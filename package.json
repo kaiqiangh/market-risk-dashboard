@@ -6,12 +6,15 @@
   "description": "Global Market Risk Intelligence Dashboard — 全球市场风险情报看板",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && npm run precompress",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check:i18n": "node scripts/check-i18n.mjs",
+    "check:data": "node scripts/validate-json.mjs",
+    "precompress": "node scripts/precompress.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.51.0",

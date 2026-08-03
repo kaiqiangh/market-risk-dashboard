@@ -33,6 +33,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # PRD §20.1 构建链：校验翻译文件 → 校验 JSON Schema → ESLint → TS check → 测试 → 构建 → 部署
+      - name: Check translation files
+        run: npm run check:i18n
+
+      - name: Validate JSON data
+        run: npm run check:data
+
       - name: Lint
         run: npm run lint
 
