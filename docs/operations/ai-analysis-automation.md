@@ -7,14 +7,14 @@
 
 ## 1. Daily cadence (frozen)
 
-| Session | ET window (frozen) | Automation time (UTC) | Trigger condition |
+| Session | ET window (frozen) | Automation time (Dublin local) | Trigger condition |
 |---|---|---|---|
-| Pre-market | 07:30 ET | 12:30 UTC | After the pipeline pre-market refresh (11:30 UTC) |
-| Post-market | 16:30 ET | 21:30 UTC | After the pipeline post-market refresh (20:30 UTC) |
+| Pre-market | 07:30 ET | 12:30 | After the pipeline pre-market refresh (11:30) |
+| Post-market | 16:30 ET | 21:30 | After the pipeline post-market refresh (20:30) |
 
 2 runs per day. When quota is exhausted or a run fails, skip this step and mark `degraded` (see §5 drill).
 
-> Timezone note: the automations run at **fixed UTC times** (deterministic). The ET window is DST-dependent — 12:30 UTC = 07:30 ET in standard time, 08:30 ET in DST; likewise 21:30 UTC = 16:30 ET standard / 17:30 ET DST. Each AI brief runs 1h after the corresponding data refresh, so it always reads the freshest facts.json.
+> Timezone note: automation rrule times are **machine-local (Dublin, GMT+1)** — 12:30 Dublin = 07:30 ET, 21:30 Dublin = 16:30 ET, year-round (modulo US/EU DST transition weeks). Each AI brief runs 1h after the corresponding data refresh (11:30 / 20:30 Dublin), so it always reads the freshest facts.json.
 
 ## 2. Input / output contract
 
