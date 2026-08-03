@@ -1,8 +1,8 @@
-# 数据校验 workflow（架构 §5#1 / PRD §20.2）。
-# 决策说明：作为**只读校验门槛**保留——仅校验已提交的 public/data，不采集数据、
-# 无 Secrets、无定时任务；触发方式为 PR（路径过滤）+ 手动触发。
-# 该 workflow 不阻塞 main 部署（deploy-pages.yml 保持"仅构建+部署"），
-# 数据质量问题由 PR 评审发现并在本地管道修复。
+# Data validation workflow (Architecture §5#1 / PRD §20.2).
+# Decision note: kept as a **read-only validation gate** — only validates the committed public/data, does not collect data,
+# no Secrets, no scheduled tasks; triggered by PR (path-filtered) + manual dispatch.
+# This workflow does not block main deployment (deploy-pages.yml remains "build + deploy only"),
+# data quality issues are caught in PR review and fixed in the local pipeline.
 name: Validate Data
 
 on:
@@ -16,7 +16,7 @@ on:
       - ".github/workflows/validate-data.yml"
   workflow_dispatch:
 
-# CI 权限最小化（架构 §8.14：只读）
+# Minimal CI permissions (Architecture §8.14: read-only)
 permissions:
   contents: read
 

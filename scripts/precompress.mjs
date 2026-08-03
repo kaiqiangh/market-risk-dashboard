@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 /**
- * 构建期预压缩（架构 §5#3 / PRD §23：JSON 文件支持 gzip 或 Brotli）。
+ * Build-time precompression (Architecture §5#3 / PRD §23: JSON files support gzip or Brotli).
  *
- * GitHub Pages 对 .json 的自动压缩行为不可靠；本脚本在 dist 阶段为
- * 超过阈值的静态资源预生成 .gz（gzip）与 .br（brotli）变体。
- * 若部署到支持 precompressed 变体的服务器（nginx gzip_static / CDN），
- * 浏览器可直接命中压缩文件；若 Pages 忽略变体则仅多出若干文件，无副作用。
+ * GitHub Pages' automatic compression of .json is unreliable; this script pre-generates
+ * .gz (gzip) and .br (brotli) variants for static assets above the size threshold at the dist stage.
+ * On servers that support precompressed variants (nginx gzip_static / CDN), browsers can
+ * hit the compressed files directly; if Pages ignores the variants, only a few extra files
+ * exist, with no side effects.
  *
- * 用法：
+ * Usage:
  *   node scripts/precompress.mjs [--dist dist] [--min-size 1024]
- * 开关：设置环境变量 NO_PRECOMPRESS=1 可跳过（默认开启）。
+ * Toggle: set the environment variable NO_PRECOMPRESS=1 to skip (enabled by default).
  */
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -26,7 +27,7 @@ const MIN_SIZE = process.argv.includes("--min-size")
   : 1024;
 
 if (process.env.NO_PRECOMPRESS === "1") {
-  console.log("[precompress] NO_PRECOMPRESS=1，跳过");
+  console.log("[precompress] NO_PRECOMPRESS=1, skipping");
   process.exit(0);
 }
 
@@ -46,7 +47,7 @@ function walk(dir) {
 }
 
 if (!existsSync(DIST)) {
-  console.log(`[precompress] dist 目录不存在: ${DIST}（跳过）`);
+  console.log(`[precompress] dist directory does not exist: ${DIST} (skipping)`);
   process.exit(0);
 }
 
@@ -72,5 +73,5 @@ for (const file of walk(DIST)) {
 }
 
 console.log(
-  `[precompress] dist 预压缩完成：gzip ${gzCount} 个，brotli ${brCount} 个，跳过 <${MIN_SIZE}B 的 ${skipped} 个`,
+  `[precompress] dist precompression complete: gzip ${gzCount}, brotli ${brCount}, skipped ${skipped} file(s) < ${MIN_SIZE}B`,
 );
