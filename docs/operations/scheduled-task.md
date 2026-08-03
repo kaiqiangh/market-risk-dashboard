@@ -17,7 +17,7 @@ Scheduled on US equity trading days (ET), 2-3 times per day; on non-trading days
 
 **ET ↔ local time mapping:** convert to your local timezone in `.env` or the task schedule (example: ET 07:30 = UTC 11:30 (DST) / 12:30 (standard time), Beijing 19:30/20:30 same day).
 
-**WorkBuddy automation mapping (currently the actual scheduler):** the three MRD automations implement this cadence in UTC — data refresh `--full` at 11:30 + 20:30 UTC (pre/post-market), overnight `--news-only` at 03:30 UTC, and the AI briefs at 12:30 + 21:30 UTC right after each refresh. If you switch to a local scheduler (cron/launchd), keep the same ET windows.
+**WorkBuddy automation mapping (currently the actual scheduler):** the four MRD automations implement this cadence at **fixed UTC times** — data refresh `--full` at 11:30 + 20:30 UTC (pre/post-market), overnight `--news-only` at 03:30 UTC, and the AI briefs at 12:30 + 21:30 UTC right after each refresh. These match the ET windows above during US standard time; during DST the ET equivalent shifts ~1h later (e.g. 12:30 UTC = 08:30 ET in summer). If you switch to a local scheduler (cron/launchd), prefer ET-anchored times so the windows stay fixed year-round.
 
 > Note: expected market/news update frequency is 2-3 times/day (architecture §8.5); FRED macro data follows a T+1 release cadence; `freshness` determination is described in `pipeline/validation/freshness.py`.
 
@@ -34,6 +34,7 @@ python -m pipeline.run --market-only     # market data + crypto + A-shares
 python -m pipeline.run --macro-only      # FRED + FedWatch
 python -m pipeline.run --news-only       # RSS news
 python -m pipeline.run --fact-layer      # rebuild fact layer only (no collection)
+python -m pipeline.run --analysis-only   # validate AI briefs + update analysis freshness + merge news translations
 
 # Other
 python -m pipeline.run --dry-run         # dry run, no writes

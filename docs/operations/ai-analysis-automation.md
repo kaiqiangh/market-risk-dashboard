@@ -7,14 +7,14 @@
 
 ## 1. Daily cadence (frozen)
 
-| Session | ET time | Trigger condition |
-|---|---|---|
-| Pre-market | 07:30 ET | After the pipeline pre-market run (facts.json updated) |
-| Post-market | 16:30 ET | After the pipeline post-market run |
+| Session | ET window (frozen) | Automation time (UTC) | Trigger condition |
+|---|---|---|---|
+| Pre-market | 07:30 ET | 12:30 UTC | After the pipeline pre-market refresh (11:30 UTC) |
+| Post-market | 16:30 ET | 21:30 UTC | After the pipeline post-market refresh (20:30 UTC) |
 
 2 runs per day. When quota is exhausted or a run fails, skip this step and mark `degraded` (see §5 drill).
 
-> WorkBuddy automations run at 12:30 UTC (pre-market) and 21:30 UTC (post-market), 1h after the 11:30 / 20:30 UTC data refreshes, so each brief reads the freshest facts.json.
+> Timezone note: the automations run at **fixed UTC times** (deterministic). The ET window is DST-dependent — 12:30 UTC = 07:30 ET in standard time, 08:30 ET in DST; likewise 21:30 UTC = 16:30 ET standard / 17:30 ET DST. Each AI brief runs 1h after the corresponding data refresh, so it always reads the freshest facts.json.
 
 ## 2. Input / output contract
 
@@ -56,13 +56,13 @@ python -m pipeline.analysis.freshness --dataset facts
 2. Check `facts.json` freshness (`pipeline.analysis.freshness`): stale is still acceptable, but the output carries a `data_freshness` annotation.
 3. `build_prompt.py` produces prompts (once for zh-CN, once for en, including evidence-index snippets): `python -m pipeline.analysis.build_prompt --lang zh-CN` / `--lang en`.
 4. Call deepseek v4 flash to generate three outputs (Chinese brief / English brief / news Chinese translation).
-5. Write the three output files (`analysis.zh-CN.json` / `analysis.en.json` / `news.zh-translations.json`).
+5. Write the three output files: `analysis.zh-CN.json` / `analysis.en.json` / `news.zh-translations.json` (the translations cover the top ~10 English-sourced `news.json` items as `NewsTranslationsDataset { items: [{id, title_zh, summary_zh?}], updated_at }`; skip items that are already Chinese).
 6. Validate with the CLI (`--zh/--en/--facts`, no `--locale`):
    - Schema is valid (no implicit fields / NaN / invalid enums / invalid time)
    - Every `evidence_refs` is findable in `evidence_index`
    - **Bilingual consistency**: `market_state` / `market_regime` / `confidence` / the `evidence_refs` set / all numbers in the text must be exactly identical; only the expression language may differ
    - On failure, retry ≤2 times (regenerate or patch locally).
-7. Publish linkage: after validation passes, run `python -m pipeline.run --analysis-only` — it flips `metadata/freshness.json` `analysis` to `fresh`, merges `news.zh-translations.json` into `news.json`, and records the merge in `metadata/translations.json`.
+7. Publish linkage: after validation passes, run `python -m pipeline.run --analysis-only` — it flips `metadata/freshness.json` `analysis` to `fresh`, merges `news.zh-translations.json` into `news.json` when present (and records `missing` in `metadata/translations.json` when the translations step was skipped), keeping a single source of truth.
 8. `git commit + push (dev)` (`AI:`-prefixed message) → trigger Pages build.
 
 **Bilingual consistency rule (architecture §3.4):** inconsistency → refuse to publish; rather skip this run than publish a wrong conclusion.
@@ -133,5 +133,5 @@ git push origin dev
 ## 7. Maintenance notes
 
 - Changing model / automation platform **does not touch the pipeline**: only change the calls in steps 3-4 of this manual.
-- The news translation file is merged into `news.json` by the next pipeline run (`pipeline/collectors/news.py` merge step), keeping a single source of truth; the automation **must not** directly modify `news.json`.
+- The news translation file is merged into `news.json` by step 7's `--analysis-only` in the same run (`pipeline/collectors/news.py` merge step + `pipeline/run.py`), keeping a single source of truth; the automation **must not** directly modify `news.json`.
 - Terminology follows `docs/glossary.md`; the prompt template `pipeline/analysis/build_prompt.py` already embeds the key term mapping.
