@@ -29,17 +29,17 @@ export default function ThemesPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-xl font-bold text-foreground" data-testid="page-title">
+      <header className="flex flex-wrap items-baseline gap-3">
+        <h1 className="text-lg font-semibold text-foreground" data-testid="page-title">
           {t("title")}
         </h1>
-        <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
-        {sectorsQ.data ? <StatusBadge status={sectorsQ.data.freshness_status} withDescription /> : null}
+        <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
+        {sectorsQ.data ? <span className="ml-auto"><StatusBadge status={sectorsQ.data.freshness_status} withDescription /></span> : null}
       </header>
 
       {/* Semiconductors */}
-      <section data-testid="section-semis">
-        <h2 className="mb-2 text-sm font-semibold text-foreground">{t("section.semis")}</h2>
+      <section className="border-t border-hairline pt-4" data-testid="section-semis">
+        <h2 className="mb-2 text-sm font-medium text-foreground">{t("section.semis")}</h2>
         {sectorsQ.isLoading ? (
           <Skeleton className="h-32 w-full" />
         ) : sectorsQ.isError ? (
@@ -61,19 +61,19 @@ export default function ThemesPage() {
       </section>
 
       {/* Memory (incl. 10 A-shares) */}
-      <section data-testid="section-memory">
+      <section className="border-t border-hairline pt-4" data-testid="section-memory">
         <MemorySectorTable assets={cnAssets} memory={memory} />
       </section>
 
       {/* Metals (no dedicated data source in MVP, marked NA; proxied via sectors/themes per architecture) */}
-      <section data-testid="section-metals">
-        <h2 className="mb-2 text-sm font-semibold text-foreground">{t("section.metals")}</h2>
+      <section className="border-t border-hairline pt-4" data-testid="section-metals">
+        <h2 className="mb-2 text-sm font-medium text-foreground">{t("section.metals")}</h2>
         <EmptyState title={t("metals.na")} message={t("metals.naHint")} />
       </section>
 
       {/* Crypto */}
-      <section data-testid="section-crypto">
-        <h2 className="mb-2 text-sm font-semibold text-foreground">{t("section.crypto")}</h2>
+      <section className="border-t border-hairline pt-4" data-testid="section-crypto">
+        <h2 className="mb-2 text-sm font-medium text-foreground">{t("section.crypto")}</h2>
         {cryptoQ.isLoading ? (
           <Skeleton className="h-32 w-full" />
         ) : cryptoQ.isError ? (
@@ -123,8 +123,8 @@ export default function ThemesPage() {
       </section>
 
       {/* Theme list */}
-      <section data-testid="section-themes">
-        <h2 className="mb-2 text-sm font-semibold text-foreground">{t("section.themes")}</h2>
+      <section className="border-t border-hairline pt-4" data-testid="section-themes">
+        <h2 className="mb-2 text-sm font-medium text-foreground">{t("section.themes")}</h2>
         {themes.length > 0 ? (
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {themes.map((th) => (

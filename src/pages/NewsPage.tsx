@@ -18,13 +18,13 @@ export default function NewsPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-xl font-bold text-foreground" data-testid="page-title">
+      <header className="flex flex-wrap items-baseline gap-3">
+        <h1 className="text-lg font-semibold text-foreground" data-testid="page-title">
           {t("title")}
         </h1>
-        <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
+        <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
         {newsQ.data ? (
-          <div className="flex items-center gap-3">
+          <div className="ml-auto flex items-center gap-3">
             <StatusBadge status={newsQ.data.freshness_status} />
             <span className="text-xs text-muted-foreground">
               {t("total")}: {formatNumber(newsQ.data.payload.total, locale)}

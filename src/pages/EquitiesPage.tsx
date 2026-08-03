@@ -6,7 +6,6 @@ import { EquityCard } from "@/components/equities/EquityCard";
 import { MemorySectorTable } from "@/components/equities/MemorySectorTable";
 import { AShareCard } from "@/components/equities/AShareCard";
 import { AssetCard } from "@/components/cross-asset/AssetCard";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -32,21 +31,18 @@ export default function EquitiesPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-xl font-bold text-foreground" data-testid="page-title">
+      <header className="flex flex-wrap items-baseline gap-3">
+        <h1 className="text-lg font-semibold text-foreground" data-testid="page-title">
           {t("title")}
         </h1>
-        <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
-        {equitiesQ.data ? <StatusBadge status={equitiesQ.data.freshness_status} withDescription /> : null}
+        <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
+        {equitiesQ.data ? <span className="ml-auto"><StatusBadge status={equitiesQ.data.freshness_status} withDescription /></span> : null}
       </header>
 
-      {/* Cross-Asset cards */}
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("section.crossAsset")}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {equitiesQ.isLoading ? (
+      {/* Cross-Asset cards (open section; AssetCards are the KPI cards) */}
+      <section className="border-t border-hairline pt-4">
+        <h2 className="mb-2 text-sm font-medium text-foreground">{t("section.crossAsset")}</h2>
+        {equitiesQ.isLoading ? (
             <Skeleton className="h-24 w-full" />
           ) : equitiesQ.isError ? (
             <ErrorState onRetry={equitiesQ.refetch} />
@@ -66,12 +62,11 @@ export default function EquitiesPage() {
           ) : (
             <EmptyState title={t("section.empty")} />
           )}
-        </CardContent>
-      </Card>
+      </section>
 
       {/* Key US equities */}
-      <section data-testid="section-us">
-        <h2 className="mb-2 text-sm font-semibold text-foreground">{t("section.us")}</h2>
+      <section className="border-t border-hairline pt-4" data-testid="section-us">
+        <h2 className="mb-2 text-sm font-medium text-foreground">{t("section.us")}</h2>
         {equitiesQ.isLoading ? (
           <Skeleton className="h-40 w-full" />
         ) : equitiesQ.isError ? (
@@ -88,14 +83,14 @@ export default function EquitiesPage() {
       </section>
 
       {/* Memory sector + A-shares */}
-      <section data-testid="section-memory">
+      <section className="border-t border-hairline pt-4" data-testid="section-memory">
         <MemorySectorTable assets={cnAssets} memory={memory} />
       </section>
 
       {/* A-share cards (mobile; the long table is above in the desktop view, this adds card views) */}
       {cnAssets.length > 0 ? (
-        <section data-testid="section-ashare">
-          <h2 className="mb-2 text-sm font-semibold text-foreground">{t("section.aShare")}</h2>
+        <section className="border-t border-hairline pt-4" data-testid="section-ashare">
+          <h2 className="mb-2 text-sm font-medium text-foreground">{t("section.aShare")}</h2>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {cnAssets.map((a) => (
               <AShareCard key={a.symbol} asset={a} />
