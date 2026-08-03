@@ -39,8 +39,8 @@
   --risk-low: 63 157 120; /* #3f9d78 — quiet teal-green */
   --risk-caution: 201 160 74; /* #c9a04a — amber */
   --risk-high: 207 116 56; /* #cf7438 — orange */
-  --risk-severe: 204 82 82; /* #cc5252 — red */
-  --risk-na: 95 107 127; /* #5f6b7f — slate */
+  --risk-severe: 217 101 101; /* #d96565 — red (AA-tuned) */
+  --risk-na: 125 138 160; /* #7d8aa0 — slate (AA-tuned) */
 
   /* Price direction (de-emphasized ~60-70% saturation, always with sign) */
   --dir-up: 107 158 133; /* #6b9e85 */
@@ -72,22 +72,22 @@
   --foreground: 26 35 51; /* #1a2333 ink */
   --muted-foreground: 93 107 127; /* #5d6b7f */
 
-  --primary: 61 124 168; /* #3d7ca8 */
+  --primary: 56 114 156; /* #38729c (AA-tuned) */
   --primary-foreground: 250 251 252;
   --destructive: 176 58 58; /* #b03a3a */
 
   /* Risk ramp darkened one step for contrast on white */
   --risk-low: 46 125 95; /* #2e7d5f */
-  --risk-caution: 154 116 51; /* #9a7433 */
+  --risk-caution: 143 107 45; /* #8f6b2d (AA-tuned) */
   --risk-high: 176 90 36; /* #b05a24 */
   --risk-severe: 176 58 58; /* #b03a3a */
   --risk-na: 107 118 134; /* #6b7686 */
 
-  --dir-up: 77 133 104; /* #4d8568 */
+  --dir-up: 70 124 96; /* #467c60 (AA-tuned) */
   --dir-down: 158 88 88; /* #9e5858 */
 
   --fresh-ok: 93 107 127;
-  --fresh-warn: 154 116 51;
+  --fresh-warn: 143 107 45;
   --fresh-bad: 176 90 36;
 
   --background: var(--surface-0);

@@ -59,3 +59,80 @@ describe("design token contract", () => {
     expect(css).toContain("--radius: 0.25rem");
   });
 });
+
+/* ---------- WCAG AA contrast audit (spec #23 ticket #34) ---------- */
+
+type RGB = [number, number, number];
+
+function parseVars(block: string): Map<string, RGB> {
+  const out = new Map<string, RGB>();
+  for (const m of block.matchAll(/--([a-z0-9-]+):\s*([0-9]+)\s+([0-9]+)\s+([0-9]+)/g)) {
+    out.set(m[1], [Number(m[2]), Number(m[3]), Number(m[4])]);
+  }
+  return out;
+}
+
+function luminance([r, g, b]: RGB): number {
+  const f = (c: number) => {
+    const s = c / 255;
+    return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+}
+
+function contrast(a: RGB, b: RGB): number {
+  const la = luminance(a);
+  const lb = luminance(b);
+  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+}
+
+const darkBlock = css.slice(css.indexOf(':root[class~="dark"]'), css.indexOf(':root[class~="light"]'));
+const lightBlock = css.slice(css.indexOf(':root[class~="light"]'), css.indexOf("@layer base"));
+const darkTokens = parseVars(darkBlock);
+const lightTokens = parseVars(lightBlock);
+
+/** Text/UI pairings that must meet 4.5:1 in both themes. */
+const AA_PAIRS: [string, string][] = [
+  ["foreground", "surface-0"],
+  ["foreground", "surface-1"],
+  ["foreground", "surface-2"],
+  ["muted-foreground", "surface-0"],
+  ["muted-foreground", "surface-1"],
+  ["muted-foreground", "surface-2"],
+  ["primary", "surface-0"],
+  ["primary", "surface-1"],
+  ["primary-foreground", "primary"],
+  ["dir-up", "surface-0"],
+  ["dir-up", "surface-1"],
+  ["dir-down", "surface-0"],
+  ["dir-down", "surface-1"],
+  ["risk-low", "surface-0"],
+  ["risk-low", "surface-1"],
+  ["risk-caution", "surface-0"],
+  ["risk-caution", "surface-1"],
+  ["risk-high", "surface-0"],
+  ["risk-high", "surface-1"],
+  ["risk-severe", "surface-0"],
+  ["risk-severe", "surface-1"],
+  ["risk-na", "surface-1"],
+  ["fresh-warn", "surface-1"],
+  ["fresh-bad", "surface-1"],
+];
+
+describe("WCAG AA contrast (ticket #34)", () => {
+  for (const [theme, tokens] of [
+    ["dark", darkTokens],
+    ["light", lightTokens],
+  ] as const) {
+    it.each(AA_PAIRS.map(([fg, bg]) => [fg, bg] as [string, string]))(
+      `[${theme}] %s on %s meets 4.5:1`,
+      (fg, bg) => {
+        const fgRgb = tokens.get(fg);
+        const bgRgb = tokens.get(bg);
+        expect(fgRgb, `${fg} defined`).toBeDefined();
+        expect(bgRgb, `${bg} defined`).toBeDefined();
+        expect(contrast(fgRgb!, bgRgb!)).toBeGreaterThanOrEqual(4.5);
+      },
+    );
+  }
+});
