@@ -1,4 +1,4 @@
-"""运行报告（架构 §3.7 run_report.py → artifacts/logs）。"""
+"""Run report (architecture §3.7 run_report.py → artifacts/logs)."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ def write_run_report(
     dataset_counts: dict[str, int],
     error: str | None = None,
 ) -> Path:
-    """写 artifacts/logs/run-report-{ts}.json。"""
+    """Write artifacts/logs/run-report-{ts}.json."""
     logs_dir = artifacts_dir / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")

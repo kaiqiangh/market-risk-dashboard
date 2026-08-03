@@ -1,7 +1,7 @@
-"""宏观数据集契约（架构 §3.2 指标映射 / 评审 §3.1 FRED 基石）。
+"""Macro dataset contract (architecture §3.2 indicator mapping / review §3.1 FRED cornerstone).
 
-payload 结构：按业务域分组的 MacroIndicator 列表 + FedWatch 快照。
-T03 MacroCollector 负责填充；本模块只定义契约。
+payload structure: MacroIndicator lists grouped by business domain + FedWatch snapshot.
+Filled by the T03 MacroCollector; this module only defines the contract.
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ MacroUnit = Literal["pct", "bps", "index", "usd", "ratio", "level"]
 
 
 class MacroIndicator(ContractModel):
-    """单一宏观指标（原始数值存储，架构 §8.3）。"""
+    """A single macro indicator (raw numeric storage, architecture §8.3)."""
 
     key: str = Field(min_length=1)
     label: str = Field(min_length=1)
@@ -30,7 +30,7 @@ class MacroIndicator(ContractModel):
 
 
 class FedWatchRateProb(ContractModel):
-    """某目标利率区间的概率（0-1）。"""
+    """Probability of a target rate bucket (0-1)."""
 
     target_rate: float
     probability: float = Field(ge=0.0, le=1.0)
@@ -38,7 +38,7 @@ class FedWatchRateProb(ContractModel):
 
 
 class FedWatchSnapshot(ContractModel):
-    """CME FedWatch 概率自算快照（架构 §1.6 冻结方法论）。"""
+    """CME FedWatch probability self-computed snapshot (architecture §1.6 frozen methodology)."""
 
     meeting_date: UTCDateTime | None = None
     effective_rate: float
@@ -47,12 +47,13 @@ class FedWatchSnapshot(ContractModel):
     inferred_action: Literal["hold", "hike", "cut", "insufficient_data"] | None = None
     change_1d: dict[str, float] | None = None
     status: Literal["accumulating", "ready"] = "accumulating"
-    # 免费结算历史仅约 5 个交易日（评审 P0-1）：较一周前变化在系统运行满 7 天前不可得，
-    # 前端必须显示 insufficient data 状态而非 0/空值。
+    # Free settlement history is only ~5 trading days (review P0-1): "change vs a week ago" is
+    # unavailable until the system has run for 7 full days; the frontend must show the
+    # insufficient-data status instead of 0/empty.
 
 
 class MacroDataset(ContractModel):
-    """宏观数据集 payload。"""
+    """Macro dataset payload."""
 
     rates: list[MacroIndicator] = Field(default_factory=list)
     credit: list[MacroIndicator] = Field(default_factory=list)
@@ -64,6 +65,6 @@ class MacroDataset(ContractModel):
 
 
 class MacroEnvelope(BaseEnvelope):
-    """macro.json 信封（payload 强类型）。"""
+    """macro.json envelope (strongly typed payload)."""
 
     payload: MacroDataset

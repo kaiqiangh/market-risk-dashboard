@@ -1,6 +1,6 @@
-"""资产池加载（架构 §8：config/universe.yaml 为唯一事实源）。
+"""Asset universe loading (architecture §8: config/universe.yaml is the single source of truth).
 
-T03 起被 Collectors/RiskModel 使用；前端 src/config/universe.ts 为展示镜像。
+Used by Collectors/RiskModel since T03; the frontend src/config/universe.ts is a display mirror.
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ class Asset:
 
 
 class AssetUniverse:
-    """从 config/universe.yaml 加载的资产池。"""
+    """Asset universe loaded from config/universe.yaml."""
 
     def __init__(self, raw: dict[str, Any]) -> None:
         self.raw = raw
@@ -53,7 +53,7 @@ class AssetUniverse:
         return assets
 
     def all_equities(self) -> list[Asset]:
-        """美股 + A 股（EquityAsset 使用的全部股票）。"""
+        """US + A-share equities (all stocks used by EquityAsset)."""
         return [*self.us_equities, *self.a_share_memory]
 
     def symbols(self, market: str | None = None) -> list[str]:

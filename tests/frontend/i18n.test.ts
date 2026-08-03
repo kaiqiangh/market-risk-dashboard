@@ -1,8 +1,8 @@
 /**
- * i18n 完整性测试（验收 7）：
- * 1) 中文文件缺失 key（en 有而 zh 无）
- * 2) 英文文件缺失 key（zh 有而 en 无）
- * 3) 硬编码文本检测（src 代码中非注释、非翻译调用的中文字符串字面量）
+ * i18n integrity tests (acceptance 7):
+ * 1) Chinese files missing keys (en has, zh lacks)
+ * 2) English files missing keys (zh has, en lacks)
+ * 3) Hardcoded text detection (Chinese string literals in src code that are not comments or t() calls)
  */
 import { describe, expect, it } from "vitest";
 import { readdirSync, readFileSync } from "node:fs";
@@ -75,15 +75,15 @@ function flattenKeys(obj: Record<string, unknown>, prefix = ""): string[] {
   });
 }
 
-describe("i18n key 完整性", () => {
-  it("命名空间文件齐全（zh-CN + en 各 9 个）", () => {
+describe("i18n key integrity", () => {
+  it("all namespace files exist (zh-CN + en, 9 each)", () => {
     for (const ns of NS) {
       expect(ZH[ns], `zh-CN ${ns}`).toBeDefined();
       expect(EN[ns], `en ${ns}`).toBeDefined();
     }
   });
 
-  it("中文文件缺失 key（en 有而 zh 无）为空", () => {
+  it("no keys missing in Chinese files (en has, zh lacks)", () => {
     for (const ns of NS) {
       const zhKeys = new Set(flattenKeys(ZH[ns]));
       const enKeys = new Set(flattenKeys(EN[ns]));
@@ -92,7 +92,7 @@ describe("i18n key 完整性", () => {
     }
   });
 
-  it("英文文件缺失 key（zh 有而 en 无）为空", () => {
+  it("no keys missing in English files (zh has, en lacks)", () => {
     for (const ns of NS) {
       const zhKeys = new Set(flattenKeys(ZH[ns]));
       const enKeys = new Set(flattenKeys(EN[ns]));
@@ -102,17 +102,17 @@ describe("i18n key 完整性", () => {
   });
 });
 
-describe("硬编码文本检测", () => {
+describe("hardcoded text detection", () => {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const srcDir = path.resolve(__dirname, "../../src");
 
-  /** 允许文件：双语格式化词汇（format.ts）与资产池数据（config/universe.ts）。 */
+  /** Allowed files: bilingual formatting vocabulary (format.ts) and asset pool data (config/universe.ts). */
   const ALLOWED_FILES = new Set([
     path.join(srcDir, "lib/format.ts"),
     path.join(srcDir, "config/universe.ts"),
   ]);
 
-  /** 去注释（块注释 + 行注释，整文件处理，块注释跨行）。 */
+  /** Strip comments (block + line comments, whole-file processing, block comments may span lines). */
   function stripComments(code: string): string {
     let out = "";
     let inBlock = false;
@@ -130,7 +130,7 @@ describe("硬编码文本检测", () => {
         continue;
       }
       if (code[i] === "/" && code[i + 1] === "/") {
-        // 行注释：跳到行尾
+        // line comment: skip to end of line
         while (i < code.length && code[i] !== "\n") i += 1;
         continue;
       }
@@ -148,15 +148,15 @@ describe("硬编码文本检测", () => {
     });
   }
 
-  it("src 代码中无硬编码中文字符串字面量", () => {
+  it("no hardcoded Chinese string literals in src code", () => {
     const violations: string[] = [];
     for (const file of walk(srcDir)) {
       if (ALLOWED_FILES.has(file)) continue;
       const code = readFileSync(file, "utf-8");
-      const stripped = stripComments(code); // 整文件去注释（块注释跨行）
+      const stripped = stripComments(code); // strip comments for the whole file (block comments span lines)
       const lines = stripped.split("\n");
       lines.forEach((line, idx) => {
-        // 翻译调用 / i18n 相关 / import 语句豁免
+        // exempt translation calls / i18n-related / import statements
         if (/\bt\(\s*["'`]/.test(line)) return;
         if (/i18n|useTranslation/.test(line)) return;
         if (line.includes("import")) return;

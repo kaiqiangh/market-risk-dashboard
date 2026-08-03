@@ -1,6 +1,6 @@
-"""加密主源：CoinGecko API（架构 §1.3 冻结；Demo key 足够每天几十次调用）。
+"""Crypto primary source: CoinGecko API (architecture §1.3 frozen; Demo key is enough for a few dozen calls per day).
 
-用 httpx 直连，Demo key 从 .env（DATA_COINGECKO_API_KEY）读取。
+Direct httpx connection; Demo key read from .env (DATA_COINGECKO_API_KEY).
 """
 
 from __future__ import annotations
@@ -76,11 +76,11 @@ class CoinGeckoProvider(BaseProvider):
         return self._get("/simple/price", {"ids": DEFAULT_IDS, "vs_currencies": "usd"})
 
     def get_crypto_market(self) -> dict[str, Any]:
-        """返回 {assets: [...], btc_dominance, market_cap_total}。"""
+        """Return {assets: [...], btc_dominance, market_cap_total}."""
         price_data = self._get_simple_price()
         id_map = {"bitcoin": "BTC", "ethereum": "ETH", "solana": "SOL"}
 
-        # 单资产详情（市值/成交量）——逐币种调用，共 3 次，额度可控
+        # Per-asset details (market cap/volume) — one call per coin, 3 total, quota is manageable
         assets: list[dict[str, Any]] = []
         for cg_id, symbol in id_map.items():
             detail = self._get(
@@ -126,7 +126,7 @@ def _f(value) -> float | None:
 
 
 def _ratio01(value) -> float | None:
-    """CoinGecko 百分比（如 56.23）→ 0-1 比率。"""
+    """CoinGecko percentage (e.g. 56.23) → 0-1 ratio."""
     f = _f(value)
     if f is None:
         return None

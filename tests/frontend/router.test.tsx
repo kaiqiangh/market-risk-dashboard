@@ -1,9 +1,9 @@
 /**
- * 路由 / 语言切换 / 主题切换测试（验收 2/3/4）。
- * - 8 路由可渲染（fixtures 数据）
- * - 语言切换保持当前页面（#/zh/risk-lab → #/en/risk-lab）
- * - 刷新后语言保持（localStorage + URL 段）
- * - 深色/浅色模式切换 + localStorage 持久化
+ * Routing / language switch / theme switch tests (acceptance 2/3/4).
+ * - 8 routes renderable (fixtures data)
+ * - language switch keeps the current page (#/zh/risk-lab → #/en/risk-lab)
+ * - language persists after refresh (localStorage + URL segment)
+ * - dark/light mode switch + localStorage persistence
  */
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
@@ -40,8 +40,8 @@ afterEach(() => {
   window.localStorage.clear();
 });
 
-describe("路由渲染（fixtures 数据）", () => {
-  it("overview 渲染风险结论 + AI 简报", async () => {
+describe("route rendering (fixtures data)", () => {
+  it("overview renders risk conclusion + AI brief", async () => {
     installFixtureFetch();
     renderApp();
     await screen.findByTestId("page-title");
@@ -60,14 +60,14 @@ describe("路由渲染（fixtures 数据）", () => {
     ["calendar", "日历"],
     ["risklab", "风险实验室"],
     ["status", "系统状态"],
-  ])("页面 %s 可渲染（fixtures）", async (page, title) => {
+  ])("page %s renders (fixtures)", async (page, title) => {
     installFixtureFetch();
     setHash(`#/zh/${page}`);
     renderApp();
     expect(await screen.findByTestId("page-title")).toHaveTextContent(title);
   });
 
-  it("非法语言段 → 重定向 /zh/overview", async () => {
+  it("invalid language segment → redirects to /zh/overview", async () => {
     installFixtureFetch();
     setHash("#/fr/overview");
     renderApp();
@@ -75,8 +75,8 @@ describe("路由渲染（fixtures 数据）", () => {
   });
 });
 
-describe("JSON 读取失败 → ErrorState", () => {
-  it("数据不可达时渲染 ErrorState（不崩溃）", async () => {
+describe("JSON read failure → ErrorState", () => {
+  it("renders ErrorState when data is unreachable (does not crash)", async () => {
     installFailingFetch();
     renderApp();
     const alerts = await screen.findAllByRole("alert", {}, { timeout: 5000 });
@@ -85,8 +85,8 @@ describe("JSON 读取失败 → ErrorState", () => {
   });
 });
 
-describe("语言切换（保持当前页面）", () => {
-  it("risk-lab 页切换 zh→en 后仍在 risk-lab", async () => {
+describe("language switch (keeps current page)", () => {
+  it("stays on risk-lab when switching zh→en on the risk-lab page", async () => {
     installFixtureFetch();
     setHash("#/zh/risklab");
     renderApp();
@@ -99,7 +99,7 @@ describe("语言切换（保持当前页面）", () => {
     await waitFor(() => expect(screen.getByTestId("page-title")).toHaveTextContent("Risk Lab"));
   });
 
-  it("overview 页切换 en→zh 后仍在 overview", async () => {
+  it("stays on overview when switching en→zh on the overview page", async () => {
     installFixtureFetch();
     setHash("#/en/overview");
     renderApp();
@@ -112,7 +112,7 @@ describe("语言切换（保持当前页面）", () => {
     await waitFor(() => expect(screen.getByTestId("page-title")).toHaveTextContent("总览"));
   });
 
-  it("刷新后语言保持（URL 段 + localStorage）", async () => {
+  it("language persists after refresh (URL segment + localStorage)", async () => {
     installFixtureFetch();
     window.localStorage.setItem(LOCALE_STORAGE_KEY, "en");
     setHash("#/en/macro");
@@ -122,8 +122,8 @@ describe("语言切换（保持当前页面）", () => {
   });
 });
 
-describe("主题切换", () => {
-  it("深色默认 → 点击切换浅色 → localStorage 持久化", async () => {
+describe("theme switch", () => {
+  it("dark by default → click toggles to light → localStorage persists", async () => {
     installFixtureFetch();
     renderApp();
     await screen.findByTestId("page-title");

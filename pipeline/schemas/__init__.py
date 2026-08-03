@@ -1,9 +1,10 @@
-"""数据契约层（T02）。
+"""Data contract layer (T02).
 
-Pydantic v2 模型全集，与前端 Zod / JSON Schema 三件套同构（架构 §1.1/§3.1）。
-- 所有模型禁止隐式字段（extra="forbid"）、拒绝 NaN/Infinity（allow_inf_nan=False）。
-- 时间一律 ISO 8601 UTC + Z；风险分 0-100、比率 0-1。
-- 契约模型不包含任何采集/计算业务逻辑（那是 T03）。
+Complete set of Pydantic v2 models, isomorphic to the frontend Zod / JSON Schema three artifacts
+(architecture §1.1/§3.1).
+- All models forbid implicit fields (extra="forbid") and reject NaN/Infinity (allow_inf_nan=False).
+- Times are always ISO 8601 UTC + Z; risk scores 0-100, ratios 0-1.
+- Contract models contain no collection/computation business logic (that is T03).
 """
 
 from .envelope import (
@@ -34,7 +35,7 @@ from .risk import (
 )
 from .sectors import MemoryProxy, SectorItem, SectorsDataset, SectorsEnvelope
 
-# 解析 risk.py 中 EvidenceRef 前向引用（factlayer ↔ risk 互相引用，见 risk.py 注释）
+# Resolve the EvidenceRef forward reference in risk.py (factlayer ↔ risk mutually reference; see risk.py comment)
 DriverContribution.model_rebuild(_types_namespace={"EvidenceRef": EvidenceRef})
 
 __all__ = [

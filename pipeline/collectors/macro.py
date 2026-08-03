@@ -1,7 +1,7 @@
-"""宏观采集器（架构 §3.7 MacroCollector）。
+"""Macro collector (architecture §3.7 MacroCollector).
 
-FRED 序列 + FedWatch 概率（Yahoo ZQ 期货 + EFFR 锚点 + 本地快照累积）。
-任何 Provider 失败 → 降级链 → degraded，不中断管道。
+FRED series + FedWatch probabilities (Yahoo ZQ futures + EFFR anchor + local snapshot accumulation).
+Any Provider failure → degradation chain → degraded, does not interrupt the pipeline.
 """
 
 from __future__ import annotations
@@ -25,7 +25,7 @@ from pipeline.schemas import FedWatchSnapshot, MacroDataset, MacroEnvelope, Macr
 from pipeline.settings import Settings
 from pipeline.utils import now_utc
 
-# FRED 序列 → 分组
+# FRED series → group
 SERIES_GROUPS: dict[str, list[str]] = {
     "rates": ["DGS10", "DGS2", "DFII10", "T10YIE", "DFF"],
     "credit": ["BAMLH0A0HYM2", "BAMLC0A0CM"],
@@ -44,7 +44,7 @@ class MacroCollector:
         self.settings = settings or Settings()
         self.degraded: list[str] = []
         self.provider_status: dict[str, Any] = {}
-        # 序列全量历史（Fix P0-2：供风险模型 5Y 百分位窗口使用）
+        # Full series history (Fix P0-2: for the risk model 5Y percentile window)
         self.series_history: dict[str, list[dict[str, Any]]] = {}
         self._fred_failures = 0
         self._fedwatch_failed = False
@@ -56,7 +56,8 @@ class MacroCollector:
             out = self.registry.call("macro", "get_series", f"fred_{series_id}", args=(series_id,))
             self.provider_status.setdefault("macro", out["meta"])
             rows = out["result"]
-            # 统一小写 key：风险模型 5Y 百分位按 indicator key 的小写序列名查找
+            # Normalize to lowercase keys: the risk model 5Y percentile looks up by the lowercase
+            # series name of the indicator key
             self.series_history[series_id.lower()] = rows
             return rows
         except ProviderError as exc:
@@ -98,7 +99,7 @@ class MacroCollector:
     # ---- FedWatch ----
 
     def _collect_fedwatch(self) -> FedWatchSnapshot | None:
-        # EFFR 锚点（DFF 优先，回退 EFFR）
+        # EFFR anchor (DFF preferred, fallback EFFR)
         effr: float | None = None
         for series_id in ("DFF", "EFFR"):
             rows = self._fred_series(series_id)
@@ -107,7 +108,7 @@ class MacroCollector:
                 break
         if effr is None:
             self._fedwatch_failed = True
-            self.degraded.append("FedWatch: 无 EFFR 锚点")
+            self.degraded.append("FedWatch: no EFFR anchor")
             return self._accumulate(insufficient_data_snapshot(None))
 
         prices: dict[str, float | None] = {}
@@ -121,7 +122,7 @@ class MacroCollector:
         codes = next_contract_codes()
         if not any(v is not None for v in prices.values()):
             self._fedwatch_failed = True
-            self.degraded.append("FedWatch: ZQ 期货不可得")
+            self.degraded.append("FedWatch: ZQ futures unavailable")
             return self._accumulate(insufficient_data_snapshot(effr))
 
         snapshot = compute_fedwatch(
@@ -137,16 +138,16 @@ class MacroCollector:
         return self._accumulate(snapshot)
 
     def _accumulate(self, snapshot: FedWatchSnapshot) -> FedWatchSnapshot:
-        """本地每日快照累积（架构 §1.6/评审 P0-1）：无论成功与否都建立累积文件。"""
+        """Local daily snapshot accumulation (architecture §1.6/review P0-1): build the accumulation file regardless of success."""
         history_path = self.settings.data_dir / "feeds" / "fedwatch-history.json"
         history = load_history(history_path)
         enriched = enrich_with_history(snapshot, history, history_path)
         save_history(history_path, history)
         return enriched
-    # ---- 汇总 ----
+    # ---- Summary ----
 
     def _quality(self) -> float:
-        """数据质量按失败源降级 ×0.8：FRED 部分失败计 1，FedWatch 失败计 1。"""
+        """Data quality degrades ×0.8 per failed source: FRED partial failure counts as 1, FedWatch failure counts as 1."""
         failed = (1 if self._fred_failures > 0 else 0) + (1 if self._fedwatch_failed else 0)
         return round(max(0.1, 0.8 ** failed), 3)
 

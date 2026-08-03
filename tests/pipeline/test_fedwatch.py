@@ -1,4 +1,4 @@
-"""FedWatch 计算测试（架构 §1.6 + Fix P0-3 CME 方法论）。"""
+"""FedWatch computation tests (architecture §1.6 + Fix P0-3 CME methodology)."""
 
 from __future__ import annotations
 
@@ -19,10 +19,10 @@ def test_next_contract_codes() -> None:
     assert codes[1] == "ZQZ26.CBT"  # Dec 2026
 
 
-# ---------- CME 方法论：P(加息)=Δ/25bp ----------
+# ---------- CME methodology: P(hike)=Δ/25bp ----------
 
 def test_compute_fedwatch_hold() -> None:
-    # effr=5.25，隐含利率≈5.25 → 维持（整月平均近似，无会议日期）
+    # effr=5.25, implied rate≈5.25 → hold (whole-month average approximation, no meeting date)
     snap = compute_fedwatch(FedWatchInput(current_contract_price=94.75, next_contract_price=94.70, effr=5.25))
     assert snap is not None
     assert snap.inferred_action == "hold"
@@ -30,11 +30,11 @@ def test_compute_fedwatch_hold() -> None:
     total = sum(p.probability for p in snap.probabilities)
     assert abs(total - 1.0) < 1e-6
     by_rate = {p.target_rate: p.probability for p in snap.probabilities}
-    assert by_rate[5.25] == 1.0  # 维持概率 100%
+    assert by_rate[5.25] == 1.0  # hold probability 100%
 
 
 def test_compute_fedwatch_cut() -> None:
-    # effr=5.25，隐含利率 5.10 → Δ=-15bp → P(降息)=0.6
+    # effr=5.25, implied rate 5.10 → Δ=-15bp → P(cut)=0.6
     snap = compute_fedwatch(FedWatchInput(current_contract_price=94.90, next_contract_price=None, effr=5.25))
     assert snap is not None
     assert snap.inferred_action == "cut"
@@ -44,7 +44,7 @@ def test_compute_fedwatch_cut() -> None:
 
 
 def test_compute_fedwatch_hike() -> None:
-    # effr=5.25，隐含利率 5.45 → Δ=+20bp → P(加息)=0.8
+    # effr=5.25, implied rate 5.45 → Δ=+20bp → P(hike)=0.8
     snap = compute_fedwatch(FedWatchInput(current_contract_price=94.55, next_contract_price=None, effr=5.25))
     assert snap is not None
     assert snap.inferred_action == "hike"
@@ -54,8 +54,8 @@ def test_compute_fedwatch_hike() -> None:
 
 
 def test_cme_exact_25bp_hike_probability_one() -> None:
-    """Δ 恰为 25bp → P(加息)=1.0（CME 公式 EFFR(End)=Δ/25bp）。"""
-    # 会议在 5 月 1 日（当天即新利率）→ 整月处于新利率 → EFFR(End)=隐含月均
+    """Δ exactly 25bp → P(hike)=1.0 (CME formula EFFR(End)=Δ/25bp)."""
+    # meeting on May 1 (new rate in effect that day) → the whole month is at the new rate → EFFR(End)=implied monthly average
     snap = compute_fedwatch(
         FedWatchInput(
             current_contract_price=94.50, next_contract_price=None,
@@ -69,9 +69,9 @@ def test_cme_exact_25bp_hike_probability_one() -> None:
 
 
 def test_cme_day_split_method() -> None:
-    """当月合约法：会议在 5 月 12 日（31 天），隐含月均 5.30、EFFR 5.25。
+    """Current-month contract method: meeting on May 12 (31 days), implied monthly average 5.30, EFFR 5.25.
 
-    EFFR(End) = (31×5.30 − 11×5.25) / 20 = 5.3275 → Δ=7.75bp → P(加息)=0.31
+    EFFR(End) = (31×5.30 − 11×5.25) / 20 = 5.3275 → Δ=7.75bp → P(hike)=0.31
     """
     snap = compute_fedwatch(
         FedWatchInput(
@@ -87,9 +87,9 @@ def test_cme_day_split_method() -> None:
 
 
 def test_cme_month_end_uses_next_contract() -> None:
-    """月底会议（5 月 31 日，最后 7 天窗口）→ 下一月合约法。
+    """Month-end meeting (May 31, last-7-day window) → next-month contract method.
 
-    下一月合约 94.60 → EFFR(End)=5.40 → Δ=+15bp → P(加息)=0.6。
+    Next-month contract 94.60 → EFFR(End)=5.40 → Δ=+15bp → P(hike)=0.6.
     """
     snap = compute_fedwatch(
         FedWatchInput(
@@ -115,7 +115,7 @@ def test_enrich_with_history_first_day() -> None:
     assert snap is not None
     history: list[dict] = []
     enriched = enrich_with_history(snap, history, Path("/tmp/fedwatch.json"), today="2026-08-03")
-    assert enriched.status == "accumulating"  # 无历史 → 数据积累中
+    assert enriched.status == "accumulating"  # no history → insufficient data
     assert enriched.change_1d is None
     assert len(history) == 1
 

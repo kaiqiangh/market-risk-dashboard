@@ -1,6 +1,6 @@
 /**
- * 测试 fetch mock：URL → tests/fixtures/*.json（与真实数据隔离，架构 §8.12）。
- * 页面测试通过 vi.stubGlobal("fetch", installFixtureFetch()) 注入。
+ * Test fetch mock: URL → tests/fixtures/*.json (isolated from real data, architecture §8.12).
+ * Page tests inject it via vi.stubGlobal("fetch", installFixtureFetch()).
  */
 import { vi } from "vitest";
 import macroFixture from "../../fixtures/macro.json";
@@ -19,7 +19,7 @@ import sourcesFixture from "../../fixtures/sources.json";
 import freshnessFixture from "../../fixtures/freshness.json";
 import schemaVersionFixture from "../../fixtures/schema-version.json";
 
-/** URL 后缀 → fixture 映射。 */
+/** URL suffix → fixture mapping. */
 export const FIXTURE_MAP: Record<string, unknown> = {
   "/latest/macro.json": macroFixture,
   "/latest/equities.json": equitiesFixture,
@@ -48,7 +48,7 @@ export function fixtureForUrl(url: string): { ok: boolean; body: unknown } {
   return { ok: false, body: { error: "fixture not found", path } };
 }
 
-/** 安装 fixture fetch（默认 200 + fixture JSON；未匹配 → 404）。 */
+/** Install fixture fetch (default 200 + fixture JSON; unmatched → 404). */
 export function installFixtureFetch(): void {
   vi.stubGlobal(
     "fetch",
@@ -69,7 +69,7 @@ export function installFixtureFetch(): void {
   );
 }
 
-/** 安装全失败 fetch（JSON 读取失败场景）。 */
+/** Install an always-failing fetch (JSON read failure scenario). */
 export function installFailingFetch(): void {
   vi.stubGlobal(
     "fetch",
@@ -79,7 +79,7 @@ export function installFailingFetch(): void {
   );
 }
 
-/** 安装可自定义行为的 fetch（负向用例）。 */
+/** Install a customizable fetch (negative cases). */
 export function installCustomFetch(handler: (url: string) => { ok: boolean; body?: unknown }): void {
   vi.stubGlobal(
     "fetch",

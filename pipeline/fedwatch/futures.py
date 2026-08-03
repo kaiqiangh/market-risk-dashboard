@@ -1,7 +1,7 @@
-"""Yahoo Chart API ZQ 联邦基金期货拉取（架构 §1.6）。
+"""Yahoo Chart API ZQ fed funds futures fetching (architecture §1.6).
 
-ZQ 合约代码形如 ZQU26.CBT（2026 年 9 月）；免费接口无 key。
-限流时抛 ProviderError → 降级链（FedWatch 缺失不影响整条管道）。
+ZQ contract codes look like ZQU26.CBT (Sep 2026); the free interface needs no key.
+On rate limiting, raise ProviderError → degradation chain (FedWatch absence does not affect the whole pipeline).
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ UA = (
 
 
 def fetch_contract_price(symbol: str, timeout: float = 12.0) -> float | None:
-    """拉取单张 ZQ 合约最近收盘价（100 − 价格 = 隐含利率）。"""
+    """Fetch the most recent settlement price of a single ZQ contract (100 − price = implied rate)."""
     with httpx.Client(timeout=timeout, headers={"User-Agent": UA}) as client:
 
         def _fetch() -> dict:
@@ -44,22 +44,23 @@ def fetch_contract_price(symbol: str, timeout: float = 12.0) -> float | None:
             closes = [c for c in result.get("indicators", {}).get("quote", [{}])[0].get("close", []) if c]
             price = closes[-1] if closes else None
         if price is None:
-            raise ProviderError(f"Yahoo chart {symbol}: 无价格")
+            raise ProviderError(f"Yahoo chart {symbol}: no price")
         return float(price)
     except (IndexError, KeyError, TypeError, ValueError) as exc:  # noqa: BLE001
-        raise ProviderError(f"Yahoo chart {symbol}: 解析失败: {exc}") from exc
+        raise ProviderError(f"Yahoo chart {symbol}: parse failed: {exc}") from exc
 
 
-# ZQ 合约月份代码：F=Jan G=Feb H=Mar J=Apr K=May M=Jun N=Jul Q=Aug U=Sep V=Oct X=Nov Z=Dec
+# ZQ contract month codes: F=Jan G=Feb H=Mar J=Apr K=May M=Jun N=Jul Q=Aug U=Sep V=Oct X=Nov Z=Dec
 _CONTRACT_MONTHS = {1: "F", 2: "G", 3: "H", 4: "J", 5: "K", 6: "M",
                    7: "N", 8: "Q", 9: "U", 10: "V", 11: "X", 12: "Z"}
 _QUARTERLY_MONTHS = (3, 6, 9, 12)
 
 
 def next_contract_codes(date=None, count: int = 2) -> list[str]:
-    """生成接下来 count 个 ZQ 季度合约代码（如 2026-08 → ["ZQU26.CBT", "ZQZ26.CBT"]）。
+    """Generate the next count ZQ quarterly contract codes (e.g. 2026-08 → ["ZQU26.CBT", "ZQZ26.CBT"]).
 
-    月底会议用下一月合约法（架构 §1.6）：到期月为季度末（Mar/Jun/Sep/Dec）。
+    Month-end meetings use the next-month contract method (architecture §1.6): expiry months are
+    quarter ends (Mar/Jun/Sep/Dec).
     """
     from datetime import date as _date
 
@@ -89,9 +90,9 @@ def _is_end_of_month(day) -> bool:
 
 
 def meeting_date_for_contract(code: str) -> str | None:
-    """由合约代码推断 FOMC 会议日期（近似：合约月第三个周三，ISO UTC 日期）。
+    """Infer the FOMC meeting date from the contract code (approximation: third Wednesday of the contract month, ISO UTC date).
 
-    例：ZQU26.CBT → 2026-09-16T18:00:00Z。精确日期以 Fed 官方日历为准（V2）。
+    E.g. ZQU26.CBT → 2026-09-16T18:00:00Z. Exact dates follow the Fed's official calendar (V2).
     """
     import datetime as _dt
 
@@ -103,8 +104,8 @@ def meeting_date_for_contract(code: str) -> str | None:
     month = next((m for m, c in _CONTRACT_MONTHS.items() if c == month_code), None)
     if month is None:
         return None
-    # 该月第三个周三
+    # Third Wednesday of that month
     first = _dt.date(year, month, 1)
-    offset = (2 - first.weekday()) % 7  # 周三=2
+    offset = (2 - first.weekday()) % 7  # Wednesday = 2
     third_wed = first + _dt.timedelta(days=offset + 14)
     return f"{third_wed.isoformat()}T18:00:00Z"

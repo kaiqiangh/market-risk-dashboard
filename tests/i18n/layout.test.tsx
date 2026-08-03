@@ -1,7 +1,8 @@
 /**
- * 英文长文本布局 / 中文换行测试（PRD §25.2 / §8.10）。
- * jsdom 无真实布局引擎，采用渲染级断言：超长英文/中文文本渲染不崩溃、
- * 文本完整出现在 DOM、新闻卡标题/摘要启用 break-words（长词换行支持）。
+ * English long-text layout / Chinese wrapping tests (PRD §25.2 / §8.10).
+ * jsdom has no real layout engine, so rendering-level assertions are used: very long English/Chinese
+ * text renders without crashing, the full text appears in the DOM, and news card titles/summaries
+ * enable break-words (long-word wrapping support).
  */
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
@@ -56,24 +57,24 @@ function makeItem(overrides: Partial<NewsItem> = {}): NewsItem {
   };
 }
 
-describe("英文长文本布局", () => {
-  it("超长英文标题渲染不崩溃且完整显示", () => {
+describe("English long-text layout", () => {
+  it("very long English title renders without crashing and in full", () => {
     renderWithI18n(<NewsCard item={makeItem({ title: LONG_EN_TITLE })} />, "en");
     expect(screen.getByText(LONG_EN_TITLE)).toBeDefined();
   });
 
-  it("超长英文摘要渲染不崩溃且完整显示", () => {
+  it("very long English summary renders without crashing and in full", () => {
     renderWithI18n(<NewsCard item={makeItem({ title: "Title", summary: LONG_SUMMARY })} />, "en");
     expect(screen.getByText(LONG_SUMMARY)).toBeDefined();
   });
 
-  it("新闻卡标题启用 break-words（长词可换行）", () => {
+  it("news card title enables break-words (long words can wrap)", () => {
     renderWithI18n(<NewsCard item={makeItem({ title: LONG_EN_TITLE })} />, "en");
     const titleEl = screen.getByText(LONG_EN_TITLE);
     expect(titleEl.className).toContain("break-words");
   });
 
-  it("新闻列表渲染多条超长英文条目", () => {
+  it("news list renders multiple very long English items", () => {
     const items = [1, 2, 3].map((n) =>
       makeItem({ id: `item-${n}`, title: `${LONG_EN_TITLE}-${n}`, summary: LONG_SUMMARY }),
     );
@@ -84,19 +85,19 @@ describe("英文长文本布局", () => {
   });
 });
 
-describe("中文换行", () => {
-  it("长中文标题渲染不崩溃且完整显示", () => {
+describe("Chinese wrapping", () => {
+  it("long Chinese title renders without crashing and in full", () => {
     renderWithI18n(<NewsCard item={makeItem({ title: LONG_ZH_TITLE, title_zh: LONG_ZH_TITLE })} />, "zh-CN");
     expect(screen.getByText(LONG_ZH_TITLE)).toBeDefined();
   });
 
-  it("长中文摘要渲染不崩溃且完整显示", () => {
+  it("long Chinese summary renders without crashing and in full", () => {
     const zhSummary = "这是用于验证中文长文本在卡片内正常换行显示而不破坏布局的超长摘要文本。".repeat(6);
     renderWithI18n(<NewsCard item={makeItem({ title: "标题", summary: zhSummary })} />, "zh-CN");
     expect(screen.getByText(zhSummary)).toBeDefined();
   });
 
-  it("中文界面渲染英文标题（无中译时）不崩溃", () => {
+  it("Chinese UI renders an English title (no translation) without crashing", () => {
     renderWithI18n(<NewsCard item={makeItem({ title: LONG_EN_TITLE, title_zh: null })} />, "zh-CN");
     expect(screen.getByText(LONG_EN_TITLE)).toBeDefined();
   });

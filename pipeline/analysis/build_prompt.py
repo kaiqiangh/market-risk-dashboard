@@ -1,9 +1,9 @@
-"""事实层 → AI 双语 prompt 模板（架构 §1.5）。
+"""Fact layer → AI bilingual prompt template (architecture §1.5).
 
-用法：
+Usage:
     python -m pipeline.analysis.build_prompt --lang zh-CN
     python -m pipeline.analysis.build_prompt --lang en --facts path/to/facts.json
-输出为纯文本 prompt（stdout 或 --out 写文件）。
+Output is a plain-text prompt (stdout or --out writes to file).
 """
 
 from __future__ import annotations
@@ -86,7 +86,7 @@ _CITATION_RULES: dict[str, str] = {
 
 
 def _render_facts(facts: FactLayer) -> str:
-    """事实层 → 文本摘要（确定性，语言无关）。"""
+    """Fact layer → text summary (deterministic, language-neutral)."""
     risk = facts.risk
     dims = "\n".join(
         f"  - {d.key}: score={d.score:.1f} weight={d.weight} effective_weight={d.effective_weight:.1f} "
@@ -133,9 +133,9 @@ def _render_facts(facts: FactLayer) -> str:
 
 
 def build_prompt(facts: FactLayer, lang: str) -> str:
-    """组装完整 prompt（system + 事实层 + 输出契约 + 证据规则）。"""
+    """Assemble the full prompt (system + fact layer + output contract + evidence rules)."""
     if lang not in SUPPORTED_LANGUAGES:
-        raise ValueError(f"不支持的语言: {lang!r}，可选: {SUPPORTED_LANGUAGES}")
+        raise ValueError(f"unsupported language: {lang!r}, options: {SUPPORTED_LANGUAGES}")
     system = _SYSTEM_TASKS[lang]
     output_contract = _OUTPUT_CONTRACT[lang] % SCHEMA_VERSION
     citation = _CITATION_RULES[lang]
@@ -148,29 +148,29 @@ def build_prompt(facts: FactLayer, lang: str) -> str:
 
 
 def load_facts(path: Path | str) -> FactLayer:
-    """加载并校验 facts.json（自描述契约文件，直接解析 FactLayer）。"""
+    """Load and validate facts.json (self-describing contract file, parsed directly as FactLayer)."""
     with Path(path).open("r", encoding="utf-8") as fh:
         data = json.load(fh)
     return FactLayer.model_validate(data)
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="构建 AI 分析 prompt")
+    parser = argparse.ArgumentParser(description="Build AI analysis prompt")
     parser.add_argument("--lang", choices=list(SUPPORTED_LANGUAGES), required=True)
-    parser.add_argument("--facts", type=Path, default=None, help="facts.json 路径（默认契约路径）")
-    parser.add_argument("--out", type=Path, default=None, help="写入文件（默认 stdout）")
+    parser.add_argument("--facts", type=Path, default=None, help="facts.json path (default contract path)")
+    parser.add_argument("--out", type=Path, default=None, help="write to file (default stdout)")
     args = parser.parse_args(argv)
 
     facts_path = args.facts or input_path("facts")
     if not facts_path.exists():
-        print(f"[build_prompt] 事实层不存在: {facts_path}（T03 产出真实 facts.json 后可用）", file=sys.stderr)
+        print(f"[build_prompt] fact layer not found: {facts_path} (available once T03 produces a real facts.json)", file=sys.stderr)
         return 1
 
     facts = load_facts(facts_path)
     prompt = build_prompt(facts, args.lang)
     if args.out:
         args.out.write_text(prompt, encoding="utf-8")
-        print(f"[build_prompt] 已写入 {args.out}")
+        print(f"[build_prompt] written to {args.out}")
     else:
         print(prompt)
     return 0

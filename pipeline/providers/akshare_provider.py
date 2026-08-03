@@ -1,7 +1,8 @@
-"""A 股存储池主源：AKShare（架构 §1.3 冻结；pyproject.toml 约束）。
+"""A-share memory pool primary source: AKShare (architecture §1.3 frozen; pyproject.toml constraint).
 
-硬约束：**akshare 只在 AkshareProvider 内 import**（隔离反爬变更影响面）。
-AKShare 依赖东财/新浪公开接口，可能被反爬/代理拦截 → 走降级链 + last-good。
+Hard constraint: **akshare is only imported inside AkshareProvider** (isolating the impact of anti-scraping changes).
+AKShare depends on Eastmoney/Sina public interfaces that may be blocked by anti-scraping/proxies → use the
+degradation chain + last-good.
 """
 
 from __future__ import annotations
@@ -22,7 +23,7 @@ from pipeline.utils import now_utc
 
 
 def _to_ak_symbol(symbol: str) -> tuple[str, str]:
-    """603986.SH → ("603986", "sh")；301308.SZ → ("301308", "sz")。"""
+    """603986.SH → ("603986", "sh"); 301308.SZ → ("301308", "sz")."""
     base, suffix = symbol.split(".")
     return base, suffix.lower()
 
@@ -35,7 +36,7 @@ class AkshareProvider(BaseProvider):
     def health(self) -> ProviderHealth:
         started = time.monotonic()
         try:
-            import akshare  # noqa: F401  # 约束：仅此处 import
+            import akshare  # noqa: F401  # constraint: import only here
 
             return ProviderHealth(
                 provider=self.name, ok=True,
@@ -46,14 +47,14 @@ class AkshareProvider(BaseProvider):
             return ProviderHealth(
                 provider=self.name, ok=False,
                 latency_ms=round((time.monotonic() - started) * 1000, 1),
-                error=f"akshare import 失败: {exc}", checked_at=None,
+                error=f"akshare import failed: {exc}", checked_at=None,
             )
 
     def get_history(self, symbol: str, period: str = "1y") -> HistoryResult:
         base, market = _to_ak_symbol(symbol)
 
         def _fetch() -> Any:
-            import akshare as ak  # 约束：仅此处 import
+            import akshare as ak  # constraint: import only here
 
             df = ak.stock_zh_a_hist(
                 symbol=base,
@@ -63,14 +64,15 @@ class AkshareProvider(BaseProvider):
                 adjust="qfq",
             )
             if df is None or len(df) == 0:
-                raise ProviderError(f"{symbol}: akshare 历史为空")
+                raise ProviderError(f"{symbol}: akshare history is empty")
             return df
 
         try:
-            # akshare 失败多为持续网络/反爬问题（ProxyError），重试无意义 → 不重试，快速降级
+            # akshare failures are mostly persistent network/anti-scraping issues (ProxyError);
+            # retrying is pointless → no retry, fast degrade
             df = retry_with_backoff(_fetch, max_retries=0, backoff_base=0.0, jitter=False)
         except Exception as exc:  # noqa: BLE001
-            raise ProviderError(f"{symbol}: akshare history 失败: {exc}") from exc
+            raise ProviderError(f"{symbol}: akshare history failed: {exc}") from exc
 
         rows: list[dict[str, Any]] = []
         for _, row in df.iterrows():
@@ -90,7 +92,7 @@ class AkshareProvider(BaseProvider):
         hist = self.get_history(symbol, period="1mo")
         closes = [r["close"] for r in hist.rows if isinstance(r["close"], (int, float))]
         if len(closes) < 2:
-            raise ProviderError(f"{symbol}: akshare 收盘不足")
+            raise ProviderError(f"{symbol}: akshare not enough closes")
         return QuoteResult(
             symbol=symbol, price=float(closes[-1]),
             change_1d=_pct(float(closes[-1]), float(closes[-2])),

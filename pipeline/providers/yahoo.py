@@ -1,7 +1,8 @@
-"""行情主源：Yahoo Finance（yfinance，架构 §1.3）。
+"""Quotes primary source: Yahoo Finance (yfinance, architecture §1.3).
 
-注意：yfinance 免费无 SLA（2025 两次 48h 中断，评审 §3.1）；必须走降级链
-（Stooq 兜底 + last-good 缓存）。本模块只做 Provider 封装，不包含业务逻辑。
+Note: yfinance is free with no SLA (two 48h outages in 2025, review §3.1); it must go through
+the degradation chain (Stooq fallback + last-good cache). This module only wraps the Provider;
+it contains no business logic.
 """
 
 from __future__ import annotations
@@ -31,7 +32,7 @@ class YahooProvider(BaseProvider):
     def health(self) -> ProviderHealth:
         started = time.monotonic()
         try:
-            # 轻量探测：拉取 SPY 1d 历史
+            # Lightweight probe: fetch SPY 1d history
             hist = yf.Ticker("SPY").history(period="5d")
             ok = hist is not None and len(hist) > 0
             return ProviderHealth(
@@ -54,10 +55,10 @@ class YahooProvider(BaseProvider):
         try:
             hist = yf.Ticker(symbol).history(period="1mo")
             if hist is None or len(hist) < 2:
-                raise ProviderError(f"{symbol}: yfinance 历史为空")
+                raise ProviderError(f"{symbol}: yfinance history is empty")
             closes = hist["Close"].dropna()
             if len(closes) < 2:
-                raise ProviderError(f"{symbol}: 收盘价不足")
+                raise ProviderError(f"{symbol}: not enough closing prices")
             price = float(closes.iloc[-1])
             change_1d = _pct(float(closes.iloc[-1]), float(closes.iloc[-2]))
             change_1w = _pct(float(closes.iloc[-1]), float(closes.iloc[-6])) if len(closes) >= 6 else None
@@ -78,7 +79,7 @@ class YahooProvider(BaseProvider):
         except ProviderError:
             raise
         except Exception as exc:  # noqa: BLE001
-            raise ProviderError(f"{symbol}: yfinance quote 失败: {exc}") from exc
+            raise ProviderError(f"{symbol}: yfinance quote failed: {exc}") from exc
 
     def get_history(self, symbol: str, period: str = "1y") -> HistoryResult:
         if period not in _PERIOD_MAP:
@@ -86,7 +87,7 @@ class YahooProvider(BaseProvider):
         try:
             hist = yf.Ticker(symbol).history(period=_PERIOD_MAP[period], auto_adjust=False)
             if hist is None or len(hist) == 0:
-                raise ProviderError(f"{symbol}: yfinance 历史为空")
+                raise ProviderError(f"{symbol}: yfinance history is empty")
             rows: list[dict] = []
             for idx, row in hist.iterrows():
                 date = idx
@@ -106,14 +107,14 @@ class YahooProvider(BaseProvider):
         except ProviderError:
             raise
         except Exception as exc:  # noqa: BLE001
-            raise ProviderError(f"{symbol}: yfinance history 失败: {exc}") from exc
+            raise ProviderError(f"{symbol}: yfinance history failed: {exc}") from exc
 
     def get_history_range(self, symbol: str, start: str, end: str) -> HistoryResult:
-        """按日期范围拉取历史（供校准 2008/2018/2020 窗口，架构 §1.8）。"""
+        """Fetch history by date range (for calibration 2008/2018/2020 windows, architecture §1.8)."""
         try:
             hist = yf.Ticker(symbol).history(start=start, end=end, auto_adjust=False)
             if hist is None or len(hist) == 0:
-                raise ProviderError(f"{symbol}: yfinance 区间历史为空 ({start}~{end})")
+                raise ProviderError(f"{symbol}: yfinance range history is empty ({start}~{end})")
             rows: list[dict] = []
             for idx, row in hist.iterrows():
                 date = idx.strftime("%Y-%m-%d") if hasattr(idx, "strftime") else str(idx)
@@ -131,11 +132,11 @@ class YahooProvider(BaseProvider):
         except ProviderError:
             raise
         except Exception as exc:  # noqa: BLE001
-            raise ProviderError(f"{symbol}: yfinance history_range 失败: {exc}") from exc
+            raise ProviderError(f"{symbol}: yfinance history_range failed: {exc}") from exc
 
-    # 财报日历兜底（FMP 主源失败时）
+    # Earnings calendar fallback (when the FMP primary source fails)
     def get_earnings_calendar(self, start: str, end: str) -> list[dict[str, Any]]:
-        """yfinance 财报日历兜底：对美股池逐个取 earnings dates，过滤到窗口内。"""
+        """yfinance earnings calendar fallback: fetch earnings dates per US equity, filtered to the window."""
         from datetime import datetime
 
         items: list[dict[str, Any]] = []
@@ -158,7 +159,7 @@ class YahooProvider(BaseProvider):
                 errors.append(f"{symbol}: {exc}")
                 continue
         if not items and errors:
-            raise ProviderError(f"yfinance calendar 兜底失败: {'; '.join(errors[:3])}")
+            raise ProviderError(f"yfinance calendar fallback failed: {'; '.join(errors[:3])}")
         return items
 
 
@@ -171,7 +172,7 @@ def _parse_date(value: str) -> str | None:
 
 
 class YahooCalendarProvider(YahooProvider):
-    """财报日历兜底 Provider（注册到 calendar 域，架构 §1.3 fmp→yfinance）。"""
+    """Earnings calendar fallback Provider (registered to the calendar domain, architecture §1.3 fmp→yfinance)."""
 
     name = "yfinance_calendar"
     priority = 2

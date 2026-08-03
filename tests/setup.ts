@@ -3,9 +3,10 @@ import { beforeEach } from "vitest";
 import i18n from "@/i18n";
 
 /**
- * 全局测试设置：
- * - jest-dom 匹配器
- * - 每个用例前重置 i18n 语言为 zh-CN 与 localStorage（i18n 为模块单例，避免跨文件泄漏）
+ * Global test setup:
+ * - jest-dom matchers
+ * - reset i18n language to zh-CN and clear localStorage before each case
+ *   (i18n is a module singleton; avoids cross-file leakage)
  */
 beforeEach(async () => {
   window.localStorage.clear();

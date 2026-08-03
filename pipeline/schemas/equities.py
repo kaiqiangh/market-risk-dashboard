@@ -1,6 +1,6 @@
-"""股票数据集契约（架构 §8.10/§8.11：美股 5 只 + A 股 10 只卡片级指标）。
+"""Equities dataset contract (architecture §8.10/§8.11: 5 US equities + 10 A-share card-level indicators).
 
-T03 MarketCollector 负责填充；本模块只定义契约。
+Filled by the T03 MarketCollector; this module only defines the contract.
 """
 
 from __future__ import annotations
@@ -15,9 +15,9 @@ Market = Literal["US", "CN", "KR", "HK"]
 
 
 class EquityAsset(ContractModel):
-    """单只股票卡片级数据。"""
+    """Card-level data of a single equity."""
 
-    symbol: str = Field(min_length=1, description="资产代码统一大写，如 NVDA / 603986.SH")
+    symbol: str = Field(min_length=1, description="asset code in uppercase, e.g. NVDA / 603986.SH")
     name: str = Field(min_length=1)
     name_zh: str | None = None
     market: Market = "US"
@@ -41,7 +41,7 @@ class EquityAsset(ContractModel):
 
 
 class EquitiesDataset(ContractModel):
-    """equities.json payload。"""
+    """equities.json payload."""
 
     assets: list[EquityAsset] = Field(default_factory=list)
 

@@ -1,6 +1,6 @@
 /**
- * 硬编码文本检测（PRD §25.2 / §8.10：不允许直接在组件中硬编码中文或英文）。
- * 扫描 src 下所有 .ts/.tsx 文件中的中文字符串字面量（翻译调用/import/注释豁免）。
+ * Hardcoded text detection (PRD §25.2 / §8.10: no hardcoded Chinese or English directly in components).
+ * Scans all .ts/.tsx files under src for Chinese string literals (translation calls/imports/comments exempt).
  */
 import { describe, expect, it } from "vitest";
 import { readdirSync, readFileSync } from "node:fs";
@@ -10,13 +10,13 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const srcDir = path.resolve(__dirname, "../../src");
 
-/** 允许文件：双语格式化词汇（format.ts）与资产池数据（config/universe.ts）。 */
+/** Allowed files: bilingual formatting vocabulary (format.ts) and asset pool data (config/universe.ts). */
 const ALLOWED_FILES = new Set([
   path.join(srcDir, "lib/format.ts"),
   path.join(srcDir, "config/universe.ts"),
 ]);
 
-/** 去注释（块注释 + 行注释，整文件处理，块注释跨行）。 */
+/** Strip comments (block + line comments, whole-file processing, block comments may span lines). */
 function stripComments(code: string): string {
   let out = "";
   let inBlock = false;
@@ -51,8 +51,8 @@ function walk(dir: string): string[] {
   });
 }
 
-describe("硬编码文本检测", () => {
-  it("src 代码中无硬编码中文字符串字面量", () => {
+describe("hardcoded text detection", () => {
+  it("no hardcoded Chinese string literals in src code", () => {
     const violations: string[] = [];
     for (const file of walk(srcDir)) {
       if (ALLOWED_FILES.has(file)) continue;

@@ -1,7 +1,7 @@
-"""行情采集器（架构 §3.7 MarketCollector：行情 + 加密 + A股 + 主题）。
+"""Market collector (architecture §3.7 MarketCollector: quotes + crypto + A-shares + themes).
 
-产出：equities / crypto / sectors 三个数据集 + 历史（供 indicator/risk 使用）。
-任何 Provider 失败 → 降级链 → degraded，不中断。
+Produces: equities / crypto / sectors datasets + history (for indicator/risk use).
+Any Provider failure → degradation chain → degraded, does not interrupt.
 """
 
 from __future__ import annotations
@@ -26,7 +26,7 @@ from pipeline.settings import Settings
 from pipeline.universe import AssetUniverse
 from pipeline.utils import now_utc
 
-# 宽度/趋势基准指数（MVP 代理）
+# Breadth/trend benchmark indices (MVP proxies)
 INDEX_HISTORIES = {"SPY": "1y", "IWM": "1y", "SOXX": "1y"}
 
 
@@ -41,13 +41,13 @@ class MarketCollector:
         self._domain_failures: dict[str, int] = {}
         self._domain_down: set[str] = set()
 
-    # ---- 行情（US + A股）----
+    # ---- Quotes (US + A-shares) ----
 
     def _fetch_equity(self, asset: Any) -> EquityAsset | None:
         domain = "quotes" if asset.market == "US" else "a_share"
         if domain in self._domain_down:
-            # 域已确认断供（如 akshare 代理被拦）→ 快速降级，不再逐个重试
-            self.degraded.append(f"{asset.symbol}: {domain} 域已断供，跳过")
+            # Domain confirmed down (e.g. akshare proxy blocked) → fast degrade, no per-symbol retry
+            self.degraded.append(f"{asset.symbol}: {domain} domain down, skipped")
             return None
         try:
             quote_out = self.registry.call(domain, "get_quote", f"quote_{asset.symbol}", args=(asset.symbol,))
@@ -96,7 +96,7 @@ class MarketCollector:
                 assets.append(item)
         return EquitiesDataset(assets=assets)
 
-    # ---- 指数历史（宽度/趋势）----
+    # ---- Index history (breadth/trend) ----
 
     def _collect_index_histories(self) -> None:
         for symbol, period in INDEX_HISTORIES.items():
@@ -106,7 +106,7 @@ class MarketCollector:
             except ProviderError as exc:
                 self.degraded.append(f"{symbol}: {exc}")
 
-    # ---- 加密 ----
+    # ---- Crypto ----
 
     def _collect_crypto(self) -> CryptoDataset:
         try:
@@ -131,7 +131,7 @@ class MarketCollector:
             sentiment=data.get("sentiment"),
         )
 
-    # ---- 行业/主题 ----
+    # ---- Sectors/themes ----
 
     def _collect_sectors(self, equities: EquitiesDataset) -> SectorsDataset:
         us = [a for a in equities.assets if a.market == "US"]
@@ -160,15 +160,15 @@ class MarketCollector:
             label_zh="存储周期代理（美光 + A股存储）",
             change_1w=mu.change_1w if mu else _avg_change(memory_assets, "change_1w"),
             change_1m=mu.change_1m if mu else _avg_change(memory_assets, "change_1m"),
-            note="DRAM/NAND 现货价付费墙，MVP 用股价代理（评审 P0-1）",
+            note="DRAM/NAND spot prices are paywalled; MVP uses share prices as proxies (review P0-1)",
             updated_at=now_utc(),
         )
         return SectorsDataset(sectors=sectors, themes=themes, memory=memory)
 
-    # ---- 汇总 ----
+    # ---- Summary ----
 
     def _quality(self) -> float:
-        """数据质量按失败域（provider）降级 ×0.8，而非按失败资产数。"""
+        """Data quality degrades ×0.8 per failed domain (provider), not per failed asset count."""
         failed = set(self._domain_down)
         for domain, count in self._domain_failures.items():
             if count > 0:

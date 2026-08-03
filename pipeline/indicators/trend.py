@@ -1,6 +1,6 @@
-"""趋势维度指标（架构 §3.2 trend）。
+"""Trend dimension indicators (architecture §3.2 trend).
 
-基于价格 vs 均线/回撤/动量，输出供 risk.trend 维度使用。
+Based on price vs moving averages/drawdown/momentum, output for the risk.trend dimension.
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ from pipeline.indicators.technical import (
 
 
 def trend_snapshot(history: dict[str, list[dict[str, Any]]], benchmark: str = "SPY") -> dict[str, Any]:
-    """汇总趋势指标（以 benchmark 指数为主；缺失时回退任意资产）。"""
+    """Summarize trend indicators (benchmark index first; fall back to any asset when missing)."""
     rows = history.get(benchmark) or next(iter(history.values()), [])
     values = closes_of(rows)
     return {

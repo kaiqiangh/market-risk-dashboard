@@ -1,7 +1,7 @@
-"""新闻数据集契约（架构 §3.5 NewsItem）。
+"""News dataset contract (architecture §3.5 NewsItem).
 
-版权边界：仅存标题+来源+链接+自写一句话摘要，不存全文（PRD §24，架构 §8.13）。
-id = sha1(title+source+published) 去重键（T03 NewsCollector 计算）。
+Copyright boundary: store only title+source+link+self-written one-sentence summary, not full text
+(PRD §24, architecture §8.13). id = sha1(title+source+published) dedupe key (computed by T03 NewsCollector).
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ NewsSentiment = Literal["positive", "negative", "neutral"]
 
 
 class NewsItem(ContractModel):
-    id: str = Field(min_length=1, description="sha1(title+source+published) 去重键")
+    id: str = Field(min_length=1, description="sha1(title+source+published) dedupe key")
     title: str = Field(min_length=1)
     title_zh: str | None = None
     source: str = Field(min_length=1)
@@ -26,12 +26,12 @@ class NewsItem(ContractModel):
     assets: list[str] = Field(default_factory=list)
     importance: float = Field(ge=0.0, le=100.0)
     sentiment: NewsSentiment | None = None
-    summary: str = Field(default="", description="自写一句话摘要（不存全文）")
+    summary: str = Field(default="", description="self-written one-sentence summary (no full text)")
     impact_window: str | None = None
 
 
 class NewsDataset(ContractModel):
-    """news.json payload。"""
+    """news.json payload."""
 
     items: list[NewsItem] = Field(default_factory=list)
     total: int = Field(default=0, ge=0)
@@ -43,15 +43,15 @@ class NewsEnvelope(BaseEnvelope):
 
 
 class NewsTranslation(ContractModel):
-    """英文新闻中译条目（AI 自动化产出 news.zh-translations.json）。"""
+    """Chinese translation of an English news item (AI automation produces news.zh-translations.json)."""
 
-    id: str = Field(min_length=1, description="对应 NewsItem.id")
+    id: str = Field(min_length=1, description="corresponding NewsItem.id")
     title_zh: str = Field(min_length=1)
     summary_zh: str | None = None
 
 
 class NewsTranslationsDataset(ContractModel):
-    """news.zh-translations.json（架构 §1.5：管道下次运行合并进 news.json）。"""
+    """news.zh-translations.json (architecture §1.5: merged into news.json on the next pipeline run)."""
 
     items: list[NewsTranslation] = Field(default_factory=list)
     updated_at: UTCDateTime | None = None

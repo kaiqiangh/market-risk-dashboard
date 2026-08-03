@@ -1,9 +1,9 @@
-"""风险模型 6 维结构契约（架构 §3.2 冻结子集）。
+"""Risk model 6-dimension structure contract (architecture §3.2 frozen subset).
 
-- 风险分 0-100；比率 0-1；趋势三态；regime 9 状态。
-- DriverContribution.evidence_ref 前向引用 factlayer.EvidenceRef；
-  运行时解析在 pipeline/schemas/__init__.py 中通过 model_rebuild 完成。
-  本模块不包含评分/判定业务逻辑（那是 T03 pipeline/risk/）。
+- Risk scores 0-100; ratios 0-1; three-state trend; 9-state regime.
+- DriverContribution.evidence_ref forward-references factlayer.EvidenceRef;
+  runtime resolution happens in pipeline/schemas/__init__.py via model_rebuild.
+  This module contains no scoring/decision business logic (that is T03 pipeline/risk/).
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ from pydantic import Field
 
 from .envelope import ContractModel, FreshnessStatus, UTCDateTime
 
-if TYPE_CHECKING:  # 仅类型检查期导入，避免运行时循环依赖
+if TYPE_CHECKING:  # import only for type checking to avoid a runtime circular dependency
     from .factlayer import EvidenceRef
 
 RiskDimensionKey = Literal[
@@ -30,37 +30,37 @@ RiskTrend = Literal["rising", "falling", "flat"]
 
 
 class RiskIndicator(ContractModel):
-    """子指标：原始值 + 5Y 百分位 + 映射后的风险分。"""
+    """Sub-indicator: raw value + 5Y percentile + mapped risk score."""
 
     key: str = Field(min_length=1)
     label: str = Field(min_length=1)
     value: float | None = None
-    percentile: float | None = Field(default=None, ge=0.0, le=100.0, description="5Y 历史百分位 0-100")
+    percentile: float | None = Field(default=None, ge=0.0, le=100.0, description="5Y historical percentile 0-100")
     z_score: float | None = None
-    risk_score: float = Field(ge=0.0, le=100.0, description="子指标映射后的风险分")
+    risk_score: float = Field(ge=0.0, le=100.0, description="mapped sub-indicator risk score")
     direction: RiskDirection = "neutral"
     weight: float = Field(default=0.0, ge=0.0)
     source: str = Field(min_length=1)
     updated_at: UTCDateTime | None = None
     status: FreshnessStatus = "fresh"
-    is_proxy: bool = Field(default=False, description="代理指标（资金流等）标注 Estimated/Proxy")
+    is_proxy: bool = Field(default=False, description="proxy indicator (e.g. fund flow) marked Estimated/Proxy")
 
 
 class RiskDimension(ContractModel):
-    """风险维度（6 维之一）。"""
+    """Risk dimension (one of the 6)."""
 
     key: RiskDimensionKey
     label: str = Field(min_length=1)
-    weight: float = Field(ge=0.0, description="配置权重（config/risk_model.yaml）")
-    effective_weight: float = Field(ge=0.0, description="重归一化后权重（缺失维度时重新分配）")
+    weight: float = Field(ge=0.0, description="configured weight (config/risk_model.yaml)")
+    effective_weight: float = Field(ge=0.0, description="weight after renormalization (redistributed when dimensions are missing)")
     score: float = Field(ge=0.0, le=100.0)
     indicators: list[RiskIndicator] = Field(default_factory=list)
-    coverage: float = Field(ge=0.0, le=1.0, description="有数据指标占比")
+    coverage: float = Field(ge=0.0, le=1.0, description="share of indicators with data")
     trend: RiskTrend = "flat"
 
 
 class DriverContribution(ContractModel):
-    """Top 驱动因素：对总分的贡献（权重 × 风险分）。"""
+    """Top driver: contribution to the total score (weight × risk score)."""
 
     dimension_key: RiskDimensionKey
     indicator_key: str = Field(min_length=1)
@@ -71,7 +71,7 @@ class DriverContribution(ContractModel):
 
 
 class RiskModelResult(ContractModel):
-    """风险模型输出（risk.json payload 与 facts.json 内嵌）。"""
+    """Risk model output (risk.json payload, also embedded in facts.json)."""
 
     model_version: str = Field(min_length=1)
     generated_at: UTCDateTime
@@ -83,16 +83,16 @@ class RiskModelResult(ContractModel):
     dimensions: list[RiskDimension] = Field(default_factory=list)
     top_drivers: list[DriverContribution] = Field(default_factory=list)
     regime: MarketRegime
-    regime_evidence: list[str] = Field(default_factory=list, description="判定依据（可解释性）")
+    regime_evidence: list[str] = Field(default_factory=list, description="decision basis (explainability)")
     confidence: float = Field(ge=0.0, le=1.0)
     confidence_factors: dict[str, float] = Field(default_factory=dict)
     disclaimer: str = Field(
-        default="本页风险分数为模型化的市场压力估计，并非精确的崩盘概率，不构成投资建议。"
+        default="This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."
     )
 
 
 class RiskEnvelope(ContractModel):
-    """risk.json 信封（payload 为 RiskModelResult，与事实层内嵌结构一致）。"""
+    """risk.json envelope (payload is RiskModelResult, consistent with the embedded fact layer structure)."""
 
     generated_at: UTCDateTime
     schema_version: str = Field(min_length=1)

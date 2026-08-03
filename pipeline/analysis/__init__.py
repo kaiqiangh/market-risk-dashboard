@@ -1,9 +1,9 @@
-"""AI 分析契约工具包（架构 §1.5 WorkBuddy 自动化）。
+"""AI analysis contract toolkit (architecture §1.5 WorkBuddy automation).
 
-- contract.py：输入/输出路径 + schema 版本 + 语言（单一事实源）
-- build_prompt.py：facts.json → 双语 prompt 模板
-- validate.py：输出 schema + 双语一致性 + evidence_refs 校验（CLI）
-- freshness.py：分析新鲜度检查（供自动化决策是否跳过）
+- contract.py: input/output paths + schema version + languages (single source of truth)
+- build_prompt.py: facts.json → bilingual prompt template
+- validate.py: output schema + bilingual consistency + evidence_refs validation (CLI)
+- freshness.py: analysis freshness check (for automation to decide whether to skip)
 """
 
 from .contract import (

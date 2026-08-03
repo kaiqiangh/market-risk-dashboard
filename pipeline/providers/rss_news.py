@@ -1,10 +1,12 @@
-"""新闻 RSS Provider（架构 §1.3/§8.13 版权边界 + Fix 轮次 R3 中文源落地）。
+"""News RSS Provider (architecture §1.3/§8.13 copyright boundary + Fix round R3 Chinese sources).
 
-只取标题/来源/链接/发布时间/自写摘要，不存全文。源列表来自 config/news_sources.yaml。
-重要度评分（0-100）在 NewsCollector 完成（来源权重+关键词+资产命中+时效）。
+Only title/source/link/publish time/self-written summary are kept, not full text. The source list
+comes from config/news_sources.yaml. Importance scoring (0-100) is done in NewsCollector
+(source weight + keyword + asset hit + recency).
 
-降级语义（Fix 轮次）：单源失败/不可达 → 记入 source_status（degraded）→ 继续其他源；
-仅当全部源失败时抛 ProviderError。source_status 供 Collector 写入 metadata/sources.json。
+Degradation semantics (Fix rounds): a single failed/unreachable source → recorded in source_status
+(degraded) → continue with other sources; ProviderError is raised only when ALL sources fail.
+source_status is written by the Collector into metadata/sources.json.
 """
 
 from __future__ import annotations
@@ -35,7 +37,7 @@ class RssNewsProvider(BaseProvider):
         sources_cfg = self.settings.load_news_sources()
         self.sources = [s for s in sources_cfg.get("sources", []) if s.get("enabled", True)]
         self._client = httpx.Client(timeout=8.0, headers={"User-Agent": UA}, follow_redirects=True)
-        # 源可达性：source_id → {"ok": bool, "error": str|None, "updated_at": str}
+        # Source reachability: source_id → {"ok": bool, "error": str|None, "updated_at": str}
         self.source_status: dict[str, dict[str, Any]] = {}
 
     def health(self) -> ProviderHealth:
@@ -85,7 +87,7 @@ class RssNewsProvider(BaseProvider):
                             "category_hint": source.get("category"),
                         }
                     )
-            except Exception as exc:  # noqa: BLE001 - 单源失败不中断（降级）
+            except Exception as exc:  # noqa: BLE001 - a single source failure does not interrupt (degradation)
                 self.source_status[source_id] = {
                     "ok": False,
                     "error": f"{type(exc).__name__}: {exc}",
@@ -94,7 +96,7 @@ class RssNewsProvider(BaseProvider):
                 errors.append(f"{source_id}: {type(exc).__name__}: {exc}")
                 continue
         if not items and errors:
-            raise ProviderError("RSS 全部源失败: " + "; ".join(errors))
+            raise ProviderError("RSS all sources failed: " + "; ".join(errors))
         return items
 
     def _fetch_feed(self, url: str) -> list[Any]:
@@ -103,7 +105,7 @@ class RssNewsProvider(BaseProvider):
             raise ProviderError(f"RSS HTTP {resp.status_code}")
         feed = feedparser.parse(resp.content)
         if feed.bozo and not feed.entries:
-            raise ProviderError(f"RSS 解析失败: {feed.bozo_exception}")
+            raise ProviderError(f"RSS parse failed: {feed.bozo_exception}")
         return feed.entries
 
 
@@ -128,10 +130,10 @@ def _entry_date(entry: Any) -> str:
 
 
 def _make_summary(entry: Any) -> str:
-    """自写一句话摘要：优先 description/summary 首句，最多 160 字符（版权边界）。"""
+    """Self-written one-sentence summary: prefers the first sentence of description/summary, max 160 chars (copyright boundary)."""
     raw = entry.get("summary") or entry.get("description") or ""
     text = _clean_text(raw)
-    # 去掉 HTML
+    # Strip HTML
     import re
 
     text = re.sub(r"<[^>]+>", " ", text)

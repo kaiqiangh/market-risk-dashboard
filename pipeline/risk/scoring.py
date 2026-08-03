@@ -1,9 +1,10 @@
-"""子指标 → 0-100 风险分映射（架构 P0-5 方法论 v1 + Fix 轮次 5Y 百分位主路径）。
+"""Sub-indicator → 0-100 risk score mapping (architecture P0-5 methodology v1 + Fix rounds 5Y percentile primary path).
 
-- 主路径（P0-2）：指标值 → 对照 5Y 历史窗口（FRED/行情序列）计算百分位与 z_score
-  → 映射 0-100 风险分；percentile_window_years 来自 config/risk_model.yaml。
-- 回退路径：历史数据不足（< min_history_samples）时使用启发式映射表
-  （HEURISTIC_RULES），保证任何场景都有确定性输出。
+- Primary path (P0-2): indicator value → percentile and z_score against the 5Y history window
+  (FRED/quote series) → mapped to a 0-100 risk score; percentile_window_years comes from
+  config/risk_model.yaml.
+- Fallback path: when history is insufficient (< min_history_samples), use the heuristic
+  mapping table (HEURISTIC_RULES), guaranteeing a deterministic output in every scenario.
 """
 
 from __future__ import annotations
@@ -11,7 +12,7 @@ from __future__ import annotations
 import math
 from typing import Any, Sequence
 
-# 启发式映射表：key → [(threshold, score)]，按 value 从小到大插值
+# Heuristic mapping table: key → [(threshold, score)], interpolated by value ascending
 HEURISTIC_RULES: dict[str, list[tuple[float, float]]] = {
     "vix": [(10, 5), (15, 20), (20, 40), (25, 60), (30, 75), (40, 90), (50, 98)],
     "hy_oas": [(2.0, 10), (3.0, 30), (4.0, 55), (5.0, 70), (6.0, 85), (8.0, 95)],
@@ -31,12 +32,12 @@ HEURISTIC_RULES: dict[str, list[tuple[float, float]]] = {
     "rsi14": [(20, 80), (30, 65), (45, 50), (60, 35), (75, 25), (90, 15)],
 }
 
-# 历史窗口最短样本数（低于则回退启发式表；约 3 个月日频 ≈ 60 样本）
+# Minimum number of history samples (below which fall back to the heuristic table; ≈ 3 months of daily data ≈ 60 samples)
 MIN_HISTORY_SAMPLES = 60
 
 
 def heuristic_risk_score(key: str, value: float | None) -> float | None:
-    """按启发式映射表返回 0-100 风险分（线性插值，越界钳制）。"""
+    """Return a 0-100 risk score from the heuristic mapping table (linear interpolation, clamped at the bounds)."""
     if value is None:
         return None
     rules = HEURISTIC_RULES.get(key)
@@ -58,7 +59,7 @@ def heuristic_risk_score(key: str, value: float | None) -> float | None:
 
 
 def _finite_history(history: Sequence[float]) -> list[float]:
-    """过滤非法值（NaN/Infinity/None），返回有限数值列表。"""
+    """Filter invalid values (NaN/Infinity/None), returning a list of finite numbers."""
     out: list[float] = []
     for v in history:
         if isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(float(v)):
@@ -67,9 +68,9 @@ def _finite_history(history: Sequence[float]) -> list[float]:
 
 
 def percentile_rank(value: float, history: Sequence[float]) -> float:
-    """历史百分位（0-100）：小于等于 value 的样本占比。
+    """Historical percentile (0-100): share of samples ≤ value.
 
-    与 percentile_risk_score 的语义一致（<= 计数 / 总数）。
+    Consistent with percentile_risk_score semantics (<= count / total).
     """
     hist = _finite_history(history)
     if not hist:
@@ -79,7 +80,7 @@ def percentile_rank(value: float, history: Sequence[float]) -> float:
 
 
 def z_score(value: float, history: Sequence[float]) -> float | None:
-    """历史 z_score（(value - mean) / std）；样本过少或 std≈0 时返回 None。"""
+    """Historical z_score ((value - mean) / std); returns None when samples are too few or std≈0."""
     hist = _finite_history(history)
     if len(hist) < 2:
         return None
@@ -92,11 +93,11 @@ def z_score(value: float, history: Sequence[float]) -> float | None:
 
 
 def percentile_to_risk(pct: float, direction: str) -> float:
-    """百分位 → 0-100 风险分。
+    """Percentile → 0-100 risk score.
 
-    - higher_is_riskier：百分位即风险分（90 分位 → 90 分）。
-    - lower_is_riskier：反向（10 分位 → 90 分）。
-    - neutral：距中位数越远越危险（50 分位 → 0 分，极值 → 100 分）。
+    - higher_is_riskier: percentile is the risk score (90th pct → 90).
+    - lower_is_riskier: inverted (10th pct → 90).
+    - neutral: the farther from the median the riskier (50th pct → 0, extremes → 100).
     """
     pct = max(0.0, min(100.0, pct))
     if direction == "lower_is_riskier":
@@ -114,9 +115,10 @@ def compute_indicator_score(
     fallback: float = 50.0,
     min_samples: int = MIN_HISTORY_SAMPLES,
 ) -> tuple[float, float | None, float | None]:
-    """子指标 → (risk_score, percentile, z_score)（P0-2 主路径）。
+    """Sub-indicator → (risk_score, percentile, z_score) (P0-2 primary path).
 
-    优先 5Y 历史百分位；历史不足时回退启发式映射表，并返回 percentile/z_score=None。
+    Prefers the 5Y historical percentile; falls back to the heuristic mapping table when history
+    is insufficient, returning percentile/z_score=None.
     """
     if value is None:
         return fallback, None, None
@@ -135,9 +137,9 @@ def percentile_risk_score(
     direction: str = "higher_is_riskier",
     fallback: float = 50.0,
 ) -> float | None:
-    """历史百分位 → 风险分（0-100）。higher_is_riskier：百分位即风险分。
+    """Historical percentile → risk score (0-100). higher_is_riskier: percentile is the risk score.
 
-    兼容旧接口：无历史时返回 fallback。
+    Backward-compatible interface: returns fallback when there is no history.
     """
     if value is None:
         return None

@@ -1,4 +1,4 @@
-"""Provider 降级链测试（架构 §1.4；验收 #3：yfinance 断供 → Stooq → degraded）。"""
+"""Provider degradation chain tests (architecture §1.4; acceptance #3: yfinance outage → Stooq → degraded)."""
 
 from __future__ import annotations
 
@@ -21,10 +21,10 @@ class _FailingYahoo(YahooProvider):
     name = "yfinance_fail"
 
     def get_quote(self, symbol: str) -> QuoteResult:
-        raise ProviderError(f"{symbol}: yfinance 断供（mock）")
+        raise ProviderError(f"{symbol}: yfinance outage (mock)")
 
     def get_history(self, symbol: str, period: str = "1y") -> HistoryResult:
-        raise ProviderError(f"{symbol}: yfinance 断供（mock）")
+        raise ProviderError(f"{symbol}: yfinance outage (mock)")
 
     def health(self) -> ProviderHealth:
         return ProviderHealth(provider=self.name, ok=False, error="mock down")
@@ -65,7 +65,7 @@ def test_primary_ok_no_fallback(tmp_path) -> None:
 
 
 def test_yahoo_fail_stooq_fallback_degraded(tmp_path) -> None:
-    """验收 #3：yfinance 断供 → Stooq 兜底 → degraded。"""
+    """Acceptance #3: yfinance outage → Stooq fallback → degraded."""
     reg = _registry(tmp_path)
     reg.register("quotes", _FailingYahoo())
     reg.register("quotes", _OkStooq())
@@ -74,7 +74,7 @@ def test_yahoo_fail_stooq_fallback_degraded(tmp_path) -> None:
     assert out["meta"]["degraded"] is True
     assert out["meta"]["provider"] == "stooq_ok"
     assert "quotes" in reg.degraded_domains
-    # 备用源结果带 is_proxy 标记
+    # Fallback result carries the is_proxy marker
     assert out["result"].is_proxy is True
 
 
@@ -82,7 +82,7 @@ def test_all_fail_uses_last_good_cache(tmp_path) -> None:
     cache_dir = tmp_path / "cache"
     reg = _registry(cache_dir)
     reg.register("quotes", _OkStooq())
-    reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))  # 成功 → 写缓存
+    reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))  # success → writes cache
 
     reg2 = _registry(cache_dir)
     reg2.register("quotes", _FailingYahoo())
@@ -116,14 +116,14 @@ def test_quality_factor_reduces_with_degrade() -> None:
     from pipeline.risk.confidence import quality_factor
 
     assert quality_factor(0) == 1.0
-    assert quality_factor(1) == 0.8  # ×0.8/次降级
+    assert quality_factor(1) == 0.8  # ×0.8 per degrade
     assert quality_factor(2) == 0.64
-    assert quality_factor(10) >= 0.1  # 钳制
+    assert quality_factor(10) >= 0.1  # clamped
 
 
 def test_confidence_drops_when_data_quality_drops() -> None:
     from pipeline.risk.confidence import compute_confidence
 
     high = compute_confidence(1.0, 0.9, 1.0)
-    low = compute_confidence(0.64, 0.9, 1.0)  # 一次降级后 dq=0.8
+    low = compute_confidence(0.64, 0.9, 1.0)  # dq=0.8 after one degrade
     assert low < high

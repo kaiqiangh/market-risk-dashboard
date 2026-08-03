@@ -1,4 +1,4 @@
-"""历史管理（架构 §1.7：全量保留 + 切片加载；不做 90 天裁剪）。"""
+"""History management (architecture §1.7: full retention + slice loading; no 90-day trimming)."""
 
 from __future__ import annotations
 

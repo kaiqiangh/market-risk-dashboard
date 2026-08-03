@@ -1,6 +1,6 @@
-"""行情兜底源：Stooq EOD CSV（架构 §1.3/评审 §3.1）。
+"""Quotes fallback source: Stooq EOD CSV (architecture §1.3/review §3.1).
 
-免费、无需 key；仅 EOD 数据。用 httpx 直连（浏览器 UA 反爬规避）。
+Free, no key required; EOD data only. Direct httpx connection (browser UA to avoid anti-scraping).
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ UA = (
 
 
 def _stooq_symbol(symbol: str) -> str:
-    """US 股票 → stooq 代码（aapl.us）；指数/期货不适用则原样小写。"""
+    """US stock → stooq code (aapl.us); indices/futures not applicable returned lowercased as-is."""
     base = symbol.replace("^", "").lower()
     if "." not in base and not base.startswith(("gc", "si", "hg", "cl")):
         return f"{base}.us"
@@ -67,7 +67,7 @@ class StooqProvider(BaseProvider):
             raise ProviderError(f"{symbol}: stooq HTTP {resp.status_code}")
         text = resp.text.strip()
         if not text or not text.startswith("Date"):
-            raise ProviderError(f"{symbol}: stooq 无数据")
+            raise ProviderError(f"{symbol}: stooq no data")
         rows: list[dict[str, float | str]] = []
         for line in text.splitlines()[1:]:
             parts = line.split(",")
@@ -87,14 +87,14 @@ class StooqProvider(BaseProvider):
             except (ValueError, IndexError):
                 continue
         if not rows:
-            raise ProviderError(f"{symbol}: stooq 解析为空")
+            raise ProviderError(f"{symbol}: stooq parse empty")
         return rows
 
     def get_quote(self, symbol: str) -> QuoteResult:
         rows = self._fetch_csv(symbol)
         closes = [r["close"] for r in rows if isinstance(r["close"], (int, float))]
         if len(closes) < 2:
-            raise ProviderError(f"{symbol}: stooq 收盘不足")
+            raise ProviderError(f"{symbol}: stooq not enough closes")
         price = float(closes[-1])
         return QuoteResult(
             symbol=symbol, price=price,

@@ -1,6 +1,6 @@
 /**
- * Zod 契约测试（T02 验收：同一 fixture 同时通过 Pydantic 与 Zod 校验）。
- * fixture 与 tests/fixtures/*.json 完全一致（Python 测试复用同一批文件）。
+ * Zod contract tests (T02 acceptance: the same fixture passes both Pydantic and Zod validation).
+ * Fixtures are identical to tests/fixtures/*.json (the Python tests reuse the same files).
  */
 import { describe, expect, it } from "vitest";
 import macroFixture from "../fixtures/macro.json";
@@ -107,7 +107,7 @@ describe("Zod contract: hard constraints", () => {
   });
 });
 
-describe("DatasetClient path rules (架构 §3.6)", () => {
+describe("DatasetClient path rules (architecture §3.6)", () => {
   const client = new DatasetClient("/market-risk-dashboard/");
 
   it("latest dataset", () => {
@@ -138,7 +138,7 @@ describe("DatasetClient path rules (架构 §3.6)", () => {
   });
 });
 
-describe("freshness five-state semantics (架构 §8.5)", () => {
+describe("freshness five-state semantics (architecture §8.5)", () => {
   const intervalMs = 60 * 60 * 1000; // 1h
   const now = new Date("2026-08-03T12:00:00Z").getTime();
 
@@ -164,7 +164,7 @@ describe("staleTime by dataset freshness semantics (Fix P2-10)", () => {
     expect(staleTimeFor("news")).toBe(5 * 60_000);
     expect(staleTimeFor("macro")).toBe(10 * 60_000);
     expect(staleTimeFor("calendar")).toBe(15 * 60_000);
-    expect(staleTimeFor("unknown-key")).toBe(60_000); // 回退默认
+    expect(staleTimeFor("unknown-key")).toBe(60_000); // fallback default
   });
 
   it("expected intervals include risk/dashboard and align with sources.yaml", () => {

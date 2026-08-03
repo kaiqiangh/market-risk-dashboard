@@ -1,6 +1,7 @@
 /**
- * 移动端布局测试（验收：移动单列卡片、风险结论优先、长表格改卡片、次要字段折叠）。
- * jsdom 无法真实测量 CSS 布局，验证响应式 class 与文档顺序。
+ * Mobile layout tests (acceptance: mobile single-column cards, risk conclusion first, long tables
+ * become cards, secondary fields collapsed). jsdom cannot truly measure CSS layout, so it verifies
+ * responsive classes and document order.
  */
 import { describe, expect, it, vi, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
@@ -26,8 +27,8 @@ afterEach(() => {
   window.localStorage.clear();
 });
 
-describe("移动端布局", () => {
-  it("Overview 风险结论优先（risk-conclusion 在 heatmap 之前）", async () => {
+describe("mobile layout", () => {
+  it("Overview puts risk conclusion first (risk-conclusion before heatmap)", async () => {
     installFixtureFetch();
     window.history.replaceState(null, "", "#/zh/overview");
     const { container } = renderApp();
@@ -44,7 +45,7 @@ describe("移动端布局", () => {
     expect(firstChartIdx).toBeGreaterThan(riskIdx);
   });
 
-  it("Overview 风险区使用移动单列 / 桌面多列响应式 class", async () => {
+  it("Overview risk section uses mobile single-column / desktop multi-column responsive classes", async () => {
     installFixtureFetch();
     window.history.replaceState(null, "", "#/zh/overview");
     const { container } = renderApp();
@@ -58,7 +59,7 @@ describe("移动端布局", () => {
     expect(cls).toContain("xl:grid-cols-3");
   });
 
-  it("Navbar 移动端横向滚动（overflow-x-auto）", async () => {
+  it("Navbar scrolls horizontally on mobile (overflow-x-auto)", async () => {
     installFixtureFetch();
     window.history.replaceState(null, "", "#/zh/overview");
     const { container } = renderApp();
@@ -67,13 +68,13 @@ describe("移动端布局", () => {
     expect(nav?.getAttribute("class") ?? "").toContain("overflow-x-auto");
   });
 
-  it("Equities A 股卡片为移动单列响应式网格", async () => {
+  it("Equities A-share cards use a mobile single-column responsive grid", async () => {
     installFixtureFetch();
     window.history.replaceState(null, "", "#/zh/equities");
     const { container } = renderApp();
     await screen.findByTestId("page-title");
 
-    // fixtures 含 1 只 A 股（603986.SH）→ AShare 卡片渲染
+    // fixtures contain 1 A-share (603986.SH) → AShare card renders
     const cards = container.querySelector('[data-testid="section-ashare"]');
     if (cards) {
       const grid = cards.querySelector("div");

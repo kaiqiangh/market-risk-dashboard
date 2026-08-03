@@ -1,7 +1,7 @@
-"""资金流代理指标（架构 §3.2 flow；评审 P1-2 伪精确风险）。
+"""Fund flow proxy indicators (architecture §3.2 flow; review P1-2 pseudo-precision risk).
 
-免费源无逐笔/Level-2 数据 → MVP 只做代理指标（OBV/MFI/相对量能），
-所有估算值必须带 Estimated/Proxy 标记。
+Free sources have no tick/Level-2 data → MVP only provides proxy indicators (OBV/MFI/relative volume);
+all estimates must carry the Estimated/Proxy marker.
 """
 
 from __future__ import annotations
@@ -11,7 +11,7 @@ from typing import Any
 
 
 def obv(rows: list[dict[str, Any]]) -> float | None:
-    """On-Balance Volume（最近值）。"""
+    """On-Balance Volume (latest value)."""
     obv_value = 0.0
     for i in range(1, len(rows)):
         close_prev = rows[i - 1].get("close")
@@ -50,7 +50,7 @@ def mfi(rows: list[dict[str, Any]], period: int = 14) -> float | None:
 
 
 def relative_volume(rows: list[dict[str, Any]], window: int = 20) -> float | None:
-    """最新成交量 / 前 N 日均量。"""
+    """Latest volume / average volume of the previous N days."""
     volumes = [float(r["volume"]) for r in rows if isinstance(r.get("volume"), (int, float))]
     if len(volumes) < window + 1:
         return None
@@ -66,7 +66,7 @@ def flow_snapshot(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "mfi": mfi(rows),
         "relative_volume": relative_volume(rows),
         "is_proxy": True,
-        "note": "MVP 资金流为代理指标（OBV/MFI/相对量能），非逐笔数据（评审 P1-2）",
+        "note": "MVP fund flow uses proxy indicators (OBV/MFI/relative volume), not tick data (review P1-2)",
     }
 
 

@@ -1,4 +1,4 @@
-"""Storage + validate_all + run.py CLI 测试。"""
+"""Storage + validate_all + run.py CLI tests."""
 
 from __future__ import annotations
 
@@ -58,7 +58,7 @@ def test_metadata_writes(tmp_path: Path) -> None:
 
 
 def test_read_history_public_method(tmp_path: Path) -> None:
-    """P2-9：writer.read_history 公开方法替代 run.py 私有 _read_json。"""
+    """P2-9: writer.read_history public method replaces run.py's private _read_json."""
     writer = StorageWriter(tmp_path / "data")
     writer.write_slices("risk", [{"date": "2026-08-01", "total_score": 40.0}])
     writer.write_slices("risk", [{"date": "2026-08-02", "total_score": 42.0}])
@@ -70,58 +70,58 @@ def test_read_history_public_method(tmp_path: Path) -> None:
 
 
 def test_record_translations_metadata(tmp_path: Path) -> None:
-    """P1-6：中译合并记录写入 metadata/translations.json。"""
+    """P1-6: Chinese translation merge record written to metadata/translations.json."""
     writer = StorageWriter(tmp_path / "data")
-    writer.record_translations("merged", merged_items=3, reason="合并完成")
+    writer.record_translations("merged", merged_items=3, reason="merge completed")
     data = json.loads((tmp_path / "data/metadata/translations.json").read_text(encoding="utf-8"))
     assert data["last_merge"]["status"] == "merged"
     assert data["last_merge"]["merged_items"] == 3
     assert data["last_merge"]["source_file"] == "news.zh-translations.json"
-    writer.record_translations("missing", merged_items=0, reason="AI 未产出")
+    writer.record_translations("missing", merged_items=0, reason="AI not produced")
     data2 = json.loads((tmp_path / "data/metadata/translations.json").read_text(encoding="utf-8"))
     assert data2["last_merge"]["status"] == "missing"
 
 
 def test_finalize_freshness_unified(tmp_path: Path) -> None:
-    """P1-7：统一五态判定（degraded 优先于时间维度）。"""
+    """P1-7: unified five-state determination (degraded takes priority over the time dimension)."""
     from pipeline.validation.freshness import finalize_freshness
 
     now = datetime(2026, 8, 3, 12, 0, tzinfo=timezone.utc)
     fresh_ts = "2026-08-03T10:00:00Z"
-    # 无数据 → missing
+    # no data → missing
     assert finalize_freshness("macro", None, False, now=now) == "missing"
-    # 时间新鲜 + 未降级 → fresh
+    # time fresh + not degraded → fresh
     assert finalize_freshness("macro", fresh_ts, False, now=now) == "fresh"
-    # 降级 → degraded（与时间无关）
+    # degraded → degraded (independent of time)
     assert finalize_freshness("macro", fresh_ts, True, now=now) == "degraded"
-    # 陈旧 → stale（macro 期望 240min；fresh_ts 距今 2h → fresh；更早 → delayed/stale）
+    # stale → stale (macro expected 240min; fresh_ts is 2h ago → fresh; earlier → delayed/stale)
     assert finalize_freshness("macro", "2026-08-03T04:00:00Z", False, now=now) == "delayed"
     assert finalize_freshness("macro", "2026-08-02T12:00:00Z", False, now=now) == "stale"
 
 
 def test_frontend_freshness_sync() -> None:
-    """P2-10：src/lib/freshness.ts 期望频率与 config/sources.yaml 保持同步。"""
+    """P2-10: src/lib/freshness.ts expected frequencies stay in sync with config/sources.yaml."""
     from pipeline.settings import PROJECT_ROOT, settings
 
     expectations = settings.load_sources().get("expectations", {})
     ts_source = (PROJECT_ROOT / "src" / "lib" / "freshness.ts").read_text(encoding="utf-8")
-    assert expectations, "config/sources.yaml expectations 不应为空"
+    assert expectations, "config/sources.yaml expectations must not be empty"
     for key, entry in expectations.items():
         minutes = int(entry.get("interval_minutes", 0))
-        assert minutes > 0, f"sources.yaml {key} interval_minutes 非法"
+        assert minutes > 0, f"sources.yaml {key} interval_minutes invalid"
         assert f"{key}: {minutes}" in ts_source, (
-            f"src/lib/freshness.ts 缺少 {key}: {minutes}（与 config/sources.yaml 不同步）"
+            f"src/lib/freshness.ts missing {key}: {minutes} (out of sync with config/sources.yaml)"
         )
-    # 反向：前端 EXPECTED_INTERVALS_MIN 不应多出 sources.yaml 未登记的 key
+    # Reverse: frontend EXPECTED_INTERVALS_MIN must not contain keys unregistered in sources.yaml
     import re
 
     block = ts_source.split("export const EXPECTED_INTERVALS_MIN", 1)[1].split("};", 1)[0]
     frontend_keys = set(re.findall(r"^\s{2}(\w+): \d+", block, re.MULTILINE))
     expected_keys = set(expectations.keys())
-    assert frontend_keys.issubset(expected_keys), f"前端多出未登记 key: {frontend_keys - expected_keys}"
+    assert frontend_keys.issubset(expected_keys), f"frontend has unregistered keys: {frontend_keys - expected_keys}"
 
 
-# ---------- validate_all（复用 tests/fixtures） ----------
+# ---------- validate_all (reuses tests/fixtures) ----------
 
 @pytest.mark.parametrize("name", ["macro.json", "equities.json", "sectors.json", "crypto.json", "news.json", "calendar.json", "risk.json", "dashboard.json", "facts.json", "analysis.zh-CN.json", "analysis.en.json"])
 def test_validate_file_on_fixtures(name: str) -> None:
@@ -137,7 +137,7 @@ def test_validate_all_fixtures_pass() -> None:
 def test_validate_all_strict_missing_fails(tmp_path: Path) -> None:
     report = validate_all(tmp_path, strict=True)
     assert not report.ok
-    assert any("缺失" in issue for issue in report.issues)
+    assert any("missing" in issue for issue in report.issues)
 
 
 # ---------- run.py CLI ----------
