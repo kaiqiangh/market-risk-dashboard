@@ -6,13 +6,15 @@ schema_version: "1.0.0"
 
 # Expected update frequency (frozen G4; kept in sync with the frontend src/lib/freshness.ts)
 expectations:
-  market: { interval_minutes: 480, note: "行情/新闻 2-3 次/日" }
-  news: { interval_minutes: 480, note: "2-3 次/日" }
-  macro: { interval_minutes: 240, note: "宏观 2-4h（FRED 实为 T+1，按发布节奏判定）" }
-  calendar: { interval_minutes: 1440, note: "财报日历 1 次/日" }
-  analysis: { interval_minutes: 720, note: "AI 简报 2 次/日" }
-  risk: { interval_minutes: 480, note: "风险模型随管道 2-3 次/日重算" }
-  dashboard: { interval_minutes: 480, note: "首页聚合随管道 2-3 次/日重算" }
+  market: { interval_minutes: 480, note: "Market/data and news 2-3 times/day" }
+  news: { interval_minutes: 480, note: "2-3 times/day" }
+  macro:
+    { interval_minutes: 240, note: "Macro 2-4h (FRED is actually T+1; judged by release schedule)" }
+  calendar: { interval_minutes: 1440, note: "Earnings calendar once per day" }
+  analysis: { interval_minutes: 720, note: "AI briefs 2 times/day" }
+  risk: { interval_minutes: 480, note: "Risk model recalculated with pipeline 2-3 times/day" }
+  dashboard:
+    { interval_minutes: 480, note: "Homepage aggregation recalculated with pipeline 2-3 times/day" }
 
 # Provider registry (smaller priority number = higher priority)
 providers:

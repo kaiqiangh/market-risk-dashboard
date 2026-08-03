@@ -16,42 +16,67 @@ dimensions:
 # Per-dimension indicator mapping (MVP level; T03 fills indicators from this table; the detailed signal list in this file is authoritative)
 indicators:
   macro:
-    - { key: real_rate_dfii10, source: FRED, metric: DFII10, label: "10Y 实际利率" }
-    - { key: yield_curve_10y2y, source: FRED, metric: DGS10-DGS2, label: "10Y-2Y 期限利差" }
-    - { key: inflation_surprise, source: FRED, metric: CPIAUCSL, label: "通胀 Surprise" }
-    - { key: labor_deterioration, source: FRED, metric: UNRATE/PAYEMS, label: "就业恶化速度" }
-    - { key: dollar_index, source: FRED, metric: DTWEXBGS, label: "美元指数" }
+    - { key: real_rate_dfii10, source: FRED, metric: DFII10, label: "10Y Real Rate" }
+    - { key: yield_curve_10y2y, source: FRED, metric: DGS10-DGS2, label: "10Y-2Y Term Spread" }
+    - { key: inflation_surprise, source: FRED, metric: CPIAUCSL, label: "Inflation Surprise" }
+    - {
+        key: labor_deterioration,
+        source: FRED,
+        metric: UNRATE/PAYEMS,
+        label: "Labor Deterioration",
+      }
+    - { key: dollar_index, source: FRED, metric: DTWEXBGS, label: "Dollar Index" }
   liquidity_credit:
-    - { key: hy_oas, source: FRED, metric: BAMLH0A0HYM2, label: "高收益 OAS" }
-    - { key: ig_oas, source: FRED, metric: BAMLC0A0CM, label: "投资级 OAS" }
-    - { key: fed_balance_sheet, source: FRED, metric: WALCL, label: "联储资产负债表" }
-    - { key: reverse_repo, source: FRED, metric: RRPONTSYD, label: "逆回购" }
-    - { key: treasury_general_account, source: FRED, metric: WTREGEN, label: "财政部 TGA" }
-    - { key: bank_reserves, source: FRED, metric: WRESBAL, label: "银行准备金" }
-    - { key: move_index, source: FRED, metric: MOVE, label: "MOVE 指数" }
+    - { key: hy_oas, source: FRED, metric: BAMLH0A0HYM2, label: "High Yield OAS" }
+    - { key: ig_oas, source: FRED, metric: BAMLC0A0CM, label: "Investment Grade OAS" }
+    - { key: fed_balance_sheet, source: FRED, metric: WALCL, label: "Fed Balance Sheet" }
+    - { key: reverse_repo, source: FRED, metric: RRPONTSYD, label: "Reverse Repo" }
+    - {
+        key: treasury_general_account,
+        source: FRED,
+        metric: WTREGEN,
+        label: "Treasury General Account (TGA)",
+      }
+    - { key: bank_reserves, source: FRED, metric: WRESBAL, label: "Bank Reserves" }
+    - { key: move_index, source: FRED, metric: MOVE, label: "MOVE Index" }
   equity_structure:
-    - { key: breadth_above_ma200, source: computed, metric: breadth, label: "200 日均线上方比例" }
-    - { key: new_highs_lows, source: computed, metric: breadth, label: "新高-新低" }
-    - { key: equal_weight_divergence, source: computed, metric: breadth, label: "等权-加权背离" }
-    - { key: small_cap_relative, source: computed, metric: breadth, label: "小盘相对强弱" }
-    - { key: semis_relative, source: computed, metric: breadth, label: "半导体相对强弱" }
+    - { key: breadth_above_ma200, source: computed, metric: breadth, label: "Pct Above 200-Day MA" }
+    - { key: new_highs_lows, source: computed, metric: breadth, label: "New Highs vs Lows" }
+    - {
+        key: equal_weight_divergence,
+        source: computed,
+        metric: breadth,
+        label: "Equal-Weight vs Cap-Weight Divergence",
+      }
+    - {
+        key: small_cap_relative,
+        source: computed,
+        metric: breadth,
+        label: "Small Cap Relative Strength",
+      }
+    - {
+        key: semis_relative,
+        source: computed,
+        metric: breadth,
+        label: "Semiconductors Relative Strength",
+      }
   volatility:
     - { key: vix, source: FRED, metric: VIXCLS, label: "VIX" }
-    - { key: vix_term_structure, source: CBOE, metric: VIX9D/VIX3M, label: "VIX 期限结构" }
-    - { key: realized_vol, source: computed, metric: vol, label: "实现波动率" }
-    - { key: vol_risk_premium, source: computed, metric: vol, label: "波动率风险溢价" }
+    - { key: vix_term_structure, source: CBOE, metric: VIX9D/VIX3M, label: "VIX Term Structure" }
+    - { key: realized_vol, source: computed, metric: vol, label: "Realized Volatility" }
+    - { key: vol_risk_premium, source: computed, metric: vol, label: "Volatility Risk Premium" }
   cross_asset:
     - {
         key: cross_asset_confirmation,
         source: computed,
         metric: cross_asset,
-        label: "跨资产确认信号",
+        label: "Cross-Asset Confirmation Signal",
       }
   trend:
-    - { key: price_vs_ma50, source: computed, metric: trend, label: "价格 vs MA50" }
-    - { key: price_vs_ma200, source: computed, metric: trend, label: "价格 vs MA200" }
-    - { key: drawdown_52w, source: computed, metric: trend, label: "52 周高点回撤" }
-    - { key: momentum_3m, source: computed, metric: trend, label: "3M 动量" }
+    - { key: price_vs_ma50, source: computed, metric: trend, label: "Price vs MA50" }
+    - { key: price_vs_ma200, source: computed, metric: trend, label: "Price vs MA200" }
+    - { key: drawdown_52w, source: computed, metric: trend, label: "52-Week High Drawdown" }
+    - { key: momentum_3m, source: computed, metric: trend, label: "3M Momentum" }
 
 # Sub-indicator → 0-100 mapping (default: 5Y historical percentile window, architecture P0-5 methodology v1)
 scoring:

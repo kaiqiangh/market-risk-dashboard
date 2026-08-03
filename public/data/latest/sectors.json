@@ -1,1 +1,62 @@
-{"generated_at":"2026-08-03T17:58:00Z","schema_version":"1.0.0","source":["yfinance"],"source_updated_at":"2026-08-03T17:58:00Z","freshness_status":"degraded","data_quality":0.8,"payload":{"sectors":[{"key":"semis","label":"Semiconductors","label_zh":"半导体","change_1d":1.9756,"change_1w":-0.2129,"change_1m":-3.9857,"percentile_5y":null,"updated_at":"2026-08-03T17:58:00Z"},{"key":"auto","label":"Autos","label_zh":"汽车","change_1d":3.6679,"change_1w":4.3351,"change_1m":-23.1424,"percentile_5y":null,"updated_at":"2026-08-03T17:58:00Z"}],"themes":[{"key":"memory","label":"Memory","label_zh":"存储","change_1d":1.3323,"change_1w":-7.3545,"change_1m":-15.309,"percentile_5y":null,"updated_at":"2026-08-03T17:58:00Z"},{"key":"ai","label":"AI / GPU","label_zh":"AI/GPU","change_1d":1.9756,"change_1w":-0.2129,"change_1m":-3.9857,"percentile_5y":null,"updated_at":"2026-08-03T17:58:00Z"}],"memory":{"label":"Memory proxy (MU + A-share memory makers)","label_zh":"存储周期代理（美光 + A股存储）","change_1w":-7.3545,"change_1m":-15.309,"note":"DRAM/NAND 现货价付费墙，MVP 用股价代理（评审 P0-1）","updated_at":"2026-08-03T17:58:00Z"}}}
+{
+  "generated_at": "2026-08-03T17:58:00Z",
+  "schema_version": "1.0.0",
+  "source": ["yfinance"],
+  "source_updated_at": "2026-08-03T17:58:00Z",
+  "freshness_status": "degraded",
+  "data_quality": 0.8,
+  "payload": {
+    "sectors": [
+      {
+        "key": "semis",
+        "label": "Semiconductors",
+        "label_zh": "半导体",
+        "change_1d": 1.9756,
+        "change_1w": -0.2129,
+        "change_1m": -3.9857,
+        "percentile_5y": null,
+        "updated_at": "2026-08-03T17:58:00Z"
+      },
+      {
+        "key": "auto",
+        "label": "Autos",
+        "label_zh": "汽车",
+        "change_1d": 3.6679,
+        "change_1w": 4.3351,
+        "change_1m": -23.1424,
+        "percentile_5y": null,
+        "updated_at": "2026-08-03T17:58:00Z"
+      }
+    ],
+    "themes": [
+      {
+        "key": "memory",
+        "label": "Memory",
+        "label_zh": "存储",
+        "change_1d": 1.3323,
+        "change_1w": -7.3545,
+        "change_1m": -15.309,
+        "percentile_5y": null,
+        "updated_at": "2026-08-03T17:58:00Z"
+      },
+      {
+        "key": "ai",
+        "label": "AI / GPU",
+        "label_zh": "AI/GPU",
+        "change_1d": 1.9756,
+        "change_1w": -0.2129,
+        "change_1m": -3.9857,
+        "percentile_5y": null,
+        "updated_at": "2026-08-03T17:58:00Z"
+      }
+    ],
+    "memory": {
+      "label": "Memory proxy (MU + A-share memory makers)",
+      "label_zh": "存储周期代理（美光 + A股存储）",
+      "change_1w": -7.3545,
+      "change_1m": -15.309,
+      "note": "DRAM/NAND 现货价付费墙，MVP 用股价代理（评审 P0-1）",
+      "updated_at": "2026-08-03T17:58:00Z"
+    }
+  }
+}

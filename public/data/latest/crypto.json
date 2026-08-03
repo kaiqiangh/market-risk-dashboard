@@ -1,1 +1,52 @@
-{"generated_at":"2026-08-03T17:58:00Z","schema_version":"1.0.0","source":["coingecko"],"source_updated_at":"2026-08-03T17:58:00Z","freshness_status":"degraded","data_quality":0.8,"payload":{"assets":[{"symbol":"BTC","name":"Bitcoin","price":63827.0,"change_1d":0.90892,"change_1w":-1.49329,"change_1m":1.50705,"market_cap":1280562852215.0,"volume_24h":24729339292.0,"source":"coingecko","updated_at":"2026-08-03T17:57:59Z"},{"symbol":"ETH","name":"Ethereum","price":1866.28,"change_1d":-0.07098,"change_1w":-3.56981,"change_1m":4.45034,"market_cap":225235260225.0,"volume_24h":7130447972.0,"source":"coingecko","updated_at":"2026-08-03T17:57:59Z"},{"symbol":"SOL","name":"Solana","price":73.6,"change_1d":0.42938,"change_1w":-2.94647,"change_1m":-10.41009,"market_cap":42749725407.0,"volume_24h":1337144153.0,"source":"coingecko","updated_at":"2026-08-03T17:58:00Z"}],"btc_dominance":0.564664,"stablecoin_mcap":null,"market_cap_total":2269179758860.649,"sentiment":null}}
+{
+  "generated_at": "2026-08-03T17:58:00Z",
+  "schema_version": "1.0.0",
+  "source": ["coingecko"],
+  "source_updated_at": "2026-08-03T17:58:00Z",
+  "freshness_status": "degraded",
+  "data_quality": 0.8,
+  "payload": {
+    "assets": [
+      {
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "price": 63827.0,
+        "change_1d": 0.90892,
+        "change_1w": -1.49329,
+        "change_1m": 1.50705,
+        "market_cap": 1280562852215.0,
+        "volume_24h": 24729339292.0,
+        "source": "coingecko",
+        "updated_at": "2026-08-03T17:57:59Z"
+      },
+      {
+        "symbol": "ETH",
+        "name": "Ethereum",
+        "price": 1866.28,
+        "change_1d": -0.07098,
+        "change_1w": -3.56981,
+        "change_1m": 4.45034,
+        "market_cap": 225235260225.0,
+        "volume_24h": 7130447972.0,
+        "source": "coingecko",
+        "updated_at": "2026-08-03T17:57:59Z"
+      },
+      {
+        "symbol": "SOL",
+        "name": "Solana",
+        "price": 73.6,
+        "change_1d": 0.42938,
+        "change_1w": -2.94647,
+        "change_1m": -10.41009,
+        "market_cap": 42749725407.0,
+        "volume_24h": 1337144153.0,
+        "source": "coingecko",
+        "updated_at": "2026-08-03T17:58:00Z"
+      }
+    ],
+    "btc_dominance": 0.564664,
+    "stablecoin_mcap": null,
+    "market_cap_total": 2269179758860.649,
+    "sentiment": null
+  }
+}
