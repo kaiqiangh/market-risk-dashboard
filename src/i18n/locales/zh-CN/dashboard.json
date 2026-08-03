@@ -43,5 +43,11 @@
     "bearCase": "熊市情景",
     "watchNext": "关注要点",
     "generatedAt": "生成时间"
+  },
+  "kpi": {
+    "trend1d": "1 日变化"
+  },
+  "statusBar": {
+    "generated": "数据生成"
   }
 }

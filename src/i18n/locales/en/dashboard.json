@@ -43,5 +43,11 @@
     "bearCase": "Bear case",
     "watchNext": "Watch next",
     "generatedAt": "Generated at"
+  },
+  "kpi": {
+    "trend1d": "1D change"
+  },
+  "statusBar": {
+    "generated": "Data generated"
   }
 }
