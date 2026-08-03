@@ -127,18 +127,18 @@ describe("language switch (keeps current page)", () => {
 });
 
 describe("theme switch", () => {
-  it("dark by default → click toggles to light → localStorage persists", async () => {
+  it("dark by default → three-way control switches preference → localStorage persists", async () => {
     installFixtureFetch();
     renderApp();
     await screen.findByTestId("page-title");
 
     expect(document.documentElement.classList.contains("dark")).toBe(true);
 
-    fireEvent.click(screen.getByTestId("theme-toggle"));
+    fireEvent.click(screen.getByTestId("theme-option-light"));
     expect(document.documentElement.classList.contains("light")).toBe(true);
     expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe("light");
 
-    fireEvent.click(screen.getByTestId("theme-toggle"));
+    fireEvent.click(screen.getByTestId("theme-option-dark"));
     expect(document.documentElement.classList.contains("dark")).toBe(true);
     expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe("dark");
   });

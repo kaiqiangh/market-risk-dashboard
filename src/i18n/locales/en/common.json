@@ -56,8 +56,10 @@
   },
   "theme": {
     "toggle": "Toggle dark/light mode",
-    "light": "Light mode",
-    "dark": "Dark mode"
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "label": "Theme"
   },
   "lang": {
     "switch": "Switch language",
