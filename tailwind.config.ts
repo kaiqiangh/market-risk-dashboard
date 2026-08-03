@@ -1,9 +1,9 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Tailwind 配置。
- * 风险色使用语义 token（CSS 变量），定义在 src/index.css 的 :root 与 .dark。
- * 颜色不是唯一表达，必须配文本 + 图标 + 数值（架构 §8.6）。
+ * Tailwind configuration.
+ * Risk colors use semantic tokens (CSS variables), defined in src/index.css under :root and .dark.
+ * Color is not the only expression; always pair with text + icon + value (architecture §8.6).
  */
 const config: Config = {
   darkMode: "class",
@@ -11,7 +11,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // 语义 token：映射到 src/index.css 中定义的 CSS 变量
+        // Semantic tokens: map to the CSS variables defined in src/index.css
         risk: {
           low: "var(--risk-low)",
           caution: "var(--risk-caution)",
