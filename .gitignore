@@ -64,3 +64,6 @@ artifacts/
 
 # Vite/Vitest 配置加载临时产物
 *.timestamp-*.mjs
+
+# playwright
+.playwright-cli
