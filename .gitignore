@@ -57,3 +57,6 @@ artifacts/
 
 # 关键：config/ 与 pipeline/ 为核心代码，必须保持跟踪，不得加入忽略列表。
 # public/data/ 为发布产物（静态数据），保持跟踪。
+
+# Vite/Vitest 配置加载临时产物
+*.timestamp-*.mjs

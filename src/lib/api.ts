@@ -33,7 +33,7 @@ export class SchemaError extends Error {
 
   constructor(key: string, url: string, error: z.ZodError) {
     const issues = error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
-    super(`Schema 校验失败 (${key}) @ ${url}\n${issues.join("\n")}`);
+    super(`Schema validation failed (${key}) @ ${url}\n${issues.join("\n")}`);
     this.name = "SchemaError";
     this.key = key;
     this.url = url;
@@ -70,23 +70,29 @@ export class DatasetClient {
     if (key in DATASET_SCHEMAS) return DATASET_SCHEMAS[key as DatasetSchemaKey];
     // dashboard 等聚合 schema 随 T04 注册；骨架期显式报错而非静默失败
     throw new SchemaError(key, this.pathFor(key), {
-      issues: [{ path: [], message: `尚无 schema 注册: ${key}` }],
+      issues: [{ path: [], message: `No schema registered for key: ${key}` }],
     } as unknown as z.ZodError);
   }
 
   /**
    * 拉取并校验数据集。
    * - 返回类型：analysis → AnalysisDataset；其余 → Dataset<T>（envelope）。
-   * - 可显式传入 schema 覆盖注册表（如 T04 为 dashboard 注册聚合 schema）。
+   * - 可显式传入 schema 覆盖注册表（如 T04 为 dashboard 注册聚合 schema、历史切片/元数据传原始 schema）。
+   * - key 类型放宽到 MetadataKey/HistoryKey：仅当显式传 schema 时使用（如 StatusPage 拉元数据），
+   *   否则 resolveSchema 只对 DatasetKey 生效。
    */
-  async fetch<T>(key: DatasetKey, opts: DatasetOptions = {}, schema?: z.ZodTypeAny): Promise<T> {
+  async fetch<T>(
+    key: DatasetKey | MetadataKey | HistoryKey,
+    opts: DatasetOptions = {},
+    schema?: z.ZodTypeAny,
+  ): Promise<T> {
     const url = this.pathFor(key, opts);
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(`数据文件不可达: ${url} (HTTP ${response.status})`);
+      throw new Error(`Data file unreachable: ${url} (HTTP ${response.status})`);
     }
     const json: unknown = await response.json();
-    const target = schema ?? this.resolveSchema(key);
+    const target = schema ?? this.resolveSchema(key as DatasetKey);
     const parsed = target.safeParse(json);
     if (!parsed.success) {
       throw new SchemaError(key, url, parsed.error);

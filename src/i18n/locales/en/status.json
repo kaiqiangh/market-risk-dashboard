@@ -1,0 +1,42 @@
+{
+  "title": "System Status",
+  "subtitle": "Data freshness (five states) + provider health",
+  "meta": {
+    "schemaVersion": "Schema version",
+    "sourcesUpdated": "Sources updated",
+    "datasetCount": "Datasets"
+  },
+  "freshness": {
+    "title": "Dataset Freshness (five states)",
+    "dataset": "Dataset",
+    "status": "Status",
+    "updatedAt": "Updated",
+    "reason": "Reason",
+    "none": "No freshness data"
+  },
+  "datasets": {
+    "macro": "Macro",
+    "equities": "Equities",
+    "sectors": "Sectors",
+    "crypto": "Crypto",
+    "news": "News",
+    "calendar": "Calendar",
+    "risk": "Risk",
+    "facts": "Fact layer",
+    "analysis": "AI brief",
+    "dashboard": "Dashboard"
+  },
+  "providers": {
+    "title": "Provider Health",
+    "domain": "Domain",
+    "provider": "Provider",
+    "fallback": "Fallback",
+    "cache": "Cache",
+    "error": "Error/Degraded",
+    "degraded": "Degraded",
+    "ok": "OK",
+    "yes": "Yes",
+    "no": "No",
+    "none": "No provider info"
+  }
+}

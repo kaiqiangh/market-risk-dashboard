@@ -5,6 +5,7 @@
     "tagline": "Cross-asset market risk intelligence"
   },
   "nav": {
+    "aria": "Main navigation",
     "overview": "Overview",
     "macro": "Macro",
     "equities": "Equities",
@@ -14,16 +15,64 @@
     "risklab": "Risk Lab",
     "status": "Status"
   },
-  "placeholder": {
-    "route": "Placeholder route",
-    "t04": "Page components land in T04",
-    "notFound": "Page not found"
-  },
   "status": {
     "fresh": "Fresh",
     "delayed": "Delayed",
     "stale": "Stale",
     "missing": "Missing",
-    "degraded": "Degraded"
+    "degraded": "Degraded",
+    "freshDesc": "Data is within the expected update cadence",
+    "delayedDesc": "Data is delayed (1.5x-3x the expected interval)",
+    "staleDesc": "Data is stale (over 3x the expected interval); interpret with caution",
+    "missingDesc": "Dataset has never been produced; normal content is hidden",
+    "degradedDesc": "Some providers degraded/fell back; model confidence has been reduced"
+  },
+  "error": {
+    "title": "Failed to load data",
+    "message": "Could not fetch or validate the data file. Please try again later.",
+    "retry": "Retry",
+    "dataUnreachable": "Data file unreachable"
+  },
+  "empty": {
+    "title": "No data yet",
+    "message": "This data source has not produced data yet"
+  },
+  "data": {
+    "na": "—",
+    "source": "Source",
+    "example": "Sample data",
+    "quality": "Data quality",
+    "coverage": "Coverage",
+    "updated": "Updated",
+    "generated": "Generated"
+  },
+  "direction": {
+    "up": "Up",
+    "down": "Down",
+    "flat": "Flat",
+    "rising": "Rising",
+    "falling": "Falling",
+    "dayChange": "vs yesterday"
+  },
+  "theme": {
+    "toggle": "Toggle dark/light mode",
+    "light": "Light mode",
+    "dark": "Dark mode"
+  },
+  "lang": {
+    "switch": "Switch language",
+    "zh": "中文",
+    "en": "English"
+  },
+  "evidence": {
+    "label": "Evidence"
+  },
+  "time": {
+    "updatedAt": "Updated at",
+    "generatedAt": "Generated at"
+  },
+  "footer": {
+    "disclaimer": "The risk score is a modeled estimate of market stress (based on historical data and current market signals). It is not a definitive probability or investment advice.",
+    "calibration": "See the calibration report for methodology and validation."
   }
 }

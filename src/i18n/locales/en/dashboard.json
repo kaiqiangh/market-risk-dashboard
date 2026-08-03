@@ -1,0 +1,47 @@
+{
+  "title": "Overview",
+  "subtitle": "Cross-asset risk panorama: score / regime / drivers / AI brief",
+  "heatmap": {
+    "title": "Cross-Asset Heatmap",
+    "empty": "No cross-asset data",
+    "axis": "Change",
+    "catEquities": "Equities",
+    "catCrypto": "Crypto",
+    "catSectors": "Sectors",
+    "catThemes": "Themes"
+  },
+  "trend": {
+    "title": "Risk Trend (30d)",
+    "score": "Risk score",
+    "empty": "No risk trend data",
+    "emptyHint": "History slice not yet produced",
+    "date": "Date"
+  },
+  "catalysts": {
+    "title": "Upcoming Catalysts",
+    "none": "No upcoming events"
+  },
+  "sectors": {
+    "title": "Sector Performance",
+    "none": "No sector data"
+  },
+  "news": {
+    "title": "Important News",
+    "none": "No news"
+  },
+  "aiBrief": {
+    "title": "AI Market Brief",
+    "degraded": "AI brief unavailable (missing data or generation failure)",
+    "degradedHint": "Market and risk data remain viewable; the brief will resume once automation produces it.",
+    "confidence": "Confidence",
+    "changedToday": "What changed today",
+    "topDrivers": "Top risk drivers",
+    "supporting": "Supporting signals",
+    "contradicting": "Contradicting signals",
+    "bullCase": "Bull case",
+    "baseCase": "Base case",
+    "bearCase": "Bear case",
+    "watchNext": "Watch next",
+    "generatedAt": "Generated at"
+  }
+}

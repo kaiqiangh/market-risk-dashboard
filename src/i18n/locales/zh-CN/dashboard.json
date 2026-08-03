@@ -1,0 +1,47 @@
+{
+  "title": "总览",
+  "subtitle": "跨资产市场风险全景：风险分 / 市场状态 / 驱动因素 / AI 简报",
+  "heatmap": {
+    "title": "跨资产热力图",
+    "empty": "暂无跨资产数据",
+    "axis": "涨跌",
+    "catEquities": "美股",
+    "catCrypto": "加密",
+    "catSectors": "板块",
+    "catThemes": "主题"
+  },
+  "trend": {
+    "title": "风险趋势（近 30 日）",
+    "score": "风险分",
+    "empty": "暂无风险趋势数据",
+    "emptyHint": "历史切片尚未产出",
+    "date": "日期"
+  },
+  "catalysts": {
+    "title": "未来催化剂",
+    "none": "暂无近期事件"
+  },
+  "sectors": {
+    "title": "板块表现",
+    "none": "暂无板块数据"
+  },
+  "news": {
+    "title": "重要新闻",
+    "none": "暂无新闻"
+  },
+  "aiBrief": {
+    "title": "AI 市场简报",
+    "degraded": "AI 简报暂不可用（数据缺失或生成失败）",
+    "degradedHint": "行情与风险数据仍可正常查看；AI 简报将在自动化产出后恢复。",
+    "confidence": "置信度",
+    "changedToday": "今日变化",
+    "topDrivers": "主要风险驱动",
+    "supporting": "支撑信号",
+    "contradicting": "反向信号",
+    "bullCase": "牛市情景",
+    "baseCase": "基准情景",
+    "bearCase": "熊市情景",
+    "watchNext": "关注要点",
+    "generatedAt": "生成时间"
+  }
+}

@@ -1,0 +1,7 @@
+[
+  { "date": "2026-07-06", "total_score": 48.1, "risk_level": "caution", "regime": "late_cycle", "confidence": 0.7, "dim_scores": { "macro": 55.2, "liquidity_credit": 30.1, "equity_structure": 45.4, "volatility": 40.2, "cross_asset": 50.0, "trend": 50.0 } },
+  { "date": "2026-07-13", "total_score": 50.4, "risk_level": "caution", "regime": "late_cycle", "confidence": 0.71, "dim_scores": { "macro": 57.0, "liquidity_credit": 31.0, "equity_structure": 47.0, "volatility": 41.0, "cross_asset": 50.0, "trend": 49.0 } },
+  { "date": "2026-07-20", "total_score": 49.2, "risk_level": "caution", "regime": "late_cycle", "confidence": 0.72, "dim_scores": { "macro": 56.0, "liquidity_credit": 30.0, "equity_structure": 46.0, "volatility": 39.0, "cross_asset": 50.0, "trend": 48.0 } },
+  { "date": "2026-07-27", "total_score": 51.8, "risk_level": "caution", "regime": "late_cycle", "confidence": 0.73, "dim_scores": { "macro": 58.0, "liquidity_credit": 32.0, "equity_structure": 48.0, "volatility": 42.0, "cross_asset": 50.0, "trend": 49.0 } },
+  { "date": "2026-08-03", "total_score": 52.3, "risk_level": "caution", "regime": "late_cycle", "confidence": 0.72, "dim_scores": { "macro": 60.0, "liquidity_credit": 33.0, "equity_structure": 49.0, "volatility": 43.0, "cross_asset": 50.0, "trend": 50.0 } }
+]
