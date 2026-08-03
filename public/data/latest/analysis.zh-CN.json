@@ -1,0 +1,301 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-08-03T17:59:15Z",
+  "language": "zh-CN",
+  "market_state": "caution",
+  "market_regime": "goldilocks",
+  "summary": "今日盘后：市场总风险分升至 41.94，维持 caution 状态，1 日风险趋势 +3.8，风险温和上行。主要压力来自 10Y 实际利率 2.41% 与 10Y 收益率 4.68% 双双处于 5 年高位（98.73 / 97.94 百分位）；但当日 VIX 自 17.09 回落至 15.99，信用利差收窄（HY OAS 2.87→2.84、IG OAS 0.81→0.80），NVDA 单日 +3.0037%、TSLA +3.0719% 领涨，风险资产整体偏强，市场维持 goldilocks 状态。美联储公布年度银行压力测试结果（重要性 70），确认大型银行具备抗衰退能力；明日关注 AMD 财报。",
+  "top_risk_drivers": [
+    {
+      "claim": "10Y 实际利率 2.41% 处于 5 年 98.73 百分位，宏观维度风险分升至 63.06，为最大风险驱动。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[0].indicators[0].value",
+          "metric": "real_rate_dfii10",
+          "value": 2.41,
+          "updated_at": "2026-08-03T17:58:28Z"
+        }
+      ]
+    },
+    {
+      "claim": "10Y 收益率 4.68% 处于 5 年 97.94 百分位，维持高位并较前值 4.67% 小幅上行。",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.rates[0].value",
+          "metric": "dgs10",
+          "value": 4.68,
+          "updated_at": "2026-07-30T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "创新高个股占比为 0，缺乏新高确认，equity_structure 维度对应风险分 90。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[1].value",
+          "metric": "new_highs_ratio",
+          "value": 0.0,
+          "updated_at": "2026-08-03T17:58:28Z"
+        }
+      ]
+    },
+    {
+      "claim": "10Y-2Y 利差 0.45 处于 5 年 65.79 百分位（10Y 4.68% vs 2Y 4.23%），曲线维持陡峭。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[0].indicators[1].value",
+          "metric": "yield_curve_10y2y",
+          "value": 0.4499999999999993,
+          "updated_at": "2026-08-03T17:58:28Z"
+        }
+      ]
+    },
+    {
+      "claim": "小盘相对强弱 0.80，风格轮动信号中性偏弱。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[3].value",
+          "metric": "small_cap_relative",
+          "value": 0.8164,
+          "updated_at": "2026-08-03T17:58:28Z"
+        }
+      ]
+    }
+  ],
+  "supporting_signals": [
+    {
+      "claim": "跨资产确认度仅 0.1667，风险资产间的同步确认不足，趋势信号可靠性打折。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[4].indicators[0].value",
+          "metric": "cross_asset_confirmation",
+          "value": 0.1667,
+          "updated_at": "2026-08-03T17:58:28Z"
+        }
+      ]
+    },
+    {
+      "claim": "波动率维度趋势转升（trend=rising），风险分 30.4，波动率低点或已过。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[0].value",
+          "metric": "vix",
+          "value": 15.99,
+          "updated_at": "2026-08-03T17:58:28Z"
+        }
+      ]
+    },
+    {
+      "claim": "MU 单日下跌 0.5992%、AVGO 下跌 0.4136%，存储链个股当日表现落后。",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[2].change_1d",
+          "metric": "change_1d",
+          "value": 1.3323,
+          "updated_at": "2026-08-03T17:57:42Z"
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[1].change_1d",
+          "metric": "change_1d",
+          "value": 0.3031,
+          "updated_at": "2026-08-03T17:57:41Z"
+        }
+      ]
+    }
+  ],
+  "contradicting_signals": [
+    {
+      "claim": "VIX 自 17.09 回落至 15.99（波动率风险分 30.4），市场情绪明显缓和。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[0].value",
+          "metric": "vix",
+          "value": 15.99,
+          "updated_at": "2026-08-03T17:58:28Z"
+        }
+      ]
+    },
+    {
+      "claim": "信用利差收窄：HY OAS 自 2.87 降至 2.84，IG OAS 自 0.81 降至 0.80。",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.credit[0].value",
+          "metric": "bamlh0a0hym2",
+          "value": 2.84,
+          "updated_at": "2026-07-30T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.credit[1].value",
+          "metric": "bamlc0a0cm",
+          "value": 0.8,
+          "updated_at": "2026-07-30T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "87.5% 的股票位于 200 日均线上方，市场宽度健康。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[0].value",
+          "metric": "breadth_above_ma200",
+          "value": 0.875,
+          "updated_at": "2026-08-03T17:58:28Z"
+        }
+      ]
+    },
+    {
+      "claim": "NVDA 单日上涨 3.0037%、TSLA 上涨 3.0719%，权重股领涨。",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[0].change_1d",
+          "metric": "change_1d",
+          "value": 3.7886,
+          "updated_at": "2026-08-03T17:57:41Z"
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[4].change_1d",
+          "metric": "change_1d",
+          "value": 3.6679,
+          "updated_at": "2026-08-03T17:57:42Z"
+        }
+      ]
+    }
+  ],
+  "what_changed_today": [
+    "总风险分升至 41.94，1 日趋势 +3.8，风险水平维持 caution。",
+    "VIX 自 17.09 回落至 15.99，波动率显著降温。",
+    "信用利差收窄：HY OAS 2.87→2.84，IG OAS 0.81→0.80。",
+    "美联储公布年度银行压力测试结果（重要性 70），确认大型银行抗衰退能力稳健。",
+    "NVDA +3.0037%、TSLA +3.0719% 领涨；MU -0.5992%、AVGO -0.4136% 收跌。"
+  ],
+  "watch_next": [
+    "明日 AMD 财报，关注半导体板块反应。",
+    "关注实际利率 2.41% 与 10Y 收益率 4.68% 是否继续上行。",
+    "观察 VIX 15.99 能否延续回落，以及创新高占比 0 是否修复。",
+    "若信用利差（HY 2.84 / IG 0.80）继续收窄，风险偏好有望进一步改善。"
+  ],
+  "bull_case": {
+    "title": "牛市情景：利率压力缓解，风险偏好修复",
+    "points": [
+      "若 VIX 从 15.99 继续下行、HY OAS 2.84 维持低位，风险资产有望延续涨势。",
+      "若实际利率 2.41% 见顶回落，宏观维度压力将明显缓解。"
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[3].indicators[0].value",
+        "metric": "vix",
+        "value": 15.99,
+        "updated_at": "2026-08-03T17:58:28Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.credit[0].value",
+        "metric": "bamlh0a0hym2",
+        "value": 2.84,
+        "updated_at": "2026-07-30T00:00:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[0].indicators[0].value",
+        "metric": "real_rate_dfii10",
+        "value": 2.41,
+        "updated_at": "2026-08-03T17:58:28Z"
+      }
+    ]
+  },
+  "base_case": {
+    "title": "基准情景：goldilocks 延续，风险温和上行",
+    "points": [
+      "总风险分 41.94 在 caution 区间徘徊，1 日趋势 +3.8。",
+      "10Y 收益率 4.68% 高位与低波动并存，市场维持区间震荡。"
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "risk",
+        "path": "payload.total_score",
+        "metric": "total_score",
+        "value": 41.89,
+        "updated_at": "2026-08-03T17:58:28Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.rates[0].value",
+        "metric": "dgs10",
+        "value": 4.68,
+        "updated_at": "2026-07-30T00:00:00Z"
+      }
+    ]
+  },
+  "bear_case": {
+    "title": "熊市情景：利率与宽度风险共振",
+    "points": [
+      "若 10Y 收益率 4.68% 突破上行，估值压力将显著加大。",
+      "若创新高占比维持 0，宽度恶化将放大下行风险。",
+      "跨资产确认度 0.1667 过低，趋势信号存在失效风险。"
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "macro",
+        "path": "payload.rates[0].value",
+        "metric": "dgs10",
+        "value": 4.68,
+        "updated_at": "2026-07-30T00:00:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[1].value",
+        "metric": "new_highs_ratio",
+        "value": 0.0,
+        "updated_at": "2026-08-03T17:58:28Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[4].indicators[0].value",
+        "metric": "cross_asset_confirmation",
+        "value": 0.1667,
+        "updated_at": "2026-08-03T17:58:28Z"
+      }
+    ]
+  },
+  "confidence": 0.8,
+  "evidence_refs": [
+    {
+      "dataset": "risk",
+      "path": "payload.total_score",
+      "metric": "total_score",
+      "value": 41.89,
+      "updated_at": "2026-08-03T17:58:28Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.regime",
+      "metric": "regime",
+      "value": "goldilocks",
+      "updated_at": "2026-08-03T17:58:28Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.confidence",
+      "metric": "confidence",
+      "value": 0.8016,
+      "updated_at": "2026-08-03T17:58:28Z"
+    }
+  ],
+  "data_freshness": "degraded"
+}
