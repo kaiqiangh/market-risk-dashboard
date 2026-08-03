@@ -5,7 +5,13 @@ from __future__ import annotations
 from pipeline.risk import confidence as conf_mod
 from pipeline.risk import regime as regime_mod
 from pipeline.risk.model import RiskModel
-from pipeline.risk.scoring import heuristic_risk_score, percentile_risk_score
+from pipeline.risk.scoring import (
+    compute_indicator_score,
+    heuristic_risk_score,
+    percentile_rank,
+    percentile_risk_score,
+    z_score,
+)
 from pipeline.schemas import MacroDataset, MacroIndicator, RiskModelResult
 
 
@@ -24,6 +30,40 @@ def test_percentile_risk_score() -> None:
     # lower_is_riskier 反转
     low = percentile_risk_score(1, history, "lower_is_riskier")
     assert low > 95
+
+
+def test_percentile_rank_and_zscore() -> None:
+    history = list(range(1, 101))
+    assert percentile_rank(50, history) == 50.0
+    assert percentile_rank(100, history) == 100.0
+    z = z_score(50, history)
+    assert z is not None and abs(z) < 0.2
+    assert z_score(50, []) is None  # 样本过少
+
+
+def test_compute_indicator_score_percentile_primary() -> None:
+    """P0-2：历史足够时百分位为主路径，percentile/z_score 非 None。"""
+    history = list(range(1, 101))
+    score, pct, z = compute_indicator_score("vix", 90, history, "higher_is_riskier")
+    assert pct == 90.0
+    assert z is not None
+    assert score == 90.0  # 90 分位 → 90 分
+    # lower_is_riskier 反向
+    score2, pct2, _ = compute_indicator_score("breadth_above_ma200", 10, history, "lower_is_riskier")
+    assert pct2 == 10.0
+    assert score2 == 90.0
+
+
+def test_compute_indicator_score_heuristic_fallback() -> None:
+    """历史不足（<60 样本）→ 回退启发式表，percentile/z_score=None。"""
+    short_history = list(range(1, 10))
+    score, pct, z = compute_indicator_score("vix", 25, short_history, "higher_is_riskier")
+    assert pct is None
+    assert z is None
+    assert score == 60.0  # 启发式 vix 25 → 60
+    # 无历史
+    score2, pct2, z2 = compute_indicator_score("vix", 25, None, "higher_is_riskier")
+    assert pct2 is None and z2 is None and score2 == 60.0
 
 
 def test_regime_crisis_on_vix_40() -> None:
@@ -77,6 +117,55 @@ def test_risk_model_trend_1d() -> None:
     assert result.trend_1d is not None
 
 
+def test_risk_model_percentile_with_series_history() -> None:
+    """P0-2：series_history 注入后 percentile/z_score 非 None，风险分走百分位。"""
+    ctx = _synthetic_context()
+    # 5Y 日频窗口（VIX 25 在历史中处于较高位置）
+    history = [10.0 + (i % 20) for i in range(1300)]  # 10~29 循环
+    ctx["series_history"] = {"vixcls": [{"date": f"2021-{i:02d}-01", "value": v} for i, v in enumerate(history)]}
+    model = RiskModel()
+    result = model.score(ctx)
+    vix_ind = next(
+        ind for dim in result.dimensions if dim.key == "volatility"
+        for ind in dim.indicators if ind.key == "vix"
+    )
+    assert vix_ind.percentile is not None
+    assert vix_ind.z_score is not None
+    # 25 在 10~29 均匀历史中的百分位 ≈ 76（<=25 的样本占比）
+    assert 65 <= vix_ind.percentile <= 85
+
+
+def test_risk_model_dimension_trend_computed() -> None:
+    """P2-11：_prev_dim_scores 注入后维度 trend 非恒 flat，方向正确。"""
+    ctx = _synthetic_context()
+    ctx["_prev_dim_scores"] = {
+        "macro": 90.0, "liquidity_credit": 20.0, "equity_structure": 20.0,
+        "volatility": 20.0, "cross_asset": 50.0, "trend": 40.0,
+    }
+    result = RiskModel().score(ctx)
+    by_key = {d.key: d for d in result.dimensions}
+    # macro 现分（≈62）远低于上一日 90 → falling
+    assert by_key["macro"].trend == "falling"
+    # equity_structure 现分（≈47）高于上一日 20 → rising
+    assert by_key["equity_structure"].trend == "rising"
+    # 至少一个维度不是 flat（分数确有变化）
+    assert any(d.trend != "flat" for d in result.dimensions)
+
+
+def test_risk_model_trend_1w_1m_from_history() -> None:
+    """P2-11：_risk_history 注入后 trend_1w/trend_1m 可算。"""
+    ctx = _synthetic_context()
+    rows = [
+        {"date": f"2026-06-{i:02d}", "total_score": 30.0 + (i % 3)}
+        for i in range(1, 25)
+    ]
+    ctx["_risk_history"] = rows
+    ctx["_prev_total_score"] = rows[-1]["total_score"]
+    result = RiskModel().score(ctx)
+    assert result.trend_1w is not None
+    assert result.trend_1m is not None
+
+
 def test_risk_model_level_thresholds() -> None:
     model = RiskModel()
     # 低风险上下文 → 分数应低于高 VIX 上下文
@@ -94,3 +183,4 @@ def test_confidence_consistency() -> None:
     assert conf_mod.compute_confidence(0.5, 0.5, 0.5) == 0.5
     assert conf_mod.consistency_from_dimension_scores([20, 20, 20]) == 1.0
     assert conf_mod.consistency_from_dimension_scores([0, 100]) < 0.5
+

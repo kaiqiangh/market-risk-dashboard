@@ -2,6 +2,10 @@
 
 管道在 validation/freshness.py 统一判定（不信任 Provider 自报，架构 §8.4）；
 analysis/freshness.py 复用本模块。
+
+统一判定（P1-7）：Collector 不再自填 freshness_status；写盘后由本模块基于
+config/sources.yaml 期望频率统一重算（fresh/delayed/stale/missing/degraded 五态），
+再落盘到 metadata/freshness.json 与各 envelope。
 """
 
 from __future__ import annotations
@@ -41,6 +45,27 @@ def evaluate_freshness(
     if age_minutes <= 3.0 * expected_minutes:
         return "delayed"
     return "stale"
+
+
+def finalize_freshness(
+    dataset: str,
+    generated_at: str | None,
+    degraded: bool,
+    missing: bool = False,
+    now: datetime | None = None,
+) -> FreshnessStatus:
+    """统一五态判定（P1-7，架构 §8.5 表格语义）。
+
+    优先级：
+    1. missing   —— 从未有数据 / 文件缺失（显式标记）
+    2. degraded  —— 部分 Provider 降级/回退（与时间无关）
+    3. fresh/delayed/stale —— 按期望更新频率（config/sources.yaml）时间维度判定
+    """
+    if missing or not generated_at:
+        return "missing"
+    if degraded:
+        return "degraded"
+    return evaluate_freshness(generated_at, expected_interval_minutes_for(dataset, 480), now)
 
 
 def expected_interval_minutes_for(dataset: str, fallback: int) -> int:

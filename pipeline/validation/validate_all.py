@@ -16,6 +16,7 @@ from pipeline.schemas import (
     AnalysisDataset,
     CalendarEnvelope,
     CryptoEnvelope,
+    DashboardEnvelope,
     EquitiesEnvelope,
     FactLayer,
     MacroEnvelope,
@@ -35,6 +36,7 @@ DATASET_MODELS: dict[str, tuple[Any, str]] = {
     "news.json": (NewsEnvelope, "news"),
     "calendar.json": (CalendarEnvelope, "calendar"),
     "risk.json": (RiskEnvelope, "analysis"),
+    "dashboard.json": (DashboardEnvelope, "dashboard"),
 }
 
 # 自描述契约文件

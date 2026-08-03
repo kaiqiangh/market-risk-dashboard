@@ -11,10 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from pipeline.schemas import FedWatchSnapshot
-
-
-def _now_utc() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+from pipeline.utils import now_utc
 
 
 def load_history(path: Path) -> list[dict]:
@@ -46,7 +43,7 @@ def enrich_with_history(
     - 历史 < 2 天 → accumulating（数据积累中）。
     - 历史 ≥ 2 天 → 计算各区间较昨日变化，status=ready。
     """
-    today = today or _now_utc()[:10]
+    today = today or now_utc()[:10]
 
     # 同日去重（就地修改传入列表，保证调用方 save_history 拿到更新后历史）
     history[:] = [h for h in history if str(h.get("date", ""))[:10] != today]
@@ -55,7 +52,7 @@ def enrich_with_history(
     history.append(
         {
             # 逻辑日期（today）+ 当前时刻：保证按日累积可测可复现
-            "date": f"{today}{_now_utc()[10:]}",
+            "date": f"{today}{now_utc()[10:]}",
             "meeting_date": snapshot.meeting_date,
             "effective_rate": snapshot.effective_rate,
             "implied_rate": snapshot.implied_rate,

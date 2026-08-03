@@ -19,12 +19,7 @@ from pipeline.schemas import (
     RiskModelResult,
     SectorsEnvelope,
 )
-
-
-def _now_utc() -> str:
-    from datetime import datetime, timezone
-
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+from pipeline.utils import now_utc
 
 
 class FactLayerBuilder:
@@ -55,7 +50,7 @@ class FactLayerBuilder:
         evidence_index = self._build_evidence(risk, macro, equities, crypto, news, calendar)
 
         return FactLayer(
-            generated_at=_now_utc(),
+            generated_at=now_utc(),
             schema_version="1.0.0",
             data_freshness=data_freshness,
             risk=risk.payload,
@@ -112,7 +107,7 @@ class FactLayerBuilder:
             if value is None:
                 return
             index[key] = EvidenceRef(
-                dataset=dataset, path=path, metric=metric, value=value, updated_at=updated_at or _now_utc()
+                dataset=dataset, path=path, metric=metric, value=value, updated_at=updated_at or now_utc()
             )
 
         add("ev_total_score", "risk", "payload.total_score", "total_score", r.total_score, r.generated_at)

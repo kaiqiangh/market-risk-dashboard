@@ -1,7 +1,10 @@
-"""新闻 RSS Provider（架构 §1.3/§8.13 版权边界）。
+"""新闻 RSS Provider（架构 §1.3/§8.13 版权边界 + Fix 轮次 R3 中文源落地）。
 
 只取标题/来源/链接/发布时间/自写摘要，不存全文。源列表来自 config/news_sources.yaml。
 重要度评分（0-100）在 NewsCollector 完成（来源权重+关键词+资产命中+时效）。
+
+降级语义（Fix 轮次）：单源失败/不可达 → 记入 source_status（degraded）→ 继续其他源；
+仅当全部源失败时抛 ProviderError。source_status 供 Collector 写入 metadata/sources.json。
 """
 
 from __future__ import annotations
@@ -14,6 +17,7 @@ import feedparser
 import httpx
 
 from pipeline.providers.base import BaseProvider, ProviderError, ProviderHealth
+from pipeline.utils import now_utc
 
 UA = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
@@ -31,6 +35,8 @@ class RssNewsProvider(BaseProvider):
         sources_cfg = self.settings.load_news_sources()
         self.sources = [s for s in sources_cfg.get("sources", []) if s.get("enabled", True)]
         self._client = httpx.Client(timeout=8.0, headers={"User-Agent": UA}, follow_redirects=True)
+        # 源可达性：source_id → {"ok": bool, "error": str|None, "updated_at": str}
+        self.source_status: dict[str, dict[str, Any]] = {}
 
     def health(self) -> ProviderHealth:
         started = time.monotonic()
@@ -59,6 +65,7 @@ class RssNewsProvider(BaseProvider):
             source_id = str(source.get("id", urlparse(url).netloc))
             try:
                 raw = self._fetch_feed(url)
+                self.source_status[source_id] = {"ok": True, "error": None, "updated_at": now_utc()}
                 for entry in raw[:max_items]:
                     title = _clean_text(entry.get("title", ""))
                     link = entry.get("link", "")
@@ -78,7 +85,12 @@ class RssNewsProvider(BaseProvider):
                             "category_hint": source.get("category"),
                         }
                     )
-            except Exception as exc:  # noqa: BLE001 - 单源失败不中断
+            except Exception as exc:  # noqa: BLE001 - 单源失败不中断（降级）
+                self.source_status[source_id] = {
+                    "ok": False,
+                    "error": f"{type(exc).__name__}: {exc}",
+                    "updated_at": now_utc(),
+                }
                 errors.append(f"{source_id}: {type(exc).__name__}: {exc}")
                 continue
         if not items and errors:

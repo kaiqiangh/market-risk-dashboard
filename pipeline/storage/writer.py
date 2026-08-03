@@ -14,10 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from pipeline.schemas import BaseEnvelope
-
-
-def _now_utc() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+from pipeline.utils import now_utc
 
 
 class StorageWriter:
@@ -69,7 +66,7 @@ class StorageWriter:
         # 预切片（首屏只加载 30d，绝不加载全量）
         self.write_json(series_dir / "30d.json", merged[-30:])
         self.write_json(series_dir / "90d.json", merged[-90:])
-        self.write_json(series_dir / "index.json", {"series": series_name, "updated_at": _now_utc(), "count": len(merged)})
+        self.write_json(series_dir / "index.json", {"series": series_name, "updated_at": now_utc(), "count": len(merged)})
 
     def append_history(self, series_name: str, row: dict[str, Any]) -> None:
         series_dir = self.history_dir / series_name
@@ -84,7 +81,7 @@ class StorageWriter:
         """feeds/{name}.json 快照追加（FedWatch 累积，评审 P0-1）。"""
         path = self.feeds_dir / f"{name}.json"
         history = self._read_json(path, default=[])
-        today = _now_utc()[:10]
+        today = now_utc()[:10]
         history = [h for h in history if str(h.get("date", ""))[:10] != today]
         history.append(row)
         history.sort(key=lambda h: h.get("date", ""))
@@ -98,17 +95,35 @@ class StorageWriter:
         data.setdefault("datasets", {})[dataset] = {
             "status": status,
             "reason": reason,
-            "updated_at": _now_utc(),
+            "updated_at": now_utc(),
+        }
+        self.write_json(path, data)
+
+    def record_translations(self, status: str, merged_items: int = 0, reason: str = "") -> None:
+        """中译合并记录（架构 §2 L320 metadata/translations.json，P1-6）。
+
+        status: "merged" | "skipped" | "missing"；合并时间一并记录。
+        """
+        path = self.metadata_dir / "translations.json"
+        data = self._read_json(path, default={"schema_version": "1.0.0", "last_merge": None})
+        data["schema_version"] = "1.0.0"
+        data["updated_at"] = now_utc()
+        data["last_merge"] = {
+            "status": status,
+            "merged_items": int(merged_items),
+            "reason": reason,
+            "source_file": "news.zh-translations.json",
+            "merged_at": now_utc(),
         }
         self.write_json(path, data)
 
     def write_sources_metadata(self, status: dict[str, Any]) -> None:
         path = self.metadata_dir / "sources.json"
-        self.write_json(path, {"schema_version": "1.0.0", "updated_at": _now_utc(), "domains": status})
+        self.write_json(path, {"schema_version": "1.0.0", "updated_at": now_utc(), "domains": status})
 
     def write_schema_version(self, version: str = "1.0.0") -> None:
         path = self.metadata_dir / "schema-version.json"
-        self.write_json(path, {"schema_version": version, "updated_at": _now_utc()})
+        self.write_json(path, {"schema_version": version, "updated_at": now_utc()})
 
     # ---- 工具 ----
 
@@ -122,6 +137,10 @@ class StorageWriter:
 
     def read_latest(self, name: str) -> dict[str, Any] | None:
         return self._read_json(self.latest_dir / f"{name}.json", default=None)
+
+    def read_history(self, series_name: str, slice_name: str = "daily") -> list[dict[str, Any]]:
+        """公开读取 history/{series}/{slice}.json（P2-9：替代 run.py 的 _read_json 私有访问）。"""
+        return self._read_json(self.history_dir / series_name / f"{slice_name}.json", default=[])
 
 
 def _merge_by_date(existing: list[dict[str, Any]], incoming: list[dict[str, Any]]) -> list[dict[str, Any]]:

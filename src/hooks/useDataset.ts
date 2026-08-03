@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { z } from "zod";
 import { datasetClient, type DatasetOptions } from "@/lib/api";
+import { staleTimeFor } from "@/lib/freshness";
 import type { DatasetKey } from "@/schemas";
 
 /**
@@ -9,6 +10,8 @@ import type { DatasetKey } from "@/schemas";
  * - schema 可选：历史切片（history/{key}/{slice}.json 为纯数组）与元数据需显式传入，
  *   否则默认用注册表 envelope schema。
  * - queryKey 包含 lang/slice/schema 形态，避免不同解析方式互相污染缓存。
+ * - staleTime 按数据集 freshness 语义设置（Fix P2-10：market 短、macro/calendar 长，
+ *   而非一律 60s；与 config/sources.yaml 期望频率对齐）。
  */
 export interface UseDatasetResult<T> {
   data: T | undefined;
@@ -33,7 +36,7 @@ export function useDataset<T>(
   return useQuery<unknown, Error, T>({
     queryKey,
     queryFn: () => datasetClient.fetch<T>(key, opts, schema),
-    staleTime: 60_000,
+    staleTime: staleTimeFor(key),
     retry: 1,
   });
 }

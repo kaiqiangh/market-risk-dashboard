@@ -16,6 +16,7 @@ from .envelope import (
 from .analysis import AnalysisDataset, CaseStatement, SignalClaim
 from .calendar import CalendarDataset, CalendarEnvelope, CalendarEvent
 from .crypto import CryptoAsset, CryptoDataset, CryptoEnvelope
+from .dashboard import DashboardAsset, DashboardEnvelope, DashboardPayload
 from .equities import EquitiesDataset, EquitiesEnvelope, EquityAsset
 from .factlayer import EvidenceRef, FactLayer
 from .macro import FedWatchRateProb, FedWatchSnapshot, MacroDataset, MacroEnvelope, MacroIndicator
@@ -47,6 +48,9 @@ __all__ = [
     "CryptoAsset",
     "CryptoDataset",
     "CryptoEnvelope",
+    "DashboardAsset",
+    "DashboardEnvelope",
+    "DashboardPayload",
     "DriverContribution",
     "EquitiesDataset",
     "EquitiesEnvelope",

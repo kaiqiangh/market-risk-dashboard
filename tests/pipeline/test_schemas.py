@@ -22,6 +22,7 @@ from pipeline.schemas import (
     BaseEnvelope,
     CalendarEnvelope,
     CryptoEnvelope,
+    DashboardEnvelope,
     EquitiesEnvelope,
     FactLayer,
     MacroEnvelope,
@@ -42,6 +43,7 @@ ENVELOPE_FIXTURES: dict[str, type[BaseEnvelope]] = {
     "news.json": NewsEnvelope,
     "calendar.json": CalendarEnvelope,
     "risk.json": RiskEnvelope,
+    "dashboard.json": DashboardEnvelope,
 }
 
 # 自描述契约文件（facts / analysis 不包裹 BaseEnvelope，见 contract.py 说明）

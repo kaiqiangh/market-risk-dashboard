@@ -24,6 +24,7 @@ from pipeline.schemas import (
 )
 from pipeline.settings import Settings
 from pipeline.universe import AssetUniverse
+from pipeline.utils import now_utc
 
 # 宽度/趋势基准指数（MVP 代理）
 INDEX_HISTORIES = {"SPY": "1y", "IWM": "1y", "SOXX": "1y"}
@@ -83,7 +84,7 @@ class MarketCollector:
             rsi14=tech["rsi14"],
             percentile_5y=tech["percentile_5y"],
             source=quote.source,
-            updated_at=quote.updated_at or _now_utc(),
+            updated_at=quote.updated_at or now_utc(),
             is_proxy=quote.is_proxy,
         )
 
@@ -145,12 +146,12 @@ class MarketCollector:
         auto = [a for a in us if a.sector == "auto"]
 
         sectors = [
-            SectorItem(key="semis", label="Semiconductors", label_zh="半导体", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_5y=None, updated_at=_now_utc()),
-            SectorItem(key="auto", label="Autos", label_zh="汽车", change_1d=_avg_change(auto, "change_1d"), change_1w=_avg_change(auto, "change_1w"), change_1m=_avg_change(auto, "change_1m"), percentile_5y=None, updated_at=_now_utc()),
+            SectorItem(key="semis", label="Semiconductors", label_zh="半导体", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_5y=None, updated_at=now_utc()),
+            SectorItem(key="auto", label="Autos", label_zh="汽车", change_1d=_avg_change(auto, "change_1d"), change_1w=_avg_change(auto, "change_1w"), change_1m=_avg_change(auto, "change_1m"), percentile_5y=None, updated_at=now_utc()),
         ]
         themes = [
-            SectorItem(key="memory", label="Memory", label_zh="存储", change_1d=_avg_change(memory_assets, "change_1d"), change_1w=_avg_change(memory_assets, "change_1w"), change_1m=_avg_change(memory_assets, "change_1m"), percentile_5y=None, updated_at=_now_utc()),
-            SectorItem(key="ai", label="AI / GPU", label_zh="AI/GPU", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_5y=None, updated_at=_now_utc()),
+            SectorItem(key="memory", label="Memory", label_zh="存储", change_1d=_avg_change(memory_assets, "change_1d"), change_1w=_avg_change(memory_assets, "change_1w"), change_1m=_avg_change(memory_assets, "change_1m"), percentile_5y=None, updated_at=now_utc()),
+            SectorItem(key="ai", label="AI / GPU", label_zh="AI/GPU", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_5y=None, updated_at=now_utc()),
         ]
 
         mu = next((a for a in us if a.symbol == "MU"), None)
@@ -160,7 +161,7 @@ class MarketCollector:
             change_1w=mu.change_1w if mu else _avg_change(memory_assets, "change_1w"),
             change_1m=mu.change_1m if mu else _avg_change(memory_assets, "change_1m"),
             note="DRAM/NAND 现货价付费墙，MVP 用股价代理（评审 P0-1）",
-            updated_at=_now_utc(),
+            updated_at=now_utc(),
         )
         return SectorsDataset(sectors=sectors, themes=themes, memory=memory)
 
@@ -185,20 +186,20 @@ class MarketCollector:
         quality = self._quality()
 
         equity_env = EquitiesEnvelope(
-            generated_at=_now_utc(), schema_version="1.0.0",
-            source=["yfinance", "akshare"], source_updated_at=_now_utc(),
+            generated_at=now_utc(), schema_version="1.0.0",
+            source=["yfinance", "akshare"], source_updated_at=now_utc(),
             freshness_status="degraded" if self.degraded else "fresh",
             data_quality=round(quality, 3), payload=equities,
         )
         crypto_env = CryptoEnvelope(
-            generated_at=_now_utc(), schema_version="1.0.0",
-            source=["coingecko"], source_updated_at=_now_utc(),
+            generated_at=now_utc(), schema_version="1.0.0",
+            source=["coingecko"], source_updated_at=now_utc(),
             freshness_status="degraded" if self.degraded else "fresh",
             data_quality=round(quality, 3), payload=crypto,
         )
         sectors_env = SectorsEnvelope(
-            generated_at=_now_utc(), schema_version="1.0.0",
-            source=["yfinance"], source_updated_at=_now_utc(),
+            generated_at=now_utc(), schema_version="1.0.0",
+            source=["yfinance"], source_updated_at=now_utc(),
             freshness_status="degraded" if self.degraded else "fresh",
             data_quality=round(quality, 3), payload=sectors,
         )
@@ -210,9 +211,3 @@ class MarketCollector:
             "degraded": self.degraded,
             "provider_status": self.provider_status,
         }
-
-
-def _now_utc() -> str:
-    from datetime import datetime, timezone
-
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

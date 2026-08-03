@@ -18,6 +18,7 @@ from pipeline.providers.base import (
     ProviderHealth,
     QuoteResult,
 )
+from pipeline.utils import now_utc
 
 STOOQ_URL = "https://stooq.com/q/d/l/"
 UA = (
@@ -102,7 +103,7 @@ class StooqProvider(BaseProvider):
             change_1m=_pct(float(closes[-1]), float(closes[0])) if len(closes) >= 2 else None,
             volume=rows[-1].get("volume") if isinstance(rows[-1].get("volume"), (int, float)) else None,
             source="stooq", provider=self.name,
-            updated_at=_now_utc(), is_proxy=True,
+            updated_at=now_utc(), is_proxy=True,
         )
 
     def get_history(self, symbol: str, period: str = "1y") -> HistoryResult:
@@ -122,9 +123,3 @@ def _pct(latest: float, prev: float) -> float | None:
     if prev is None or prev == 0:
         return None
     return round((latest - prev) / prev * 100.0, 4)
-
-
-def _now_utc() -> str:
-    from datetime import datetime, timezone
-
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

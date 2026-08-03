@@ -11,6 +11,8 @@ expectations:
   macro: { interval_minutes: 240, note: "宏观 2-4h（FRED 实为 T+1，按发布节奏判定）" }
   calendar: { interval_minutes: 1440, note: "财报日历 1 次/日" }
   analysis: { interval_minutes: 720, note: "AI 简报 2 次/日" }
+  risk: { interval_minutes: 480, note: "风险模型随管道 2-3 次/日重算" }
+  dashboard: { interval_minutes: 480, note: "首页聚合随管道 2-3 次/日重算" }
 
 # Provider 注册表（priority 数字越小越优先）
 providers:

@@ -1,7 +1,7 @@
 # ============================================================
-# 新闻 RSS 源列表 + 重要性规则（架构 §1.4、评审 P1-3）
+# 新闻 RSS 源列表 + 重要性规则（架构 §1.4、评审 P1-3、Fix 轮次 R3 中文源落地）
 # 版权边界：仅存标题+来源+链接+自写摘要，不存全文（PRD §24）。
-# T03 的 RssNewsProvider 按本文件采集。
+# T03 的 RssNewsProvider 按本文件采集；单源失败只降级不中断（架构 §8.8）。
 # ============================================================
 version: "1.0.0"
 
@@ -11,9 +11,15 @@ sources:
   - { id: marketwatch, name: MarketWatch, url: "https://feeds.content.dowjones.io/public/rss/mw_topstories", lang: en, weight: 2 }
   - { id: investing, name: Investing.com, url: "https://www.investing.com/rss/news.rss", lang: en, weight: 2 }
   - { id: fed, name: Federal Reserve, url: "https://www.federalreserve.gov/feeds/press_all.xml", lang: en, weight: 4, category: central_bank }
-  # 中文源：东财 RSS（存在性以 T03 实测为准）；财联社经 RSSHub（需自建/公共实例）
-  - { id: eastmoney, name: 东方财富, url: "https://rsshub.app/eastmoney/report/strategyreport", lang: zh, weight: 3, enabled: false }
-  - { id: clschina, name: 财联社, url: "https://rsshub.app/cls/telegraph", lang: zh, weight: 4, enabled: false }
+  # 中文源（R3 落地；enabled 默认 true，单源不可达由 Provider 标记 degraded 而非崩溃）
+  # 东财官方 RSS（2026-08 实测可达，95 条/次）——权威官方源
+  - { id: eastmoney, name: 东方财富, url: "https://rss.eastmoney.com/rss_partener.xml", lang: zh, weight: 3 }
+  # 财联社（无官方 RSS）→ 经公共 RSSHub 实例 /cls/telegraph；公共实例可能 403/限流
+  # → Provider 单源降级（degraded），不阻塞其他源；生产可自建 RSSHub 后替换 url
+  - { id: clschina, name: 财联社, url: "https://rsshub.app/cls/telegraph", lang: zh, weight: 4 }
+  # 华尔街见闻：官方 rss.xml（https://wallstreetcn.com/rss.xml）2026-08 实测返回 S3
+  # NoSuchKey（无公开可用官方 RSS）→ 用 RSSHub 路由 /wallstreetcn/news；不可达时降级
+  - { id: wallstreetcn, name: 华尔街见闻, url: "https://rsshub.app/wallstreetcn/news", lang: zh, weight: 3 }
 
 # 重要性评分规则（0-100）：来源权重 + 关键词 + 资产命中 + 时效
 importance:

@@ -16,6 +16,7 @@ from typing import Any
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import NewsDataset, NewsEnvelope, NewsItem, NewsTranslationsDataset
 from pipeline.settings import Settings
+from pipeline.utils import now_utc
 
 _HTML_RE = re.compile(r"<[^>]+>")
 _ASSET_ALIASES = {
@@ -98,13 +99,19 @@ class NewsCollector:
             raw_items = []
             provider = "rss_news"
 
+        # 源可达性（Fix R3）：由 RssNewsProvider 记录，写入 sources 状态供系统状态页
+        source_status: dict[str, Any] = {}
+        for p in self.registry.providers_for("news"):
+            if hasattr(p, "source_status"):
+                source_status.update(p.source_status)
+
         now = datetime.now(timezone.utc)
         items: list[NewsItem] = []
         seen: set[str] = set()
         for raw in raw_items:
             title = _clean(raw.get("title", ""))
             source = raw.get("source", "unknown")
-            published = raw.get("published_at", _now_utc())
+            published = raw.get("published_at", now_utc())
             dedupe_id = self._dedupe_id(title, source, published)
             if dedupe_id in seen:
                 continue
@@ -131,13 +138,13 @@ class NewsCollector:
 
         quality = 0.8 if self.degraded else 1.0  # 按失败源降级 ×0.8
         envelope = NewsEnvelope(
-            generated_at=_now_utc(), schema_version="1.0.0",
-            source=[provider], source_updated_at=_now_utc(),
+            generated_at=now_utc(), schema_version="1.0.0",
+            source=[provider], source_updated_at=now_utc(),
             freshness_status="degraded" if self.degraded else "fresh",
             data_quality=round(quality, 3),
-            payload=NewsDataset(items=items, total=len(items), updated_at=_now_utc()),
+            payload=NewsDataset(items=items, total=len(items), updated_at=now_utc()),
         )
-        return envelope, {"degraded": self.degraded, "provider": provider}
+        return envelope, {"degraded": self.degraded, "provider": provider, "source_status": source_status}
 
     # ---- 中译合并（架构 §1.5 步骤 4）----
 
@@ -161,7 +168,3 @@ class NewsCollector:
 def _clean(text: str) -> str:
     text = _HTML_RE.sub(" ", text or "")
     return " ".join(text.split())
-
-
-def _now_utc() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

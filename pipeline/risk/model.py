@@ -1,7 +1,11 @@
-"""6 维风险模型（架构 §3.2/§1.8 口径红线）。
+"""6 维风险模型（架构 §3.2/§1.8 口径红线 + Fix 轮次 P0-2/P2-11）。
 
 - 风险分为"模型化的市场压力估计"，非精确崩盘概率（disclaimer 固定文案）。
 - 权重来自 config/risk_model.yaml；某维 coverage=0 时按剩余维度权重比例重归一化。
+- 子指标评分主路径（P0-2）：5Y 历史百分位窗口（config.percentile_window_years），
+  启发式表仅作历史不足回退；percentile/z_score 随历史可算即算。
+- 维度趋势（P2-11）：由上一日各维分数对比计算 rising/falling/flat；
+  trend_1w/trend_1m 由 risk 历史序列计算（历史足够时）。
 - 输出 RiskModelResult（pydantic 契约，score 0-100 / confidence 0-1）。
 """
 
@@ -11,7 +15,7 @@ from typing import Any
 
 from pipeline.risk import confidence as conf_mod
 from pipeline.risk import regime as regime_mod
-from pipeline.risk.scoring import heuristic_risk_score
+from pipeline.risk.scoring import compute_indicator_score
 from pipeline.schemas import (
     DriverContribution,
     RiskDimension,
@@ -20,6 +24,7 @@ from pipeline.schemas import (
     RiskModelResult,
 )
 from pipeline.settings import Settings
+from pipeline.utils import now_utc
 
 DIMENSION_LABELS = {
     "macro": "Macro",
@@ -32,13 +37,37 @@ DIMENSION_LABELS = {
 
 DEFAULT_DISCLAIMER = "本页风险分数为模型化的市场压力估计，并非精确的崩盘概率，不构成投资建议。"
 
+# 指标 key → 5Y 历史序列来源（FRED series key；元组表示组合序列，如期限利差）
+INDICATOR_HISTORY_SERIES: dict[str, str | tuple[str, str]] = {
+    "real_rate_dfii10": "dfii10",
+    "yield_curve_10y2y": ("dgs10", "dgs2"),
+    "hy_oas": "bamlh0a0hym2",
+    "ig_oas": "bamlc0a0cm",
+    "dxy": "dtwexbgs",
+    "dgs10": "dgs10",
+    "fed_balance_sheet": "walcl",
+    "reverse_repo": "rrpontsyd",
+    "vix": "vixcls",
+    "realized_vol": None,  # 计算型：无独立 5Y 序列（回退启发式）
+}
 
-def _ind(key: str, label: str, value: float | None, direction: str, source: str, weight: float, is_proxy: bool = False) -> RiskIndicator:
-    score = heuristic_risk_score(key, value) if value is not None else None
+
+def _ind(
+    key: str,
+    label: str,
+    value: float | None,
+    direction: str,
+    source: str,
+    weight: float,
+    history: list[float] | None = None,
+    fallback: float = 50.0,
+    is_proxy: bool = False,
+) -> RiskIndicator:
+    score, pct, z = compute_indicator_score(key, value, history, direction, fallback=fallback)
     return RiskIndicator(
         key=key, label=label, value=value,
-        percentile=None, z_score=None,
-        risk_score=score if score is not None else 50.0,  # 无映射规则时取中性分
+        percentile=pct, z_score=z,
+        risk_score=score,
         direction=direction, weight=weight, source=source,
         updated_at=None, status="fresh" if value is not None else "missing",
         is_proxy=is_proxy,
@@ -55,6 +84,51 @@ class RiskModel:
         self.thresholds = _parse_thresholds(thresholds)
         cw = raw.get("confidence", {}).get("weights", {})
         self.conf_weights = {k: float(v) for k, v in cw.items()}
+        scoring_cfg = raw.get("scoring", {})
+        self.percentile_window_years = int(scoring_cfg.get("percentile_window_years", 5))
+        self.fallback_percentile = float(scoring_cfg.get("fallback_percentile", 50.0))
+        # 5Y 窗口 ≈ 252 交易日/年（日频序列）
+        self._max_history_samples = max(60, self.percentile_window_years * 252)
+
+    # ---- 5Y 历史窗口 ----
+
+    def _series_values(self, ctx: dict[str, Any], series_key: str) -> list[float]:
+        """从 series_history 提取某序列的 5Y 窗口数值（升序，最新在末尾）。"""
+        series_history = ctx.get("series_history", {}) or {}
+        rows = series_history.get(series_key) or []
+        values = [
+            float(r["value"])
+            for r in rows
+            if isinstance(r.get("value"), (int, float)) and not isinstance(r.get("value"), bool)
+        ]
+        return values[-self._max_history_samples:]
+
+    def _indicator_history(self, ctx: dict[str, Any], key: str) -> list[float] | None:
+        """指标 key → 5Y 历史数值（组合序列按日期对齐求差；无来源返回 None）。"""
+        spec = INDICATOR_HISTORY_SERIES.get(key)
+        if spec is None:
+            return None
+        if isinstance(spec, str):
+            values = self._series_values(ctx, spec)
+            return values if values else None
+
+        # 组合序列：如 10Y-2Y 期限利差 = DGS10 - DGS2（按日期对齐）
+        series_history = ctx.get("series_history", {}) or {}
+        maps: list[dict[str, float]] = []
+        for series_key in spec:
+            rows = series_history.get(series_key) or []
+            maps.append(
+                {
+                    str(r.get("date", "")): float(r["value"])
+                    for r in rows
+                    if isinstance(r.get("value"), (int, float)) and not isinstance(r.get("value"), bool)
+                }
+            )
+        if len(maps) < 2 or not maps[0] or not maps[1]:
+            return None
+        common = sorted(set(maps[0]) & set(maps[1]))
+        diffs = [round(maps[0][d] - maps[1][d], 6) for d in common]
+        return diffs[-self._max_history_samples:] if diffs else None
 
     # ---- 各维指标 ----
 
@@ -70,12 +144,18 @@ class RiskModel:
         ig = credit.get("bamlc0a0cm")
         dxy = next((m for m in getattr(macro, "fx", []) if m.key == "dtwexbgs"), None)
         return [
-            _ind("real_rate_dfii10", "10Y Real Rate", dfii10.value if dfii10 else None, "higher_is_riskier", "FRED", 5.0),
-            _ind("yield_curve_10y2y", "10Y-2Y Curve", curve, "higher_is_riskier", "FRED", 5.0),
-            _ind("hy_oas", "HY OAS", hy.value if hy else None, "higher_is_riskier", "FRED", 5.0),
-            _ind("ig_oas", "IG OAS", ig.value if ig else None, "higher_is_riskier", "FRED", 5.0),
-            _ind("dxy", "Dollar Index", dxy.value if dxy else None, "higher_is_riskier", "FRED", 5.0),
-            _ind("dgs10", "10Y Yield", dgs10.value if dgs10 else None, "neutral", "FRED", 5.0),
+            _ind("real_rate_dfii10", "10Y Real Rate", dfii10.value if dfii10 else None, "higher_is_riskier", "FRED", 5.0,
+                 history=self._indicator_history(ctx, "real_rate_dfii10")),
+            _ind("yield_curve_10y2y", "10Y-2Y Curve", curve, "higher_is_riskier", "FRED", 5.0,
+                 history=self._indicator_history(ctx, "yield_curve_10y2y")),
+            _ind("hy_oas", "HY OAS", hy.value if hy else None, "higher_is_riskier", "FRED", 5.0,
+                 history=self._indicator_history(ctx, "hy_oas")),
+            _ind("ig_oas", "IG OAS", ig.value if ig else None, "higher_is_riskier", "FRED", 5.0,
+                 history=self._indicator_history(ctx, "ig_oas")),
+            _ind("dxy", "Dollar Index", dxy.value if dxy else None, "higher_is_riskier", "FRED", 5.0,
+                 history=self._indicator_history(ctx, "dxy")),
+            _ind("dgs10", "10Y Yield", dgs10.value if dgs10 else None, "neutral", "FRED", 5.0,
+                 history=self._indicator_history(ctx, "dgs10")),
         ]
 
     def _liquidity_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
@@ -84,9 +164,12 @@ class RiskModel:
         w = liquidity.get("walcl")
         rr = liquidity.get("rrpontsyd")
         return [
-            _ind("fed_balance_sheet", "Fed Balance Sheet", w.value if w else None, "neutral", "FRED", 5.0),
-            _ind("reverse_repo", "Reverse Repo", rr.value if rr else None, "neutral", "FRED", 5.0),
-            _ind("hy_oas", "HY OAS", _first_value(ctx, "credit", "bamlh0a0hym2"), "higher_is_riskier", "FRED", 10.0),
+            _ind("fed_balance_sheet", "Fed Balance Sheet", w.value if w else None, "neutral", "FRED", 5.0,
+                 history=self._indicator_history(ctx, "fed_balance_sheet")),
+            _ind("reverse_repo", "Reverse Repo", rr.value if rr else None, "neutral", "FRED", 5.0,
+                 history=self._indicator_history(ctx, "reverse_repo")),
+            _ind("hy_oas", "HY OAS", _first_value(ctx, "credit", "bamlh0a0hym2"), "higher_is_riskier", "FRED", 10.0,
+                 history=self._indicator_history(ctx, "hy_oas")),
         ]
 
     def _equity_structure_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
@@ -102,7 +185,8 @@ class RiskModel:
     def _volatility_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
         vix = _series_value(ctx, "vixcls")
         return [
-            _ind("vix", "VIX", vix, "higher_is_riskier", "FRED", 8.0),
+            _ind("vix", "VIX", vix, "higher_is_riskier", "FRED", 8.0,
+                 history=self._indicator_history(ctx, "vix")),
             _ind("realized_vol", "Realized Vol", ctx.get("trend", {}).get("realized_vol"), "higher_is_riskier", "computed", 7.0),
         ]
 
@@ -133,6 +217,7 @@ class RiskModel:
             "trend": self._trend_indicators,
         }
 
+        prev_dim_scores: dict[str, float] = ctx.get("_prev_dim_scores") or {}
         dimensions: list[RiskDimension] = []
         for dim_key, builder in builders.items():
             indicators = builder(ctx)
@@ -152,7 +237,7 @@ class RiskModel:
                     score=dim_score,
                     indicators=indicators,
                     coverage=coverage,
-                    trend="flat",
+                    trend=_dim_trend(dim_score, prev_dim_scores.get(dim_key)),
                 )
             )
 
@@ -210,9 +295,10 @@ class RiskModel:
         }
         regime, regime_evidence = regime_mod.infer_regime(regime_ctx)
 
-        # 趋势：与最近一次 risk 历史对比（run.py 注入 prev_total_score）
+        # 趋势：与最近一次 risk 历史对比（run.py 注入 prev_total_score + risk_history）
         prev_score = ctx.get("_prev_total_score")
         trend_1d = round(total_score - prev_score, 2) if prev_score is not None else None
+        trend_1w, trend_1m = _history_trends(total_score, ctx.get("_risk_history"))
 
         # 置信度
         data_quality = float(ctx.get("data_quality", 1.0))
@@ -222,12 +308,12 @@ class RiskModel:
 
         return RiskModelResult(
             model_version=self.model_version,
-            generated_at=_now_utc(),
+            generated_at=now_utc(),
             total_score=total_score,
             risk_level=risk_level,
             trend_1d=trend_1d,
-            trend_1w=None,
-            trend_1m=None,
+            trend_1w=trend_1w,
+            trend_1m=trend_1m,
             dimensions=dimensions,
             top_drivers=top_drivers,
             regime=regime,
@@ -246,6 +332,43 @@ class RiskModel:
             if rule(total_score):
                 return level
         return "caution"
+
+
+def _dim_trend(score: float, prev_score: float | None) -> str:
+    """维度趋势（P2-11）：与上一日分数对比；无上一日 → flat。"""
+    if prev_score is None:
+        return "flat"
+    if abs(score - prev_score) < 0.01:
+        return "flat"
+    return "rising" if score > prev_score else "falling"
+
+
+def _history_trends(total_score: float, rows: Any) -> tuple[float | None, float | None]:
+    """trend_1w / trend_1m：由 risk 历史序列计算（历史不足返回 None）。
+
+    rows 为 history/risk/daily.json 的既往行（不含今日）；1w≈5 个交易日、1m≈21 个。
+    """
+    if not rows or not isinstance(rows, list):
+        return None, None
+    try:
+        last_score = float(rows[-1]["total_score"])
+        trend_1w = round(total_score - last_score, 2)
+    except (KeyError, TypeError, ValueError, IndexError):
+        trend_1w = None
+    if len(rows) >= 6:
+        try:
+            week_ago = float(rows[-6]["total_score"])
+            trend_1w = round(total_score - week_ago, 2)
+        except (KeyError, TypeError, ValueError, IndexError):
+            trend_1w = None
+    trend_1m = None
+    if len(rows) >= 22:
+        try:
+            month_ago = float(rows[-22]["total_score"])
+            trend_1m = round(total_score - month_ago, 2)
+        except (KeyError, TypeError, ValueError, IndexError):
+            trend_1m = None
+    return trend_1w, trend_1m
 
 
 def _parse_thresholds(raw: dict[str, Any]) -> list[tuple[RiskLevel, Any]]:
@@ -289,9 +412,3 @@ def _curve_value(ctx: dict[str, Any]) -> float | None:
     if dgs10 and dgs2 and dgs10.value is not None and dgs2.value is not None:
         return round(dgs10.value - dgs2.value, 4)
     return None
-
-
-def _now_utc() -> str:
-    from datetime import datetime, timezone
-
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

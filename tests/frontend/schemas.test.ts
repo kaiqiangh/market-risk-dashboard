@@ -10,6 +10,7 @@ import cryptoFixture from "../fixtures/crypto.json";
 import newsFixture from "../fixtures/news.json";
 import calendarFixture from "../fixtures/calendar.json";
 import riskFixture from "../fixtures/risk.json";
+import dashboardFixture from "../fixtures/dashboard.json";
 import factsFixture from "../fixtures/facts.json";
 import analysisZhFixture from "../fixtures/analysis.zh-CN.json";
 import analysisEnFixture from "../fixtures/analysis.en.json";
@@ -17,6 +18,7 @@ import analysisEnFixture from "../fixtures/analysis.en.json";
 import { AnalysisDataset } from "@/schemas/analysis";
 import { CalendarEnvelope } from "@/schemas/calendar";
 import { CryptoEnvelope } from "@/schemas/crypto";
+import { DashboardEnvelope } from "@/schemas/dashboard";
 import { EquitiesEnvelope } from "@/schemas/equities";
 import { FactLayer } from "@/schemas/factlayer";
 import { MacroEnvelope } from "@/schemas/macro";
@@ -24,7 +26,13 @@ import { NewsEnvelope } from "@/schemas/news";
 import { RiskEnvelope } from "@/schemas/risk";
 import { SectorsEnvelope } from "@/schemas/sectors";
 import { DatasetClient } from "@/lib/api";
-import { badgeFor, evaluateFreshness } from "@/lib/freshness";
+import {
+  EXPECTED_INTERVALS_MIN,
+  EXPECTED_INTERVALS_MS,
+  badgeFor,
+  evaluateFreshness,
+  staleTimeFor,
+} from "@/lib/freshness";
 
 const ENVELOPE_CASES: Array<[string, unknown, { safeParse: (v: unknown) => { success: boolean } }]> = [
   ["macro", macroFixture, MacroEnvelope],
@@ -34,6 +42,7 @@ const ENVELOPE_CASES: Array<[string, unknown, { safeParse: (v: unknown) => { suc
   ["news", newsFixture, NewsEnvelope],
   ["calendar", calendarFixture, CalendarEnvelope],
   ["risk", riskFixture, RiskEnvelope],
+  ["dashboard", dashboardFixture, DashboardEnvelope],
 ];
 
 describe("Zod contract: fixtures pass", () => {
@@ -145,5 +154,25 @@ describe("freshness five-state semantics (架构 §8.5)", () => {
     expect(badgeFor("stale").prominent).toBe(true);
     expect(badgeFor("missing").labelKey).toBe("status.missing");
     expect(badgeFor("degraded").labelKey).toBe("status.degraded");
+  });
+});
+
+describe("staleTime by dataset freshness semantics (Fix P2-10)", () => {
+  it("distinguishes market vs macro/calendar instead of uniform 60s", () => {
+    expect(staleTimeFor("market")).toBe(5 * 60_000);
+    expect(staleTimeFor("risk")).toBe(5 * 60_000);
+    expect(staleTimeFor("news")).toBe(5 * 60_000);
+    expect(staleTimeFor("macro")).toBe(10 * 60_000);
+    expect(staleTimeFor("calendar")).toBe(15 * 60_000);
+    expect(staleTimeFor("unknown-key")).toBe(60_000); // 回退默认
+  });
+
+  it("expected intervals include risk/dashboard and align with sources.yaml", () => {
+    expect(EXPECTED_INTERVALS_MIN.market).toBe(480);
+    expect(EXPECTED_INTERVALS_MIN.macro).toBe(240);
+    expect(EXPECTED_INTERVALS_MIN.calendar).toBe(1440);
+    expect(EXPECTED_INTERVALS_MIN.risk).toBe(480);
+    expect(EXPECTED_INTERVALS_MIN.dashboard).toBe(480);
+    expect(EXPECTED_INTERVALS_MS.market).toBe(480 * 60_000);
   });
 });

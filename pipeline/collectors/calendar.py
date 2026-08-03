@@ -11,6 +11,7 @@ from typing import Any
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import CalendarDataset, CalendarEnvelope, CalendarEvent
 from pipeline.settings import Settings
+from pipeline.utils import now_utc
 
 
 class CalendarCollector:
@@ -52,14 +53,12 @@ class CalendarCollector:
 
         quality = 0.8 if self.degraded else 1.0  # 按失败源降级 ×0.8
         envelope = CalendarEnvelope(
-            generated_at=_now_utc(), schema_version="1.0.0",
-            source=["fmp", "yfinance"], source_updated_at=_now_utc(),
+            generated_at=now_utc(), schema_version="1.0.0",
+            source=["fmp", "yfinance"], source_updated_at=now_utc(),
             freshness_status="degraded" if self.degraded else "fresh",
             data_quality=round(quality, 3),
-            payload=CalendarDataset(events=events, updated_at=_now_utc()),
+            payload=CalendarDataset(events=events, updated_at=now_utc()),
         )
         return envelope, {"degraded": self.degraded, "provider_status": self.provider_status}
 
 
-def _now_utc() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

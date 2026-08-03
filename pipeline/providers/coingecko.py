@@ -17,6 +17,7 @@ from pipeline.providers.base import (
     ProviderHealth,
     retry_with_backoff,
 )
+from pipeline.utils import now_utc
 
 CG_BASE = "https://api.coingecko.com/api/v3"
 DEFAULT_IDS = "bitcoin,ethereum,solana"
@@ -101,7 +102,7 @@ class CoinGeckoProvider(BaseProvider):
                     "market_cap": _f(md.get("market_cap", {}).get("usd")),
                     "volume_24h": _f(md.get("total_volume", {}).get("usd")),
                     "source": "coingecko",
-                    "updated_at": _now_utc(),
+                    "updated_at": now_utc(),
                 }
             )
 
@@ -130,9 +131,3 @@ def _ratio01(value) -> float | None:
     if f is None:
         return None
     return round(max(0.0, min(1.0, f / 100.0)), 6)
-
-
-def _now_utc() -> str:
-    from datetime import datetime, timezone
-
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

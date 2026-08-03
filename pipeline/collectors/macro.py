@@ -23,6 +23,7 @@ from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.providers.fred import SERIES_CATALOG
 from pipeline.schemas import FedWatchSnapshot, MacroDataset, MacroEnvelope, MacroIndicator
 from pipeline.settings import Settings
+from pipeline.utils import now_utc
 
 # FRED 序列 → 分组
 SERIES_GROUPS: dict[str, list[str]] = {
@@ -43,6 +44,8 @@ class MacroCollector:
         self.settings = settings or Settings()
         self.degraded: list[str] = []
         self.provider_status: dict[str, Any] = {}
+        # 序列全量历史（Fix P0-2：供风险模型 5Y 百分位窗口使用）
+        self.series_history: dict[str, list[dict[str, Any]]] = {}
         self._fred_failures = 0
         self._fedwatch_failed = False
 
@@ -52,7 +55,10 @@ class MacroCollector:
         try:
             out = self.registry.call("macro", "get_series", f"fred_{series_id}", args=(series_id,))
             self.provider_status.setdefault("macro", out["meta"])
-            return out["result"]
+            rows = out["result"]
+            # 统一小写 key：风险模型 5Y 百分位按 indicator key 的小写序列名查找
+            self.series_history[series_id.lower()] = rows
+            return rows
         except ProviderError as exc:
             self.degraded.append(str(exc))
             self._fred_failures += 1
@@ -148,15 +154,19 @@ class MacroCollector:
         dataset = self._collect_macro()
         quality = self._quality()
         envelope = MacroEnvelope(
-            generated_at=_now_utc(),
+            generated_at=now_utc(),
             schema_version="1.0.0",
             source=["fred", "yahoo"],
-            source_updated_at=_now_utc(),
+            source_updated_at=now_utc(),
             freshness_status="degraded" if self.degraded else "fresh",
             data_quality=round(quality, 3),
             payload=dataset,
         )
-        return envelope, {"degraded": self.degraded, "provider_status": self.provider_status}
+        return envelope, {
+            "degraded": self.degraded,
+            "provider_status": self.provider_status,
+            "series_history": self.series_history,
+        }
 
 
 def _change(rows: list[dict], lookback: int) -> float | None:
@@ -187,9 +197,3 @@ def _utc_from_date(date_str: str) -> str | None:
     if not date_str:
         return None
     return f"{date_str}T00:00:00Z"
-
-
-def _now_utc() -> str:
-    from datetime import datetime, timezone
-
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

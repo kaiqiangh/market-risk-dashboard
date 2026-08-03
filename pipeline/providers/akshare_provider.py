@@ -18,6 +18,7 @@ from pipeline.providers.base import (
     QuoteResult,
     retry_with_backoff,
 )
+from pipeline.utils import now_utc
 
 
 def _to_ak_symbol(symbol: str) -> tuple[str, str]:
@@ -96,7 +97,7 @@ class AkshareProvider(BaseProvider):
             change_1w=_pct(float(closes[-1]), float(closes[-6])) if len(closes) >= 6 else None,
             change_1m=_pct(float(closes[-1]), float(closes[0])) if len(closes) >= 2 else None,
             volume=hist.rows[-1].get("volume"),
-            source="akshare", provider=self.name, updated_at=_now_utc(), is_proxy=False,
+            source="akshare", provider=self.name, updated_at=now_utc(), is_proxy=False,
         )
 
 
@@ -125,9 +126,3 @@ def _start_date(period: str) -> str:
 
     days = {"1mo": 45, "3mo": 100, "6mo": 200, "1y": 400, "2y": 750, "5y": 1850}.get(period, 400)
     return (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y%m%d")
-
-
-def _now_utc() -> str:
-    from datetime import datetime, timezone
-
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

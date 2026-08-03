@@ -35,6 +35,7 @@ from pipeline.schemas import (
     AnalysisDataset,
     CalendarEnvelope,
     CryptoEnvelope,
+    DashboardEnvelope,
     EquitiesEnvelope,
     FactLayer,
     MacroEnvelope,
@@ -54,6 +55,7 @@ ENVELOPE_MODELS: dict[str, tuple[Any, str]] = {
     "news.json": (NewsEnvelope, "news"),
     "calendar.json": (CalendarEnvelope, "calendar"),
     "risk.json": (RiskEnvelope, "analysis"),
+    "dashboard.json": (DashboardEnvelope, "dashboard"),
 }
 
 # 自描述契约文件（不带 envelope）：存在时必须通过校验，不强制要求存在。
@@ -64,7 +66,7 @@ STANDALONE_MODELS: dict[str, Any] = {
     "analysis.en.json": AnalysisDataset,
 }
 
-# 可选的 dashboard.json（T03 未产出；若出现则必须通过校验，不强制要求存在）
+# 可选的 envelope 文件（若出现则必须通过校验，不强制要求存在）
 OPTIONAL_ENVELOPE_MODELS: dict[str, tuple[Any, str]] = {}
 
 # 时间正则：ISO 8601 UTC（YYYY-MM-DDTHH:MM:SSZ 或带小数秒）

@@ -18,6 +18,7 @@ from pipeline.providers.base import (
     ProviderHealth,
     QuoteResult,
 )
+from pipeline.utils import now_utc
 
 _PERIOD_MAP = {"1mo": "1mo", "1y": "1y", "3mo": "3mo", "6mo": "6mo", "2y": "2y", "5y": "5y"}
 
@@ -71,7 +72,7 @@ class YahooProvider(BaseProvider):
                 volume=volume,
                 source="yahoo",
                 provider=self.name,
-                updated_at=_now_utc(),
+                updated_at=now_utc(),
                 is_proxy=False,
             )
         except ProviderError:
@@ -189,9 +190,3 @@ def _clean(value) -> float | None:
         return None if (math.isnan(f) or math.isinf(f)) else round(f, 6)
     except (TypeError, ValueError):
         return None
-
-
-def _now_utc() -> str:
-    from datetime import datetime, timezone
-
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
