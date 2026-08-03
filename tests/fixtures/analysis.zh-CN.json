@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-08-03T10:30:00Z",
+  "language": "zh-CN",
+  "market_state": "caution",
+  "market_regime": "late_cycle",
+  "summary": "当前市场处于谨慎状态，总风险分 52.3，较昨日上升 1.4。实际利率 1.9% 处于偏高区间是主要推手，NVDA 单日下跌 2.1% 强化了风险情绪。",
+  "top_risk_drivers": [
+    {
+      "claim": "实际利率升至 1.9%，处于 5 年 72 百分位，推高宏观维度风险分至 62。",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.rates[0].value",
+          "metric": "real_rate_dfii10",
+          "value": 1.9,
+          "updated_at": "2026-08-03T09:30:00Z"
+        }
+      ]
+    }
+  ],
+  "supporting_signals": [
+    {
+      "claim": "NVDA 单日下跌 2.1%，存储板块承压。",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[0].change_1d",
+          "metric": "change_1d",
+          "value": -2.1,
+          "updated_at": "2026-08-03T10:00:00Z"
+        }
+      ]
+    }
+  ],
+  "contradicting_signals": [
+    {
+      "claim": "风险置信度 0.72，数据覆盖完整。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.total_score",
+          "metric": "total_score",
+          "value": 52.3,
+          "updated_at": "2026-08-03T10:00:00Z"
+        }
+      ]
+    }
+  ],
+  "what_changed_today": ["总风险分较昨日上升 1.4。"],
+  "watch_next": ["关注明日 CPI 数据对实际利率的影响。"],
+  "bull_case": {
+    "title": "牛市情景：利率回落至 1.5% 下方",
+    "points": ["若通胀回落，实际利率可能下行。"],
+    "evidence_refs": [
+      {
+        "dataset": "macro",
+        "path": "payload.rates[0].value",
+        "metric": "real_rate_dfii10",
+        "value": 1.9,
+        "updated_at": "2026-08-03T09:30:00Z"
+      }
+    ]
+  },
+  "base_case": {
+    "title": "基准情景：维持谨慎",
+    "points": ["风险分在 45 至 60 区间震荡。"],
+    "evidence_refs": []
+  },
+  "bear_case": {
+    "title": "熊市情景：风险分突破 70",
+    "points": ["若 NVDA 继续下跌 5% 以上，市场宽度将恶化。"],
+    "evidence_refs": []
+  },
+  "confidence": 0.72,
+  "evidence_refs": [
+    {
+      "dataset": "risk",
+      "path": "payload.total_score",
+      "metric": "total_score",
+      "value": 52.3,
+      "updated_at": "2026-08-03T10:00:00Z"
+    }
+  ],
+  "data_freshness": "fresh"
+}

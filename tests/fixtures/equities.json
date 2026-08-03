@@ -1,0 +1,58 @@
+{
+  "generated_at": "2026-08-03T10:00:00Z",
+  "schema_version": "1.0.0",
+  "source": ["yfinance", "akshare"],
+  "source_updated_at": "2026-08-03T09:45:00Z",
+  "freshness_status": "fresh",
+  "data_quality": 0.9,
+  "payload": {
+    "assets": [
+      {
+        "symbol": "NVDA",
+        "name": "NVIDIA",
+        "name_zh": "英伟达",
+        "market": "US",
+        "sector": "semis",
+        "theme": ["AI", "GPU"],
+        "price": 128.4,
+        "currency": "USD",
+        "change_1d": -2.1,
+        "change_1w": 3.5,
+        "change_1m": 8.2,
+        "change_ytd": 42.0,
+        "volume": 250000000,
+        "market_cap": 3200000000000,
+        "ma50_distance_pct": 4.1,
+        "ma200_distance_pct": 18.3,
+        "rsi14": 61.0,
+        "percentile_5y": 88.0,
+        "source": "yfinance",
+        "updated_at": "2026-08-03T10:00:00Z",
+        "is_proxy": false
+      },
+      {
+        "symbol": "603986.SH",
+        "name": "GigaDevice",
+        "name_zh": "兆易创新",
+        "market": "CN",
+        "sector": "semis",
+        "theme": ["Memory", "NOR"],
+        "price": 96.5,
+        "currency": "CNY",
+        "change_1d": 1.2,
+        "change_1w": -0.8,
+        "change_1m": 5.6,
+        "change_ytd": 12.3,
+        "volume": 15000000,
+        "market_cap": 64000000000,
+        "ma50_distance_pct": 2.2,
+        "ma200_distance_pct": 9.8,
+        "rsi14": 55.0,
+        "percentile_5y": 70.0,
+        "source": "akshare",
+        "updated_at": "2026-08-03T10:00:00Z",
+        "is_proxy": false
+      }
+    ]
+  }
+}
