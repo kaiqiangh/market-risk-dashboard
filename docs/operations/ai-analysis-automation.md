@@ -31,7 +31,7 @@
 |---|---|
 | `public/data/latest/analysis.zh-CN.json` | Chinese brief (AnalysisDataset schema) |
 | `public/data/latest/analysis.en.json` | English brief (AnalysisDataset schema) |
-| `public/data/latest/news.zh-translations.json` | English news Chinese translations (title_zh/summary_zh) |
+| `public/data/latest/news.zh-translations.json` | News bilingual translations, symmetric full pair — `{id, title, summary, title_zh, summary_zh}`, every item, both directions (ADR-0003) |
 
 **Tools (in repo, called in order by the automation):**
 
@@ -56,7 +56,10 @@ python -m pipeline.analysis.freshness --dataset facts
 2. Check `facts.json` freshness (`pipeline.analysis.freshness`): stale is still acceptable, but the output carries a `data_freshness` annotation.
 3. `build_prompt.py` produces prompts (once for zh-CN, once for en, including evidence-index snippets): `python -m pipeline.analysis.build_prompt --lang zh-CN` / `--lang en`.
 4. Call deepseek v4 flash to generate three outputs (Chinese brief / English brief / news Chinese translation).
-5. Write the three output files: `analysis.zh-CN.json` / `analysis.en.json` / `news.zh-translations.json` (the translations cover the top ~10 English-sourced `news.json` items as `NewsTranslationsDataset { items: [{id, title_zh, summary_zh?}], updated_at }`; skip items that are already Chinese).
+5. Write the three output files: `analysis.zh-CN.json` / `analysis.en.json` / `news.zh-translations.json` — the translations are a **symmetric full pair for EVERY item** in `news.json` (ADR-0003 canonical bilingual, not a top-N sample), as `NewsTranslationsDataset { items: [{id, title, summary, title_zh, summary_zh}], updated_at }`:
+   - `lang == "en"` items: `title`/`summary` = the item's English verbatim; `title_zh`/`summary_zh` = your Chinese translation.
+   - `lang == "zh"` items: `title`/`summary` = your English translation; `title_zh`/`summary_zh` = the item's Chinese verbatim.
+   Covering every item doubles as the backfill for already-stored data (the merge is keyed by `id` and never overwrites canonical English).
 6. Validate with the CLI (`--zh/--en/--facts`, no `--locale`):
    - Schema is valid (no implicit fields / NaN / invalid enums / invalid time)
    - Every `evidence_refs` is findable in `evidence_index`
@@ -134,4 +137,5 @@ git push origin dev
 
 - Changing model / automation platform **does not touch the pipeline**: only change the calls in steps 3-4 of this manual.
 - The news translation file is merged into `news.json` by step 7's `--analysis-only` in the same run (`pipeline/collectors/news.py` merge step + `pipeline/run.py`), keeping a single source of truth; the automation **must not** directly modify `news.json`.
+- **Backfill:** because the translation step now covers every item in `news.json` each run and the merge is keyed by `id`, the next scheduled brief backfills the live file automatically. For archived history slices (e.g. `public/data/history/*/news.json`), regenerate `news.zh-translations.json` against that file with the same full-pair rule and merge via `--analysis-only`; the merge never overwrites canonical English (English side applies only to `lang == "zh"` items).
 - Terminology follows `docs/glossary.md`; the prompt template `pipeline/analysis/build_prompt.py` already embeds the key term mapping.
