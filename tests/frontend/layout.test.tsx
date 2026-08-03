@@ -49,7 +49,7 @@ describe("mobile layout", () => {
     expect(firstChartIdx).toBeGreaterThan(riskIdx);
   });
 
-  it("Overview risk section uses mobile single-column / desktop multi-column responsive classes", async () => {
+  it("Overview KPI strip uses mobile single-column / desktop four-column responsive classes", async () => {
     installFixtureFetch();
     window.history.replaceState(null, "", "#/zh/overview");
     const { container } = renderApp();
@@ -60,7 +60,24 @@ describe("mobile layout", () => {
     const cls = section?.getAttribute("class") ?? "";
     expect(cls).toContain("grid-cols-1");
     expect(cls).toContain("md:grid-cols-2");
-    expect(cls).toContain("xl:grid-cols-3");
+    expect(cls).toContain("xl:grid-cols-4");
+  });
+
+  it("open chart region: trend chart renders without card chrome (spec #23)", async () => {
+    installFixtureFetch();
+    window.history.replaceState(null, "", "#/zh/overview");
+    renderApp();
+    const chart = await screen.findByTestId("trend-fallback");
+    let el: HTMLElement | null = chart;
+    let wrappedInCard = false;
+    while (el) {
+      if (el.classList?.contains("bg-card")) {
+        wrappedInCard = true;
+        break;
+      }
+      el = el.parentElement;
+    }
+    expect(wrappedInCard).toBe(false);
   });
 
   it("Navbar scrolls horizontally on mobile (overflow-x-auto)", async () => {

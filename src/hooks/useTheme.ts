@@ -1,55 +1,99 @@
 import { useCallback, useEffect, useState } from "react";
 
 /**
- * useTheme: dark/light mode (architecture §1.2; dark by default).
- * - Persisted in localStorage `market_dashboard_theme`.
- * - In index.css: `:root`/`[class~="dark"]` are dark tokens, `[class~="light"]` overrides to light.
- *   So toggling = adding/removing the light/dark class on <html>.
+ * useTheme: tri-state theme preference (ADR-0001; dark-first terminal).
+ * - Preference: "dark" | "light" | "system", persisted in localStorage.
+ * - Default for first-time visitors is ALWAYS dark, regardless of OS appearance.
+ * - "system" is opt-in and is the only mode that follows prefers-color-scheme.
+ * - Legacy stored values ("dark"/"light") migrate directly; absence means "dark".
+ * - In index.css: `:root`/`[class~="dark"]` are dark tokens, `[class~="light"]` overrides.
  */
 
 export const THEME_STORAGE_KEY = "market_dashboard_theme";
 
-export type Theme = "dark" | "light";
+export type ThemePreference = "dark" | "light" | "system";
+export type ResolvedTheme = "dark" | "light";
 
-function readInitialTheme(): Theme {
+/** Back-compat alias for the pre-tri-state binary Theme type. */
+export type Theme = ResolvedTheme;
+
+function readStoredPreference(): ThemePreference {
   if (typeof window === "undefined") return "dark";
   const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-  if (stored === "light" || stored === "dark") return stored;
+  // Legacy binary values migrate directly; anything unrecognized means dark (ADR-0001)
+  if (stored === "light" || stored === "dark" || stored === "system") return stored;
   return "dark";
 }
 
-function applyTheme(theme: Theme): void {
+function systemTheme(): ResolvedTheme {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return "dark";
+  return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+}
+
+function applyTheme(resolved: ResolvedTheme): void {
   const root = document.documentElement;
   root.classList.remove("dark", "light");
-  root.classList.add(theme);
+  root.classList.add(resolved);
 }
 
 export interface UseThemeResult {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
+  /** Stored preference: dark | light | system. */
+  preference: ThemePreference;
+  /** Effective theme after resolving "system". */
+  theme: ResolvedTheme;
+  setPreference: (preference: ThemePreference) => void;
+  /** Back-compat binary setter (maps to setPreference). */
+  setTheme: (theme: ResolvedTheme) => void;
+  /** Back-compat dark/light flip for legacy callers (mapped to explicit preferences). */
   toggleTheme: () => void;
   isDark: boolean;
 }
 
 export function useTheme(): UseThemeResult {
-  const [theme, setThemeState] = useState<Theme>(readInitialTheme);
+  const [preference, setPreferenceState] = useState<ThemePreference>(readStoredPreference);
+  const [resolved, setResolved] = useState<ResolvedTheme>(() =>
+    preference === "system" ? systemTheme() : preference,
+  );
 
+  // Resolve + apply + persist whenever the preference changes
   useEffect(() => {
-    applyTheme(theme);
+    const next = preference === "system" ? systemTheme() : preference;
+    setResolved(next);
+    applyTheme(next);
     try {
-      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+      window.localStorage.setItem(THEME_STORAGE_KEY, preference);
     } catch {
-      // Silently degrade when localStorage is unavailable (private mode etc.); the theme still applies for this session
+      // Silently degrade when localStorage is unavailable (private mode etc.)
     }
-  }, [theme]);
+  }, [preference]);
 
-  const setTheme = useCallback((next: Theme) => {
-    setThemeState(next);
+  // Only "system" mode listens to OS appearance changes (ADR-0001)
+  useEffect(() => {
+    if (preference !== "system") return;
+    const mq = window.matchMedia("(prefers-color-scheme: light)");
+    const onChange = () => {
+      const next = systemTheme();
+      setResolved(next);
+      applyTheme(next);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [preference]);
+
+  const setPreference = useCallback((next: ThemePreference) => {
+    setPreferenceState(next);
+  }, []);
+
+  const setTheme = useCallback((theme: ResolvedTheme) => {
+    setPreferenceState(theme);
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setThemeState((prev) => (prev === "dark" ? "light" : "dark"));
+    setPreferenceState((prev) => {
+      const current = prev === "system" ? systemTheme() : prev;
+      return current === "dark" ? "light" : "dark";
+    });
   }, []);
 
-  return { theme, setTheme, toggleTheme, isDark: theme === "dark" };
+  return { preference, theme: resolved, setPreference, setTheme, toggleTheme, isDark: resolved === "dark" };
 }

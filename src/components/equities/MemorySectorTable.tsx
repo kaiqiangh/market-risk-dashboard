@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { changeTone, toneClasses } from "@/lib/riskColors";
+import { dirTone, dirClasses } from "@/lib/riskColors";
 import { formatChange, formatMoney } from "@/lib/format";
 import type { EquityAsset, MemoryProxy } from "@/schemas";
 
@@ -33,13 +33,13 @@ export function MemorySectorTable({ assets, memory }: MemorySectorTableProps) {
             <div className="mt-1 flex flex-wrap gap-3 text-xs text-muted-foreground">
               <span>
                 {t("memory.change1w")}:{" "}
-                <span className={toneClasses(changeTone(memory.change_1w)).text}>
+                <span className={dirClasses(dirTone(memory.change_1w)).text}>
                   {memory.change_1w === null ? t("common:data.na") : formatChange(memory.change_1w, locale)}
                 </span>
               </span>
               <span>
                 {t("memory.change1m")}:{" "}
-                <span className={toneClasses(changeTone(memory.change_1m)).text}>
+                <span className={dirClasses(dirTone(memory.change_1m)).text}>
                   {memory.change_1m === null ? t("common:data.na") : formatChange(memory.change_1m, locale)}
                 </span>
               </span>
@@ -76,13 +76,13 @@ export function MemorySectorTable({ assets, memory }: MemorySectorTableProps) {
                       <td className="py-1.5 pr-2 font-mono text-foreground">{a.symbol}</td>
                       <td className="py-1.5 pr-2">{name}</td>
                       <td className="py-1.5 pr-2 text-right tabular-nums">{formatMoney(a.price, a.currency, locale)}</td>
-                      <td className={`py-1.5 pr-2 text-right tabular-nums ${toneClasses(changeTone(a.change_1d)).text}`}>
+                      <td className={`py-1.5 pr-2 text-right tabular-nums ${dirClasses(dirTone(a.change_1d)).text}`}>
                         {a.change_1d === null ? t("common:data.na") : formatChange(a.change_1d, locale)}
                       </td>
-                      <td className={`py-1.5 pr-2 text-right tabular-nums ${toneClasses(changeTone(a.change_1w)).text}`}>
+                      <td className={`py-1.5 pr-2 text-right tabular-nums ${dirClasses(dirTone(a.change_1w)).text}`}>
                         {a.change_1w === null ? t("common:data.na") : formatChange(a.change_1w, locale)}
                       </td>
-                      <td className={`py-1.5 text-right tabular-nums ${toneClasses(changeTone(a.change_1m)).text}`}>
+                      <td className={`py-1.5 text-right tabular-nums ${dirClasses(dirTone(a.change_1m)).text}`}>
                         {a.change_1m === null ? t("common:data.na") : formatChange(a.change_1m, locale)}
                       </td>
                     </tr>

@@ -15,7 +15,7 @@ export function AppLayout() {
     <div className="flex min-h-screen flex-col">
       <LocaleSync />
       <Navbar />
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
+      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-6">
         <Suspense
           fallback={
             <div className="flex flex-col gap-4" data-testid="page-loading">

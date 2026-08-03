@@ -2,14 +2,14 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link2 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
-import { formatNumber } from "@/lib/format";
+import { formatDate, formatNumber } from "@/lib/format";
 import type { EvidenceRef } from "@/schemas";
 
 /**
- * EvidenceLink: evidence link (architecture §8.9 Evidence Linking).
- * Each conclusion carries evidence_refs; on click:
- * 1) if an element matching data-evidence-path exists on the page → scroll to and highlight that indicator card;
- * 2) always expand inline details (dataset / metric / value) to ensure accessibility (not dependent on scrolling).
+ * EvidenceLink: evidence citation chips (architecture §8.9, spec #23 ticket #29).
+ * Each chip shows dataset:metric + updated timestamp (source + timestamp), wired to
+ * the underlying fact/news item. Click: scroll to + highlight the matching indicator,
+ * and always expand the inline value (accessibility — not dependent on scrolling).
  */
 export interface EvidenceLinkProps {
   refs: EvidenceRef[];
@@ -46,13 +46,16 @@ export function EvidenceLink({ refs }: EvidenceLinkProps) {
           <Badge
             key={key}
             variant="outline"
-            className="cursor-pointer px-1.5 py-0 text-[10px] hover:bg-accent"
+            className="cursor-pointer rounded-sm border-hairline bg-surface-2 px-1.5 py-0 font-mono text-[10px] text-muted-foreground transition-colors duration-150 hover:border-primary/40 hover:text-foreground"
             onClick={() => highlight(ref)}
             title={`${ref.dataset} ${ref.path}`}
           >
-            {ref.metric}
+            {ref.dataset}:{ref.metric}
+            {ref.updated_at ? (
+              <span className="text-muted-foreground">· {formatDate(ref.updated_at, locale)}</span>
+            ) : null}
             {expanded ? (
-              <span className="ml-1 font-mono text-muted-foreground">
+              <span className="ml-1 text-foreground">
                 {typeof ref.value === "number" ? formatNumber(ref.value, locale) : ref.value}
               </span>
             ) : null}

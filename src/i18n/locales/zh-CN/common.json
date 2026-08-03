@@ -56,8 +56,10 @@
   },
   "theme": {
     "toggle": "切换深色/浅色模式",
-    "light": "浅色模式",
-    "dark": "深色模式"
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统",
+    "label": "主题"
   },
   "lang": {
     "switch": "切换语言",

@@ -9,7 +9,7 @@ import { ErrorState } from "@/components/ui/ErrorState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { formatDateTime } from "@/lib/format";
-import { freshnessTone, toneClasses } from "@/lib/riskColors";
+import { freshTone, freshClasses } from "@/lib/riskColors";
 
 /**
  * StatusPage: system status page.
@@ -57,15 +57,15 @@ export default function StatusPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-xl font-bold text-foreground" data-testid="page-title">
+      <header className="flex flex-wrap items-baseline gap-3">
+        <h1 className="text-lg font-semibold text-foreground" data-testid="page-title">
           {t("title")}
         </h1>
-        <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
+        <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
       </header>
 
       {/* Meta info */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle>{t("meta.schemaVersion")}</CardTitle>
@@ -104,13 +104,10 @@ export default function StatusPage() {
         </Card>
       </div>
 
-      {/* Dataset five states */}
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("freshness.title")}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {freshnessQ.isLoading ? (
+      {/* Dataset five states (hairline section, not a card) */}
+      <section className="border-t border-hairline pt-4">
+        <h2 className="mb-2 text-sm font-medium text-foreground">{t("freshness.title")}</h2>
+        {freshnessQ.isLoading ? (
             <Skeleton className="h-40 w-full" />
           ) : freshnessQ.isError ? (
             <ErrorState onRetry={freshnessQ.refetch} />
@@ -152,16 +149,12 @@ export default function StatusPage() {
           ) : (
             <EmptyState title={t("freshness.none")} />
           )}
-        </CardContent>
-      </Card>
+      </section>
 
-      {/* Provider health */}
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("providers.title")}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {sourcesQ.isLoading ? (
+      {/* Provider health (hairline section, not a card) */}
+      <section className="border-t border-hairline pt-4">
+        <h2 className="mb-2 text-sm font-medium text-foreground">{t("providers.title")}</h2>
+        {sourcesQ.isLoading ? (
             <Skeleton className="h-40 w-full" />
           ) : sourcesQ.isError ? (
             <ErrorState onRetry={sourcesQ.refetch} />
@@ -200,7 +193,7 @@ export default function StatusPage() {
                         </td>
                         <td className="py-1.5">
                           {degraded ? (
-                            <span className={`text-risk-caution ${toneClasses(freshnessTone("degraded")).text}`}>
+                            <span className={freshClasses(freshTone("degraded")).text}>
                               {t("providers.degraded")}
                             </span>
                           ) : error ? (
@@ -220,8 +213,7 @@ export default function StatusPage() {
           ) : (
             <EmptyState title={t("providers.none")} />
           )}
-        </CardContent>
-      </Card>
+      </section>
     </div>
   );
 }

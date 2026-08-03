@@ -1,26 +1,53 @@
-import { Moon, Sun } from "lucide-react";
+import { Monitor, Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "@/hooks/useTheme";
-import { Button } from "@/components/ui/Button";
+import { useTheme, type ThemePreference } from "@/hooks/useTheme";
+import { cn } from "@/lib/utils";
 
 /**
- * ThemeToggle: dark/light toggle (dark by default, persisted in localStorage).
+ * ThemeToggle: three-way theme preference control (ADR-0001).
+ * dark | light | system — dark is the default for first-time visitors;
+ * "system" is opt-in and the only mode that follows the OS appearance.
  */
+const OPTIONS: { value: ThemePreference; icon: typeof Moon; key: string }[] = [
+  { value: "dark", icon: Moon, key: "theme.dark" },
+  { value: "light", icon: Sun, key: "theme.light" },
+  { value: "system", icon: Monitor, key: "theme.system" },
+];
+
 export function ThemeToggle() {
   const { t } = useTranslation("common");
-  const { theme, toggleTheme, isDark } = useTheme();
+  const { preference, setPreference } = useTheme();
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={toggleTheme}
-      aria-label={t("theme.toggle")}
-      title={t("theme.toggle")}
+    <div
+      role="radiogroup"
+      aria-label={t("theme.label")}
+      className="inline-flex items-center rounded-sm border border-hairline bg-surface-1"
       data-testid="theme-toggle"
     >
-      {isDark ? <Sun className="h-4 w-4" aria-hidden /> : <Moon className="h-4 w-4" aria-hidden />}
-      <span className="sr-only">{theme === "dark" ? t("theme.light") : t("theme.dark")}</span>
-    </Button>
+      {OPTIONS.map(({ value, icon: Icon, key }) => {
+        const active = preference === value;
+        return (
+          <button
+            key={value}
+            type="button"
+            role="radio"
+            aria-checked={active}
+            title={t(key)}
+            onClick={() => setPreference(value)}
+            className={cn(
+              "inline-flex h-7 items-center gap-1 px-2 text-xs transition-colors duration-150",
+              active
+                ? "bg-surface-2 text-foreground"
+                : "text-muted-foreground hover:text-foreground",
+            )}
+            data-testid={`theme-option-${value}`}
+          >
+            <Icon className="h-3.5 w-3.5" aria-hidden />
+            <span>{t(key)}</span>
+          </button>
+        );
+      })}
+    </div>
   );
 }

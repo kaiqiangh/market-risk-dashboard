@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { changeTone, toneClasses } from "@/lib/riskColors";
+import { dirTone, dirClasses } from "@/lib/riskColors";
 import { formatChange, formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -19,8 +19,8 @@ export interface AssetCardProps {
 export function AssetCard({ symbol, name, value, change1d, sub, className }: AssetCardProps) {
   const { i18n } = useTranslation();
   const locale = i18n.language;
-  const tone = changeTone(change1d);
-  const classes = toneClasses(tone);
+  const tone = dirTone(change1d);
+  const classes = dirClasses(tone);
 
   return (
     <div

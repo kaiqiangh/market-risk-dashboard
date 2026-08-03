@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { changeTone, toneClasses } from "@/lib/riskColors";
+import { dirTone, dirClasses } from "@/lib/riskColors";
 import { formatChange, formatMoney, formatNumber } from "@/lib/format";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import type { EquityAsset } from "@/schemas";
@@ -15,8 +15,8 @@ export function AShareCard({ asset }: AShareCardProps) {
   const { t, i18n } = useTranslation("equities");
   const locale = i18n.language;
   const name = locale.startsWith("zh") && asset.name_zh ? asset.name_zh : asset.name;
-  const tone = changeTone(asset.change_1d);
-  const classes = toneClasses(tone);
+  const tone = dirTone(asset.change_1d);
+  const classes = dirClasses(tone);
 
   return (
     <Card data-testid="ashare-card">
@@ -36,13 +36,13 @@ export function AShareCard({ asset }: AShareCardProps) {
         <dl className="grid grid-cols-2 gap-1.5 text-xs">
           <div className="rounded bg-muted/50 px-1.5 py-1">
             <dt className="text-[9px] uppercase text-muted-foreground">{t("metric.change1w")}</dt>
-            <dd className={`font-medium tabular-nums ${toneClasses(changeTone(asset.change_1w)).text}`}>
+            <dd className={`font-medium tabular-nums ${dirClasses(dirTone(asset.change_1w)).text}`}>
               {asset.change_1w === null ? t("common:data.na") : formatChange(asset.change_1w, locale)}
             </dd>
           </div>
           <div className="rounded bg-muted/50 px-1.5 py-1">
             <dt className="text-[9px] uppercase text-muted-foreground">{t("metric.change1m")}</dt>
-            <dd className={`font-medium tabular-nums ${toneClasses(changeTone(asset.change_1m)).text}`}>
+            <dd className={`font-medium tabular-nums ${dirClasses(dirTone(asset.change_1m)).text}`}>
               {asset.change_1m === null ? t("common:data.na") : formatChange(asset.change_1m, locale)}
             </dd>
           </div>

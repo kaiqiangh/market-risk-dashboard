@@ -19,6 +19,10 @@ const badgeVariants = cva(
         high: "border-risk-high/40 bg-risk-high/10 text-risk-high",
         severe: "border-risk-severe/40 bg-risk-severe/10 text-risk-severe",
         na: "border-risk-na/40 bg-risk-na/10 text-risk-na",
+        // Freshness family (ADR-0002): ok is muted by design; only warn/bad earn a warm tone
+        freshOk: "border-hairline bg-muted/40 text-muted-foreground",
+        freshWarn: "border-fresh-warn/40 bg-fresh-warn/10 text-fresh-warn",
+        freshBad: "border-fresh-bad/40 bg-fresh-bad/10 text-fresh-bad",
       },
     },
     defaultVariants: {

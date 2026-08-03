@@ -49,11 +49,11 @@ describe("StatusBadge (five states → badge)", () => {
     expect(screen.getByTestId("status-badge-delayed")).toHaveTextContent("延迟");
   });
 
-  it("stale → stale (prominent warning)", () => {
+  it("stale → stale (prominent warning via fresh family, ADR-0002)", () => {
     render(<StatusBadge status="stale" />);
     const badge = screen.getByTestId("status-badge-stale");
     expect(badge).toHaveTextContent("已过期");
-    expect(badge.className).toContain("risk-high");
+    expect(badge.className).toContain("fresh-warn");
   });
 
   it("missing → no data", () => {

@@ -18,12 +18,12 @@ export default function RiskLabPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-xl font-bold text-foreground" data-testid="page-title">
+      <header className="flex flex-wrap items-baseline gap-3">
+        <h1 className="text-lg font-semibold text-foreground" data-testid="page-title">
           {t("title")}
         </h1>
-        <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
-        {riskQ.data ? <StatusBadge status={riskQ.data.freshness_status} withDescription /> : null}
+        <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
+        {riskQ.data ? <span className="ml-auto"><StatusBadge status={riskQ.data.freshness_status} withDescription /></span> : null}
       </header>
 
       {riskQ.isLoading ? (
@@ -49,7 +49,9 @@ export default function RiskLabPage() {
             </div>
           </section>
 
-          <RiskDimensionBreakdown result={riskQ.data.payload} />
+          <section className="border-t border-hairline pt-4">
+            <RiskDimensionBreakdown result={riskQ.data.payload} />
+          </section>
         </>
       ) : (
         <EmptyState title={t("common:empty.title")} />

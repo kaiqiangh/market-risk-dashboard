@@ -28,8 +28,8 @@ export function Navbar() {
   const segment = lang === "en" ? "en" : "zh";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4">
+    <header className="sticky top-0 z-40 border-b border-hairline bg-background">
+      <div className="mx-auto flex h-14 max-w-[1440px] items-center gap-3 px-4">
         <Link to={`/${segment}/overview`} className="flex shrink-0 items-center gap-2" data-testid="brand">
           <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/15 text-primary" aria-hidden>
             <Activity className="h-4 w-4" />

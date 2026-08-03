@@ -43,5 +43,15 @@
     "bearCase": "Bear case",
     "watchNext": "Watch next",
     "generatedAt": "Generated at"
+  },
+  "kpi": {
+    "trend1d": "1D change",
+    "hyOas": "HY OAS",
+    "colDelta": "Δ 1D",
+    "oneWeek": "1W",
+    "oneMonth": "1M"
+  },
+  "statusBar": {
+    "generated": "Data generated"
   }
 }
