@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   主题 CSS 变量（Tailwind 语义 token 的数据源）
+   深色为默认主题；浅色主题通过 .light class 覆盖（T04 实现切换）。
+   风险色（架构 §8.6）：颜色不得是唯一表达，必须配文本+图标+数值。
+   ============================================================ */
+
+:root,
+:root[class~="dark"] {
+  --background: 11 15 23; /* #0b0f17 */
+  --foreground: 226 232 240; /* #e2e8f0 */
+  --card: 15 21 33; /* #0f1521 */
+  --card-foreground: 226 232 240;
+  --muted: 30 41 59; /* #1e293b */
+  --muted-foreground: 148 163 184; /* #94a3b8 */
+  --border: 30 41 59;
+  --input: 30 41 59;
+  --primary: 56 189 248; /* #38bdf8 */
+  --primary-foreground: 8 15 23;
+  --accent: 30 41 59;
+  --accent-foreground: 226 232 240;
+  --destructive: 248 113 113; /* #f87171 */
+  --radius: 0.5rem;
+
+  /* 风险语义色 */
+  --risk-low: 34 197 94; /* green-500 — 正常/风险降低 */
+  --risk-caution: 250 204 21; /* yellow-400 — 谨慎 */
+  --risk-high: 249 115 22; /* orange-500 — 高风险 */
+  --risk-severe: 239 68 68; /* red-500 — 严重/危机 */
+  --risk-na: 100 116 139; /* slate-500 — 缺失/降级 */
+}
+
+/* 浅色主题覆盖（T04 接入 ThemeToggle 后启用） */
+:root[class~="light"] {
+  --background: 248 250 252;
+  --foreground: 15 23 42;
+  --card: 255 255 255;
+  --card-foreground: 15 23 42;
+  --muted: 241 245 249;
+  --muted-foreground: 100 116 139;
+  --border: 226 232 240;
+  --input: 226 232 240;
+  --primary: 2 132 199;
+  --primary-foreground: 248 250 252;
+  --accent: 241 245 249;
+  --accent-foreground: 15 23 42;
+  --destructive: 220 38 38;
+
+  --risk-low: 22 163 74;
+  --risk-caution: 202 138 4;
+  --risk-high: 234 88 12;
+  --risk-severe: 220 38 38;
+  --risk-na: 100 116 139;
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+      "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  }
+}

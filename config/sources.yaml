@@ -1,0 +1,39 @@
+# ============================================================
+# 数据源配置：Provider 注册表 / 降级顺序 / 期望更新频率（架构 §1.4、§8.5）
+# T03 的 ProviderRegistry 按本文件注册各域主/备 Provider 与降级链。
+# ============================================================
+schema_version: "1.0.0"
+
+# 期望更新频率（冻结 G4；前端 src/lib/freshness.ts 与之保持同步）
+expectations:
+  market: { interval_minutes: 480, note: "行情/新闻 2-3 次/日" }
+  news: { interval_minutes: 480, note: "2-3 次/日" }
+  macro: { interval_minutes: 240, note: "宏观 2-4h（FRED 实为 T+1，按发布节奏判定）" }
+  calendar: { interval_minutes: 1440, note: "财报日历 1 次/日" }
+  analysis: { interval_minutes: 720, note: "AI 简报 2 次/日" }
+
+# Provider 注册表（priority 数字越小越优先）
+providers:
+  quotes:
+    - { name: yfinance, priority: 1, kind: primary }
+    - { name: stooq, priority: 2, kind: fallback }
+  macro:
+    - { name: fred, priority: 1, kind: primary }
+  crypto:
+    - { name: coingecko, priority: 1, kind: primary }
+    - { name: binance_public, priority: 2, kind: fallback, enabled: false }
+  calendar:
+    - { name: fmp, priority: 1, kind: primary }
+    - { name: yfinance, priority: 2, kind: fallback }
+  a_share:
+    - { name: akshare, priority: 1, kind: primary }
+  news:
+    - { name: rss_news, priority: 1, kind: primary }
+
+# 降级链（架构 §1.4）
+degrade:
+  max_retries: 2
+  backoff_base_seconds: 1.0
+  jitter: true
+  data_quality_degrade_factor: 0.8
+  last_good_cache_dir: "artifacts/cache"

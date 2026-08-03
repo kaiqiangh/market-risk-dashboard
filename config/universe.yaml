@@ -1,0 +1,116 @@
+# ============================================================
+# 资产池配置（架构 §8 共享知识：唯一事实源）
+# T03 的 AssetUniverse 将加载本文件；前端 src/config/universe.ts 与之对应（展示用镜像）。
+# 资产代码统一大写；A 股代码带交易所后缀（.SH/.SZ）。
+# ============================================================
+version: "1.0.0"
+
+# 美股关键池（MVP 冻结，架构 §8.11）
+us_equities:
+  - symbol: NVDA
+    name: NVIDIA
+    name_zh: 英伟达
+    sector: semis
+    theme: [AI, GPU]
+  - symbol: AVGO
+    name: Broadcom
+    name_zh: 博通
+    sector: semis
+    theme: [AI, Networking]
+  - symbol: MU
+    name: Micron Technology
+    name_zh: 美光科技
+    sector: semis
+    theme: [Memory, DRAM, NAND]
+  - symbol: AMD
+    name: Advanced Micro Devices
+    name_zh: 超威半导体
+    sector: semis
+    theme: [AI, CPU, GPU]
+  - symbol: TSLA
+    name: Tesla
+    name_zh: 特斯拉
+    sector: auto
+    theme: [EV, Momentum]
+
+# A 股存储产业链池（架构 §8.10 建议代码，实现时用 AKShare 校验）
+a_share_memory:
+  - symbol: "603986.SH"
+    name: GigaDevice
+    name_zh: 兆易创新
+    sector: semis
+    theme: [Memory, NOR, MCU]
+  - symbol: "301308.SZ"
+    name: Longsys
+    name_zh: 江波龙
+    sector: memory_module
+    theme: [Memory, Module]
+  - symbol: "688525.SH"
+    name: Biwin Storage
+    name_zh: 佰维存储
+    sector: memory_module
+    theme: [Memory, Module]
+  - symbol: "000021.SZ"
+    name: Shenzhen Kaifa
+    name_zh: 深科技
+    sector: memory_module
+    theme: [Memory, Module]
+  - symbol: "300223.SZ"
+    name: Ingenic
+    name_zh: 北京君正
+    sector: semis
+    theme: [Memory, SoC]
+  - symbol: "001309.SZ"
+    name: Demingli
+    name_zh: 德明利
+    sector: memory_module
+    theme: [Memory, Module]
+  - symbol: "300475.SZ"
+    name: Shannon Semiconductor
+    name_zh: 香农芯创
+    sector: distribution
+    theme: [Memory, Distribution]
+  - symbol: "688008.SH"
+    name: Montage Technology
+    name_zh: 澜起科技
+    sector: semis
+    theme: [Memory, Interface]
+  - symbol: "600584.SH"
+    name: JCET
+    name_zh: 长电科技
+    sector: packaging
+    theme: [Packaging, OSAT]
+  - symbol: "002156.SZ"
+    name: Tongfu Microelectronics
+    name_zh: 通富微电
+    sector: packaging
+    theme: [Packaging, OSAT]
+
+# 跨资产（加密）
+crypto:
+  - symbol: BTC
+    name: Bitcoin
+    name_zh: 比特币
+  - symbol: ETH
+    name: Ethereum
+    name_zh: 以太坊
+  - symbol: SOL
+    name: Solana
+    name_zh: 索拉纳
+
+# 金属与商品（yfinance 期货连续合约代码）
+metals:
+  - symbol: "GC=F"
+    name: Gold
+    name_zh: 黄金
+  - symbol: "SI=F"
+    name: Silver
+    name_zh: 白银
+  - symbol: "HG=F"
+    name: Copper
+    name_zh: 铜
+
+oil:
+  - symbol: "CL=F"
+    name: WTI Crude
+    name_zh: WTI 原油

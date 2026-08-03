@@ -1,0 +1,29 @@
+{
+  "app": {
+    "name": "市场风险情报看板",
+    "nameShort": "风险看板",
+    "tagline": "跨资产市场风险情报"
+  },
+  "nav": {
+    "overview": "总览",
+    "macro": "宏观",
+    "equities": "股票",
+    "themes": "主题",
+    "news": "新闻",
+    "calendar": "日历",
+    "risklab": "风险实验室",
+    "status": "系统状态"
+  },
+  "placeholder": {
+    "route": "路由占位页",
+    "t04": "页面组件将在 T04 实现",
+    "notFound": "页面不存在"
+  },
+  "status": {
+    "fresh": "正常",
+    "delayed": "延迟",
+    "stale": "已过期",
+    "missing": "无数据",
+    "degraded": "部分降级"
+  }
+}

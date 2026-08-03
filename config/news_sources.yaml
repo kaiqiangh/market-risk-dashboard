@@ -1,0 +1,49 @@
+# ============================================================
+# 新闻 RSS 源列表 + 重要性规则（架构 §1.4、评审 P1-3）
+# 版权边界：仅存标题+来源+链接+自写摘要，不存全文（PRD §24）。
+# T03 的 RssNewsProvider 按本文件采集。
+# ============================================================
+version: "1.0.0"
+
+sources:
+  # 英文源（免费 RSS）
+  - { id: cnbc, name: CNBC, url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114", lang: en, weight: 3 }
+  - { id: marketwatch, name: MarketWatch, url: "https://feeds.content.dowjones.io/public/rss/mw_topstories", lang: en, weight: 2 }
+  - { id: investing, name: Investing.com, url: "https://www.investing.com/rss/news.rss", lang: en, weight: 2 }
+  - { id: fed, name: Federal Reserve, url: "https://www.federalreserve.gov/feeds/press_all.xml", lang: en, weight: 4, category: central_bank }
+  # 中文源：东财 RSS（存在性以 T03 实测为准）；财联社经 RSSHub（需自建/公共实例）
+  - { id: eastmoney, name: 东方财富, url: "https://rsshub.app/eastmoney/report/strategyreport", lang: zh, weight: 3, enabled: false }
+  - { id: clschina, name: 财联社, url: "https://rsshub.app/cls/telegraph", lang: zh, weight: 4, enabled: false }
+
+# 重要性评分规则（0-100）：来源权重 + 关键词 + 资产命中 + 时效
+importance:
+  source_weight: 30
+  keyword_weight: 30
+  asset_hit_weight: 20
+  recency_weight: 20
+  keywords:
+    high:
+      - "fed"
+      - "rate decision"
+      - "cpi"
+      - "nvidia"
+      - "micron"
+      - "memory"
+      - "dram"
+      - "yield curve"
+      - "recession"
+      - "美联储"
+      - "利率决议"
+      - "通胀"
+      - "存储"
+      - "减产"
+  assets:
+    - NVDA
+    - AVGO
+    - MU
+    - AMD
+    - TSLA
+    - BTC
+    - ETH
+
+categories: [macro, monetary_policy, equities, memory, crypto, geopolitics, earnings, other]

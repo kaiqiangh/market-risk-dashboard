@@ -1,0 +1,29 @@
+{
+  "app": {
+    "name": "Market Risk Dashboard",
+    "nameShort": "Risk Dashboard",
+    "tagline": "Cross-asset market risk intelligence"
+  },
+  "nav": {
+    "overview": "Overview",
+    "macro": "Macro",
+    "equities": "Equities",
+    "themes": "Themes",
+    "news": "News",
+    "calendar": "Calendar",
+    "risklab": "Risk Lab",
+    "status": "Status"
+  },
+  "placeholder": {
+    "route": "Placeholder route",
+    "t04": "Page components land in T04",
+    "notFound": "Page not found"
+  },
+  "status": {
+    "fresh": "Fresh",
+    "delayed": "Delayed",
+    "stale": "Stale",
+    "missing": "Missing",
+    "degraded": "Degraded"
+  }
+}
