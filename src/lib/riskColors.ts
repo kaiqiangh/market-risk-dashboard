@@ -1,14 +1,14 @@
 import type { FreshnessStatus, MarketRegime, RiskLevel } from "@/schemas";
 
 /**
- * 风险语义色映射（架构 §8.6）。
- * 颜色不得是唯一表达：所有使用处必须配文本 + 图标 + 数值。
- * 返回 Tailwind 语义 token 类名（定义于 index.css / tailwind.config.ts）。
+ * Risk semantic color mapping (architecture §8.6).
+ * Color must not be the only expression: every usage must pair it with text + icon + value.
+ * Returns Tailwind semantic token class names (defined in index.css / tailwind.config.ts).
  */
 
 export type RiskTone = "low" | "caution" | "high" | "severe" | "na";
 
-/** 风险等级 → 语义色。 */
+/** Risk level → semantic color. */
 export function riskLevelTone(level: RiskLevel): RiskTone {
   switch (level) {
     case "risk_on":
@@ -30,7 +30,7 @@ export interface ToneClasses {
   text: string;
   bg: string;
   border: string;
-  /** 配合 bg 使用的半透明背景（如进度条轨道）。 */
+  /** Translucent background used with bg (e.g. progress bar track). */
   softBg: string;
 }
 
@@ -75,7 +75,7 @@ export function riskLevelClasses(level: RiskLevel): ToneClasses {
   return toneClasses(riskLevelTone(level));
 }
 
-/** 市场状态 → 语义色（risk_on/低风险为绿，危机为红）。 */
+/** Market regime → semantic color (risk_on / low risk = green, crisis = red). */
 export function regimeTone(regime: MarketRegime): RiskTone {
   switch (regime) {
     case "goldilocks":
@@ -96,7 +96,7 @@ export function regimeTone(regime: MarketRegime): RiskTone {
   }
 }
 
-/** 资产涨跌方向色：上涨绿/下跌红/平灰（金融惯例，配文本+符号）。 */
+/** Asset change direction color: up = green / down = red / flat = gray (financial convention, paired with text + sign). */
 export function changeTone(value: number | null | undefined): RiskTone {
   if (value === null || value === undefined || Number.isNaN(value)) return "na";
   if (value > 0) return "low";
@@ -104,7 +104,7 @@ export function changeTone(value: number | null | undefined): RiskTone {
   return "na";
 }
 
-/** 风险趋势（分数变化）：上升=橙（风险增）/下降=绿（风险降）。 */
+/** Risk trend (score change): rising = orange (risk increasing) / falling = green (risk decreasing). */
 export function riskTrendTone(value: number | null | undefined): RiskTone {
   if (value === null || value === undefined || Number.isNaN(value)) return "na";
   if (value > 0) return "high";
@@ -112,7 +112,7 @@ export function riskTrendTone(value: number | null | undefined): RiskTone {
   return "na";
 }
 
-/** freshness → 语义色。 */
+/** freshness → semantic color. */
 export function freshnessTone(status: FreshnessStatus): RiskTone {
   switch (status) {
     case "fresh":

@@ -12,10 +12,10 @@ import { formatDateTime } from "@/lib/format";
 import { freshnessTone, toneClasses } from "@/lib/riskColors";
 
 /**
- * StatusPage：系统状态页。
- * 数据源：metadata/sources.json（Provider 健康）+ metadata/freshness.json（五态）
- *        + metadata/schema-version.json（契约版本）。
- * 元数据非 envelope，用 z.unknown() 显式 schema 拉取（DatasetClient 第三参）。
+ * StatusPage: system status page.
+ * Data sources: metadata/sources.json (provider health) + metadata/freshness.json (five states)
+ *        + metadata/schema-version.json (contract version).
+ * Metadata is not an envelope; fetched with an explicit z.unknown() schema (DatasetClient third argument).
  */
 interface SourcesMetadata {
   schema_version?: string;
@@ -64,7 +64,7 @@ export default function StatusPage() {
         <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
       </header>
 
-      {/* 元信息 */}
+      {/* Meta info */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Card>
           <CardHeader>
@@ -104,7 +104,7 @@ export default function StatusPage() {
         </Card>
       </div>
 
-      {/* 数据集五态 */}
+      {/* Dataset five states */}
       <Card>
         <CardHeader>
           <CardTitle>{t("freshness.title")}</CardTitle>
@@ -155,7 +155,7 @@ export default function StatusPage() {
         </CardContent>
       </Card>
 
-      {/* Provider 健康 */}
+      {/* Provider health */}
       <Card>
         <CardHeader>
           <CardTitle>{t("providers.title")}</CardTitle>

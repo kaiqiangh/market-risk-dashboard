@@ -11,7 +11,7 @@ import { riskLevelTone, toneClasses, type RiskTone } from "@/lib/riskColors";
 import { formatRatio } from "@/lib/format";
 import type { AnalysisDataset, SignalClaim } from "@/schemas";
 
-/** 分析文件里的 market_state 为字符串，宽松映射到语义色。 */
+/** market_state in the analysis file is a string; map loosely to a semantic color. */
 function stateToneFromString(state: string): RiskTone {
   try {
     return riskLevelTone(state as Parameters<typeof riskLevelTone>[0]);
@@ -21,17 +21,17 @@ function stateToneFromString(state: string): RiskTone {
 }
 
 /**
- * AIBrief：AI 市场简报（渲染 analysis.{lang}.json，架构 §1.5/§3.4）。
- * - 数据缺失/生成失败 → 显示降级而非瘫痪（degraded 卡片）。
- * - 每个结论携带 evidence_refs → EvidenceLink 高亮。
+ * AIBrief: AI market brief (renders analysis.{lang}.json, architecture §1.5/§3.4).
+ * - Missing data / generation failure → show degraded rather than broken (degraded card).
+ * - Each conclusion carries evidence_refs → highlighted via EvidenceLink.
  */
 
 export interface AIBriefProps {
-  /** 分析数据（当前语言）。 */
+  /** Analysis data (current language). */
   analysis?: AnalysisDataset;
-  /** 加载中。 */
+  /** Loading. */
   loading?: boolean;
-  /** 拉取失败（404/网络/校验失败）。 */
+  /** Fetch failed (404 / network / validation failure). */
   error?: boolean;
 }
 

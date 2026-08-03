@@ -7,7 +7,7 @@ import { formatDate } from "@/lib/format";
 import type { CalendarEvent } from "@/schemas";
 
 /**
- * CalendarList：日历列表（按日期分组；移动端单列卡片）。
+ * CalendarList: calendar list (grouped by date; single-column cards on mobile).
  */
 export interface CalendarListProps {
   events: CalendarEvent[];

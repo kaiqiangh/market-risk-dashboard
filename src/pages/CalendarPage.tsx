@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { StatusBadge } from "@/components/layout/StatusBadge";
 
 /**
- * CalendarPage：日历页（经济日历 + 财报日历，按日期分组）。
+ * CalendarPage: calendar page (economic calendar + earnings calendar, grouped by date).
  */
 export default function CalendarPage() {
   const { t } = useTranslation("calendar");

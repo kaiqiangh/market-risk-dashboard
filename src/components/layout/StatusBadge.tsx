@@ -5,12 +5,12 @@ import { Badge } from "@/components/ui/Badge";
 import type { FreshnessStatus } from "@/schemas";
 
 /**
- * StatusBadge：freshness 五态徽标（架构 §8.5）。
- * 五态 → 图标+文本+颜色（颜色不是唯一表达）。
+ * StatusBadge: freshness five-state badge (architecture §8.5).
+ * Five states → icon + text + color (color is not the only expression).
  */
 export interface StatusBadgeProps {
   status: FreshnessStatus;
-  /** 是否显示说明文字（默认仅标签）。 */
+  /** Whether to show the descriptive text (label only by default). */
   withDescription?: boolean;
   className?: string;
 }

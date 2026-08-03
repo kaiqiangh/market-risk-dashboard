@@ -10,15 +10,15 @@ import {
 import { localeSegment, pageFromHash, pagePath } from "@/config/routes";
 
 /**
- * useLocale：语言探测 + 切换（架构 §1.9）。
- * - 语言优先级：URL 语言段 → localStorage → 浏览器 → 默认 zh-CN。
- * - 切换：写 localStorage + i18n.changeLanguage + 替换 URL 语言段（保持当前页面）。
+ * useLocale: language detection + switching (architecture §1.9).
+ * - Language priority: URL language segment → localStorage → browser → default zh-CN.
+ * - Switching: write localStorage + i18n.changeLanguage + replace the URL language segment (keep the current page).
  */
 export interface UseLocaleResult {
   locale: SupportedLocale;
-  /** 切换到目标语言（保持当前页面）。 */
+  /** Switch to the target language (keep the current page). */
   setLocale: (next: SupportedLocale) => void;
-  /** 切换为另一种语言。 */
+  /** Toggle to the other language. */
   toggleLocale: () => void;
 }
 
@@ -31,7 +31,7 @@ export function useLocale(): UseLocaleResult {
     ? (i18n.language as SupportedLocale)
     : "zh-CN";
 
-  /** 读取当前语言（调用时取最新，避免闭包过期）。 */
+  /** Read the current language (read latest at call time to avoid stale closures). */
   const currentLocale = (): SupportedLocale =>
     SUPPORTED_LOCALES.includes(i18n.language as SupportedLocale)
       ? (i18n.language as SupportedLocale)
@@ -40,7 +40,7 @@ export function useLocale(): UseLocaleResult {
   const setLocale = (next: SupportedLocale): void => {
     if (next === currentLocale()) return;
     window.localStorage.setItem(LOCALE_STORAGE_KEY, next);
-    // 语言切换不跳首页：从 hash 取当前页面（Navbar 等布局组件拿不到子路由 params.page）
+    // Language switching does not navigate home: read the current page from the hash (layout components like Navbar cannot access child route params.page)
     const page = params.page ?? pageFromHash(window.location.hash) ?? "overview";
     void i18n.changeLanguage(next);
     navigate(pagePath(next, page), { replace: true });
@@ -54,10 +54,10 @@ export function useLocale(): UseLocaleResult {
 }
 
 /**
- * LocaleSync：把 URL 语言段同步到 i18n（架构 §1.9 优先级）。
- * 覆盖直接改 URL / 浏览器前进后退的场景；路由语言段变化时保证 i18n.language 一致。
- * 额外触发一次本地 state 更新，确保已挂载的布局子树（Navbar 等）随语言重渲染
- * （react-i18next 对 useEffect 内 changeLanguage 的订阅通知在部分环境不可靠）。
+ * LocaleSync: syncs the URL language segment to i18n (architecture §1.9 priority).
+ * Covers direct URL edits / browser back-forward; ensures i18n.language stays consistent when the route language segment changes.
+ * Also triggers one local state update so mounted layout subtrees (Navbar etc.) re-render with the language
+ * (react-i18next subscription notifications for changeLanguage inside useEffect are unreliable in some environments).
  */
 export function LocaleSync(): null {
   const { i18n } = useTranslation();
@@ -78,7 +78,7 @@ export function LocaleSync(): null {
   return null;
 }
 
-/** 便捷：当前语言段（zh/en）。 */
+/** Convenience: current language segment (zh/en). */
 export function useLocaleSegment(): string {
   const { locale } = useLocale();
   return localeSegment(locale);

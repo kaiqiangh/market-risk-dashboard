@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/Badge";
 
 /**
- * ImportanceBadge：新闻/事件重要性（高分高亮，颜色 + 文本）。
+ * ImportanceBadge: news/event importance (high score highlighted, color + text).
  */
 export interface ImportanceBadgeProps {
   importance: number; // 0-100

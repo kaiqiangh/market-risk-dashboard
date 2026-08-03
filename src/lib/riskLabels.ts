@@ -1,10 +1,10 @@
 import type { MarketRegime, RiskDimensionKey, RiskLevel, RiskTrend } from "@/schemas";
 
 /**
- * 风险枚举 → i18n key 映射（架构 §8.7：术语遵循 glossary；禁止硬编码 UI 文案）。
- * key 为**命名空间相对路径**（默认 risk 命名空间，随 useTranslation("risk") 使用；
- * AIBrief 等跨命名空间处用 `risk:${key}` 显式前缀，同样成立）。
- * RISK_TREND_KEYS 属于 common 命名空间，显式带 `common:` 前缀。
+ * Risk enum → i18n key mapping (architecture §8.7: terminology follows the glossary; no hardcoded UI copy).
+ * Keys are **namespace-relative paths** (default risk namespace, used with useTranslation("risk");
+ * cross-namespace usages like AIBrief use the explicit `risk:${key}` prefix, which also works).
+ * RISK_TREND_KEYS belong to the common namespace and carry an explicit `common:` prefix.
  */
 
 export const RISK_LEVEL_KEYS: Record<RiskLevel, string> = {
@@ -43,12 +43,12 @@ export const RISK_TREND_KEYS: Record<RiskTrend, string> = {
   flat: "common:direction.flat",
 };
 
-/** 分析文件里的 market_state 与风险等级枚举一致；宽松映射以防未知值。 */
+/** market_state in the analysis file matches the risk level enum; map loosely to guard against unknown values. */
 export function riskLevelKey(level: string): string {
   return RISK_LEVEL_KEYS[level as RiskLevel] ?? "level.caution";
 }
 
-/** 分析文件里的 market_regime 与枚举一致；宽松映射以防未知值。 */
+/** market_regime in the analysis file matches the enum; map loosely to guard against unknown values. */
 export function regimeKey(regime: string): string {
   return REGIME_KEYS[regime as MarketRegime] ?? "regime.riskOff";
 }

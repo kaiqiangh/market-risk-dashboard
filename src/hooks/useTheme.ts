@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 
 /**
- * useTheme：深色/浅色模式（架构 §1.2；默认深色）。
- * - localStorage `market_dashboard_theme` 持久化。
- * - index.css：`:root`/`[class~="dark"]` 为深色 token，`[class~="light"]` 覆盖为浅色。
- *   因此切换 = 在 <html> 上增删 light/dark class。
+ * useTheme: dark/light mode (architecture §1.2; dark by default).
+ * - Persisted in localStorage `market_dashboard_theme`.
+ * - In index.css: `:root`/`[class~="dark"]` are dark tokens, `[class~="light"]` overrides to light.
+ *   So toggling = adding/removing the light/dark class on <html>.
  */
 
 export const THEME_STORAGE_KEY = "market_dashboard_theme";
@@ -39,7 +39,7 @@ export function useTheme(): UseThemeResult {
     try {
       window.localStorage.setItem(THEME_STORAGE_KEY, theme);
     } catch {
-      // localStorage 不可用（隐私模式等）时静默降级，主题仍生效于本次会话
+      // Silently degrade when localStorage is unavailable (private mode etc.); the theme still applies for this session
     }
   }, [theme]);
 

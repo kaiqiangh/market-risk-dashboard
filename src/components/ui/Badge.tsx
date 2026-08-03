@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 /**
- * Badge（shadcn/ui 风格）。tone 与风险语义色映射（架构 §8.6：颜色非唯一表达）。
+ * Badge (shadcn/ui style). tone maps to risk semantic colors (architecture §8.6: color is not the only expression).
  */
 
 const badgeVariants = cva(

@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { StatusBadge } from "@/components/layout/StatusBadge";
 
 /**
- * RiskLabPage：风险实验室（6 维风险模型分解 + 权重 + 置信度 + 免责声明）。
+ * RiskLabPage: risk lab (6-dimension risk model breakdown + weights + confidence + disclaimer).
  */
 export default function RiskLabPage() {
   const { t } = useTranslation("risk");

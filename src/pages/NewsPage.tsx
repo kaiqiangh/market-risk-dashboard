@@ -9,7 +9,7 @@ import { StatusBadge } from "@/components/layout/StatusBadge";
 import { formatNumber } from "@/lib/format";
 
 /**
- * NewsPage：新闻页（重要性 Top 列表）。
+ * NewsPage: news page (top importance list).
  */
 export default function NewsPage() {
   const { t, i18n } = useTranslation("news");

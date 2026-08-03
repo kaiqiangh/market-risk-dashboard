@@ -4,7 +4,7 @@ import { useLocale } from "@/hooks/useLocale";
 import { Button } from "@/components/ui/Button";
 
 /**
- * LanguageSwitch：语言切换（不跳首页，仅替换 URL 语言段；localStorage 持久化）。
+ * LanguageSwitch: language switch (does not navigate home; only replaces the URL language segment; persisted in localStorage).
  */
 export function LanguageSwitch() {
   const { t } = useTranslation("common");

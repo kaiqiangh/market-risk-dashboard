@@ -13,7 +13,7 @@ import { StatusBadge } from "@/components/layout/StatusBadge";
 const SECTIONS = ["rates", "credit", "inflation", "labor", "liquidity", "fx"] as const;
 
 /**
- * MacroPage：宏观页（利率/信用/通胀/就业/流动性/外汇 + FedWatch + 图表）。
+ * MacroPage: macro page (rates / credit / inflation / labor / liquidity / fx + FedWatch + charts).
  */
 export default function MacroPage() {
   const { t } = useTranslation("macro");
@@ -35,7 +35,7 @@ export default function MacroPage() {
         <ErrorState onRetry={macroQ.refetch} />
       ) : macroQ.data ? (
         <>
-          {/* 图表（合并 rates + credit 数值） */}
+          {/* Chart (merges rates + credit values) */}
           <Card>
             <CardHeader>
               <CardTitle>{t("chart.title")}</CardTitle>
@@ -49,7 +49,7 @@ export default function MacroPage() {
             </CardContent>
           </Card>
 
-          {/* 分节指标卡 */}
+          {/* Sectioned indicator cards */}
           <div className="flex flex-col gap-4">
             {SECTIONS.map((section) => {
               const indicators = macroQ.data?.payload[section] ?? [];

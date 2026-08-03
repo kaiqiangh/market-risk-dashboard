@@ -3,8 +3,8 @@ import { FreshnessStatus, utcDateTime } from "./envelope";
 import { RiskModelResult } from "./risk";
 
 /**
- * 事实层契约（架构 §3.3，AI 输入，语言无关确定性事实）。
- * facts.json 为自描述契约文件，直接以 FactLayer 解析（不包裹 BaseEnvelope）。
+ * Fact layer contract (architecture §3.3, AI input, language-neutral deterministic facts).
+ * facts.json is a self-describing contract file, parsed directly as FactLayer (not wrapped in BaseEnvelope).
  */
 export const FactLayer = z
   .object({

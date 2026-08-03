@@ -2,9 +2,9 @@ import { HashRouter } from "react-router-dom";
 import { AppRoutes } from "./router";
 
 /**
- * 应用外壳。
- * 使用 Hash Router（冻结，架构 §1.2）：GitHub Pages 刷新稳定性（#/zh/overview）。
- * 路由表与占位页面见 src/router.tsx；布局（Navbar/Footer/LanguageSwitch）在 T04 实现。
+ * App shell.
+ * Uses Hash Router (frozen, architecture §1.2) for GitHub Pages refresh stability (#/zh/overview).
+ * See src/router.tsx for the route table and placeholder pages; layout (Navbar/Footer/LanguageSwitch) is implemented in T04.
  */
 export default function App() {
   return (

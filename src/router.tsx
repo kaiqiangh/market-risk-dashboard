@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 import { AppLayout } from "@/components/layout/AppLayout";
 
 /**
- * 路由表（架构 §1.2 Hash Router + 路由懒加载）。
- * 语言段驱动：`#/zh/overview` / `#/en/overview`。
- * 页面组件 T04 落地（React.lazy 代码分割；Suspense fallback 在 AppLayout）。
+ * Route table (architecture §1.2 Hash Router + route lazy loading).
+ * Driven by the language segment: `#/zh/overview` / `#/en/overview`.
+ * Page components land in T04 (React.lazy code splitting; Suspense fallback in AppLayout).
  */
 export const PAGE_KEYS = [
   "overview",
@@ -51,7 +51,7 @@ function NotFoundPage() {
   );
 }
 
-/** 语言段守卫：非法语言段 → 重定向默认页（URL 段为 zh/en，对应 zh-CN/en locale）。 */
+/** Language segment guard: invalid language segment → redirect to default page (URL segment is zh/en, matching zh-CN/en locales). */
 function LangGuard() {
   const { lang } = useParams<{ lang?: string }>();
   if (lang !== "zh" && lang !== "en") {

@@ -11,8 +11,8 @@ import { formatCompactNumber, formatRatio } from "@/lib/format";
 import { Badge } from "@/components/ui/Badge";
 
 /**
- * ThemesPage：主题页（半导体/存储（含 A 股 10 只）/金属/加密）。
- * T03 降级时按 degraded 显示（A 股采集失败 → 提示 + 空态）。
+ * ThemesPage: themes page (semis / memory (incl. 10 A-shares) / metals / crypto).
+ * Shows degraded when T03 is degraded (A-share collection failure → notice + empty state).
  */
 export default function ThemesPage() {
   const { t, i18n } = useTranslation("themes");
@@ -37,7 +37,7 @@ export default function ThemesPage() {
         {sectorsQ.data ? <StatusBadge status={sectorsQ.data.freshness_status} withDescription /> : null}
       </header>
 
-      {/* 半导体 */}
+      {/* Semiconductors */}
       <section data-testid="section-semis">
         <h2 className="mb-2 text-sm font-semibold text-foreground">{t("section.semis")}</h2>
         {sectorsQ.isLoading ? (
@@ -60,18 +60,18 @@ export default function ThemesPage() {
         )}
       </section>
 
-      {/* 存储（含 A 股 10 只） */}
+      {/* Memory (incl. 10 A-shares) */}
       <section data-testid="section-memory">
         <MemorySectorTable assets={cnAssets} memory={memory} />
       </section>
 
-      {/* 金属（MVP 无独立数据源，标注 NA；架构以 sectors/主题代理展示） */}
+      {/* Metals (no dedicated data source in MVP, marked NA; proxied via sectors/themes per architecture) */}
       <section data-testid="section-metals">
         <h2 className="mb-2 text-sm font-semibold text-foreground">{t("section.metals")}</h2>
         <EmptyState title={t("metals.na")} message={t("metals.naHint")} />
       </section>
 
-      {/* 加密 */}
+      {/* Crypto */}
       <section data-testid="section-crypto">
         <h2 className="mb-2 text-sm font-semibold text-foreground">{t("section.crypto")}</h2>
         {cryptoQ.isLoading ? (
@@ -122,7 +122,7 @@ export default function ThemesPage() {
         )}
       </section>
 
-      {/* 主题列表 */}
+      {/* Theme list */}
       <section data-testid="section-themes">
         <h2 className="mb-2 text-sm font-semibold text-foreground">{t("section.themes")}</h2>
         {themes.length > 0 ? (

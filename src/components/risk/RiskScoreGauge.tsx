@@ -9,8 +9,8 @@ import { formatNumber, formatPctPoints, formatRatio } from "@/lib/format";
 import type { RiskLevel } from "@/schemas";
 
 /**
- * RiskScoreGauge：全球风险分仪表（架构 §8.6：颜色 + 文本 + 数值）。
- * 首屏风险结论优先（PRD §22.3）。
+ * RiskScoreGauge: global risk score gauge (architecture §8.6: color + text + value).
+ * Risk conclusion prioritized on the initial screen (PRD §22.3).
  */
 export interface RiskScoreGaugeProps {
   score: number;

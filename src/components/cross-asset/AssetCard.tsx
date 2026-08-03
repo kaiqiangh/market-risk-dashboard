@@ -4,12 +4,12 @@ import { formatChange, formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 /**
- * AssetCard：跨资产/个股迷你卡（价格 + 涨跌；颜色 + 文本 + 数值）。
+ * AssetCard: cross-asset / single-stock mini card (price + change; color + text + value).
  */
 export interface AssetCardProps {
   symbol: string;
   name?: string | null;
-  /** 主数值（价格/指数）。 */
+  /** Primary value (price / index). */
   value?: number | null;
   change1d?: number | null;
   sub?: string | null;

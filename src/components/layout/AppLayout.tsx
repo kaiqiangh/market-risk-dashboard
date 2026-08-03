@@ -6,9 +6,9 @@ import { LocaleSync } from "@/hooks/useLocale";
 import { Skeleton } from "@/components/ui/Skeleton";
 
 /**
- * AppLayout：全局布局壳（架构 §1.2/§4.3）。
- * - LocaleSync：URL 语言段 → i18n 同步（刷新/前进后退语言保持）。
- * - Suspense：路由懒加载 fallback（ECharts 按需 + 代码分割）。
+ * AppLayout: global layout shell (architecture §1.2/§4.3).
+ * - LocaleSync: syncs the URL language segment → i18n (language kept across refresh / back-forward).
+ * - Suspense: route lazy-loading fallback (on-demand ECharts + code splitting).
  */
 export function AppLayout() {
   return (

@@ -4,7 +4,7 @@ import echarts from "./echarts";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatChange } from "@/lib/format";
 
-/** jsdom/无 canvas 环境 → 走 HTML 降级（避免 zrender 动画循环崩溃）。 */
+/** jsdom / no-canvas environment → fall back to HTML (avoid zrender animation loop crashes). */
 function canvasSupported(): boolean {
   try {
     const canvas = document.createElement("canvas");
@@ -15,9 +15,9 @@ function canvasSupported(): boolean {
 }
 
 /**
- * AssetHeatmap：跨资产热力图（ECharts heatmap）。
- * cells：资产涨跌（%）矩阵；颜色红=跌/绿=涨（配数值文本，颜色非唯一表达）。
- * 空数据 → EmptyState；jsdom 无 canvas → HTML 网格降级。
+ * AssetHeatmap: cross-asset heatmap (ECharts heatmap).
+ * cells: asset change (%) matrix; color red = down / green = up (paired with value text, color is not the only expression).
+ * Empty data → EmptyState; jsdom without canvas → HTML grid fallback.
  */
 export interface HeatmapCell {
   asset: string;
@@ -49,7 +49,7 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
     try {
       chart = echarts.init(ref.current);
       const data = validCells.map((c) => [categories.indexOf(c.category), 0, c.change1d as number]);
-      // y 轴按资产分组显示（单行每类一个资产池；MVP 用 category 做 y）
+      // Y axis groups by asset (one pool per category row; MVP uses category as the y axis)
       chart.setOption({
         grid: { left: 8, right: 24, top: 24, bottom: 8, containLabel: true },
         tooltip: {

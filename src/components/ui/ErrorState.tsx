@@ -4,12 +4,12 @@ import { Button } from "./Button";
 import { cn } from "@/lib/utils";
 
 /**
- * ErrorState：fetch/Zod 失败渲染（架构 §8.8：永不静默吞错，带错误详情 + 重试）。
+ * ErrorState: fetch/Zod failure rendering (architecture §8.8: never swallow errors silently, show error details + retry).
  */
 export interface ErrorStateProps {
   title?: string;
   message?: string;
-  /** 详细错误（如 SchemaError.issues）。 */
+  /** Detailed errors (e.g. SchemaError.issues). */
   detail?: string[];
   onRetry?: () => void | Promise<unknown>;
   className?: string;
