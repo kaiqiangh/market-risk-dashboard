@@ -1,0 +1,28 @@
+{
+  "generated_at": "2026-08-03T10:00:00Z",
+  "schema_version": "1.0.0",
+  "source": ["coingecko"],
+  "source_updated_at": "2026-08-03T09:50:00Z",
+  "freshness_status": "fresh",
+  "data_quality": 0.88,
+  "payload": {
+    "assets": [
+      {
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "price": 64000.0,
+        "change_1d": -0.8,
+        "change_1w": 2.4,
+        "change_1m": 6.1,
+        "market_cap": 1260000000000,
+        "volume_24h": 28000000000,
+        "source": "coingecko",
+        "updated_at": "2026-08-03T10:00:00Z"
+      }
+    ],
+    "btc_dominance": 0.54,
+    "stablecoin_mcap": 168000000000,
+    "market_cap_total": 2330000000000,
+    "sentiment": "neutral"
+  }
+}

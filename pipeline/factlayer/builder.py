@@ -1,0 +1,170 @@
+"""事实层组装（架构 §3.3 FactLayerBuilder：AI 输入契约）。
+
+语言无关的确定性事实；evidence_index 中的证据供 AI 引用（validate.py 校验）。
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from pipeline.schemas import (
+    CalendarEnvelope,
+    CryptoEnvelope,
+    EquitiesEnvelope,
+    EvidenceRef,
+    FactLayer,
+    MacroEnvelope,
+    NewsEnvelope,
+    RiskEnvelope,
+    RiskModelResult,
+    SectorsEnvelope,
+)
+from pipeline.utils import now_utc
+
+
+class FactLayerBuilder:
+    def build(
+        self,
+        *,
+        risk: RiskEnvelope,
+        macro: MacroEnvelope,
+        equities: EquitiesEnvelope,
+        crypto: CryptoEnvelope,
+        news: NewsEnvelope,
+        calendar: CalendarEnvelope,
+        sectors: SectorsEnvelope | None = None,
+    ) -> FactLayer:
+        envs = {
+            "macro": macro,
+            "equities": equities,
+            "crypto": crypto,
+            "news": news,
+            "calendar": calendar,
+        }
+        if sectors is not None:
+            envs["sectors"] = sectors
+
+        data_freshness = {key: env.freshness_status for key, env in envs.items()}
+        data_freshness["risk"] = risk.freshness_status
+
+        evidence_index = self._build_evidence(risk, macro, equities, crypto, news, calendar)
+
+        return FactLayer(
+            generated_at=now_utc(),
+            schema_version="1.0.0",
+            data_freshness=data_freshness,
+            risk=risk.payload,
+            macro_summary=self._macro_summary(macro),
+            market_summary=self._market_summary(equities, crypto),
+            news_top=[n.model_dump() for n in news.payload.items[:15]],
+            calendar_next7d=[e.model_dump() for e in calendar.payload.events[:20]],
+            evidence_index=evidence_index,
+        )
+
+    # ---- 摘要 ----
+
+    def _macro_summary(self, macro: MacroEnvelope) -> dict[str, Any]:
+        summary: dict[str, Any] = {}
+        for group in ("rates", "credit", "inflation", "labor", "liquidity", "fx"):
+            for ind in getattr(macro.payload, group):
+                summary[ind.key] = ind.value
+                if ind.previous is not None:
+                    summary[f"{ind.key}_prev"] = ind.previous
+        if macro.payload.fedwatch is not None:
+            fw = macro.payload.fedwatch
+            summary["fedwatch_implied_rate"] = fw.implied_rate
+            summary["fedwatch_action"] = fw.inferred_action
+            summary["fedwatch_status"] = fw.status
+        return summary
+
+    def _market_summary(self, equities: EquitiesEnvelope, crypto: CryptoEnvelope) -> dict[str, Any]:
+        summary: dict[str, Any] = {}
+        for asset in equities.payload.assets[:8]:
+            summary[f"{asset.symbol.lower()}_price"] = asset.price
+            summary[f"{asset.symbol.lower()}_change_1d"] = asset.change_1d
+            summary[f"{asset.symbol.lower()}_change_1w"] = asset.change_1w
+        for asset in crypto.payload.assets:
+            summary[f"{asset.symbol.lower()}_price"] = asset.price
+            summary[f"{asset.symbol.lower()}_change_1d"] = asset.change_1d
+        summary["btc_dominance"] = crypto.payload.btc_dominance
+        return summary
+
+    # ---- 证据索引 ----
+
+    def _build_evidence(
+        self,
+        risk: RiskEnvelope,
+        macro: MacroEnvelope,
+        equities: EquitiesEnvelope,
+        crypto: CryptoEnvelope,
+        news: NewsEnvelope,
+        calendar: CalendarEnvelope,
+    ) -> dict[str, EvidenceRef]:
+        index: dict[str, EvidenceRef] = {}
+        r = risk.payload
+
+        def add(key: str, dataset: str, path: str, metric: str, value: float | str | None, updated_at: str | None = None) -> None:
+            if value is None:
+                return
+            index[key] = EvidenceRef(
+                dataset=dataset, path=path, metric=metric, value=value, updated_at=updated_at or now_utc()
+            )
+
+        add("ev_total_score", "risk", "payload.total_score", "total_score", r.total_score, r.generated_at)
+        add("ev_confidence", "risk", "payload.confidence", "confidence", r.confidence, r.generated_at)
+        add("ev_regime", "risk", "payload.regime", "regime", r.regime, r.generated_at)
+
+        for i, dim in enumerate(r.dimensions):
+            for j, ind in enumerate(dim.indicators):
+                if ind.value is None:
+                    continue
+                add(
+                    f"ev_{dim.key}_{ind.key}",
+                    "risk",
+                    f"payload.dimensions[{i}].indicators[{j}].value",
+                    ind.key,
+                    ind.value,
+                    ind.updated_at,
+                )
+
+        for group in ("rates", "credit", "inflation", "labor", "liquidity", "fx"):
+            for i, ind in enumerate(getattr(macro.payload, group)):
+                if ind.value is None:
+                    continue
+                add(
+                    f"ev_macro_{ind.key}",
+                    "macro",
+                    f"payload.{group}[{i}].value",
+                    ind.key,
+                    ind.value,
+                    ind.updated_at,
+                )
+
+        for i, asset in enumerate(equities.payload.assets):
+            add(
+                f"ev_equity_{asset.symbol.lower()}_price",
+                "equities",
+                f"payload.assets[{i}].price",
+                "price",
+                asset.price,
+                asset.updated_at,
+            )
+            add(
+                f"ev_equity_{asset.symbol.lower()}_1d",
+                "equities",
+                f"payload.assets[{i}].change_1d",
+                "change_1d",
+                asset.change_1d,
+                asset.updated_at,
+            )
+
+        for i, asset in enumerate(crypto.payload.assets):
+            add(f"ev_crypto_{asset.symbol.lower()}_price", "crypto", f"payload.assets[{i}].price", "price", asset.price, asset.updated_at)
+
+        for i, item in enumerate(news.payload.items[:5]):
+            add(f"ev_news_{i}", "news", f"payload.items[{i}].importance", "importance", item.importance, item.published_at)
+
+        for i, event in enumerate(calendar.payload.events[:5]):
+            add(f"ev_calendar_{i}", "calendar", f"payload.events[{i}].datetime", "event_datetime", event.datetime)
+
+        return index

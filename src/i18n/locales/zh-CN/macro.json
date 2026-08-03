@@ -1,0 +1,37 @@
+{
+  "title": "宏观",
+  "subtitle": "利率 / 信用 / 通胀 / 就业 / 流动性 / 外汇 + FedWatch 利率预期",
+  "chart": {
+    "title": "宏观指标概览",
+    "empty": "暂无宏观指标"
+  },
+  "section": {
+    "rates": "利率",
+    "credit": "信用利差",
+    "inflation": "通胀",
+    "labor": "就业",
+    "liquidity": "流动性",
+    "fx": "外汇",
+    "empty": "该分类暂无数据"
+  },
+  "indicator": {
+    "change1m": "月环比",
+    "value": "数值",
+    "unit": "单位"
+  },
+  "fedwatch": {
+    "title": "FedWatch 利率预期",
+    "meeting": "下次会议",
+    "effectiveRate": "有效联邦基金利率",
+    "impliedRate": "隐含利率",
+    "action": "推断行动",
+    "hold": "维持",
+    "hike": "加息",
+    "cut": "降息",
+    "insufficientData": "数据积累中",
+    "accumulating": "免费结算历史不足 7 个交易日，概率自算将在积累足够数据后可用。",
+    "ready": "已就绪",
+    "probability": "概率",
+    "change1d": "较昨日"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "title": "主题",
+  "subtitle": "半导体 / 存储（含 A 股 10 只）/ 金属 / 加密 / 主题",
+  "section": {
+    "semis": "半导体",
+    "memory": "存储（美光 + A 股存储）",
+    "metals": "金属",
+    "crypto": "加密",
+    "themes": "主题",
+    "empty": "暂无数据"
+  },
+  "metals": {
+    "na": "金属数据暂未接入",
+    "naHint": "MVP 阶段以板块/主题代理展示，后续接入商品数据源。"
+  },
+  "crypto": {
+    "marketCap": "总市值",
+    "dominance": "BTC 占比",
+    "volume24h": "24h 成交额",
+    "riskOn": "风险偏好",
+    "riskOff": "风险规避",
+    "neutral": "中性"
+  }
+}

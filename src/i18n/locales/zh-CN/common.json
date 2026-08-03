@@ -1,0 +1,78 @@
+{
+  "app": {
+    "name": "市场风险情报看板",
+    "nameShort": "风险看板",
+    "tagline": "跨资产市场风险情报"
+  },
+  "nav": {
+    "aria": "主导航",
+    "overview": "总览",
+    "macro": "宏观",
+    "equities": "股票",
+    "themes": "主题",
+    "news": "新闻",
+    "calendar": "日历",
+    "risklab": "风险实验室",
+    "status": "系统状态"
+  },
+  "status": {
+    "fresh": "正常",
+    "delayed": "延迟",
+    "stale": "已过期",
+    "missing": "无数据",
+    "degraded": "部分降级",
+    "freshDesc": "数据在预期更新频率内，正常展示",
+    "delayedDesc": "数据更新延迟（超过预期间隔 1.5~3 倍）",
+    "staleDesc": "数据明显过期（超过预期间隔 3 倍），请谨慎解读",
+    "missingDesc": "该数据集从未有数据，暂不展示正常内容",
+    "degradedDesc": "部分数据源降级/回退，模型置信度已下调"
+  },
+  "error": {
+    "title": "数据加载失败",
+    "message": "无法加载或校验数据文件，请稍后重试",
+    "retry": "重试",
+    "dataUnreachable": "数据文件不可达"
+  },
+  "empty": {
+    "title": "暂无数据",
+    "message": "该数据源尚未产出数据"
+  },
+  "data": {
+    "na": "—",
+    "source": "数据源",
+    "example": "示例数据",
+    "quality": "数据质量",
+    "coverage": "覆盖度",
+    "updated": "更新于",
+    "generated": "生成于"
+  },
+  "direction": {
+    "up": "上涨",
+    "down": "下跌",
+    "flat": "持平",
+    "rising": "上升",
+    "falling": "下降",
+    "dayChange": "较昨日"
+  },
+  "theme": {
+    "toggle": "切换深色/浅色模式",
+    "light": "浅色模式",
+    "dark": "深色模式"
+  },
+  "lang": {
+    "switch": "切换语言",
+    "zh": "中文",
+    "en": "English"
+  },
+  "evidence": {
+    "label": "证据"
+  },
+  "time": {
+    "updatedAt": "更新时间",
+    "generatedAt": "生成时间"
+  },
+  "footer": {
+    "disclaimer": "本看板风险分数为模型化的市场压力估计（基于历史数据与当前市场信号），不构成确定性概率或投资建议。",
+    "calibration": "风险模型口径与校准方法见校准报告。"
+  }
+}

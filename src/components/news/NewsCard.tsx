@@ -1,0 +1,64 @@
+import { useTranslation } from "react-i18next";
+import { ExternalLink, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/Card";
+import { ImportanceBadge } from "./ImportanceBadge";
+import { formatRelativeTime } from "@/lib/format";
+import type { NewsItem } from "@/schemas";
+
+/**
+ * NewsCard：单条新闻卡（标题/来源/时间/重要性/情绪/相关资产）。
+ * 不渲染不可信 HTML（架构 §8.13：AI 输出经转义渲染，仅文本）。
+ */
+export interface NewsCardProps {
+  item: NewsItem;
+}
+
+function SentimentIcon({ sentiment }: { sentiment: NewsItem["sentiment"] }) {
+  if (sentiment === "positive") return <TrendingUp className="h-3.5 w-3.5 text-risk-low" aria-hidden />;
+  if (sentiment === "negative") return <TrendingDown className="h-3.5 w-3.5 text-risk-severe" aria-hidden />;
+  return <Minus className="h-3.5 w-3.5 text-muted-foreground" aria-hidden />;
+}
+
+export function NewsCard({ item }: NewsCardProps) {
+  const { t, i18n } = useTranslation("news");
+  const locale = i18n.language;
+  const title = locale.startsWith("zh") && item.title_zh ? item.title_zh : item.title;
+
+  return (
+    <Card data-testid="news-card">
+      <CardContent className="flex flex-col gap-1.5 p-4">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <ImportanceBadge importance={item.importance} />
+            <SentimentIcon sentiment={item.sentiment} />
+            <span className="text-[11px] text-muted-foreground">{formatRelativeTime(item.published_at, locale)}</span>
+          </div>
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline"
+            aria-label={t("readMore")}
+          >
+            {t("readMore")}
+            <ExternalLink className="h-3 w-3" aria-hidden />
+          </a>
+        </div>
+        <p className="break-words text-sm font-medium leading-snug text-foreground">{title}</p>
+        {item.summary ? <p className="break-words text-xs leading-relaxed text-muted-foreground">{item.summary}</p> : null}
+        <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground">
+          <span className="rounded bg-muted px-1.5 py-0.5">{item.source}</span>
+          {item.assets.length > 0 ? (
+            <span className="flex items-center gap-1">
+              {item.assets.slice(0, 4).map((a) => (
+                <span key={a} className="rounded bg-muted px-1.5 py-0.5 font-mono">
+                  {a}
+                </span>
+              ))}
+            </span>
+          ) : null}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

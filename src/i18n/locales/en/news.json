@@ -1,0 +1,17 @@
+{
+  "title": "News",
+  "subtitle": "Market news ranked by importance (source weight + keywords + asset hits + recency)",
+  "importance": {
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "sentiment": {
+    "positive": "Positive",
+    "negative": "Negative",
+    "neutral": "Neutral"
+  },
+  "readMore": "Read more",
+  "none": "No news",
+  "total": "Total news"
+}

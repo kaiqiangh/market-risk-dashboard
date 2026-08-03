@@ -1,0 +1,42 @@
+{
+  "title": "系统状态",
+  "subtitle": "数据新鲜度五态 + 数据源 Provider 健康",
+  "meta": {
+    "schemaVersion": "Schema 版本",
+    "sourcesUpdated": "数据源更新",
+    "datasetCount": "数据集数量"
+  },
+  "freshness": {
+    "title": "数据集新鲜度（五态）",
+    "dataset": "数据集",
+    "status": "状态",
+    "updatedAt": "更新时间",
+    "reason": "原因",
+    "none": "暂无新鲜度数据"
+  },
+  "datasets": {
+    "macro": "宏观",
+    "equities": "股票",
+    "sectors": "板块",
+    "crypto": "加密",
+    "news": "新闻",
+    "calendar": "日历",
+    "risk": "风险",
+    "facts": "事实层",
+    "analysis": "AI 简报",
+    "dashboard": "首页聚合"
+  },
+  "providers": {
+    "title": "数据源健康",
+    "domain": "域",
+    "provider": "Provider",
+    "fallback": "备用",
+    "cache": "缓存",
+    "error": "错误/降级",
+    "degraded": "已降级",
+    "ok": "正常",
+    "yes": "是",
+    "no": "否",
+    "none": "暂无数据源信息"
+  }
+}

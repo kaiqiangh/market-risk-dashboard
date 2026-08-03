@@ -7,6 +7,9 @@
 
 # testing
 /coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
 # next.js
 /.next/
@@ -14,6 +17,8 @@
 
 # production
 /build
+/dist
+/dist-ssr
 
 # misc
 .DS_Store
@@ -25,12 +30,37 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
 .env
-
-# vercel
-.vercel
+.env*.local
+.env.*.local
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# docs（内部规划文档不跟踪；随仓库发布的内容单独取消忽略，见 T05）
+docs/*
+!docs/calibration-report.md
+!docs/glossary.md
+!docs/operations/
+!docs/operations/*
+
+# AI Agents
+.workbuddy/*
+
+# python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# 数据管道本地产物
+artifacts/
+*.log
+
+# 关键：config/ 与 pipeline/ 为核心代码，必须保持跟踪，不得加入忽略列表。
+# public/data/ 为发布产物（静态数据），保持跟踪。
+
+# Vite/Vitest 配置加载临时产物
+*.timestamp-*.mjs

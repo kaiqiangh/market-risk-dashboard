@@ -1,0 +1,22 @@
+{
+  "title": "Calendar",
+  "subtitle": "Economic + earnings calendar (next 7 days)",
+  "type": {
+    "economic": "Economic",
+    "earnings": "Earnings"
+  },
+  "importance": {
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "field": {
+    "actual": "Actual",
+    "forecast": "Forecast",
+    "previous": "Previous",
+    "unit": "Unit",
+    "relatedAssets": "Assets",
+    "source": "Source"
+  },
+  "none": "No calendar events"
+}

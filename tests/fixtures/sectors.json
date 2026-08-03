@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-08-03T10:00:00Z",
+  "schema_version": "1.0.0",
+  "source": ["yfinance"],
+  "source_updated_at": "2026-08-03T09:45:00Z",
+  "freshness_status": "fresh",
+  "data_quality": 0.85,
+  "payload": {
+    "sectors": [
+      {
+        "key": "semis",
+        "label": "Semiconductors",
+        "label_zh": "半导体",
+        "change_1d": -1.8,
+        "change_1w": 2.1,
+        "change_1m": 7.4,
+        "percentile_5y": 82.0,
+        "updated_at": "2026-08-03T10:00:00Z"
+      }
+    ],
+    "themes": [
+      {
+        "key": "memory",
+        "label": "Memory",
+        "label_zh": "存储",
+        "change_1d": -2.4,
+        "change_1w": 1.9,
+        "change_1m": 12.6,
+        "percentile_5y": 90.0,
+        "updated_at": "2026-08-03T10:00:00Z"
+      }
+    ],
+    "memory": {
+      "label": "Memory proxy (MU / 000660.KS / 005930.KS)",
+      "label_zh": "存储周期代理（美光/海力士/三星）",
+      "change_1w": 2.3,
+      "change_1m": 11.8,
+      "note": "Proxy using memory-maker equities; DRAM/NAND spot prices are paywalled (V2).",
+      "updated_at": "2026-08-03T10:00:00Z"
+    }
+  }
+}

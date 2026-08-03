@@ -1,0 +1,52 @@
+[project]
+name = "market-risk-dashboard"
+version = "0.1.0"
+description = "Global Market Risk Intelligence Dashboard — 数据管道（采集/指标/风险/事实层/存储）"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "httpx>=0.27.0",
+  "pandas>=2.2.0",
+  "numpy>=1.26.0",
+  "pydantic>=2.7.0",
+  "pydantic-settings>=2.3.0",
+  "scipy>=1.13.0",
+  "statsmodels>=0.14.0",
+  "feedparser>=6.0.10",
+  "yfinance>=0.2.40",
+  "akshare>=1.14.0",
+  "python-dotenv>=1.0.1",
+  "orjson>=3.10.0",
+  "brotli>=1.1.0",
+  "PyYAML>=6.0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-asyncio>=0.23.0",
+  "respx>=0.21.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["pipeline*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/pipeline"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+# 共享知识：akshare 只在 AkshareProvider 内 import（隔离反爬变更影响面，禁止其他模块直接 import akshare）。
+# 该约束在 T03 实现 providers 时强制执行；本仓库 CI 可用 ruff 自定义规则补充检查。

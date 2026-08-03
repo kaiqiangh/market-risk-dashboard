@@ -1,0 +1,71 @@
+{
+  "title": "风险实验室",
+  "subtitle": "6 维风险模型分解：宏观 / 流动性信用 / 股票结构 / 波动率 / 跨资产 / 趋势",
+  "score": {
+    "title": "全球风险分",
+    "breakdown": "模型分解",
+    "confidence": "置信度",
+    "modelVersion": "模型版本",
+    "disclaimer": "该指标是基于历史数据和当前市场信号生成的市场压力估计，不构成确定性概率或投资建议"
+  },
+  "level": {
+    "riskOn": "风险偏好",
+    "lowRisk": "低风险",
+    "caution": "谨慎",
+    "highRisk": "高风险",
+    "severeRisk": "严重",
+    "crisis": "危机"
+  },
+  "regime": {
+    "title": "市场状态",
+    "noEvidence": "暂无判定依据",
+    "goldilocks": "金发姑娘",
+    "riskOn": "风险偏好",
+    "disinflation": "通胀回落",
+    "reflation": "再通胀",
+    "lateCycle": "周期末段",
+    "stagflation": "滞胀",
+    "liquidityStress": "流动性压力",
+    "riskOff": "风险规避",
+    "crisis": "危机"
+  },
+  "dim": {
+    "macro": "宏观",
+    "liquidityCredit": "流动性信用",
+    "equityStructure": "股票结构",
+    "volatility": "波动率",
+    "crossAsset": "跨资产",
+    "trend": "趋势"
+  },
+  "dimension": {
+    "title": "风险维度",
+    "weight": "配置权重",
+    "effectiveWeight": "有效权重",
+    "score": "维度分",
+    "coverage": "覆盖度",
+    "trend": "趋势",
+    "indicators": "指标",
+    "disclaimer": "维度缺失时权重按剩余维度比例重归一化，同时下调覆盖度与置信度。"
+  },
+  "indicator": {
+    "label": "指标",
+    "value": "数值",
+    "percentile": "百分位",
+    "zScore": "Z 分",
+    "riskScore": "风险分",
+    "direction": "方向",
+    "weight": "权重",
+    "source": "来源",
+    "updatedAt": "更新于",
+    "status": "状态",
+    "proxy": "代理"
+  },
+  "confidenceFactors": {
+    "title": "置信度因子"
+  },
+  "drivers": {
+    "title": "Top 风险驱动",
+    "contribution": "贡献",
+    "none": "暂无风险驱动"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "title": "Risk Lab",
+  "subtitle": "6-dimension risk model breakdown: Macro / Liquidity & Credit / Equity Structure / Volatility / Cross-Asset / Trend",
+  "score": {
+    "title": "Global Risk Score",
+    "breakdown": "Model Breakdown",
+    "confidence": "Confidence",
+    "modelVersion": "Model version",
+    "disclaimer": "This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."
+  },
+  "level": {
+    "riskOn": "Risk On",
+    "lowRisk": "Low Risk",
+    "caution": "Caution",
+    "highRisk": "High Risk",
+    "severeRisk": "Severe",
+    "crisis": "Crisis"
+  },
+  "regime": {
+    "title": "Market Regime",
+    "noEvidence": "No supporting evidence",
+    "goldilocks": "Goldilocks",
+    "riskOn": "Risk On",
+    "disinflation": "Disinflation",
+    "reflation": "Reflation",
+    "lateCycle": "Late Cycle",
+    "stagflation": "Stagflation",
+    "liquidityStress": "Liquidity Stress",
+    "riskOff": "Risk Off",
+    "crisis": "Crisis"
+  },
+  "dim": {
+    "macro": "Macro",
+    "liquidityCredit": "Liquidity & Credit",
+    "equityStructure": "Equity Structure",
+    "volatility": "Volatility",
+    "crossAsset": "Cross-Asset",
+    "trend": "Trend"
+  },
+  "dimension": {
+    "title": "Risk Dimensions",
+    "weight": "Weight",
+    "effectiveWeight": "Effective weight",
+    "score": "Score",
+    "coverage": "Coverage",
+    "trend": "Trend",
+    "indicators": "Indicators",
+    "disclaimer": "When a dimension is missing, its weight is re-normalized across remaining dimensions while coverage and confidence are reduced."
+  },
+  "indicator": {
+    "label": "Indicator",
+    "value": "Value",
+    "percentile": "Percentile",
+    "zScore": "Z-score",
+    "riskScore": "Risk score",
+    "direction": "Direction",
+    "weight": "Weight",
+    "source": "Source",
+    "updatedAt": "Updated",
+    "status": "Status",
+    "proxy": "Proxy"
+  },
+  "confidenceFactors": {
+    "title": "Confidence factors"
+  },
+  "drivers": {
+    "title": "Top Risk Drivers",
+    "contribution": "Contribution",
+    "none": "No risk drivers"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-08-03T10:00:00Z",
+  "schema_version": "1.0.0",
+  "source": ["fmp", "fred"],
+  "source_updated_at": "2026-08-03T08:00:00Z",
+  "freshness_status": "fresh",
+  "data_quality": 0.9,
+  "payload": {
+    "events": [
+      {
+        "id": "econ-CPI-2026-08-13",
+        "type": "economic",
+        "title": "CPI YoY",
+        "country": "US",
+        "datetime": "2026-08-13T12:30:00Z",
+        "importance": "high",
+        "actual": null,
+        "forecast": 3.1,
+        "previous": 3.2,
+        "unit": "pct",
+        "related_assets": ["NVDA", "BTC"],
+        "source": "fred"
+      },
+      {
+        "id": "earnings-NVDA-2026-08-27",
+        "type": "earnings",
+        "title": "NVIDIA Q2 FY27 Earnings",
+        "country": "US",
+        "datetime": "2026-08-27T20:00:00Z",
+        "importance": "high",
+        "actual": null,
+        "forecast": null,
+        "previous": null,
+        "unit": null,
+        "related_assets": ["NVDA"],
+        "source": "fmp"
+      }
+    ],
+    "updated_at": "2026-08-03T10:00:00Z"
+  }
+}

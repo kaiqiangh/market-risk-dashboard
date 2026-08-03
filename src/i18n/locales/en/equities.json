@@ -1,0 +1,45 @@
+{
+  "title": "Equities",
+  "subtitle": "Key US stocks (NVDA / AVGO / MU / AMD / TSLA) + Memory sector + A-share memory",
+  "section": {
+    "crossAsset": "Cross-Asset Cards",
+    "us": "Key US Stocks",
+    "memory": "Memory Sector",
+    "aShare": "A-share Memory Names",
+    "empty": "No equity data"
+  },
+  "metric": {
+    "proxy": "Proxy",
+    "price": "Price",
+    "change1d": "1D",
+    "change1w": "1W",
+    "change1m": "1M",
+    "changeYtd": "YTD",
+    "volume": "Volume",
+    "marketCap": "Market cap",
+    "ma50": "MA50",
+    "ma200": "MA200",
+    "rsi14": "RSI(14)",
+    "percentile5y": "5Y percentile"
+  },
+  "memory": {
+    "title": "Memory Cycle (Micron + A-share memory)",
+    "change1w": "1W",
+    "change1m": "1M",
+    "degraded": "A-share memory source is degraded; showing available data only",
+    "empty": "No A-share memory data",
+    "note": "DRAM/NAND spot prices sit behind paywalls; MVP uses stock proxies"
+  },
+  "table": {
+    "symbol": "Symbol",
+    "name": "Name",
+    "price": "Price",
+    "change1d": "1D",
+    "change1w": "1W",
+    "change1m": "1M"
+  },
+  "aShare": {
+    "degraded": "A-share memory source degraded (10 expected, 0 currently available)",
+    "note": "AKShare anti-scraping fallback: retains last good data on failure"
+  }
+}

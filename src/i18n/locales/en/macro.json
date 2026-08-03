@@ -1,0 +1,37 @@
+{
+  "title": "Macro",
+  "subtitle": "Rates / Credit / Inflation / Labor / Liquidity / FX + FedWatch expectations",
+  "chart": {
+    "title": "Macro Indicator Overview",
+    "empty": "No macro indicators"
+  },
+  "section": {
+    "rates": "Rates",
+    "credit": "Credit Spreads",
+    "inflation": "Inflation",
+    "labor": "Labor",
+    "liquidity": "Liquidity",
+    "fx": "FX",
+    "empty": "No data in this category"
+  },
+  "indicator": {
+    "change1m": "MoM",
+    "value": "Value",
+    "unit": "Unit"
+  },
+  "fedwatch": {
+    "title": "FedWatch Rate Expectations",
+    "meeting": "Next meeting",
+    "effectiveRate": "Effective Fed Funds Rate",
+    "impliedRate": "Implied rate",
+    "action": "Inferred action",
+    "hold": "Hold",
+    "hike": "Hike",
+    "cut": "Cut",
+    "insufficientData": "Data accumulating",
+    "accumulating": "Fewer than 7 trading days of free settlement history; probability estimates become available once enough data accumulates.",
+    "ready": "Ready",
+    "probability": "Probability",
+    "change1d": "vs yesterday"
+  }
+}

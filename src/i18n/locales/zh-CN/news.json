@@ -1,0 +1,17 @@
+{
+  "title": "新闻",
+  "subtitle": "按重要性排序的市场新闻（来源加权 + 关键词 + 资产命中 + 时效）",
+  "importance": {
+    "high": "高",
+    "medium": "中",
+    "low": "低"
+  },
+  "sentiment": {
+    "positive": "正面",
+    "negative": "负面",
+    "neutral": "中性"
+  },
+  "readMore": "阅读原文",
+  "none": "暂无新闻",
+  "total": "新闻总数"
+}
