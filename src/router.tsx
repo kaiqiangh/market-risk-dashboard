@@ -7,6 +7,7 @@ import { AppLayout } from "@/components/layout/AppLayout";
  * Route table (architecture §1.2 Hash Router + route lazy loading).
  * Driven by the language segment: `#/zh/overview` / `#/en/overview`.
  * Page components land in T04 (React.lazy code splitting; Suspense fallback in AppLayout).
+ * Default landing locale is English (user decision 2026-08-03): root and invalid segments → /en/overview.
  */
 export const PAGE_KEYS = [
   "overview",
@@ -55,7 +56,7 @@ function NotFoundPage() {
 function LangGuard() {
   const { lang } = useParams<{ lang?: string }>();
   if (lang !== "zh" && lang !== "en") {
-    return <Navigate to="/zh/overview" replace />;
+    return <Navigate to="/en/overview" replace />;
   }
   return <Outlet />;
 }
@@ -63,7 +64,7 @@ function LangGuard() {
 export function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/zh/overview" replace />} />
+      <Route path="/" element={<Navigate to="/en/overview" replace />} />
       <Route path="/:lang" element={<AppLayout />}>
         <Route element={<LangGuard />}>
           <Route index element={<Navigate to="overview" replace />} />

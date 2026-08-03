@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-08-03T18:01:25Z",
+  "generated_at": "2026-08-03T20:30:13Z",
   "language": "zh-CN",
   "market_state": "caution",
   "market_regime": "goldilocks",
-  "summary": "盘前：市场总风险分 41.89，一日内变化 -0.05、一周内变化 -0.05，整体趋稳，维持 caution 状态，处于 goldilocks（低波动、正动量、宽度健康）。风险集中在宏观维度（63.06）：10Y 实际利率 2.41% 处于 98.73 百分位、10Y 收益率 4.68% 偏高；但信用利差保持低位（HY OAS 2.84、IG OAS 0.8），VIX 15.99 回落，风险偏好仍有支撑。NVDA 单日上涨 3.8%、TSLA 上涨 3.7%，BTC 报 63827。数据整体 degraded（news 与 calendar 为 fresh），解读需谨慎。",
+  "summary": "盘后：总风险分 41.89（caution，goldilocks 状态），日内与周内均持平（均为 -0.05）。宏观维度仍是主要风险来源（63.06）：10Y 实际利率 2.41% 处于 98.73 百分位，10Y 收益率 4.68%，10Y-2Y 曲线 0.45%。信用保持温和，HY OAS 2.84、IG OAS 0.8，VIX 回落至 15.99。个股收盘涨跌互现偏强：NVDA 208.36（+3.79%）、AMD 487.95（+2.48%）、MU 833.99（+1.33%）、TSLA 322.63（+3.67%）、AVGO 390.46（+0.3%）。加密市场平静：BTC 63827（+0.91%）、ETH 1866.28、SOL 73.6。宽度健康（87.5% 个股位于 200 日均线上方），但新高占比为 0.0。该判断置信度 0.8；数据覆盖为 degraded。",
   "top_risk_drivers": [
     {
-      "claim": "10Y 实际利率 2.41% 处于 98.73 百分位，为宏观维度风险最高的指标，是总风险分的主要推手。",
+      "claim": "10Y 实际利率 2.41% 处于 98.73 百分位，是宏观维度最主要的风险来源。",
       "evidence_refs": [
         {
           "dataset": "risk",
@@ -19,7 +19,7 @@
       ]
     },
     {
-      "claim": "10Y 收益率 4.68% 处于 97.94 百分位，利率水平偏高，推高宏观风险。",
+      "claim": "10Y 收益率 4.68%（97.94 百分位）维持利率高位。",
       "evidence_refs": [
         {
           "dataset": "macro",
@@ -31,7 +31,7 @@
       ]
     },
     {
-      "claim": "市场新高占比为 0.0%，突破动能缺失，贡献 18.0 风险分。",
+      "claim": "在 87.5% 个股站上 200 日均线的同时，新高占比为 0.0，宽度结构存在分化。",
       "evidence_refs": [
         {
           "dataset": "risk",
@@ -39,17 +39,24 @@
           "metric": "new_highs_ratio",
           "value": 0.0,
           "updated_at": "2026-08-03T17:58:28Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[0].value",
+          "metric": "breadth_above_ma200",
+          "value": 0.875,
+          "updated_at": "2026-08-03T17:58:28Z"
         }
       ]
     },
     {
-      "claim": "10Y-2Y 期限利差 0.45% 处于 65.79 百分位，曲线形态与经济软着陆预期相符。",
+      "claim": "10Y-2Y 期限利差 0.45%，构成温和的宏观约束。",
       "evidence_refs": [
         {
           "dataset": "risk",
           "path": "payload.dimensions[0].indicators[1].value",
           "metric": "yield_curve_10y2y",
-          "value": 0.45,
+          "value": 0.4499999999999993,
           "updated_at": "2026-08-03T17:58:28Z"
         }
       ]
@@ -57,19 +64,7 @@
   ],
   "supporting_signals": [
     {
-      "claim": "VIX 回落至 15.99（前值 17.09），处于 30.4 百分位，波动风险低。",
-      "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[3].indicators[0].value",
-          "metric": "vix",
-          "value": 15.99,
-          "updated_at": "2026-08-03T17:58:28Z"
-        }
-      ]
-    },
-    {
-      "claim": "信用利差处于低位：HY OAS 2.84、IG OAS 0.8，信用风险可控。",
+      "claim": "信用压力低位——HY OAS 2.84、IG OAS 0.8——构成风险偏好的支撑。",
       "evidence_refs": [
         {
           "dataset": "risk",
@@ -88,52 +83,66 @@
       ]
     },
     {
-      "claim": "股价高于 200 日均线的占比达 0.875，NVDA 单日上涨 3.8%，宽度与动能健康。",
+      "claim": "VIX 由 17.09 回落至 15.99，波动环境趋缓。",
       "evidence_refs": [
         {
           "dataset": "risk",
-          "path": "payload.dimensions[2].indicators[0].value",
-          "metric": "breadth_above_ma200",
-          "value": 0.875,
+          "path": "payload.dimensions[3].indicators[0].value",
+          "metric": "vix",
+          "value": 15.99,
           "updated_at": "2026-08-03T17:58:28Z"
-        },
+        }
+      ]
+    },
+    {
+      "claim": "半导体领涨：NVDA 208.36（+3.79%）、AMD 487.95（+2.48%）、MU 833.99（+1.33%）、TSLA 322.63（+3.67%）。",
+      "evidence_refs": [
         {
           "dataset": "equities",
           "path": "payload.assets[0].change_1d",
           "metric": "change_1d",
           "value": 3.7886,
           "updated_at": "2026-08-03T17:57:41Z"
-        }
-      ]
-    },
-    {
-      "claim": "美联储年度压力测试确认大型银行可抵御严重衰退（重要性 70.0），金融体系韧性支撑风险偏好。",
-      "evidence_refs": [
+        },
         {
-          "dataset": "news",
-          "path": "payload.items[0].importance",
-          "metric": "importance",
-          "value": 70.0,
-          "updated_at": "2026-08-03T17:58:24Z"
+          "dataset": "equities",
+          "path": "payload.assets[3].change_1d",
+          "metric": "change_1d",
+          "value": 2.4782,
+          "updated_at": "2026-08-03T17:57:42Z"
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[2].change_1d",
+          "metric": "change_1d",
+          "value": 1.3323,
+          "updated_at": "2026-08-03T17:57:42Z"
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[4].change_1d",
+          "metric": "change_1d",
+          "value": 3.6679,
+          "updated_at": "2026-08-03T17:57:42Z"
         }
       ]
     }
   ],
   "contradicting_signals": [
     {
-      "claim": "52 周回撤为 -0.2422，处于深度回撤区间，与宽度健康信号形成反差。",
+      "claim": "MU 一周仍下跌 7.35%，3 个月动量仅 5.15，半导体反弹缺乏趋势确认。",
       "evidence_refs": [
         {
           "dataset": "risk",
-          "path": "payload.dimensions[5].indicators[1].value",
-          "metric": "drawdown_52w",
-          "value": -0.2422,
+          "path": "payload.dimensions[5].indicators[2].value",
+          "metric": "momentum_3m",
+          "value": 5.1453,
           "updated_at": "2026-08-03T17:58:28Z"
         }
       ]
     },
     {
-      "claim": "跨资产确认度仅为 0.1667，各资产风险信号共振不足，削弱信号一致性。",
+      "claim": "跨资产确认度仅 0.17，其他资产类别对风险偏好的印证有限。",
       "evidence_refs": [
         {
           "dataset": "risk",
@@ -146,26 +155,36 @@
     }
   ],
   "what_changed_today": [
-    "总风险分 41.89，单日变化 -0.05、一周变化 -0.05，风险趋势趋稳。",
-    "VIX 从前值 17.09 回落至 15.99。"
+    "总风险分持平于 41.89（当日 -0.05）。",
+    "VIX 由 17.09 回落至 15.99。",
+    "NVDA 收于 208.36，上涨 3.79%。",
+    "无新增宏观数据；美联储银行压力测试（重要性 70.0）为当日最重要新闻。"
   ],
   "watch_next": [
-    "关注 2026-08-04 AMD 财报（中重要性）对半导体板块的影响。",
-    "关注 10Y 收益率 4.68% 及 Fed 政策信号对风险偏好的影响。"
+    "AMD 财报明日公布——半导体板块的关键催化剂。",
+    "关注在 87.5% 个股站上 200 日均线的背景下，新高数量能否回归。",
+    "关注 10Y 实际利率 2.41% 与 HY OAS 2.84 是否出现信用压力回升。"
   ],
   "bull_case": {
-    "title": "牛市情景：数据修复叠加利率回落",
+    "title": "牛市情形：风险偏好扩散",
     "points": [
-      "若宏观数据恢复 fresh，且 10Y 收益率从 4.68% 回落，风险分或降至 35 下方。",
-      "VIX 维持 15.99 低位、信用利差收窄（HY OAS 2.84），风险偏好有望延续。"
+      "若信用维持宽松（HY OAS 2.84、IG OAS 0.8）且 VIX 守住 15.99，股市有望延续涨势。",
+      "新高数量从当前的 0.0 回升将确认参与度改善。"
     ],
     "evidence_refs": [
       {
-        "dataset": "macro",
-        "path": "payload.rates[0].value",
-        "metric": "dgs10",
-        "value": 4.68,
-        "updated_at": "2026-07-30T00:00:00Z"
+        "dataset": "risk",
+        "path": "payload.dimensions[0].indicators[2].value",
+        "metric": "hy_oas",
+        "value": 2.84,
+        "updated_at": "2026-08-03T17:58:28Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[0].indicators[3].value",
+        "metric": "ig_oas",
+        "value": 0.8,
+        "updated_at": "2026-08-03T17:58:28Z"
       },
       {
         "dataset": "risk",
@@ -176,27 +195,20 @@
       },
       {
         "dataset": "risk",
-        "path": "payload.dimensions[0].indicators[2].value",
-        "metric": "hy_oas",
-        "value": 2.84,
+        "path": "payload.dimensions[2].indicators[1].value",
+        "metric": "new_highs_ratio",
+        "value": 0.0,
         "updated_at": "2026-08-03T17:58:28Z"
       }
     ]
   },
   "base_case": {
-    "title": "基准情景：谨慎区间震荡",
+    "title": "基准情形：维持谨慎",
     "points": [
-      "风险分在 40 至 50 区间震荡，市场维持 caution。",
-      "等待 2026-08-04 AMD 财报及后续宏观数据给出方向。"
+      "风险分维持在 41.89 附近，宏观风险（63.06）与温和信用相互对冲。",
+      "市场依托 200 日均线震荡上行。"
     ],
     "evidence_refs": [
-      {
-        "dataset": "calendar",
-        "path": "payload.events[0].datetime",
-        "metric": "event_datetime",
-        "value": "2026-08-04T12:00:00Z",
-        "updated_at": "2026-08-03T17:58:28Z"
-      },
       {
         "dataset": "risk",
         "path": "payload.total_score",
@@ -207,10 +219,10 @@
     ]
   },
   "bear_case": {
-    "title": "熊市情景：利率上行触发风险重定价",
+    "title": "熊市情形：利率向上突破",
     "points": [
-      "若 10Y 收益率突破 5.0% 且实际利率续升，宏观风险分或升至 70 以上。",
-      "半导体相对强度高达 4.0677，集中度风险积聚，若板块轮动逆转将拖累整体宽度。"
+      "若 10Y 收益率突破 4.68%、实际利率维持 2.41%，估值将承压。",
+      "若站上 200 日均线的 87.5% 比例回落，宽度可能走弱。"
     ],
     "evidence_refs": [
       {
@@ -222,14 +234,14 @@
       },
       {
         "dataset": "risk",
-        "path": "payload.dimensions[2].indicators[4].value",
-        "metric": "semis_relative",
-        "value": 4.0677,
+        "path": "payload.dimensions[0].indicators[0].value",
+        "metric": "real_rate_dfii10",
+        "value": 2.41,
         "updated_at": "2026-08-03T17:58:28Z"
       }
     ]
   },
-  "confidence": 0.72,
+  "confidence": 0.8,
   "evidence_refs": [
     {
       "dataset": "risk",
@@ -240,10 +252,38 @@
     },
     {
       "dataset": "risk",
+      "path": "payload.confidence",
+      "metric": "confidence",
+      "value": 0.8016,
+      "updated_at": "2026-08-03T17:58:28Z"
+    },
+    {
+      "dataset": "risk",
       "path": "payload.regime",
       "metric": "regime",
       "value": "goldilocks",
       "updated_at": "2026-08-03T17:58:28Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[3].indicators[0].value",
+      "metric": "vix",
+      "value": 15.99,
+      "updated_at": "2026-08-03T17:58:28Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.rates[0].value",
+      "metric": "dgs10",
+      "value": 4.68,
+      "updated_at": "2026-07-30T00:00:00Z"
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[0].change_1d",
+      "metric": "change_1d",
+      "value": 3.7886,
+      "updated_at": "2026-08-03T17:57:41Z"
     }
   ],
   "data_freshness": "degraded"

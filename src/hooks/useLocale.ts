@@ -11,7 +11,7 @@ import { localeSegment, pageFromHash, pagePath } from "@/config/routes";
 
 /**
  * useLocale: language detection + switching (architecture §1.9).
- * - Language priority: URL language segment → localStorage → browser → default zh-CN.
+ * - Language priority: URL language segment → localStorage → default en.
  * - Switching: write localStorage + i18n.changeLanguage + replace the URL language segment (keep the current page).
  */
 export interface UseLocaleResult {
@@ -29,13 +29,13 @@ export function useLocale(): UseLocaleResult {
 
   const locale: SupportedLocale = SUPPORTED_LOCALES.includes(i18n.language as SupportedLocale)
     ? (i18n.language as SupportedLocale)
-    : "zh-CN";
+    : "en";
 
   /** Read the current language (read latest at call time to avoid stale closures). */
   const currentLocale = (): SupportedLocale =>
     SUPPORTED_LOCALES.includes(i18n.language as SupportedLocale)
       ? (i18n.language as SupportedLocale)
-      : "zh-CN";
+      : "en";
 
   const setLocale = (next: SupportedLocale): void => {
     if (next === currentLocale()) return;
@@ -69,7 +69,7 @@ export function LocaleSync(): null {
     if (target && i18n.language !== target) {
       void i18n.changeLanguage(target);
     } else if (!target) {
-      const resolved: SupportedLocale = lang === "en" ? "en" : "zh-CN";
+      const resolved: SupportedLocale = lang === "zh" ? "zh-CN" : "en";
       if (i18n.language !== resolved) void i18n.changeLanguage(resolved);
     }
     setTick((n) => n + 1);

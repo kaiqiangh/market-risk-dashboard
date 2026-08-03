@@ -71,11 +71,11 @@ describe("route rendering (fixtures data)", () => {
     expect(await screen.findByTestId("page-title")).toHaveTextContent(title);
   });
 
-  it("invalid language segment → redirects to /zh/overview", async () => {
+  it("invalid language segment → redirects to /en/overview", async () => {
     installFixtureFetch();
     setHash("#/fr/overview");
     renderApp();
-    await waitFor(() => expect(window.location.hash).toContain("/zh/overview"));
+    await waitFor(() => expect(window.location.hash).toContain("/en/overview"));
   });
 });
 
