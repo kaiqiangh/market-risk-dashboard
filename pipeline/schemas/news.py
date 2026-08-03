@@ -13,12 +13,14 @@ from pydantic import Field
 from .envelope import BaseEnvelope, ContractModel, UTCDateTime
 
 NewsSentiment = Literal["positive", "negative", "neutral"]
+NewsSourceLang = Literal["en", "zh"]
 
 
 class NewsItem(ContractModel):
     id: str = Field(min_length=1, description="sha1(title+source+published) dedupe key")
-    title: str = Field(min_length=1)
+    title: str = Field(min_length=1, description="English headline (canonical bilingual, ADR-0003)")
     title_zh: str | None = None
+    lang: NewsSourceLang = Field(default="en", description="source feed language; translation routing only, never a display string (ADR-0003)")
     source: str = Field(min_length=1)
     url: str = Field(min_length=1)
     published_at: UTCDateTime
@@ -26,7 +28,8 @@ class NewsItem(ContractModel):
     assets: list[str] = Field(default_factory=list)
     importance: float = Field(ge=0.0, le=100.0)
     sentiment: NewsSentiment | None = None
-    summary: str = Field(default="", description="self-written one-sentence summary (no full text)")
+    summary: str = Field(default="", description="English one-sentence summary (canonical bilingual, ADR-0003)")
+    summary_zh: str | None = Field(default=None, description="Chinese translation of the summary (canonical bilingual, ADR-0003)")
     impact_window: str | None = None
 
 
@@ -43,9 +46,15 @@ class NewsEnvelope(BaseEnvelope):
 
 
 class NewsTranslation(ContractModel):
-    """Chinese translation of an English news item (AI automation produces news.zh-translations.json)."""
+    """Symmetric full-pair translation of a news item (AI automation produces news.zh-translations.json, ADR-0003).
+
+    Carries both English (title/summary) and Chinese (title_zh/summary_zh) for the same id; merge copies
+    both sides without overwriting the canonical English (title/summary) of the item.
+    """
 
     id: str = Field(min_length=1, description="corresponding NewsItem.id")
+    title: str | None = Field(default=None, description="English title (required for zh-source items)")
+    summary: str | None = Field(default=None, description="English summary (required for zh-source items)")
     title_zh: str = Field(min_length=1)
     summary_zh: str | None = None
 

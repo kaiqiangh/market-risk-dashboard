@@ -44,6 +44,7 @@ function makeItem(overrides: Partial<NewsItem> = {}): NewsItem {
     id: "item-1",
     title: "Test title",
     title_zh: null,
+    lang: "en",
     source: "Test Source",
     url: "https://example.com/news/1",
     published_at: "2026-08-03T10:00:00Z",

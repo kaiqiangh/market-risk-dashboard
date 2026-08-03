@@ -8,6 +8,7 @@ export const NewsItem = z
     id: z.string().min(1),
     title: z.string().min(1),
     title_zh: z.string().nullable(),
+    lang: z.enum(["en", "zh"]).default("en"),
     source: z.string().min(1),
     url: z.string().min(1),
     published_at: utcDateTime,
@@ -16,6 +17,7 @@ export const NewsItem = z
     importance: z.number().finite().min(0).max(100),
     sentiment: NewsSentiment.nullable(),
     summary: z.string(),
+    summary_zh: z.string().nullable().optional(),
     impact_window: z.string().nullable(),
   })
   .strict();
@@ -33,8 +35,10 @@ export const NewsEnvelope = datasetEnvelope(NewsDataset);
 export const NewsTranslation = z
   .object({
     id: z.string().min(1),
+    title: z.string().nullable().optional(),
+    summary: z.string().nullable().optional(),
     title_zh: z.string().min(1),
-    summary_zh: z.string().nullable(),
+    summary_zh: z.string().nullable().optional(),
   })
   .strict();
 
