@@ -1,11 +1,6 @@
 """分析新鲜度检查（架构 §8.5 五态语义；供 AI 自动化决策是否跳过）。
 
-五态判定（相对期望更新频率）：
-- fresh   : 最近更新 ≤ 1.5× 期望间隔
-- delayed : 1.5× ~ 3×
-- stale   : > 3×
-- missing : 从未有数据 / 文件缺失
-- degraded: 部分 Provider 降级/回退（与时间无关；由 facts.data_freshness 判定）
+五态判定复用 pipeline/validation/freshness.py（管道统一判定，架构 §8.4）。
 
 用法：
     python -m pipeline.analysis.freshness [--facts path] [--interval-min 720]
@@ -22,33 +17,9 @@ from typing import Literal
 
 from pipeline.analysis.contract import expected_interval_minutes, input_path
 from pipeline.schemas import FactLayer, FreshnessStatus
+from pipeline.validation.freshness import evaluate_freshness
 
 AnalysisDecision = Literal["run", "skip_missing", "run_stale", "run_degraded"]
-
-
-def evaluate_freshness(
-    updated_at: str | None,
-    expected_minutes: int,
-    now: datetime | None = None,
-) -> FreshnessStatus:
-    """时间维度五态判定（不含 degraded；degraded 由调用方按数据质量叠加）。"""
-    if not updated_at:
-        return "missing"
-    try:
-        updated = datetime.fromisoformat(updated_at.replace("Z", "+00:00"))
-    except ValueError:
-        return "missing"
-    if now is None:
-        now = datetime.now(timezone.utc)
-    if updated.tzinfo is None:
-        updated = updated.replace(tzinfo=timezone.utc)
-
-    age_minutes = (now - updated).total_seconds() / 60.0
-    if age_minutes <= 1.5 * expected_minutes:
-        return "fresh"
-    if age_minutes <= 3.0 * expected_minutes:
-        return "delayed"
-    return "stale"
 
 
 def evaluate_analysis_freshness(facts: FactLayer, now: datetime | None = None) -> tuple[FreshnessStatus, AnalysisDecision]:

@@ -1,0 +1,138 @@
+"""加密主源：CoinGecko API（架构 §1.3 冻结；Demo key 足够每天几十次调用）。
+
+用 httpx 直连，Demo key 从 .env（DATA_COINGECKO_API_KEY）读取。
+"""
+
+from __future__ import annotations
+
+import math
+import time
+from typing import Any
+
+import httpx
+
+from pipeline.providers.base import (
+    BaseProvider,
+    ProviderError,
+    ProviderHealth,
+    retry_with_backoff,
+)
+
+CG_BASE = "https://api.coingecko.com/api/v3"
+DEFAULT_IDS = "bitcoin,ethereum,solana"
+
+
+class CoinGeckoProvider(BaseProvider):
+    name = "coingecko"
+    priority = 1
+    domain = "crypto"
+
+    def __init__(self, settings=None) -> None:
+        super().__init__(settings)
+        self.api_key = self.settings.coingecko_api_key
+        self._client = httpx.Client(timeout=15.0)
+
+    def _headers(self) -> dict[str, str]:
+        if self.api_key:
+            return {"x-cg-demo-api-key": self.api_key}
+        return {}
+
+    def health(self) -> ProviderHealth:
+        started = time.monotonic()
+        try:
+            data = self._get_simple_price()
+            ok = bool(data)
+            return ProviderHealth(
+                provider=self.name, ok=ok,
+                latency_ms=round((time.monotonic() - started) * 1000, 1),
+                error=None if ok else "empty response", checked_at=None,
+            )
+        except Exception as exc:  # noqa: BLE001
+            return ProviderHealth(
+                provider=self.name, ok=False,
+                latency_ms=round((time.monotonic() - started) * 1000, 1),
+                error=str(exc)[:200], checked_at=None,
+            )
+
+    def _get(self, path: str, params: dict[str, Any]) -> dict[str, Any]:
+        def _fetch() -> dict[str, Any]:
+            resp = self._client.get(f"{CG_BASE}{path}", params=params, headers=self._headers())
+            if resp.status_code == 429:
+                raise ProviderError("CoinGecko rate limited (429)")
+            if resp.status_code != 200:
+                raise ProviderError(f"CoinGecko HTTP {resp.status_code}")
+            data = resp.json()
+            if not isinstance(data, dict):
+                raise ProviderError("CoinGecko unexpected payload")
+            return data
+
+        try:
+            return retry_with_backoff(_fetch, max_retries=2, backoff_base=1.5, jitter=True)
+        except Exception as exc:  # noqa: BLE001
+            raise ProviderError(f"CoinGecko {path}: {exc}") from exc
+
+    def _get_simple_price(self) -> dict[str, Any]:
+        return self._get("/simple/price", {"ids": DEFAULT_IDS, "vs_currencies": "usd"})
+
+    def get_crypto_market(self) -> dict[str, Any]:
+        """返回 {assets: [...], btc_dominance, market_cap_total}。"""
+        price_data = self._get_simple_price()
+        id_map = {"bitcoin": "BTC", "ethereum": "ETH", "solana": "SOL"}
+
+        # 单资产详情（市值/成交量）——逐币种调用，共 3 次，额度可控
+        assets: list[dict[str, Any]] = []
+        for cg_id, symbol in id_map.items():
+            detail = self._get(
+                f"/coins/{cg_id}",
+                {"localization": "false", "tickers": "false", "community_data": "false", "developer_data": "false"},
+            )
+            md = detail.get("market_data", {})
+            price = md.get("current_price", {}).get("usd")
+            if price is None:
+                continue
+            assets.append(
+                {
+                    "symbol": symbol,
+                    "name": detail.get("name", symbol),
+                    "price": _f(price),
+                    "change_1d": _f(md.get("price_change_percentage_24h")),
+                    "change_1w": _f(md.get("price_change_percentage_7d")),
+                    "change_1m": _f(md.get("price_change_percentage_30d")),
+                    "market_cap": _f(md.get("market_cap", {}).get("usd")),
+                    "volume_24h": _f(md.get("total_volume", {}).get("usd")),
+                    "source": "coingecko",
+                    "updated_at": _now_utc(),
+                }
+            )
+
+        global_data = self._get("/global", {})
+        gd = global_data.get("data", {})
+        return {
+            "assets": assets,
+            "btc_dominance": _ratio01(gd.get("market_cap_percentage", {}).get("btc")),
+            "stablecoin_mcap": _f(gd.get("stablecoin_market_cap")),
+            "market_cap_total": _f(gd.get("total_market_cap", {}).get("usd")),
+            "sentiment": None,
+        }
+
+
+def _f(value) -> float | None:
+    try:
+        f = float(value)
+        return None if (math.isnan(f) or math.isinf(f)) else round(f, 6)
+    except (TypeError, ValueError):
+        return None
+
+
+def _ratio01(value) -> float | None:
+    """CoinGecko 百分比（如 56.23）→ 0-1 比率。"""
+    f = _f(value)
+    if f is None:
+        return None
+    return round(max(0.0, min(1.0, f / 100.0)), 6)
+
+
+def _now_utc() -> str:
+    from datetime import datetime, timezone
+
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

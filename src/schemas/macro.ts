@@ -27,7 +27,7 @@ export const FedWatchRateProb = z
 
 export const FedWatchSnapshot = z
   .object({
-    meeting_date: utcDateTime,
+    meeting_date: utcDateTime.nullable(),
     effective_rate: z.number().finite(),
     implied_rate: z.number().finite(),
     probabilities: z.array(FedWatchRateProb),

@@ -1,0 +1,197 @@
+"""行情主源：Yahoo Finance（yfinance，架构 §1.3）。
+
+注意：yfinance 免费无 SLA（2025 两次 48h 中断，评审 §3.1）；必须走降级链
+（Stooq 兜底 + last-good 缓存）。本模块只做 Provider 封装，不包含业务逻辑。
+"""
+
+from __future__ import annotations
+
+import math
+import time
+
+import yfinance as yf
+
+from pipeline.providers.base import (
+    BaseProvider,
+    HistoryResult,
+    ProviderError,
+    ProviderHealth,
+    QuoteResult,
+)
+
+_PERIOD_MAP = {"1mo": "1mo", "1y": "1y", "3mo": "3mo", "6mo": "6mo", "2y": "2y", "5y": "5y"}
+
+
+class YahooProvider(BaseProvider):
+    name = "yfinance"
+    priority = 1
+    domain = "quotes"
+
+    def health(self) -> ProviderHealth:
+        started = time.monotonic()
+        try:
+            # 轻量探测：拉取 SPY 1d 历史
+            hist = yf.Ticker("SPY").history(period="5d")
+            ok = hist is not None and len(hist) > 0
+            return ProviderHealth(
+                provider=self.name,
+                ok=bool(ok),
+                latency_ms=round((time.monotonic() - started) * 1000, 1),
+                error=None if ok else "empty history",
+                checked_at=None,
+            )
+        except Exception as exc:  # noqa: BLE001
+            return ProviderHealth(
+                provider=self.name,
+                ok=False,
+                latency_ms=round((time.monotonic() - started) * 1000, 1),
+                error=str(exc)[:200],
+                checked_at=None,
+            )
+
+    def get_quote(self, symbol: str) -> QuoteResult:
+        try:
+            hist = yf.Ticker(symbol).history(period="1mo")
+            if hist is None or len(hist) < 2:
+                raise ProviderError(f"{symbol}: yfinance 历史为空")
+            closes = hist["Close"].dropna()
+            if len(closes) < 2:
+                raise ProviderError(f"{symbol}: 收盘价不足")
+            price = float(closes.iloc[-1])
+            change_1d = _pct(float(closes.iloc[-1]), float(closes.iloc[-2]))
+            change_1w = _pct(float(closes.iloc[-1]), float(closes.iloc[-6])) if len(closes) >= 6 else None
+            change_1m = _pct(float(closes.iloc[-1]), float(closes.iloc[0])) if len(closes) >= 2 else None
+            volume = float(hist["Volume"].dropna().iloc[-1]) if "Volume" in hist and len(hist["Volume"].dropna()) else None
+            return QuoteResult(
+                symbol=symbol,
+                price=price,
+                change_1d=change_1d,
+                change_1w=change_1w,
+                change_1m=change_1m,
+                volume=volume,
+                source="yahoo",
+                provider=self.name,
+                updated_at=_now_utc(),
+                is_proxy=False,
+            )
+        except ProviderError:
+            raise
+        except Exception as exc:  # noqa: BLE001
+            raise ProviderError(f"{symbol}: yfinance quote 失败: {exc}") from exc
+
+    def get_history(self, symbol: str, period: str = "1y") -> HistoryResult:
+        if period not in _PERIOD_MAP:
+            period = "1y"
+        try:
+            hist = yf.Ticker(symbol).history(period=_PERIOD_MAP[period], auto_adjust=False)
+            if hist is None or len(hist) == 0:
+                raise ProviderError(f"{symbol}: yfinance 历史为空")
+            rows: list[dict] = []
+            for idx, row in hist.iterrows():
+                date = idx
+                if hasattr(idx, "strftime"):
+                    date = idx.strftime("%Y-%m-%d")
+                rows.append(
+                    {
+                        "date": str(date),
+                        "open": _clean(row.get("Open")),
+                        "high": _clean(row.get("High")),
+                        "low": _clean(row.get("Low")),
+                        "close": _clean(row.get("Close")),
+                        "volume": _clean(row.get("Volume")),
+                    }
+                )
+            return HistoryResult(symbol=symbol, provider=self.name, rows=rows, period=period)
+        except ProviderError:
+            raise
+        except Exception as exc:  # noqa: BLE001
+            raise ProviderError(f"{symbol}: yfinance history 失败: {exc}") from exc
+
+    def get_history_range(self, symbol: str, start: str, end: str) -> HistoryResult:
+        """按日期范围拉取历史（供校准 2008/2018/2020 窗口，架构 §1.8）。"""
+        try:
+            hist = yf.Ticker(symbol).history(start=start, end=end, auto_adjust=False)
+            if hist is None or len(hist) == 0:
+                raise ProviderError(f"{symbol}: yfinance 区间历史为空 ({start}~{end})")
+            rows: list[dict] = []
+            for idx, row in hist.iterrows():
+                date = idx.strftime("%Y-%m-%d") if hasattr(idx, "strftime") else str(idx)
+                rows.append(
+                    {
+                        "date": str(date),
+                        "open": _clean(row.get("Open")),
+                        "high": _clean(row.get("High")),
+                        "low": _clean(row.get("Low")),
+                        "close": _clean(row.get("Close")),
+                        "volume": _clean(row.get("Volume")),
+                    }
+                )
+            return HistoryResult(symbol=symbol, provider=self.name, rows=rows, period=f"{start}~{end}")
+        except ProviderError:
+            raise
+        except Exception as exc:  # noqa: BLE001
+            raise ProviderError(f"{symbol}: yfinance history_range 失败: {exc}") from exc
+
+    # 财报日历兜底（FMP 主源失败时）
+    def get_earnings_calendar(self, start: str, end: str) -> list[dict[str, Any]]:
+        """yfinance 财报日历兜底：对美股池逐个取 earnings dates，过滤到窗口内。"""
+        from datetime import datetime
+
+        items: list[dict[str, Any]] = []
+        errors: list[str] = []
+        start_dt = _parse_date(start)
+        end_dt = _parse_date(end)
+        for symbol in _default_symbols():
+            try:
+                cal = yf.Ticker(symbol).get_earnings_dates(limit=4)
+                if cal is None or len(cal) == 0:
+                    continue
+                for idx in cal.index:
+                    date = idx
+                    if hasattr(idx, "date"):
+                        date = idx.date()
+                    date_str = date.isoformat() if hasattr(date, "isoformat") else str(date)
+                    if start_dt and end_dt and start_dt <= str(date_str)[:10] <= end_dt:
+                        items.append({"symbol": symbol, "date": str(date_str)[:10], "eps_estimate": None, "eps_actual": None, "revenue_estimate": None, "time": "AMC"})
+            except Exception as exc:  # noqa: BLE001
+                errors.append(f"{symbol}: {exc}")
+                continue
+        if not items and errors:
+            raise ProviderError(f"yfinance calendar 兜底失败: {'; '.join(errors[:3])}")
+        return items
+
+
+def _default_symbols() -> list[str]:
+    return ["NVDA", "AVGO", "MU", "AMD", "TSLA"]
+
+
+def _parse_date(value: str) -> str | None:
+    return value[:10] if value else None
+
+
+class YahooCalendarProvider(YahooProvider):
+    """财报日历兜底 Provider（注册到 calendar 域，架构 §1.3 fmp→yfinance）。"""
+
+    name = "yfinance_calendar"
+    priority = 2
+    domain = "calendar"
+
+
+def _pct(latest: float, prev: float) -> float | None:
+    if prev is None or math.isnan(prev) or prev == 0:
+        return None
+    return round((latest - prev) / prev * 100.0, 4)
+
+
+def _clean(value) -> float | None:
+    try:
+        f = float(value)
+        return None if (math.isnan(f) or math.isinf(f)) else round(f, 6)
+    except (TypeError, ValueError):
+        return None
+
+
+def _now_utc() -> str:
+    from datetime import datetime, timezone
+
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

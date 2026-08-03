@@ -1,0 +1,109 @@
+"""技术指标计算（架构 §3.7 IndicatorEngine.technical）。
+
+输入 history rows（[{date, open, high, low, close, volume}]），输出指标字典。
+所有函数纯计算、无 IO；NaN/Infinity 一律丢弃。
+"""
+
+from __future__ import annotations
+
+import math
+from typing import Any, Sequence
+
+
+def closes_of(rows: list[dict[str, Any]]) -> list[float]:
+    return [float(r["close"]) for r in rows if isinstance(r.get("close"), (int, float))]
+
+
+def moving_average(values: Sequence[float], window: int) -> float | None:
+    if len(values) < window:
+        return None
+    return round(sum(values[-window:]) / window, 6)
+
+
+def distance_from_ma(values: Sequence[float], window: int) -> float | None:
+    """最新收盘价相对均线的百分比偏离（如 4.1 = 高于 MA50 4.1%）。"""
+    ma = moving_average(values, window)
+    if ma is None or ma == 0 or not values:
+        return None
+    return round((values[-1] - ma) / ma * 100.0, 4)
+
+
+def rsi(values: Sequence[float], period: int = 14) -> float | None:
+    """Wilder RSI(14)，输出 0-100。"""
+    if len(values) < period + 1:
+        return None
+    gains: list[float] = []
+    losses: list[float] = []
+    for i in range(len(values) - period, len(values)):
+        diff = values[i] - values[i - 1]
+        gains.append(max(diff, 0.0))
+        losses.append(max(-diff, 0.0))
+    avg_gain = sum(gains) / period
+    avg_loss = sum(losses) / period
+    if avg_loss == 0:
+        return 100.0
+    rs = avg_gain / avg_loss
+    return round(100.0 - 100.0 / (1.0 + rs), 4)
+
+
+def drawdown_52w(values: Sequence[float]) -> float | None:
+    """52 周高点回撤（0 = 无回撤；-12.5 = 距 52 周高点 -12.5%）。"""
+    if not values:
+        return None
+    high = max(values)
+    if high == 0:
+        return None
+    return round((values[-1] - high) / high * 100.0, 4)
+
+
+def momentum(values: Sequence[float], lookback: int = 63) -> float | None:
+    """N 个交易日动量（百分比）。lookback≈63 = 3 个月。"""
+    if len(values) <= lookback or values[-lookback - 1] == 0:
+        return None
+    return round((values[-1] - values[-lookback - 1]) / values[-lookback - 1] * 100.0, 4)
+
+
+def realized_vol(values: Sequence[float], window: int = 20, annualize: bool = True) -> float | None:
+    """已实现波动率（日收益率标准差；annualize=True 时 ×√252 输出年化百分比）。"""
+    if len(values) < window + 1:
+        return None
+    returns = [
+        (values[i] - values[i - 1]) / values[i - 1]
+        for i in range(len(values) - window, len(values))
+        if values[i - 1] != 0 and not math.isnan(values[i - 1])
+    ]
+    if len(returns) < 2:
+        return None
+    mean = sum(returns) / len(returns)
+    var = sum((r - mean) ** 2 for r in returns) / (len(returns) - 1)
+    std = math.sqrt(var)
+    if annualize:
+        std *= math.sqrt(252)
+    return round(std * 100.0, 4)
+
+
+def percentile_in_window(values: Sequence[float]) -> float | None:
+    """最新值在窗口内的百分位（0-100）。近似 5Y 百分位窗口（MVP）。"""
+    if not values:
+        return None
+    last = values[-1]
+    window = values[:-1] or [last]
+    below = sum(1 for v in window if v <= last)
+    return round(below / len(window) * 100.0, 2)
+
+
+def technical_snapshot(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """对一段历史输出全部基础技术指标。"""
+    values = closes_of(rows)
+    return {
+        "ma20": moving_average(values, 20),
+        "ma50": moving_average(values, 50),
+        "ma200": moving_average(values, 200),
+        "ma50_distance_pct": distance_from_ma(values, 50),
+        "ma200_distance_pct": distance_from_ma(values, 200),
+        "rsi14": rsi(values, 14),
+        "drawdown_52w": drawdown_52w(values),
+        "momentum_3m": momentum(values, 63),
+        "realized_vol": realized_vol(values, 20),
+        "percentile_5y": percentile_in_window(values),
+    }

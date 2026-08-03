@@ -40,7 +40,7 @@ class FedWatchRateProb(ContractModel):
 class FedWatchSnapshot(ContractModel):
     """CME FedWatch 概率自算快照（架构 §1.6 冻结方法论）。"""
 
-    meeting_date: UTCDateTime
+    meeting_date: UTCDateTime | None = None
     effective_rate: float
     implied_rate: float
     probabilities: list[FedWatchRateProb] = Field(default_factory=list)
