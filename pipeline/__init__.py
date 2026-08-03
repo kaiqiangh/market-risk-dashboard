@@ -1,8 +1,8 @@
-"""Market Risk Dashboard — 数据管道包。
+"""Market Risk Dashboard — data pipeline package.
 
-架构 §1.3：pipeline/ 为纯本地数据管道（采集→指标→6维风险→事实层→存储）。
-本包在 T01 提供工程骨架（settings/run），T02 提供数据契约（schemas/analysis），
-T03 实现 Provider/Collector/Indicator/Risk 等业务逻辑。
+Architecture §1.3: pipeline/ is a pure local data pipeline (collect → indicators → 6-dimension risk →
+fact layer → storage). This package provides the engineering skeleton in T01 (settings/run), the data
+contracts in T02 (schemas/analysis), and the Provider/Collector/Indicator/Risk business logic in T03.
 """
 
 __version__ = "0.1.0"

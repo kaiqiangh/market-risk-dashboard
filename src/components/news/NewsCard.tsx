@@ -6,8 +6,8 @@ import { formatRelativeTime } from "@/lib/format";
 import type { NewsItem } from "@/schemas";
 
 /**
- * NewsCard：单条新闻卡（标题/来源/时间/重要性/情绪/相关资产）。
- * 不渲染不可信 HTML（架构 §8.13：AI 输出经转义渲染，仅文本）。
+ * NewsCard: single news card (title / source / time / importance / sentiment / related assets).
+ * Does not render untrusted HTML (architecture §8.13: AI output is rendered escaped, text only).
  */
 export interface NewsCardProps {
   item: NewsItem;

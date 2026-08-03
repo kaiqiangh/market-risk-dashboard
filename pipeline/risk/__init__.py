@@ -1,4 +1,4 @@
-"""Risk 包（架构 §3.7 RiskModel）。"""
+"""Risk package (architecture §3.7 RiskModel)."""
 
 from pipeline.risk import calibration, confidence, model, regime, scoring
 

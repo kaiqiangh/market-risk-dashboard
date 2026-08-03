@@ -1,9 +1,10 @@
-"""离线校准引擎（架构 §1.8 冻结：2008/2018/2020 三段）。
+"""Offline calibration engine (architecture §1.8 frozen: 2008/2018/2020 three segments).
 
-数据全部免费可得：FRED VIXCLS/BAMLH0A0HYM2/DGS10 + yfinance SPX 历史。
-评估指标（PRD §15 子集）：提前预警时间、风险分数变化速度、最大回撤、
-未来 5/10/20/30 日波动率、风险等级稳定性。
-口径红线：校准完成前 UI 不得称风险分数为"精确崩盘概率"。
+All data is freely available: FRED VIXCLS/BAMLH0A0HYM2/DGS10 + yfinance SPX history.
+Evaluation metrics (PRD §15 subset): early-warning lead time, risk score change speed,
+maximum drawdown, future 5/10/20/30-day volatility, risk level stability.
+Calibration red line: before calibration completes, the UI must not call the risk score
+an "exact crash probability".
 """
 
 from __future__ import annotations
@@ -13,14 +14,14 @@ from typing import Any
 from pipeline.risk.scoring import heuristic_risk_score
 
 CALIBRATION_WINDOWS = {
-    "2008": {"start": "2008-08-01", "end": "2009-03-31", "note": "2008 金融危机"},
-    "2018": {"start": "2018-09-01", "end": "2018-12-31", "note": "2018 Q4 抛售"},
-    "2020": {"start": "2020-02-01", "end": "2020-04-30", "note": "COVID 崩盘"},
+    "2008": {"start": "2008-08-01", "end": "2009-03-31", "note": "2008 financial crisis"},
+    "2018": {"start": "2018-09-01", "end": "2018-12-31", "note": "2018 Q4 selloff"},
+    "2020": {"start": "2020-02-01", "end": "2020-04-30", "note": "COVID crash"},
 }
 
 
 def composite_score(vix: float | None, hy: float | None, drawdown: float | None) -> float:
-    """简化综合风险分（0-100）：VIX + HY OAS + 回撤的加权组合。"""
+    """Simplified composite risk score (0-100): weighted combination of VIX + HY OAS + drawdown."""
     scores = [
         heuristic_risk_score("vix", vix),
         heuristic_risk_score("hy_oas", hy),
@@ -39,7 +40,7 @@ def evaluate_segment(
     spx_series: list[float],
     segment: str,
 ) -> dict[str, Any]:
-    """对单段窗口计算评估指标。"""
+    """Compute evaluation metrics for a single segment window."""
     scores: list[float] = []
     for i in range(len(dates)):
         drawdown = _drawdown(spx_series[: i + 1])
@@ -50,14 +51,14 @@ def evaluate_segment(
     peak_idx = spx_series.index(max(spx_series)) if spx_series else 0
     max_dd = _max_drawdown(spx_series) if spx_series else None
 
-    # 提前预警：风险分首次 ≥ 60 距峰值的天数（负数 = 峰值前预警）
+    # Early warning: days from the peak when the risk score first reaches ≥ 60 (negative = warned before the peak)
     early_warning_days: int | None = None
     for i, s in enumerate(scores):
         if s >= 60:
             early_warning_days = i - peak_idx
             break
 
-    # 变化速度：风险分从 40 → 60 的最短天数
+    # Change speed: fewest days for the risk score to go from 40 → 60
     speed_days: int | None = None
     start_idx: int | None = None
     for i, s in enumerate(scores):
@@ -67,12 +68,12 @@ def evaluate_segment(
             speed_days = i - start_idx
             break
 
-    # 未来 5/10/20/30 日波动率（从峰值后）
+    # Future 5/10/20/30-day volatility (after the peak)
     future_vol: dict[str, float | None] = {}
     for horizon in (5, 10, 20, 30):
         future_vol[f"vol_{horizon}d"] = _future_vol(spx_series, peak_idx, horizon)
 
-    # 风险等级稳定性：分数跨 40/60 阈值的切换次数
+    # Risk level stability: number of switches across the 40/60 thresholds
     switches = 0
     prev_level = _level(scores[0]) if scores else None
     for s in scores:
@@ -106,7 +107,7 @@ def _drawdown(series: list[float]) -> float | None:
 
 
 def _max_drawdown(series: list[float]) -> float | None:
-    """窗口内最大回撤（峰值→谷值的最坏值，架构 §15 评估指标）。"""
+    """Maximum drawdown within the window (worst peak→trough value, architecture §15 evaluation metric)."""
     if not series:
         return None
     peak = series[0]

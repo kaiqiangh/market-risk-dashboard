@@ -6,7 +6,7 @@ import { formatDateTime } from "@/lib/format";
 import type { CalendarEvent } from "@/schemas";
 
 /**
- * EventCard：日历事件卡（经济/财报；重要性色 + 文本；实际/预测/前值）。
+ * EventCard: calendar event card (economic / earnings; importance color + text; actual / forecast / previous).
  */
 export interface EventCardProps {
   event: CalendarEvent;

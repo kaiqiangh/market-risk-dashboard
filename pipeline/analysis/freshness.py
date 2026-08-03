@@ -1,8 +1,8 @@
-"""分析新鲜度检查（架构 §8.5 五态语义；供 AI 自动化决策是否跳过）。
+"""Analysis freshness check (architecture §8.5 five-state semantics; used by AI automation to decide whether to skip).
 
-五态判定复用 pipeline/validation/freshness.py（管道统一判定，架构 §8.4）。
+Five-state determination reuses pipeline/validation/freshness.py (unified pipeline determination, architecture §8.4).
 
-用法：
+Usage:
     python -m pipeline.analysis.freshness [--facts path] [--interval-min 720]
 """
 
@@ -23,7 +23,7 @@ AnalysisDecision = Literal["run", "skip_missing", "run_stale", "run_degraded"]
 
 
 def evaluate_analysis_freshness(facts: FactLayer, now: datetime | None = None) -> tuple[FreshnessStatus, AnalysisDecision]:
-    """综合判定：时间维度 + 事实层数据质量。返回 (status, 决策)。"""
+    """Combined determination: time dimension + fact layer data quality. Returns (status, decision)."""
     time_status = evaluate_freshness(facts.generated_at, expected_interval_minutes("analysis"), now)
 
     degraded_datasets = [
@@ -40,14 +40,14 @@ def evaluate_analysis_freshness(facts: FactLayer, now: datetime | None = None) -
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="AI 分析新鲜度检查")
-    parser.add_argument("--facts", type=Path, default=None, help="facts.json 路径（默认契约路径）")
-    parser.add_argument("--interval-min", type=int, default=None, help="覆盖 analysis 期望间隔（分钟）")
+    parser = argparse.ArgumentParser(description="AI analysis freshness check")
+    parser.add_argument("--facts", type=Path, default=None, help="facts.json path (default contract path)")
+    parser.add_argument("--interval-min", type=int, default=None, help="override the analysis expected interval (minutes)")
     args = parser.parse_args(argv)
 
     facts_path = args.facts or input_path("facts")
     if not facts_path.exists():
-        print("[freshness] missing（事实层不存在） decision=skip_missing", file=sys.stderr)
+        print("[freshness] missing (fact layer not found) decision=skip_missing", file=sys.stderr)
         return 0
 
     facts = FactLayer.model_validate(json.loads(facts_path.read_text(encoding="utf-8")))

@@ -1,5 +1,5 @@
-# GitHub Pages 部署（架构 §1.1：仅构建+部署，不采集数据、无 Secrets）
-# 数据采集在本机 Scheduled Task 完成并 push 到仓库；本 workflow 只消费已提交内容。
+# GitHub Pages deployment (Architecture §1.1: build + deploy only; no data collection, no Secrets)
+# Data collection is done by the local Scheduled Task and pushed to the repo; this workflow only consumes committed content.
 name: Deploy Pages
 
 on:
@@ -7,7 +7,7 @@ on:
     branches: [dev, main]
   workflow_dispatch:
 
-# CI 权限最小化（架构 §8.14）
+# Minimal CI permissions (Architecture §8.14)
 permissions:
   contents: read
   pages: write
@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # PRD §20.1 构建链：校验翻译文件 → 校验 JSON Schema → ESLint → TS check → 测试 → 构建 → 部署
+      # PRD §20.1 build chain: check translation files → validate JSON Schema → ESLint → TS check → test → build → deploy
       - name: Check translation files
         run: npm run check:i18n
 

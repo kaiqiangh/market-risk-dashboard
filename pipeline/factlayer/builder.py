@@ -1,6 +1,6 @@
-"""事实层组装（架构 §3.3 FactLayerBuilder：AI 输入契约）。
+"""Fact layer assembly (architecture §3.3 FactLayerBuilder: AI input contract).
 
-语言无关的确定性事实；evidence_index 中的证据供 AI 引用（validate.py 校验）。
+Language-neutral deterministic facts; the evidence_index entries are for the AI to cite (validated by validate.py).
 """
 
 from __future__ import annotations
@@ -61,7 +61,7 @@ class FactLayerBuilder:
             evidence_index=evidence_index,
         )
 
-    # ---- 摘要 ----
+    # ---- Summaries ----
 
     def _macro_summary(self, macro: MacroEnvelope) -> dict[str, Any]:
         summary: dict[str, Any] = {}
@@ -89,7 +89,7 @@ class FactLayerBuilder:
         summary["btc_dominance"] = crypto.payload.btc_dominance
         return summary
 
-    # ---- 证据索引 ----
+    # ---- Evidence index ----
 
     def _build_evidence(
         self,

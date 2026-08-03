@@ -1,10 +1,10 @@
-"""AI 分析契约：输入/输出路径 + schema 版本 + 语言（单一事实源，架构 §1.5）。
+"""AI analysis contract: input/output paths + schema version + languages (single source of truth, architecture §1.5).
 
-文件形态约定（重要，架构 §3.3/§3.4）：
+File shape conventions (important, architecture §3.3/§3.4):
 - facts.json / analysis.zh-CN.json / analysis.en.json / news.zh-translations.json
-  为**自描述契约文件**（自带 schema_version/generated_at/language），直接以对应模型解析，
-  不额外包裹 BaseEnvelope（避免元数据重复）。
-- 其余数据集文件（macro/equities/…/risk.json）一律包裹 BaseEnvelope。
+  are **self-describing contract files** (carry schema_version/generated_at/language), parsed
+  directly with their own models, without wrapping in BaseEnvelope (avoids duplicate metadata).
+- All other dataset files (macro/equities/…/risk.json) are wrapped in BaseEnvelope.
 """
 
 from __future__ import annotations
@@ -16,16 +16,16 @@ from pipeline.settings import settings
 
 SUPPORTED_LANGUAGES: tuple[str, ...] = ("zh-CN", "en")
 
-# 输出目录：public/data/latest（架构 §1.5）
+# Output directory: public/data/latest (architecture §1.5)
 ANALYSIS_DIR: Path = settings.data_dir / "latest"
 
-# 输入（管道产出，确定性）
+# Input (pipeline-produced, deterministic)
 INPUT_FILES: dict[str, Path] = {
     "facts": ANALYSIS_DIR / "facts.json",
     "news": ANALYSIS_DIR / "news.json",
 }
 
-# 输出（AI 自动化产出，经校验）
+# Output (produced by AI automation, validated)
 OUTPUT_FILES: dict[str, Path] = {
     "analysis_zh": ANALYSIS_DIR / "analysis.zh-CN.json",
     "analysis_en": ANALYSIS_DIR / "analysis.en.json",
@@ -34,31 +34,31 @@ OUTPUT_FILES: dict[str, Path] = {
 
 
 def input_path(name: str) -> Path:
-    """输入文件路径（name: 'facts' | 'news'）。"""
+    """Input file path (name: 'facts' | 'news')."""
     if name not in INPUT_FILES:
-        raise KeyError(f"未知输入契约: {name!r}，可选: {sorted(INPUT_FILES)}")
+        raise KeyError(f"unknown input contract: {name!r}, options: {sorted(INPUT_FILES)}")
     return INPUT_FILES[name]
 
 
 def output_path(name: str) -> Path:
-    """输出文件路径（name: 'analysis_zh' | 'analysis_en' | 'news_translations'）。"""
+    """Output file path (name: 'analysis_zh' | 'analysis_en' | 'news_translations')."""
     if name not in OUTPUT_FILES:
-        raise KeyError(f"未知输出契约: {name!r}，可选: {sorted(OUTPUT_FILES)}")
+        raise KeyError(f"unknown output contract: {name!r}, options: {sorted(OUTPUT_FILES)}")
     return OUTPUT_FILES[name]
 
 
 def analysis_path(lang: str) -> Path:
-    """按语言返回分析文件路径。"""
+    """Return the analysis file path for a language."""
     if lang not in SUPPORTED_LANGUAGES:
-        raise ValueError(f"不支持的语言: {lang!r}，可选: {SUPPORTED_LANGUAGES}")
+        raise ValueError(f"unsupported language: {lang!r}, options: {SUPPORTED_LANGUAGES}")
     return ANALYSIS_DIR / f"analysis.{lang}.json"
 
 
 def expected_interval_minutes(dataset: str, fallback: int = 720) -> int:
-    """期望更新间隔（分钟）。
+    """Expected update interval (minutes).
 
-    优先读 config/sources.yaml expectations；缺失时返回 fallback。
-    冻结频率（架构 §8.5）：行情/新闻 480、宏观 240、日历 1440、分析 720。
+    Prefers config/sources.yaml expectations; returns fallback when missing.
+    Frozen frequencies (architecture §8.5): market/news 480, macro 240, calendar 1440, analysis 720.
     """
     try:
         sources = settings.load_sources()

@@ -1,4 +1,4 @@
-"""FedWatch 包（架构 §1.6）。"""
+"""FedWatch package (architecture §1.6)."""
 
 from pipeline.fedwatch.calculator import FedWatchInput, compute_fedwatch, insufficient_data_snapshot
 from pipeline.fedwatch.futures import fetch_contract_price, meeting_date_for_contract, next_contract_codes

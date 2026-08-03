@@ -8,7 +8,7 @@ import { formatNumber, formatPctPoints } from "@/lib/format";
 import type { DriverContribution, RiskDimensionKey } from "@/schemas";
 
 /**
- * TopDrivers：Top 风险驱动（对总分的贡献）。
+ * TopDrivers: top risk drivers (contribution to the total score).
  */
 export interface TopDriversProps {
   drivers: DriverContribution[];

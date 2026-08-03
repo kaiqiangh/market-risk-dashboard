@@ -1,4 +1,4 @@
-"""Risk 模型测试（scoring/model/regime/confidence）。"""
+"""Risk model tests (scoring/model/regime/confidence)."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from pipeline.schemas import MacroDataset, MacroIndicator, RiskModelResult
 def test_heuristic_risk_score_bounds() -> None:
     assert heuristic_risk_score("vix", 15) == 20.0
     assert heuristic_risk_score("vix", 10) == 5.0
-    assert heuristic_risk_score("vix", 100) == 98.0  # 越界钳制
+    assert heuristic_risk_score("vix", 100) == 98.0  # clamped at bounds
     assert heuristic_risk_score("vix", None) is None
     assert heuristic_risk_score("unknown_key", 10) is None
 
@@ -27,7 +27,7 @@ def test_percentile_risk_score() -> None:
     history = list(range(1, 101))  # 1..100
     assert percentile_risk_score(100, history, "higher_is_riskier") == 100.0
     assert percentile_risk_score(1, history, "higher_is_riskier") < 5
-    # lower_is_riskier 反转
+    # lower_is_riskier inverted
     low = percentile_risk_score(1, history, "lower_is_riskier")
     assert low > 95
 
@@ -38,30 +38,30 @@ def test_percentile_rank_and_zscore() -> None:
     assert percentile_rank(100, history) == 100.0
     z = z_score(50, history)
     assert z is not None and abs(z) < 0.2
-    assert z_score(50, []) is None  # 样本过少
+    assert z_score(50, []) is None  # too few samples
 
 
 def test_compute_indicator_score_percentile_primary() -> None:
-    """P0-2：历史足够时百分位为主路径，percentile/z_score 非 None。"""
+    """P0-2: with sufficient history the percentile is the primary path; percentile/z_score are non-None."""
     history = list(range(1, 101))
     score, pct, z = compute_indicator_score("vix", 90, history, "higher_is_riskier")
     assert pct == 90.0
     assert z is not None
-    assert score == 90.0  # 90 分位 → 90 分
-    # lower_is_riskier 反向
+    assert score == 90.0  # 90th pct → 90 points
+    # lower_is_riskier inverted
     score2, pct2, _ = compute_indicator_score("breadth_above_ma200", 10, history, "lower_is_riskier")
     assert pct2 == 10.0
     assert score2 == 90.0
 
 
 def test_compute_indicator_score_heuristic_fallback() -> None:
-    """历史不足（<60 样本）→ 回退启发式表，percentile/z_score=None。"""
+    """Insufficient history (<60 samples) → heuristic table fallback, percentile/z_score=None."""
     short_history = list(range(1, 10))
     score, pct, z = compute_indicator_score("vix", 25, short_history, "higher_is_riskier")
     assert pct is None
     assert z is None
-    assert score == 60.0  # 启发式 vix 25 → 60
-    # 无历史
+    assert score == 60.0  # heuristic vix 25 → 60
+    # no history
     score2, pct2, z2 = compute_indicator_score("vix", 25, None, "higher_is_riskier")
     assert pct2 is None and z2 is None and score2 == 60.0
 
@@ -73,7 +73,7 @@ def test_regime_crisis_on_vix_40() -> None:
 
 
 def test_regime_goldilocks() -> None:
-    # 低波动 + 正动量 + 宽度健康 + 曲线不极端 → goldilocks
+    # low vol + positive momentum + healthy breadth + non-extreme curve → goldilocks
     regime, _ = regime_mod.infer_regime({"vix": 12.0, "hy_oas": 2.5, "yield_curve_10y2y": 0.3, "breadth_above_ma200": 0.7, "momentum_3m": 8.0})
     assert regime in ("goldilocks", "risk_on")
 
@@ -107,8 +107,8 @@ def test_risk_model_produces_valid_result() -> None:
     assert 0 <= result.total_score <= 100
     assert 0 <= result.confidence <= 1
     assert len(result.dimensions) == 6
-    assert result.top_drivers  # 有 Top drivers
-    assert "精确" not in result.disclaimer or "模型化" in result.disclaimer
+    assert result.top_drivers  # has top drivers
+    assert "definitive probability" not in result.disclaimer or "modeled estimate" in result.disclaimer
 
 
 def test_risk_model_trend_1d() -> None:
@@ -118,10 +118,10 @@ def test_risk_model_trend_1d() -> None:
 
 
 def test_risk_model_percentile_with_series_history() -> None:
-    """P0-2：series_history 注入后 percentile/z_score 非 None，风险分走百分位。"""
+    """P0-2: after series_history injection percentile/z_score are non-None, the risk score uses the percentile path."""
     ctx = _synthetic_context()
-    # 5Y 日频窗口（VIX 25 在历史中处于较高位置）
-    history = [10.0 + (i % 20) for i in range(1300)]  # 10~29 循环
+    # 5Y daily-frequency window (VIX 25 sits high in the history)
+    history = [10.0 + (i % 20) for i in range(1300)]  # 10~29 cycle
     ctx["series_history"] = {"vixcls": [{"date": f"2021-{i:02d}-01", "value": v} for i, v in enumerate(history)]}
     model = RiskModel()
     result = model.score(ctx)
@@ -131,12 +131,12 @@ def test_risk_model_percentile_with_series_history() -> None:
     )
     assert vix_ind.percentile is not None
     assert vix_ind.z_score is not None
-    # 25 在 10~29 均匀历史中的百分位 ≈ 76（<=25 的样本占比）
+    # 25 in the uniform 10~29 history has percentile ≈ 76 (share of samples ≤ 25)
     assert 65 <= vix_ind.percentile <= 85
 
 
 def test_risk_model_dimension_trend_computed() -> None:
-    """P2-11：_prev_dim_scores 注入后维度 trend 非恒 flat，方向正确。"""
+    """P2-11: after _prev_dim_scores injection the dimension trend is not always flat and the direction is correct."""
     ctx = _synthetic_context()
     ctx["_prev_dim_scores"] = {
         "macro": 90.0, "liquidity_credit": 20.0, "equity_structure": 20.0,
@@ -144,16 +144,16 @@ def test_risk_model_dimension_trend_computed() -> None:
     }
     result = RiskModel().score(ctx)
     by_key = {d.key: d for d in result.dimensions}
-    # macro 现分（≈62）远低于上一日 90 → falling
+    # macro current score (≈62) is far below yesterday's 90 → falling
     assert by_key["macro"].trend == "falling"
-    # equity_structure 现分（≈47）高于上一日 20 → rising
+    # equity_structure current score (≈47) is above yesterday's 20 → rising
     assert by_key["equity_structure"].trend == "rising"
-    # 至少一个维度不是 flat（分数确有变化）
+    # at least one dimension is not flat (scores actually changed)
     assert any(d.trend != "flat" for d in result.dimensions)
 
 
 def test_risk_model_trend_1w_1m_from_history() -> None:
-    """P2-11：_risk_history 注入后 trend_1w/trend_1m 可算。"""
+    """P2-11: after _risk_history injection trend_1w/trend_1m are computable."""
     ctx = _synthetic_context()
     rows = [
         {"date": f"2026-06-{i:02d}", "total_score": 30.0 + (i % 3)}
@@ -168,7 +168,7 @@ def test_risk_model_trend_1w_1m_from_history() -> None:
 
 def test_risk_model_level_thresholds() -> None:
     model = RiskModel()
-    # 低风险上下文 → 分数应低于高 VIX 上下文
+    # low-risk context → score should be lower than the high-VIX context
     low_ctx = _synthetic_context()
     low_ctx["macro"].rates = [MacroIndicator(key="vixcls", label="VIX", value=12.0, unit="index", source="FRED")]
     low = model.score(low_ctx)

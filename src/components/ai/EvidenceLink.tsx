@@ -6,10 +6,10 @@ import { formatNumber } from "@/lib/format";
 import type { EvidenceRef } from "@/schemas";
 
 /**
- * EvidenceLink：证据链接（架构 §8.9 Evidence Linking）。
- * 每个结论携带 evidence_refs；点击后：
- * 1) 若页面存在 data-evidence-path 匹配的元素 → 滚动并高亮该指标卡片；
- * 2) 始终展开内联详情（dataset / metric / value），保证可访问性（不依赖滚动）。
+ * EvidenceLink: evidence link (architecture §8.9 Evidence Linking).
+ * Each conclusion carries evidence_refs; on click:
+ * 1) if an element matching data-evidence-path exists on the page → scroll to and highlight that indicator card;
+ * 2) always expand inline details (dataset / metric / value) to ensure accessibility (not dependent on scrolling).
  */
 export interface EvidenceLinkProps {
   refs: EvidenceRef[];

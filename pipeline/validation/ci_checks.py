@@ -1,21 +1,22 @@
-"""T05 数据静态校验（CI + 本地脚本共用，架构 §5#1 / PRD §20.2）。
+"""T05 static data validation (shared by CI + local scripts; architecture §5#1 / PRD §20.2).
 
-覆盖检查项（与 validate-data.yml / scripts/validate_data.sh 等价）：
-1. Schema 校验：全部 JSON 过 Pydantic 同构校验（禁隐式字段/NaN/枚举/时间）。
-2. 必填字段：latest/* 已知数据集 + facts.json 必须存在；dashboard.json 存在时也必须通过。
-3. 时间戳：envelope 时间 ISO 8601 UTC + Z（Pydantic UTCDateTime 强制）。
-4. 数据质量：data_quality ∈ [0,1]（Pydantic 强制 + 显式复查）。
-5. 风险分数范围：total_score / dimension.score / indicator.risk_score ∈ [0,100]。
-6. NaN/Infinity：JSON 文本中的非法常量（Python json.loads 默认接受，这里拒绝）。
-7. 重复新闻：news.json 中 id 重复 / (title+source+published_at) 重复。
-8. 数据过期：按 freshness 五态检查 generated_at 相对期望频率（过期记为 WARNING，
-   不阻塞发布——数据是静态快照，代码 PR 不应因数据时间而失败）。
-9. 未知语言 key：analysis.*.json 的 language 必须属于受支持语言（zh-CN/en）。
-10. 中英文缺失：analysis.zh-CN.json 与 analysis.en.json 成对存在（缺一则报错）；
-    两者均缺失视为 AI 降级模式（WARNING）。
-11. AI 双语结论不一致：复用 pipeline/analysis/validate.compare_bilingual。
+Covered checks (equivalent to validate-data.yml / scripts/validate_data.sh):
+1. Schema validation: all JSON passes Pydantic isomorphic validation (no implicit fields/NaN/enum/time).
+2. Required fields: latest/* known datasets + facts.json must exist; dashboard.json must pass when present.
+3. Timestamps: envelope times are ISO 8601 UTC + Z (enforced by Pydantic UTCDateTime).
+4. Data quality: data_quality ∈ [0,1] (Pydantic enforced + explicit re-check).
+5. Risk score ranges: total_score / dimension.score / indicator.risk_score ∈ [0,100].
+6. NaN/Infinity: illegal constants in JSON text (Python json.loads accepts them by default; rejected here).
+7. Duplicate news: duplicate id / (title+source+published_at) in news.json.
+8. Stale data: check generated_at against the expected frequency using the five-state freshness
+   (stale is a WARNING, it does not block publishing — data is a static snapshot, and a code PR
+   should not fail because of data timestamps).
+9. Unknown language key: the language of analysis.*.json must be a supported language (zh-CN/en).
+10. Bilingual missing: analysis.zh-CN.json and analysis.en.json must exist as a pair (error if one
+    is missing); if both are missing, treat as AI degraded mode (WARNING).
+11. AI bilingual conclusion mismatch: reuses pipeline/analysis/validate.compare_bilingual.
 
-退出码：0 = 通过（可含 WARNING）；1 = 存在 ERROR。
+Exit code: 0 = pass (WARNING allowed); 1 = ERROR present.
 """
 
 from __future__ import annotations
@@ -46,7 +47,7 @@ from pipeline.schemas import (
 from pipeline.schemas.envelope import is_schema_compatible
 from pipeline.validation.freshness import evaluate_freshness
 
-# latest 文件名 → (模型, 期望频率 dataset key)；与 validate_all 保持一致
+# latest filename → (model, expected-frequency dataset key); consistent with validate_all
 ENVELOPE_MODELS: dict[str, tuple[Any, str]] = {
     "macro.json": (MacroEnvelope, "macro"),
     "equities.json": (EquitiesEnvelope, "market"),
@@ -58,18 +59,18 @@ ENVELOPE_MODELS: dict[str, tuple[Any, str]] = {
     "dashboard.json": (DashboardEnvelope, "dashboard"),
 }
 
-# 自描述契约文件（不带 envelope）：存在时必须通过校验，不强制要求存在。
-# facts.json 由管道每次运行产出；analysis.*.json 由 AI 自动化产出（缺失=降级模式）。
+# Self-describing contract files (no envelope): must pass validation if present; presence not required.
+# facts.json is produced on every pipeline run; analysis.*.json is produced by AI automation (missing = degraded mode).
 STANDALONE_MODELS: dict[str, Any] = {
     "facts.json": FactLayer,
     "analysis.zh-CN.json": AnalysisDataset,
     "analysis.en.json": AnalysisDataset,
 }
 
-# 可选的 envelope 文件（若出现则必须通过校验，不强制要求存在）
+# Optional envelope files (must pass validation if present; presence not required)
 OPTIONAL_ENVELOPE_MODELS: dict[str, tuple[Any, str]] = {}
 
-# 时间正则：ISO 8601 UTC（YYYY-MM-DDTHH:MM:SSZ 或带小数秒）
+# Time regex: ISO 8601 UTC (YYYY-MM-DDTHH:MM:SSZ or with fractional seconds)
 _ISO_UTC_RE = re.compile(
     r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$"
 )
@@ -78,13 +79,13 @@ _FRESHNESS_ENUM = {"fresh", "delayed", "stale", "missing", "degraded"}
 
 
 def _reject_constant(name: str) -> Any:
-    """JSON parse_constant：拒绝 NaN/Infinity/-Infinity（JSON 规范非法）。"""
-    raise ValueError(f"JSON 含非法常量: {name}")
+    """JSON parse_constant: reject NaN/Infinity/-Infinity (illegal per JSON spec)."""
+    raise ValueError(f"JSON contains illegal constant: {name}")
 
 
 @dataclass
 class CheckReport:
-    """校验结果：errors 导致失败，warnings 仅提示。"""
+    """Validation result: errors cause failure, warnings are informational only."""
 
     errors: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
@@ -102,15 +103,15 @@ class CheckReport:
 
 
 def load_json_strict(path: Path) -> dict[str, Any]:
-    """读取 JSON 并拒绝 NaN/Infinity 常量（Python 默认接受，这里显式拒绝）。"""
+    """Read JSON and reject NaN/Infinity constants (Python accepts them by default; rejected here explicitly)."""
     text = path.read_text(encoding="utf-8")
     return json.loads(text, parse_constant=_reject_constant)
 
 
 def check_latest(latest_dir: Path, report: CheckReport, now: datetime) -> None:
-    """校验 latest/ 全部已知文件。"""
+    """Validate all known files under latest/."""
     if not latest_dir.exists():
-        report.error(f"latest 目录缺失: {latest_dir}")
+        report.error(f"latest directory missing: {latest_dir}")
         return
 
     known = {**ENVELOPE_MODELS, **OPTIONAL_ENVELOPE_MODELS}
@@ -119,54 +120,54 @@ def check_latest(latest_dir: Path, report: CheckReport, now: datetime) -> None:
         if not path.exists():
             if name in OPTIONAL_ENVELOPE_MODELS:
                 continue
-            report.error(f"{name}: 文件缺失（必填数据集）")
+            report.error(f"{name}: file missing (required dataset)")
             continue
         report.files_checked += 1
         _check_one(path, name, model_spec, report, now)
 
-    # 自描述契约文件（存在则校验；缺失按各自语义处理）
+    # Self-describing contract files (validate if present; missing handled per semantics)
     for name, model in STANDALONE_MODELS.items():
         path = latest_dir / name
         if not path.exists():
             if name == "facts.json":
-                report.error(f"{name}: 文件缺失（管道每次运行必须产出）")
+                report.error(f"{name}: file missing (must be produced on every pipeline run)")
             continue
         report.files_checked += 1
         _check_one(path, name, model, report, now)
 
-    # 未知 analysis.*.json 语言（例如 analysis.fr.json）
+    # Unknown analysis.*.json language (e.g. analysis.fr.json)
     for path in sorted(latest_dir.glob("analysis.*.json")):
         lang = path.name[len("analysis.") : -len(".json")]
         if lang not in SUPPORTED_LANGUAGES:
-            report.error(f"{path.name}: 未知语言 key {lang!r}（支持: {SUPPORTED_LANGUAGES}）")
+            report.error(f"{path.name}: unknown language key {lang!r} (supported: {SUPPORTED_LANGUAGES})")
 
-    # 中英文成对：存在其一则必须两者都在；均缺失 → AI 降级模式（WARNING）
+    # Bilingual pair: if one exists, both must exist; both missing → AI degraded mode (WARNING)
     zh = latest_dir / "analysis.zh-CN.json"
     en = latest_dir / "analysis.en.json"
     if zh.exists() != en.exists():
         missing = "analysis.en.json" if not en.exists() else "analysis.zh-CN.json"
-        report.error(f"中英文分析文件缺失: {missing}（必须成对发布）")
+        report.error(f"missing bilingual analysis file: {missing} (must be published in pairs)")
     elif not zh.exists() and not en.exists():
-        report.warn("analysis.*.json 均缺失：AI 简报未生成（降级模式，站点 AI 区块显示 degraded）")
+        report.warn("analysis.*.json all missing: AI briefing not generated (degraded mode; site AI block shows degraded)")
 
-    # 双语一致性（均存在时）
+    # Bilingual consistency (when both exist)
     if zh.exists() and en.exists():
         try:
             zh_obj = AnalysisDataset.model_validate(load_json_strict(zh))
             en_obj = AnalysisDataset.model_validate(load_json_strict(en))
             issues = compare_bilingual(zh_obj, en_obj)
             for issue in issues:
-                report.error(f"AI 双语结论不一致: {issue}")
+                report.error(f"AI bilingual conclusion mismatch: {issue}")
         except Exception as exc:  # noqa: BLE001
-            report.error(f"AI 双语校验失败: {exc}")
+            report.error(f"AI bilingual validation failed: {exc}")
 
 
 def _check_one(path: Path, name: str, model_spec: tuple[Any, str] | Any, report: CheckReport, now: datetime) -> None:
-    """校验单个文件：schema + 必填 + 时间戳 + 数据质量 + 风险范围 + 过期。"""
+    """Validate a single file: schema + required + timestamp + data quality + risk range + staleness."""
     try:
         data = load_json_strict(path)
     except (json.JSONDecodeError, OSError, ValueError) as exc:
-        report.error(f"{name}: 无法读取/解析 JSON（含 NaN/Infinity?）: {exc}")
+        report.error(f"{name}: unable to read/parse JSON (contains NaN/Infinity?): {exc}")
         return
 
     if name in ENVELOPE_MODELS or name in OPTIONAL_ENVELOPE_MODELS:
@@ -174,29 +175,29 @@ def _check_one(path: Path, name: str, model_spec: tuple[Any, str] | Any, report:
         try:
             env = model.model_validate(data)
         except Exception as exc:  # noqa: BLE001
-            report.error(f"{name}: schema 校验失败: {exc}")
+            report.error(f"{name}: schema validation failed: {exc}")
             return
-        # schema_version 兼容
+        # schema_version compatibility
         if not is_schema_compatible(str(env.schema_version)):
-            report.error(f"{name}: schema_version {env.schema_version} 不兼容")
-        # 时间戳格式（显式复查）
+            report.error(f"{name}: schema_version {env.schema_version} incompatible")
+        # Timestamp format (explicit re-check)
         for ts_field in ("generated_at", "source_updated_at"):
             value = getattr(env, ts_field, None)
             if value and not _ISO_UTC_RE.match(str(value)):
-                report.error(f"{name}: {ts_field} 非 ISO 8601 UTC: {value!r}")
-        # 数据质量
+                report.error(f"{name}: {ts_field} is not ISO 8601 UTC: {value!r}")
+        # Data quality
         if not (0.0 <= float(env.data_quality) <= 1.0):
-            report.error(f"{name}: data_quality 超出 [0,1]: {env.data_quality}")
-        # freshness 枚举
+            report.error(f"{name}: data_quality out of range [0,1]: {env.data_quality}")
+        # freshness enum
         if env.freshness_status not in _FRESHNESS_ENUM:
-            report.error(f"{name}: freshness_status 非法: {env.freshness_status}")
-        # 数据过期（时间维度；WARNING 不阻塞）
+            report.error(f"{name}: invalid freshness_status: {env.freshness_status}")
+        # Stale data (time dimension; WARNING does not block)
         status = evaluate_freshness(str(env.generated_at), _expected_minutes(dataset_key), now)
         if status == "stale":
-            report.warn(f"{name}: 数据已过期（freshness=stale, generated_at={env.generated_at}）")
+            report.warn(f"{name}: data is stale (freshness=stale, generated_at={env.generated_at})")
         elif status == "delayed":
-            report.warn(f"{name}: 数据延迟（freshness=delayed, generated_at={env.generated_at}）")
-        # 风险分数范围（risk.json 显式复查；payload 可能是 Pydantic 模型）
+            report.warn(f"{name}: data is delayed (freshness=delayed, generated_at={env.generated_at})")
+        # Risk score ranges (explicit re-check for risk.json; payload may be a Pydantic model)
         if name == "risk.json":
             payload = env.payload
             if hasattr(payload, "model_dump"):
@@ -207,17 +208,17 @@ def _check_one(path: Path, name: str, model_spec: tuple[Any, str] | Any, report:
         try:
             obj = model.model_validate(data)
         except Exception as exc:  # noqa: BLE001
-            report.error(f"{name}: schema 校验失败: {exc}")
+            report.error(f"{name}: schema validation failed: {exc}")
             return
         if not is_schema_compatible(str(getattr(obj, "schema_version", "1.0.0"))):
-            report.error(f"{name}: schema_version 不兼容")
+            report.error(f"{name}: schema_version incompatible")
         if name.startswith("analysis."):
             if getattr(obj, "language", None) not in SUPPORTED_LANGUAGES:
-                report.error(f"{name}: language 非法: {getattr(obj, 'language', None)!r}")
+                report.error(f"{name}: invalid language: {getattr(obj, 'language', None)!r}")
 
 
 def _expected_minutes(dataset_key: str) -> int:
-    """期望更新间隔（分钟），读取 config/sources.yaml，失败回退 480。"""
+    """Expected update interval (minutes), read from config/sources.yaml, fallback 480 on failure."""
     try:
         from pipeline.settings import settings
 
@@ -229,32 +230,32 @@ def _expected_minutes(dataset_key: str) -> int:
 
 
 def _check_risk_ranges(payload: dict[str, Any], report: CheckReport, name: str) -> None:
-    """风险分数范围显式复查（Pydantic Field 已约束，这里双保险）。"""
+    """Explicit re-check of risk score ranges (Pydantic Field already constrains; double safety here)."""
     try:
         total = float(payload["total_score"])
         if not (0.0 <= total <= 100.0):
-            report.error(f"{name}: total_score 超出 [0,100]: {total}")
+            report.error(f"{name}: total_score out of range [0,100]: {total}")
         for dim in payload.get("dimensions", []):
             score = float(dim.get("score", -1))
             if not (0.0 <= score <= 100.0):
-                report.error(f"{name}: dimension {dim.get('key')} score 超出 [0,100]: {score}")
+                report.error(f"{name}: dimension {dim.get('key')} score out of range [0,100]: {score}")
             for ind in dim.get("indicators", []):
                 rs = ind.get("risk_score")
                 if rs is not None:
                     rs = float(rs)
                     if not (0.0 <= rs <= 100.0):
                         report.error(
-                            f"{name}: indicator {ind.get('key')} risk_score 超出 [0,100]: {rs}"
+                            f"{name}: indicator {ind.get('key')} risk_score out of range [0,100]: {rs}"
                         )
         confidence = payload.get("confidence")
         if confidence is not None and not (0.0 <= float(confidence) <= 1.0):
-            report.error(f"{name}: confidence 超出 [0,1]: {confidence}")
+            report.error(f"{name}: confidence out of range [0,1]: {confidence}")
     except (KeyError, TypeError, ValueError) as exc:
-        report.error(f"{name}: 风险结构无法复查范围: {exc}")
+        report.error(f"{name}: unable to re-check risk structure ranges: {exc}")
 
 
 def check_news_duplicates(latest_dir: Path, report: CheckReport) -> None:
-    """重复新闻检查：id 重复 / (title+source+published_at) 重复。"""
+    """Duplicate news check: duplicate id / duplicate (title+source+published_at)."""
     path = latest_dir / "news.json"
     if not path.exists():
         return
@@ -262,7 +263,7 @@ def check_news_duplicates(latest_dir: Path, report: CheckReport) -> None:
         data = load_json_strict(path)
         items = data.get("payload", {}).get("items", [])
     except Exception as exc:  # noqa: BLE001
-        report.error(f"news.json: 重复新闻检查无法读取: {exc}")
+        report.error(f"news.json: unable to read for duplicate news check: {exc}")
         return
     ids: dict[str, int] = {}
     sigs: dict[str, int] = {}
@@ -278,56 +279,56 @@ def check_news_duplicates(latest_dir: Path, report: CheckReport) -> None:
         sigs[sig] = sigs.get(sig, 0) + 1
     for nid, count in ids.items():
         if count > 1:
-            report.error(f"news.json: 重复新闻 id {nid!r}（出现 {count} 次）")
+            report.error(f"news.json: duplicate news id {nid!r} (appears {count} times)")
     for sig, count in sigs.items():
         if count > 1:
-            report.error(f"news.json: 重复新闻 (title+source+published_at) {sig[0]!r}（出现 {count} 次）")
+            report.error(f"news.json: duplicate news (title+source+published_at) {sig[0]!r} (appears {count} times)")
 
 
 def check_history(data_dir: Path, report: CheckReport) -> None:
-    """历史切片：文件可解析 + 行结构（date + total_score 范围）。"""
+    """History slices: file parseable + row structure (date + total_score range)."""
     for series in ("risk", "market"):
         for slice_name in ("30d", "90d", "daily"):
             path = data_dir / "history" / series / f"{slice_name}.json"
             if not path.exists():
-                report.warn(f"history/{series}/{slice_name}.json 缺失（预热回填后应存在）")
+                report.warn(f"history/{series}/{slice_name}.json missing (should exist after warm-up backfill)")
                 continue
             report.files_checked += 1
             try:
                 rows = load_json_strict(path)
             except Exception as exc:  # noqa: BLE001
-                report.error(f"history/{series}/{slice_name}.json: 解析失败: {exc}")
+                report.error(f"history/{series}/{slice_name}.json: parse failed: {exc}")
                 continue
             if not isinstance(rows, list):
-                report.error(f"history/{series}/{slice_name}.json: 顶层应为数组")
+                report.error(f"history/{series}/{slice_name}.json: top level should be an array")
                 continue
             for row in rows:
                 if not isinstance(row, dict):
-                    report.error(f"history/{series}/{slice_name}.json: 行非对象")
+                    report.error(f"history/{series}/{slice_name}.json: row is not an object")
                     continue
                 date = row.get("date")
                 if not _DATE_RE.match(str(date or "")):
-                    report.error(f"history/{series}/{slice_name}.json: 行 date 非法: {date!r}")
+                    report.error(f"history/{series}/{slice_name}.json: invalid row date: {date!r}")
                 score = row.get("total_score")
                 if score is not None:
                     try:
                         score = float(score)
                     except (TypeError, ValueError):
-                        report.error(f"history/{series}/{slice_name}.json: total_score 非法: {score!r}")
+                        report.error(f"history/{series}/{slice_name}.json: invalid total_score: {score!r}")
                     else:
                         if not (0.0 <= score <= 100.0):
-                            report.error(f"history/{series}/{slice_name}.json: total_score 超出 [0,100]: {score}")
+                            report.error(f"history/{series}/{slice_name}.json: total_score out of range [0,100]: {score}")
         index_path = data_dir / "history" / series / "index.json"
         if index_path.exists():
             report.files_checked += 1
             try:
                 load_json_strict(index_path)
             except Exception as exc:  # noqa: BLE001
-                report.error(f"history/{series}/index.json: 解析失败: {exc}")
+                report.error(f"history/{series}/index.json: parse failed: {exc}")
 
 
 def check_metadata_and_feeds(data_dir: Path, report: CheckReport) -> None:
-    """metadata/* 与 feeds/* 可解析 + 基本结构。"""
+    """metadata/* and feeds/* parseable + basic structure."""
     meta_checks = {
         "metadata/freshness.json": ("datasets", "schema_version"),
         "metadata/sources.json": ("domains", "schema_version"),
@@ -337,21 +338,21 @@ def check_metadata_and_feeds(data_dir: Path, report: CheckReport) -> None:
     for rel, keys in meta_checks.items():
         path = data_dir / rel
         if not path.exists():
-            report.warn(f"{rel} 缺失（系统状态页数据源）")
+            report.warn(f"{rel} missing (system status page data source)")
             continue
         report.files_checked += 1
         try:
             data = load_json_strict(path)
         except Exception as exc:  # noqa: BLE001
-            report.error(f"{rel}: 解析失败: {exc}")
+            report.error(f"{rel}: parse failed: {exc}")
             continue
         for key in keys:
             if key not in data:
-                report.warn(f"{rel}: 缺少字段 {key!r}")
+                report.warn(f"{rel}: missing field {key!r}")
 
 
 def run_all(data_dir: Path, now: datetime | None = None) -> CheckReport:
-    """全量校验入口。data_dir 指向 public/data。"""
+    """Full validation entry point. data_dir points to public/data."""
     now = now or datetime.now(timezone.utc)
     report = CheckReport()
     latest = data_dir / "latest"
@@ -364,9 +365,9 @@ def run_all(data_dir: Path, now: datetime | None = None) -> CheckReport:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="T05 数据静态校验（Schema/必填/时间戳/质量/风险范围/NaN/重复/过期/语言/双语）"
+        description="T05 static data validation (schema/required/timestamp/quality/risk range/NaN/duplicate/stale/language/bilingual)"
     )
-    parser.add_argument("--data-dir", type=Path, default=None, help="public/data 目录（默认 settings.data_dir）")
+    parser.add_argument("--data-dir", type=Path, default=None, help="public/data directory (default: settings.data_dir)")
     args = parser.parse_args(argv)
 
     if args.data_dir is not None:
@@ -377,19 +378,19 @@ def main(argv: list[str] | None = None) -> int:
         data_dir = settings.data_dir
 
     report = run_all(data_dir)
-    print(f"[validate_data] 检查 {report.files_checked} 个文件，ERROR {len(report.errors)} 个，WARNING {len(report.warnings)} 个")
+    print(f"[validate_data] checked {report.files_checked} files, ERROR {len(report.errors)}, WARNING {len(report.warnings)}")
     for issue in report.errors:
         print(f"  [ERROR] {issue}")
     for issue in report.warnings:
         print(f"  [WARN ] {issue}")
 
     if not report.ok:
-        print("[validate_data] 结果：未通过（存在 ERROR）")
+        print("[validate_data] result: failed (ERROR present)")
         return 1
     if report.warnings:
-        print("[validate_data] 结果：通过（含 WARNING，请留意）")
+        print("[validate_data] result: passed (with WARNING, please review)")
     else:
-        print("[validate_data] 结果：全部通过")
+        print("[validate_data] result: all passed")
     return 0
 
 

@@ -1,133 +1,133 @@
-# WorkBuddy AI 自动化接入手册
+# WorkBuddy AI Automation Integration Manual
 
-**适用：** WorkBuddy 定时自动化（deepseek v4 flash）在管道之外生成双语 AI 简报。
-**契约：** 输入/输出均为磁盘文件（架构 §1.5）；管道保持确定性与可重放，AI 是"可插拔的外部步骤"。
+**Applies to:** WorkBuddy scheduled automation (deepseek v4 flash) generating bilingual AI briefs outside the pipeline.
+**Contract:** input/output are both disk files (architecture §1.5); the pipeline stays deterministic and replayable; AI is a "pluggable external step".
 
 ---
 
-## 1. 每日节奏（冻结）
+## 1. Daily cadence (frozen)
 
-| 时段 | ET 时间 | 触发条件 |
+| Session | ET time | Trigger condition |
 |---|---|---|
-| 盘前 | 07:30 ET | 管道盘前运行后（facts.json 已更新） |
-| 盘后 | 16:30 ET | 管道盘后运行后 |
+| Pre-market | 07:30 ET | After the pipeline pre-market run (facts.json updated) |
+| Post-market | 16:30 ET | After the pipeline post-market run |
 
-每天 2 次。无额度/失败时跳过该步并标记 degraded（见 §5 演练）。
+2 runs per day. When quota is exhausted or a run fails, skip this step and mark `degraded` (see §5 drill).
 
-## 2. 输入 / 输出契约
+## 2. Input / output contract
 
-**输入（管道产出，确定性）：**
+**Input (pipeline output, deterministic):**
 
-| 文件 | 说明 |
+| File | Description |
 |---|---|
-| `public/data/latest/facts.json` | 事实层：风险结果 + 宏观/市场摘要 + Top 新闻 + 未来 7 天事件 + `evidence_index` |
-| `public/data/latest/news.json` | 新闻（含英文原始标题） |
+| `public/data/latest/facts.json` | Fact layer: risk results + macro/market summary + Top news + next-7-day events + `evidence_index` |
+| `public/data/latest/news.json` | News (including original English headlines) |
 
-**输出（AI 产出，经校验）：**
+**Output (AI output, validated):**
 
-| 文件 | 说明 |
+| File | Description |
 |---|---|
-| `public/data/latest/analysis.zh-CN.json` | 中文简报（AnalysisDataset schema） |
-| `public/data/latest/analysis.en.json` | 英文简报（AnalysisDataset schema） |
-| `public/data/latest/news.zh-translations.json` | 英文新闻中译（title_zh/summary_zh） |
+| `public/data/latest/analysis.zh-CN.json` | Chinese brief (AnalysisDataset schema) |
+| `public/data/latest/analysis.en.json` | English brief (AnalysisDataset schema) |
+| `public/data/latest/news.zh-translations.json` | English news Chinese translations (title_zh/summary_zh) |
 
-**工具（仓库内，自动化按顺序调用）：**
+**Tools (in repo, called in order by the automation):**
 
 ```bash
-# 1) 事实层 → 双语文案 prompt
-python -m pipeline.analysis.build_prompt --lang zh-CN    # 中文 prompt
-python -m pipeline.analysis.build_prompt --lang en       # 英文 prompt
+# 1) Fact layer → bilingual copy prompt
+python -m pipeline.analysis.build_prompt --lang zh-CN    # Chinese prompt
+python -m pipeline.analysis.build_prompt --lang en       # English prompt
 
-# 2) 输出校验（schema + evidence_refs + 双语一致性）
+# 2) Output validation (schema + evidence_refs + bilingual consistency)
 python -m pipeline.analysis.validate \
   --zh public/data/latest/analysis.zh-CN.json \
   --en public/data/latest/analysis.en.json \
   --facts public/data/latest/facts.json
 
-# 3) 新鲜度检查（供自动化决策是否跳过）
+# 3) Freshness check (for the automation to decide whether to skip)
 python -m pipeline.analysis.freshness --dataset facts
 ```
 
-## 3. 自动化步骤（WorkBuddy 触发器）
+## 3. Automation steps (WorkBuddy trigger)
 
-1. `git pull --rebase origin dev`（拉取最新 facts.json）。
-2. 检查 `facts.json` 新鲜度（`pipeline.analysis.freshness`）：stale 仍可生成，但输出带 `data_freshness` 标注。
-3. `build_prompt.py` 出 prompt（中/英各一次，含证据索引片段）。
-4. 调用 deepseek v4 flash 生成三份输出（中文简报 / 英文简报 / 新闻中译）。
-5. `pipeline.analysis.validate` 校验：
-   - Schema 合法（禁隐式字段/NaN/枚举/时间）
-   - 每个 `evidence_refs` 都能在 `evidence_index` 中找到
-   - **双语一致性**：`market_state` / `market_regime` / `confidence` / `evidence_refs` 集合 / 文本中所有数字必须完全一致；仅表达语言可不同
-   - 失败重试 ≤2 次（重新生成或局部修正）。
-6. 写三个输出文件 → `git commit + push (dev)` → 触发 Pages 构建。
+1. `git pull --rebase origin dev` (pull latest facts.json).
+2. Check `facts.json` freshness (`pipeline.analysis.freshness`): stale is still acceptable, but the output carries a `data_freshness` annotation.
+3. `build_prompt.py` produces prompts (once for zh-CN, once for en, including evidence-index snippets).
+4. Call deepseek v4 flash to generate three outputs (Chinese brief / English brief / news Chinese translation).
+5. `pipeline.analysis.validate` validates:
+   - Schema is valid (no implicit fields / NaN / invalid enums / invalid time)
+   - Every `evidence_refs` is findable in `evidence_index`
+   - **Bilingual consistency**: `market_state` / `market_regime` / `confidence` / the `evidence_refs` set / all numbers in the text must be exactly identical; only the expression language may differ
+   - On failure, retry ≤2 times (regenerate or patch locally).
+6. Write the three output files → `git commit + push (dev)` → trigger Pages build.
 
-**双语一致性规则（架构 §3.4）：** 不一致 → 拒绝发布；宁可跳过本次也不发布错误结论。
+**Bilingual consistency rule (architecture §3.4):** inconsistency → refuse to publish; rather skip this run than publish a wrong conclusion.
 
-## 4. 校验失败 / 无额度降级演练
+## 4. Validation failure / quota-exhausted degradation drill
 
-**场景 A：校验失败且重试耗尽**
+**Scenario A: validation fails and retries are exhausted**
 
-1. 不写任何分析文件，不 push。
-2. 保留上次成功发布的分析文件（前端继续展示旧简报 + stale 标记）。
-3. 管道下次运行在 `metadata/freshness.json` 将分析数据集标记 `degraded`（原因 `analysis_failed`）。
-4. 前端 AI 区块显示降级而非缺失。
+1. Do not write any analysis files, do not push.
+2. Keep the last successfully published analysis files (the frontend keeps showing the old brief + stale marker).
+3. On the next pipeline run, mark the analysis dataset `degraded` in `metadata/freshness.json` (reason `analysis_failed`).
+4. The frontend AI block shows degraded instead of missing.
 
-**场景 B：无额度（quota exhausted）**
+**Scenario B: quota exhausted**
 
-1. 跳过生成步骤（不调用 LLM）。
-2. 同上：不 push 分析文件，标记 `degraded`。
-3. 恢复额度后，下个计划时间自动恢复；也可手动触发一次盘后自动化。
+1. Skip the generation step (do not call the LLM).
+2. Same as above: do not push analysis files, mark `degraded`.
+3. After quota is restored, the next scheduled time recovers automatically; you can also manually trigger one post-market automation run.
 
-**演练检查清单：**
+**Drill check list:**
 
-- [ ] `git status` 无未推送的分析文件残留
-- [ ] `metadata/freshness.json` 中 `analysis` 数据集为 `degraded`
-- [ ] 前端 AI 区块显示"部分降级"而非崩溃/空白
-- [ ] `scripts/validate_data.sh` 仍通过（AI 缺失是 WARNING 不是 ERROR）
+- [ ] `git status` has no leftover unpushed analysis files
+- [ ] the `analysis` dataset is `degraded` in `metadata/freshness.json`
+- [ ] the frontend AI block shows "partially degraded" instead of crashing/blank
+- [ ] `scripts/validate_data.sh` still passes (missing AI is a WARNING, not an ERROR)
 
-## 5. 手动演练步骤（验证整条链路）
+## 5. Manual drill steps (verify the whole chain)
 
 ```bash
 cd /path/to/market-risk-dashboard
 git pull --rebase origin dev
 
-# 1) 确认事实层新鲜
+# 1) Confirm the fact layer is fresh
 .venv/bin/python -m pipeline.analysis.freshness --dataset facts
 
-# 2) 生成 prompt（确认模板可用）
+# 2) Generate prompts (confirm the template works)
 .venv/bin/python -m pipeline.analysis.build_prompt --lang zh-CN > /tmp/prompt-zh.txt
 .venv/bin/python -m pipeline.analysis.build_prompt --lang en    > /tmp/prompt-en.txt
 
-# 3) 用 deepseek v4 flash 按 prompt 生成（WorkBuddy 自动化内完成）
-#    输出写 public/data/latest/analysis.zh-CN.json / analysis.en.json / news.zh-translations.json
+# 3) Generate with deepseek v4 flash following the prompts (done inside WorkBuddy automation)
+#    Write output to public/data/latest/analysis.zh-CN.json / analysis.en.json / news.zh-translations.json
 
-# 4) 校验
+# 4) Validate
 .venv/bin/python -m pipeline.analysis.validate \
   --zh public/data/latest/analysis.zh-CN.json \
   --en public/data/latest/analysis.en.json \
   --facts public/data/latest/facts.json
 
-# 5) 全量数据校验（T05 门槛）
+# 5) Full data validation (T05 gate)
 scripts/validate_data.sh
 
-# 6) 提交推送
+# 6) Commit and push
 git add public/data/latest/analysis.zh-CN.json public/data/latest/analysis.en.json public/data/latest/news.zh-translations.json
 git commit -m "ai: bilingual brief $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 git push origin dev
 ```
 
-## 6. 故障排查
+## 6. Troubleshooting
 
-| 现象 | 原因 | 处理 |
+| Symptom | Cause | Handling |
 |---|---|---|
-| validate 报 schema 错误 | AI 输出缺字段/枚举非法 | 用输出 schema 字段清单核对；重试生成 |
-| validate 报 evidence_ref 不存在 | AI 引用了 evidence_index 之外的证据 | 只允许引用 prompt 提供的证据片段；重新生成 |
-| 双语数字不一致 | 中英文本数字不同（如 3.2 与 3.20） | 统一保留原始数值；重试 |
-| 无额度 | deepseek 额度耗尽 | 跳过 + degraded（见 §4） |
-| facts 长时间 stale | 管道未运行 | 先跑管道（`docs/operations/scheduled-task.md`） |
+| validate reports schema error | AI output missing fields / invalid enum | Cross-check against the output schema field list; retry generation |
+| validate reports evidence_ref not found | AI referenced evidence outside `evidence_index` | Only reference evidence snippets provided in the prompt; regenerate |
+| Bilingual number mismatch | zh/en texts have different numbers (e.g. 3.2 vs 3.20) | Keep the original values identical; retry |
+| Quota exhausted | deepseek quota used up | Skip + degraded (see §4) |
+| facts stale for a long time | pipeline has not run | Run the pipeline first (`docs/operations/scheduled-task.md`) |
 
-## 7. 维护说明
+## 7. Maintenance notes
 
-- 换模型/换自动化平台**不动管道**：只改本手册步骤 3-4 的调用。
-- 新闻中译文件由管道下次运行合并进 `news.json`（`pipeline/collectors/news.py` merge 步骤），保证单一事实源；自动化**不要**直接改 `news.json`。
-- 术语遵循 `docs/glossary.md`；prompt 模板 `pipeline/analysis/build_prompt.py` 已内嵌关键术语映射。
+- Changing model / automation platform **does not touch the pipeline**: only change the calls in steps 3-4 of this manual.
+- The news translation file is merged into `news.json` by the next pipeline run (`pipeline/collectors/news.py` merge step), keeping a single source of truth; the automation **must not** directly modify `news.json`.
+- Terminology follows `docs/glossary.md`; the prompt template `pipeline/analysis/build_prompt.py` already embeds the key term mapping.

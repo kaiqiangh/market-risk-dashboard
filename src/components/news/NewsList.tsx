@@ -4,7 +4,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import type { NewsItem } from "@/schemas";
 
 /**
- * NewsList：新闻列表（按重要性排序；移动端单列，桌面 2 列）。
+ * NewsList: news list (sorted by importance; single column on mobile, 2 columns on desktop).
  */
 export interface NewsListProps {
   items: NewsItem[];

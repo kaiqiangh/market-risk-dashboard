@@ -1,6 +1,6 @@
-"""宏观主源：FRED API（架构 §1.3 绝对基石；评审 §3.1）。
+"""Macro primary source: FRED API (architecture §1.3 absolute cornerstone; review §3.1).
 
-用 httpx 直连，含重试/限速；API key 来自本机 .env（DATA_FRED_API_KEY）。
+Direct httpx connection with retry/rate limiting; API key comes from the local .env (DATA_FRED_API_KEY).
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ from pipeline.providers.base import (
 
 FRED_BASE = "https://api.stlouisfed.org/fred/series/observations"
 
-# MVP 使用的 FRED 序列（架构 §3.2 指标映射 + 校准 §1.8）
+# FRED series used by the MVP (architecture §3.2 indicator mapping + calibration §1.8)
 SERIES_CATALOG: dict[str, dict[str, str]] = {
     "DGS10": {"label": "10-Year Treasury Yield", "unit": "pct"},
     "DGS2": {"label": "2-Year Treasury Yield", "unit": "pct"},
@@ -79,9 +79,9 @@ class FredProvider(BaseProvider):
 
     def get_series(self, series_id: str, start: str | None = None, end: str | None = None, limit: int | None = None) -> list[dict[str, Any]]:
         if not self.api_key:
-            raise ProviderError("FRED: 缺少 DATA_FRED_API_KEY（本机 .env）")
+            raise ProviderError("FRED: missing DATA_FRED_API_KEY (local .env)")
         if series_id not in SERIES_CATALOG and series_id not in ("DFF",):
-            # 允许任意已知序列，未知序列仍尝试拉取（FRED 会返回空）
+            # Allow any known series; unknown series are still fetched (FRED will return empty)
             pass
 
         def _fetch() -> dict[str, Any]:

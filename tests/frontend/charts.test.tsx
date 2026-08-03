@@ -1,5 +1,5 @@
 /**
- * 图表空态测试（架构 §8.8 缺失渲染 EmptyState）+ jsdom 降级渲染。
+ * Chart empty-state tests (architecture §8.8 missing → EmptyState) + jsdom degraded rendering.
  */
 import { describe, expect, it, vi, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
@@ -13,13 +13,13 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-describe("RiskTrendChart 空态", () => {
-  it("points=[] → EmptyState（chart-empty）", () => {
+describe("RiskTrendChart empty state", () => {
+  it("points=[] → EmptyState (chart-empty)", () => {
     render(<RiskTrendChart points={[]} />);
     expect(screen.getByTestId("chart-empty")).toBeInTheDocument();
   });
 
-  it("points 非空 → 渲染图表或 HTML 降级（jsdom 无 canvas）", () => {
+  it("non-empty points → renders chart or HTML fallback (jsdom has no canvas)", () => {
     render(
       <RiskTrendChart
         points={[
@@ -33,18 +33,18 @@ describe("RiskTrendChart 空态", () => {
   });
 });
 
-describe("AssetHeatmap 空态", () => {
+describe("AssetHeatmap empty state", () => {
   it("cells=[] → EmptyState", () => {
     render(<AssetHeatmap cells={[]} />);
     expect(screen.getByTestId("chart-empty")).toBeInTheDocument();
   });
 
-  it("cells 非空 → 渲染图表或 HTML 降级", () => {
+  it("non-empty cells → renders chart or HTML fallback", () => {
     render(
       <AssetHeatmap
         cells={[
-          { asset: "NVDA", category: "美股", change1d: -2.1 },
-          { asset: "BTC", category: "加密", change1d: -0.8 },
+          { asset: "NVDA", category: "equity", change1d: -2.1 },
+          { asset: "BTC", category: "crypto", change1d: -0.8 },
         ]}
       />,
     );
@@ -53,13 +53,13 @@ describe("AssetHeatmap 空态", () => {
   });
 });
 
-describe("MacroChart 空态", () => {
+describe("MacroChart empty state", () => {
   it("items=[] → EmptyState", () => {
     render(<MacroChart items={[]} />);
     expect(screen.getByTestId("chart-empty")).toBeInTheDocument();
   });
 
-  it("items 非空 → 渲染图表或 HTML 降级", () => {
+  it("non-empty items → renders chart or HTML fallback", () => {
     render(
       <MacroChart
         items={[

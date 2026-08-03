@@ -3,10 +3,10 @@ import { datasetEnvelope } from "./envelope";
 import { DriverContribution, MarketRegime, RiskModelResult } from "./risk";
 
 /**
- * 首页聚合 schema（架构 §3.6 的 dashboard.json）。
- * T04 先注册（DatasetClient 可解析）；Overview 页为稳健起见直接组合
- * risk/crypto/equities/sectors/calendar/news 渲染，不强制依赖本文件。
- * T05 管道产出 dashboard.json 后首页可无缝切换为单文件聚合。
+ * Dashboard aggregation schema (dashboard.json per architecture §3.6).
+ * Registered in T04 (resolvable by DatasetClient); the Overview page combines
+ * risk/crypto/equities/sectors/calendar/news directly for robustness and does not hard-depend on this file.
+ * After the pipeline produces dashboard.json in T05, the homepage can seamlessly switch to the single-file aggregation.
  */
 export const DashboardPayload = z
   .object({

@@ -1,4 +1,4 @@
-"""快照累积（架构 §1.6：FedWatch 本地每日快照）。"""
+"""Snapshot accumulation (architecture §1.6: FedWatch local daily snapshots)."""
 
 from __future__ import annotations
 

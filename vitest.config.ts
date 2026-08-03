@@ -2,8 +2,8 @@ import path from "node:path";
 import { defineConfig } from "vitest/config";
 
 /**
- * Vitest 独立配置（vitest 优先读取本文件）。
- * 测试配置与 vite.config.ts 解耦，避免把测试相关字段混入构建配置。
+ * Standalone Vitest config (vitest reads this file first).
+ * Decouples the test config from vite.config.ts so test-related fields do not leak into the build config.
  */
 export default defineConfig({
   resolve: {

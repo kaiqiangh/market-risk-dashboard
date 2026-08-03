@@ -9,9 +9,9 @@ import { RiskEnvelope } from "./risk";
 import { SectorsEnvelope } from "./sectors";
 
 /**
- * 数据集 schema 注册表（供 DatasetClient 按 key 解析；数据集 key 与 pipeline 对齐）。
- * analysis 为自描述契约文件（非 envelope），单独处理。
- * dashboard 为首页聚合（T04 注册；管道在 T05 产出 dashboard.json）。
+ * Dataset schema registry (used by DatasetClient to resolve by key; dataset keys align with the pipeline).
+ * analysis is a self-describing contract file (not an envelope) and is handled separately.
+ * dashboard is the homepage aggregation (registered in T04; the pipeline produces dashboard.json in T05).
  */
 export const DATASET_SCHEMAS = {
   macro: MacroEnvelope,
@@ -26,10 +26,10 @@ export const DATASET_SCHEMAS = {
 
 export type DatasetSchemaKey = keyof typeof DATASET_SCHEMAS;
 
-/** analysis 为自描述契约（AnalysisDataset），不走 envelope。 */
+/** analysis is a self-describing contract (AnalysisDataset) and does not use the envelope. */
 export const ANALYSIS_SCHEMA = AnalysisDatasetSchema;
 
-/** 数据集 key（架构 §3.6；历史切片为纯数组，经 fetch 第三参 schema 覆盖解析） */
+/** Dataset key (architecture §3.6; history slices are plain arrays, parsed via the schema override passed as the third fetch argument) */
 export type DatasetKey = "dashboard" | DatasetSchemaKey | "analysis";
 
 export type { AnalysisDataset, CaseStatement, SignalClaim } from "./analysis";

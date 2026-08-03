@@ -1,6 +1,6 @@
-"""日历采集器（架构 §3.7 CalendarCollector：经济日历 + 财报日历）。
+"""Calendar collector (architecture §3.7 CalendarCollector: economic calendar + earnings calendar).
 
-MVP：财报日历来自 FMP（→ yfinance 兜底）；经济日历标注来源受限。
+MVP: earnings calendar from FMP (→ yfinance fallback); economic calendar sources are limited.
 """
 
 from __future__ import annotations
@@ -51,7 +51,7 @@ class CalendarCollector:
             self.degraded.append(f"calendar: {exc}")
             self.provider_status["calendar"] = {"degraded": True, "error": str(exc)}
 
-        quality = 0.8 if self.degraded else 1.0  # 按失败源降级 ×0.8
+        quality = 0.8 if self.degraded else 1.0  # degrade ×0.8 per failed source
         envelope = CalendarEnvelope(
             generated_at=now_utc(), schema_version="1.0.0",
             source=["fmp", "yfinance"], source_updated_at=now_utc(),

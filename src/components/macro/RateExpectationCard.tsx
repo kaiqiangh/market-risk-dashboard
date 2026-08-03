@@ -7,8 +7,8 @@ import { formatDateTime, formatRatio } from "@/lib/format";
 import type { FedWatchSnapshot } from "@/schemas";
 
 /**
- * RateExpectationCard：FedWatch 利率预期（CME 方法论自算，架构 §1.6）。
- * 免费结算历史 <7 天 → "数据积累中（insufficient data）"，不显示 0/空值（冻结约束）。
+ * RateExpectationCard: FedWatch rate expectations (computed with CME methodology, architecture §1.6).
+ * Free settlement history < 7 days → "insufficient data (accumulating)", do not show 0/empty values (frozen constraint).
  */
 export interface RateExpectationCardProps {
   fedwatch: FedWatchSnapshot | null;

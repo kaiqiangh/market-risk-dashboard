@@ -1,6 +1,6 @@
-"""日历数据集契约（经济日历 + 财报日历，架构 §1.3 / §3.5）。
+"""Calendar dataset contract (economic calendar + earnings calendar, architecture §1.3 / §3.5).
 
-T03 CalendarCollector 负责填充；本模块只定义契约。
+Filled by the T03 CalendarCollector; this module only defines the contract.
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ EventImportance = Literal["high", "medium", "low"]
 
 
 class CalendarEvent(ContractModel):
-    id: str = Field(min_length=1, description="稳定去重键，如 econ-CPI-2026-08-13")
+    id: str = Field(min_length=1, description="stable dedupe key, e.g. econ-CPI-2026-08-13")
     type: EventType
     title: str = Field(min_length=1)
     country: str | None = None
@@ -31,7 +31,7 @@ class CalendarEvent(ContractModel):
 
 
 class CalendarDataset(ContractModel):
-    """calendar.json payload。"""
+    """calendar.json payload."""
 
     events: list[CalendarEvent] = Field(default_factory=list)
     updated_at: UTCDateTime | None = None

@@ -1,6 +1,6 @@
-"""财报日历主源：Financial Modeling Prep 免费层（架构 §1.3 冻结）。
+"""Earnings calendar primary source: Financial Modeling Prep free tier (architecture §1.3 frozen).
 
-250 req/day 免费额度，够 ~40 标的每日一次；失败降级到 yfinance 兜底。
+250 req/day free quota is enough for ~40 tickers once daily; on failure degrades to the yfinance fallback.
 """
 
 from __future__ import annotations
@@ -52,7 +52,7 @@ class FmpProvider(BaseProvider):
 
     def get_earnings_calendar(self, start: str, end: str) -> list[dict[str, Any]]:
         if not self.api_key:
-            raise ProviderError("FMP: 缺少 DATA_FMP_API_KEY（本机 .env）")
+            raise ProviderError("FMP: missing DATA_FMP_API_KEY (local .env)")
 
         def _fetch() -> dict[str, Any]:
             resp = self._client.get(

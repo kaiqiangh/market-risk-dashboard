@@ -1,89 +1,89 @@
-# Market Risk Dashboard — 离线校准报告
+# Market Risk Dashboard — Offline Calibration Report
 
-**文档版本：** 1.0（T05 随仓库发布）
-**产出方：** 数据管道 `scripts/calibration.py` + `pipeline/risk/calibration.py`
-**口径声明（红线）：** 本页风险分数为**模型化的市场压力估计**，并非精确的崩盘概率，不构成投资建议（架构 §1.8 / PRD §14.8）。
+**Document version:** 1.0 (published with repo at T05)
+**Produced by:** data pipeline `scripts/calibration.py` + `pipeline/risk/calibration.py`
+**Scope statement (red line):** The risk scores on this page are **model-based market stress estimates**, not exact crash probabilities, and do not constitute investment advice (architecture §1.8 / PRD §14.8).
 
 ---
 
-## 1. 目的
+## 1. Purpose
 
-在 MVP 发布前，对风险模型在 **2008 全球金融危机、2018 Q4 抛售、2020 COVID 崩盘** 三段历史窗口的表现做离线回测，用于支撑风险分数可信度声明，并暴露模型在极端行情下的行为特征（预警时间、变化速度、稳定性）。
+Before the MVP release, run an offline backtest of the risk model across three historical windows — **2008 Global Financial Crisis, 2018 Q4 sell-off, 2020 COVID crash** — to support the credibility claim of the risk score and to expose the model's behavior under extreme market conditions (warning lead time, rate of change, stability).
 
-## 2. 方法
+## 2. Method
 
-- **模型**：简化风险模型 = 综合评分（VIX + HY OAS + SPX 回撤），与线上 `pipeline/risk/scoring.py` 同一套启发式映射（0-100）。
-- **数据**：全部免费可得——FRED `VIXCLS`、`BAMLH0A0HYM2`（HY OAS）、`DGS10` + yfinance SPX 历史。
-- **窗口**：
-  - 2008：2008-08 → 2009-03（金融危机主跌段）
-  - 2018：2018-09 → 2018-12（Q4 抛售）
-  - 2020：2020-02 → 2020-04（COVID 崩盘）
-- **评估指标**（PRD §15 子集）：
-  - 提前预警时间：风险分首次 ≥60 相对风险峰值的交易日数（负数 = 峰值前预警）
-  - 风险分数变化速度：风险分从 40 → 60 所需交易日数
-  - 最大回撤：窗口内 SPX 最大回撤
-  - 峰值后未来波动率：风险峰值后 5/10/20/30 日的年化波动率
-  - 风险等级稳定性：窗口内风险等级切换次数（越少越稳定）
+- **Model:** simplified risk model = composite score (VIX + HY OAS + SPX drawdown), using the same heuristic mapping (0-100) as the production `pipeline/risk/scoring.py`.
+- **Data:** all freely available — FRED `VIXCLS`, `BAMLH0A0HYM2` (HY OAS), `DGS10` + yfinance SPX history.
+- **Windows:**
+  - 2008: 2008-08 → 2009-03 (main decline phase of the financial crisis)
+  - 2018: 2018-09 → 2018-12 (Q4 sell-off)
+  - 2020: 2020-02 → 2020-04 (COVID crash)
+- **Evaluation metrics** (subset of PRD §15):
+  - Early warning lead time: trading days from first risk score ≥60 to the risk peak (negative = warning before the peak)
+  - Risk score rate of change: trading days required for the risk score to move from 40 → 60
+  - Max drawdown: maximum SPX drawdown within the window
+  - Post-peak forward volatility: annualized volatility 5/10/20/30 days after the risk peak
+  - Risk-level stability: number of risk-level switches within the window (fewer = more stable)
 
-## 3. 结果汇总
+## 3. Results summary
 
-| 窗口 | 交易日数 | 最大回撤 | 提前预警（风险分≥60） | 40→60 速度 | 峰值后未来波动率 5d/10d/20d/30d | 等级切换 | 首/峰/末分数 |
+| Window | Trading days | Max drawdown | Early warning (score ≥60) | 40→60 speed | Post-peak forward volatility 5d/10d/20d/30d | Level switches | First/peak/last score |
 |---|---|---|---|---|---|---|---|
-| 2008 金融危机 | 166 | -48.17% | 34 天（峰值前） | 40 天 | 0.80 / 0.92 / 1.26 / 2.22 | 7 | 40.14 / 65.19 / 63.21 |
-| 2018 Q4 抛售 | 81 | -19.78% | 未达 60（峰值 57.55） | 未达 60 | 0.15 / 0.24 / 1.12 / 1.26 | 9 | 22.24 / 57.55 / 50.39 |
-| 2020 COVID | 61 | -33.92% | 7 天（峰值前） | 4 天 | 1.46 / 2.65 / 5.42 / 5.19 | 9 | 30.94 / 64.85 / 53.75 |
+| 2008 Financial Crisis | 166 | -48.17% | 34 days (before peak) | 40 days | 0.80 / 0.92 / 1.26 / 2.22 | 7 | 40.14 / 65.19 / 63.21 |
+| 2018 Q4 Sell-off | 81 | -19.78% | Not reached 60 (peak 57.55) | Not reached 60 | 0.15 / 0.24 / 1.12 / 1.26 | 9 | 22.24 / 57.55 / 50.39 |
+| 2020 COVID | 61 | -33.92% | 7 days (before peak) | 4 days | 1.46 / 2.65 / 5.42 / 5.19 | 9 | 30.94 / 64.85 / 53.75 |
 
-### 3.1 2008（2008 金融危机）
+### 3.1 2008 (2008 Financial Crisis)
 
-- 交易日数：166
-- 最大回撤：-48.17%
-- 提前预警（风险分≥60 相对峰值）：34 天（负数=峰值前预警）
-- 风险分 40→60 速度：40 天
-- 峰值后未来波动率：{'vol_5d': 0.8, 'vol_10d': 0.92, 'vol_20d': 1.26, 'vol_30d': 2.22}
-- 风险等级切换次数：7
-- 分数范围：首 40.14 / 峰值 65.19 / 末 63.21
+- Trading days: 166
+- Max drawdown: -48.17%
+- Early warning (score ≥60 vs peak): 34 days (negative = warning before peak)
+- Risk score 40→60 speed: 40 days
+- Post-peak forward volatility: {'vol_5d': 0.8, 'vol_10d': 0.92, 'vol_20d': 1.26, 'vol_30d': 2.22}
+- Risk-level switches: 7
+- Score range: first 40.14 / peak 65.19 / last 63.21
 
-### 3.2 2018（2018 Q4 抛售）
+### 3.2 2018 (2018 Q4 Sell-off)
 
-- 交易日数：81
-- 最大回撤：-19.78%
-- 提前预警（风险分≥60 相对峰值）：None 天（峰值 57.55，未达 60 阈值）
-- 风险分 40→60 速度：None 天
-- 峰值后未来波动率：{'vol_5d': 0.15, 'vol_10d': 0.24, 'vol_20d': 1.12, 'vol_30d': 1.26}
-- 风险等级切换次数：9
-- 分数范围：首 22.24 / 峰值 57.55 / 末 50.39
+- Trading days: 81
+- Max drawdown: -19.78%
+- Early warning (score ≥60 vs peak): None days (peak 57.55, 60 threshold not reached)
+- Risk score 40→60 speed: None days
+- Post-peak forward volatility: {'vol_5d': 0.15, 'vol_10d': 0.24, 'vol_20d': 1.12, 'vol_30d': 1.26}
+- Risk-level switches: 9
+- Score range: first 22.24 / peak 57.55 / last 50.39
 
-### 3.3 2020（COVID 崩盘）
+### 3.3 2020 (COVID Crash)
 
-- 交易日数：61
-- 最大回撤：-33.92%
-- 提前预警（风险分≥60 相对峰值）：7 天（负数=峰值前预警）
-- 风险分 40→60 速度：4 天
-- 峰值后未来波动率：{'vol_5d': 1.46, 'vol_10d': 2.65, 'vol_20d': 5.42, 'vol_30d': 5.19}
-- 风险等级切换次数：9
-- 分数范围：首 30.94 / 峰值 64.85 / 末 53.75
+- Trading days: 61
+- Max drawdown: -33.92%
+- Early warning (score ≥60 vs peak): 7 days (negative = warning before peak)
+- Risk score 40→60 speed: 4 days
+- Post-peak forward volatility: {'vol_5d': 1.46, 'vol_10d': 2.65, 'vol_20d': 5.42, 'vol_30d': 5.19}
+- Risk-level switches: 9
+- Score range: first 30.94 / peak 64.85 / last 53.75
 
-## 4. 解读
+## 4. Interpretation
 
-- **预警有效性**：2008 与 2020 均在风险峰值前触发 ≥60 高分（提前 34 天 / 7 天），说明模型能在大跌主跌段前发出压力信号；2020 信号更快（4 天从 40 升至 60），与 COVID 崩盘的高斜率一致。
-- **2018 案例**：峰值仅 57.55，未触发 60 高分——符合 2018 是"温和修正"而非系统性危机的定性；模型未产生严重误报（False Positive 控制合理）。
-- **波动率放大**：峰值后未来波动率随窗口加深单调上升（尤其 2020 的 20d/30d），与历史崩盘后波动率聚集一致。
-- **稳定性**：等级切换 7-9 次，说明模型在市场剧烈切换期会频繁改变等级——这是启发式模型的已知局限（见 §5），不视为故障。
+- **Warning effectiveness:** both 2008 and 2020 triggered a high score ≥60 before the risk peak (34 / 7 days early), showing the model can emit a stress signal before the main decline phase; the 2020 signal was faster (40 → 60 in 4 days), consistent with the steep slope of the COVID crash.
+- **2018 case:** the peak was only 57.55 and never triggered the 60 high-score threshold — consistent with 2018 being characterized as a "mild correction" rather than a systemic crisis; the model produced no severe false positives (False Positive control is reasonable).
+- **Volatility amplification:** post-peak forward volatility rises monotonically with window depth (especially 20d/30d in 2020), consistent with volatility clustering after historical crashes.
+- **Stability:** 7-9 level switches show the model frequently changes levels during sharp market transitions — a known limitation of heuristic models (see §5), not treated as a fault.
 
-## 5. 局限
+## 5. Limitations
 
-- 市场宽度历史（2008-2012）不可得 → 本报告未纳入宽度维度（评审 P0-3）；T05 建议后续用 SPX 新高新低数 / 200 日均线上方比例重建近似宽度序列再回测。
-- MVP 风险映射为启发式规则（pipeline/risk/scoring.py），非统计模型；分数含义为"模型化的市场压力估计"。
-- 免费数据源无 SLA，回测窗口可能因网络不可得而跳过；本地重跑 `python scripts/calibration.py` 可复现。
-- 单窗口样本少（3 段），结论为描述性而非统计显著。
+- Market breadth history (2008-2012) is unavailable → this report does not include the breadth dimension (review P0-3); T05 recommends later rebuilding an approximate breadth series from SPX new high/new low counts / % above MA200 and re-running the backtest.
+- The MVP risk mapping is a heuristic rule set (pipeline/risk/scoring.py), not a statistical model; the score meaning is a "model-based market stress estimate".
+- Free data sources have no SLA; backtest windows may be skipped if network data is unavailable; rerun locally with `python scripts/calibration.py` to reproduce.
+- Single-window sample size is small (3 windows); conclusions are descriptive rather than statistically significant.
 
-## 6. 复现
+## 6. Reproduction
 
 ```bash
-python scripts/calibration.py   # 重跑三段回测并刷新本报告
+python scripts/calibration.py   # Rerun the three-window backtest and refresh this report
 ```
 
-## 7. 发布
+## 7. Release
 
-- 本文档随仓库发布（`docs/calibration-report.md` 已取消 gitignore；根目录 `CALIBRATION.md` 为可发布副本）。
-- 风险分数可信度声明必须引用本报告；任何 UI/文案不得称风险分数为"精确崩盘概率"。
+- This document is published with the repository (`docs/calibration-report.md` is un-ignored from gitignore; root-level `CALIBRATION.md` is the publishable copy).
+- Any credibility claim about the risk score must reference this report; no UI/copy may describe the risk score as an "exact crash probability".

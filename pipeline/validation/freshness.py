@@ -1,11 +1,11 @@
-"""Freshness 五态判定（架构 §8.5 唯一权威实现）。
+"""Freshness five-state determination (architecture §8.5 single authoritative implementation).
 
-管道在 validation/freshness.py 统一判定（不信任 Provider 自报，架构 §8.4）；
-analysis/freshness.py 复用本模块。
+The pipeline determines freshness uniformly in validation/freshness.py (not trusting Provider
+self-reporting, architecture §8.4); analysis/freshness.py reuses this module.
 
-统一判定（P1-7）：Collector 不再自填 freshness_status；写盘后由本模块基于
-config/sources.yaml 期望频率统一重算（fresh/delayed/stale/missing/degraded 五态），
-再落盘到 metadata/freshness.json 与各 envelope。
+Unified determination (P1-7): Collectors no longer fill freshness_status themselves; after writing,
+this module recomputes against the expected frequency from config/sources.yaml (fresh/delayed/stale/
+missing/degraded five states), then persists to metadata/freshness.json and each envelope.
 """
 
 from __future__ import annotations
@@ -21,12 +21,12 @@ def evaluate_freshness(
     expected_minutes: int,
     now: datetime | None = None,
 ) -> FreshnessStatus:
-    """时间维度五态判定（相对期望更新频率；不含 degraded）。
+    """Time-dimension five-state determination (relative to the expected update frequency; no degraded).
 
-    - fresh   : 最近更新 ≤ 1.5× 期望间隔
+    - fresh   : latest update ≤ 1.5× expected interval
     - delayed : 1.5× ~ 3×
     - stale   : > 3×
-    - missing : 从未有数据 / 文件缺失
+    - missing : never had data / file missing
     """
     if not updated_at:
         return "missing"
@@ -54,12 +54,12 @@ def finalize_freshness(
     missing: bool = False,
     now: datetime | None = None,
 ) -> FreshnessStatus:
-    """统一五态判定（P1-7，架构 §8.5 表格语义）。
+    """Unified five-state determination (P1-7, architecture §8.5 table semantics).
 
-    优先级：
-    1. missing   —— 从未有数据 / 文件缺失（显式标记）
-    2. degraded  —— 部分 Provider 降级/回退（与时间无关）
-    3. fresh/delayed/stale —— 按期望更新频率（config/sources.yaml）时间维度判定
+    Priority:
+    1. missing   —— never had data / file missing (explicit marker)
+    2. degraded  —— some Provider degraded/fallback (independent of time)
+    3. fresh/delayed/stale —— time-dimension determination by expected update frequency (config/sources.yaml)
     """
     if missing or not generated_at:
         return "missing"
@@ -69,7 +69,7 @@ def finalize_freshness(
 
 
 def expected_interval_minutes_for(dataset: str, fallback: int) -> int:
-    """从 config/sources.yaml 读取期望间隔（分钟）。"""
+    """Read the expected interval (minutes) from config/sources.yaml."""
     from pipeline.settings import settings
 
     try:

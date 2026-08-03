@@ -1,7 +1,7 @@
-"""FedWatch 本地每日快照累积（架构 §1.6/评审 P0-1）。
+"""FedWatch local daily snapshot accumulation (architecture §1.6/review P0-1).
 
-免费结算历史仅约 5 个交易日 → "较一周前变化"从上线日起累积；
-积累满 7 天前快照 status=accumulating、change_1d=None（前端显示 insufficient data）。
+Free settlement history is only ~5 trading days → "change vs a week ago" accumulates from launch;
+before 7 days accumulate the snapshot status=accumulating, change_1d=None (frontend shows insufficient data).
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ from pipeline.utils import now_utc
 
 
 def load_history(path: Path) -> list[dict]:
-    """读取累积历史（不存在返回空列表）。"""
+    """Read accumulated history (empty list when the file does not exist)."""
     if not path.exists():
         return []
     try:
@@ -36,22 +36,22 @@ def enrich_with_history(
     history_path: Path,
     today: str | None = None,
 ) -> FedWatchSnapshot:
-    """将新快照与历史合并，回填 change_1d 与 status。
+    """Merge the new snapshot with history, backfilling change_1d and status.
 
-    规则：
-    - 同日已有快照 → 更新当日（去重）。
-    - 历史 < 2 天 → accumulating（数据积累中）。
-    - 历史 ≥ 2 天 → 计算各区间较昨日变化，status=ready。
+    Rules:
+    - A snapshot already exists for the same day → update that day (dedupe).
+    - History < 2 days → accumulating (insufficient data).
+    - History ≥ 2 days → compute the change vs yesterday for each bucket, status=ready.
     """
     today = today or now_utc()[:10]
 
-    # 同日去重（就地修改传入列表，保证调用方 save_history 拿到更新后历史）
+    # Same-day dedupe (mutates the passed list in place so the caller's save_history gets the updated history)
     history[:] = [h for h in history if str(h.get("date", ""))[:10] != today]
     yesterday = max((h for h in history if str(h.get("date", ""))[:10] < today), key=lambda h: h["date"], default=None)
 
     history.append(
         {
-            # 逻辑日期（today）+ 当前时刻：保证按日累积可测可复现
+            # Logical date (today) + current time: ensures per-day accumulation is testable and reproducible
             "date": f"{today}{now_utc()[10:]}",
             "meeting_date": snapshot.meeting_date,
             "effective_rate": snapshot.effective_rate,

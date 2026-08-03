@@ -2,8 +2,8 @@ import { z } from "zod";
 import { EvidenceRef, FreshnessStatus, utcDateTime } from "./envelope";
 
 /**
- * AI 分析输出契约（架构 §3.4）。
- * analysis.zh-CN.json / analysis.en.json 为自描述契约文件，直接以 AnalysisDataset 解析。
+ * AI analysis output contract (architecture §3.4).
+ * analysis.zh-CN.json / analysis.en.json are self-describing contract files, parsed directly as AnalysisDataset.
  */
 export const AnalysisLanguage = z.enum(["zh-CN", "en"]);
 

@@ -1,4 +1,4 @@
-"""Report 包。"""
+"""Report package."""
 
 from pipeline.report.run_report import write_run_report
 

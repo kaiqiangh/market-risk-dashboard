@@ -1,12 +1,12 @@
-"""Provider 抽象与降级链（架构 §1.4）。
+"""Provider abstraction and degradation chain (architecture §1.4).
 
-- BaseProvider：统一接口（health + 各域方法），任何外部数据必须经此接口。
-- ProviderRegistry：域 → 有序 Provider 列表 + last-good 缓存 + 降级标记。
-- 降级链（必须实现为可测试用例）：
-    主 Provider 失败/超时/限速 → 指数退避重试（≤2 次，jitter）
-    → 备用 Provider → last-good 缓存 → 标记 degraded、降低 data_quality
-    → 全部失败：freshness=missing，payload 保留上次数据 + stale 标记
-- 任何 Provider 异常不得中断整条管道（Collector 捕获→degraded→继续）。
+- BaseProvider: unified interface (health + per-domain methods); all external data must go through it.
+- ProviderRegistry: domain → ordered Provider list + last-good cache + degraded markers.
+- Degradation chain (must be implementable as test cases):
+    primary Provider failure/timeout/rate limit → exponential backoff retry (≤2 times, jitter)
+    → fallback Provider → last-good cache → mark degraded, lower data_quality
+    → all failed: freshness=missing, payload keeps last data + stale marker
+- No Provider exception may interrupt the whole pipeline (Collector catches → degraded → continue).
 """
 
 from __future__ import annotations
@@ -22,14 +22,14 @@ from pydantic import BaseModel, Field
 
 from pipeline.settings import Settings
 
-# 默认超时/重试（可由 config/sources.yaml degrade 覆盖）
+# Default timeout/retry (overridable by config/sources.yaml degrade)
 DEFAULT_TIMEOUT_SECONDS = 10.0
 DEFAULT_MAX_RETRIES = 2
 DEFAULT_BACKOFF_BASE = 1.0
 
 
 class ProviderError(Exception):
-    """Provider 层错误（网络/限流/解析/业务失败）。管道不得因此崩溃。"""
+    """Provider-layer error (network/rate limit/parse/business failure). The pipeline must not crash on it."""
 
 
 class ProviderHealth(BaseModel):
@@ -50,7 +50,7 @@ class QuoteResult(BaseModel):
     source: str = ""
     provider: str = ""
     updated_at: str | None = None
-    is_proxy: bool = Field(default=False, description="备用源/缓存/代理时 True")
+    is_proxy: bool = Field(default=False, description="True when fallback source/cache/proxy")
 
 
 class HistoryResult(BaseModel):
@@ -60,15 +60,15 @@ class HistoryResult(BaseModel):
     period: str = "1y"
 
 
-# 需要类型还原的方法（缓存重建用）
+# Methods that need type restoration (for cache rebuild)
 _RESULT_TYPES: dict[str, type] = {"get_quote": QuoteResult, "get_history": HistoryResult}
 
 
 class BaseProvider(ABC):
-    """所有外部数据提供方必须继承。方法失败抛 ProviderError。"""
+    """All external data providers must inherit. Methods raise ProviderError on failure."""
 
     name: str = "base"
-    priority: int = 100  # 数字越小越优先
+    priority: int = 100  # smaller number = higher priority
     domain: str = "general"
 
     def __init__(self, settings: Settings | None = None) -> None:
@@ -76,9 +76,9 @@ class BaseProvider(ABC):
 
     @abstractmethod
     def health(self) -> ProviderHealth:
-        """健康检查（轻量，失败不抛异常）。"""
+        """Health check (lightweight, does not raise on failure)."""
 
-    # ---- 行情域 ----
+    # ---- Quotes domain ----
 
     def get_quote(self, symbol: str) -> QuoteResult:  # pragma: no cover - abstract
         raise NotImplementedError
@@ -86,22 +86,22 @@ class BaseProvider(ABC):
     def get_history(self, symbol: str, period: str = "1y") -> HistoryResult:  # pragma: no cover
         raise NotImplementedError
 
-    # ---- 宏观域 ----
+    # ---- Macro domain ----
 
     def get_series(self, series_id: str, start: str | None = None, end: str | None = None) -> list[dict[str, Any]]:
         raise NotImplementedError  # pragma: no cover
 
-    # ---- 加密域 ----
+    # ---- Crypto domain ----
 
     def get_crypto_market(self) -> dict[str, Any]:
         raise NotImplementedError  # pragma: no cover
 
-    # ---- 日历域 ----
+    # ---- Calendar domain ----
 
     def get_earnings_calendar(self, start: str, end: str) -> list[dict[str, Any]]:
         raise NotImplementedError  # pragma: no cover
 
-    # ---- 新闻域 ----
+    # ---- News domain ----
 
     def fetch_news(self) -> list[dict[str, Any]]:
         raise NotImplementedError  # pragma: no cover
@@ -114,7 +114,7 @@ def retry_with_backoff(
     backoff_base: float = DEFAULT_BACKOFF_BASE,
     jitter: bool = True,
 ) -> T:
-    """指数退避重试（≤ max_retries 次）。最后一次失败原样抛出。"""
+    """Exponential backoff retry (≤ max_retries times). The last failure is re-raised as-is."""
     attempt = 0
     while True:
         try:
@@ -133,7 +133,7 @@ T = TypeVar("T")
 
 
 class ProviderRegistry:
-    """维护"域 → 有序 Provider 列表"与 last-good 缓存（架构 §1.4）。"""
+    """Maintains the "domain → ordered Provider list" and the last-good cache (architecture §1.4)."""
 
     def __init__(self, settings: Settings | None = None) -> None:
         self.settings = settings or Settings()
@@ -150,7 +150,7 @@ class ProviderRegistry:
         self.health_map: dict[str, ProviderHealth] = {}
         self.degraded_domains: set[str] = set()
 
-    # ---- 注册 ----
+    # ---- Registration ----
 
     def register(self, domain: str, provider: BaseProvider) -> None:
         providers = self._providers.setdefault(domain, [])
@@ -164,7 +164,7 @@ class ProviderRegistry:
     def providers_for(self, domain: str) -> list[BaseProvider]:
         return list(self._providers.get(domain, []))
 
-    # ---- last-good 缓存 ----
+    # ---- last-good cache ----
 
     def _cache_path(self, domain: str, key: str) -> Path:
         return self.cache_dir / f"{domain}__{key}.json"
@@ -196,7 +196,7 @@ class ProviderRegistry:
         except OSError:
             pass
 
-    # ---- 统一降级调用 ----
+    # ---- Unified degraded call ----
 
     def call(
         self,
@@ -206,10 +206,10 @@ class ProviderRegistry:
         args: tuple = (),
         kwargs: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """按降级链调用 Provider 方法，返回 (result, meta)。
+        """Call a Provider method along the degradation chain, returning (result, meta).
 
-        meta 含 provider、used_fallback、from_cache、degraded。
-        全部失败时：尝试 last-good 缓存 → 仍失败抛 ProviderError。
+        meta contains provider, used_fallback, from_cache, degraded.
+        When all fail: try the last-good cache → still fail raises ProviderError.
         """
         kwargs = kwargs or {}
         providers = self.providers_for(domain)
@@ -234,11 +234,11 @@ class ProviderRegistry:
                     self.degraded_domains.add(domain)
                 self._save_last_good(domain, key, method, result)
                 return {"result": result, "meta": meta}
-            except Exception as exc:  # noqa: BLE001 - 降级链必须吞掉 Provider 异常
+            except Exception as exc:  # noqa: BLE001 - the degradation chain must swallow Provider exceptions
                 errors.append(f"{provider.name}: {type(exc).__name__}: {exc}")
                 continue
 
-        # 全部 Provider 失败 → last-good 缓存
+        # All Providers failed → last-good cache
         cached = self._load_last_good(domain, key, method)
         if cached is not None:
             self.degraded_domains.add(domain)
@@ -253,9 +253,9 @@ class ProviderRegistry:
                 },
             }
 
-        raise ProviderError(f"[{domain}] 所有 Provider 失败: {'; '.join(errors)}")
+        raise ProviderError(f"[{domain}] all Providers failed: {'; '.join(errors)}")
 
-    # ---- 状态 ----
+    # ---- Status ----
 
     def status(self) -> dict[str, list[dict[str, Any]]]:
         out: dict[str, list[dict[str, Any]]] = {}

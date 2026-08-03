@@ -1,23 +1,23 @@
 /**
- * 展示层格式化封装（架构 §8.2/§8.3/§1.9）。
- * - 原始数据一律 ISO 8601 UTC + 原始数值；仅本模块负责转本地时区与本地化。
- * - 所有格式化经 Intl.* 按当前语言输出；中英双语词（涨跌/百分位/货币单位）作为
- *   格式化器的固定词汇表，与 UI 文案（i18n key）分离。
+ * Display-layer formatting wrapper (architecture §8.2/§8.3/§1.9).
+ * - Raw data is always ISO 8601 UTC + raw values; only this module converts to local timezone and localizes.
+ * - All formatting outputs via Intl.* in the current language; bilingual words (up/down, percentile, currency units) act as
+ *   the formatter's fixed vocabulary, separated from UI copy (i18n keys).
  */
 
 export type FormatLocale = "zh-CN" | "en";
 
-/** 转为 Intl 标准 locale（en → en-US，其余 → zh-CN）。 */
+/** Convert to an Intl standard locale (en → en-US, others → zh-CN). */
 export function toIntlLocale(locale: string): string {
   return locale === "en" || locale.startsWith("en") ? "en-US" : "zh-CN";
 }
 
-/** 是否为中文 locale。 */
+/** Whether the locale is Chinese. */
 export function isZh(locale: string): boolean {
   return locale === "zh-CN" || locale.startsWith("zh");
 }
 
-/** 缺失/非法值统一占位符（不译，通用符号）。 */
+/** Unified placeholder for missing/invalid values (not translated, universal symbol). */
 export const NA = "—";
 
 function safeDate(iso: string | null | undefined): Date | null {
@@ -26,7 +26,7 @@ function safeDate(iso: string | null | undefined): Date | null {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
-/** 日期：中文 2026年8月3日 / 英文 Aug 3, 2026（架构 T04 format 要求）。 */
+/** Date: localized per locale (zh-CN long month form / en short month form), architecture T04 format requirement. */
 export function formatDate(iso: string | null | undefined, locale: string = "zh-CN"): string {
   const d = safeDate(iso);
   if (!d) return NA;
@@ -37,7 +37,7 @@ export function formatDate(iso: string | null | undefined, locale: string = "zh-
   }).format(d);
 }
 
-/** 日期+时间（本地时区）。 */
+/** Date + time (local timezone). */
 export function formatDateTime(iso: string | null | undefined, locale: string = "zh-CN"): string {
   const d = safeDate(iso);
   if (!d) return NA;
@@ -47,7 +47,7 @@ export function formatDateTime(iso: string | null | undefined, locale: string = 
   }).format(d);
 }
 
-/** 仅时间（本地时区）。 */
+/** Time only (local timezone). */
 export function formatTime(iso: string | null | undefined, locale: string = "zh-CN"): string {
   const d = safeDate(iso);
   if (!d) return NA;
@@ -57,7 +57,7 @@ export function formatTime(iso: string | null | undefined, locale: string = "zh-
   }).format(d);
 }
 
-/** 通用数字（默认最多 2 位小数）。 */
+/** Generic number (at most 2 decimal places by default). */
 export function formatNumber(
   value: number | null | undefined,
   locale: string = "zh-CN",
@@ -67,7 +67,7 @@ export function formatNumber(
   return new Intl.NumberFormat(toIntlLocale(locale), { maximumFractionDigits }).format(value);
 }
 
-/** 带符号数字：+2.35 / -1.20（用于变化量）。 */
+/** Signed number: +2.35 / -1.20 (for change values). */
 export function formatSignedNumber(
   value: number | null | undefined,
   locale: string = "zh-CN",
@@ -80,7 +80,7 @@ export function formatSignedNumber(
   }).format(value);
 }
 
-/** 百分点数值（如 change_1d=2.35 表示 +2.35%）→ "+2.35%" / "-1.20%"。 */
+/** Percentage points (e.g. change_1d=2.35 means +2.35%) → "+2.35%" / "-1.20%". */
 export function formatPctPoints(
   value: number | null | undefined,
   locale: string = "zh-CN",
@@ -94,7 +94,7 @@ export function formatPctPoints(
   }).format(value)}%`;
 }
 
-/** 0-1 比例（如 confidence=0.72）→ "72.0%"。 */
+/** 0-1 ratio (e.g. confidence=0.72) → "72.0%". */
 export function formatRatio(
   value: number | null | undefined,
   locale: string = "zh-CN",
@@ -111,8 +111,8 @@ const CHANGE_UP_WORDS: Record<string, string> = { "zh-CN": "上涨", en: "Up" };
 const CHANGE_DOWN_WORDS: Record<string, string> = { "zh-CN": "下跌", en: "Down" };
 
 /**
- * 涨跌文案：中文 "上涨 2.35%" / 英文 "Up 2.35%"（架构 T04 format 要求）。
- * value 为百分点（2.35 → +2.35%）；方向由词表达，数值取绝对值（保留 2 位小数）。
+ * Change label: zh-CN uses the localized up/down words, en uses "Up"/"Down" + value (architecture T04 format requirement).
+ * value is in percentage points (2.35 → +2.35%); direction is expressed by the word, and the value uses its absolute value (2 decimal places).
  */
 export function formatChange(value: number | null | undefined, locale: string = "zh-CN"): string {
   if (value === null || value === undefined || Number.isNaN(value)) return NA;
@@ -125,7 +125,7 @@ export function formatChange(value: number | null | undefined, locale: string = 
   return word ? `${word} ${num}%` : `${num}%`;
 }
 
-/** 5Y 百分位：中文 "78.4百分位" / 英文 "78.4th pct"。 */
+/** 5Y percentile: zh-CN appends the localized pct suffix / en "78.4th pct". */
 export function formatPercentile(value: number | null | undefined, locale: string = "zh-CN"): string {
   if (value === null || value === undefined || Number.isNaN(value)) return NA;
   const num = new Intl.NumberFormat(toIntlLocale(locale), { maximumFractionDigits: 1 }).format(value);
@@ -141,7 +141,7 @@ const UNIT_SUFFIX_WORDS: Record<string, string> = {
   level: "",
 };
 
-/** 宏观单位 → 展示后缀（pct 追加 %，usd 用 USD 缩写等；词表为格式化器词汇）。 */
+/** Macro unit → display suffix (pct appends %, usd uses the USD abbreviation, etc.; the vocabulary belongs to the formatter). */
 export function formatUnitSuffix(unit: string, locale: string = "zh-CN"): string {
   const base = UNIT_SUFFIX_WORDS[unit] ?? "";
   if (unit === "usd") return base;
@@ -149,7 +149,7 @@ export function formatUnitSuffix(unit: string, locale: string = "zh-CN"): string
   return base;
 }
 
-/** 紧凑数字：中文 12.3亿 / 英文 1.23B（不追加货币）。 */
+/** Compact number: zh-CN compact form / en "1.23B" (no currency appended). */
 export function formatCompactNumber(
   value: number | null | undefined,
   locale: string = "zh-CN",
@@ -164,8 +164,8 @@ export function formatCompactNumber(
 const CURRENCY_WORDS: Record<string, string> = { USD: "美元", CNY: "人民币", HKD: "港元", KRW: "韩元" };
 
 /**
- * 货币：中文 "3.2万亿美元" / 英文 "$3.2T"（架构 T04 format 要求）。
- * 中文用紧凑记数 + 货币词；英文用 Intl 货币紧凑格式（自动 $/T 后缀）。
+ * Money: zh-CN compact notation + currency word / en "$3.2T" (architecture T04 format requirement).
+ * Chinese uses compact notation + currency word; English uses Intl compact currency format (auto $/T suffix).
  */
 export function formatMoneyCompact(
   value: number | null | undefined,
@@ -189,7 +189,7 @@ export function formatMoneyCompact(
   }).format(value);
 }
 
-/** 货币全量：$1,234.56 / ¥8,900。 */
+/** Full money: $1,234.56 / ¥8,900. */
 export function formatMoney(
   value: number | null | undefined,
   currency: string = "USD",
@@ -203,7 +203,7 @@ export function formatMoney(
   }).format(value);
 }
 
-/** 相对时间：Intl.RelativeTimeFormat（中文 "3 天前" / 英文 "3 days ago"）。 */
+/** Relative time: Intl.RelativeTimeFormat (localized per locale). */
 export function formatRelativeTime(
   iso: string | null | undefined,
   locale: string = "zh-CN",

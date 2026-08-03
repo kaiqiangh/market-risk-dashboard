@@ -2,12 +2,12 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Progress：风险分/置信度条（语义色 + 文本）。
+ * Progress: risk score / confidence bar (semantic color + text).
  */
 export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   value: number; // 0-100
   barClassName?: string;
-  /** 进度条高度（默认 h-2）。 */
+  /** Progress bar height (default h-2). */
   barHeightClass?: string;
 }
 

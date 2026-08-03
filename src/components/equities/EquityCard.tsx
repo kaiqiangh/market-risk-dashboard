@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/Badge";
 import type { EquityAsset } from "@/schemas";
 
 /**
- * EquityCard：关键美股卡（NVDA/AVGO/MU/AMD/TSLA，MVP 冻结 G2）。
- * 卡片级指标：价格/1d/1w/1m/RSI/MA50/MA200/5Y 百分位。
+ * EquityCard: key US equities card (NVDA/AVGO/MU/AMD/TSLA, frozen for MVP G2).
+ * Card-level indicators: price / 1d / 1w / 1m / RSI / MA50 / MA200 / 5Y percentile.
  */
 export interface EquityCardProps {
   asset: EquityAsset;

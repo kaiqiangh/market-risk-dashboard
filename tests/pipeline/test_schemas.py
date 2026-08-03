@@ -1,11 +1,11 @@
-"""Pydantic 契约测试（T02 验收：同一 fixture 通过 Pydantic 校验 + 硬约束）。
+"""Pydantic contract tests (T02 acceptance: the same fixture passes Pydantic validation + hard constraints).
 
-覆盖：
-- 所有核心数据集 fixture 通过对应 envelope / 自描述模型校验
-- 禁隐式字段（extra="forbid"）
-- 拒绝 NaN/Infinity
-- 枚举/时间严格校验、数字范围校验
-- schema_version 支持与向后兼容检查
+Covers:
+- All core dataset fixtures pass the corresponding envelope / self-describing model validation
+- No implicit fields (extra="forbid")
+- Rejects NaN/Infinity
+- Strict enum/time validation, numeric range validation
+- schema_version support and backward-compatibility check
 """
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ from pipeline.schemas.envelope import SCHEMA_VERSION, is_schema_compatible
 
 FIXTURES = Path(__file__).resolve().parent.parent / "fixtures"
 
-# 数据集 key 与 Python 对齐（架构 §8.1）
+# Dataset keys aligned with Python (architecture §8.1)
 ENVELOPE_FIXTURES: dict[str, type[BaseEnvelope]] = {
     "macro.json": MacroEnvelope,
     "equities.json": EquitiesEnvelope,
@@ -46,7 +46,7 @@ ENVELOPE_FIXTURES: dict[str, type[BaseEnvelope]] = {
     "dashboard.json": DashboardEnvelope,
 }
 
-# 自描述契约文件（facts / analysis 不包裹 BaseEnvelope，见 contract.py 说明）
+# Self-describing contract files (facts / analysis are not wrapped in BaseEnvelope; see contract.py)
 STANDALONE_FIXTURES: dict[str, type] = {
     "facts.json": FactLayer,
     "analysis.zh-CN.json": AnalysisDataset,
@@ -58,7 +58,7 @@ def load_fixture(name: str) -> dict:
     return json.loads((FIXTURES / name).read_text(encoding="utf-8"))
 
 
-# ---------- 正向：fixture 全部合法 ----------
+# ---------- Positive: all fixtures valid ----------
 
 @pytest.mark.parametrize("name,model", ENVELOPE_FIXTURES.items())
 def test_envelope_fixtures_valid(name: str, model: type[BaseEnvelope]) -> None:
@@ -72,7 +72,7 @@ def test_standalone_fixtures_valid(name: str, model: type) -> None:
     model.model_validate(load_fixture(name))
 
 
-# ---------- 负向：硬约束 ----------
+# ---------- Negative: hard constraints ----------
 
 def _valid_macro() -> dict:
     return load_fixture("macro.json")
@@ -116,7 +116,7 @@ def test_rejects_bad_datetime() -> None:
     with pytest.raises(ValidationError):
         MacroEnvelope.model_validate(data)
     data2 = _valid_macro()
-    data2["generated_at"] = "2026-08-03T10:00:00+08:00"  # 非 Z 后缀
+    data2["generated_at"] = "2026-08-03T10:00:00+08:00"  # non-Z suffix
     with pytest.raises(ValidationError):
         MacroEnvelope.model_validate(data2)
 
@@ -139,7 +139,7 @@ def test_rejects_missing_required() -> None:
         MacroEnvelope.model_validate(data)
 
 
-# ---------- schema_version 支持与向后兼容 ----------
+# ---------- schema_version support and backward compatibility ----------
 
 def test_schema_version_supported() -> None:
     for name, model in ENVELOPE_FIXTURES.items():
@@ -151,11 +151,11 @@ def test_schema_version_supported() -> None:
 @pytest.mark.parametrize(
     "file_version,expected",
     [
-        ("1.0.0", True),   # 当前版本
-        ("1.0.1", True),   # 同 major，patch 可忽略
-        ("1.1.0", False),  # 未来 minor：新字段可能不兼容（extra=forbid）
-        ("2.0.0", False),  # major 不同：结构不兼容
-        ("0.9.0", False),  # 更早 major
+        ("1.0.0", True),   # current version
+        ("1.0.1", True),   # same major, patch ignored
+        ("1.1.0", False),  # future minor: new fields may be incompatible (extra=forbid)
+        ("2.0.0", False),  # different major: structure incompatible
+        ("0.9.0", False),  # earlier major
         ("not-a-version", False),
     ],
 )
@@ -163,9 +163,9 @@ def test_is_schema_compatible(file_version: str, expected: bool) -> None:
     assert is_schema_compatible(file_version, SCHEMA_VERSION) is expected
 
 
-# ---------- 复制隔离：负向用例不污染共享 fixture ----------
+# ---------- Copy isolation: negative cases do not pollute shared fixtures ----------
 
 def test_fixture_files_unchanged_after_negative_tests() -> None:
-    """负向用例使用深拷贝，原始 fixture 文件应保持合法。"""
+    """Negative cases use deep copies; the original fixture files must remain valid."""
     for name, model in ENVELOPE_FIXTURES.items():
         model.model_validate(load_fixture(name))

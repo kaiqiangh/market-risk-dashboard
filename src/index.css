@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 /* ============================================================
-   主题 CSS 变量（Tailwind 语义 token 的数据源）
-   深色为默认主题；浅色主题通过 .light class 覆盖（T04 实现切换）。
-   风险色（架构 §8.6）：颜色不得是唯一表达，必须配文本+图标+数值。
+   Theme CSS variables (the data source for Tailwind semantic tokens)
+   Dark is the default theme; the light theme overrides via the .light class (switching implemented in T04).
+   Risk colors (architecture §8.6): color must not be the only expression, always pair with text + icon + value.
    ============================================================ */
 
 :root,
@@ -25,15 +25,15 @@
   --destructive: 248 113 113; /* #f87171 */
   --radius: 0.5rem;
 
-  /* 风险语义色 */
-  --risk-low: 34 197 94; /* green-500 — 正常/风险降低 */
-  --risk-caution: 250 204 21; /* yellow-400 — 谨慎 */
-  --risk-high: 249 115 22; /* orange-500 — 高风险 */
-  --risk-severe: 239 68 68; /* red-500 — 严重/危机 */
-  --risk-na: 100 116 139; /* slate-500 — 缺失/降级 */
+  /* Risk semantic colors */
+  --risk-low: 34 197 94; /* green-500 — normal / risk decreasing */
+  --risk-caution: 250 204 21; /* yellow-400 — caution */
+  --risk-high: 249 115 22; /* orange-500 — high risk */
+  --risk-severe: 239 68 68; /* red-500 — severe / crisis */
+  --risk-na: 100 116 139; /* slate-500 — missing / degraded */
 }
 
-/* 浅色主题覆盖（T04 接入 ThemeToggle 后启用） */
+/* Light theme overrides (enabled after T04 wires up ThemeToggle) */
 :root[class~="light"] {
   --background: 248 250 252;
   --foreground: 15 23 42;

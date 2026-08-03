@@ -8,7 +8,7 @@ import { LanguageSwitch } from "./LanguageSwitch";
 import { ThemeToggle } from "./ThemeToggle";
 
 /**
- * Navbar：顶部导航（架构 §1.9 语言段驱动；移动端横向滚动）。
+ * Navbar: top navigation (architecture §1.9 language-segment driven; horizontal scroll on mobile).
  */
 
 const PAGE_ICONS: Record<PageKey, ComponentType<{ className?: string }>> = {

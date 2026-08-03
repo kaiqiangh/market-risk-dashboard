@@ -1,10 +1,10 @@
 # ============================================================
-# 数据源配置：Provider 注册表 / 降级顺序 / 期望更新频率（架构 §1.4、§8.5）
-# T03 的 ProviderRegistry 按本文件注册各域主/备 Provider 与降级链。
+# Data source configuration: Provider registry / fallback order / expected update frequency (architecture §1.4, §8.5)
+# T03's ProviderRegistry registers each domain's primary/backup providers and fallback chain from this file.
 # ============================================================
 schema_version: "1.0.0"
 
-# 期望更新频率（冻结 G4；前端 src/lib/freshness.ts 与之保持同步）
+# Expected update frequency (frozen G4; kept in sync with the frontend src/lib/freshness.ts)
 expectations:
   market: { interval_minutes: 480, note: "行情/新闻 2-3 次/日" }
   news: { interval_minutes: 480, note: "2-3 次/日" }
@@ -14,7 +14,7 @@ expectations:
   risk: { interval_minutes: 480, note: "风险模型随管道 2-3 次/日重算" }
   dashboard: { interval_minutes: 480, note: "首页聚合随管道 2-3 次/日重算" }
 
-# Provider 注册表（priority 数字越小越优先）
+# Provider registry (smaller priority number = higher priority)
 providers:
   quotes:
     - { name: yfinance, priority: 1, kind: primary }
@@ -32,7 +32,7 @@ providers:
   news:
     - { name: rss_news, priority: 1, kind: primary }
 
-# 降级链（架构 §1.4）
+# Fallback chain (architecture §1.4)
 degrade:
   max_retries: 2
   backoff_base_seconds: 1.0

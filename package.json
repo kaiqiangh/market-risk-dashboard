@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Global Market Risk Intelligence Dashboard — 全球市场风险情报看板",
+  "description": "Global Market Risk Intelligence Dashboard",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build && npm run precompress",

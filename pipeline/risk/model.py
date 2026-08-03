@@ -1,12 +1,15 @@
-"""6 维风险模型（架构 §3.2/§1.8 口径红线 + Fix 轮次 P0-2/P2-11）。
+"""6-dimension risk model (architecture §3.2/§1.8 calibration red lines + Fix rounds P0-2/P2-11).
 
-- 风险分为"模型化的市场压力估计"，非精确崩盘概率（disclaimer 固定文案）。
-- 权重来自 config/risk_model.yaml；某维 coverage=0 时按剩余维度权重比例重归一化。
-- 子指标评分主路径（P0-2）：5Y 历史百分位窗口（config.percentile_window_years），
-  启发式表仅作历史不足回退；percentile/z_score 随历史可算即算。
-- 维度趋势（P2-11）：由上一日各维分数对比计算 rising/falling/flat；
-  trend_1w/trend_1m 由 risk 历史序列计算（历史足够时）。
-- 输出 RiskModelResult（pydantic 契约，score 0-100 / confidence 0-1）。
+- The risk score is a "modeled market stress estimate", not an exact crash probability
+  (fixed disclaimer copy).
+- Weights come from config/risk_model.yaml; when a dimension has coverage=0, weights are
+  renormalized proportionally across the remaining dimensions.
+- Sub-indicator scoring primary path (P0-2): 5Y historical percentile window
+  (config.percentile_window_years); the heuristic table is only the fallback for insufficient
+  history; percentile/z_score are computed whenever history allows.
+- Dimension trend (P2-11): computed by comparing each dimension's score to the previous day;
+  trend_1w/trend_1m are computed from the risk history series (when history is sufficient).
+- Outputs RiskModelResult (pydantic contract, score 0-100 / confidence 0-1).
 """
 
 from __future__ import annotations
@@ -35,9 +38,9 @@ DIMENSION_LABELS = {
     "trend": "Trend",
 }
 
-DEFAULT_DISCLAIMER = "本页风险分数为模型化的市场压力估计，并非精确的崩盘概率，不构成投资建议。"
+DEFAULT_DISCLAIMER = "This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."
 
-# 指标 key → 5Y 历史序列来源（FRED series key；元组表示组合序列，如期限利差）
+# Indicator key → 5Y history series source (FRED series key; tuple means a composite series, e.g. term spread)
 INDICATOR_HISTORY_SERIES: dict[str, str | tuple[str, str]] = {
     "real_rate_dfii10": "dfii10",
     "yield_curve_10y2y": ("dgs10", "dgs2"),
@@ -48,7 +51,7 @@ INDICATOR_HISTORY_SERIES: dict[str, str | tuple[str, str]] = {
     "fed_balance_sheet": "walcl",
     "reverse_repo": "rrpontsyd",
     "vix": "vixcls",
-    "realized_vol": None,  # 计算型：无独立 5Y 序列（回退启发式）
+    "realized_vol": None,  # computed: no independent 5Y series (heuristic fallback)
 }
 
 
@@ -87,13 +90,13 @@ class RiskModel:
         scoring_cfg = raw.get("scoring", {})
         self.percentile_window_years = int(scoring_cfg.get("percentile_window_years", 5))
         self.fallback_percentile = float(scoring_cfg.get("fallback_percentile", 50.0))
-        # 5Y 窗口 ≈ 252 交易日/年（日频序列）
+        # 5Y window ≈ 252 trading days/year (daily-frequency series)
         self._max_history_samples = max(60, self.percentile_window_years * 252)
 
-    # ---- 5Y 历史窗口 ----
+    # ---- 5Y history window ----
 
     def _series_values(self, ctx: dict[str, Any], series_key: str) -> list[float]:
-        """从 series_history 提取某序列的 5Y 窗口数值（升序，最新在末尾）。"""
+        """Extract the 5Y-window values of a series from series_history (ascending, latest last)."""
         series_history = ctx.get("series_history", {}) or {}
         rows = series_history.get(series_key) or []
         values = [
@@ -104,7 +107,7 @@ class RiskModel:
         return values[-self._max_history_samples:]
 
     def _indicator_history(self, ctx: dict[str, Any], key: str) -> list[float] | None:
-        """指标 key → 5Y 历史数值（组合序列按日期对齐求差；无来源返回 None）。"""
+        """Indicator key → 5Y history values (composite series aligned by date and differenced; None when no source)."""
         spec = INDICATOR_HISTORY_SERIES.get(key)
         if spec is None:
             return None
@@ -112,7 +115,7 @@ class RiskModel:
             values = self._series_values(ctx, spec)
             return values if values else None
 
-        # 组合序列：如 10Y-2Y 期限利差 = DGS10 - DGS2（按日期对齐）
+        # Composite series: e.g. 10Y-2Y term spread = DGS10 - DGS2 (aligned by date)
         series_history = ctx.get("series_history", {}) or {}
         maps: list[dict[str, float]] = []
         for series_key in spec:
@@ -130,7 +133,7 @@ class RiskModel:
         diffs = [round(maps[0][d] - maps[1][d], 6) for d in common]
         return diffs[-self._max_history_samples:] if diffs else None
 
-    # ---- 各维指标 ----
+    # ---- Per-dimension indicators ----
 
     def _macro_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
         macro = ctx.get("macro")
@@ -191,7 +194,7 @@ class RiskModel:
         ]
 
     def _cross_asset_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
-        # 9 项确认信号命中率（MVP 简化）：跨资产风险确认
+        # 9-signal confirmation hit rate (MVP simplified): cross-asset risk confirmation
         cross = ctx.get("cross_asset", {})
         return [
             _ind("cross_asset_confirmation", "Cross-asset Confirmation", cross.get("confirmation"), "higher_is_riskier", "computed", 15.0, is_proxy=True),
@@ -205,7 +208,7 @@ class RiskModel:
             _ind("momentum_3m", "3M Momentum", trend.get("momentum_3m"), "lower_is_riskier", "computed", 4.0),
         ]
 
-    # ---- 主流程 ----
+    # ---- Main flow ----
 
     def score(self, ctx: dict[str, Any]) -> RiskModelResult:
         builders = {
@@ -241,7 +244,8 @@ class RiskModel:
                 )
             )
 
-        # 重归一化：coverage=0 的维度权重按剩余维度比例重新分配
+        # Renormalization: weights of dimensions with coverage=0 are redistributed proportionally
+        # across the remaining dimensions
         total_weight = sum(d.weight for d in dimensions if d.coverage > 0)
         if total_weight <= 0:
             total_weight = sum(d.weight for d in dimensions) or 1.0
@@ -250,7 +254,7 @@ class RiskModel:
                 d.effective_weight = round(d.weight, 4)
             else:
                 d.effective_weight = 0.0
-        # 将缺失维度权重按有效维度比例分配
+        # Redistribute the missing-dimension weight proportionally across valid dimensions
         missing_weight = sum(d.weight for d in dimensions if d.coverage == 0)
         if missing_weight > 0 and total_weight > 0:
             for d in dimensions:
@@ -260,10 +264,10 @@ class RiskModel:
         denom = sum(d.effective_weight for d in dimensions) or 1.0
         total_score = round(sum(d.effective_weight * d.score for d in dimensions) / denom, 2)
 
-        # 风险等级
+        # Risk level
         risk_level = self._level_for(total_score)
 
-        # Top drivers（贡献 = 有效权重 × 风险分 / 100）
+        # Top drivers (contribution = effective weight × risk score / 100)
         drivers: list[DriverContribution] = []
         for d in dimensions:
             for ind in d.indicators:
@@ -295,12 +299,12 @@ class RiskModel:
         }
         regime, regime_evidence = regime_mod.infer_regime(regime_ctx)
 
-        # 趋势：与最近一次 risk 历史对比（run.py 注入 prev_total_score + risk_history）
+        # Trend: compare with the most recent risk history (run.py injects prev_total_score + risk_history)
         prev_score = ctx.get("_prev_total_score")
         trend_1d = round(total_score - prev_score, 2) if prev_score is not None else None
         trend_1w, trend_1m = _history_trends(total_score, ctx.get("_risk_history"))
 
-        # 置信度
+        # Confidence
         data_quality = float(ctx.get("data_quality", 1.0))
         coverage = sum(d.coverage * d.weight for d in dimensions) / (sum(d.weight for d in dimensions) or 1.0)
         consistency = conf_mod.consistency_from_dimension_scores([d.score for d in dimensions])
@@ -335,7 +339,7 @@ class RiskModel:
 
 
 def _dim_trend(score: float, prev_score: float | None) -> str:
-    """维度趋势（P2-11）：与上一日分数对比；无上一日 → flat。"""
+    """Dimension trend (P2-11): compare with the previous day's score; no previous day → flat."""
     if prev_score is None:
         return "flat"
     if abs(score - prev_score) < 0.01:
@@ -344,9 +348,9 @@ def _dim_trend(score: float, prev_score: float | None) -> str:
 
 
 def _history_trends(total_score: float, rows: Any) -> tuple[float | None, float | None]:
-    """trend_1w / trend_1m：由 risk 历史序列计算（历史不足返回 None）。
+    """trend_1w / trend_1m: computed from the risk history series (None when history is insufficient).
 
-    rows 为 history/risk/daily.json 的既往行（不含今日）；1w≈5 个交易日、1m≈21 个。
+    rows are the prior rows of history/risk/daily.json (excluding today); 1w ≈ 5 trading days, 1m ≈ 21.
     """
     if not rows or not isinstance(rows, list):
         return None, None
@@ -372,7 +376,7 @@ def _history_trends(total_score: float, rows: Any) -> tuple[float | None, float 
 
 
 def _parse_thresholds(raw: dict[str, Any]) -> list[tuple[RiskLevel, Any]]:
-    """从 config thresholds 构建 (level, predicate)。"""
+    """Build (level, predicate) from config thresholds."""
     out: list[tuple[RiskLevel, Any]] = []
     for level, rule in raw.items():
         if not isinstance(rule, dict):
@@ -383,7 +387,7 @@ def _parse_thresholds(raw: dict[str, Any]) -> list[tuple[RiskLevel, Any]]:
             out.append((level, lambda s, r=rule: float(r["gte"]) <= s < float(r["lt"])))
         elif "gte" in rule:
             out.append((level, lambda s, r=rule: s >= float(r["gte"])))
-    # 按 (下界) 排序，保证第一个命中优先
+    # Sort by (lower bound) so the first hit takes priority
     return out
 
 

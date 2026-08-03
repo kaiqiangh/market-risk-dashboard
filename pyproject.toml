@@ -1,7 +1,7 @@
 [project]
 name = "market-risk-dashboard"
 version = "0.1.0"
-description = "Global Market Risk Intelligence Dashboard — 数据管道（采集/指标/风险/事实层/存储）"
+description = "Global Market Risk Intelligence Dashboard — data pipeline (collection / indicators / risk / fact layer / storage)"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -48,5 +48,5 @@ target-version = "py311"
 select = ["E", "F", "W", "I", "UP", "B", "SIM"]
 ignore = ["E501"]
 
-# 共享知识：akshare 只在 AkshareProvider 内 import（隔离反爬变更影响面，禁止其他模块直接 import akshare）。
-# 该约束在 T03 实现 providers 时强制执行；本仓库 CI 可用 ruff 自定义规则补充检查。
+# Shared knowledge: akshare is imported only inside AkshareProvider (isolating the blast radius of anti-scraping changes; other modules must not import akshare directly).
+# This constraint was enforced when T03 implemented the providers; this repo's CI can add a ruff custom rule for supplementary checks.

@@ -1,7 +1,7 @@
 # ============================================================
-# 风险模型配置（架构 §3.2 冻结 6 维权重；可配置 + 重归一化）
-# 某维 coverage=0 时，其权重按剩余维度权重比例重新分配，
-# 同时 confidence_factors.coverage 相应下调。
+# Risk model configuration (architecture §3.2 frozen 6-dimension weights; configurable + renormalization)
+# When a dimension's coverage=0, its weight is redistributed proportionally across the remaining dimensions,
+# and confidence_factors.coverage is lowered accordingly.
 # ============================================================
 model_version: "1.0.0"
 
@@ -13,7 +13,7 @@ dimensions:
   cross_asset: { weight: 15 }
   trend: { weight: 10 }
 
-# 各维指标映射（MVP 级；T03 实现时按此表填充 indicators，详细信号清单以本文件为准）
+# Per-dimension indicator mapping (MVP level; T03 fills indicators from this table; the detailed signal list in this file is authoritative)
 indicators:
   macro:
     - { key: real_rate_dfii10, source: FRED, metric: DFII10, label: "10Y 实际利率" }
@@ -48,12 +48,12 @@ indicators:
     - { key: drawdown_52w, source: computed, metric: trend, label: "52 周高点回撤" }
     - { key: momentum_3m, source: computed, metric: trend, label: "3M 动量" }
 
-# 子指标 → 0-100 映射（默认：5Y 历史百分位窗口，架构 P0-5 方法论 v1）
+# Sub-indicator → 0-100 mapping (default: 5Y historical percentile window, architecture P0-5 methodology v1)
 scoring:
   percentile_window_years: 5
   fallback_percentile: 50.0
 
-# 风险等级阈值（总风险分 0-100）
+# Risk level thresholds (total risk score 0-100)
 thresholds:
   risk_level:
     risk_on: { lt: 20 }
@@ -63,7 +63,7 @@ thresholds:
     severe_risk: { gte: 80, lt: 90 }
     crisis: { gte: 90 }
 
-# 置信度 = f(数据质量, 指标覆盖度, 信号一致性)（产品级定义，非统计严格，架构 P0-5）
+# Confidence = f(data quality, indicator coverage, signal consistency) (product-level definition, not statistically strict, architecture P0-5)
 confidence:
   weights: { data_quality: 0.4, coverage: 0.4, consistency: 0.2 }
   degrade_factor_per_fallback: 0.8

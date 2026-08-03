@@ -1,6 +1,6 @@
-"""加密资产数据集契约（架构 §3.2 cross_asset / 评审 §3 数据源矩阵 #7）。
+"""Crypto asset dataset contract (architecture §3.2 cross_asset / review §3 data source matrix #7).
 
-T03 CoinGeckoCollector 负责填充；本模块只定义契约。
+Filled by the T03 CoinGeckoCollector; this module only defines the contract.
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ CryptoSentiment = Literal["risk_on", "risk_off", "neutral"]
 
 
 class CryptoAsset(ContractModel):
-    symbol: str = Field(min_length=1, description="如 BTC / ETH / SOL")
+    symbol: str = Field(min_length=1, description="e.g. BTC / ETH / SOL")
     name: str = Field(min_length=1)
     price: float
     change_1d: float | None = None
@@ -28,7 +28,7 @@ class CryptoAsset(ContractModel):
 
 
 class CryptoDataset(ContractModel):
-    """crypto.json payload。"""
+    """crypto.json payload."""
 
     assets: list[CryptoAsset] = Field(default_factory=list)
     btc_dominance: float | None = Field(default=None, ge=0.0, le=1.0)

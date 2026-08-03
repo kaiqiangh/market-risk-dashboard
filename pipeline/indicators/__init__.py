@@ -1,4 +1,4 @@
-"""Indicators 包（架构 §3.7 IndicatorEngine）。"""
+"""Indicators package (architecture §3.7 IndicatorEngine)."""
 
 from pipeline.indicators import breadth, flow, technical, trend
 

@@ -7,7 +7,7 @@ import { REGIME_KEYS } from "@/lib/riskLabels";
 import type { MarketRegime } from "@/schemas";
 
 /**
- * RegimeCard：市场状态（Market Regime，9 状态规则引擎输出）。
+ * RegimeCard: market regime (Market Regime, output of the 9-state rule engine).
  */
 export interface RegimeCardProps {
   regime: MarketRegime;

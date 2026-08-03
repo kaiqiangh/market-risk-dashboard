@@ -1,23 +1,23 @@
 import { z } from "zod";
 
 /**
- * 全局数据 Envelope（架构 §3.1，与 pipeline/schemas/envelope.py 同构）。
- * - strict()：禁止隐式字段（additionalProperties=false 同构）
- * - finite()：拒绝 NaN/Infinity
- * - datetime()：ISO 8601 UTC + Z
+ * Global data Envelope (architecture §3.1, isomorphic with pipeline/schemas/envelope.py).
+ * - strict(): disallow implicit fields (additionalProperties=false isomorphic)
+ * - finite(): reject NaN/Infinity
+ * - datetime(): ISO 8601 UTC + Z
  */
 
 export const FreshnessStatus = z.enum(["fresh", "delayed", "stale", "missing", "degraded"]);
 export type FreshnessStatus = z.infer<typeof FreshnessStatus>;
 
-/** ISO 8601 UTC + Z 时间（如 2026-08-03T10:00:00Z） */
+/** ISO 8601 UTC + Z timestamp (e.g. 2026-08-03T10:00:00Z) */
 export const utcDateTime = z.string().datetime();
 
 /**
- * EvidenceRef：证据引用（架构 §3.3）。
- * 注：Python 侧定义在 pipeline/schemas/factlayer.py（经 model_rebuild 解析前向引用）；
- * 前端为避免 risk ↔ factlayer 的运行时循环依赖，统一放在共享原语模块 envelope.ts。
- * 语义与 JSON 输出完全一致。
+ * EvidenceRef: evidence reference (architecture §3.3).
+ * Note: the Python side defines it in pipeline/schemas/factlayer.py (forward reference resolved via model_rebuild);
+ * the frontend keeps it in the shared primitive module envelope.ts to avoid a runtime circular dependency between risk ↔ factlayer.
+ * Semantics are identical to the JSON output.
  */
 export const EvidenceRef = z
   .object({
@@ -43,7 +43,7 @@ export const BaseEnvelope = z
   .strict();
 export type BaseEnvelope = z.infer<typeof BaseEnvelope>;
 
-/** 构造带强类型 payload 的数据集信封 schema。 */
+/** Build a dataset envelope schema with a strongly typed payload. */
 export function datasetEnvelope<T extends z.ZodTypeAny>(payloadSchema: T) {
   return z
     .object({

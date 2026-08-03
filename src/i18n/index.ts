@@ -20,11 +20,11 @@ import riskEn from "./locales/en/risk.json";
 import statusEn from "./locales/en/status.json";
 
 /**
- * i18n 初始化（架构 §1.9）。
- * 语言优先级：URL 语言段 → localStorage `market_dashboard_locale` → 浏览器语言 → 默认 zh-CN。
- * 命名空间（PRD §8.5）：common/dashboard/macro/equities/sectors/news/calendar/risk/status。
- * 注：PRD 原命名空间含 sectors，前端以 themes 命名空间承载板块/主题文案；
- *     sectors 数据（板块/主题）本身来自数据文件（label/label_zh），不占用翻译命名空间。
+ * i18n initialization (architecture §1.9).
+ * Language priority: URL language segment → localStorage `market_dashboard_locale` → browser language → default zh-CN.
+ * Namespaces (PRD §8.5): common/dashboard/macro/equities/sectors/news/calendar/risk/status.
+ * Note: PRD originally included the sectors namespace; the frontend carries sector/theme copy in the themes namespace;
+ *       sectors data (sectors/themes) itself comes from data files (label/label_zh) and does not occupy a translation namespace.
  */
 
 export const SUPPORTED_LOCALES = ["zh-CN", "en"] as const;
@@ -39,13 +39,13 @@ const LOCALE_SEGMENT_MAP: Record<string, SupportedLocale> = {
   en: "en",
 };
 
-/** 从 URL hash（#/zh/overview）解析语言段。 */
+/** Parse the language segment from the URL hash (#/zh/overview). */
 export function localeFromHash(hash: string): SupportedLocale | null {
   const segment = hash.replace(/^#\/?/, "").split("/")[0] ?? "";
   return LOCALE_SEGMENT_MAP[segment] ?? null;
 }
 
-/** 按优先级探测初始语言。 */
+/** Detect the initial language by priority. */
 export function detectInitialLocale(): SupportedLocale {
   const fromHash = localeFromHash(window.location.hash);
   if (fromHash) return fromHash;
@@ -103,7 +103,7 @@ void i18n.use(initReactI18next).init({
   defaultNS: "common",
   ns: [...NAMESPACES],
   interpolation: {
-    escapeValue: false, // React 已做 XSS 转义
+    escapeValue: false, // React already performs XSS escaping
   },
   returnNull: false,
 });

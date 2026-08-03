@@ -29,11 +29,11 @@ import { formatChange } from "@/lib/format";
 import type { HeatmapCell } from "@/charts/AssetHeatmap";
 
 /**
- * OverviewPage：首页（PRD §22.3 布局）。
- * 数据来源：risk.json（风险分/regime/drivers）+ history/risk/30d.json（趋势）
- *           + crypto/equities/sectors（跨资产热力）+ calendar（催化剂）
- *           + news（重要新闻）+ analysis.{lang}.json（AI 简报）。
- * 稳健性：dashboard.json 尚未产出时不依赖它（T05 聚合后可切换）。
+ * OverviewPage: homepage (PRD §22.3 layout).
+ * Data sources: risk.json (risk score / regime / drivers) + history/risk/30d.json (trend)
+ *           + crypto/equities/sectors (cross-asset heatmap) + calendar (catalysts)
+ *           + news (important news) + analysis.{lang}.json (AI brief).
+ * Robustness: does not depend on dashboard.json until it is produced (switchable after the T05 aggregation).
  */
 export default function OverviewPage() {
   const { t, i18n } = useTranslation("dashboard");
@@ -50,7 +50,7 @@ export default function OverviewPage() {
     lang: locale === "en" ? "en" : "zh-CN",
   });
 
-  // 跨资产热力 cell 组装
+  // Build cross-asset heatmap cells
   const heatmapCells: HeatmapCell[] = [];
   if (equitiesQ.data) {
     for (const a of equitiesQ.data.payload.assets) {
@@ -71,7 +71,7 @@ export default function OverviewPage() {
     }
   }
 
-  // 未来催化剂（按时间升序取前 5）
+  // Upcoming catalysts (top 5 by ascending time)
   const nowIso = new Date().toISOString();
   const catalysts =
     calendarQ.data
@@ -92,7 +92,7 @@ export default function OverviewPage() {
         <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
       </header>
 
-      {/* 风险结论优先：Risk Score + Regime + Top Drivers */}
+      {/* Risk conclusion first: Risk Score + Regime + Top Drivers */}
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3" data-testid="risk-conclusion">
         {riskQ.isLoading ? (
           <Skeleton className="h-64 w-full" />

@@ -4,7 +4,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { Button } from "@/components/ui/Button";
 
 /**
- * ThemeToggle：深色/浅色切换（默认深色，localStorage 持久化）。
+ * ThemeToggle: dark/light toggle (dark by default, persisted in localStorage).
  */
 export function ThemeToggle() {
   const { t } = useTranslation("common");

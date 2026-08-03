@@ -4,7 +4,7 @@ import echarts from "./echarts";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatNumber } from "@/lib/format";
 
-/** jsdom/无 canvas 环境 → 走 HTML 降级（避免 zrender 动画循环崩溃）。 */
+/** jsdom / no-canvas environment → fall back to HTML (avoid zrender animation loop crashes). */
 function canvasSupported(): boolean {
   try {
     const canvas = document.createElement("canvas");
@@ -15,8 +15,8 @@ function canvasSupported(): boolean {
 }
 
 /**
- * MacroChart：宏观指标条形图（ECharts BarChart，按需引入）。
- * items：{ label, value, unit }[]；空数据 → EmptyState；无 canvas → HTML 降级。
+ * MacroChart: macro indicator bar chart (ECharts BarChart, imported on demand).
+ * items: { label, value, unit }[]; empty data → EmptyState; no canvas → HTML fallback.
  */
 export interface MacroChartItem {
   label: string;

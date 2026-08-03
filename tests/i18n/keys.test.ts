@@ -1,6 +1,6 @@
 /**
- * i18n key 完整性测试（PRD §25.2：Translation key 完整性 / 中文缺失 key / 英文缺失 key）。
- * tests/i18n 为 §25.2 完整套件的权威目录（tests/frontend/i18n.test.ts 为 T04 遗留回归）。
+ * i18n key integrity tests (PRD §25.2: translation key integrity / missing keys in zh / missing keys in en).
+ * tests/i18n is the authoritative directory for the §25.2 full suite (tests/frontend/i18n.test.ts is the T04 regression leftover).
  */
 import { describe, expect, it } from "vitest";
 import { readdirSync, readFileSync } from "node:fs";
@@ -39,8 +39,8 @@ function flattenKeys(obj: Record<string, unknown>, prefix = ""): string[] {
   });
 }
 
-describe("i18n 命名空间完整性", () => {
-  it("只允许 zh-CN / en 两个语言目录", () => {
+describe("i18n namespace integrity", () => {
+  it("only the zh-CN / en language directories are allowed", () => {
     const langs = readdirSync(LOCALES_DIR, { withFileTypes: true })
       .filter((e) => e.isDirectory())
       .map((e) => e.name)
@@ -48,26 +48,26 @@ describe("i18n 命名空间完整性", () => {
     expect(langs).toEqual(["en", "zh-CN"]);
   });
 
-  it("每个语言都有全部 9 个命名空间文件", () => {
+  it("every language has all 9 namespace files", () => {
     for (const lang of LANGS) {
       for (const ns of NAMESPACES) {
         const p = path.join(LOCALES_DIR, lang, `${ns}.json`);
-        expect(() => readFileSync(p, "utf-8"), `${lang}/${ns}.json 缺失`).not.toThrow();
+        expect(() => readFileSync(p, "utf-8"), `${lang}/${ns}.json missing`).not.toThrow();
       }
     }
   });
 });
 
-describe("Translation key 完整性", () => {
+describe("Translation key integrity", () => {
   for (const ns of NAMESPACES) {
-    it(`中文文件缺失 key（en 有而 zh 无）为空: ${ns}`, () => {
+    it(`no keys missing in Chinese files (en has, zh lacks): ${ns}`, () => {
       const zh = new Set(flattenKeys(load("zh-CN", ns)));
       const en = new Set(flattenKeys(load("en", ns)));
       const missingInZh = [...en].filter((k) => !zh.has(k));
       expect(missingInZh, `en-only keys in ${ns}`).toEqual([]);
     });
 
-    it(`英文文件缺失 key（zh 有而 en 无）为空: ${ns}`, () => {
+    it(`no keys missing in English files (zh has, en lacks): ${ns}`, () => {
       const zh = new Set(flattenKeys(load("zh-CN", ns)));
       const en = new Set(flattenKeys(load("en", ns)));
       const missingInEn = [...zh].filter((k) => !en.has(k));
@@ -75,7 +75,7 @@ describe("Translation key 完整性", () => {
     });
   }
 
-  it("所有翻译值非空字符串", () => {
+  it("all translation values are non-empty strings", () => {
     for (const lang of LANGS) {
       for (const ns of NAMESPACES) {
         const obj = load(lang, ns);
@@ -85,7 +85,7 @@ describe("Translation key 完整性", () => {
           }, obj);
           expect(
             typeof value === "string" && value.trim().length > 0,
-            `${lang}/${ns}.${key} 为空`,
+            `${lang}/${ns}.${key} is empty`,
           ).toBe(true);
         }
       }

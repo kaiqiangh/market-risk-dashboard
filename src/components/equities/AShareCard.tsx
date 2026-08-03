@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import type { EquityAsset } from "@/schemas";
 
 /**
- * AShareCard：A 股存储个股卡（移动端优先卡片；长表格改卡片，架构响应式要求）。
+ * AShareCard: A-share memory stock card (mobile-first cards; long tables become cards per responsive design requirements).
  */
 export interface AShareCardProps {
   asset: EquityAsset;

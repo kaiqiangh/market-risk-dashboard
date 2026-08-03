@@ -1,6 +1,6 @@
 import type { FreshnessStatus } from "@/schemas/envelope";
 
-/** 全局数据信封（架构 §3.1）。 */
+/** Global data envelope (architecture §3.1). */
 export interface BaseEnvelope {
   generated_at: string;
   schema_version: string;
@@ -11,7 +11,7 @@ export interface BaseEnvelope {
   payload: Record<string, unknown>;
 }
 
-/** 带强类型 payload 的数据集。 */
+/** Dataset with a strongly typed payload. */
 export interface Dataset<T> extends Omit<BaseEnvelope, "payload"> {
   payload: T;
 }

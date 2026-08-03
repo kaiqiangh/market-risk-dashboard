@@ -1,6 +1,6 @@
-"""行业/主题数据集契约（架构 §3.2 equity_structure 与 PRD 主题模块）。
+"""Sectors/themes dataset contract (architecture §3.2 equity_structure and PRD themes module).
 
-T03 负责填充；本模块只定义契约。
+Filled by T03; this module only defines the contract.
 """
 
 from __future__ import annotations
@@ -11,7 +11,7 @@ from .envelope import BaseEnvelope, ContractModel, UTCDateTime
 
 
 class SectorItem(ContractModel):
-    """行业或主题条目。"""
+    """Sector or theme entry."""
 
     key: str = Field(min_length=1)
     label: str = Field(min_length=1)
@@ -24,7 +24,7 @@ class SectorItem(ContractModel):
 
 
 class MemoryProxy(ContractModel):
-    """存储周期代理（评审 P0-1：MVP 用美光/海力士/三星股价做存储周期代理）。"""
+    """Memory cycle proxy (review P0-1: MVP uses Micron/Hynix/Samsung share prices as a memory cycle proxy)."""
 
     label: str = Field(min_length=1)
     label_zh: str | None = None
@@ -35,7 +35,7 @@ class MemoryProxy(ContractModel):
 
 
 class SectorsDataset(ContractModel):
-    """sectors.json payload。"""
+    """sectors.json payload."""
 
     sectors: list[SectorItem] = Field(default_factory=list)
     themes: list[SectorItem] = Field(default_factory=list)

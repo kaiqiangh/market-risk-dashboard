@@ -1,9 +1,9 @@
-"""新闻采集器（架构 §3.7 NewsCollector + §1.5 中译合并）。
+"""News collector (architecture §3.7 NewsCollector + §1.5 Chinese translation merge).
 
-- id = sha1(title+source+published) 去重键
-- importance 规则评分 0-100（来源权重 + 关键词 + 资产命中 + 时效）
-- 只存标题/来源/链接/自写摘要，不存全文（版权边界）
-- merge_translations：把 news.zh-translations.json 合并进 news.json（单一事实源）
+- id = sha1(title+source+published) dedupe key
+- importance rule scoring 0-100 (source weight + keyword + asset hit + recency)
+- stores only title/source/link/self-written summary, not full text (copyright boundary)
+- merge_translations: merges news.zh-translations.json into news.json (single source of truth)
 """
 
 from __future__ import annotations
@@ -47,7 +47,7 @@ class NewsCollector:
 
     def _score_importance(self, item: dict[str, Any], now: datetime) -> float:
         title = item["title"].lower()
-        # 来源权重（按 news_sources.yaml 的 source weight，缺省取 1）
+        # Source weight (per news_sources.yaml source weight, default 1)
         source_cfg = self.settings.load_news_sources().get("sources", [])
         weight = next((float(s.get("weight", 1)) for s in source_cfg if s.get("id") == item.get("source_id")), 1.0)
         source_score = self.source_weight * min(weight / 4.0, 1.0)
@@ -99,7 +99,7 @@ class NewsCollector:
             raw_items = []
             provider = "rss_news"
 
-        # 源可达性（Fix R3）：由 RssNewsProvider 记录，写入 sources 状态供系统状态页
+        # Source reachability (Fix R3): recorded by RssNewsProvider, written to sources status for the system status page
         source_status: dict[str, Any] = {}
         for p in self.registry.providers_for("news"):
             if hasattr(p, "source_status"):
@@ -136,7 +136,7 @@ class NewsCollector:
         items.sort(key=lambda n: n.importance, reverse=True)
         items = items[:50]
 
-        quality = 0.8 if self.degraded else 1.0  # 按失败源降级 ×0.8
+        quality = 0.8 if self.degraded else 1.0  # degrade ×0.8 per failed source
         envelope = NewsEnvelope(
             generated_at=now_utc(), schema_version="1.0.0",
             source=[provider], source_updated_at=now_utc(),
@@ -146,10 +146,10 @@ class NewsCollector:
         )
         return envelope, {"degraded": self.degraded, "provider": provider, "source_status": source_status}
 
-    # ---- 中译合并（架构 §1.5 步骤 4）----
+    # ---- Chinese translation merge (architecture §1.5 step 4) ----
 
     def merge_translations(self, news: NewsEnvelope, translations: NewsTranslationsDataset | None) -> NewsEnvelope:
-        """把 AI 产出的中译合并进 news.json（title_zh/summary_zh）。"""
+        """Merge AI-produced Chinese translations into news.json (title_zh/summary_zh)."""
         if translations is None or not translations.items:
             return news
         by_id = {t.id: t for t in translations.items}

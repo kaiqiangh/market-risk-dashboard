@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 /**
- * Button（shadcn/ui 风格，最小集）。
+ * Button (shadcn/ui style, minimal set).
  */
 
 const buttonVariants = cva(

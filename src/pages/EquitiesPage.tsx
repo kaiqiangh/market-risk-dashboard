@@ -13,8 +13,8 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { StatusBadge } from "@/components/layout/StatusBadge";
 
 /**
- * EquitiesPage：股票页（Equity Monitor）。
- * 裁剪范围（G2）：Cross-Asset 卡片 + 4-5 只关键股（NVDA/AVGO/MU/AMD/TSLA）+ A 股存储。
+ * EquitiesPage: equities page (Equity Monitor).
+ * Scope (G2): Cross-Asset cards + 4-5 key stocks (NVDA/AVGO/MU/AMD/TSLA) + A-share memory.
  */
 export default function EquitiesPage() {
   const { t, i18n } = useTranslation("equities");
@@ -27,7 +27,7 @@ export default function EquitiesPage() {
   const cnAssets = equitiesQ.data?.payload.assets.filter((a) => a.market === "CN") ?? [];
   const memory = sectorsQ.data?.payload.memory ?? null;
 
-  // Cross-Asset 卡片：关键股 + 加密 + 板块代理
+  // Cross-Asset cards: key stocks + crypto + sector proxies
   const crossAssets = equitiesQ.data?.payload.assets.filter((a) => KEY_US_STOCKS.includes(a.symbol)) ?? [];
 
   return (
@@ -40,7 +40,7 @@ export default function EquitiesPage() {
         {equitiesQ.data ? <StatusBadge status={equitiesQ.data.freshness_status} withDescription /> : null}
       </header>
 
-      {/* Cross-Asset 卡片 */}
+      {/* Cross-Asset cards */}
       <Card>
         <CardHeader>
           <CardTitle>{t("section.crossAsset")}</CardTitle>
@@ -69,7 +69,7 @@ export default function EquitiesPage() {
         </CardContent>
       </Card>
 
-      {/* 关键美股 */}
+      {/* Key US equities */}
       <section data-testid="section-us">
         <h2 className="mb-2 text-sm font-semibold text-foreground">{t("section.us")}</h2>
         {equitiesQ.isLoading ? (
@@ -87,12 +87,12 @@ export default function EquitiesPage() {
         )}
       </section>
 
-      {/* 存储板块 + A 股 */}
+      {/* Memory sector + A-shares */}
       <section data-testid="section-memory">
         <MemorySectorTable assets={cnAssets} memory={memory} />
       </section>
 
-      {/* A 股卡片（移动端；长表格已在上方桌面表格，此处补卡片视图） */}
+      {/* A-share cards (mobile; the long table is above in the desktop view, this adds card views) */}
       {cnAssets.length > 0 ? (
         <section data-testid="section-ashare">
           <h2 className="mb-2 text-sm font-semibold text-foreground">{t("section.aShare")}</h2>

@@ -7,8 +7,8 @@ import { formatChange, formatMoney } from "@/lib/format";
 import type { EquityAsset, MemoryProxy } from "@/schemas";
 
 /**
- * MemorySectorTable：存储板块（美光 + A 股存储，架构 §8.10 池）。
- * T03 降级（A 股采集失败）时按 degraded 显示提示 + 现有数据。
+ * MemorySectorTable: memory sector (Micron + A-share memory, architecture §8.10 pool).
+ * Shows a degraded notice + available data when T03 is degraded (A-share collection failure).
  */
 export interface MemorySectorTableProps {
   assets: EquityAsset[];

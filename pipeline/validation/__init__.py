@@ -1,4 +1,4 @@
-"""Validation 包（架构 §3.7 Validator）。"""
+"""Validation package (architecture §3.7 Validator)."""
 
 from pipeline.validation.freshness import evaluate_freshness
 from pipeline.validation.validate_all import ValidationReport, validate_all, validate_file

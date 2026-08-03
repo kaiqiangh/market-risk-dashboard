@@ -5,7 +5,7 @@ import { formatDateTime, formatNumber, formatUnitSuffix } from "@/lib/format";
 import type { MacroIndicator } from "@/schemas";
 
 /**
- * MacroIndicatorCard：宏观指标卡（数值 + 单位 + 环比 + freshness）。
+ * MacroIndicatorCard: macro indicator card (value + unit + MoM change + freshness).
  */
 export interface MacroIndicatorCardProps {
   indicator: MacroIndicator;

@@ -1,7 +1,7 @@
-"""技术指标计算（架构 §3.7 IndicatorEngine.technical）。
+"""Technical indicator computation (architecture §3.7 IndicatorEngine.technical).
 
-输入 history rows（[{date, open, high, low, close, volume}]），输出指标字典。
-所有函数纯计算、无 IO；NaN/Infinity 一律丢弃。
+Input history rows ([{date, open, high, low, close, volume}]), output an indicator dict.
+All functions are pure computation with no IO; NaN/Infinity are always dropped.
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ def moving_average(values: Sequence[float], window: int) -> float | None:
 
 
 def distance_from_ma(values: Sequence[float], window: int) -> float | None:
-    """最新收盘价相对均线的百分比偏离（如 4.1 = 高于 MA50 4.1%）。"""
+    """Percentage deviation of the latest close from the moving average (e.g. 4.1 = 4.1% above MA50)."""
     ma = moving_average(values, window)
     if ma is None or ma == 0 or not values:
         return None
@@ -29,7 +29,7 @@ def distance_from_ma(values: Sequence[float], window: int) -> float | None:
 
 
 def rsi(values: Sequence[float], period: int = 14) -> float | None:
-    """Wilder RSI(14)，输出 0-100。"""
+    """Wilder RSI(14), output 0-100."""
     if len(values) < period + 1:
         return None
     gains: list[float] = []
@@ -47,7 +47,7 @@ def rsi(values: Sequence[float], period: int = 14) -> float | None:
 
 
 def drawdown_52w(values: Sequence[float]) -> float | None:
-    """52 周高点回撤（0 = 无回撤；-12.5 = 距 52 周高点 -12.5%）。"""
+    """52-week high drawdown (0 = no drawdown; -12.5 = -12.5% from the 52-week high)."""
     if not values:
         return None
     high = max(values)
@@ -57,14 +57,14 @@ def drawdown_52w(values: Sequence[float]) -> float | None:
 
 
 def momentum(values: Sequence[float], lookback: int = 63) -> float | None:
-    """N 个交易日动量（百分比）。lookback≈63 = 3 个月。"""
+    """N-trading-day momentum (percentage). lookback≈63 = 3 months."""
     if len(values) <= lookback or values[-lookback - 1] == 0:
         return None
     return round((values[-1] - values[-lookback - 1]) / values[-lookback - 1] * 100.0, 4)
 
 
 def realized_vol(values: Sequence[float], window: int = 20, annualize: bool = True) -> float | None:
-    """已实现波动率（日收益率标准差；annualize=True 时 ×√252 输出年化百分比）。"""
+    """Realized volatility (std dev of daily returns; ×√252 annualized percentage when annualize=True)."""
     if len(values) < window + 1:
         return None
     returns = [
@@ -83,7 +83,7 @@ def realized_vol(values: Sequence[float], window: int = 20, annualize: bool = Tr
 
 
 def percentile_in_window(values: Sequence[float]) -> float | None:
-    """最新值在窗口内的百分位（0-100）。近似 5Y 百分位窗口（MVP）。"""
+    """Percentile of the latest value within the window (0-100). Approximate 5Y percentile window (MVP)."""
     if not values:
         return None
     last = values[-1]
@@ -93,7 +93,7 @@ def percentile_in_window(values: Sequence[float]) -> float | None:
 
 
 def technical_snapshot(rows: list[dict[str, Any]]) -> dict[str, Any]:
-    """对一段历史输出全部基础技术指标。"""
+    """Output all basic technical indicators for a history segment."""
     values = closes_of(rows)
     return {
         "ma20": moving_average(values, 20),

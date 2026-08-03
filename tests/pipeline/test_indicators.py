@@ -1,4 +1,4 @@
-"""Indicators 测试（technical/breadth/flow/trend）。"""
+"""Indicators tests (technical/breadth/flow/trend)."""
 
 from __future__ import annotations
 
@@ -18,21 +18,21 @@ def test_moving_average() -> None:
 
 
 def test_rsi_extremes() -> None:
-    up = list(range(1, 30))  # 持续上涨 → RSI 100
+    up = list(range(1, 30))  # continuously rising → RSI 100
     assert technical.rsi(up, 14) == 100.0
-    down = list(range(30, 1, -1))  # 持续下跌 → RSI 0
+    down = list(range(30, 1, -1))  # continuously falling → RSI 0
     rsi_down = technical.rsi(down, 14)
     assert rsi_down is not None and rsi_down < 5
 
 
 def test_distance_from_ma() -> None:
-    values = [100] * 50 + [110]  # 最新高于 MA50
+    values = [100] * 50 + [110]  # latest above MA50
     dist = technical.distance_from_ma(values, 50)
     assert dist is not None and dist > 0
 
 
 def test_drawdown_and_momentum() -> None:
-    values = [100, 110, 120, 90]  # 高点 120 → 最新 90
+    values = [100, 110, 120, 90]  # high 120 → latest 90
     dd = technical.drawdown_52w(values)
     assert dd is not None and dd < 0
     mom = technical.momentum([100] * 63 + [110], 63)
@@ -52,14 +52,14 @@ def test_breadth_snapshot() -> None:
     iwm = _rows([100.0] * 200 + [95.0])
     soxx = _rows([100.0] * 200 + [120.0])
     snap = breadth.breadth_snapshot({"SPY": spy, "IWM": iwm, "SOXX": soxx})
-    assert snap["breadth_above_ma200"] == round(2 / 3, 4)  # SPY/SOXX 高于 MA200，IWM 低于
+    assert snap["breadth_above_ma200"] == round(2 / 3, 4)  # SPY/SOXX above MA200, IWM below
     assert snap["is_proxy"] is True
     assert snap["small_cap_relative"] is not None
 
 
 def test_flow_snapshot() -> None:
     rows = _rows([100.0] * 30)
-    rows[-1]["volume"] = 5000.0  # 放量
+    rows[-1]["volume"] = 5000.0  # volume spike
     snap = flow.flow_snapshot(rows)
     assert snap["obv"] is not None
     assert snap["mfi"] is not None

@@ -1,8 +1,8 @@
-"""首页聚合 dashboard.json 契约（架构 §2 文件列表 L299 + §3.6）。
+"""Homepage aggregation dashboard.json contract (architecture §2 file list L299 + §3.6).
 
-与前端 src/schemas/dashboard.ts（Zod）同构：
-- payload 聚合 risk/regime/top_drivers/cross_asset/catalysts/sector_performance 关键字段。
-- 管道在 --full 流程产出；前端 Overview 页可单文件消费（T05 起）。
+Isomorphic to the frontend src/schemas/dashboard.ts (Zod):
+- payload aggregates key fields from risk/regime/top_drivers/cross_asset/catalysts/sector_performance.
+- produced by the pipeline in the --full flow; the frontend Overview page can consume a single file (since T05).
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ from .risk import DriverContribution, MarketRegime, RiskModelResult
 
 
 class DashboardAsset(ContractModel):
-    """跨资产确认信号条目（equity/crypto 等）。"""
+    """Cross-asset confirmation signal entry (equity/crypto etc.)."""
 
     asset: str = Field(min_length=1)
     category: str = Field(min_length=1)
@@ -24,7 +24,7 @@ class DashboardAsset(ContractModel):
 
 
 class DashboardPayload(ContractModel):
-    """dashboard.json payload（与前端 Zod strict 结构一致）。"""
+    """dashboard.json payload (consistent with the frontend Zod strict structure)."""
 
     risk: RiskModelResult
     regime: MarketRegime
@@ -35,6 +35,6 @@ class DashboardPayload(ContractModel):
 
 
 class DashboardEnvelope(BaseEnvelope):
-    """dashboard.json 信封（payload 强类型）。"""
+    """dashboard.json envelope (strongly typed payload)."""
 
     payload: DashboardPayload

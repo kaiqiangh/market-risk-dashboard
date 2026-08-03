@@ -1,11 +1,11 @@
 # ============================================================
-# 资产池配置（架构 §8 共享知识：唯一事实源）
-# T03 的 AssetUniverse 将加载本文件；前端 src/config/universe.ts 与之对应（展示用镜像）。
-# 资产代码统一大写；A 股代码带交易所后缀（.SH/.SZ）。
+# Asset pool configuration (architecture §8 shared knowledge: single source of truth)
+# T03's AssetUniverse loads this file; the frontend src/config/universe.ts mirrors it (display-only mirror).
+# Asset symbols are uppercase; A-share symbols carry the exchange suffix (.SH/.SZ).
 # ============================================================
 version: "1.0.0"
 
-# 美股关键池（MVP 冻结，架构 §8.11）
+# Key US equities pool (frozen for MVP, architecture §8.11)
 us_equities:
   - symbol: NVDA
     name: NVIDIA
@@ -33,7 +33,7 @@ us_equities:
     sector: auto
     theme: [EV, Momentum]
 
-# A 股存储产业链池（架构 §8.10 建议代码，实现时用 AKShare 校验）
+# A-share memory supply chain pool (suggested codes per architecture §8.10, validated with AKShare during implementation)
 a_share_memory:
   - symbol: "603986.SH"
     name: GigaDevice
@@ -86,7 +86,7 @@ a_share_memory:
     sector: packaging
     theme: [Packaging, OSAT]
 
-# 跨资产（加密）
+# Cross-asset (crypto)
 crypto:
   - symbol: BTC
     name: Bitcoin
@@ -98,7 +98,7 @@ crypto:
     name: Solana
     name_zh: 索拉纳
 
-# 金属与商品（yfinance 期货连续合约代码）
+# Metals & commodities (yfinance futures continuous contract symbols)
 metals:
   - symbol: "GC=F"
     name: Gold

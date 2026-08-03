@@ -2,13 +2,13 @@ import { z } from "zod";
 import { MarketRegime, RiskLevel } from "./risk";
 
 /**
- * 历史切片契约（架构 §1.7 / §3.6）。
- * 管道产出 history/{series}/{slice}.json 为**纯数组**（非 envelope），
- * 行级极窄：日期 + 分数 + 各维分数（风险）/ 日期 + 代码 + 收盘（行情）。
- * 前端通过 DatasetClient.fetch(key, { slice }, historySchema) 显式传入本 schema 解析。
+ * History slice contract (architecture §1.7 / §3.6).
+ * The pipeline produces history/{series}/{slice}.json as **plain arrays** (not envelopes),
+ * with very narrow rows: date + score + per-dimension scores (risk) / date + symbol + close (market).
+ * The frontend explicitly passes this schema via DatasetClient.fetch(key, { slice }, historySchema).
  */
 
-/** 风险历史切片行（history/risk/30d.json 等）。 */
+/** Risk history slice row (history/risk/30d.json etc.). */
 export const RiskTrendPoint = z
   .object({
     date: z.string().min(1), // YYYY-MM-DD
@@ -22,7 +22,7 @@ export const RiskTrendPoint = z
 
 export const RiskTrendSlice = z.array(RiskTrendPoint);
 
-/** 行情历史切片行（history/market/30d.json 等）。 */
+/** Market history slice row (history/market/30d.json etc.). */
 export const MarketSlicePoint = z
   .object({
     date: z.string().min(1), // YYYY-MM-DD

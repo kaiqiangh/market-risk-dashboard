@@ -12,7 +12,7 @@ module.exports = {
   plugins: ["react-refresh"],
   overrides: [
     {
-      // 测试文件允许显式 any（负向用例需要构造非法 payload）
+      // Test files may use explicit any (negative test cases need to construct invalid payloads)
       files: ["tests/**/*.{ts,tsx}"],
       rules: {
         "@typescript-eslint/no-explicit-any": "off",

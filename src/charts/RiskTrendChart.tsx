@@ -4,7 +4,7 @@ import echarts from "./echarts";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatDate, formatNumber } from "@/lib/format";
 
-/** jsdom/无 canvas 环境 → 走 HTML 降级（避免 zrender 动画循环崩溃）。 */
+/** jsdom / no-canvas environment → fall back to HTML (avoid zrender animation loop crashes). */
 function canvasSupported(): boolean {
   try {
     const canvas = document.createElement("canvas");
@@ -15,9 +15,9 @@ function canvasSupported(): boolean {
 }
 
 /**
- * RiskTrendChart：风险趋势（history/risk/{slice}.json，ECharts 折线 + 面积）。
- * - 首屏只加载 30d 切片（架构 §1.7）。
- * - jsdom/无 canvas 环境自动降级为 HTML 表格（可测试、可访问）。
+ * RiskTrendChart: risk trend (history/risk/{slice}.json, ECharts line + area).
+ * - Initial view only loads the 30d slice (architecture §1.7).
+ * - Automatically falls back to an HTML table in jsdom / no-canvas environments (testable, accessible).
  */
 export interface RiskTrendPointInput {
   date: string;

@@ -1,9 +1,9 @@
-"""存储写入（架构 §1.7/§3.5 StorageWriter）。
+"""Storage writing (architecture §1.7/§3.5 StorageWriter).
 
-- latest/{name}.json：envelope 写入（或自描述契约文件）
-- history/{series}/daily.json：全量追加 + 30d/90d 预切片
-- metadata/*：sources / freshness / schema-version
-- 序列化：orjson（fast）+ 可选 brotli 预压缩（构建期开关，默认关）
+- latest/{name}.json: envelope writing (or self-describing contract files)
+- history/{series}/daily.json: full append + 30d/90d pre-slices
+- metadata/*: sources / freshness / schema-version
+- serialization: orjson (fast) + optional brotli precompression (build-time switch, off by default)
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ class StorageWriter:
         for d in (self.latest_dir, self.history_dir, self.metadata_dir, self.feeds_dir):
             d.mkdir(parents=True, exist_ok=True)
 
-    # ---- 序列化 ----
+    # ---- Serialization ----
 
     @staticmethod
     def _dump(obj: Any) -> str:
@@ -43,27 +43,27 @@ class StorageWriter:
         path.write_text(self._dump(obj), encoding="utf-8")
         return path
 
-    # ---- 数据集 ----
+    # ---- Datasets ----
 
     def write_dataset(self, name: str, envelope: BaseEnvelope) -> Path:
-        """latest/{name}.json（envelope 结构）。"""
+        """latest/{name}.json (envelope structure)."""
         return self.write_json(self.latest_dir / f"{name}.json", envelope.model_dump(mode="json"))
 
     def write_standalone(self, name: str, obj: Any) -> Path:
-        """自描述契约文件（facts/analysis/news-translations）。"""
+        """Self-describing contract file (facts/analysis/news-translations)."""
         return self.write_json(self.latest_dir / f"{name}.json", obj)
 
-    # ---- 历史 + 切片 ----
+    # ---- History + slices ----
 
     def write_slices(self, series_name: str, daily: list[dict[str, Any]]) -> None:
-        """history/{series_name}/daily.json 全量 + 30d/90d 预切片（架构 §1.7）。"""
+        """history/{series_name}/daily.json full + 30d/90d pre-slices (architecture §1.7)."""
         series_dir = self.history_dir / series_name
         series_dir.mkdir(parents=True, exist_ok=True)
-        # 全量追加（按日期去重）
+        # Full append (dedupe by date)
         existing = self._read_json(series_dir / "daily.json", default=[])
         merged = _merge_by_date(existing, daily)
         self.write_json(series_dir / "daily.json", merged)
-        # 预切片（首屏只加载 30d，绝不加载全量）
+        # Pre-slices (the first screen loads only 30d, never the full history)
         self.write_json(series_dir / "30d.json", merged[-30:])
         self.write_json(series_dir / "90d.json", merged[-90:])
         self.write_json(series_dir / "index.json", {"series": series_name, "updated_at": now_utc(), "count": len(merged)})
@@ -78,7 +78,7 @@ class StorageWriter:
         self.write_json(series_dir / "90d.json", merged[-90:])
 
     def snapshot_append(self, name: str, row: dict[str, Any]) -> None:
-        """feeds/{name}.json 快照追加（FedWatch 累积，评审 P0-1）。"""
+        """feeds/{name}.json snapshot append (FedWatch accumulation, review P0-1)."""
         path = self.feeds_dir / f"{name}.json"
         history = self._read_json(path, default=[])
         today = now_utc()[:10]
@@ -87,7 +87,7 @@ class StorageWriter:
         history.sort(key=lambda h: h.get("date", ""))
         self.write_json(path, history)
 
-    # ---- 元数据 ----
+    # ---- Metadata ----
 
     def update_freshness(self, dataset: str, status: str, reason: str) -> None:
         path = self.metadata_dir / "freshness.json"
@@ -100,9 +100,9 @@ class StorageWriter:
         self.write_json(path, data)
 
     def record_translations(self, status: str, merged_items: int = 0, reason: str = "") -> None:
-        """中译合并记录（架构 §2 L320 metadata/translations.json，P1-6）。
+        """Chinese translation merge record (architecture §2 L320 metadata/translations.json, P1-6).
 
-        status: "merged" | "skipped" | "missing"；合并时间一并记录。
+        status: "merged" | "skipped" | "missing"; the merge time is recorded as well.
         """
         path = self.metadata_dir / "translations.json"
         data = self._read_json(path, default={"schema_version": "1.0.0", "last_merge": None})
@@ -125,7 +125,7 @@ class StorageWriter:
         path = self.metadata_dir / "schema-version.json"
         self.write_json(path, {"schema_version": version, "updated_at": now_utc()})
 
-    # ---- 工具 ----
+    # ---- Utilities ----
 
     def _read_json(self, path: Path, default: Any) -> Any:
         if not path.exists():
@@ -139,7 +139,7 @@ class StorageWriter:
         return self._read_json(self.latest_dir / f"{name}.json", default=None)
 
     def read_history(self, series_name: str, slice_name: str = "daily") -> list[dict[str, Any]]:
-        """公开读取 history/{series}/{slice}.json（P2-9：替代 run.py 的 _read_json 私有访问）。"""
+        """Public read of history/{series}/{slice}.json (P2-9: replaces run.py's private _read_json access)."""
         return self._read_json(self.history_dir / series_name / f"{slice_name}.json", default=[])
 
 

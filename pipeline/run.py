@@ -1,22 +1,22 @@
-"""管道 CLI 入口（架构 §1.3 冻结命令集 + T03 全量实现 + Fix 轮次）。
+"""Pipeline CLI entry point (architecture §1.3 frozen command set + T03 full implementation + Fix rounds).
 
-命令：
-  --full          全量（默认）：采集+指标+风险+事实层+存储
-  --market-only   仅行情/加密/A股
-  --macro-only    仅宏观（FRED + FedWatch）
-  --news-only     仅新闻
-  --analysis-only 仅 AI 分析文件校验/中译合并（不采集）
-  --fact-layer    只重建事实层（不采集）
-  --backfill      预热回填 30-90 天历史（FedWatch 除外）
-  --dry-run       试跑不写盘
-  --locale        分析语言
+Commands:
+  --full          Full (default): collect + indicators + risk + fact layer + storage
+  --market-only   Quotes/crypto/A-shares only
+  --macro-only    Macro only (FRED + FedWatch)
+  --news-only     News only
+  --analysis-only AI analysis file validation / Chinese translation merge only (no collection)
+  --fact-layer    Rebuild fact layer only (no collection)
+  --backfill      Warm-up backfill of 30-90 days of history (except FedWatch)
+  --dry-run       Dry run without writing to disk
+  --locale        Analysis language
 
-Fix 轮次新增/修订：
-- P0-4：AI 分析缺失时 metadata/freshness.json 的 analysis 域 = degraded（架构 §1.5）
-- P1-5：--full 产出 latest/dashboard.json（首页聚合）
-- P1-6：中译合并写入 metadata/translations.json 记录
-- P1-7：写盘后统一 freshness 判定（validation/freshness.finalize_freshness）再落盘
-- P2-9：writer.read_history 公开方法替代私有 _read_json
+Fix round additions/revisions:
+- P0-4: when AI analysis is missing, metadata/freshness.json analysis domain = degraded (architecture §1.5)
+- P1-5: --full produces latest/dashboard.json (homepage aggregation)
+- P1-6: Chinese translation merge records to metadata/translations.json
+- P1-7: unified freshness determination after writing (validation/freshness.finalize_freshness) before persisting
+- P2-9: writer.read_history public method replaces private _read_json
 """
 
 from __future__ import annotations
@@ -57,17 +57,17 @@ COMMANDS = (
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="pipeline.run", description="Market Risk Dashboard 数据管道 CLI")
+    parser = argparse.ArgumentParser(prog="pipeline.run", description="Market Risk Dashboard data pipeline CLI")
     mode = parser.add_mutually_exclusive_group()
-    mode.add_argument("--full", action="store_true", help="全量（默认）：采集+指标+风险+事实层+存储")
-    mode.add_argument("--market-only", action="store_true", help="仅行情/加密/A股")
-    mode.add_argument("--macro-only", action="store_true", help="仅宏观（FRED + FedWatch）")
-    mode.add_argument("--news-only", action="store_true", help="仅新闻采集")
-    mode.add_argument("--analysis-only", action="store_true", help="仅 AI 分析文件校验/合并（不采集）")
-    mode.add_argument("--fact-layer", action="store_true", help="只重建事实层（不采集）")
-    parser.add_argument("--locale", choices=["zh-CN", "en"], default=None, help="分析语言（默认双语）")
-    parser.add_argument("--dry-run", action="store_true", help="试跑：校验配置与参数，不写盘")
-    parser.add_argument("--backfill", action="store_true", help="预热回填 30-90 天历史（FedWatch 除外）")
+    mode.add_argument("--full", action="store_true", help="full (default): collect + indicators + risk + fact layer + storage")
+    mode.add_argument("--market-only", action="store_true", help="quotes/crypto/A-shares only")
+    mode.add_argument("--macro-only", action="store_true", help="macro only (FRED + FedWatch)")
+    mode.add_argument("--news-only", action="store_true", help="news collection only")
+    mode.add_argument("--analysis-only", action="store_true", help="AI analysis file validation/merge only (no collection)")
+    mode.add_argument("--fact-layer", action="store_true", help="rebuild fact layer only (no collection)")
+    parser.add_argument("--locale", choices=["zh-CN", "en"], default=None, help="analysis language (default bilingual)")
+    parser.add_argument("--dry-run", action="store_true", help="dry run: validate config and arguments, no write to disk")
+    parser.add_argument("--backfill", action="store_true", help="warm-up backfill of 30-90 days of history (except FedWatch)")
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     return parser
 
@@ -80,7 +80,7 @@ def _resolve_command(args: argparse.Namespace) -> str:
 
 
 # ============================================================
-# 风险上下文组装
+# Risk context assembly
 # ============================================================
 
 def _build_risk_context(
@@ -94,14 +94,14 @@ def _build_risk_context(
     risk_history: list[dict[str, Any]],
     series_history: dict[str, list[dict[str, Any]]],
 ) -> dict[str, Any]:
-    """把采集结果组装成 RiskModel.score 所需上下文。"""
+    """Assemble the collected results into the context required by RiskModel.score."""
     from pipeline.indicators.breadth import breadth_snapshot
     from pipeline.indicators.trend import trend_snapshot
 
     breadth = breadth_snapshot(histories)
     trend = trend_snapshot(histories)
 
-    # 跨资产确认信号（MVP 简化 7 项）
+    # Cross-asset confirmation signals (MVP simplified to 7 items)
     vix = _macro_value(macro, "rates", "vixcls")
     hy = _macro_value(macro, "credit", "bamlh0a0hym2")
     dxy = _macro_value(macro, "fx", "dtwexbgs")
@@ -154,7 +154,7 @@ def _latest_change(rows: list[dict[str, Any]]) -> float | None:
 
 
 def _read_prev_risk(writer: StorageWriter) -> tuple[float | None, dict[str, float] | None, list[dict[str, Any]]]:
-    """读取 risk 历史：上一日总分 / 上一日各维分数 / 全量既往行（P2-9 公开 read_history）。"""
+    """Read risk history: previous day total score / previous day dimension scores / all prior rows (P2-9 public read_history)."""
     rows = writer.read_history("risk", "daily")
     if not rows:
         return None, None, []
@@ -167,7 +167,7 @@ def _read_prev_risk(writer: StorageWriter) -> tuple[float | None, dict[str, floa
 
 
 # ============================================================
-# 统一 freshness 落盘（P1-7）
+# Unified freshness write (P1-7)
 # ============================================================
 
 def _finalize_and_write(
@@ -177,10 +177,11 @@ def _finalize_and_write(
     degraded: bool,
     extra_reason: str = "",
 ) -> Any:
-    """统一 freshness 判定 + 写盘 + 更新 metadata/freshness.json（P1-7）。
+    """Unified freshness determination + write + update metadata/freshness.json (P1-7).
 
-    Collector 不再自填 freshness_status；写盘后按 sources.yaml 期望频率统一重算
-    （fresh/delayed/stale/missing/degraded 五态），再落盘到 envelope 与 freshness.json。
+    Collectors no longer fill freshness_status themselves; after writing, recompute
+    against the expected frequency from sources.yaml (fresh/delayed/stale/missing/degraded
+    five states), then persist to the envelope and freshness.json.
     """
     generated_at = str(getattr(env, "generated_at", "") or "")
     status = finalize_freshness(name, generated_at or None, degraded)
@@ -194,12 +195,12 @@ def _finalize_and_write(
 
 
 def _write_analysis_freshness(writer: StorageWriter) -> None:
-    """AI 分析 freshness（P0-4，架构 §1.5）：缺失/失败 → analysis=degraded。"""
+    """AI analysis freshness (P0-4, architecture §1.5): missing/failed → analysis=degraded."""
     zh = writer.latest_dir / "analysis.zh-CN.json"
     en = writer.latest_dir / "analysis.en.json"
     if not (zh.exists() and en.exists()):
         writer.update_freshness(
-            "analysis", "degraded", "AI 分析文件缺失（无额度/失败重试耗尽）→ 降级"
+            "analysis", "degraded", "AI analysis files missing (no quota/exhausted retries) → degraded"
         )
         return
     import json as _json
@@ -217,7 +218,7 @@ def _write_analysis_freshness(writer: StorageWriter) -> None:
 
 
 # ============================================================
-# 首页聚合（P1-5）
+# Homepage aggregation (P1-5)
 # ============================================================
 
 def _build_dashboard(
@@ -229,7 +230,7 @@ def _build_dashboard(
     data_quality: float,
     degraded: bool,
 ) -> DashboardEnvelope:
-    """聚合 risk/crypto/equities/sectors/calendar 关键字段（架构 §2 L299 + §3.6）。"""
+    """Aggregate key fields from risk/crypto/equities/sectors/calendar (architecture §2 L299 + §3.6)."""
     r = risk_env.payload
 
     cross_asset: list[DashboardAsset] = []
@@ -267,11 +268,11 @@ def _build_dashboard(
 
 
 # ============================================================
-# 各命令
+# Commands
 # ============================================================
 
 def _run_collection(command: str) -> dict[str, Any]:
-    """按命令执行采集，返回收集结果与耗时。"""
+    """Run collection according to the command, returning collected results and durations."""
     started = time.monotonic()
     registry = build_registry(settings)
     universe = AssetUniverse.load(settings)
@@ -337,7 +338,7 @@ def _run_collection(command: str) -> dict[str, Any]:
         t0 = time.monotonic()
         ncc = NewsCollector(registry, settings)
         news, news_meta = ncc.collect()
-        # 合并 AI 中译（若存在）+ 记录合并状态（P1-6）
+        # Merge AI Chinese translations (if present) + record merge status (P1-6)
         translations_path = settings.data_dir / "latest" / "news.zh-translations.json"
         if translations_path.exists():
             from pipeline.schemas import NewsTranslationsDataset
@@ -349,9 +350,9 @@ def _run_collection(command: str) -> dict[str, Any]:
             )
             news = ncc.merge_translations(news, translations)
             merged_count = sum(1 for it in news.payload.items if it.title_zh)
-            writer.record_translations("merged", merged_count, "news.zh-translations.json 已合并进 news.json")
+            writer.record_translations("merged", merged_count, "news.zh-translations.json merged into news.json")
         else:
-            writer.record_translations("missing", 0, "news.zh-translations.json 不存在（AI 未产出中译）")
+            writer.record_translations("missing", 0, "news.zh-translations.json not found (AI did not produce Chinese translation)")
         results["news"] = news
         results["news_degraded"] = bool(news_meta["degraded"])
         results["degraded"].extend(news_meta["degraded"])
@@ -367,7 +368,7 @@ def _run_collection(command: str) -> dict[str, Any]:
 
 
 def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command: str) -> tuple[bool, str | None]:
-    """计算风险 + 事实层 + dashboard + 写盘 + 统一 freshness + 校验。返回 (ok, error)。"""
+    """Compute risk + fact layer + dashboard + write + unified freshness + validate. Returns (ok, error)."""
     try:
         risk_model = RiskModel(settings)
         prev_score, prev_dims, risk_history = _read_prev_risk(writer)
@@ -404,9 +405,9 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             sectors=results.get("sectors"),
         )
     except Exception as exc:  # noqa: BLE001
-        return False, f"风险/事实层计算失败: {exc}"
+        return False, f"risk/fact layer computation failed: {exc}"
 
-    # ---- 写盘（统一 freshness 判定后落盘，P1-7）----
+    # ---- Write (persist after unified freshness determination, P1-7) ----
     try:
         degraded = bool(results["degraded"])
         macro = _finalize_and_write(writer, "macro", results["macro"], bool(results["macro_meta"].get("degraded")))
@@ -420,7 +421,7 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         facts_status = "degraded" if degraded else finalize_freshness("facts", str(risk_env.generated_at), False)
         writer.update_freshness("facts", facts_status, "degraded" if facts_status == "degraded" else "ok")
 
-        # dashboard（P1-5）
+        # dashboard (P1-5)
         dashboard_env = _build_dashboard(
             risk_env=risk_env,
             equities=equities,
@@ -432,10 +433,10 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         )
         dashboard_env = _finalize_and_write(writer, "dashboard", dashboard_env, degraded)
 
-        # AI 分析 freshness（P0-4）
+        # AI analysis freshness (P0-4)
         _write_analysis_freshness(writer)
 
-        # 历史切片
+        # History slices
         today = now_utc()[:10]
         risk_row = {
             "date": today,
@@ -451,16 +452,16 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             market_row = {"date": spy_rows[-1]["date"], "symbol": "SPY", "close": spy_rows[-1]["close"]}
             writer.write_slices("market", [market_row])
 
-        # 元数据
+        # Metadata
         writer.write_sources_metadata(results["provider_status"])
         writer.write_schema_version("1.0.0")
     except Exception as exc:  # noqa: BLE001
-        return False, f"写盘失败: {exc}"
+        return False, f"write to disk failed: {exc}"
 
-    # ---- 校验 ----
+    # ---- Validate ----
     report = validate_all(writer.latest_dir, strict=False)
     if not report.ok:
-        return False, "校验失败: " + "; ".join(report.issues)
+        return False, "validation failed: " + "; ".join(report.issues)
 
     results["risk"] = risk_env
     results["dashboard"] = dashboard_env
@@ -475,19 +476,19 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     command = _resolve_command(args)
 
-    # 配置自检
+    # Config self-check
     try:
         settings.load_universe()
         settings.load_risk_model()
         settings.load_sources()
         settings.load_news_sources()
     except (FileNotFoundError, ValueError) as exc:
-        print(f"[pipeline] 配置加载失败: {exc}", file=sys.stderr)
+        print(f"[pipeline] config loading failed: {exc}", file=sys.stderr)
         return 1
 
     if args.dry_run:
         _print_plan(command, args)
-        print("[pipeline] dry-run 完成，未写任何文件（no-op 正常退出）")
+        print("[pipeline] dry-run complete, no files written (no-op normal exit)")
         return 0
 
     if command == "analysis-only":
@@ -499,7 +500,7 @@ def main(argv: list[str] | None = None) -> int:
     started = time.monotonic()
     results = _run_collection(command)
 
-    # 单域命令只写对应数据集（统一 freshness 判定，P1-7）
+    # Single-domain commands write only the corresponding dataset (unified freshness, P1-7)
     if command == "market-only":
         writer = StorageWriter(settings.data_dir)
         _finalize_and_write(writer, "equities", results["equities"], bool(results["degraded"]))
@@ -545,7 +546,7 @@ def main(argv: list[str] | None = None) -> int:
         _print_summary(command, results, results.get("durations", {}).get("total", 0.0))
         return 0
 
-    print(f"[pipeline] 失败: {error}", file=sys.stderr)
+    print(f"[pipeline] failed: {error}", file=sys.stderr)
     write_run_report(
         settings.artifacts_dir,
         command=command, ok=False,
@@ -558,7 +559,7 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _run_fact_layer_only() -> tuple[bool, str | None]:
-    """只重建事实层：读取 latest/*.json，重新组装 facts.json。"""
+    """Rebuild fact layer only: read latest/*.json and reassemble facts.json."""
     writer = StorageWriter(settings.data_dir)
 
     def load(name: str, model: Any):
@@ -577,7 +578,7 @@ def _run_fact_layer_only() -> tuple[bool, str | None]:
     sectors = SectorsEnvelope.model_validate(sectors_data) if sectors_data else None
 
     if not all([macro, equities, crypto, news, calendar, risk]):
-        return False, "事实层重建需要 latest/*.json 已存在（先运行 --full）"
+        return False, "fact layer rebuild requires latest/*.json to exist (run --full first)"
 
     builder = FactLayerBuilder()
     facts = builder.build(risk=risk, macro=macro, equities=equities, crypto=crypto, news=news, calendar=calendar, sectors=sectors)
@@ -588,7 +589,7 @@ def _run_fact_layer_only() -> tuple[bool, str | None]:
 
 
 def _run_analysis_only() -> int:
-    """AI 分析文件校验 + 中译合并（架构 §1.5 步骤 3/4）。"""
+    """AI analysis file validation + Chinese translation merge (architecture §1.5 steps 3/4)."""
     import json as _json
 
     from pipeline.analysis.validate import validate_analysis_pair
@@ -600,24 +601,24 @@ def _run_analysis_only() -> int:
     facts_path = input_path("facts")
 
     if not zh_path.exists() or not en_path.exists():
-        print("[pipeline] analysis-only：分析文件缺失（AI 自动化产出后校验），跳过", file=sys.stderr)
+        print("[pipeline] analysis-only: analysis file missing (validate after AI automation output), skipped", file=sys.stderr)
         writer = StorageWriter(settings.data_dir)
-        writer.update_freshness("analysis", "degraded", "AI 分析文件缺失（无额度/失败重试耗尽）→ 降级")
+        writer.update_freshness("analysis", "degraded", "AI analysis files missing (no quota/exhausted retries) → degraded")
         return 0
 
     try:
         issues, _, _ = validate_analysis_pair(zh_path, en_path, facts_path if facts_path.exists() else None)
     except Exception as exc:  # noqa: BLE001
-        print(f"[pipeline] analysis-only：校验失败: {exc}", file=sys.stderr)
+        print(f"[pipeline] analysis-only: validation failed: {exc}", file=sys.stderr)
         return 1
 
     if issues:
-        print("[pipeline] analysis-only：双语一致性未通过：")
+        print("[pipeline] analysis-only: bilingual consistency failed:")
         for issue in issues:
             print(f"  - {issue}")
         return 1
 
-    # 中译合并进 news.json（P1-6：记录合并状态）
+    # Merge Chinese translation into news.json (P1-6: record merge status)
     writer = StorageWriter(settings.data_dir)
     news_data = writer.read_latest("news")
     translations_path = settings.data_dir / "latest" / "news.zh-translations.json"
@@ -630,23 +631,24 @@ def _run_analysis_only() -> int:
         merged = collector.merge_translations(news, translations)
         merged_count = sum(1 for it in merged.payload.items if it.title_zh)
         writer.write_dataset("news", merged)
-        writer.record_translations("merged", merged_count, "analysis-only 合并 news.zh-translations.json 进 news.json")
-        print("[pipeline] analysis-only：中译已合并进 news.json")
+        writer.record_translations("merged", merged_count, "analysis-only merged news.zh-translations.json into news.json")
+        print("[pipeline] analysis-only: Chinese translation merged into news.json")
     elif news_data:
-        writer.record_translations("missing", 0, "news.zh-translations.json 不存在（AI 未产出中译）")
+        writer.record_translations("missing", 0, "news.zh-translations.json not found (AI did not produce Chinese translation)")
 
-    writer.update_freshness("analysis", "fresh", "AI 分析文件校验通过")
-    print("[pipeline] analysis-only：校验通过 ✓")
+    writer.update_freshness("analysis", "fresh", "AI analysis file validation passed")
+    print("[pipeline] analysis-only: validation passed ✓")
     return 0
 
 
 def _run_backfill() -> int:
-    """预热回填 30-90 天（FedWatch 除外，架构 §1.7/评审 P1-5）。
+    """Warm-up backfill of 30-90 days (except FedWatch, architecture §1.7/review P1-5).
 
-    拉取基准 + 全部美股历史；history/market 只写 SPY 基准序列（避免按日期
-    合并时不同符号互相覆盖），其余符号仅预热 last-good 缓存供 quote 使用。
+    Pull benchmark + all US equity history; history/market writes only the SPY benchmark
+    series (to avoid different symbols overwriting each other when merging by date), while
+    other symbols only warm the last-good cache for quote use.
     """
-    print("[pipeline] backfill：回填 30-90 天历史…")
+    print("[pipeline] backfill: backfilling 30-90 days of history…")
     registry = build_registry(settings)
     writer = StorageWriter(settings.data_dir)
     universe = AssetUniverse.load(settings)
@@ -657,22 +659,22 @@ def _run_backfill() -> int:
             rows = out["result"].rows
             if symbol == "SPY":
                 writer.write_slices("market", [{"date": r["date"], "symbol": symbol, "close": r["close"]} for r in rows if r.get("close") is not None])
-            print(f"  {symbol}: {len(rows)} 行回填")
+            print(f"  {symbol}: {len(rows)} rows backfilled")
         except Exception as exc:  # noqa: BLE001
-            print(f"  {symbol}: 回填失败（降级不中断）: {exc}")
-    print("[pipeline] backfill：完成")
+            print(f"  {symbol}: backfill failed (degraded, not interrupted): {exc}")
+    print("[pipeline] backfill: complete")
     return 0
 
 
 def _print_plan(command: str, args: argparse.Namespace) -> None:
-    print("Market Risk Dashboard 管道运行计划")
-    print(f"  命令        : {command}")
-    print(f"  语言        : {args.locale or '双语'}")
+    print("Market Risk Dashboard pipeline run plan")
+    print(f"  command     : {command}")
+    print(f"  language    : {args.locale or 'bilingual'}")
     print(f"  dry-run     : {args.dry_run}")
     print(f"  backfill    : {args.backfill}")
-    print(f"  配置目录    : {settings.config_dir}")
-    print(f"  数据目录    : {settings.data_dir}")
-    print("  ⚠ T03：真实采集已实现；dry-run 不触网不写盘。")
+    print(f"  config dir  : {settings.config_dir}")
+    print(f"  data dir    : {settings.data_dir}")
+    print("  ⚠ T03: real collection implemented; dry-run does not touch the network or disk.")
 
 
 def _print_summary(command: str, results: dict[str, Any], elapsed: float) -> None:
@@ -685,14 +687,14 @@ def _print_summary(command: str, results: dict[str, Any], elapsed: float) -> Non
             if hasattr(payload, attr):
                 counts[key] = len(getattr(payload, attr))
                 break
-    print(f"[pipeline] {command} 完成（{elapsed:.1f}s）")
-    print(f"  数据集项数  : {counts}")
-    print(f"  降级        : {len(results.get('degraded', []))} 处")
+    print(f"[pipeline] {command} completed ({elapsed:.1f}s)")
+    print(f"  dataset counts: {counts}")
+    print(f"  degraded      : {len(results.get('degraded', []))} site(s)")
     if results.get("degraded"):
         for d in results["degraded"][:10]:
             print(f"    - {d}")
     risk = results.get("risk")
-    print(f"  风险分      : {risk.payload.total_score if risk else None}")
+    print(f"  risk score    : {risk.payload.total_score if risk else None}")
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Card（shadcn/ui 风格）：信息密度优先、低装饰。
+ * Card (shadcn/ui style): information-dense, low-decoration.
  */
 
 export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {

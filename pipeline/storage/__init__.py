@@ -1,4 +1,4 @@
-"""Storage 包（架构 §3.5）。"""
+"""Storage package (architecture §3.5)."""
 
 from pipeline.storage.writer import StorageWriter
 

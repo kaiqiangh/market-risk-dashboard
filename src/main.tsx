@@ -5,9 +5,9 @@ import App from "./App";
 import "./i18n";
 import "./index.css";
 
-// TanStack Query 全局配置。
-// staleTime 按数据 freshness 语义在 useDataset 中覆盖（架构 §8.5）；
-// 这里给保守默认，避免骨架期频繁重拉。
+// TanStack Query global configuration.
+// staleTime is overridden in useDataset by dataset freshness semantics (architecture §8.5);
+// keep a conservative default here to avoid frequent refetches during the skeleton phase.
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

@@ -10,8 +10,8 @@ import { formatNumber, formatPercentile, formatRatio } from "@/lib/format";
 import type { RiskDimension, RiskModelResult } from "@/schemas";
 
 /**
- * RiskDimensionBreakdown：6 维风险模型分解（RiskLab 核心）。
- * 维度卡片：分数 / 配置权重 / 有效权重 / 覆盖度 / 趋势 / 指标明细。
+ * RiskDimensionBreakdown: 6-dimension risk model breakdown (RiskLab core).
+ * Dimension cards: score / configured weight / effective weight / coverage / trend / indicator details.
  */
 export interface RiskDimensionBreakdownProps {
   result: RiskModelResult;
@@ -31,7 +31,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
 
   return (
     <div className="flex flex-col gap-4">
-      {/* 总分 + 置信度因子 */}
+      {/* Total score + confidence factors */}
       <Card>
         <CardHeader>
           <CardTitle>{t("score.breakdown")}</CardTitle>
@@ -69,7 +69,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
         ) : null}
       </Card>
 
-      {/* 6 维卡片 */}
+      {/* 6 dimension cards */}
       <div className="grid gap-4 lg:grid-cols-2">
         {result.dimensions.map((dim) => {
           const tone = riskLevelTone(
@@ -101,7 +101,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
                 </div>
                 <Progress value={dim.score} barClassName={classes.bg} />
 
-                {/* 指标明细（桌面表格 / 移动卡片折叠） */}
+                {/* Indicator details (desktop table / collapsible mobile cards) */}
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[480px] text-left text-xs">
                     <thead>

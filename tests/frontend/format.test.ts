@@ -1,7 +1,6 @@
 /**
- * format.ts 格式化测试（架构 §1.9/§8.2/§8.3 + T04 format 要求）。
- * 中文 2026年8月3日 / 英文 Aug 3, 2026；中文 上涨 2.35% / 英文 Up 2.35%；
- * 中文 市值 3.2万亿美元 / 英文 Market Cap $3.2T。
+ * format.ts formatting tests (architecture §1.9/§8.2/§8.3 + T04 format requirements).
+ * Exercises the bilingual format map: zh-CN date / rise-fall copy / compact market cap vs en.
  */
 import { describe, expect, it } from "vitest";
 import {
@@ -29,7 +28,7 @@ describe("formatDate", () => {
   });
 });
 
-describe("formatChange (涨跌文案)", () => {
+describe("formatChange (rise/fall copy)", () => {
   it("zh-CN up", () => {
     expect(formatChange(2.35, "zh-CN")).toBe("上涨 2.35%");
   });
@@ -59,7 +58,7 @@ describe("formatPctPoints / formatRatio", () => {
   });
 });
 
-describe("formatMoneyCompact (市值)", () => {
+describe("formatMoneyCompact (market cap)", () => {
   it("zh-CN 3.2万亿美元", () => {
     expect(formatMoneyCompact(3.2e12, "USD", "zh-CN")).toBe("3.2万亿美元");
   });

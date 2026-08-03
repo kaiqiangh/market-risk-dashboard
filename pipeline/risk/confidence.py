@@ -1,6 +1,6 @@
-"""置信度计算（架构 P0-5：置信度 = f(数据质量, 指标覆盖度, 信号一致性)）。
+"""Confidence computation (architecture P0-5: confidence = f(data quality, indicator coverage, signal consistency)).
 
-产品级定义（非统计严格）：weights 默认 data_quality 0.4 / coverage 0.4 / consistency 0.2。
+Product-level definition (not statistically strict): default weights data_quality 0.4 / coverage 0.4 / consistency 0.2.
 """
 
 from __future__ import annotations
@@ -25,7 +25,7 @@ def compute_confidence(
 
 
 def consistency_from_dimension_scores(scores: list[float]) -> float:
-    """信号一致性：维度分数越分散 → 一致性越低。1 - min(1, std/50)。"""
+    """Signal consistency: the more dispersed the dimension scores, the lower the consistency. 1 - min(1, std/50)."""
     if len(scores) < 2:
         return 1.0
     mean = sum(scores) / len(scores)
@@ -35,6 +35,6 @@ def consistency_from_dimension_scores(scores: list[float]) -> float:
 
 
 def quality_factor(degraded_count: int, base: float = 1.0, per_degrade: float = 0.8) -> float:
-    """降级次数 → 数据质量（×0.8/次降级，架构 §1.4）。"""
+    """Degrade count → data quality (×0.8 per degrade, architecture §1.4)."""
     factor = base * (per_degrade ** degraded_count)
     return round(max(0.1, factor), 4)

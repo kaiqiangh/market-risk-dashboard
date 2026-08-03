@@ -1,4 +1,4 @@
-"""Providers 包：工厂函数集中注册（架构 §1.4 ProviderRegistry）。"""
+"""Providers package: factory functions for centralized registration (architecture §1.4 ProviderRegistry)."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ from pipeline.providers.yahoo import YahooCalendarProvider, YahooProvider
 
 
 def build_default_providers(settings=None) -> list[BaseProvider]:
-    """构建全部 Provider（注册顺序决定降级链）。"""
+    """Build all Providers (registration order determines the degradation chain)."""
     return [
         YahooProvider(settings),
         StooqProvider(settings),
@@ -35,7 +35,7 @@ def build_default_providers(settings=None) -> list[BaseProvider]:
 
 
 def build_registry(settings=None) -> ProviderRegistry:
-    """构建已注册全部 Provider 的 Registry。"""
+    """Build a Registry with all Providers registered."""
     registry = ProviderRegistry(settings)
     registry.register_all(build_default_providers(settings))
     return registry

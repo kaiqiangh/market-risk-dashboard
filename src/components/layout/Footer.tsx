@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 /**
- * Footer：免责声明 + 数据时间。
+ * Footer: disclaimer + data timestamp.
  */
 export function Footer() {
   const { t } = useTranslation("common");

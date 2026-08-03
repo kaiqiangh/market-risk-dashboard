@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
 /**
- * EmptyState：数据缺失空态（架构 §8.8 缺失渲染 EmptyState）。
+ * EmptyState: missing-data empty state (architecture §8.8: missing renders EmptyState).
  */
 export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
