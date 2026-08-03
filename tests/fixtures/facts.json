@@ -198,7 +198,7 @@
     "regime_evidence": ["10Y-2Y spread near inversion", "HY OAS widening"],
     "confidence": 0.72,
     "confidence_factors": { "data_quality": 0.9, "coverage": 0.83, "consistency": 0.6 },
-    "disclaimer": "本页风险分数为模型化的市场压力估计，并非精确的崩盘概率，不构成投资建议。"
+    "disclaimer": "The risk score on this page is a model-based estimate of market stress, not a precise probability of a market crash, and should not be considered investment advice."
   },
   "macro_summary": {
     "dgs10": 4.21,

@@ -41,7 +41,12 @@ indicators:
     - { key: realized_vol, source: computed, metric: vol, label: "实现波动率" }
     - { key: vol_risk_premium, source: computed, metric: vol, label: "波动率风险溢价" }
   cross_asset:
-    - { key: cross_asset_confirmation, source: computed, metric: cross_asset, label: "跨资产确认信号" }
+    - {
+        key: cross_asset_confirmation,
+        source: computed,
+        metric: cross_asset,
+        label: "跨资产确认信号",
+      }
   trend:
     - { key: price_vs_ma50, source: computed, metric: trend, label: "价格 vs MA50" }
     - { key: price_vs_ma200, source: computed, metric: trend, label: "价格 vs MA200" }
@@ -68,4 +73,4 @@ confidence:
   weights: { data_quality: 0.4, coverage: 0.4, consistency: 0.2 }
   degrade_factor_per_fallback: 0.8
 
-disclaimer: "本页风险分数为模型化的市场压力估计，并非精确的崩盘概率，不构成投资建议。"
+disclaimer: "The risk score on this page is a model-based estimate of market stress, not a precise probability of a market crash, and should not be considered investment advice."
