@@ -46,13 +46,13 @@ export function EvidenceLink({ refs }: EvidenceLinkProps) {
           <Badge
             key={key}
             variant="outline"
-            className="cursor-pointer px-1.5 py-0 text-[10px] hover:bg-accent"
+            className="cursor-pointer rounded-sm border-hairline bg-surface-2 px-1.5 py-0 font-mono text-[10px] text-muted-foreground transition-colors duration-150 hover:border-primary/40 hover:text-foreground"
             onClick={() => highlight(ref)}
             title={`${ref.dataset} ${ref.path}`}
           >
-            {ref.metric}
+            {ref.dataset}:{ref.metric}
             {expanded ? (
-              <span className="ml-1 font-mono text-muted-foreground">
+              <span className="ml-1 text-foreground">
                 {typeof ref.value === "number" ? formatNumber(ref.value, locale) : ref.value}
               </span>
             ) : null}
