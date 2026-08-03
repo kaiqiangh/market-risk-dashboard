@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import echarts from "./echarts";
+import { chartTheme } from "./theme";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatNumber } from "@/lib/format";
 
@@ -43,6 +44,7 @@ export function MacroChart({ items, height = 260 }: MacroChartProps) {
     let chart: echarts.ECharts | undefined;
     try {
       chart = echarts.init(ref.current);
+      const th = chartTheme();
       chart.setOption({
         grid: { left: 8, right: 16, top: 24, bottom: 8, containLabel: true },
         tooltip: {
@@ -59,18 +61,18 @@ export function MacroChart({ items, height = 260 }: MacroChartProps) {
         xAxis: {
           type: "category",
           data: items.map((i) => i.label),
-          axisLabel: { color: "#94a3b8", fontSize: 10, interval: 0, rotate: items.length > 5 ? 30 : 0 },
+          axisLabel: { color: th.axis, fontSize: 10, interval: 0, rotate: items.length > 5 ? 30 : 0 },
         },
         yAxis: {
           type: "value",
-          axisLabel: { color: "#94a3b8", fontSize: 10 },
-          splitLine: { lineStyle: { color: "rgba(148,163,184,0.15)" } },
+          axisLabel: { color: th.axis, fontSize: 10 },
+          splitLine: { lineStyle: { color: th.grid } },
         },
         series: [
           {
             type: "bar",
             data: items.map((i) => i.value),
-            itemStyle: { color: "#38bdf8", borderRadius: [3, 3, 0, 0] },
+            itemStyle: { color: th.accent, borderRadius: [2, 2, 0, 0] },
             barMaxWidth: 40,
           },
         ],

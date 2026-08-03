@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import echarts from "./echarts";
+import { chartTheme } from "./theme";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatChange } from "@/lib/format";
 
@@ -48,6 +49,7 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
     let chart: echarts.ECharts | undefined;
     try {
       chart = echarts.init(ref.current);
+      const th = chartTheme();
       const data = validCells.map((c) => [categories.indexOf(c.category), 0, c.change1d as number]);
       // Y axis groups by asset (one pool per category row; MVP uses category as the y axis)
       chart.setOption({
@@ -64,12 +66,12 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
         xAxis: {
           type: "category",
           data: categories,
-          axisLabel: { color: "#94a3b8", fontSize: 10, interval: 0 },
+          axisLabel: { color: th.axis, fontSize: 10, interval: 0 },
         },
         yAxis: {
           type: "category",
           data: [t("heatmap.axis")],
-          axisLabel: { color: "#94a3b8", fontSize: 10 },
+          axisLabel: { color: th.axis, fontSize: 10 },
         },
         visualMap: {
           min: -8,
@@ -78,9 +80,10 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
           orient: "vertical",
           right: 0,
           top: "center",
-          textStyle: { color: "#94a3b8", fontSize: 10 },
+          textStyle: { color: th.axis, fontSize: 10 },
           inRange: {
-            color: ["#ef4444", "#f8fafc", "#22c55e"],
+            // Direction family (ADR-0002): muted down → neutral surface → muted up
+            color: [th.dirDown, th.neutral, th.dirUp],
           },
         },
         series: [
@@ -90,7 +93,7 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
             data,
             label: {
               show: true,
-              color: "#0f172a",
+              color: th.onFill,
               fontSize: 11,
               formatter: (p: unknown) => {
                 const pp = p as { data: number[] };
@@ -98,8 +101,9 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
                 return val === null || val === undefined ? "—" : `${val > 0 ? "+" : ""}${Number(val).toFixed(1)}%`;
               },
             },
-            itemStyle: { borderColor: "rgba(15,23,42,0.6)", borderWidth: 1 },
-            emphasis: { itemStyle: { shadowBlur: 6, shadowColor: "rgba(0,0,0,0.3)" } },
+            itemStyle: { borderColor: th.grid, borderWidth: 1 },
+            // Glow budget: hover emphasis is a border highlight, not a shadow
+            emphasis: { itemStyle: { borderColor: th.accent, borderWidth: 2 } },
           },
         ],
       });
@@ -128,11 +132,11 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
             <div
               key={`${c.category}-${c.asset}`}
               className={`rounded-md border px-2 py-1.5 text-center ${
-                up ? "border-risk-low/40 bg-risk-low/10" : "border-risk-severe/40 bg-risk-severe/10"
+                up ? "border-dir-up/40 bg-dir-up/10" : "border-dir-down/40 bg-dir-down/10"
               }`}
             >
               <p className="text-[11px] text-muted-foreground">{c.asset}</p>
-              <p className={`text-sm font-semibold tabular-nums ${up ? "text-risk-low" : "text-risk-severe"}`}>
+              <p className={`text-sm font-semibold tabular-nums ${up ? "text-dir-up" : "text-dir-down"}`}>
                 {formatChange(c.change1d, locale)}
               </p>
             </div>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import echarts from "./echarts";
+import { chartTheme } from "./theme";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatDate, formatNumber } from "@/lib/format";
 
@@ -46,6 +47,7 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
     let chart: echarts.ECharts | undefined;
     try {
       chart = echarts.init(ref.current);
+      const th = chartTheme();
       const dates = points.map((p) => p.date);
       const scores = points.map((p) => Number(p.total_score.toFixed(2)));
       chart.setOption({
@@ -62,15 +64,15 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
         xAxis: {
           type: "category",
           data: dates,
-          axisLine: { lineStyle: { color: "rgba(148,163,184,0.5)" } },
-          axisLabel: { color: "#94a3b8", fontSize: 10 },
+          axisLine: { lineStyle: { color: th.grid } },
+          axisLabel: { color: th.axis, fontSize: 10 },
         },
         yAxis: {
           type: "value",
           min: 0,
           max: 100,
-          axisLabel: { color: "#94a3b8", fontSize: 10 },
-          splitLine: { lineStyle: { color: "rgba(148,163,184,0.15)" } },
+          axisLabel: { color: th.axis, fontSize: 10 },
+          splitLine: { lineStyle: { color: th.grid } },
         },
         series: [
           {
@@ -79,8 +81,18 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
             smooth: true,
             showSymbol: false,
             data: scores,
-            lineStyle: { color: "#38bdf8", width: 2 },
-            areaStyle: { color: "rgba(56,189,248,0.12)" },
+            lineStyle: { color: th.accent, width: 1.5 },
+            areaStyle: { color: th.accentSoft },
+            // Risk thresholds in risk tones (the only saturated marks on the chart)
+            markLine: {
+              silent: true,
+              symbol: "none",
+              label: { color: th.axis, fontSize: 10 },
+              data: [
+                { yAxis: 70, lineStyle: { color: th.riskSevere, type: "dashed", width: 1 } },
+                { yAxis: 50, lineStyle: { color: th.riskCaution, type: "dashed", width: 1 } },
+              ],
+            },
           },
         ],
       });
