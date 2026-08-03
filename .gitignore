@@ -38,8 +38,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# docs（内部规划文档不跟踪；随仓库发布的内容在 T05 单独取消忽略，如 calibration-report）
+# docs（内部规划文档不跟踪；随仓库发布的内容单独取消忽略，见 T05）
 docs/*
+!docs/calibration-report.md
+!docs/glossary.md
+!docs/operations/
+!docs/operations/*
 
 # AI Agents
 .workbuddy/*
