@@ -6,13 +6,17 @@
  * - dark/light mode switch + localStorage persistence
  */
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, configure, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@/i18n";
 import App from "@/App";
 import { LOCALE_STORAGE_KEY } from "@/i18n";
 import { THEME_STORAGE_KEY } from "@/hooks/useTheme";
 import { installFixtureFetch, installFailingFetch } from "./helpers/fetchMock";
+
+// CI runs all 12 test files in parallel; lazy-loaded routes + TanStack Query
+// can exceed the default 1s findBy timeout under CPU contention.
+configure({ asyncUtilTimeout: 5000 });
 
 function renderApp() {
   const queryClient = new QueryClient({

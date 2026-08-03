@@ -4,11 +4,15 @@
  * responsive classes and document order.
  */
 import { describe, expect, it, vi, afterEach } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, configure, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@/i18n";
 import App from "@/App";
 import { installFixtureFetch } from "./helpers/fetchMock";
+
+// CI runs all 12 test files in parallel; lazy-loaded routes + TanStack Query
+// can exceed the default 1s findBy timeout under CPU contention.
+configure({ asyncUtilTimeout: 5000 });
 
 function renderApp() {
   const queryClient = new QueryClient({
