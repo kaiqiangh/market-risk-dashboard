@@ -58,6 +58,19 @@ describe("design token contract", () => {
   it("global radius is 4px", () => {
     expect(css).toContain("--radius: 0.25rem");
   });
+
+  it("every color token is rgb()-wrapped in the tailwind config (bugfix: bare var() triplets render transparent)", () => {
+    // radius is a layout token (bare var() is correct there) — only color tokens need the wrapper
+    const colorRefs = consumedVars.filter((v) => !THEME_INVARIANT.has(v));
+    expect(colorRefs.length).toBeGreaterThan(10);
+    // Bare `var(--x)` as background-color resolves to "255 255 255", which is NOT a
+    // valid color — surfaces render transparent. All color utilities must emit
+    // `rgb(var(--x) / <alpha-value>)` so both `bg-card` and `bg-card/10` are valid.
+    for (const v of colorRefs) {
+      const ref = `var(--${v})`;
+      expect(tailwindConfig, `rgb() wrapper around ${ref}`).toContain(`rgb(${ref} / <alpha-value>)`);
+    }
+  });
 });
 
 /* ---------- WCAG AA contrast audit (spec #23 ticket #34) ---------- */
