@@ -52,7 +52,7 @@ export class DatasetClient {
   /** Build the data file URL (see the header comment for path rules). */
   pathFor(key: DatasetKey | MetadataKey | HistoryKey, opts: DatasetOptions = {}): string {
     if (key === "analysis") {
-      const lang = opts.lang ?? "zh-CN";
+      const lang = opts.lang ?? "en";
       return `${this.baseUrl}/data/latest/analysis.${lang}.json`;
     }
     if (key === "sources" || key === "freshness" || key === "schema-version" || key === "translations") {

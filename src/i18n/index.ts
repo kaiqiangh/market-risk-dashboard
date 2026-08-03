@@ -21,7 +21,8 @@ import statusEn from "./locales/en/status.json";
 
 /**
  * i18n initialization (architecture §1.9).
- * Language priority: URL language segment → localStorage `market_dashboard_locale` → browser language → default zh-CN.
+ * Language priority: URL language segment → localStorage `market_dashboard_locale` → default en.
+ * Default landing language is English (user decision 2026-08-03); zh-CN remains fully supported via the language switch.
  * Namespaces (PRD §8.5): common/dashboard/macro/equities/sectors/news/calendar/risk/status.
  * Note: PRD originally included the sectors namespace; the frontend carries sector/theme copy in the themes namespace;
  *       sectors data (sectors/themes) itself comes from data files (label/label_zh) and does not occupy a translation namespace.
@@ -45,7 +46,7 @@ export function localeFromHash(hash: string): SupportedLocale | null {
   return LOCALE_SEGMENT_MAP[segment] ?? null;
 }
 
-/** Detect the initial language by priority. */
+/** Detect the initial language by priority (URL segment → localStorage → default en). */
 export function detectInitialLocale(): SupportedLocale {
   const fromHash = localeFromHash(window.location.hash);
   if (fromHash) return fromHash;
@@ -55,8 +56,6 @@ export function detectInitialLocale(): SupportedLocale {
     return stored as SupportedLocale;
   }
 
-  const browserLang = window.navigator.language?.toLowerCase() ?? "";
-  if (browserLang.startsWith("zh")) return "zh-CN";
   return "en";
 }
 
@@ -98,7 +97,7 @@ void i18n.use(initReactI18next).init({
     },
   },
   lng: detectInitialLocale(),
-  fallbackLng: "zh-CN",
+  fallbackLng: "en",
   supportedLngs: SUPPORTED_LOCALES as unknown as string[],
   defaultNS: "common",
   ns: [...NAMESPACES],
