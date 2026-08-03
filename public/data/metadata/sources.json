@@ -1,1 +1,42 @@
-{"schema_version":"1.0.0","updated_at":"2026-08-03T17:58:28Z","domains":{"a_share":{"error":"[a_share] 所有 Provider 失败: akshare: ProviderError: 301308.SZ: akshare history 失败: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"},"crypto":{"provider":"coingecko","used_fallback":false,"from_cache":false,"degraded":false},"macro":{"provider":"fred","used_fallback":false,"from_cache":false,"degraded":false},"calendar":{"provider":"yfinance_calendar","used_fallback":true,"from_cache":false,"degraded":true},"news":{"provider":"rss_news","sources":{"cnbc":{"ok":true,"error":null,"updated_at":"2026-08-03T17:58:24Z"},"marketwatch":{"ok":true,"error":null,"updated_at":"2026-08-03T17:58:24Z"},"investing":{"ok":true,"error":null,"updated_at":"2026-08-03T17:58:24Z"},"fed":{"ok":true,"error":null,"updated_at":"2026-08-03T17:58:24Z"},"eastmoney":{"ok":true,"error":null,"updated_at":"2026-08-03T17:58:27Z"},"clschina":{"ok":false,"error":"ProviderError: RSS HTTP 403","updated_at":"2026-08-03T17:58:27Z"},"wallstreetcn":{"ok":false,"error":"ProviderError: RSS HTTP 403","updated_at":"2026-08-03T17:58:27Z"}}}}}
+{
+  "schema_version": "1.0.0",
+  "updated_at": "2026-08-03T17:58:28Z",
+  "domains": {
+    "a_share": {
+      "error": "[a_share] 所有 Provider 失败: akshare: ProviderError: 301308.SZ: akshare history 失败: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+    },
+    "crypto": {
+      "provider": "coingecko",
+      "used_fallback": false,
+      "from_cache": false,
+      "degraded": false
+    },
+    "macro": { "provider": "fred", "used_fallback": false, "from_cache": false, "degraded": false },
+    "calendar": {
+      "provider": "yfinance_calendar",
+      "used_fallback": true,
+      "from_cache": false,
+      "degraded": true
+    },
+    "news": {
+      "provider": "rss_news",
+      "sources": {
+        "cnbc": { "ok": true, "error": null, "updated_at": "2026-08-03T17:58:24Z" },
+        "marketwatch": { "ok": true, "error": null, "updated_at": "2026-08-03T17:58:24Z" },
+        "investing": { "ok": true, "error": null, "updated_at": "2026-08-03T17:58:24Z" },
+        "fed": { "ok": true, "error": null, "updated_at": "2026-08-03T17:58:24Z" },
+        "eastmoney": { "ok": true, "error": null, "updated_at": "2026-08-03T17:58:27Z" },
+        "clschina": {
+          "ok": false,
+          "error": "ProviderError: RSS HTTP 403",
+          "updated_at": "2026-08-03T17:58:27Z"
+        },
+        "wallstreetcn": {
+          "ok": false,
+          "error": "ProviderError: RSS HTTP 403",
+          "updated_at": "2026-08-03T17:58:27Z"
+        }
+      }
+    }
+  }
+}

@@ -1,13 +1,7 @@
 {
   "generated_at": "2026-08-03T10:00:00Z",
   "schema_version": "1.0.0",
-  "source": [
-    "risk_model",
-    "yfinance",
-    "coingecko",
-    "fmp",
-    "rss_news"
-  ],
+  "source": ["risk_model", "yfinance", "coingecko", "fmp", "rss_news"],
   "source_updated_at": "2026-08-03T09:45:00Z",
   "freshness_status": "fresh",
   "data_quality": 0.9,
@@ -197,17 +191,14 @@
         }
       ],
       "regime": "late_cycle",
-      "regime_evidence": [
-        "10Y-2Y spread near inversion",
-        "HY OAS widening"
-      ],
+      "regime_evidence": ["10Y-2Y spread near inversion", "HY OAS widening"],
       "confidence": 0.72,
       "confidence_factors": {
         "data_quality": 0.9,
         "coverage": 0.83,
         "consistency": 0.6
       },
-      "disclaimer": "本页风险分数为模型化的市场压力估计，并非精确的崩盘概率，不构成投资建议。"
+      "disclaimer": "The risk score on this page is a model-based estimate of market stress, not a precise probability of a market crash, and should not be considered investment advice."
     },
     "regime": "late_cycle",
     "top_drivers": [
@@ -252,9 +243,7 @@
         "title": "NVDA Earnings",
         "datetime": "2026-08-19T12:00:00Z",
         "importance": "high",
-        "related_assets": [
-          "NVDA"
-        ]
+        "related_assets": ["NVDA"]
       }
     ],
     "sector_performance": [
