@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { changeTone, toneClasses } from "@/lib/riskColors";
+import { dirTone, dirClasses } from "@/lib/riskColors";
 import { formatChange, formatMoney, formatNumber, formatPercentile } from "@/lib/format";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -16,8 +16,8 @@ export interface EquityCardProps {
 export function EquityCard({ asset }: EquityCardProps) {
   const { t, i18n } = useTranslation("equities");
   const locale = i18n.language;
-  const tone = changeTone(asset.change_1d);
-  const classes = toneClasses(tone);
+  const tone = dirTone(asset.change_1d);
+  const classes = dirClasses(tone);
   const displayName = locale.startsWith("zh") && asset.name_zh ? asset.name_zh : asset.name;
 
   return (
@@ -52,7 +52,7 @@ export function EquityCard({ asset }: EquityCardProps) {
           ).map(([label, value]) => (
             <div key={label} className="rounded bg-muted/50 px-1.5 py-1 text-center">
               <dt className="text-[9px] uppercase text-muted-foreground">{label}</dt>
-              <dd className={`font-medium tabular-nums ${toneClasses(changeTone(value)).text}`}>
+              <dd className={`font-medium tabular-nums ${dirClasses(dirTone(value)).text}`}>
                 {value === null ? t("common:data.na") : formatChange(value, locale)}
               </dd>
             </div>
@@ -65,13 +65,13 @@ export function EquityCard({ asset }: EquityCardProps) {
           </div>
           <div className="rounded bg-muted/50 px-1.5 py-1 text-center">
             <dt className="text-[9px] uppercase text-muted-foreground">MA50</dt>
-            <dd className={`font-medium tabular-nums ${toneClasses(changeTone(asset.ma50_distance_pct)).text}`}>
+            <dd className={`font-medium tabular-nums ${dirClasses(dirTone(asset.ma50_distance_pct)).text}`}>
               {asset.ma50_distance_pct === null ? t("common:data.na") : formatChange(asset.ma50_distance_pct, locale)}
             </dd>
           </div>
           <div className="rounded bg-muted/50 px-1.5 py-1 text-center">
             <dt className="text-[9px] uppercase text-muted-foreground">MA200</dt>
-            <dd className={`font-medium tabular-nums ${toneClasses(changeTone(asset.ma200_distance_pct)).text}`}>
+            <dd className={`font-medium tabular-nums ${dirClasses(dirTone(asset.ma200_distance_pct)).text}`}>
               {asset.ma200_distance_pct === null ? t("common:data.na") : formatChange(asset.ma200_distance_pct, locale)}
             </dd>
           </div>

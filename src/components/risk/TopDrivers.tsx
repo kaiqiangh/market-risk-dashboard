@@ -3,7 +3,7 @@ import { AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { RISK_DIMENSION_KEYS } from "@/lib/riskLabels";
-import { changeTone, toneClasses } from "@/lib/riskColors";
+import { riskTrendTone, toneClasses } from "@/lib/riskColors";
 import { formatNumber, formatPctPoints } from "@/lib/format";
 import type { DriverContribution, RiskDimensionKey } from "@/schemas";
 
@@ -48,7 +48,8 @@ export function TopDrivers({ drivers }: TopDriversProps) {
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
         {top.map((driver, i) => {
-          const tone = changeTone(driver.contribution);
+          // Contribution is a risk semantic: positive = adds risk (high tone), negative = reduces risk (low tone)
+          const tone = riskTrendTone(driver.contribution);
           const classes = toneClasses(tone);
           return (
             <div

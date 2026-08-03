@@ -1,10 +1,16 @@
 import type { FreshnessStatus, MarketRegime, RiskLevel } from "@/schemas";
 
 /**
- * Risk semantic color mapping (architecture §8.6).
+ * Semantic color families (ADR-0002; architecture §8.6).
+ * Three dedicated families replace the legacy single overloaded ramp:
+ * - risk-*  (RiskTone): risk level + market regime ONLY — the only saturated colors at rest
+ * - dir-*   (DirTone):  price/asset direction — muted, always paired with an explicit sign
+ * - fresh-* (FreshTone): data freshness — icon + text; fresh uses no saturated color
  * Color must not be the only expression: every usage must pair it with text + icon + value.
  * Returns Tailwind semantic token class names (defined in index.css / tailwind.config.ts).
  */
+
+/* ================= Risk family (risk level + regime) ================= */
 
 export type RiskTone = "low" | "caution" | "high" | "severe" | "na";
 
@@ -34,7 +40,7 @@ export interface ToneClasses {
   softBg: string;
 }
 
-const TONE_CLASSES: Record<RiskTone, ToneClasses> = {
+const RISK_TONE_CLASSES: Record<RiskTone, ToneClasses> = {
   low: {
     text: "text-risk-low",
     bg: "bg-risk-low",
@@ -68,14 +74,14 @@ const TONE_CLASSES: Record<RiskTone, ToneClasses> = {
 };
 
 export function toneClasses(tone: RiskTone): ToneClasses {
-  return TONE_CLASSES[tone];
+  return RISK_TONE_CLASSES[tone];
 }
 
 export function riskLevelClasses(level: RiskLevel): ToneClasses {
   return toneClasses(riskLevelTone(level));
 }
 
-/** Market regime → semantic color (risk_on / low risk = green, crisis = red). */
+/** Market regime → risk ramp (regime is a risk semantic). */
 export function regimeTone(regime: MarketRegime): RiskTone {
   switch (regime) {
     case "goldilocks":
@@ -96,15 +102,7 @@ export function regimeTone(regime: MarketRegime): RiskTone {
   }
 }
 
-/** Asset change direction color: up = green / down = red / flat = gray (financial convention, paired with text + sign). */
-export function changeTone(value: number | null | undefined): RiskTone {
-  if (value === null || value === undefined || Number.isNaN(value)) return "na";
-  if (value > 0) return "low";
-  if (value < 0) return "severe";
-  return "na";
-}
-
-/** Risk trend (score change): rising = orange (risk increasing) / falling = green (risk decreasing). */
+/** Risk trend (score change): rising = high tone (risk increasing) / falling = low tone. */
 export function riskTrendTone(value: number | null | undefined): RiskTone {
   if (value === null || value === undefined || Number.isNaN(value)) return "na";
   if (value > 0) return "high";
@@ -112,19 +110,96 @@ export function riskTrendTone(value: number | null | undefined): RiskTone {
   return "na";
 }
 
-/** freshness → semantic color. */
-export function freshnessTone(status: FreshnessStatus): RiskTone {
+/* ================= Direction family (price/asset change) ================= */
+
+export type DirTone = "up" | "down" | "flat";
+
+/**
+ * Asset change direction: up = muted green / down = muted red / flat or missing = neutral.
+ * Global Western convention (ADR-0002). Always pair with an explicit +/− sign.
+ */
+export function dirTone(value: number | null | undefined): DirTone {
+  if (value === null || value === undefined || Number.isNaN(value)) return "flat";
+  if (value > 0) return "up";
+  if (value < 0) return "down";
+  return "flat";
+}
+
+const DIR_TONE_CLASSES: Record<DirTone, ToneClasses> = {
+  up: {
+    text: "text-dir-up",
+    bg: "bg-dir-up",
+    border: "border-dir-up",
+    softBg: "bg-dir-up/10",
+  },
+  down: {
+    text: "text-dir-down",
+    bg: "bg-dir-down",
+    border: "border-dir-down",
+    softBg: "bg-dir-down/10",
+  },
+  flat: {
+    text: "text-muted-foreground",
+    bg: "bg-muted",
+    border: "border-hairline",
+    softBg: "bg-muted/40",
+  },
+};
+
+export function dirClasses(tone: DirTone): ToneClasses {
+  return DIR_TONE_CLASSES[tone];
+}
+
+/* ================= Freshness family (data staleness) ================= */
+
+export type FreshTone = "ok" | "warn" | "bad" | "na";
+
+/**
+ * Freshness → treatment. "Fresh" is the expected state and earns no saturated
+ * color (muted); only stale/missing get a warm tone. Always pair with icon + text.
+ */
+export function freshTone(status: FreshnessStatus): FreshTone {
   switch (status) {
     case "fresh":
-      return "low";
+      return "ok";
     case "delayed":
     case "degraded":
-      return "caution";
     case "stale":
-      return "high";
+      return "warn";
     case "missing":
-      return "na";
+      return "bad";
     default:
       return "na";
   }
+}
+
+const FRESH_TONE_CLASSES: Record<FreshTone, ToneClasses> = {
+  ok: {
+    text: "text-fresh-ok",
+    bg: "bg-fresh-ok",
+    border: "border-fresh-ok",
+    softBg: "bg-fresh-ok/10",
+  },
+  warn: {
+    text: "text-fresh-warn",
+    bg: "bg-fresh-warn",
+    border: "border-fresh-warn",
+    softBg: "bg-fresh-warn/10",
+  },
+  bad: {
+    text: "text-fresh-bad",
+    bg: "bg-fresh-bad",
+    border: "border-fresh-bad",
+    softBg: "bg-fresh-bad/10",
+  },
+  na: {
+    text: "text-muted-foreground",
+    bg: "bg-muted",
+    border: "border-hairline",
+    softBg: "bg-muted/40",
+  },
+};
+
+export function freshClasses(tone: FreshTone): ToneClasses {
+  return FRESH_TONE_CLASSES[tone];
 }

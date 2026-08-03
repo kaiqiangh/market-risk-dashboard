@@ -9,7 +9,7 @@ import { ErrorState } from "@/components/ui/ErrorState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { formatDateTime } from "@/lib/format";
-import { freshnessTone, toneClasses } from "@/lib/riskColors";
+import { freshTone, freshClasses } from "@/lib/riskColors";
 
 /**
  * StatusPage: system status page.
@@ -200,7 +200,7 @@ export default function StatusPage() {
                         </td>
                         <td className="py-1.5">
                           {degraded ? (
-                            <span className={`text-risk-caution ${toneClasses(freshnessTone("degraded")).text}`}>
+                            <span className={freshClasses(freshTone("degraded")).text}>
                               {t("providers.degraded")}
                             </span>
                           ) : error ? (

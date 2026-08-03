@@ -3,57 +3,101 @@
 @tailwind utilities;
 
 /* ============================================================
-   Theme CSS variables (the data source for Tailwind semantic tokens)
-   Dark is the default theme; the light theme overrides via the .light class (switching implemented in T04).
-   Risk colors (architecture §8.6): color must not be the only expression, always pair with text + icon + value.
+   Design tokens — Dark-first Market Intelligence Terminal (spec #23)
+   Dark is the default theme; light overrides via the .light class.
+   See docs/adr/0001 (theme tri-state), docs/adr/0002 (color families),
+   CONTEXT.md (surface levels, glow budget, card policy).
+
+   Rules encoded here:
+   - Three surface levels; elevation = lightness step + 1px hairline,
+     never shadows at rest. No gradients/blur/translucency tokens exist.
+   - risk-* (muted ramp) is reserved for risk level + regime ONLY.
+   - dir-* is price direction, deliberately de-saturated, always with a sign.
+   - fresh-* freshness treatment: fresh uses no saturated color.
+   - Global radius is 4px. Numerals use Tailwind's `tabular-nums` utility.
    ============================================================ */
 
 :root,
 :root[class~="dark"] {
-  --background: 11 15 23; /* #0b0f17 */
-  --foreground: 226 232 240; /* #e2e8f0 */
-  --card: 15 21 33; /* #0f1521 */
-  --card-foreground: 226 232 240;
-  --muted: 30 41 59; /* #1e293b */
-  --muted-foreground: 148 163 184; /* #94a3b8 */
-  --border: 30 41 59;
-  --input: 30 41 59;
-  --primary: 56 189 248; /* #38bdf8 */
-  --primary-foreground: 8 15 23;
-  --accent: 30 41 59;
-  --accent-foreground: 226 232 240;
-  --destructive: 248 113 113; /* #f87171 */
-  --radius: 0.5rem;
+  /* Surface levels */
+  --surface-0: 14 19 28; /* #0e131c — app background, open chart regions */
+  --surface-1: 20 26 38; /* #141a26 — cards, panels */
+  --surface-2: 27 35 51; /* #1b2333 — overlays: popovers, tooltips, modals */
+  --hairline: 38 48 67; /* #263043 — 1px separation borders */
 
-  /* Risk semantic colors */
-  --risk-low: 34 197 94; /* green-500 — normal / risk decreasing */
-  --risk-caution: 250 204 21; /* yellow-400 — caution */
-  --risk-high: 249 115 22; /* orange-500 — high risk */
-  --risk-severe: 239 68 68; /* red-500 — severe / crisis */
-  --risk-na: 100 116 139; /* slate-500 — missing / degraded */
+  /* Text */
+  --foreground: 215 222 233; /* #d7dee9 */
+  --muted-foreground: 139 151 169; /* #8b97a9 */
+
+  /* Accent: single restrained blue-cyan, interactive elements only */
+  --primary: 107 163 201; /* #6ba3c9 */
+  --primary-foreground: 14 19 28;
+  --destructive: 204 82 82; /* #cc5252 */
+  --radius: 0.25rem; /* 4px — terminal, not consumer app */
+
+  /* Risk semantic ramp (muted; the only saturated colors at rest) */
+  --risk-low: 63 157 120; /* #3f9d78 — quiet teal-green */
+  --risk-caution: 201 160 74; /* #c9a04a — amber */
+  --risk-high: 207 116 56; /* #cf7438 — orange */
+  --risk-severe: 204 82 82; /* #cc5252 — red */
+  --risk-na: 95 107 127; /* #5f6b7f — slate */
+
+  /* Price direction (de-emphasized ~60-70% saturation, always with sign) */
+  --dir-up: 107 158 133; /* #6b9e85 */
+  --dir-down: 178 115 115; /* #b27373 */
+
+  /* Freshness: fresh is the expected state and consumes no color budget */
+  --fresh-ok: 139 151 169; /* muted — fresh */
+  --fresh-warn: 201 160 74; /* amber — stale */
+  --fresh-bad: 207 116 56; /* orange — missing */
+
+  /* Legacy semantic aliases (kept so existing consumers keep working) */
+  --background: var(--surface-0);
+  --card: var(--surface-1);
+  --card-foreground: var(--foreground);
+  --muted: var(--surface-2);
+  --border: var(--hairline);
+  --input: var(--hairline);
+  --accent: var(--surface-2);
+  --accent-foreground: var(--foreground);
 }
 
-/* Light theme overrides (enabled after T04 wires up ThemeToggle) */
+/* Light theme: quiet paper, independently tuned (NOT an inverted dark) */
 :root[class~="light"] {
-  --background: 248 250 252;
-  --foreground: 15 23 42;
-  --card: 255 255 255;
-  --card-foreground: 15 23 42;
-  --muted: 241 245 249;
-  --muted-foreground: 100 116 139;
-  --border: 226 232 240;
-  --input: 226 232 240;
-  --primary: 2 132 199;
-  --primary-foreground: 248 250 252;
-  --accent: 241 245 249;
-  --accent-foreground: 15 23 42;
-  --destructive: 220 38 38;
+  --surface-0: 250 251 252; /* #fafbfc */
+  --surface-1: 255 255 255; /* #ffffff */
+  --surface-2: 241 244 248; /* #f1f4f8 */
+  --hairline: 221 227 234; /* #dde3ea */
 
-  --risk-low: 22 163 74;
-  --risk-caution: 202 138 4;
-  --risk-high: 234 88 12;
-  --risk-severe: 220 38 38;
-  --risk-na: 100 116 139;
+  --foreground: 26 35 51; /* #1a2333 ink */
+  --muted-foreground: 93 107 127; /* #5d6b7f */
+
+  --primary: 61 124 168; /* #3d7ca8 */
+  --primary-foreground: 250 251 252;
+  --destructive: 176 58 58; /* #b03a3a */
+
+  /* Risk ramp darkened one step for contrast on white */
+  --risk-low: 46 125 95; /* #2e7d5f */
+  --risk-caution: 154 116 51; /* #9a7433 */
+  --risk-high: 176 90 36; /* #b05a24 */
+  --risk-severe: 176 58 58; /* #b03a3a */
+  --risk-na: 107 118 134; /* #6b7686 */
+
+  --dir-up: 77 133 104; /* #4d8568 */
+  --dir-down: 158 88 88; /* #9e5858 */
+
+  --fresh-ok: 93 107 127;
+  --fresh-warn: 154 116 51;
+  --fresh-bad: 176 90 36;
+
+  --background: var(--surface-0);
+  --card: var(--surface-1);
+  --card-foreground: var(--foreground);
+  --muted: var(--surface-2);
+  --border: var(--hairline);
+  --input: var(--hairline);
+  --accent: var(--surface-2);
+  --accent-foreground: var(--foreground);
 }
 
 @layer base {
@@ -65,5 +109,20 @@
     font-family:
       -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
       "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  }
+  /* The one sanctioned glow: focus rings (glow budget, CONTEXT.md) */
+  :focus-visible {
+    outline: 2px solid rgb(var(--primary));
+    outline-offset: 1px;
+  }
+  /* Motion law: 150ms ease on hover/focus only; honor reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }

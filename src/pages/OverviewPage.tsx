@@ -24,7 +24,7 @@ import { ErrorState } from "@/components/ui/ErrorState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { StatusBadge } from "@/components/layout/StatusBadge";
-import { changeTone, toneClasses } from "@/lib/riskColors";
+import { dirTone, dirClasses } from "@/lib/riskColors";
 import { formatChange } from "@/lib/format";
 import type { HeatmapCell } from "@/charts/AssetHeatmap";
 
@@ -199,8 +199,8 @@ export default function OverviewPage() {
             ) : sectorsQ.data && sectorsQ.data.payload.sectors.length > 0 ? (
               <div className="flex flex-col gap-1.5" data-testid="sector-performance">
                 {sectorsQ.data.payload.sectors.map((s) => {
-                  const tone = changeTone(s.change_1d);
-                  const classes = toneClasses(tone);
+                  const tone = dirTone(s.change_1d);
+                  const classes = dirClasses(tone);
                   const label = locale.startsWith("zh") && s.label_zh ? s.label_zh : s.label;
                   return (
                     <div key={s.key} className="flex items-center justify-between rounded-md bg-muted/40 px-3 py-2">
