@@ -43,6 +43,20 @@ python -m pytest tests/pipeline/ -v
 
 Copy `.env.example` to `.env` and fill in API keys (local only, gitignored).
 
+### Validation, calibration & docs (T05)
+
+```bash
+scripts/validate_data.sh          # one-shot data validation (schema/required/timestamps/
+                                  # quality/risk ranges/NaN/duplicates/expiry/languages/bilingual)
+npm run check:i18n                # i18n translation key parity (zh-CN ↔ en)
+npm run check:data                # Node structural JSON validation (deploy gate)
+npm run precompress               # build-time gzip/brotli precompression (dist/)
+```
+
+- **Calibration report**: [`CALIBRATION.md`](./CALIBRATION.md) (2008 / 2018 / 2020 backtests; published with the repo)
+- **Glossary**: `docs/glossary.md` (bilingual financial terms)
+- **Operations**: `docs/operations/scheduled-task.md` (local Scheduled Task), `docs/operations/ai-analysis-automation.md` (WorkBuddy AI automation)
+
 ## Repository layout
 
 ```

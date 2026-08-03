@@ -44,8 +44,8 @@ export function NewsCard({ item }: NewsCardProps) {
             <ExternalLink className="h-3 w-3" aria-hidden />
           </a>
         </div>
-        <p className="text-sm font-medium leading-snug text-foreground">{title}</p>
-        {item.summary ? <p className="text-xs leading-relaxed text-muted-foreground">{item.summary}</p> : null}
+        <p className="break-words text-sm font-medium leading-snug text-foreground">{title}</p>
+        {item.summary ? <p className="break-words text-xs leading-relaxed text-muted-foreground">{item.summary}</p> : null}
         <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground">
           <span className="rounded bg-muted px-1.5 py-0.5">{item.source}</span>
           {item.assets.length > 0 ? (

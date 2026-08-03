@@ -40,6 +40,19 @@ python -m pytest tests/pipeline/ -v
 
 将 `.env.example` 复制为 `.env` 并填入 API key（仅本机使用，已 gitignore）。
 
+### 校验、校准与文档（T05）
+
+```bash
+scripts/validate_data.sh          # 一键数据校验（schema/必填/时间戳/质量/风险范围/NaN/重复/过期/语言/双语）
+npm run check:i18n                # i18n 翻译 key 完整性（zh-CN ↔ en）
+npm run check:data                # Node 结构 JSON 校验（部署门槛）
+npm run precompress               # 构建期 gzip/brotli 预压缩（dist/）
+```
+
+- **校准报告**：[`CALIBRATION.md`](./CALIBRATION.md)（2008/2018/2020 三段回测，随仓库发布）
+- **术语表**：`docs/glossary.md`（中英金融术语）
+- **运维手册**：`docs/operations/scheduled-task.md`（本地定时任务）、`docs/operations/ai-analysis-automation.md`（WorkBuddy AI 自动化）
+
 ## 仓库结构
 
 ```
