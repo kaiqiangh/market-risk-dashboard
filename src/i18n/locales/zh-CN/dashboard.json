@@ -45,7 +45,11 @@
     "generatedAt": "生成时间"
   },
   "kpi": {
-    "trend1d": "1 日变化"
+    "trend1d": "1 日变化",
+    "hyOas": "高收益债利差",
+    "colDelta": "Δ 1日",
+    "oneWeek": "1周",
+    "oneMonth": "1月"
   },
   "statusBar": {
     "generated": "数据生成"

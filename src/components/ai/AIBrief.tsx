@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { StatusBadge } from "@/components/layout/StatusBadge";
 import { EvidenceLink } from "./EvidenceLink";
 import { riskLevelKey, regimeKey } from "@/lib/riskLabels";
-import { riskLevelTone, type RiskTone } from "@/lib/riskColors";
+import { riskLevelTone, toneClasses, type RiskTone } from "@/lib/riskColors";
 import { formatDateTime, formatRatio } from "@/lib/format";
 import type { AnalysisDataset, SignalClaim } from "@/schemas";
 
@@ -71,13 +71,7 @@ function CaseBlock({
   caseData: { title: string; points: string[]; evidence_refs: AnalysisDataset["bull_case"]["evidence_refs"] };
   tone: "low" | "caution" | "high" | "severe" | "na";
 }) {
-  const toneText = {
-    low: "text-risk-low",
-    caution: "text-risk-caution",
-    high: "text-risk-high",
-    severe: "text-risk-severe",
-    na: "text-risk-na",
-  }[tone];
+  const toneText = toneClasses(tone).text;
   return (
     <div className="rounded-sm border border-hairline bg-surface-2/40 p-3">
       <p className={`text-xs font-semibold ${toneText}`}>{title}</p>

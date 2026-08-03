@@ -7,6 +7,7 @@ import type {
   CalendarEnvelope,
   CryptoEnvelope,
   EquitiesEnvelope,
+  MacroEnvelope,
   NewsEnvelope,
   RiskEnvelope,
   SectorsEnvelope,
@@ -18,7 +19,6 @@ import { EventCard } from "@/components/calendar/EventCard";
 import { AIBrief } from "@/components/ai/AIBrief";
 import { KpiCard } from "@/components/ui/KpiCard";
 import { Badge } from "@/components/ui/Badge";
-import { Progress } from "@/components/ui/Progress";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -42,6 +42,7 @@ export default function OverviewPage() {
 
   const riskQ = useDataset<RiskEnvelope>("risk");
   const trendQ = useDataset<RiskTrendSlice>("risk", { slice: "30d" }, RiskTrendSlice);
+  const macroQ = useDataset<MacroEnvelope>("macro");
   const cryptoQ = useDataset<CryptoEnvelope>("crypto");
   const equitiesQ = useDataset<EquitiesEnvelope>("equities");
   const sectorsQ = useDataset<SectorsEnvelope>("sectors");
@@ -94,6 +95,10 @@ export default function OverviewPage() {
         ? TrendingUp
         : TrendingDown;
   const topDrivers = risk ? [...risk.top_drivers].sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution)).slice(0, 5) : [];
+
+  // HY OAS (spec #28 KPI set): high-yield credit spread from the macro dataset when available
+  const hyOas =
+    macroQ.data?.payload.credit.find((ind) => ind.key === "bamlh0a0hym2" || /high yield oas/i.test(ind.label)) ?? null;
 
   return (
     <div className="flex flex-col gap-5">
@@ -158,7 +163,7 @@ export default function OverviewPage() {
               footer={
                 risk.trend_1w === null
                   ? undefined
-                  : `1W ${formatPctPoints(risk.trend_1w, locale)} · 1M ${risk.trend_1m === null ? t("common:data.na") : formatPctPoints(risk.trend_1m, locale)}`
+                  : `${t("kpi.oneWeek")} ${formatPctPoints(risk.trend_1w, locale)} · ${t("kpi.oneMonth")} ${risk.trend_1m === null ? t("common:data.na") : formatPctPoints(risk.trend_1m, locale)}`
               }
             >
               <span className={`text-2xl font-semibold tabular-nums ${toneClasses(trendTone).text}`}>
@@ -167,12 +172,23 @@ export default function OverviewPage() {
             </KpiCard>
 
             <KpiCard
-              label={t("risk:score.confidence")}
-              footer={<Progress value={risk.confidence * 100} barClassName="bg-primary" barHeightClass="h-1" />}
+              label={t("kpi.hyOas")}
+              footer={
+                hyOas?.change_1m === null || hyOas?.change_1m === undefined
+                  ? undefined
+                  : `1M ${formatPctPoints(hyOas.change_1m, locale)}`
+              }
             >
-              <span className="text-2xl font-semibold tabular-nums text-foreground">
-                {formatRatio(risk.confidence, locale)}
-              </span>
+              {hyOas ? (
+                <span
+                  className={`text-2xl font-semibold tabular-nums ${dirClasses(dirTone(hyOas.change_1m)).text}`}
+                >
+                  {formatNumber(hyOas.value, locale)}
+                  <span className="text-sm font-medium text-muted-foreground">%</span>
+                </span>
+              ) : (
+                <span className="text-base text-muted-foreground">{t("common:data.na")}</span>
+              )}
             </KpiCard>
           </>
         ) : (
@@ -219,7 +235,7 @@ export default function OverviewPage() {
               <div className="grid grid-cols-[1fr_auto_auto] gap-3 border-b border-hairline pb-1.5 text-[11px] text-muted-foreground">
                 <span>{t("risk:drivers.title")}</span>
                 <span className="text-right">{t("risk:drivers.contribution")}</span>
-                <span className="w-16 text-right">Δ 1D</span>
+                <span className="w-16 text-right">{t("kpi.colDelta")}</span>
               </div>
               {topDrivers.map((driver) => {
                 const contribTone = riskTrendTone(driver.contribution);
@@ -333,16 +349,21 @@ export default function OverviewPage() {
         <AIBrief analysis={analysisQ.data} loading={analysisQ.isLoading} error={analysisQ.isError} />
       </section>
 
-      {/* Mono status footer */}
+      {/* Mono status footer + compliance disclaimer */}
       {riskQ.data ? (
-        <footer className="flex flex-wrap gap-4 border-t border-hairline pt-2 font-mono text-[11px] text-muted-foreground">
-          <span>
-            {t("statusBar.generated")}: {formatDateTime(riskQ.data.generated_at, locale)}
-          </span>
-          <span>
-            {t("common:data.quality")}: <span className="tabular-nums">{formatRatio(riskQ.data.data_quality, locale)}</span>
-          </span>
-          <span className="ml-auto">{risk?.model_version}</span>
+        <footer className="flex flex-col gap-1 border-t border-hairline pt-2">
+          <div className="flex flex-wrap gap-4 font-mono text-[11px] text-muted-foreground">
+            <span>
+              {t("statusBar.generated")}: {formatDateTime(riskQ.data.generated_at, locale)}
+            </span>
+            <span>
+              {t("common:data.quality")}: <span className="tabular-nums">{formatRatio(riskQ.data.data_quality, locale)}</span>
+            </span>
+            <span className="ml-auto">{risk?.model_version}</span>
+          </div>
+          {risk?.disclaimer ? (
+            <p className="text-[11px] leading-relaxed text-muted-foreground">{risk.disclaimer}</p>
+          ) : null}
         </footer>
       ) : null}
     </div>

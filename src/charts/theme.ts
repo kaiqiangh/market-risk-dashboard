@@ -7,20 +7,13 @@
  * risk semantics (thresholds), dir-* for up/down, hairlines for grid.
  */
 
-function cssVar(name: string, fallback: string): string {
+function cssVar(name: string, fallback: string, alpha?: number): string {
   if (typeof window === "undefined" || typeof getComputedStyle !== "function") return fallback;
   const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   if (!raw) return fallback;
   const parts = raw.split(/[\s,]+/).filter(Boolean);
-  return parts.length === 3 ? `rgb(${parts.join(", ")})` : raw;
-}
-
-function cssVarAlpha(name: string, alpha: number, fallback: string): string {
-  if (typeof window === "undefined" || typeof getComputedStyle !== "function") return fallback;
-  const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  if (!raw) return fallback;
-  const parts = raw.split(/[\s,]+/).filter(Boolean);
-  return parts.length === 3 ? `rgba(${parts.join(", ")}, ${alpha})` : raw;
+  if (parts.length !== 3) return raw;
+  return alpha === undefined ? `rgb(${parts.join(", ")})` : `rgba(${parts.join(", ")}, ${alpha})`;
 }
 
 export interface ChartTheme {
@@ -47,9 +40,9 @@ export interface ChartTheme {
 export function chartTheme(): ChartTheme {
   return {
     axis: cssVar("--muted-foreground", "rgb(139, 151, 169)"),
-    grid: cssVarAlpha("--hairline", 0.6, "rgba(38, 48, 67, 0.6)"),
+    grid: cssVar("--hairline", "rgba(38, 48, 67, 0.6)", 0.6),
     accent: cssVar("--primary", "rgb(107, 163, 201)"),
-    accentSoft: cssVarAlpha("--primary", 0.1, "rgba(107, 163, 201, 0.1)"),
+    accentSoft: cssVar("--primary", "rgba(107, 163, 201, 0.1)", 0.1),
     dirUp: cssVar("--dir-up", "rgb(107, 158, 133)"),
     dirDown: cssVar("--dir-down", "rgb(178, 115, 115)"),
     neutral: cssVar("--surface-2", "rgb(27, 35, 51)"),
