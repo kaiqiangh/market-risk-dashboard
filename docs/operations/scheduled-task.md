@@ -17,6 +17,8 @@ Scheduled on US equity trading days (ET), 2-3 times per day; on non-trading days
 
 **ET ↔ local time mapping:** convert to your local timezone in `.env` or the task schedule (example: ET 07:30 = UTC 11:30 (DST) / 12:30 (standard time), Beijing 19:30/20:30 same day).
 
+**WorkBuddy automation mapping (currently the actual scheduler):** the three MRD automations implement this cadence in UTC — data refresh `--full` at 11:30 + 20:30 UTC (pre/post-market), overnight `--news-only` at 03:30 UTC, and the AI briefs at 12:30 + 21:30 UTC right after each refresh. If you switch to a local scheduler (cron/launchd), keep the same ET windows.
+
 > Note: expected market/news update frequency is 2-3 times/day (architecture §8.5); FRED macro data follows a T+1 release cadence; `freshness` determination is described in `pipeline/validation/freshness.py`.
 
 ## 2. CLI command set (frozen)

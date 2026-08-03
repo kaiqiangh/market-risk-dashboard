@@ -14,6 +14,8 @@
 
 2 runs per day. When quota is exhausted or a run fails, skip this step and mark `degraded` (see §5 drill).
 
+> WorkBuddy automations run at 12:30 UTC (pre-market) and 21:30 UTC (post-market), 1h after the 11:30 / 20:30 UTC data refreshes, so each brief reads the freshest facts.json.
+
 ## 2. Input / output contract
 
 **Input (pipeline output, deterministic):**
@@ -52,14 +54,16 @@ python -m pipeline.analysis.freshness --dataset facts
 
 1. `git pull --rebase origin dev` (pull latest facts.json).
 2. Check `facts.json` freshness (`pipeline.analysis.freshness`): stale is still acceptable, but the output carries a `data_freshness` annotation.
-3. `build_prompt.py` produces prompts (once for zh-CN, once for en, including evidence-index snippets).
+3. `build_prompt.py` produces prompts (once for zh-CN, once for en, including evidence-index snippets): `python -m pipeline.analysis.build_prompt --lang zh-CN` / `--lang en`.
 4. Call deepseek v4 flash to generate three outputs (Chinese brief / English brief / news Chinese translation).
-5. `pipeline.analysis.validate` validates:
+5. Write the three output files (`analysis.zh-CN.json` / `analysis.en.json` / `news.zh-translations.json`).
+6. Validate with the CLI (`--zh/--en/--facts`, no `--locale`):
    - Schema is valid (no implicit fields / NaN / invalid enums / invalid time)
    - Every `evidence_refs` is findable in `evidence_index`
    - **Bilingual consistency**: `market_state` / `market_regime` / `confidence` / the `evidence_refs` set / all numbers in the text must be exactly identical; only the expression language may differ
    - On failure, retry ≤2 times (regenerate or patch locally).
-6. Write the three output files → `git commit + push (dev)` → trigger Pages build.
+7. Publish linkage: after validation passes, run `python -m pipeline.run --analysis-only` — it flips `metadata/freshness.json` `analysis` to `fresh`, merges `news.zh-translations.json` into `news.json`, and records the merge in `metadata/translations.json`.
+8. `git commit + push (dev)` (`AI:`-prefixed message) → trigger Pages build.
 
 **Bilingual consistency rule (architecture §3.4):** inconsistency → refuse to publish; rather skip this run than publish a wrong conclusion.
 
