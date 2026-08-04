@@ -196,12 +196,18 @@ FAILED_FRESHNESS_STATUSES: frozenset[str] = frozenset({"missing"})
 DEGRADED_FRESHNESS_STATUSES: frozenset[str] = frozenset({"degraded", "stale"})
 
 
-def dataset_health(writer: StorageWriter, command: str) -> dict[str, list[str]]:
+def dataset_health(writer: StorageWriter, command: str, *, run_started_at: str) -> dict[str, list[str]]:
     """Classify this run's datasets into failed / degraded / skipped.
 
     Reads the freshness metadata the run just wrote, which is already the system's
     record of per-dataset outcome, rather than threading a parallel tally through
     `_run_collection`. Datasets the command never attempted are reported as skipped.
+
+    `run_started_at` is the wall-clock UTC instant (ISO 8601 + Z, same format as
+    `now_utc`) at which this run began. It distinguishes "written during THIS run"
+    from "written by a previous run": an entry whose freshness record predates the
+    run start is a stale record, not evidence the dataset survived — a dataset that
+    died before its freshness write must be loud, not masked by yesterday's `fresh`.
     """
     attempted = COMMAND_DATASETS.get(command, FULL_RUN_DATASETS)
     metadata = writer.read_freshness()
@@ -212,6 +218,15 @@ def dataset_health(writer: StorageWriter, command: str) -> dict[str, list[str]]:
         entry = metadata.get(name)
         if not isinstance(entry, dict):
             # Attempted but no record written: the write did not complete.
+            failed.append(name)
+            continue
+        # QA finding 1: an entry not written during this run is a previous run's record,
+        # and must not mask a dataset that died before its freshness write. All freshness
+        # timestamps come from `now_utc()` (ISO 8601 UTC, second precision, + Z suffix),
+        # so lexicographic order is chronological order. An entry with no usable
+        # timestamp cannot be proven current and is treated as stale as well.
+        updated_at = str(entry.get("updated_at", ""))
+        if updated_at < run_started_at:
             failed.append(name)
             continue
         status = str(entry.get("status", ""))
@@ -530,6 +545,29 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
 # main
 # ============================================================
 
+def _finish_run(command: str, results: dict[str, Any], elapsed: float, health: dict[str, list[str]]) -> int:
+    """Write the run report for a successful command and print the summary.
+
+    Shared by `--full` and the single-domain commands: the report is what makes a
+    degraded or partial run distinguishable from a clean one (#63 AC). A partial command
+    that skipped datasets is never clean — that is the point of the skipped list.
+    """
+    write_run_report(
+        settings.artifacts_dir,
+        command=command,
+        ok=True,
+        durations=results.get("durations", {}),
+        provider_status=results.get("provider_status", {}),
+        degraded=results.get("degraded", []),
+        dataset_counts={"latest": len(list((settings.data_dir / "latest").glob("*.json")))},
+        failed_datasets=health["failed"],
+        skipped_datasets=health["skipped"],
+        degraded_datasets=health["degraded"],
+    )
+    _print_summary(command, results, elapsed)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     command = _resolve_command(args)
@@ -556,6 +594,7 @@ def main(argv: list[str] | None = None) -> int:
         return _run_backfill()
 
     started = time.monotonic()
+    run_started_at = now_utc()
     results = _run_collection(command)
 
     # Single-domain commands write only the corresponding dataset (unified freshness, P1-7)
@@ -565,23 +604,23 @@ def main(argv: list[str] | None = None) -> int:
         _finalize_and_write(writer, "crypto", results["crypto"], bool(results["degraded"]))
         _finalize_and_write(writer, "sectors", results["sectors"], bool(results["degraded"]))
         writer.write_sources_metadata(results["provider_status"])
-        _print_summary(command, results, time.monotonic() - started)
-        return 0
+        health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
+        return _finish_run(command, results, time.monotonic() - started, health)
 
     if command == "macro-only":
         writer = StorageWriter(settings.data_dir)
         _finalize_and_write(writer, "macro", results["macro"], bool(results["macro_meta"].get("degraded")))
         _write_analysis_freshness(writer)
         writer.write_sources_metadata(results["provider_status"])
-        _print_summary(command, results, time.monotonic() - started)
-        return 0
+        health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
+        return _finish_run(command, results, time.monotonic() - started, health)
 
     if command == "news-only":
         writer = StorageWriter(settings.data_dir)
         _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)))
         writer.write_sources_metadata(results["provider_status"])
-        _print_summary(command, results, time.monotonic() - started)
-        return 0
+        health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
+        return _finish_run(command, results, time.monotonic() - started, health)
 
     # full / fact-layer
     if command == "fact-layer":
@@ -591,23 +630,10 @@ def main(argv: list[str] | None = None) -> int:
         ok, error = _run_risk_and_write(results, writer, command)
         results["durations"]["total"] = time.monotonic() - started
 
-    health = dataset_health(StorageWriter(settings.data_dir), command)
+    health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
 
     if ok:
-        write_run_report(
-            settings.artifacts_dir,
-            command=command,
-            ok=True,
-            durations=results.get("durations", {}),
-            provider_status=results.get("provider_status", {}),
-            degraded=results.get("degraded", []),
-            dataset_counts={"latest": len(list((settings.data_dir / "latest").glob("*.json")))},
-            failed_datasets=health["failed"],
-            skipped_datasets=health["skipped"],
-            degraded_datasets=health["degraded"],
-        )
-        _print_summary(command, results, results.get("durations", {}).get("total", 0.0))
-        return 0
+        return _finish_run(command, results, results.get("durations", {}).get("total", 0.0), health)
 
     print(f"[pipeline] failed: {error}", file=sys.stderr)
     write_run_report(

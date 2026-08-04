@@ -224,6 +224,36 @@ def test_write_json_temp_file_shares_target_directory(tmp_path: Path, monkeypatc
     assert seen[0].parent == target.parent, f"temp file {seen[0]} is not in the target directory"
 
 
+def test_write_json_fsyncs_before_replace(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """fsync is part of the atomic-write guarantee (#63): the payload must be durable
+    before `os.replace` makes it visible, or a crash can surface a zero-length file.
+
+    The ticket lists "temp-file + fsync + os.replace"; the first and third are pinned
+    above, this pins the middle one.
+    """
+    import pipeline.storage.writer as writer_mod
+
+    writer = StorageWriter(tmp_path / "data")
+    target = tmp_path / "data" / "latest" / "macro.json"
+    events: list[str] = []
+    real_replace = os.replace
+
+    def _record_fsync(fd: int) -> None:
+        events.append(f"fsync:{fd}")
+
+    def _record_replace(src: str | Path, dst: str | Path) -> None:
+        events.append(f"replace:{Path(src).name}")
+        real_replace(src, dst)
+
+    monkeypatch.setattr(writer_mod.os, "fsync", _record_fsync)
+    monkeypatch.setattr(writer_mod.os, "replace", _record_replace)
+    writer.write_json(target, {"ok": True})
+
+    assert len(events) == 2, f"write_json must fsync then replace, saw: {events}"
+    assert events[0].startswith("fsync:"), f"fsync must precede replace, saw: {events}"
+    assert events[1].startswith("replace:"), f"replace must follow fsync, saw: {events}"
+
+
 def test_write_json_still_writes_readable_output(tmp_path: Path) -> None:
     """Atomicity must not change what lands on disk."""
     writer = StorageWriter(tmp_path / "data")
@@ -316,8 +346,12 @@ def test_empty_file_is_treated_as_corrupt(tmp_path: Path) -> None:
     daily.parent.mkdir(parents=True, exist_ok=True)
     daily.write_text("", encoding="utf-8")
 
-    with pytest.raises(CorruptDataError):
+    with pytest.raises(CorruptDataError) as excinfo:
         writer.read_history("risk", "daily")
+
+    # The distinct reason names the failure mode — an interrupted write — rather than
+    # letting the empty file read as a JSONDecodeError on "".
+    assert "is empty (the signature of an interrupted write)" in str(excinfo.value)
 
 
 # ---- Defect 3: undated history rows are rejected ----
@@ -506,7 +540,13 @@ def test_free_text_degraded_note_makes_the_run_unclean(tmp_path: Path) -> None:
 
 # ---- Defect 4: the lists the run report is fed are derived, not hand-maintained ----
 
-def _write_freshness(data_dir: Path, statuses: dict[str, str]) -> None:
+#: The instant the seeded freshness entries were "written" and, for the existing tests,
+#: the run-start passed to `dataset_health` — so the entries count as written during the
+#: run. Newer tests vary this to pin the stale-entry rule (#63 amendment, QA finding 1).
+_RUN_START = "2026-08-04T00:00:00Z"
+
+
+def _write_freshness(data_dir: Path, statuses: dict[str, str], *, updated_at: str = _RUN_START) -> None:
     """Seed metadata/freshness.json the way a run would leave it."""
     path = data_dir / "metadata" / "freshness.json"
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -515,7 +555,7 @@ def _write_freshness(data_dir: Path, statuses: dict[str, str]) -> None:
             {
                 "schema_version": "1.0.0",
                 "datasets": {
-                    name: {"status": status, "reason": "", "updated_at": "2026-08-04T00:00:00Z"}
+                    name: {"status": status, "reason": "", "updated_at": updated_at}
                     for name, status in statuses.items()
                 },
             }
@@ -534,7 +574,7 @@ def test_dataset_health_names_missing_and_degraded_datasets(tmp_path: Path) -> N
     statuses["crypto"] = "degraded"
     _write_freshness(data_dir, statuses)
 
-    health = dataset_health(StorageWriter(data_dir), "full")
+    health = dataset_health(StorageWriter(data_dir), "full", run_started_at=_RUN_START)
 
     assert health["failed"] == ["sectors"]
     assert health["degraded"] == ["crypto"]
@@ -548,7 +588,7 @@ def test_dataset_health_reports_a_clean_full_run_as_clean(tmp_path: Path) -> Non
     data_dir = tmp_path / "data"
     _write_freshness(data_dir, {name: "fresh" for name in FULL_RUN_DATASETS})
 
-    assert dataset_health(StorageWriter(data_dir), "full") == {
+    assert dataset_health(StorageWriter(data_dir), "full", run_started_at=_RUN_START) == {
         "failed": [],
         "degraded": [],
         "skipped": [],
@@ -569,7 +609,7 @@ def test_dataset_health_counts_stale_as_degraded_but_not_delayed(tmp_path: Path)
     statuses["calendar"] = "delayed"
     _write_freshness(data_dir, statuses)
 
-    health = dataset_health(StorageWriter(data_dir), "full")
+    health = dataset_health(StorageWriter(data_dir), "full", run_started_at=_RUN_START)
 
     assert health["degraded"] == ["macro"]
     assert "calendar" not in health["degraded"]
@@ -583,7 +623,7 @@ def test_dataset_health_reports_datasets_a_partial_command_skipped(tmp_path: Pat
     data_dir = tmp_path / "data"
     _write_freshness(data_dir, {"equities": "fresh", "sectors": "fresh", "crypto": "fresh"})
 
-    health = dataset_health(StorageWriter(data_dir), "market-only")
+    health = dataset_health(StorageWriter(data_dir), "market-only", run_started_at=_RUN_START)
 
     assert health["failed"] == []
     assert health["degraded"] == []
@@ -597,18 +637,121 @@ def test_dataset_health_treats_an_unrecorded_attempt_as_failed(tmp_path: Path) -
     data_dir = tmp_path / "data"
     _write_freshness(data_dir, {"equities": "fresh", "crypto": "fresh"})
 
-    health = dataset_health(StorageWriter(data_dir), "market-only")
+    health = dataset_health(StorageWriter(data_dir), "market-only", run_started_at=_RUN_START)
 
     assert health["failed"] == ["sectors"]
+
+
+def test_dataset_health_treats_a_stale_fresh_entry_from_a_previous_run_as_failed(tmp_path: Path) -> None:
+    """A `fresh` entry written by a previous run must not mask a dataset that died early.
+
+    QA finding 1: `dataset_health` used to classify a dataset as failed only when its
+    entry was absent or `missing`. A STALE `fresh` entry from yesterday therefore made a
+    dataset that crashed before this run's freshness write invisible — `{failed: [],
+    degraded: [], skipped: []}` and `clean: true`. The run knows when it started; an
+    entry whose `updated_at` predates the run start is a previous run's record, and the
+    dataset counts as failed regardless of the status it carries.
+    """
+    from pipeline.run import FULL_RUN_DATASETS, dataset_health
+
+    data_dir = tmp_path / "data"
+    _write_freshness(data_dir, {name: "fresh" for name in FULL_RUN_DATASETS}, updated_at="2026-08-03T00:00:00Z")
+
+    health = dataset_health(StorageWriter(data_dir), "full", run_started_at="2026-08-05T00:00:00Z")
+
+    assert health["failed"] == list(FULL_RUN_DATASETS), (
+        "yesterday's fresh entries must not hide datasets that never wrote this run"
+    )
+    assert health["degraded"] == []
+
+
+def test_dataset_health_accepts_entries_written_during_this_run(tmp_path: Path) -> None:
+    """Freshness records updated after the run started are evidence the dataset survived."""
+    from pipeline.run import FULL_RUN_DATASETS, dataset_health
+
+    data_dir = tmp_path / "data"
+    _write_freshness(data_dir, {name: "fresh" for name in FULL_RUN_DATASETS}, updated_at="2026-08-05T00:00:00Z")
+
+    assert dataset_health(StorageWriter(data_dir), "full", run_started_at="2026-08-05T00:00:00Z") == {
+        "failed": [],
+        "degraded": [],
+        "skipped": [],
+    }
 
 
 def test_dataset_health_before_the_first_run_fails_everything(tmp_path: Path) -> None:
     """No freshness metadata at all is not a clean run."""
     from pipeline.run import FULL_RUN_DATASETS, dataset_health
 
-    health = dataset_health(StorageWriter(tmp_path / "data"), "full")
+    health = dataset_health(StorageWriter(tmp_path / "data"), "full", run_started_at=_RUN_START)
 
     assert health["failed"] == list(FULL_RUN_DATASETS)
+
+
+def test_partial_command_writes_a_run_report(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """`--market-only` must write a run report naming skipped and degraded datasets.
+
+    QA finding 2: the single-domain branches of main() returned 0 without calling
+    `dataset_health` or `write_run_report`, so a degraded `--market-only` run produced
+    zero run reports — the skipped-dataset machinery was dead code in the real flow.
+    """
+    import pipeline.run as run_mod
+    from pipeline.schemas import (
+        CryptoDataset,
+        CryptoEnvelope,
+        EquitiesDataset,
+        EquitiesEnvelope,
+        SectorsDataset,
+        SectorsEnvelope,
+    )
+
+    data_dir = tmp_path / "data"
+    artifacts_dir = tmp_path / "artifacts"
+    monkeypatch.setattr(
+        run_mod,
+        "settings",
+        Settings(_env_file=None, data_dir=data_dir, artifacts_dir=artifacts_dir),
+    )
+
+    def _fake_collection(command: str) -> dict:
+        return {
+            "durations": {"market": 1.0, "collection": 1.0},
+            "degraded": ["crypto: coingecko rate limited"],
+            "provider_status": {"quotes": [{"provider": "yfinance", "ok": True}]},
+            "histories": {},
+            "qualities": [0.8, 0.8, 0.8],
+            "macro_meta": {},
+            "equities": EquitiesEnvelope(
+                generated_at="2026-08-05T00:00:00Z", schema_version="1.0.0", source="yfinance",
+                source_updated_at="2026-08-05T00:00:00Z", freshness_status="fresh",
+                data_quality=0.9, payload=EquitiesDataset(),
+            ),
+            "crypto": CryptoEnvelope(
+                generated_at="2026-08-05T00:00:00Z", schema_version="1.0.0", source="coingecko",
+                source_updated_at="2026-08-05T00:00:00Z", freshness_status="fresh",
+                data_quality=0.9, payload=CryptoDataset(),
+            ),
+            "sectors": SectorsEnvelope(
+                generated_at="2026-08-05T00:00:00Z", schema_version="1.0.0", source="yfinance",
+                source_updated_at="2026-08-05T00:00:00Z", freshness_status="fresh",
+                data_quality=0.9, payload=SectorsDataset(),
+            ),
+        }
+
+    monkeypatch.setattr(run_mod, "_run_collection", _fake_collection)
+
+    assert run_mod.main(["--market-only"]) == 0
+
+    reports = sorted((artifacts_dir / "logs").glob("run-report-*.json"))
+    assert len(reports) == 1, f"a partial run must write exactly one run report, found {len(reports)}"
+    report = json.loads(reports[0].read_text(encoding="utf-8"))
+
+    assert report["command"] == "market-only"
+    assert report["clean"] is False, "a degraded partial run is not clean"
+    assert report["failed_datasets"] == []
+    assert "macro" in report["skipped_datasets"] and "news" in report["skipped_datasets"]
+    assert report["degraded"] == ["crypto: coingecko rate limited"]
+    assert set(report["degraded_datasets"]) == {"equities", "crypto", "sectors"}
 
 
 def test_dataset_health_surfaces_corrupt_freshness_metadata(tmp_path: Path) -> None:
@@ -621,4 +764,4 @@ def test_dataset_health_surfaces_corrupt_freshness_metadata(tmp_path: Path) -> N
     (data_dir / "metadata" / "freshness.json").write_text("{oops", encoding="utf-8")
 
     with pytest.raises(CorruptDataError):
-        dataset_health(writer, "full")
+        dataset_health(writer, "full", run_started_at=_RUN_START)
