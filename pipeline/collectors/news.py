@@ -13,8 +13,9 @@ import re
 from datetime import datetime, timezone
 from typing import Any
 
+from pipeline.degrade import degraded_quality
 from pipeline.providers.base import ProviderError, ProviderRegistry
-from pipeline.schemas import NewsDataset, NewsEnvelope, NewsItem, NewsTranslationsDataset
+from pipeline.schemas import NewsDataset, NewsItem, NewsTranslationsDataset
 from pipeline.settings import Settings
 from pipeline.utils import now_utc
 
@@ -89,11 +90,27 @@ class NewsCollector:
             return ["earnings"]
         return ["other"]
 
-    def collect(self) -> tuple[NewsEnvelope, dict[str, Any]]:
+    # ---- Summary ----
+
+    def _quality(self) -> float:
+        """Data quality degrades by the configured factor per degraded domain (#65).
+
+        News degrades as a unit: the registry's `degraded_domains` is the reader — a news
+        fallback or cache replay lowers published quality.
+        """
+        return degraded_quality(len(self.registry.degraded_domains), settings=self.settings)
+
+    def collect(self) -> tuple[NewsDataset, dict[str, Any]]:
+        outcome: dict[str, Any] = {"provider": "rss_news", "used_fallback": False, "from_cache": False}
         try:
             out = self.registry.call("news", "fetch_news", "rss_all")
             raw_items: list[dict[str, Any]] = out["result"]
-            provider = out["meta"].get("provider", "rss_news")
+            outcome = {
+                "provider": str(out["meta"].get("provider", "rss_news")),
+                "used_fallback": bool(out["meta"].get("used_fallback", False)),
+                "from_cache": bool(out["meta"].get("from_cache", False)),
+            }
+            provider = outcome["provider"]
         except ProviderError as exc:
             self.degraded.append(str(exc))
             raw_items = []
@@ -144,20 +161,22 @@ class NewsCollector:
         items.sort(key=lambda n: n.importance, reverse=True)
         items = items[:50]
 
-        quality = 0.8 if self.degraded else 1.0  # degrade ×0.8 per failed source
-        envelope = NewsEnvelope(
-            generated_at=now_utc(), schema_version="1.0.0",
-            source=[provider], source_updated_at=now_utc(),
-            freshness_status="degraded" if self.degraded else "fresh",
-            data_quality=round(quality, 3),
-            payload=NewsDataset(items=items, total=len(items), updated_at=now_utc()),
-        )
-        return envelope, {"degraded": self.degraded, "provider": provider, "source_status": source_status}
+        quality = self._quality()
+        # #64: return payload + provider outcome; the caller assembles the envelope and
+        # finalizes freshness through the single assembly path.
+        payload = NewsDataset(items=items, total=len(items), updated_at=now_utc())
+        return payload, {
+            "degraded": self.degraded,
+            "provider": provider,
+            "source_status": source_status,
+            "provider_outcome": outcome,
+            "data_quality": round(quality, 3),
+        }
 
     # ---- Chinese translation merge (architecture §1.5 step 4; ADR-0003) ----
 
-    def merge_translations(self, news: NewsEnvelope, translations: NewsTranslationsDataset | None) -> NewsEnvelope:
-        """Merge AI-produced symmetric full-pair translations into news.json.
+    def merge_translations(self, news: NewsDataset, translations: NewsTranslationsDataset | None) -> NewsDataset:
+        """Merge AI-produced symmetric full-pair translations into the news payload.
 
         Canonical bilingual model (ADR-0003): `summary`/`title` stay English, `summary_zh`/`title_zh`
         carry Chinese. A translation record carries both sides; this copies whatever it provides and
@@ -167,7 +186,7 @@ class NewsCollector:
             return news
         by_id = {t.id: t for t in translations.items}
         updated_items = []
-        for item in news.payload.items:
+        for item in news.items:
             trans = by_id.get(item.id)
             if trans is None:
                 updated_items.append(item)
@@ -185,7 +204,7 @@ class NewsCollector:
                     if value:
                         update[field] = value
             updated_items.append(item.model_copy(update=update) if update else item)
-        return news.model_copy(update={"payload": news.payload.model_copy(update={"items": updated_items})})
+        return news.model_copy(update={"items": updated_items})
 
 
 def _clean(text: str) -> str:

@@ -8,19 +8,17 @@ from __future__ import annotations
 
 from typing import Any
 
+from pipeline.degrade import degraded_quality
 from pipeline.indicators.technical import technical_snapshot
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import (
     CryptoAsset,
     CryptoDataset,
-    CryptoEnvelope,
     EquitiesDataset,
-    EquitiesEnvelope,
     EquityAsset,
     MemoryProxy,
     SectorItem,
     SectorsDataset,
-    SectorsEnvelope,
 )
 from pipeline.settings import Settings
 from pipeline.universe import AssetUniverse
@@ -40,6 +38,23 @@ class MarketCollector:
         self.histories: dict[str, list[dict[str, Any]]] = {}
         self._domain_failures: dict[str, int] = {}
         self._domain_down: set[str] = set()
+        #: Domain → provider outcome of the most recent successful call (#65).
+        self._provider_outcomes: dict[str, dict[str, Any]] = {}
+
+    def _record_outcome(self, domain: str, meta: dict[str, Any]) -> None:
+        """Remember which provider answered a successful `registry.call` for `domain` (#65)."""
+        self._provider_outcomes[domain] = meta
+
+    def _provider_for(self, domain: str) -> dict[str, Any]:
+        """The provenance for `domain`: the answering provider, or last-good, or unavailable."""
+        outcome = self._provider_outcomes.get(domain) or self.registry.resolved_provider(domain)
+        if outcome is not None:
+            return {
+                "provider": str(outcome.get("provider", "unavailable")),
+                "used_fallback": bool(outcome.get("used_fallback", False)),
+                "from_cache": bool(outcome.get("from_cache", False)),
+            }
+        return {"provider": "unavailable", "used_fallback": False, "from_cache": False}
 
     # ---- Quotes (US + A-shares) ----
 
@@ -52,6 +67,8 @@ class MarketCollector:
         try:
             quote_out = self.registry.call(domain, "get_quote", f"quote_{asset.symbol}", args=(asset.symbol,))
             hist_out = self.registry.call(domain, "get_history", f"hist_{asset.symbol}_1y", args=(asset.symbol, "1y"))
+            self._record_outcome(domain, quote_out["meta"])
+            self._record_outcome(domain, hist_out["meta"])
         except ProviderError as exc:
             self.degraded.append(f"{asset.symbol}: {exc}")
             self.provider_status.setdefault(domain, {})["error"] = str(exc)
@@ -82,7 +99,8 @@ class MarketCollector:
             ma50_distance_pct=tech["ma50_distance_pct"],
             ma200_distance_pct=tech["ma200_distance_pct"],
             rsi14=tech["rsi14"],
-            percentile_5y=tech["percentile_5y"],
+            percentile_1y=tech["percentile_1y"],
+            percentile_1y_obs=tech["percentile_1y_obs"],
             source=quote.source,
             updated_at=quote.updated_at or now_utc(),
             is_proxy=quote.is_proxy,
@@ -102,6 +120,7 @@ class MarketCollector:
         for symbol, period in INDEX_HISTORIES.items():
             try:
                 out = self.registry.call("quotes", "get_history", f"hist_{symbol}_{period}", args=(symbol, period))
+                self._record_outcome("quotes", out["meta"])
                 self.histories[symbol] = out["result"].rows
             except ProviderError as exc:
                 self.degraded.append(f"{symbol}: {exc}")
@@ -113,6 +132,7 @@ class MarketCollector:
             out = self.registry.call("crypto", "get_crypto_market", "crypto_market")
             data = out["result"]
             self.provider_status["crypto"] = out["meta"]
+            self._record_outcome("crypto", out["meta"])
         except ProviderError as exc:
             self.degraded.append(f"crypto: {exc}")
             self.provider_status["crypto"] = {"degraded": True, "error": str(exc)}
@@ -146,12 +166,12 @@ class MarketCollector:
         auto = [a for a in us if a.sector == "auto"]
 
         sectors = [
-            SectorItem(key="semis", label="Semiconductors", label_zh="半导体", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_5y=None, updated_at=now_utc()),
-            SectorItem(key="auto", label="Autos", label_zh="汽车", change_1d=_avg_change(auto, "change_1d"), change_1w=_avg_change(auto, "change_1w"), change_1m=_avg_change(auto, "change_1m"), percentile_5y=None, updated_at=now_utc()),
+            SectorItem(key="semis", label="Semiconductors", label_zh="半导体", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_1y=None, percentile_1y_obs=0, updated_at=now_utc()),
+            SectorItem(key="auto", label="Autos", label_zh="汽车", change_1d=_avg_change(auto, "change_1d"), change_1w=_avg_change(auto, "change_1w"), change_1m=_avg_change(auto, "change_1m"), percentile_1y=None, percentile_1y_obs=0, updated_at=now_utc()),
         ]
         themes = [
-            SectorItem(key="memory", label="Memory", label_zh="存储", change_1d=_avg_change(memory_assets, "change_1d"), change_1w=_avg_change(memory_assets, "change_1w"), change_1m=_avg_change(memory_assets, "change_1m"), percentile_5y=None, updated_at=now_utc()),
-            SectorItem(key="ai", label="AI / GPU", label_zh="AI/GPU", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_5y=None, updated_at=now_utc()),
+            SectorItem(key="memory", label="Memory", label_zh="存储", change_1d=_avg_change(memory_assets, "change_1d"), change_1w=_avg_change(memory_assets, "change_1w"), change_1m=_avg_change(memory_assets, "change_1m"), percentile_1y=None, percentile_1y_obs=0, updated_at=now_utc()),
+            SectorItem(key="ai", label="AI / GPU", label_zh="AI/GPU", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_1y=None, percentile_1y_obs=0, updated_at=now_utc()),
         ]
 
         mu = next((a for a in us if a.symbol == "MU"), None)
@@ -168,15 +188,12 @@ class MarketCollector:
     # ---- Summary ----
 
     def _quality(self) -> float:
-        """Data quality degrades ×0.8 per failed domain (provider), not per failed asset count."""
-        failed = set(self._domain_down)
-        for domain, count in self._domain_failures.items():
-            if count > 0:
-                failed.add(domain)
-        crypto_status = self.provider_status.get("crypto")
-        if isinstance(crypto_status, dict) and crypto_status.get("degraded"):
-            failed.add("crypto")
-        return round(max(0.1, 0.8 ** len(failed)), 3)
+        """Data quality degrades by the configured factor per degraded domain (#65).
+
+        `ProviderRegistry.degraded_domains` is the reader: every domain that fell back or
+        replayed from cache lowers published quality, compounding with the factor.
+        """
+        return degraded_quality(len(self.registry.degraded_domains), settings=self.settings)
 
     def collect(self) -> dict[str, Any]:
         equities = self._collect_equities()
@@ -185,29 +202,19 @@ class MarketCollector:
         sectors = self._collect_sectors(equities)
         quality = self._quality()
 
-        equity_env = EquitiesEnvelope(
-            generated_at=now_utc(), schema_version="1.0.0",
-            source=["yfinance", "akshare"], source_updated_at=now_utc(),
-            freshness_status="degraded" if self.degraded else "fresh",
-            data_quality=round(quality, 3), payload=equities,
-        )
-        crypto_env = CryptoEnvelope(
-            generated_at=now_utc(), schema_version="1.0.0",
-            source=["coingecko"], source_updated_at=now_utc(),
-            freshness_status="degraded" if self.degraded else "fresh",
-            data_quality=round(quality, 3), payload=crypto,
-        )
-        sectors_env = SectorsEnvelope(
-            generated_at=now_utc(), schema_version="1.0.0",
-            source=["yfinance"], source_updated_at=now_utc(),
-            freshness_status="degraded" if self.degraded else "fresh",
-            data_quality=round(quality, 3), payload=sectors,
-        )
+        # #64/#65: collectors return payloads + provider outcome; the caller (run.py) assembles
+        # the envelope through the single assembly path and finalizes freshness + provenance.
         return {
-            "equities": equity_env,
-            "crypto": crypto_env,
-            "sectors": sectors_env,
+            "equities": equities,
+            "crypto": crypto,
+            "sectors": sectors,
             "histories": self.histories,
             "degraded": self.degraded,
             "provider_status": self.provider_status,
+            "data_quality": round(quality, 3),
+            "providers": {
+                "equities": self._provider_for("quotes") or self._provider_for("a_share"),
+                "crypto": self._provider_for("crypto"),
+                "sectors": self._provider_for("quotes"),
+            },
         }

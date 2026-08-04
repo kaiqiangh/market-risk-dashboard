@@ -16,10 +16,12 @@ from __future__ import annotations
 
 from typing import Any
 
+from pipeline.degrade import degrade_factor
 from pipeline.risk import confidence as conf_mod
 from pipeline.risk import regime as regime_mod
 from pipeline.risk.scoring import compute_indicator_score
 from pipeline.schemas import (
+    BreadthSnapshot,
     DriverContribution,
     RiskDimension,
     RiskIndicator,
@@ -46,7 +48,7 @@ INDICATOR_HISTORY_SERIES: dict[str, str | tuple[str, str]] = {
     "yield_curve_10y2y": ("dgs10", "dgs2"),
     "hy_oas": "bamlh0a0hym2",
     "ig_oas": "bamlc0a0cm",
-    "dxy": "dtwexbgs",
+    "dollar_index": "dtwexbgs",
     "dgs10": "dgs10",
     "fed_balance_sheet": "walcl",
     "reverse_repo": "rrpontsyd",
@@ -138,25 +140,18 @@ class RiskModel:
     def _macro_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
         macro = ctx.get("macro")
         rates = {m.key: m for m in getattr(macro, "rates", [])}
-        credit = {m.key: m for m in getattr(macro, "credit", [])}
         dgs10 = rates.get("dgs10")
         dfii10 = rates.get("dfii10")
         dgs2 = rates.get("dgs2")
         curve = (dgs10.value - dgs2.value) if (dgs10 and dgs2 and dgs10.value is not None and dgs2.value is not None) else None
-        hy = credit.get("bamlh0a0hym2")
-        ig = credit.get("bamlc0a0cm")
-        dxy = next((m for m in getattr(macro, "fx", []) if m.key == "dtwexbgs"), None)
+        dollar = next((m for m in getattr(macro, "fx", []) if m.key == "dtwexbgs"), None)
         return [
             _ind("real_rate_dfii10", "10Y Real Rate", dfii10.value if dfii10 else None, "higher_is_riskier", "FRED", 5.0,
                  history=self._indicator_history(ctx, "real_rate_dfii10")),
-            _ind("yield_curve_10y2y", "10Y-2Y Curve", curve, "higher_is_riskier", "FRED", 5.0,
+            _ind("yield_curve_10y2y", "10Y-2Y Curve", curve, "lower_is_riskier", "FRED", 5.0,
                  history=self._indicator_history(ctx, "yield_curve_10y2y")),
-            _ind("hy_oas", "HY OAS", hy.value if hy else None, "higher_is_riskier", "FRED", 5.0,
-                 history=self._indicator_history(ctx, "hy_oas")),
-            _ind("ig_oas", "IG OAS", ig.value if ig else None, "higher_is_riskier", "FRED", 5.0,
-                 history=self._indicator_history(ctx, "ig_oas")),
-            _ind("dxy", "Dollar Index", dxy.value if dxy else None, "higher_is_riskier", "FRED", 5.0,
-                 history=self._indicator_history(ctx, "dxy")),
+            _ind("dollar_index", "Dollar Index", dollar.value if dollar else None, "higher_is_riskier", "FRED", 5.0,
+                 history=self._indicator_history(ctx, "dollar_index")),
             _ind("dgs10", "10Y Yield", dgs10.value if dgs10 else None, "neutral", "FRED", 5.0,
                  history=self._indicator_history(ctx, "dgs10")),
         ]
@@ -173,6 +168,8 @@ class RiskModel:
                  history=self._indicator_history(ctx, "reverse_repo")),
             _ind("hy_oas", "HY OAS", _first_value(ctx, "credit", "bamlh0a0hym2"), "higher_is_riskier", "FRED", 10.0,
                  history=self._indicator_history(ctx, "hy_oas")),
+            _ind("ig_oas", "IG OAS", _first_value(ctx, "credit", "bamlc0a0cm"), "higher_is_riskier", "FRED", 5.0,
+                 history=self._indicator_history(ctx, "ig_oas")),
         ]
 
     def _equity_structure_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
@@ -221,11 +218,17 @@ class RiskModel:
         }
 
         prev_dim_scores: dict[str, float] = ctx.get("_prev_dim_scores") or {}
+        proxy_discount = conf_mod.proxy_discount_factor()
         dimensions: list[RiskDimension] = []
         for dim_key, builder in builders.items():
             indicators = builder(ctx)
             available = [i for i in indicators if i.value is not None]
-            coverage = round(len(available) / len(indicators), 4) if indicators else 0.0
+            # #69: a proxy-backed indicator counts for less than a measured one in coverage —
+            # its own knob (confidence.proxy_discount_factor), NOT the degrade factor.
+            effective_available = sum(
+                proxy_discount if i.is_proxy else 1.0 for i in available
+            )
+            coverage = round(effective_available / len(indicators), 4) if indicators else 0.0
             if available:
                 dim_score = round(sum(i.risk_score * i.weight for i in available) / sum(i.weight for i in available), 2)
             else:
@@ -267,13 +270,26 @@ class RiskModel:
         # Risk level
         risk_level = self._level_for(total_score)
 
-        # Top drivers (contribution = effective weight × risk score / 100)
+        # Top drivers (#68): an indicator's contribution reflects its OWN share of weight
+        # within its dimension, not the dimension's weight. For indicator i in dimension d:
+        #   contribution = (d.effective_weight / W) * (i.weight / V_d) * i.risk_score
+        # where W = total effective weight and V_d = sum of available indicator weights in d.
+        # Summing over every indicator reconciles exactly with the composite score.
+        # Each driver also discloses its trust discount (#69): a proxy is discounted by the
+        # proxy knob; when the run's providers degraded, the degrade factor compounds in.
+        data_quality_now = float(ctx.get("data_quality", 1.0))
+        degrade_discount = degrade_factor() if data_quality_now < 1.0 else 1.0
         drivers: list[DriverContribution] = []
         for d in dimensions:
-            for ind in d.indicators:
-                if ind.value is None:
-                    continue
-                contribution = round(d.effective_weight * ind.risk_score / 100.0, 4)
+            available = [i for i in d.indicators if i.value is not None]
+            dim_weight_sum = sum(i.weight for i in available) or 1.0
+            for ind in available:
+                contribution = round(
+                    d.effective_weight / denom * (ind.weight / dim_weight_sum) * ind.risk_score, 4
+                )
+                ind_discount = round(
+                    (proxy_discount if ind.is_proxy else 1.0) * degrade_discount, 4
+                )
                 drivers.append(
                     DriverContribution(
                         dimension_key=d.key,
@@ -282,6 +298,8 @@ class RiskModel:
                         contribution=contribution,
                         change_1d=None,
                         evidence_ref=None,
+                        is_proxy=ind.is_proxy,
+                        discount=ind_discount,
                     )
                 )
         drivers.sort(key=lambda x: x.contribution, reverse=True)
@@ -295,7 +313,6 @@ class RiskModel:
             "breadth_above_ma200": ctx.get("breadth", {}).get("breadth_above_ma200"),
             "cross_asset_confirmation": ctx.get("cross_asset", {}).get("confirmation"),
             "momentum_3m": ctx.get("trend", {}).get("momentum_3m"),
-            "dxy": _first_value(ctx, "fx", "dtwexbgs"),
         }
         regime, regime_evidence = regime_mod.infer_regime(regime_ctx)
 
@@ -310,6 +327,13 @@ class RiskModel:
         consistency = conf_mod.consistency_from_dimension_scores([d.score for d in dimensions])
         confidence = conf_mod.compute_confidence(data_quality, coverage, consistency, self.conf_weights)
 
+        # #69: publish the breadth sample disclosure (qualifying/considered counts) so a
+        # thinning sample is visible in the data.
+        breadth_data = ctx.get("breadth")
+        breadth_snapshot_value: BreadthSnapshot | None = None
+        if isinstance(breadth_data, dict):
+            breadth_snapshot_value = BreadthSnapshot.model_validate(breadth_data)
+
         return RiskModelResult(
             model_version=self.model_version,
             generated_at=now_utc(),
@@ -320,6 +344,7 @@ class RiskModel:
             trend_1m=trend_1m,
             dimensions=dimensions,
             top_drivers=top_drivers,
+            breadth=breadth_snapshot_value,
             regime=regime,
             regime_evidence=regime_evidence,
             confidence=confidence,

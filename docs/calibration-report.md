@@ -12,14 +12,14 @@ Before the MVP release, run an offline backtest of the risk model across three h
 
 ## 2. Method
 
-- **Model:** simplified risk model = composite score (VIX + HY OAS + SPX drawdown), using the same heuristic mapping (0-100) as the production `pipeline/risk/scoring.py`.
+- **Model:** simplified risk model = composite score (VIX + HY OAS + SPX drawdown), using the **heuristic fallback** mapping (`heuristic_risk_score`, the same table `pipeline/risk/scoring.py` uses when percentile history is unavailable). This harness does **not** exercise the production percentile path.
 - **Data:** all freely available — FRED `VIXCLS`, `BAMLH0A0HYM2` (HY OAS), `DGS10` + yfinance SPX history.
 - **Windows:**
   - 2008: 2008-08 → 2009-03 (main decline phase of the financial crisis)
   - 2018: 2018-09 → 2018-12 (Q4 sell-off)
   - 2020: 2020-02 → 2020-04 (COVID crash)
 - **Evaluation metrics** (subset of PRD §15):
-  - Early warning lead time: trading days from first risk score ≥60 to the risk peak (negative = warning before the peak)
+  - Early warning lead time: trading days from first risk score ≥60 to the risk peak (**positive = warning before the peak**, i.e. days early)
   - Risk score rate of change: trading days required for the risk score to move from 40 → 60
   - Max drawdown: maximum SPX drawdown within the window
   - Post-peak forward volatility: annualized volatility 5/10/20/30 days after the risk peak
@@ -37,7 +37,7 @@ Before the MVP release, run an offline backtest of the risk model across three h
 
 - Trading days: 166
 - Max drawdown: -48.17%
-- Early warning (score ≥60 vs peak): 34 days (negative = warning before peak)
+- Early warning (score ≥60 vs peak): 34 days (positive = warning before peak)
 - Risk score 40→60 speed: 40 days
 - Post-peak forward volatility: {'vol_5d': 0.8, 'vol_10d': 0.92, 'vol_20d': 1.26, 'vol_30d': 2.22}
 - Risk-level switches: 7
@@ -57,7 +57,7 @@ Before the MVP release, run an offline backtest of the risk model across three h
 
 - Trading days: 61
 - Max drawdown: -33.92%
-- Early warning (score ≥60 vs peak): 7 days (negative = warning before peak)
+- Early warning (score ≥60 vs peak): 7 days (positive = warning before peak)
 - Risk score 40→60 speed: 4 days
 - Post-peak forward volatility: {'vol_5d': 1.46, 'vol_10d': 2.65, 'vol_20d': 5.42, 'vol_30d': 5.19}
 - Risk-level switches: 9
@@ -73,7 +73,7 @@ Before the MVP release, run an offline backtest of the risk model across three h
 ## 5. Limitations
 
 - Market breadth history (2008-2012) is unavailable → this report does not include the breadth dimension (review P0-3); T05 recommends later rebuilding an approximate breadth series from SPX new high/new low counts / % above MA200 and re-running the backtest.
-- The MVP risk mapping is a heuristic rule set (pipeline/risk/scoring.py), not a statistical model; the score meaning is a "model-based market stress estimate".
+- The MVP risk mapping is a heuristic rule set (pipeline/risk/scoring.py); this harness evaluates the **heuristic fallback** path, not the production percentile path — the score meaning is a "model-based market stress estimate", not a statistical model.
 - Free data sources have no SLA; backtest windows may be skipped if network data is unavailable; rerun locally with `python scripts/calibration.py` to reproduce.
 - Single-window sample size is small (3 windows); conclusions are descriptive rather than statistically significant.
 

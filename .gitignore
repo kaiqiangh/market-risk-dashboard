@@ -44,6 +44,12 @@ docs/*
 !docs/glossary.md
 !docs/operations/
 !docs/operations/*
+# Decision records: every ticket cites these by number, so they ship with the code.
+!docs/adr/
+!docs/adr/*
+# Referenced by AGENTS.md, which is tracked — leaving these out dangles those pointers.
+!docs/agents/
+!docs/agents/*
 
 # AI Agents
 .workbuddy/*

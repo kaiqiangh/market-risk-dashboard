@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EvidenceRef, FreshnessStatus, utcDateTime } from "./envelope";
+import { EvidenceRef, FreshnessStatus, ProviderProvenance, utcDateTime } from "./envelope";
 
 export const RiskDimensionKey = z.enum([
   "macro",
@@ -28,6 +28,7 @@ export const MarketRegime = z.enum([
   "liquidity_stress",
   "risk_off",
   "crisis",
+  "indeterminate",
 ]);
 export const RiskTrend = z.enum(["rising", "falling", "flat"]);
 
@@ -69,6 +70,26 @@ export const DriverContribution = z
     contribution: z.number().finite(),
     change_1d: z.number().finite().nullable(),
     evidence_ref: EvidenceRef.nullable(),
+    is_proxy: z.boolean(),
+    discount: z.number().finite().min(0).max(1),
+  })
+  .strict();
+
+/** Breadth sample disclosure (#69): the ratio plus qualifying/considered counts. */
+export const BreadthSnapshot = z
+  .object({
+    breadth_above_ma200: z.number().finite().min(0).max(1).nullable(),
+    breadth_qualifying: z.number().int().min(0),
+    breadth_considered: z.number().int().min(0),
+    new_highs_ratio: z.number().finite().min(0).max(1).nullable(),
+    new_lows_ratio: z.number().finite().min(0).max(1).nullable(),
+    new_highs_qualifying: z.number().int().min(0),
+    new_lows_qualifying: z.number().int().min(0),
+    new_considered: z.number().int().min(0),
+    small_cap_relative: z.number().finite().nullable(),
+    semis_relative: z.number().finite().nullable(),
+    is_proxy: z.boolean(),
+    note: z.string(),
   })
   .strict();
 
@@ -83,6 +104,7 @@ export const RiskModelResult = z
     trend_1m: z.number().finite().nullable(),
     dimensions: z.array(RiskDimension),
     top_drivers: z.array(DriverContribution),
+    breadth: BreadthSnapshot.nullable(),
     regime: MarketRegime,
     regime_evidence: z.array(z.string()),
     confidence: z.number().finite().min(0).max(1),
@@ -99,6 +121,7 @@ export const RiskEnvelope = z
     source_updated_at: utcDateTime.nullable(),
     freshness_status: FreshnessStatus,
     data_quality: z.number().finite().min(0).max(1),
+    provenance: ProviderProvenance,
     payload: RiskModelResult,
   })
   .strict();

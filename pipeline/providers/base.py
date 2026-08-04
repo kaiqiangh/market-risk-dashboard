@@ -15,12 +15,15 @@ import json
 import random
 import time
 from abc import ABC, abstractmethod
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Callable, Generic, TypeVar
 
 from pydantic import BaseModel, Field
 
+from pipeline.degrade import degrade_factor as resolve_degrade_factor
 from pipeline.settings import Settings
+from pipeline.utils import now_utc
 
 # Default timeout/retry (overridable by config/sources.yaml degrade)
 DEFAULT_TIMEOUT_SECONDS = 10.0
@@ -142,13 +145,17 @@ class ProviderRegistry:
         self.max_retries = int(degrade.get("max_retries", DEFAULT_MAX_RETRIES))
         self.backoff_base = float(degrade.get("backoff_base_seconds", DEFAULT_BACKOFF_BASE))
         self.jitter = bool(degrade.get("jitter", True))
-        self.degrade_factor = float(degrade.get("data_quality_degrade_factor", 0.8))
+        # Single source of truth (#62): pass the already-parsed mapping so this does not
+        # re-read sources.yaml.
+        self.degrade_factor = resolve_degrade_factor(sources=sources)
         cache_dir = self.settings.artifacts_dir / "cache"
         cache_dir.mkdir(parents=True, exist_ok=True)
         self.cache_dir: Path = cache_dir
         self._providers: dict[str, list[BaseProvider]] = {}
         self.health_map: dict[str, ProviderHealth] = {}
         self.degraded_domains: set[str] = set()
+        #: Domain → meta of the most recent successful call (#65): the provider that answered.
+        self._last_outcome: dict[str, dict[str, Any]] = {}
 
     # ---- Registration ----
 
@@ -169,7 +176,18 @@ class ProviderRegistry:
     def _cache_path(self, domain: str, key: str) -> Path:
         return self.cache_dir / f"{domain}__{key}.json"
 
-    def _load_last_good(self, domain: str, key: str, method: str) -> dict[str, Any] | Any | None:
+    def _load_last_good(self, domain: str, key: str, method: str) -> tuple[Any, dict[str, Any]] | None:
+        """Load a valid last-good cache entry, or ``None`` when it cannot be served (#66).
+
+        A cache entry is served only when it is dated and younger than
+        ``degrade.cache_max_age_hours``. Ruling C: an undated entry (the pre-#66 disk
+        format) is treated as beyond the maximum age. Returns ``(data, meta)`` where meta
+        names the originating provider and the original ``fetched_at`` — the caller
+        (``call()``) publishes that provider in the provenance descriptor instead of the
+        ``last-good`` placeholder.
+        """
+        from pipeline.degrade import cache_max_age_hours
+
         path = self._cache_path(domain, key)
         if not path.exists():
             return None
@@ -177,21 +195,48 @@ class ProviderRegistry:
             cached = json.loads(path.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, OSError):
             return None
-        data = cached.get("data") if isinstance(cached, dict) else cached
+        if not isinstance(cached, dict):
+            return None
+        fetched_at = cached.get("fetched_at")
+        if not isinstance(fetched_at, str):
+            # Ruling C: legacy undated entry — expired by definition.
+            return None
+        try:
+            fetched = datetime.fromisoformat(fetched_at.replace("Z", "+00:00"))
+        except ValueError:
+            return None
+        if fetched.tzinfo is None:
+            fetched = fetched.replace(tzinfo=UTC)
+        age_hours = max(0.0, (datetime.now(UTC) - fetched).total_seconds() / 3600.0)
+        if age_hours > cache_max_age_hours():
+            return None
+
+        data = cached.get("data")
+        provider = str(cached.get("provider", "unknown"))
         restore_type = _RESULT_TYPES.get(method)
         if restore_type is not None and isinstance(data, dict):
             try:
-                return restore_type.model_validate(data)
+                data = restore_type.model_validate(data)
             except Exception:  # noqa: BLE001
                 return None
-        return data
+        return data, {"provider": provider, "fetched_at": fetched_at}
 
-    def _save_last_good(self, domain: str, key: str, method: str, payload: Any) -> None:
+    def _save_last_good(self, domain: str, key: str, method: str, payload: Any, provider: str) -> None:
         data = payload.model_dump(mode="json") if isinstance(payload, BaseModel) else payload
         try:
             self.cache_dir.mkdir(parents=True, exist_ok=True)
             self._cache_path(domain, key).write_text(
-                json.dumps({"method": method, "data": data}, ensure_ascii=False, default=str), encoding="utf-8"
+                json.dumps(
+                    {
+                        "method": method,
+                        "data": data,
+                        "fetched_at": now_utc(),
+                        "provider": provider,
+                    },
+                    ensure_ascii=False,
+                    default=str,
+                ),
+                encoding="utf-8",
             )
         except OSError:
             pass
@@ -232,28 +277,40 @@ class ProviderRegistry:
                 }
                 if index > 0:
                     self.degraded_domains.add(domain)
-                self._save_last_good(domain, key, method, result)
+                self._last_outcome[domain] = meta
+                self._save_last_good(domain, key, method, result, provider.name)
                 return {"result": result, "meta": meta}
             except Exception as exc:  # noqa: BLE001 - the degradation chain must swallow Provider exceptions
                 errors.append(f"{provider.name}: {type(exc).__name__}: {exc}")
                 continue
 
-        # All Providers failed → last-good cache
+        # All Providers failed → last-good cache (expired/undated entries are not served, #66)
         cached = self._load_last_good(domain, key, method)
         if cached is not None:
+            data, cache_meta = cached
             self.degraded_domains.add(domain)
+            meta = {
+                "provider": cache_meta["provider"],
+                "used_fallback": True,
+                "from_cache": True,
+                "degraded": True,
+                "errors": errors,
+            }
+            self._last_outcome[domain] = meta
             return {
-                "result": cached,
-                "meta": {
-                    "provider": "last-good",
-                    "used_fallback": True,
-                    "from_cache": True,
-                    "degraded": True,
-                    "errors": errors,
-                },
+                "result": data,
+                "meta": meta,
             }
 
         raise ProviderError(f"[{domain}] all Providers failed: {'; '.join(errors)}")
+
+    def resolved_provider(self, domain: str) -> dict[str, Any] | None:
+        """The provider outcome of the most recent successful call for `domain` (#65).
+
+        Returns the meta (provider/used_fallback/from_cache/degraded) of the provider that
+        actually answered, or ``None`` if nothing succeeded (or was served from cache).
+        """
+        return self._last_outcome.get(domain)
 
     # ---- Status ----
 

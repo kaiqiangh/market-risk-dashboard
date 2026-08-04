@@ -46,7 +46,10 @@
     "baseCase": "基准情景",
     "bearCase": "熊市情景",
     "watchNext": "关注要点",
-    "generatedAt": "生成时间"
+    "generatedAt": "生成时间",
+    "noFreshBasis": "AI 简报缺乏新鲜数据基础",
+    "noFreshBasisHint": "输入数据已降级或缺失；待输入恢复新鲜后简报将恢复。",
+    "regimeIndeterminate": "市场状态无法判断：当前输入未触发任何条件——模型没有读数，而非判断为平静或危险。"
   },
   "kpi": {
     "trend1d": "1 日变化",

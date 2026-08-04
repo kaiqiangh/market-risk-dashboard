@@ -1,7 +1,8 @@
 """Market Regime rule engine (architecture P0-5: rule engine first, modeling deferred to V2).
 
-9 states: goldilocks / risk_on / disinflation / reflation / late_cycle /
-stagflation / liquidity_stress / risk_off / crisis.
+10 states: goldilocks / risk_on / disinflation / reflation / late_cycle /
+stagflation / liquidity_stress / risk_off / crisis / indeterminate
+(no condition fired → indeterminate with no evidence, not a guessed regime).
 Rules are based on threshold combinations (VIX/spread/curve/breadth/cross-asset/momentum)
 and output the decision basis (explainability).
 """
@@ -12,17 +13,20 @@ from typing import Any
 
 
 def infer_regime(ctx: dict[str, Any]) -> tuple[str, list[str]]:
-    """Input context (vix/hy_oas/yield_curve/breadth/cross_asset/momentum/dxy),
-    returns (regime, evidence_list)."""
+    """Input context (vix/hy_oas/yield_curve/breadth/cross_asset/momentum),
+    returns (regime, evidence_list). #71: the dollar index was dead here and is gone."""
     vix = ctx.get("vix")
     hy_oas = ctx.get("hy_oas")
     curve = ctx.get("yield_curve_10y2y")
     breadth = ctx.get("breadth_above_ma200")
     cross = ctx.get("cross_asset_confirmation")
     momentum = ctx.get("momentum_3m")
-    dxy = ctx.get("dxy")
 
     evidence: list[str] = []
+
+    # #71: nothing measured at all -> indeterminate, never a guessed benign reading.
+    if all(i is None for i in (vix, hy_oas, curve, breadth, cross, momentum)):
+        return "indeterminate", []
 
     # Crisis / risk-off take priority
     if vix is not None and vix >= 40:
@@ -48,7 +52,8 @@ def infer_regime(ctx: dict[str, Any]) -> tuple[str, list[str]]:
         evidence.append(f"Yield curve={curve:.2f} < 0 and momentum={momentum:.1f} < 0")
         return "stagflation", evidence
 
-    # Reflation: steepening curve + strong momentum + weakening dollar
+    # Reflation: steepening curve + strong momentum (the dollar index was never read
+    # by this branch — #71 removed the dead read rather than restoring a modelling term)
     if curve is not None and curve > 0.5 and (momentum is None or momentum > 5):
         evidence.append(f"Yield curve={curve:.2f} > 0.5 and strong momentum")
         return "reflation", evidence
@@ -73,5 +78,6 @@ def infer_regime(ctx: dict[str, Any]) -> tuple[str, list[str]]:
         evidence.append("low volatility or strong momentum")
         return "risk_on", evidence
 
-    evidence.append("default: late_cycle (no strong signal)")
-    return "late_cycle", evidence
+    # #71: no condition fired — say so. An empty evidence list yields `indeterminate`
+    # (rendered in the neutral risk-na tone), never a guessed benign reading.
+    return "indeterminate", []

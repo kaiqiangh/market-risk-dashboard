@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from pipeline.degrade import degraded_quality
 from pipeline.fedwatch import (
     FedWatchInput,
     compute_fedwatch,
@@ -21,9 +22,8 @@ from pipeline.fedwatch import (
 )
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.providers.fred import SERIES_CATALOG
-from pipeline.schemas import FedWatchSnapshot, MacroDataset, MacroEnvelope, MacroIndicator
+from pipeline.schemas import FedWatchSnapshot, MacroDataset, MacroIndicator
 from pipeline.settings import Settings
-from pipeline.utils import now_utc
 
 # FRED series → group
 SERIES_GROUPS: dict[str, list[str]] = {
@@ -48,6 +48,8 @@ class MacroCollector:
         self.series_history: dict[str, list[dict[str, Any]]] = {}
         self._fred_failures = 0
         self._fedwatch_failed = False
+        #: Domain → provider outcome of the most recent successful call (#65).
+        self._provider_outcomes: dict[str, dict[str, Any]] = {}
 
     # ---- FRED ----
 
@@ -55,6 +57,7 @@ class MacroCollector:
         try:
             out = self.registry.call("macro", "get_series", f"fred_{series_id}", args=(series_id,))
             self.provider_status.setdefault("macro", out["meta"])
+            self._provider_outcomes["macro"] = out["meta"]
             rows = out["result"]
             # Normalize to lowercase keys: the risk model 5Y percentile looks up by the lowercase
             # series name of the indicator key
@@ -147,34 +150,45 @@ class MacroCollector:
     # ---- Summary ----
 
     def _quality(self) -> float:
-        """Data quality degrades ×0.8 per failed source: FRED partial failure counts as 1, FedWatch failure counts as 1."""
-        failed = (1 if self._fred_failures > 0 else 0) + (1 if self._fedwatch_failed else 0)
-        return round(max(0.1, 0.8 ** failed), 3)
+        """Data quality degrades by the configured factor per failed source.
 
-    def collect(self) -> tuple[MacroEnvelope, dict[str, Any]]:
+        FRED partial failure counts as one source, FedWatch failure counts as one.
+        """
+        # #65: the registry's degraded_domains is the reader — every domain that fell back or
+        # replayed from cache lowers published quality, compounding with the factor.
+        return degraded_quality(len(self.registry.degraded_domains), settings=self.settings)
+
+    def collect(self) -> tuple[MacroDataset, dict[str, Any]]:
         dataset = self._collect_macro()
         quality = self._quality()
-        envelope = MacroEnvelope(
-            generated_at=now_utc(),
-            schema_version="1.0.0",
-            source=["fred", "yahoo"],
-            source_updated_at=now_utc(),
-            freshness_status="degraded" if self.degraded else "fresh",
-            data_quality=round(quality, 3),
-            payload=dataset,
-        )
-        return envelope, {
+        # #64: return payload + provider outcome; the caller assembles the envelope and
+        # finalizes freshness through the single assembly path.
+        outcome = self._provider_outcomes.get("macro") or self.registry.resolved_provider("macro")
+        if outcome is None:
+            outcome = {"provider": "unavailable", "used_fallback": False, "from_cache": False}
+        return dataset, {
             "degraded": self.degraded,
             "provider_status": self.provider_status,
             "series_history": self.series_history,
+            "data_quality": round(quality, 3),
+            "provider": {
+                "provider": str(outcome.get("provider", "unavailable")),
+                "used_fallback": bool(outcome.get("used_fallback", False)),
+                "from_cache": bool(outcome.get("from_cache", False)),
+            },
         }
 
 
 def _change(rows: list[dict], lookback: int) -> float | None:
+    """Change over exactly `lookback` periods, consistent with `momentum` (#70).
+
+    The base is `lookback` periods before the latest (`rows[-1 - lookback]`); the previous
+    off-by-one used `rows[-lookback]`, which is one period closer and understated the span.
+    """
     if len(rows) < 2:
         return None
-    idx = min(lookback, len(rows) - 1)
-    return round(rows[-1]["value"] - rows[-idx]["value"], 6)
+    periods = min(lookback, len(rows) - 1)
+    return round(rows[-1]["value"] - rows[-1 - periods]["value"], 6)
 
 
 def _unit(unit: str) -> str:

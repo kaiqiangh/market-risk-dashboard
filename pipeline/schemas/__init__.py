@@ -23,6 +23,7 @@ from .factlayer import EvidenceRef, FactLayer
 from .macro import FedWatchRateProb, FedWatchSnapshot, MacroDataset, MacroEnvelope, MacroIndicator
 from .news import NewsDataset, NewsEnvelope, NewsItem, NewsTranslation, NewsTranslationsDataset
 from .risk import (
+    BreadthSnapshot,
     DriverContribution,
     MarketRegime,
     RiskDimension,
@@ -49,6 +50,7 @@ __all__ = [
     "CryptoAsset",
     "CryptoDataset",
     "CryptoEnvelope",
+    "BreadthSnapshot",
     "DashboardAsset",
     "DashboardEnvelope",
     "DashboardPayload",

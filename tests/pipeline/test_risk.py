@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from pipeline.risk import confidence as conf_mod
 from pipeline.risk import regime as regime_mod
 from pipeline.risk.model import RiskModel
@@ -12,7 +14,7 @@ from pipeline.risk.scoring import (
     percentile_risk_score,
     z_score,
 )
-from pipeline.schemas import MacroDataset, MacroIndicator, RiskModelResult
+from pipeline.schemas import MacroDataset, RiskModelResult
 
 
 def test_heuristic_risk_score_bounds() -> None:
@@ -78,19 +80,35 @@ def test_regime_goldilocks() -> None:
     assert regime in ("goldilocks", "risk_on")
 
 
+def _macro_with_rates(*, value: float | None = None) -> MacroDataset:
+    """A MacroDataset built entirely from the factory (#73: no direct constructor calls).
+
+    Defaults to the four indicators the risk model reads; passing ``value`` swaps the VIX
+    indicator in (used by the level-threshold test).
+    """
+    from pipeline.schemas import MacroEnvelope
+    from tests.pipeline.factories import make_envelope, make_macro_indicator, make_macro_payload
+
+    if value is not None:
+        rates = [make_macro_indicator(key="vixcls", label="VIX", value=value, unit="index", source="FRED")]
+        payload = make_macro_payload(rates=rates, credit=[], inflation=[], labor=[], liquidity=[], fx=[])
+    else:
+        payload = make_macro_payload(
+            rates=[
+                make_macro_indicator(key="dgs10", label="10Y", value=4.2, source="FRED"),
+                make_macro_indicator(key="dgs2", label="2Y", value=3.8, source="FRED"),
+                make_macro_indicator(key="dfii10", label="Real", value=1.9, source="FRED"),
+                make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED"),
+            ],
+            credit=[make_macro_indicator(key="bamlh0a0hym2", label="HY", value=4.5, source="FRED")],
+            fx=[],
+        )
+    return MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload
+
+
 def _synthetic_context() -> dict:
-    macro = MacroDataset(
-        rates=[
-            MacroIndicator(key="dgs10", label="10Y", value=4.2, unit="pct", source="FRED"),
-            MacroIndicator(key="dgs2", label="2Y", value=3.8, unit="pct", source="FRED"),
-            MacroIndicator(key="dfii10", label="Real", value=1.9, unit="pct", source="FRED"),
-            MacroIndicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED"),
-        ],
-        credit=[MacroIndicator(key="bamlh0a0hym2", label="HY", value=4.5, unit="pct", source="FRED")],
-        fx=[],
-    )
     return {
-        "macro": macro,
+        "macro": _macro_with_rates(),
         "breadth": {"breadth_above_ma200": 0.55, "new_highs_ratio": 0.4, "new_lows_ratio": 0.2,
                     "small_cap_relative": -1.0, "semis_relative": 2.0},
         "trend": {"price_vs_ma200": 8.0, "drawdown_52w": -5.0, "momentum_3m": 3.0, "realized_vol": 18.0},
@@ -170,10 +188,10 @@ def test_risk_model_level_thresholds() -> None:
     model = RiskModel()
     # low-risk context → score should be lower than the high-VIX context
     low_ctx = _synthetic_context()
-    low_ctx["macro"].rates = [MacroIndicator(key="vixcls", label="VIX", value=12.0, unit="index", source="FRED")]
+    low_ctx["macro"] = _macro_with_rates(value=12.0)
     low = model.score(low_ctx)
     high_ctx = _synthetic_context()
-    high_ctx["macro"].rates = [MacroIndicator(key="vixcls", label="VIX", value=45.0, unit="index", source="FRED")]
+    high_ctx["macro"] = _macro_with_rates(value=45.0)
     high = model.score(high_ctx)
     assert high.total_score > low.total_score
 
@@ -184,3 +202,319 @@ def test_confidence_consistency() -> None:
     assert conf_mod.consistency_from_dimension_scores([20, 20, 20]) == 1.0
     assert conf_mod.consistency_from_dimension_scores([0, 100]) < 0.5
 
+
+
+# ---------- #67: config == code, direction agrees with the scoring table ----------
+
+def _risk_result() -> RiskModelResult:
+    """Score the standard synthetic context once (shared by the #67 assertions)."""
+    return RiskModel().score(_synthetic_context())
+
+
+def _indicator_by_key(result: RiskModelResult, key: str):
+    for dim in result.dimensions:
+        for ind in dim.indicators:
+            if ind.key == key:
+                return dim.key, ind
+    return None, None
+
+
+def test_inverted_curve_scores_high_risk() -> None:
+    """A negative 10Y-2Y spread (inverted curve) must score as HIGH risk.
+
+    HEURISTIC_RULES["yield_curve_10y2y"] maps -0.5 -> 95; the declaration used to say
+    `higher_is_riskier`, which contradicted the table (#67 group 5).
+    """
+    from pipeline.schemas import MacroIndicator
+    from tests.pipeline.factories import make_macro_indicator
+
+    ctx = _synthetic_context()
+    # dgs10 = 3.0, dgs2 = 4.0 -> curve = -1.0 (inverted), no history -> heuristic path
+    macro = _macro_with_rates().model_copy(
+        update={"rates": [
+            MacroIndicator.model_validate(make_macro_indicator(key="dgs10", label="10Y", value=3.0, source="FRED")),
+            MacroIndicator.model_validate(make_macro_indicator(key="dgs2", label="2Y", value=4.0, source="FRED")),
+        ]}
+    )
+    ctx["macro"] = macro
+    result = RiskModel().score(ctx)
+    dim_key, ind = _indicator_by_key(result, "yield_curve_10y2y")
+    assert dim_key == "macro"
+    assert ind is not None
+    assert ind.risk_score >= 90, f"inverted curve must score high, got {ind.risk_score}"
+    assert ind.direction == "lower_is_riskier", (
+        "yield_curve_10y2y declares lower_is_riskier (inversion is high risk), got "
+        f"{ind.direction}"
+    )
+
+
+def test_hy_oas_counted_once_in_a_scored_result() -> None:
+    """hy_oas appears in exactly one dimension of a scored result, at weight 10.0."""
+    result = _risk_result()
+    sites = [
+        (dim.key, ind.weight)
+        for dim in result.dimensions
+        for ind in dim.indicators
+        if ind.key == "hy_oas"
+    ]
+    assert sites == [("liquidity_credit", 10.0)], f"hy_oas must be scored once at 10.0, found {sites}"
+
+
+def test_ig_oas_is_scored_under_liquidity_credit() -> None:
+    """ig_oas moved from macro to liquidity_credit, preserving weight 5.0 (#67 group 4)."""
+    result = _risk_result()
+    dim_key, ind = _indicator_by_key(result, "ig_oas")
+    assert dim_key == "liquidity_credit", f"ig_oas must live under liquidity_credit, found {dim_key}"
+    assert ind is not None and ind.weight == 5.0
+    assert "bamlc0a0cm" not in {i.key for i in result.dimensions[0].indicators}  # macro has no credit keys
+    # No indicator key is registered in two dimensions in the scored output (ruling B).
+    seen: dict[str, str] = {}
+    for dim in result.dimensions:
+        for ind in dim.indicators:
+            assert ind.key not in seen, f"{ind.key} registered in {seen[ind.key]} and {dim.key}"
+            seen[ind.key] = dim.key
+
+
+def test_macro_dimension_has_exactly_four_indicators() -> None:
+    """After the hy_oas/ig_oas removals, macro is rates + curve + dollar + nominal yield."""
+    result = _risk_result()
+    macro = next(d for d in result.dimensions if d.key == "macro")
+    assert {i.key for i in macro.indicators} == {
+        "real_rate_dfii10", "yield_curve_10y2y", "dollar_index", "dgs10",
+    }
+
+
+
+# ---------- #68: top drivers reflect each indicator's own weight ----------
+
+def _liquidity_only_context() -> dict:
+    """A synthetic context where the ONLY available indicators live in liquidity_credit:
+    hy_oas (weight 10.0) and fed_balance_sheet (weight 5.0), both scoring exactly 50
+    (hy_oas heuristic maps 3.8 -> 50; fed_balance_sheet has no heuristic and falls back).
+    The old computation credited both with the dimension's whole weight, making them
+    indistinguishable in the driver list.
+    """
+    from pipeline.schemas import MacroEnvelope
+    from tests.pipeline.factories import make_envelope, make_macro_indicator, make_macro_payload
+
+    payload = make_macro_payload(
+        rates=[],
+        credit=[make_macro_indicator(key="bamlh0a0hym2", label="HY", value=3.8, source="FRED")],
+        liquidity=[make_macro_indicator(key="walcl", label="Fed Balance Sheet", value=8.2e6, source="FRED")],
+        fx=[],
+    )
+    ctx = _synthetic_context()
+    ctx["macro"] = MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload
+    return ctx
+
+
+def _expected_contributions(result: RiskModelResult) -> dict[str, float]:
+    """The #68 spec: indicator i's contribution is its own share of weight within its
+    dimension, times the dimension's share of total weight, times the risk score:
+    (d.effective_weight / W) * (i.weight / V_d) * i.risk_score."""
+    out: dict[str, float] = {}
+    denom = sum(d.effective_weight for d in result.dimensions) or 1.0
+    for d in result.dimensions:
+        available = [i for i in d.indicators if i.value is not None]
+        v = sum(i.weight for i in available) or 1.0
+        for ind in available:
+            out[ind.key] = round(d.effective_weight / denom * (ind.weight / v) * ind.risk_score, 4)
+    return out
+
+
+def test_driver_contribution_uses_indicator_weight() -> None:
+    """#68: an indicator's contribution scales with its OWN weight, not the dimension's."""
+    result = RiskModel().score(_liquidity_only_context())
+    drivers = {d.indicator_key: d.contribution for d in result.top_drivers}
+
+    hy = next(d for d in result.dimensions if d.key == "liquidity_credit")
+    scores = {i.key: i.risk_score for i in hy.indicators if i.value is not None}
+    assert scores["hy_oas"] == scores["fed_balance_sheet"] == 50.0
+
+    expected = _expected_contributions(result)
+    # Both liquidity indicators land in the published top-5 (they are the only drivers).
+    assert drivers["hy_oas"] == pytest.approx(expected["hy_oas"], rel=1e-3)
+    assert drivers["fed_balance_sheet"] == pytest.approx(expected["fed_balance_sheet"], rel=1e-3)
+    # hy_oas (10.0) outranks fed_balance_sheet (5.0) by exactly the weight ratio.
+    assert drivers["hy_oas"] > drivers["fed_balance_sheet"]
+    assert abs(drivers["hy_oas"] / drivers["fed_balance_sheet"] - 2.0) < 1e-3
+
+
+def test_same_dimension_different_weights_differ() -> None:
+    """The specific defect: same dimension, same score, different weight -> different
+    contribution. hy_oas (10.0) and fed_balance_sheet (5.0) are no longer identical."""
+    result = RiskModel().score(_liquidity_only_context())
+    drivers = {d.indicator_key: d.contribution for d in result.top_drivers}
+    assert drivers["hy_oas"] != drivers["fed_balance_sheet"]
+    assert drivers["hy_oas"] == pytest.approx(2.0 * drivers["fed_balance_sheet"], rel=1e-3)
+
+
+def test_contributions_reconcile_with_composite() -> None:
+    """The sum of all indicator contributions reconciles with the composite score.
+
+    Tolerance: 0.01 — the composite is rounded to 2 decimals and each contribution to 4,
+    so the sum cannot drift by more than dimension-score rounding (each ≤ 0.005) plus
+    total-score rounding (≤ 0.005).
+    """
+    result = RiskModel().score(_synthetic_context())
+    expected = _expected_contributions(result)
+    assert abs(sum(expected.values()) - result.total_score) <= 0.01, (
+        f"indicator contributions must reconcile with the composite: "
+        f"sum={sum(expected.values()):.4f} total_score={result.total_score}"
+    )
+    # The model's published top-5 must match the spec formula (not a different one).
+    for d in result.top_drivers:
+        assert d.contribution == pytest.approx(expected[d.indicator_key], rel=1e-3), (
+            f"published contribution for {d.indicator_key} does not match the indicator-share formula"
+        )
+
+
+def test_driver_ordering_is_pinned() -> None:
+    """Regression pin: the top-driver ordering over `_synthetic_context()`.
+
+    Changes to the contribution computation must show up here deliberately, not silently.
+    """
+    result = RiskModel().score(_synthetic_context())
+    keys = [d.indicator_key for d in result.top_drivers]
+    # The pinned ordering after #68 (indicator-share contributions, sorted descending).
+    assert keys == ["hy_oas", "cross_asset_confirmation", "real_rate_dfii10", "vix", "yield_curve_10y2y"], (
+        f"top-driver ordering drifted: {keys}"
+    )
+    assert all(
+        result.top_drivers[i].contribution >= result.top_drivers[i + 1].contribution
+        for i in range(len(result.top_drivers) - 1)
+    )
+
+
+# ---------- #69: proxy-backed indicators stop inflating coverage and confidence ----------
+
+def _synthetic_ctx_confidence() -> float:
+    """The overall confidence for `_synthetic_context()` (equity_structure is 5/5 proxies)."""
+    return RiskModel().score(_synthetic_context()).confidence
+
+
+def test_proxy_indicator_discounts_coverage() -> None:
+    """#69: a proxy-backed indicator counts for less than a measured one in coverage."""
+    result = RiskModel().score(_synthetic_context())
+    es = next(d for d in result.dimensions if d.key == "equity_structure")
+    assert all(i.is_proxy for i in es.indicators if i.value is not None)
+    assert es.coverage < 1.0, (
+        "equity_structure is 5/5 proxy indicators; coverage must be discounted below 1.0"
+    )
+    # The discount is the proxy knob (0.8), not a full 1.0.
+    assert es.coverage == pytest.approx(0.8, abs=1e-4)
+
+
+def test_proxy_dimension_confidence_baseline_reduced() -> None:
+    """#69: equity_structure/cross_asset show a permanently reduced confidence baseline."""
+    result = RiskModel().score(_synthetic_context())
+    es = next(d for d in result.dimensions if d.key == "equity_structure")
+    ca = next(d for d in result.dimensions if d.key == "cross_asset")
+    assert es.coverage < 1.0 and ca.coverage < 1.0
+    # A fully-covered run would score higher; the baseline is honest, not a regression.
+    assert result.confidence < 1.0
+    assert "coverage" in result.confidence_factors
+
+
+def test_proxy_and_degrade_compound() -> None:
+    """#69 ruling F: proxy AND degraded-provider discounts compound to 0.64, not 0.8."""
+    from pipeline.degrade import degrade_factor
+    from pipeline.risk.confidence import DEFAULT_PROXY_DISCOUNT_FACTOR
+
+    ctx = _synthetic_context()
+    ctx["data_quality"] = 0.8  # a degraded run (degrade factor applied upstream)
+    result = RiskModel().score(ctx)
+    # A proxy driver in the same run compounds both discounts.
+    proxy_driver = next(d for d in result.top_drivers if d.is_proxy)
+    assert proxy_driver.discount == pytest.approx(
+        DEFAULT_PROXY_DISCOUNT_FACTOR * degrade_factor(), rel=1e-4
+    ), "proxy + degraded provider must compound to factor × proxy_discount (0.64)"
+
+
+def test_discount_uses_shared_constant(monkeypatch) -> None:
+    """#69: the proxy discount is its own knob — patching the config key moves it, and
+    patching the degrade factor does NOT."""
+    import pipeline.risk.confidence as conf_mod
+
+    # The accessor reads its own config key (range-checked), independent of the degrade factor.
+    assert conf_mod.proxy_discount_factor(risk_model={"confidence": {"proxy_discount_factor": 0.5}}) == 0.5
+    with pytest.raises(ValueError):
+        conf_mod.proxy_discount_factor(risk_model={"confidence": {"proxy_discount_factor": 0.0}})
+    with pytest.raises(ValueError):
+        conf_mod.proxy_discount_factor(risk_model={"confidence": {"proxy_discount_factor": 1.5}})
+
+    # The model's coverage discount follows the knob.
+    monkeypatch.setattr(conf_mod, "proxy_discount_factor", lambda *a, **k: 0.5)
+    result = RiskModel().score(_synthetic_context())
+    es = next(d for d in result.dimensions if d.key == "equity_structure")
+    assert es.coverage == pytest.approx(0.5, abs=1e-4)
+
+
+# ---------- #71: the regime says indeterminate when nothing fired ----------
+
+def test_empty_context_yields_indeterminate() -> None:
+    """#71: with no condition firing, the regime is indeterminate, not a benign fallback."""
+    regime, evidence = regime_mod.infer_regime({})
+    assert regime == "indeterminate", (
+        f"all-absent input must not guess a benign regime, got {regime!r}"
+    )
+    assert evidence == []
+
+
+def test_evidence_contains_only_fired_conditions() -> None:
+    """#71: nothing is appended unconditionally to the evidence list."""
+    _, evidence = regime_mod.infer_regime({})
+    assert evidence == []
+    assert all("default:" not in line for line in evidence)
+
+
+def test_indeterminate_confidence_is_not_full() -> None:
+    """#71: an all-absent run is indeterminate and its confidence reflects the absence
+    of evidence — not full confidence."""
+    result = RiskModel().score({})
+    assert result.regime == "indeterminate"
+    assert result.confidence < 1.0
+
+
+def test_dollar_index_absent_from_regime_context(monkeypatch) -> None:
+    """#71: no dxy/dollar_index key reaches infer_regime (the dead path is gone)."""
+    captured: dict = {}
+
+    def capture(ctx: dict) -> tuple[str, list[str]]:
+        captured["ctx"] = ctx
+        return "goldilocks", ["captured"]
+
+    monkeypatch.setattr(regime_mod, "infer_regime", capture)
+    RiskModel().score(_synthetic_context())
+    assert "dxy" not in captured["ctx"]
+    assert "dollar_index" not in captured["ctx"]
+
+
+def test_dollar_index_removal_changes_no_regime() -> None:
+    """#71: dxy was never read by any condition — a dollar value changes NO regime outcome.
+
+    This is the regression pin for the dead-code claim: the same context with and without
+    a dollar value yields the identical regime and evidence.
+    """
+    from pipeline.schemas import MacroEnvelope
+    from tests.pipeline.factories import make_envelope, make_macro_indicator, make_macro_payload
+
+    # Identical to _synthetic_context()'s macro EXCEPT for the fx group (dollar present).
+    with_dollar = dict(_synthetic_context())
+    payload = make_macro_payload(
+        rates=[
+            make_macro_indicator(key="dgs10", label="10Y", value=4.2, source="FRED"),
+            make_macro_indicator(key="dgs2", label="2Y", value=3.8, source="FRED"),
+            make_macro_indicator(key="dfii10", label="Real", value=1.9, source="FRED"),
+            make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED"),
+        ],
+        credit=[make_macro_indicator(key="bamlh0a0hym2", label="HY", value=4.5, source="FRED")],
+        fx=[make_macro_indicator(key="dtwexbgs", label="Dollar", value=98.0, source="FRED")],
+    )
+    with_dollar["macro"] = MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload
+    without = _synthetic_context()  # fx=[] — everything else identical
+
+    r_with = RiskModel().score(with_dollar)
+    r_without = RiskModel().score(without)
+    assert r_with.regime == r_without.regime
+    assert r_with.regime_evidence == r_without.regime_evidence

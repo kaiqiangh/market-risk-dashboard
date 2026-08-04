@@ -72,6 +72,24 @@ git commit -m "data: scheduled update $(date -u +%Y-%m-%dT%H:%M:%SZ)" || exit 0
 git push origin dev
 ```
 
+### Schema-change PRs: the expected-red window (#74)
+
+`validate-data.yml` watches `pipeline/schemas/**` (plus `pipeline/validation/**`,
+`public/data/**`, `scripts/validate_data.sh`, `scripts/validate-json.mjs`,
+`config/sources.yaml`). When a PR changes a schema, the committed `public/data` does not
+yet match the new contract, so the data gate turns **red** — and it must **stay red**
+until the next scheduled run regenerates and pushes `public/data` (usually within hours).
+
+A red run on a schema-change PR is the system working, not a mistake:
+
+- The failure text names the contract mismatch (Pydantic/Zod validation), not something incidental.
+- Do **not** "fix" the red by adding `continue-on-error`, a skip label, or an `if:` escape
+  on the gate. A green gate during the window would be a lie, and this release is about
+  honest data.
+- The window closes by itself: run the scheduled task (or `python -m pipeline.run --full`
+  followed by `scripts/validate_data.sh` and a commit) to regenerate `public/data`, and
+  the same PR turns green.
+
 ## 4. Offline / failure degradation behavior
 
 | Scenario | Pipeline behavior | Operations action |

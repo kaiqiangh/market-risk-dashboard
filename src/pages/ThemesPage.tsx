@@ -34,7 +34,7 @@ export default function ThemesPage() {
           {t("title")}
         </h1>
         <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
-        {sectorsQ.data ? <span className="ml-auto"><StatusBadge status={sectorsQ.data.freshness_status} withDescription /></span> : null}
+        {sectorsQ.data ? <span className="ml-auto"><StatusBadge status={sectorsQ.data.freshness_status} fromCache={sectorsQ.data.provenance?.from_cache} withDescription /></span> : null}
       </header>
 
       {/* Semiconductors */}

@@ -1,18 +1,1 @@
-[
-  {
-    "date": "2026-08-03T17:58:07Z",
-    "meeting_date": null,
-    "effective_rate": 3.63,
-    "implied_rate": 0.0,
-    "inferred_action": "insufficient_data",
-    "probabilities": []
-  },
-  {
-    "date": "2026-08-04T10:26:18Z",
-    "meeting_date": null,
-    "effective_rate": 3.63,
-    "implied_rate": 0.0,
-    "inferred_action": "insufficient_data",
-    "probabilities": []
-  }
-]
+[{"date":"2026-08-03T17:58:07Z","meeting_date":null,"effective_rate":3.63,"implied_rate":0.0,"inferred_action":"insufficient_data","probabilities":[]},{"date":"2026-08-04T22:35:45Z","meeting_date":null,"effective_rate":3.63,"implied_rate":0.0,"inferred_action":"insufficient_data","probabilities":[]}]

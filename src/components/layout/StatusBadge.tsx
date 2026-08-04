@@ -8,11 +8,15 @@ import type { FreshnessStatus } from "@/schemas";
  * StatusBadge: freshness five-state badge (architecture §8.5, ADR-0002).
  * Five states → icon + text + muted treatment; "fresh" uses no saturated color
  * (expected state), only stale/missing earn a warm tone. Color is never the only expression.
+ * #66: a cache-replayed dataset renders a distinct badge (fromCache) instead of sharing
+ * the delayed/degraded look.
  */
 export interface StatusBadgeProps {
   status: FreshnessStatus;
   /** Whether to show the descriptive text (label only by default). */
   withDescription?: boolean;
+  /** Cache replay (#66): served from the last-good cache, not fetched live. */
+  fromCache?: boolean;
   className?: string;
 }
 
@@ -30,14 +34,15 @@ const TONE_TO_DOT: Record<FreshTone, string> = {
   na: "bg-muted-foreground",
 };
 
-export function StatusBadge({ status, withDescription = false, className }: StatusBadgeProps) {
+export function StatusBadge({ status, withDescription = false, fromCache = false, className }: StatusBadgeProps) {
   const { t } = useTranslation("common");
-  const badge = badgeFor(status);
+  const badge = badgeFor(status, fromCache);
   const tone = freshTone(status);
+  const testId = fromCache ? "status-badge-cache" : `status-badge-${status}`;
 
   return (
     <span className={`inline-flex items-center gap-2 ${className ?? ""}`} title={t(badge.descriptionKey)}>
-      <Badge variant={TONE_TO_VARIANT[tone]} data-testid={`status-badge-${status}`}>
+      <Badge variant={TONE_TO_VARIANT[tone]} data-testid={testId}>
         <span className={`h-1.5 w-1.5 rounded-full ${TONE_TO_DOT[tone]}`} aria-hidden />
         {t(badge.labelKey)}
       </Badge>

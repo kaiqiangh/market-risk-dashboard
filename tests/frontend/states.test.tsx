@@ -61,6 +61,13 @@ describe("StatusBadge (five states → badge)", () => {
     expect(screen.getByTestId("status-badge-missing")).toHaveTextContent("无数据");
   });
 
+  it("cache replay badge is distinct from delayed (#66)", () => {
+    render(<StatusBadge status="delayed" fromCache />);
+    const badge = screen.getByTestId("status-badge-cache");
+    expect(badge).toHaveTextContent("缓存回放");
+    expect(badge).not.toHaveTextContent("延迟");
+  });
+
   it("degraded → partially degraded", () => {
     render(<StatusBadge status="degraded" withDescription />);
     expect(screen.getByTestId("status-badge-degraded")).toHaveTextContent("部分降级");

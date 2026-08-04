@@ -12,11 +12,8 @@ Seam: the data contract + the merge step (pipeline/collectors/news.py merge_tran
 
 from __future__ import annotations
 
-import pytest
-from pydantic import ValidationError
-
 from pipeline.collectors.news import NewsCollector
-from pipeline.schemas import NewsDataset, NewsEnvelope, NewsItem, NewsTranslation, NewsTranslationsDataset
+from pipeline.schemas import NewsDataset, NewsItem, NewsTranslation, NewsTranslationsDataset
 
 UTC = "2026-08-03T00:00:00Z"
 
@@ -40,16 +37,9 @@ def _item(**overrides) -> NewsItem:
     return NewsItem(**base)
 
 
-def _envelope(items: list[NewsItem]) -> NewsEnvelope:
-    return NewsEnvelope(
-        generated_at=UTC,
-        schema_version="1.0.0",
-        source=["rss_news"],
-        source_updated_at=UTC,
-        freshness_status="fresh",
-        data_quality=1.0,
-        payload=NewsDataset(items=items, total=len(items), updated_at=UTC),
-    )
+def _payload(items: list[NewsItem]) -> NewsDataset:
+    """The news payload (#64): collectors return payloads; the caller assembles the envelope."""
+    return NewsDataset(items=items, total=len(items), updated_at=UTC)
 
 
 def _translations(*items: NewsTranslation) -> NewsTranslationsDataset:
@@ -105,7 +95,7 @@ def test_news_translation_legacy_shape_still_parses():
 # ---- merge_translations: no overwrite of canonical English ----
 
 def test_merge_keeps_en_summary_and_sets_summary_zh():
-    news = _envelope([_item(id="a")])
+    news = _payload([_item(id="a")])
     trans = _translations(
         NewsTranslation(
             id="a",
@@ -116,7 +106,7 @@ def test_merge_keeps_en_summary_and_sets_summary_zh():
         )
     )
     merged = _collector().merge_translations(news, trans)
-    item = merged.payload.items[0]
+    item = merged.items[0]
     assert item.summary == "Fed raised rates by 25bp"  # not overwritten with Chinese
     assert item.title == "Fed raises rates"
     assert item.summary_zh == "美联储加息25个基点"
@@ -124,7 +114,7 @@ def test_merge_keeps_en_summary_and_sets_summary_zh():
 
 
 def test_merge_zh_source_gets_english_summary_and_keeps_chinese_original():
-    news = _envelope([_item(id="z", lang="zh", source="东方财富", title="全球市场收跌", summary="美股三大指数收跌")])
+    news = _payload([_item(id="z", lang="zh", source="东方财富", title="全球市场收跌", summary="美股三大指数收跌")])
     trans = _translations(
         NewsTranslation(
             id="z",
@@ -135,7 +125,7 @@ def test_merge_zh_source_gets_english_summary_and_keeps_chinese_original():
         )
     )
     merged = _collector().merge_translations(news, trans)
-    item = merged.payload.items[0]
+    item = merged.items[0]
     assert item.summary == "US stocks fell across the board"  # English canonical filled
     assert item.summary_zh == "美股三大指数收跌"  # Chinese original preserved
     assert item.title == "Global markets fell"
@@ -143,10 +133,10 @@ def test_merge_zh_source_gets_english_summary_and_keeps_chinese_original():
 
 
 def test_merge_untranslated_item_is_unchanged():
-    news = _envelope([_item(id="a"), _item(id="b", title="Second item", summary="Second summary")])
+    news = _payload([_item(id="a"), _item(id="b", title="Second item", summary="Second summary")])
     trans = _translations(NewsTranslation(id="a", title_zh="美联储加息", summary_zh="美联储加息25个基点"))
     merged = _collector().merge_translations(news, trans)
-    kept = merged.payload.items[1]
+    kept = merged.items[1]
     assert kept.id == "b"
     assert kept.summary == "Second summary"
     assert kept.summary_zh is None
@@ -156,19 +146,19 @@ def test_merge_untranslated_item_is_unchanged():
 def test_merge_never_overwrites_canonical_english_when_record_diverges():
     # A translation record must never silently rewrite the canonical English of an item. The
     # inequality guard restricts English-side writes to zh-source items (raw Chinese → English).
-    news = _envelope([_item(id="a")])
+    news = _payload([_item(id="a")])
     trans = _translations(
         NewsTranslation(id="a", title="Reworded title", summary="Reworded English summary", title_zh="美联储加息", summary_zh="中文摘要")
     )
     merged = _collector().merge_translations(news, trans)
-    item = merged.payload.items[0]
+    item = merged.items[0]
     assert item.summary == "Fed raised rates by 25bp"  # canonical English protected
     assert item.title == "Fed raises rates"
     assert item.summary_zh == "中文摘要"  # Chinese side still overlaid
 
 
 def test_merge_none_translations_is_noop():
-    news = _envelope([_item(id="a")])
+    news = _payload([_item(id="a")])
     merged = _collector().merge_translations(news, None)
     assert merged is news
-    assert merged.payload.items[0].summary_zh is None
+    assert merged.items[0].summary_zh is None

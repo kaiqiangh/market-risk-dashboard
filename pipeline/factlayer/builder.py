@@ -19,6 +19,7 @@ from pipeline.schemas import (
     RiskModelResult,
     SectorsEnvelope,
 )
+from pipeline.schemas.envelope import SCHEMA_VERSION
 from pipeline.utils import now_utc
 
 
@@ -33,7 +34,14 @@ class FactLayerBuilder:
         news: NewsEnvelope,
         calendar: CalendarEnvelope,
         sectors: SectorsEnvelope | None = None,
+        generated_at: str | None = None,
     ) -> FactLayer:
+        """Assemble the fact layer from the observed envelopes.
+
+        Ruling E (#66): a rebuild is not an observation. ``generated_at`` defaults to ``now``
+        for a fresh build (the pipeline just observed the data), but a rebuild passes the
+        original ``fetched_at`` so the facts never re-stamp data as freshly fetched.
+        """
         envs = {
             "macro": macro,
             "equities": equities,
@@ -50,8 +58,8 @@ class FactLayerBuilder:
         evidence_index = self._build_evidence(risk, macro, equities, crypto, news, calendar)
 
         return FactLayer(
-            generated_at=now_utc(),
-            schema_version="1.0.0",
+            generated_at=generated_at or now_utc(),
+            schema_version=SCHEMA_VERSION,
             data_freshness=data_freshness,
             risk=risk.payload,
             macro_summary=self._macro_summary(macro),

@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { datasetClient } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
 import { StatusBadge } from "@/components/layout/StatusBadge";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -165,8 +164,6 @@ export default function StatusPage() {
                   <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
                     <th className="py-1.5 pr-2 font-medium">{t("providers.domain")}</th>
                     <th className="py-1.5 pr-2 font-medium">{t("providers.provider")}</th>
-                    <th className="py-1.5 pr-2 font-medium">{t("providers.fallback")}</th>
-                    <th className="py-1.5 pr-2 font-medium">{t("providers.cache")}</th>
                     <th className="py-1.5 font-medium">{t("providers.error")}</th>
                   </tr>
                 </thead>
@@ -177,19 +174,23 @@ export default function StatusPage() {
                     const usedFallback = Boolean(info.used_fallback);
                     const fromCache = Boolean(info.from_cache);
                     const error = typeof info.error === "string" ? (info.error as string) : null;
+                    const provider = typeof info.provider === "string" ? (info.provider as string) : null;
+                    // #65: show the resolved provider and how it was served (fallback/cache)
+                    // instead of bare Yes/No booleans.
+                    const served = provider ?? t("common:data.na");
+                    const annotation = fromCache
+                      ? ` · ${t("providers.cache")}`
+                      : usedFallback
+                        ? ` · ${t("providers.fallback")}`
+                        : "";
                     return (
                       <tr key={domain} className="border-b border-border/50 last:border-0">
                         <td className="py-1.5 pr-2">{domain}</td>
-                        <td className="py-1.5 pr-2">{typeof info.provider === "string" ? info.provider : t("common:data.na")}</td>
                         <td className="py-1.5 pr-2">
-                          <Badge variant={usedFallback ? "caution" : "low"} className="px-1.5 py-0 text-[10px]">
-                            {usedFallback ? t("providers.yes") : t("providers.no")}
-                          </Badge>
-                        </td>
-                        <td className="py-1.5 pr-2">
-                          <Badge variant={fromCache ? "caution" : "secondary"} className="px-1.5 py-0 text-[10px]">
-                            {fromCache ? t("providers.yes") : t("providers.no")}
-                          </Badge>
+                          <span className="font-mono">{served}</span>
+                          {annotation ? (
+                            <span className="ml-1 text-[10px] text-muted-foreground">{annotation}</span>
+                          ) : null}
                         </td>
                         <td className="py-1.5">
                           {degraded ? (

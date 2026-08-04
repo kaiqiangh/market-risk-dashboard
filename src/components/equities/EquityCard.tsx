@@ -7,7 +7,7 @@ import type { EquityAsset } from "@/schemas";
 
 /**
  * EquityCard: key US equities card (NVDA/AVGO/MU/AMD/TSLA, frozen for MVP G2).
- * Card-level indicators: price / 1d / 1w / 1m / RSI / MA50 / MA200 / 5Y percentile.
+ * Card-level indicators: price / 1d / 1w / 1m / RSI / MA50 / MA200 / 1Y percentile.
  */
 export interface EquityCardProps {
   asset: EquityAsset;
@@ -76,9 +76,9 @@ export function EquityCard({ asset }: EquityCardProps) {
             </dd>
           </div>
           <div className="col-span-3 rounded bg-muted/50 px-1.5 py-1 text-center">
-            <dt className="text-[9px] uppercase text-muted-foreground">{t("metric.percentile5y")}</dt>
+            <dt className="text-[9px] uppercase text-muted-foreground">{t("metric.percentile1y")}</dt>
             <dd className="font-medium tabular-nums">
-              {asset.percentile_5y === null ? t("common:data.na") : formatPercentile(asset.percentile_5y, locale)}
+              {asset.percentile_1y === null ? t("common:data.na") : formatPercentile(asset.percentile_1y, locale)}
             </dd>
           </div>
         </dl>

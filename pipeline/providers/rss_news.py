@@ -23,6 +23,7 @@ from urllib.parse import urlparse
 import feedparser
 import httpx
 
+from pipeline.degrade import cache_max_age_hours
 from pipeline.providers.base import BaseProvider, ProviderError, ProviderHealth
 from pipeline.utils import now_utc
 
@@ -46,7 +47,8 @@ class RssNewsProvider(BaseProvider):
         self.max_retries = int(degrade.get("max_retries", 2))
         self.backoff_base = float(degrade.get("backoff_base_seconds", 1.0))
         self.jitter = bool(degrade.get("jitter", True))
-        self.cache_max_age_hours = float(degrade.get("cache_max_age_hours", 24))
+        # #66: the cache cap is read from one place (pipeline.degrade.cache_max_age_hours).
+        self.cache_max_age_hours = cache_max_age_hours()
         self.cache_dir = self.settings.artifacts_dir / "cache"
         self._last_attempts = 0
         # Source reachability: source_id → {"ok": bool, "error": str|None, "updated_at": str}

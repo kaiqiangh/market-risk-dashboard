@@ -34,11 +34,19 @@ from pipeline.providers import ProviderRegistry, build_registry
 from pipeline.report import write_run_report
 from pipeline.risk.model import RiskModel
 from pipeline.schemas import (
+    BaseEnvelope,
+    CalendarEnvelope,
+    CryptoEnvelope,
     DashboardAsset,
     DashboardEnvelope,
     DashboardPayload,
+    EquitiesEnvelope,
+    MacroEnvelope,
+    NewsEnvelope,
     RiskEnvelope,
+    SectorsEnvelope,
 )
+from pipeline.schemas.envelope import assemble_envelope
 from pipeline.settings import settings
 from pipeline.storage import StorageWriter
 from pipeline.universe import AssetUniverse
@@ -167,31 +175,184 @@ def _read_prev_risk(writer: StorageWriter) -> tuple[float | None, dict[str, floa
 
 
 # ============================================================
-# Unified freshness write (P1-7)
+# Dataset health for the run report (#63)
 # ============================================================
 
-def _finalize_and_write(
-    writer: StorageWriter,
-    name: str,
-    env: Any,
-    degraded: bool,
-    extra_reason: str = "",
-) -> Any:
-    """Unified freshness determination + write + update metadata/freshness.json (P1-7).
+#: Every dataset a `--full` run is expected to publish.
+FULL_RUN_DATASETS: tuple[str, ...] = (
+    "macro", "equities", "sectors", "crypto", "news", "calendar", "risk", "facts", "dashboard",
+)
 
-    Collectors no longer fill freshness_status themselves; after writing, recompute
-    against the expected frequency from sources.yaml (fresh/delayed/stale/missing/degraded
-    five states), then persist to the envelope and freshness.json.
+#: Datasets each command attempts. Anything in FULL_RUN_DATASETS and not listed here was
+#: skipped by design — still worth naming, because a `--market-only` run leaves most of
+#: the dashboard on yesterday's data and an operator should not have to infer that.
+COMMAND_DATASETS: dict[str, tuple[str, ...]] = {
+    "full": FULL_RUN_DATASETS,
+    "market-only": ("equities", "sectors", "crypto"),
+    "macro-only": ("macro",),
+    "news-only": ("news",),
+    "fact-layer": ("facts",),
+}
+
+#: metadata/freshness.json status meaning the dataset produced nothing at all.
+FAILED_FRESHNESS_STATUSES: frozenset[str] = frozenset({"missing"})
+
+#: Statuses meaning the dataset published something we do not fully trust.
+#: `delayed` is deliberately excluded: it is the ordinary state of a dataset whose
+#: provider updates on a slower cadence than the run, and counting it would make
+#: `clean` false on nearly every run, which would make the field useless.
+DEGRADED_FRESHNESS_STATUSES: frozenset[str] = frozenset({"degraded", "stale"})
+
+
+def dataset_health(writer: StorageWriter, command: str, *, run_started_at: str) -> dict[str, list[str]]:
+    """Classify this run's datasets into failed / degraded / skipped.
+
+    Reads the freshness metadata the run just wrote, which is already the system's
+    record of per-dataset outcome, rather than threading a parallel tally through
+    `_run_collection`. Datasets the command never attempted are reported as skipped.
+
+    `run_started_at` is the wall-clock UTC instant (ISO 8601 + Z, same format as
+    `now_utc`) at which this run began. It distinguishes "written during THIS run"
+    from "written by a previous run": an entry whose freshness record predates the
+    run start is a stale record, not evidence the dataset survived — a dataset that
+    died before its freshness write must be loud, not masked by yesterday's `fresh`.
     """
-    generated_at = str(getattr(env, "generated_at", "") or "")
-    status = finalize_freshness(name, generated_at or None, degraded)
-    updated = env.model_copy(update={"freshness_status": status})
-    writer.write_dataset(name, updated)
+    attempted = COMMAND_DATASETS.get(command, FULL_RUN_DATASETS)
+    metadata = writer.read_freshness()
+
+    failed: list[str] = []
+    degraded: list[str] = []
+    for name in attempted:
+        entry = metadata.get(name)
+        if not isinstance(entry, dict):
+            # Attempted but no record written: the write did not complete.
+            failed.append(name)
+            continue
+        # QA finding 1: an entry not written during this run is a previous run's record,
+        # and must not mask a dataset that died before its freshness write. All freshness
+        # timestamps come from `now_utc()` (ISO 8601 UTC, second precision, + Z suffix),
+        # so lexicographic order is chronological order. An entry with no usable
+        # timestamp cannot be proven current and is treated as stale as well.
+        updated_at = str(entry.get("updated_at", ""))
+        if updated_at < run_started_at:
+            failed.append(name)
+            continue
+        status = str(entry.get("status", ""))
+        if status in FAILED_FRESHNESS_STATUSES:
+            failed.append(name)
+        elif status in DEGRADED_FRESHNESS_STATUSES:
+            degraded.append(name)
+
+    skipped = [name for name in FULL_RUN_DATASETS if name not in attempted]
+    return {"failed": failed, "degraded": degraded, "skipped": skipped}
+
+
+# ============================================================
+# Unified freshness write (P1-7 / #64 single freshness author)
+# ============================================================
+
+#: Envelope model per published dataset (the single assembly path maps name -> model).
+_ENVELOPE_MODELS: dict[str, type[BaseEnvelope]] = {
+    "macro": MacroEnvelope,
+    "equities": EquitiesEnvelope,
+    "sectors": SectorsEnvelope,
+    "crypto": CryptoEnvelope,
+    "news": NewsEnvelope,
+    "calendar": CalendarEnvelope,
+    "risk": RiskEnvelope,
+    "dashboard": DashboardEnvelope,
+}
+
+
+def _assemble(
+    name: str,
+    payload: Any,
+    degraded: bool,
+    *,
+    provider: str,
+    used_fallback: bool = False,
+    from_cache: bool = False,
+    data_quality: float,
+    generated_at: str | None = None,
+    source_updated_at: str | None = None,
+) -> BaseEnvelope:
+    """Build the envelope for `name` through the single assembly path (#64/#65).
+
+    Freshness is computed by :func:`pipeline.schemas.envelope.assemble_envelope` via
+    ``finalize_freshness`` — the only producer. `provider` is the resolved provider that
+    actually served the dataset (#65): it becomes the envelope's source and provenance.
+    """
+    return assemble_envelope(
+        _ENVELOPE_MODELS[name],
+        payload,
+        dataset=name,
+        degraded=degraded,
+        provider=provider,
+        used_fallback=used_fallback,
+        from_cache=from_cache,
+        data_quality=data_quality,
+        generated_at=generated_at,
+        source_updated_at=source_updated_at,
+    )
+
+
+def _provider_kwargs(meta: dict[str, Any], dataset: str | None, default: str = "unavailable") -> dict[str, Any]:
+    """Extract assemble_envelope provider kwargs from a collector meta (#65).
+
+    ``dataset`` names the per-dataset outcome (market returns a ``providers`` dict); ``None``
+    reads the single ``provider_outcome`` key (news/calendar).
+    """
+    outcome = None
+    if dataset is not None:
+        outcome = meta.get("providers", {}).get(dataset)
+    else:
+        outcome = meta.get("provider_outcome")
+    if not isinstance(outcome, dict):
+        outcome = {"provider": default, "used_fallback": False, "from_cache": False}
+    return {
+        "provider": str(outcome.get("provider", default)),
+        "used_fallback": bool(outcome.get("used_fallback", False)),
+        "from_cache": bool(outcome.get("from_cache", False)),
+    }
+
+
+def _write_finalized(writer: StorageWriter, name: str, env: BaseEnvelope, extra_reason: str = "") -> BaseEnvelope:
+    """Persist an already-assembled envelope and record its freshness metadata."""
+    writer.write_dataset(name, env)
+    status = env.freshness_status
     reason = {"degraded": "degraded", "missing": "missing"}.get(status, "ok")
     if extra_reason:
         reason = f"{reason} ({extra_reason})"
     writer.update_freshness(name, status, reason)
-    return updated
+    return env
+
+
+def _finalize_and_write(
+    writer: StorageWriter,
+    name: str,
+    payload: Any,
+    degraded: bool,
+    *,
+    provider: str,
+    used_fallback: bool = False,
+    from_cache: bool = False,
+    data_quality: float,
+    generated_at: str | None = None,
+    source_updated_at: str | None = None,
+    extra_reason: str = "",
+) -> BaseEnvelope:
+    """Assemble through the single path, write, and update metadata/freshness.json (#64/#65).
+
+    Collectors no longer fill freshness_status themselves; this recomputes against the
+    expected frequency from sources.yaml (fresh/delayed/stale/missing/degraded), then
+    persists to the envelope and freshness.json. The resolved provider (and whether it was a
+    fallback / cache replay) is published as source + provenance (#65).
+    """
+    env = _assemble(name, payload, degraded, provider=provider,
+                    used_fallback=used_fallback, from_cache=from_cache,
+                    data_quality=data_quality, generated_at=generated_at,
+                    source_updated_at=source_updated_at)
+    return _write_finalized(writer, name, env, extra_reason)
 
 
 def _write_analysis_freshness(writer: StorageWriter) -> None:
@@ -227,10 +388,14 @@ def _build_dashboard(
     crypto: Any,
     sectors: Any,
     calendar: Any,
-    data_quality: float,
-    degraded: bool,
-) -> DashboardEnvelope:
-    """Aggregate key fields from risk/crypto/equities/sectors/calendar (architecture §2 L299 + §3.6)."""
+) -> DashboardPayload:
+    """Aggregate key fields from risk/crypto/equities/sectors/calendar (architecture §2 L299 + §3.6).
+
+    Returns the payload only (#64 follow-up): the envelope's schema_version / source /
+    source_updated_at / freshness_status / data_quality are supplied by the caller through
+    the single assembly path — the values a hand-built envelope carries are discarded by
+    ``_finalize_and_write`` and were a latent trap.
+    """
     r = risk_env.payload
 
     cross_asset: list[DashboardAsset] = []
@@ -248,22 +413,13 @@ def _build_dashboard(
         for t in sectors.payload.themes:
             sector_performance.append({"key": t.key, "label": t.label, "label_zh": t.label_zh, "change_1d": t.change_1d})
 
-    payload = DashboardPayload(
+    return DashboardPayload(
         risk=r,
         regime=r.regime,
         top_drivers=r.top_drivers,
         cross_asset=cross_asset,
         catalysts=catalysts,
         sector_performance=sector_performance,
-    )
-    return DashboardEnvelope(
-        generated_at=now_utc(),
-        schema_version="1.0.0",
-        source=["risk_model", "yfinance", "coingecko", "fmp", "rss_news"],
-        source_updated_at=now_utc(),
-        freshness_status="degraded" if degraded else "fresh",
-        data_quality=round(data_quality, 3),
-        payload=payload,
     )
 
 
@@ -306,9 +462,10 @@ def _run_collection(command: str) -> dict[str, Any]:
             sectors=market["sectors"],
             histories=market["histories"],
         )
+        results["market_meta"] = market
         results["degraded"].extend(market["degraded"])
         results["provider_status"].update(market["provider_status"])
-        results["qualities"].extend([market["equities"].data_quality, market["crypto"].data_quality, market["sectors"].data_quality])
+        results["qualities"].append(market["data_quality"])
         results["durations"]["market"] = time.monotonic() - t0
 
     if need_macro:
@@ -320,7 +477,7 @@ def _run_collection(command: str) -> dict[str, Any]:
         results["degraded"].extend(macro_meta["degraded"])
         results["provider_status"].update(macro_meta["provider_status"])
         results["series_history"] = macro_meta.get("series_history", {})
-        results["qualities"].append(macro.data_quality)
+        results["qualities"].append(macro_meta["data_quality"])
         results["durations"]["macro"] = time.monotonic() - t0
 
     if need_calendar:
@@ -328,10 +485,11 @@ def _run_collection(command: str) -> dict[str, Any]:
         ccc = CalendarCollector(registry, settings)
         calendar, cal_meta = ccc.collect()
         results["calendar"] = calendar
+        results["calendar_meta"] = cal_meta
         results["calendar_degraded"] = bool(cal_meta["degraded"])
         results["degraded"].extend(cal_meta["degraded"])
         results["provider_status"].update(cal_meta["provider_status"])
-        results["qualities"].append(calendar.data_quality)
+        results["qualities"].append(cal_meta["data_quality"])
         results["durations"]["calendar"] = time.monotonic() - t0
 
     if need_news:
@@ -349,18 +507,19 @@ def _run_collection(command: str) -> dict[str, Any]:
                 _json.loads(translations_path.read_text(encoding="utf-8"))
             )
             news = ncc.merge_translations(news, translations)
-            merged_count = sum(1 for it in news.payload.items if it.title_zh)
+            merged_count = sum(1 for it in news.items if it.title_zh)
             writer.record_translations("merged", merged_count, "news.zh-translations.json merged into news.json")
         else:
             writer.record_translations("missing", 0, "news.zh-translations.json not found (AI did not produce Chinese translation)")
         results["news"] = news
+        results["news_meta"] = news_meta
         results["news_degraded"] = bool(news_meta["degraded"])
         results["degraded"].extend(news_meta["degraded"])
         results["provider_status"]["news"] = {
             "provider": news_meta.get("provider", "rss_news"),
             "sources": news_meta.get("source_status", {}),
         }
-        results["qualities"].append(news.data_quality)
+        results["qualities"].append(news_meta["data_quality"])
         results["durations"]["news"] = time.monotonic() - t0
 
     results["durations"]["collection"] = time.monotonic() - started
@@ -369,13 +528,42 @@ def _run_collection(command: str) -> dict[str, Any]:
 
 def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command: str) -> tuple[bool, str | None]:
     """Compute risk + fact layer + dashboard + write + unified freshness + validate. Returns (ok, error)."""
+    degraded = bool(results["degraded"])
+    market_meta = results.get("market_meta", {})
+    macro_meta = results.get("macro_meta", {})
+    news_meta = results.get("news_meta", {})
+    calendar_meta = results.get("calendar_meta", {})
     try:
+        # #64/#65: assemble every envelope through the single path (freshness = finalize_freshness;
+        # source + provenance = the resolved provider from the collector's outcome).
+        macro_outcome = macro_meta.get("provider", {"provider": "unavailable", "used_fallback": False, "from_cache": False})
+        macro = _assemble("macro", results["macro"], bool(macro_meta.get("degraded")),
+                          provider=str(macro_outcome.get("provider", "unavailable")),
+                          used_fallback=bool(macro_outcome.get("used_fallback", False)),
+                          from_cache=bool(macro_outcome.get("from_cache", False)),
+                          data_quality=macro_meta.get("data_quality", 1.0))
+        equities = _assemble("equities", results["equities"], degraded,
+                             **_provider_kwargs(market_meta, "equities"),
+                             data_quality=market_meta.get("data_quality", 1.0))
+        sectors = _assemble("sectors", results["sectors"], degraded,
+                            **_provider_kwargs(market_meta, "sectors"),
+                            data_quality=market_meta.get("data_quality", 1.0))
+        crypto = _assemble("crypto", results["crypto"], degraded,
+                           **_provider_kwargs(market_meta, "crypto"),
+                           data_quality=market_meta.get("data_quality", 1.0))
+        news = _assemble("news", results["news"], bool(results.get("news_degraded", False)),
+                         **_provider_kwargs(news_meta, None, default="rss_news"),
+                         data_quality=news_meta.get("data_quality", 1.0))
+        calendar = _assemble("calendar", results["calendar"], bool(results.get("calendar_degraded", False)),
+                             **_provider_kwargs(calendar_meta, None, default="fmp"),
+                             data_quality=calendar_meta.get("data_quality", 1.0))
+
         risk_model = RiskModel(settings)
         prev_score, prev_dims, risk_history = _read_prev_risk(writer)
         ctx = _build_risk_context(
-            macro=results["macro"],
-            equities=results["equities"],
-            crypto=results["crypto"],
+            macro=macro,
+            equities=equities,
+            crypto=crypto,
             histories=results.get("histories", {}),
             qualities=results["qualities"],
             prev_total_score=prev_score,
@@ -384,54 +572,49 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             series_history=results.get("series_history", {}),
         )
         risk_result = risk_model.score(ctx)
-        risk_env = RiskEnvelope(
-            generated_at=now_utc(),
-            schema_version="1.0.0",
-            source=["risk_model", "fred", "yfinance"],
-            source_updated_at=now_utc(),
-            freshness_status="degraded" if results["degraded"] else "fresh",
-            data_quality=ctx["data_quality"],
-            payload=risk_result,
-        )
+        risk_env = _assemble("risk", risk_result, degraded,
+                             provider="risk_model",
+                             data_quality=ctx["data_quality"])
 
         builder = FactLayerBuilder()
         facts = builder.build(
             risk=risk_env,
-            macro=results["macro"],
-            equities=results["equities"],
-            crypto=results["crypto"],
-            news=results["news"],
-            calendar=results["calendar"],
-            sectors=results.get("sectors"),
+            macro=macro,
+            equities=equities,
+            crypto=crypto,
+            news=news,
+            calendar=calendar,
+            sectors=sectors,
         )
     except Exception as exc:  # noqa: BLE001
         return False, f"risk/fact layer computation failed: {exc}"
 
     # ---- Write (persist after unified freshness determination, P1-7) ----
     try:
-        degraded = bool(results["degraded"])
-        macro = _finalize_and_write(writer, "macro", results["macro"], bool(results["macro_meta"].get("degraded")))
-        equities = _finalize_and_write(writer, "equities", results["equities"], degraded)
-        sectors = _finalize_and_write(writer, "sectors", results["sectors"], degraded)
-        crypto = _finalize_and_write(writer, "crypto", results["crypto"], degraded)
-        news = _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)))
-        calendar = _finalize_and_write(writer, "calendar", results["calendar"], bool(results.get("calendar_degraded", False)))
-        risk_env = _finalize_and_write(writer, "risk", risk_env, degraded)
+        macro = _write_finalized(writer, "macro", macro)
+        equities = _write_finalized(writer, "equities", equities)
+        sectors = _write_finalized(writer, "sectors", sectors)
+        crypto = _write_finalized(writer, "crypto", crypto)
+        news = _write_finalized(writer, "news", news)
+        calendar = _write_finalized(writer, "calendar", calendar)
+        risk_env = _write_finalized(writer, "risk", risk_env)
         writer.write_standalone("facts", facts.model_dump(mode="json"))
         facts_status = "degraded" if degraded else finalize_freshness("facts", str(risk_env.generated_at), False)
         writer.update_freshness("facts", facts_status, "degraded" if facts_status == "degraded" else "ok")
 
         # dashboard (P1-5)
-        dashboard_env = _build_dashboard(
+        dashboard_payload = _build_dashboard(
             risk_env=risk_env,
             equities=equities,
             crypto=crypto,
             sectors=sectors,
             calendar=calendar,
-            data_quality=ctx["data_quality"],
-            degraded=degraded,
         )
-        dashboard_env = _finalize_and_write(writer, "dashboard", dashboard_env, degraded)
+        dashboard_env = _finalize_and_write(
+            writer, "dashboard", dashboard_payload, degraded,
+            provider="risk_model",
+            data_quality=round(ctx["data_quality"], 3),
+        )
 
         # AI analysis freshness (P0-4)
         _write_analysis_freshness(writer)
@@ -472,6 +655,55 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
 # main
 # ============================================================
 
+def _finish_run(command: str, results: dict[str, Any], elapsed: float, health: dict[str, list[str]]) -> int:
+    """Write the run report for a successful command and print the summary.
+
+    Shared by `--full` and the single-domain commands: the report is what makes a
+    degraded or partial run distinguishable from a clean one (#63 AC). A partial command
+    that skipped datasets is never clean — that is the point of the skipped list.
+    """
+    write_run_report(
+        settings.artifacts_dir,
+        command=command,
+        ok=True,
+        durations=results.get("durations", {}),
+        provider_status=results.get("provider_status", {}),
+        degraded=results.get("degraded", []),
+        dataset_counts={"latest": len(list((settings.data_dir / "latest").glob("*.json")))},
+        failed_datasets=health["failed"],
+        skipped_datasets=health["skipped"],
+        degraded_datasets=health["degraded"],
+        proxy_discounts=_risk_proxy_discounts(results),
+    )
+    _print_summary(command, results, elapsed)
+    return 0
+
+
+def _risk_proxy_discounts(results: dict[str, Any]) -> list[dict[str, Any]]:
+    """The trust discounts that applied to the top drivers (#69), for the run report.
+
+    Each entry names the indicator and the combined discount (1.0 none; proxy discount;
+    proxy × degrade factor), so a 0.64 is never an unexplained number.
+    """
+    risk_env = results.get("risk")
+    payload = getattr(risk_env, "payload", None)
+    if payload is None:
+        return []
+    out: list[dict[str, Any]] = []
+    for d in getattr(payload, "top_drivers", []):
+        if d.discount < 1.0:
+            out.append(
+                {
+                    "indicator_key": d.indicator_key,
+                    "dimension_key": d.dimension_key,
+                    "label": d.label,
+                    "is_proxy": d.is_proxy,
+                    "discount": d.discount,
+                }
+            )
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     command = _resolve_command(args)
@@ -498,32 +730,47 @@ def main(argv: list[str] | None = None) -> int:
         return _run_backfill()
 
     started = time.monotonic()
+    run_started_at = now_utc()
     results = _run_collection(command)
 
     # Single-domain commands write only the corresponding dataset (unified freshness, P1-7)
     if command == "market-only":
         writer = StorageWriter(settings.data_dir)
-        _finalize_and_write(writer, "equities", results["equities"], bool(results["degraded"]))
-        _finalize_and_write(writer, "crypto", results["crypto"], bool(results["degraded"]))
-        _finalize_and_write(writer, "sectors", results["sectors"], bool(results["degraded"]))
+        market_meta = results.get("market_meta", {})
+        degraded = bool(results["degraded"])
+        _finalize_and_write(writer, "equities", results["equities"], degraded,
+                            **_provider_kwargs(market_meta, "equities"),
+                            data_quality=market_meta.get("data_quality", 1.0))
+        _finalize_and_write(writer, "crypto", results["crypto"], degraded,
+                            **_provider_kwargs(market_meta, "crypto"),
+                            data_quality=market_meta.get("data_quality", 1.0))
+        _finalize_and_write(writer, "sectors", results["sectors"], degraded,
+                            **_provider_kwargs(market_meta, "sectors"),
+                            data_quality=market_meta.get("data_quality", 1.0))
         writer.write_sources_metadata(results["provider_status"])
-        _print_summary(command, results, time.monotonic() - started)
-        return 0
+        health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
+        return _finish_run(command, results, time.monotonic() - started, health)
 
     if command == "macro-only":
         writer = StorageWriter(settings.data_dir)
-        _finalize_and_write(writer, "macro", results["macro"], bool(results["macro_meta"].get("degraded")))
+        macro_meta = results.get("macro_meta", {})
+        _finalize_and_write(writer, "macro", results["macro"], bool(macro_meta.get("degraded")),
+                            **_provider_kwargs(macro_meta, None, default="fred"),
+                            data_quality=macro_meta.get("data_quality", 1.0))
         _write_analysis_freshness(writer)
         writer.write_sources_metadata(results["provider_status"])
-        _print_summary(command, results, time.monotonic() - started)
-        return 0
+        health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
+        return _finish_run(command, results, time.monotonic() - started, health)
 
     if command == "news-only":
         writer = StorageWriter(settings.data_dir)
-        _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)))
+        news_meta = results.get("news_meta", {})
+        _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)),
+                            **_provider_kwargs(news_meta, None, default="rss_news"),
+                            data_quality=news_meta.get("data_quality", 1.0))
         writer.write_sources_metadata(results["provider_status"])
-        _print_summary(command, results, time.monotonic() - started)
-        return 0
+        health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
+        return _finish_run(command, results, time.monotonic() - started, health)
 
     # full / fact-layer
     if command == "fact-layer":
@@ -533,18 +780,10 @@ def main(argv: list[str] | None = None) -> int:
         ok, error = _run_risk_and_write(results, writer, command)
         results["durations"]["total"] = time.monotonic() - started
 
+    health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
+
     if ok:
-        write_run_report(
-            settings.artifacts_dir,
-            command=command,
-            ok=True,
-            durations=results.get("durations", {}),
-            provider_status=results.get("provider_status", {}),
-            degraded=results.get("degraded", []),
-            dataset_counts={"latest": len(list((settings.data_dir / "latest").glob("*.json")))},
-        )
-        _print_summary(command, results, results.get("durations", {}).get("total", 0.0))
-        return 0
+        return _finish_run(command, results, results.get("durations", {}).get("total", 0.0), health)
 
     print(f"[pipeline] failed: {error}", file=sys.stderr)
     write_run_report(
@@ -554,6 +793,9 @@ def main(argv: list[str] | None = None) -> int:
         provider_status=results.get("provider_status", {}),
         degraded=results.get("degraded", []),
         dataset_counts={}, error=error,
+        failed_datasets=health["failed"],
+        skipped_datasets=health["skipped"],
+        degraded_datasets=health["degraded"],
     )
     return 1
 
@@ -566,7 +808,15 @@ def _run_fact_layer_only() -> tuple[bool, str | None]:
         data = writer.read_latest(name)
         return model.model_validate(data) if data else None
 
-    from pipeline.schemas import CalendarEnvelope, CryptoEnvelope, EquitiesEnvelope, MacroEnvelope, NewsEnvelope, RiskEnvelope
+    from pipeline.schemas import (
+        CalendarEnvelope,
+        CryptoEnvelope,
+        EquitiesEnvelope,
+        MacroEnvelope,
+        NewsEnvelope,
+        RiskEnvelope,
+        SectorsEnvelope,
+    )
 
     macro = load("macro", MacroEnvelope)
     equities = load("equities", EquitiesEnvelope)
@@ -581,9 +831,27 @@ def _run_fact_layer_only() -> tuple[bool, str | None]:
         return False, "fact layer rebuild requires latest/*.json to exist (run --full first)"
 
     builder = FactLayerBuilder()
-    facts = builder.build(risk=risk, macro=macro, equities=equities, crypto=crypto, news=news, calendar=calendar, sectors=sectors)
+    # Ruling E (#66): a rebuild is not an observation — preserve the original fetched_at
+    # and recompute status from it; never re-stamp the facts as freshly fetched.
+    original_generated_at = None
+    existing_facts = writer.read_latest("facts")
+    if isinstance(existing_facts, dict) and isinstance(existing_facts.get("generated_at"), str):
+        original_generated_at = existing_facts["generated_at"]
+    if original_generated_at is None:
+        # First rebuild without an existing facts.json: the facts aggregate every input,
+        # so they are only as fresh as their oldest observation.
+        original_generated_at = min(
+            str(env.generated_at) for env in (macro, equities, crypto, news, calendar, risk)
+        )
+    facts = builder.build(
+        risk=risk, macro=macro, equities=equities, crypto=crypto, news=news, calendar=calendar,
+        sectors=sectors, generated_at=original_generated_at,
+    )
     writer.write_standalone("facts", facts.model_dump(mode="json"))
-    writer.update_freshness("facts", "fresh", "rebuilt")
+    # Ruling E: recompute the freshness status from the preserved fetched_at, never re-stamp
+    # the rebuild as freshly observed.
+    facts_status = finalize_freshness("facts", original_generated_at, False)
+    writer.update_freshness("facts", facts_status, "rebuilt")
     _write_analysis_freshness(writer)
     return True, None
 

@@ -3,21 +3,23 @@
  * Page tests inject it via vi.stubGlobal("fetch", installFixtureFetch()).
  */
 import { vi } from "vitest";
-import macroFixture from "../../fixtures/macro.json";
-import equitiesFixture from "../../fixtures/equities.json";
-import sectorsFixture from "../../fixtures/sectors.json";
-import cryptoFixture from "../../fixtures/crypto.json";
-import newsFixture from "../../fixtures/news.json";
-import calendarFixture from "../../fixtures/calendar.json";
 import riskFixture from "../../fixtures/risk.json";
 import factsFixture from "../../fixtures/facts.json";
 import analysisZhFixture from "../../fixtures/analysis.zh-CN.json";
-import analysisEnFixture from "../../fixtures/analysis.en.json";
-import riskHistoryFixture from "../../fixtures/risk-history-30d.json";
-import marketHistoryFixture from "../../fixtures/market-history-30d.json";
-import sourcesFixture from "../../fixtures/sources.json";
-import freshnessFixture from "../../fixtures/freshness.json";
-import schemaVersionFixture from "../../fixtures/schema-version.json";
+import {
+  analysisEnFixture,
+  calendarFixture,
+  cryptoFixture,
+  equitiesFixture,
+  freshnessFixture,
+  macroFixture,
+  marketHistory30dFixture as marketHistoryFixture,
+  newsFixture,
+  riskHistory30dFixture as riskHistoryFixture,
+  schemaVersionFixture,
+  sectorsFixture,
+  sourcesFixture,
+} from "./fixtureData";
 
 /** URL suffix → fixture mapping. */
 export const FIXTURE_MAP: Record<string, unknown> = {

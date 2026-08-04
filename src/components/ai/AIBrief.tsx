@@ -125,6 +125,33 @@ export function AIBrief({ analysis, loading = false, error = false }: AIBriefPro
     );
   }
 
+  // #66: honest empty state — when the inputs the brief was built from were degraded or
+  // missing, the brief must say plainly it has no fresh basis rather than narrate numbers
+  // it knows are not trustworthy.
+  const hasFreshBasis = !["degraded", "missing"].includes(analysis.data_freshness);
+  if (!hasFreshBasis) {
+    return (
+      <Card className={QUARANTINE_CLASS} data-testid="ai-brief-no-basis">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <ShieldAlert className="h-4 w-4 text-fresh-warn" aria-hidden />
+            {t("aiBrief.title")}
+            <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">AI</span>
+            <span className="ml-auto flex items-center gap-2 text-[11px] font-normal text-muted-foreground">
+              <StatusBadge status={analysis.data_freshness} />
+            </span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col gap-2 rounded-sm border border-fresh-warn/40 bg-fresh-warn/5 p-4">
+            <p className="text-sm font-medium text-foreground">{t("aiBrief.noFreshBasis")}</p>
+            <p className="text-xs text-muted-foreground">{t("aiBrief.noFreshBasisHint")}</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   const stateTone = stateToneFromString(analysis.market_state);
 
   return (
@@ -150,6 +177,13 @@ export function AIBrief({ analysis, loading = false, error = false }: AIBriefPro
             {t("aiBrief.confidence")}: <span className="font-semibold tabular-nums text-foreground">{formatRatio(analysis.confidence, locale)}</span>
           </span>
         </div>
+        {/* #71 / ruling G: on `indeterminate` the regime section is KEPT and states WHY —
+            a missing section would be indistinguishable from a rendering bug. */}
+        {analysis.market_regime === "indeterminate" ? (
+          <p className="mt-2 rounded-sm border border-border bg-surface-2/40 px-2 py-1.5 text-[11px] text-muted-foreground">
+            {t("aiBrief.regimeIndeterminate")}
+          </p>
+        ) : null}
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <p className="text-sm leading-relaxed text-foreground">{analysis.summary}</p>
