@@ -121,6 +121,7 @@ class NewsCollector:
                     id=dedupe_id,
                     title=title,
                     title_zh=None,
+                    lang="zh" if raw.get("lang", "en") == "zh" else "en",
                     source=source,
                     url=raw.get("url", ""),
                     published_at=published,
@@ -146,22 +147,37 @@ class NewsCollector:
         )
         return envelope, {"degraded": self.degraded, "provider": provider, "source_status": source_status}
 
-    # ---- Chinese translation merge (architecture §1.5 step 4) ----
+    # ---- Chinese translation merge (architecture §1.5 step 4; ADR-0003) ----
 
     def merge_translations(self, news: NewsEnvelope, translations: NewsTranslationsDataset | None) -> NewsEnvelope:
-        """Merge AI-produced Chinese translations into news.json (title_zh/summary_zh)."""
+        """Merge AI-produced symmetric full-pair translations into news.json.
+
+        Canonical bilingual model (ADR-0003): `summary`/`title` stay English, `summary_zh`/`title_zh`
+        carry Chinese. A translation record carries both sides; this copies whatever it provides and
+        never replaces the canonical English with Chinese (the pre-ADR-0003 overwrite bug).
+        """
         if translations is None or not translations.items:
             return news
         by_id = {t.id: t for t in translations.items}
         updated_items = []
         for item in news.payload.items:
             trans = by_id.get(item.id)
-            if trans is not None:
-                updated_items.append(
-                    item.model_copy(update={"title_zh": trans.title_zh, "summary": trans.summary_zh or item.summary})
-                )
-            else:
+            if trans is None:
                 updated_items.append(item)
+                continue
+            update: dict[str, Any] = {}
+            # Chinese side (en-source items): overlay the translation.
+            for field, value in (("title_zh", trans.title_zh), ("summary_zh", trans.summary_zh)):
+                if value:
+                    update[field] = value
+            # English side: written only for zh-source items, whose canonical English is missing
+            # (their raw feed text is Chinese). en-source items already hold canonical English —
+            # the record's English side is their own text verbatim and is never rewritten.
+            if item.lang == "zh":
+                for field, value in (("title", trans.title), ("summary", trans.summary)):
+                    if value:
+                        update[field] = value
+            updated_items.append(item.model_copy(update=update) if update else item)
         return news.model_copy(update={"payload": news.payload.model_copy(update={"items": updated_items})})
 
 

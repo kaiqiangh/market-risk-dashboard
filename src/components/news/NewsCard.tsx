@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { ExternalLink, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/Card";
 import { ImportanceBadge } from "./ImportanceBadge";
-import { formatRelativeTime } from "@/lib/format";
+import { formatRelativeTime, isZh } from "@/lib/format";
 import type { NewsItem } from "@/schemas";
 
 /**
@@ -22,7 +22,11 @@ function SentimentIcon({ sentiment }: { sentiment: NewsItem["sentiment"] }) {
 export function NewsCard({ item }: NewsCardProps) {
   const { t, i18n } = useTranslation("news");
   const locale = i18n.language;
-  const title = locale.startsWith("zh") && item.title_zh ? item.title_zh : item.title;
+  const zh = isZh(locale);
+  // Canonical bilingual (ADR-0003): prefer the active locale's field, fall back to the other
+  // language so a missing translation never blanks the card.
+  const title = zh ? (item.title_zh || item.title) : (item.title || item.title_zh);
+  const summary = zh ? (item.summary_zh || item.summary) : (item.summary || item.summary_zh);
 
   return (
     <Card data-testid="news-card">
@@ -45,7 +49,7 @@ export function NewsCard({ item }: NewsCardProps) {
           </a>
         </div>
         <p className="break-words text-sm font-medium leading-snug text-foreground">{title}</p>
-        {item.summary ? <p className="break-words text-xs leading-relaxed text-muted-foreground">{item.summary}</p> : null}
+        {summary ? <p className="break-words text-xs leading-relaxed text-muted-foreground">{summary}</p> : null}
         <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground">
           <span className="rounded bg-muted px-1.5 py-0.5">{item.source}</span>
           {item.assets.length > 0 ? (
