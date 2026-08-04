@@ -156,19 +156,21 @@ class NewsCollector:
         items = items[:50]
 
         quality = self._quality()
-        envelope = NewsEnvelope(
-            generated_at=now_utc(), schema_version="1.0.0",
-            source=[provider], source_updated_at=now_utc(),
-            freshness_status="degraded" if self.degraded else "fresh",
-            data_quality=round(quality, 3),
-            payload=NewsDataset(items=items, total=len(items), updated_at=now_utc()),
-        )
-        return envelope, {"degraded": self.degraded, "provider": provider, "source_status": source_status}
+        # #64: return payload + provider outcome; the caller assembles the envelope and
+        # finalizes freshness through the single assembly path.
+        payload = NewsDataset(items=items, total=len(items), updated_at=now_utc())
+        return payload, {
+            "degraded": self.degraded,
+            "provider": provider,
+            "source_status": source_status,
+            "source": [provider],
+            "data_quality": round(quality, 3),
+        }
 
     # ---- Chinese translation merge (architecture §1.5 step 4; ADR-0003) ----
 
-    def merge_translations(self, news: NewsEnvelope, translations: NewsTranslationsDataset | None) -> NewsEnvelope:
-        """Merge AI-produced symmetric full-pair translations into news.json.
+    def merge_translations(self, news: NewsDataset, translations: NewsTranslationsDataset | None) -> NewsDataset:
+        """Merge AI-produced symmetric full-pair translations into the news payload.
 
         Canonical bilingual model (ADR-0003): `summary`/`title` stay English, `summary_zh`/`title_zh`
         carry Chinese. A translation record carries both sides; this copies whatever it provides and
@@ -178,7 +180,7 @@ class NewsCollector:
             return news
         by_id = {t.id: t for t in translations.items}
         updated_items = []
-        for item in news.payload.items:
+        for item in news.items:
             trans = by_id.get(item.id)
             if trans is None:
                 updated_items.append(item)
@@ -196,7 +198,7 @@ class NewsCollector:
                     if value:
                         update[field] = value
             updated_items.append(item.model_copy(update=update) if update else item)
-        return news.model_copy(update={"payload": news.payload.model_copy(update={"items": updated_items})})
+        return news.model_copy(update={"items": updated_items})
 
 
 def _clean(text: str) -> str:

@@ -139,8 +139,21 @@ class _Registry:
 
 
 def test_collector_propagates_partial_source_failure_to_news_freshness() -> None:
+    """A partial source failure reaches the caller's freshness determination.
+
+    #64: the collector no longer assigns freshness_status — it reports the provider outcome
+    (meta["degraded"]), and the single assembly path turns that into a degraded envelope.
+    """
+    from pipeline.schemas import NewsEnvelope
+    from pipeline.schemas.envelope import assemble_envelope
+
     news, meta = NewsCollector(_Registry()).collect()
-    assert news.freshness_status == "degraded"
-    assert news.data_quality == 0.8
     assert meta["degraded"]
+    assert meta["data_quality"] == 0.8
     assert meta["source_status"]["bad"]["ok"] is False
+
+    env = assemble_envelope(
+        NewsEnvelope, news, dataset="news", degraded=meta["degraded"],
+        source=meta["source"], data_quality=meta["data_quality"],
+    )
+    assert env.freshness_status == "degraded"

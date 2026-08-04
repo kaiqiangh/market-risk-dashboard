@@ -14,14 +14,11 @@ from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import (
     CryptoAsset,
     CryptoDataset,
-    CryptoEnvelope,
     EquitiesDataset,
-    EquitiesEnvelope,
     EquityAsset,
     MemoryProxy,
     SectorItem,
     SectorsDataset,
-    SectorsEnvelope,
 )
 from pipeline.settings import Settings
 from pipeline.universe import AssetUniverse
@@ -186,29 +183,19 @@ class MarketCollector:
         sectors = self._collect_sectors(equities)
         quality = self._quality()
 
-        equity_env = EquitiesEnvelope(
-            generated_at=now_utc(), schema_version="1.0.0",
-            source=["yfinance", "akshare"], source_updated_at=now_utc(),
-            freshness_status="degraded" if self.degraded else "fresh",
-            data_quality=round(quality, 3), payload=equities,
-        )
-        crypto_env = CryptoEnvelope(
-            generated_at=now_utc(), schema_version="1.0.0",
-            source=["coingecko"], source_updated_at=now_utc(),
-            freshness_status="degraded" if self.degraded else "fresh",
-            data_quality=round(quality, 3), payload=crypto,
-        )
-        sectors_env = SectorsEnvelope(
-            generated_at=now_utc(), schema_version="1.0.0",
-            source=["yfinance"], source_updated_at=now_utc(),
-            freshness_status="degraded" if self.degraded else "fresh",
-            data_quality=round(quality, 3), payload=sectors,
-        )
+        # #64: collectors return payloads + provider outcome; the caller (run.py) assembles
+        # the envelope through the single assembly path and finalizes freshness.
         return {
-            "equities": equity_env,
-            "crypto": crypto_env,
-            "sectors": sectors_env,
+            "equities": equities,
+            "crypto": crypto,
+            "sectors": sectors,
             "histories": self.histories,
             "degraded": self.degraded,
             "provider_status": self.provider_status,
+            "data_quality": round(quality, 3),
+            "sources": {
+                "equities": ["yfinance", "akshare"],
+                "crypto": ["coingecko"],
+                "sectors": ["yfinance"],
+            },
         }

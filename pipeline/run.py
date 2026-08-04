@@ -34,11 +34,19 @@ from pipeline.providers import ProviderRegistry, build_registry
 from pipeline.report import write_run_report
 from pipeline.risk.model import RiskModel
 from pipeline.schemas import (
+    BaseEnvelope,
+    CalendarEnvelope,
+    CryptoEnvelope,
     DashboardAsset,
     DashboardEnvelope,
     DashboardPayload,
+    EquitiesEnvelope,
+    MacroEnvelope,
+    NewsEnvelope,
     RiskEnvelope,
+    SectorsEnvelope,
 )
+from pipeline.schemas.envelope import assemble_envelope
 from pipeline.settings import settings
 from pipeline.storage import StorageWriter
 from pipeline.universe import AssetUniverse
@@ -240,31 +248,81 @@ def dataset_health(writer: StorageWriter, command: str, *, run_started_at: str) 
 
 
 # ============================================================
-# Unified freshness write (P1-7)
+# Unified freshness write (P1-7 / #64 single freshness author)
 # ============================================================
 
-def _finalize_and_write(
-    writer: StorageWriter,
-    name: str,
-    env: Any,
-    degraded: bool,
-    extra_reason: str = "",
-) -> Any:
-    """Unified freshness determination + write + update metadata/freshness.json (P1-7).
+#: Envelope model per published dataset (the single assembly path maps name -> model).
+_ENVELOPE_MODELS: dict[str, type[BaseEnvelope]] = {
+    "macro": MacroEnvelope,
+    "equities": EquitiesEnvelope,
+    "sectors": SectorsEnvelope,
+    "crypto": CryptoEnvelope,
+    "news": NewsEnvelope,
+    "calendar": CalendarEnvelope,
+    "risk": RiskEnvelope,
+    "dashboard": DashboardEnvelope,
+}
 
-    Collectors no longer fill freshness_status themselves; after writing, recompute
-    against the expected frequency from sources.yaml (fresh/delayed/stale/missing/degraded
-    five states), then persist to the envelope and freshness.json.
+
+def _assemble(
+    name: str,
+    payload: Any,
+    degraded: bool,
+    *,
+    source: str | list[str],
+    data_quality: float,
+    generated_at: str | None = None,
+    source_updated_at: str | None = None,
+) -> BaseEnvelope:
+    """Build the envelope for `name` through the single assembly path (#64).
+
+    Freshness is computed by :func:`pipeline.schemas.envelope.assemble_envelope` via
+    ``finalize_freshness`` — the only producer. No caller builds an envelope by hand.
     """
-    generated_at = str(getattr(env, "generated_at", "") or "")
-    status = finalize_freshness(name, generated_at or None, degraded)
-    updated = env.model_copy(update={"freshness_status": status})
-    writer.write_dataset(name, updated)
+    return assemble_envelope(
+        _ENVELOPE_MODELS[name],
+        payload,
+        dataset=name,
+        degraded=degraded,
+        source=source,
+        data_quality=data_quality,
+        generated_at=generated_at,
+        source_updated_at=source_updated_at,
+    )
+
+
+def _write_finalized(writer: StorageWriter, name: str, env: BaseEnvelope, extra_reason: str = "") -> BaseEnvelope:
+    """Persist an already-assembled envelope and record its freshness metadata."""
+    writer.write_dataset(name, env)
+    status = env.freshness_status
     reason = {"degraded": "degraded", "missing": "missing"}.get(status, "ok")
     if extra_reason:
         reason = f"{reason} ({extra_reason})"
     writer.update_freshness(name, status, reason)
-    return updated
+    return env
+
+
+def _finalize_and_write(
+    writer: StorageWriter,
+    name: str,
+    payload: Any,
+    degraded: bool,
+    *,
+    source: str | list[str],
+    data_quality: float,
+    generated_at: str | None = None,
+    source_updated_at: str | None = None,
+    extra_reason: str = "",
+) -> BaseEnvelope:
+    """Assemble through the single path, write, and update metadata/freshness.json (#64).
+
+    Collectors no longer fill freshness_status themselves; this recomputes against the
+    expected frequency from sources.yaml (fresh/delayed/stale/missing/degraded), then
+    persists to the envelope and freshness.json.
+    """
+    env = _assemble(name, payload, degraded, source=source, data_quality=data_quality,
+                    generated_at=generated_at, source_updated_at=source_updated_at)
+    return _write_finalized(writer, name, env, extra_reason)
 
 
 def _write_analysis_freshness(writer: StorageWriter) -> None:
@@ -379,9 +437,10 @@ def _run_collection(command: str) -> dict[str, Any]:
             sectors=market["sectors"],
             histories=market["histories"],
         )
+        results["market_meta"] = market
         results["degraded"].extend(market["degraded"])
         results["provider_status"].update(market["provider_status"])
-        results["qualities"].extend([market["equities"].data_quality, market["crypto"].data_quality, market["sectors"].data_quality])
+        results["qualities"].append(market["data_quality"])
         results["durations"]["market"] = time.monotonic() - t0
 
     if need_macro:
@@ -393,7 +452,7 @@ def _run_collection(command: str) -> dict[str, Any]:
         results["degraded"].extend(macro_meta["degraded"])
         results["provider_status"].update(macro_meta["provider_status"])
         results["series_history"] = macro_meta.get("series_history", {})
-        results["qualities"].append(macro.data_quality)
+        results["qualities"].append(macro_meta["data_quality"])
         results["durations"]["macro"] = time.monotonic() - t0
 
     if need_calendar:
@@ -401,10 +460,11 @@ def _run_collection(command: str) -> dict[str, Any]:
         ccc = CalendarCollector(registry, settings)
         calendar, cal_meta = ccc.collect()
         results["calendar"] = calendar
+        results["calendar_meta"] = cal_meta
         results["calendar_degraded"] = bool(cal_meta["degraded"])
         results["degraded"].extend(cal_meta["degraded"])
         results["provider_status"].update(cal_meta["provider_status"])
-        results["qualities"].append(calendar.data_quality)
+        results["qualities"].append(cal_meta["data_quality"])
         results["durations"]["calendar"] = time.monotonic() - t0
 
     if need_news:
@@ -422,18 +482,19 @@ def _run_collection(command: str) -> dict[str, Any]:
                 _json.loads(translations_path.read_text(encoding="utf-8"))
             )
             news = ncc.merge_translations(news, translations)
-            merged_count = sum(1 for it in news.payload.items if it.title_zh)
+            merged_count = sum(1 for it in news.items if it.title_zh)
             writer.record_translations("merged", merged_count, "news.zh-translations.json merged into news.json")
         else:
             writer.record_translations("missing", 0, "news.zh-translations.json not found (AI did not produce Chinese translation)")
         results["news"] = news
+        results["news_meta"] = news_meta
         results["news_degraded"] = bool(news_meta["degraded"])
         results["degraded"].extend(news_meta["degraded"])
         results["provider_status"]["news"] = {
             "provider": news_meta.get("provider", "rss_news"),
             "sources": news_meta.get("source_status", {}),
         }
-        results["qualities"].append(news.data_quality)
+        results["qualities"].append(news_meta["data_quality"])
         results["durations"]["news"] = time.monotonic() - t0
 
     results["durations"]["collection"] = time.monotonic() - started
@@ -442,13 +503,38 @@ def _run_collection(command: str) -> dict[str, Any]:
 
 def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command: str) -> tuple[bool, str | None]:
     """Compute risk + fact layer + dashboard + write + unified freshness + validate. Returns (ok, error)."""
+    degraded = bool(results["degraded"])
+    market_meta = results.get("market_meta", {})
+    macro_meta = results.get("macro_meta", {})
+    news_meta = results.get("news_meta", {})
+    calendar_meta = results.get("calendar_meta", {})
     try:
+        # #64: assemble every envelope through the single path (freshness = finalize_freshness).
+        macro = _assemble("macro", results["macro"], bool(macro_meta.get("degraded")),
+                          source=macro_meta.get("source", ["fred", "yahoo"]),
+                          data_quality=macro_meta.get("data_quality", 1.0))
+        equities = _assemble("equities", results["equities"], degraded,
+                             source=market_meta.get("sources", {}).get("equities", ["yfinance", "akshare"]),
+                             data_quality=market_meta.get("data_quality", 1.0))
+        sectors = _assemble("sectors", results["sectors"], degraded,
+                            source=market_meta.get("sources", {}).get("sectors", ["yfinance"]),
+                            data_quality=market_meta.get("data_quality", 1.0))
+        crypto = _assemble("crypto", results["crypto"], degraded,
+                           source=market_meta.get("sources", {}).get("crypto", ["coingecko"]),
+                           data_quality=market_meta.get("data_quality", 1.0))
+        news = _assemble("news", results["news"], bool(results.get("news_degraded", False)),
+                         source=news_meta.get("source", ["rss_news"]),
+                         data_quality=news_meta.get("data_quality", 1.0))
+        calendar = _assemble("calendar", results["calendar"], bool(results.get("calendar_degraded", False)),
+                             source=calendar_meta.get("source", ["fmp", "yfinance"]),
+                             data_quality=calendar_meta.get("data_quality", 1.0))
+
         risk_model = RiskModel(settings)
         prev_score, prev_dims, risk_history = _read_prev_risk(writer)
         ctx = _build_risk_context(
-            macro=results["macro"],
-            equities=results["equities"],
-            crypto=results["crypto"],
+            macro=macro,
+            equities=equities,
+            crypto=crypto,
             histories=results.get("histories", {}),
             qualities=results["qualities"],
             prev_total_score=prev_score,
@@ -457,39 +543,32 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             series_history=results.get("series_history", {}),
         )
         risk_result = risk_model.score(ctx)
-        risk_env = RiskEnvelope(
-            generated_at=now_utc(),
-            schema_version="1.0.0",
-            source=["risk_model", "fred", "yfinance"],
-            source_updated_at=now_utc(),
-            freshness_status="degraded" if results["degraded"] else "fresh",
-            data_quality=ctx["data_quality"],
-            payload=risk_result,
-        )
+        risk_env = _assemble("risk", risk_result, degraded,
+                             source=["risk_model", "fred", "yfinance"],
+                             data_quality=ctx["data_quality"])
 
         builder = FactLayerBuilder()
         facts = builder.build(
             risk=risk_env,
-            macro=results["macro"],
-            equities=results["equities"],
-            crypto=results["crypto"],
-            news=results["news"],
-            calendar=results["calendar"],
-            sectors=results.get("sectors"),
+            macro=macro,
+            equities=equities,
+            crypto=crypto,
+            news=news,
+            calendar=calendar,
+            sectors=sectors,
         )
     except Exception as exc:  # noqa: BLE001
         return False, f"risk/fact layer computation failed: {exc}"
 
     # ---- Write (persist after unified freshness determination, P1-7) ----
     try:
-        degraded = bool(results["degraded"])
-        macro = _finalize_and_write(writer, "macro", results["macro"], bool(results["macro_meta"].get("degraded")))
-        equities = _finalize_and_write(writer, "equities", results["equities"], degraded)
-        sectors = _finalize_and_write(writer, "sectors", results["sectors"], degraded)
-        crypto = _finalize_and_write(writer, "crypto", results["crypto"], degraded)
-        news = _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)))
-        calendar = _finalize_and_write(writer, "calendar", results["calendar"], bool(results.get("calendar_degraded", False)))
-        risk_env = _finalize_and_write(writer, "risk", risk_env, degraded)
+        macro = _write_finalized(writer, "macro", macro)
+        equities = _write_finalized(writer, "equities", equities)
+        sectors = _write_finalized(writer, "sectors", sectors)
+        crypto = _write_finalized(writer, "crypto", crypto)
+        news = _write_finalized(writer, "news", news)
+        calendar = _write_finalized(writer, "calendar", calendar)
+        risk_env = _write_finalized(writer, "risk", risk_env)
         writer.write_standalone("facts", facts.model_dump(mode="json"))
         facts_status = "degraded" if degraded else finalize_freshness("facts", str(risk_env.generated_at), False)
         writer.update_freshness("facts", facts_status, "degraded" if facts_status == "degraded" else "ok")
@@ -504,7 +583,13 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             data_quality=ctx["data_quality"],
             degraded=degraded,
         )
-        dashboard_env = _finalize_and_write(writer, "dashboard", dashboard_env, degraded)
+        dashboard_env = _finalize_and_write(
+            writer, "dashboard", dashboard_env.payload, degraded,
+            source=dashboard_env.source,
+            data_quality=dashboard_env.data_quality,
+            generated_at=dashboard_env.generated_at,
+            source_updated_at=dashboard_env.source_updated_at,
+        )
 
         # AI analysis freshness (P0-4)
         _write_analysis_freshness(writer)
@@ -600,16 +685,27 @@ def main(argv: list[str] | None = None) -> int:
     # Single-domain commands write only the corresponding dataset (unified freshness, P1-7)
     if command == "market-only":
         writer = StorageWriter(settings.data_dir)
-        _finalize_and_write(writer, "equities", results["equities"], bool(results["degraded"]))
-        _finalize_and_write(writer, "crypto", results["crypto"], bool(results["degraded"]))
-        _finalize_and_write(writer, "sectors", results["sectors"], bool(results["degraded"]))
+        market_meta = results.get("market_meta", {})
+        degraded = bool(results["degraded"])
+        _finalize_and_write(writer, "equities", results["equities"], degraded,
+                            source=market_meta.get("sources", {}).get("equities", ["yfinance", "akshare"]),
+                            data_quality=market_meta.get("data_quality", 1.0))
+        _finalize_and_write(writer, "crypto", results["crypto"], degraded,
+                            source=market_meta.get("sources", {}).get("crypto", ["coingecko"]),
+                            data_quality=market_meta.get("data_quality", 1.0))
+        _finalize_and_write(writer, "sectors", results["sectors"], degraded,
+                            source=market_meta.get("sources", {}).get("sectors", ["yfinance"]),
+                            data_quality=market_meta.get("data_quality", 1.0))
         writer.write_sources_metadata(results["provider_status"])
         health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
         return _finish_run(command, results, time.monotonic() - started, health)
 
     if command == "macro-only":
         writer = StorageWriter(settings.data_dir)
-        _finalize_and_write(writer, "macro", results["macro"], bool(results["macro_meta"].get("degraded")))
+        macro_meta = results.get("macro_meta", {})
+        _finalize_and_write(writer, "macro", results["macro"], bool(macro_meta.get("degraded")),
+                            source=macro_meta.get("source", ["fred", "yahoo"]),
+                            data_quality=macro_meta.get("data_quality", 1.0))
         _write_analysis_freshness(writer)
         writer.write_sources_metadata(results["provider_status"])
         health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
@@ -617,7 +713,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if command == "news-only":
         writer = StorageWriter(settings.data_dir)
-        _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)))
+        news_meta = results.get("news_meta", {})
+        _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)),
+                            source=news_meta.get("source", ["rss_news"]),
+                            data_quality=news_meta.get("data_quality", 1.0))
         writer.write_sources_metadata(results["provider_status"])
         health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
         return _finish_run(command, results, time.monotonic() - started, health)

@@ -62,13 +62,14 @@ class CalendarCollector:
             self.provider_status["calendar"] = {"degraded": True, "error": str(exc)}
 
         quality = self._quality()
-        envelope = CalendarEnvelope(
-            generated_at=now_utc(), schema_version="1.0.0",
-            source=["fmp", "yfinance"], source_updated_at=now_utc(),
-            freshness_status="degraded" if self.degraded else "fresh",
-            data_quality=round(quality, 3),
-            payload=CalendarDataset(events=events, updated_at=now_utc()),
-        )
-        return envelope, {"degraded": self.degraded, "provider_status": self.provider_status}
+        # #64: return payload + provider outcome; the caller assembles the envelope and
+        # finalizes freshness through the single assembly path.
+        payload = CalendarDataset(events=events, updated_at=now_utc())
+        return payload, {
+            "degraded": self.degraded,
+            "provider_status": self.provider_status,
+            "source": ["fmp", "yfinance"],
+            "data_quality": round(quality, 3),
+        }
 
 

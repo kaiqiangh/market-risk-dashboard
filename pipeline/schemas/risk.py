@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, Literal
 
 from pydantic import Field
 
-from .envelope import ContractModel, FreshnessStatus, UTCDateTime
+from .envelope import BaseEnvelope, ContractModel, FreshnessStatus, UTCDateTime
 
 if TYPE_CHECKING:  # import only for type checking to avoid a runtime circular dependency
     from .factlayer import EvidenceRef
@@ -91,13 +91,11 @@ class RiskModelResult(ContractModel):
     )
 
 
-class RiskEnvelope(ContractModel):
-    """risk.json envelope (payload is RiskModelResult, consistent with the embedded fact layer structure)."""
+class RiskEnvelope(BaseEnvelope):
+    """risk.json envelope (payload is RiskModelResult, consistent with the embedded fact layer structure).
 
-    generated_at: UTCDateTime
-    schema_version: str = Field(min_length=1)
-    source: str | list[str]
-    source_updated_at: UTCDateTime | None = None
-    freshness_status: FreshnessStatus = "fresh"
-    data_quality: float = Field(ge=0.0, le=1.0)
+    Inherits the base envelope shape (#64): freshness_status is required with no default, so
+    the risk card cannot certify itself as fresh — the only producer is finalize_freshness.
+    """
+
     payload: RiskModelResult

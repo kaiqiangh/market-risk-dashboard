@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import math
 import re
+from datetime import datetime
 from typing import Annotated, Any, Literal
 
 from pydantic import AfterValidator, BaseModel, ConfigDict, Field
@@ -94,3 +95,42 @@ def ensure_no_nan_inf(value: float) -> float:
     if value is not None and isinstance(value, float) and (math.isnan(value) or math.isinf(value)):
         raise ValueError("value must not be NaN/Infinity")
     return value
+
+
+def assemble_envelope(
+    model: type[BaseEnvelope],
+    payload: Any,
+    *,
+    dataset: str,
+    degraded: bool,
+    source: str | list[str],
+    data_quality: float = 1.0,
+    generated_at: str | None = None,
+    source_updated_at: str | None = None,
+    now: datetime | None = None,
+) -> BaseEnvelope:
+    """The single envelope assembly path (#64).
+
+    Collectors no longer assign ``freshness_status``; they return payloads and the provider
+    outcome (``degraded``). This helper computes the status with
+    :func:`pipeline.validation.freshness.finalize_freshness` — the only producer — and builds
+    the envelope. ``now`` is the clock used for the time-based freshness determination (the
+    test seam for a fixed clock).
+    """
+    # Imported lazily: `pipeline.validation` imports `pipeline.schemas` at package import time,
+    # so a module-level import here would be circular.
+    from pipeline.utils import now_utc
+    from pipeline.validation.freshness import finalize_freshness
+
+    generated_at = generated_at or now_utc()
+    source_updated_at = source_updated_at or generated_at
+    status = finalize_freshness(dataset, generated_at, degraded, now=now)
+    return model(
+        generated_at=generated_at,
+        schema_version=SCHEMA_VERSION,
+        source=source,
+        source_updated_at=source_updated_at,
+        freshness_status=status,
+        data_quality=data_quality,
+        payload=payload,
+    )

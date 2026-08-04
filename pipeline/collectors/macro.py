@@ -22,9 +22,8 @@ from pipeline.fedwatch import (
 )
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.providers.fred import SERIES_CATALOG
-from pipeline.schemas import FedWatchSnapshot, MacroDataset, MacroEnvelope, MacroIndicator
+from pipeline.schemas import FedWatchSnapshot, MacroDataset, MacroIndicator
 from pipeline.settings import Settings
-from pipeline.utils import now_utc
 
 # FRED series → group
 SERIES_GROUPS: dict[str, list[str]] = {
@@ -155,22 +154,17 @@ class MacroCollector:
         failed = (1 if self._fred_failures > 0 else 0) + (1 if self._fedwatch_failed else 0)
         return degraded_quality(failed, settings=self.settings)
 
-    def collect(self) -> tuple[MacroEnvelope, dict[str, Any]]:
+    def collect(self) -> tuple[MacroDataset, dict[str, Any]]:
         dataset = self._collect_macro()
         quality = self._quality()
-        envelope = MacroEnvelope(
-            generated_at=now_utc(),
-            schema_version="1.0.0",
-            source=["fred", "yahoo"],
-            source_updated_at=now_utc(),
-            freshness_status="degraded" if self.degraded else "fresh",
-            data_quality=round(quality, 3),
-            payload=dataset,
-        )
-        return envelope, {
+        # #64: return payload + provider outcome; the caller assembles the envelope and
+        # finalizes freshness through the single assembly path.
+        return dataset, {
             "degraded": self.degraded,
             "provider_status": self.provider_status,
             "series_history": self.series_history,
+            "data_quality": round(quality, 3),
+            "source": ["fred", "yahoo"],
         }
 
 

@@ -713,11 +713,8 @@ def test_partial_command_writes_a_run_report(tmp_path: Path, monkeypatch: pytest
     import pipeline.run as run_mod
     from pipeline.schemas import (
         CryptoDataset,
-        CryptoEnvelope,
         EquitiesDataset,
-        EquitiesEnvelope,
         SectorsDataset,
-        SectorsEnvelope,
     )
     from pipeline.schemas.envelope import SCHEMA_VERSION
 
@@ -735,23 +732,20 @@ def test_partial_command_writes_a_run_report(tmp_path: Path, monkeypatch: pytest
             "degraded": ["crypto: coingecko rate limited"],
             "provider_status": {"quotes": [{"provider": "yfinance", "ok": True}]},
             "histories": {},
-            "qualities": [0.8, 0.8, 0.8],
+            "qualities": [0.8],
             "macro_meta": {},
-            "equities": EquitiesEnvelope(
-                generated_at="2026-08-05T00:00:00Z", schema_version=SCHEMA_VERSION, source="yfinance",
-                source_updated_at="2026-08-05T00:00:00Z", freshness_status="fresh",
-                data_quality=0.9, payload=EquitiesDataset(),
-            ),
-            "crypto": CryptoEnvelope(
-                generated_at="2026-08-05T00:00:00Z", schema_version=SCHEMA_VERSION, source="coingecko",
-                source_updated_at="2026-08-05T00:00:00Z", freshness_status="fresh",
-                data_quality=0.9, payload=CryptoDataset(),
-            ),
-            "sectors": SectorsEnvelope(
-                generated_at="2026-08-05T00:00:00Z", schema_version=SCHEMA_VERSION, source="yfinance",
-                source_updated_at="2026-08-05T00:00:00Z", freshness_status="fresh",
-                data_quality=0.9, payload=SectorsDataset(),
-            ),
+            "market_meta": {
+                "data_quality": 0.9,
+                "sources": {
+                    "equities": ["yfinance", "akshare"],
+                    "crypto": ["coingecko"],
+                    "sectors": ["yfinance"],
+                },
+            },
+            # #64: collectors return payloads; run.py assembles the envelopes.
+            "equities": EquitiesDataset(),
+            "crypto": CryptoDataset(),
+            "sectors": SectorsDataset(),
         }
 
     monkeypatch.setattr(run_mod, "_run_collection", _fake_collection)
