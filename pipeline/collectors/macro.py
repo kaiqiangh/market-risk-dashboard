@@ -180,10 +180,15 @@ class MacroCollector:
 
 
 def _change(rows: list[dict], lookback: int) -> float | None:
+    """Change over exactly `lookback` periods, consistent with `momentum` (#70).
+
+    The base is `lookback` periods before the latest (`rows[-1 - lookback]`); the previous
+    off-by-one used `rows[-lookback]`, which is one period closer and understated the span.
+    """
     if len(rows) < 2:
         return None
-    idx = min(lookback, len(rows) - 1)
-    return round(rows[-1]["value"] - rows[-idx]["value"], 6)
+    periods = min(lookback, len(rows) - 1)
+    return round(rows[-1]["value"] - rows[-1 - periods]["value"], 6)
 
 
 def _unit(unit: str) -> str:

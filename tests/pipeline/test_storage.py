@@ -803,3 +803,43 @@ def test_degraded_domain_lowers_published_quality(tmp_path: Path) -> None:
     )
     assert degraded.data_quality < clean.data_quality
     assert degraded.data_quality == degraded_quality(2, settings=settings)
+
+
+def test_run_report_pins_proxy_discounts(tmp_path: Path) -> None:
+    """QA finding from #69: the run report names which discount applied to which driver.
+
+    A 0.64 (proxy × degraded provider) must be an explained number in the written report,
+    never silently absent.
+    """
+    from pipeline.report import write_run_report
+
+    path = write_run_report(
+        tmp_path / "artifacts",
+        command="full",
+        ok=True,
+        durations={"total": 10.0},
+        provider_status={},
+        degraded=[],
+        dataset_counts={"latest": 8},
+        proxy_discounts=[
+            {
+                "indicator_key": "cross_asset_confirmation",
+                "dimension_key": "cross_asset",
+                "label": "Cross-asset confirmation",
+                "is_proxy": True,
+                "discount": 0.64,
+            }
+        ],
+    )
+    report = json.loads(path.read_text(encoding="utf-8"))
+
+    assert report["proxy_discounts"] == [
+        {
+            "indicator_key": "cross_asset_confirmation",
+            "dimension_key": "cross_asset",
+            "label": "Cross-asset confirmation",
+            "is_proxy": True,
+            "discount": 0.64,
+        }
+    ]
+    assert report["proxy_discounts"][0]["discount"] < 1.0

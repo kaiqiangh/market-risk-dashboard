@@ -99,7 +99,8 @@ class MarketCollector:
             ma50_distance_pct=tech["ma50_distance_pct"],
             ma200_distance_pct=tech["ma200_distance_pct"],
             rsi14=tech["rsi14"],
-            percentile_5y=tech["percentile_5y"],
+            percentile_1y=tech["percentile_1y"],
+            percentile_1y_obs=tech["percentile_1y_obs"],
             source=quote.source,
             updated_at=quote.updated_at or now_utc(),
             is_proxy=quote.is_proxy,
@@ -165,12 +166,12 @@ class MarketCollector:
         auto = [a for a in us if a.sector == "auto"]
 
         sectors = [
-            SectorItem(key="semis", label="Semiconductors", label_zh="半导体", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_5y=None, updated_at=now_utc()),
-            SectorItem(key="auto", label="Autos", label_zh="汽车", change_1d=_avg_change(auto, "change_1d"), change_1w=_avg_change(auto, "change_1w"), change_1m=_avg_change(auto, "change_1m"), percentile_5y=None, updated_at=now_utc()),
+            SectorItem(key="semis", label="Semiconductors", label_zh="半导体", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_1y=None, percentile_1y_obs=0, updated_at=now_utc()),
+            SectorItem(key="auto", label="Autos", label_zh="汽车", change_1d=_avg_change(auto, "change_1d"), change_1w=_avg_change(auto, "change_1w"), change_1m=_avg_change(auto, "change_1m"), percentile_1y=None, percentile_1y_obs=0, updated_at=now_utc()),
         ]
         themes = [
-            SectorItem(key="memory", label="Memory", label_zh="存储", change_1d=_avg_change(memory_assets, "change_1d"), change_1w=_avg_change(memory_assets, "change_1w"), change_1m=_avg_change(memory_assets, "change_1m"), percentile_5y=None, updated_at=now_utc()),
-            SectorItem(key="ai", label="AI / GPU", label_zh="AI/GPU", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_5y=None, updated_at=now_utc()),
+            SectorItem(key="memory", label="Memory", label_zh="存储", change_1d=_avg_change(memory_assets, "change_1d"), change_1w=_avg_change(memory_assets, "change_1w"), change_1m=_avg_change(memory_assets, "change_1m"), percentile_1y=None, percentile_1y_obs=0, updated_at=now_utc()),
+            SectorItem(key="ai", label="AI / GPU", label_zh="AI/GPU", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_1y=None, percentile_1y_obs=0, updated_at=now_utc()),
         ]
 
         mu = next((a for a in us if a.symbol == "MU"), None)

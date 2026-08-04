@@ -46,7 +46,8 @@ def test_technical_snapshot() -> None:
     snap = technical.technical_snapshot(_rows(closes))
     assert snap["ma200"] is not None
     assert snap["rsi14"] is not None
-    assert 0 <= snap["percentile_5y"] <= 100
+    assert 0 <= snap["percentile_1y"] <= 100
+    assert snap["percentile_1y_obs"] > 0
 
 
 def test_breadth_snapshot() -> None:
@@ -123,3 +124,51 @@ def test_thin_breadth_sample_is_visible() -> None:
     assert thin["breadth_qualifying"] < full["breadth_qualifying"]
     assert thin["breadth_considered"] < full["breadth_considered"]
     assert thin["breadth_considered"] == 4
+
+
+# ---------- #70: windows and labels describe what they actually measure ----------
+
+def test_percentile_field_reports_its_window() -> None:
+    """#70: the percentile field's name states the window it actually uses (1y history)."""
+    closes = [float(i) for i in range(1, 260)]  # ~1y of daily closes
+    snap = technical.technical_snapshot(_rows(closes))
+    assert "percentile_1y" in snap, "the percentile field must state its window (1y)"
+    assert "percentile_5y" not in snap, "the overclaiming 5y name must be gone"
+    assert 0 <= snap["percentile_1y"] <= 100
+
+
+def test_percentile_publishes_observation_count() -> None:
+    """#70: a percentile is published with the number of observations behind it; a thin
+    sample (30 points) is distinguishable from a full one (250 points)."""
+    thin = technical.technical_snapshot(_rows([float(i) for i in range(1, 32)]))
+    full = technical.technical_snapshot(_rows([float(i) for i in range(1, 252)]))
+    assert thin["percentile_1y_obs"] < full["percentile_1y_obs"]
+    assert thin["percentile_1y_obs"] == 30
+    assert full["percentile_1y_obs"] == 250
+
+
+def test_drawdown_uses_trailing_52w_high() -> None:
+    """#70: drawdown_52w measures against the trailing 52-week high, not the series max."""
+    # Old peak 200 sits BEFORE the trailing 52-week window (260 flat + 20 flat closes).
+    values = [200.0] + [100.0] * 260 + [110.0] * 20
+    dd = technical.drawdown_52w(values)
+    assert dd == 0.0, f"trailing 52w high is 110, latest is 110 -> no drawdown, got {dd}"
+    # The series max (200) would claim -45%; the trailing window must not see it.
+    assert dd > -50.0
+
+
+def test_macro_lookback_boundary() -> None:
+    """#70: `_change(rows, lookback)` spans exactly `lookback` periods, consistent with
+    `momentum`'s lookback semantics (change over `lookback` periods, not one fewer)."""
+    from pipeline.collectors.macro import _change
+
+    # 25 values, lookback 21 -> base is 21 periods before the latest.
+    rows = [{"value": float(i)} for i in range(25)]
+    assert _change(rows, 21) == 24.0 - 3.0  # v[24] - v[3]
+
+    # A series shorter than the lookback spans the whole series (clamp at the oldest).
+    short = [{"value": float(i)} for i in range(10)]
+    assert _change(short, 21) == 9.0 - 0.0
+
+    # The lookback must NOT include the extra (closer) period.
+    assert _change(rows, 21) != 24.0 - 4.0

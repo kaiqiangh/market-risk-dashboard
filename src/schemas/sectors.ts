@@ -9,7 +9,8 @@ export const SectorItem = z
     change_1d: z.number().finite().nullable(),
     change_1w: z.number().finite().nullable(),
     change_1m: z.number().finite().nullable(),
-    percentile_5y: z.number().finite().min(0).max(100).nullable(),
+    percentile_1y: z.number().finite().min(0).max(100).nullable(),
+    percentile_1y_obs: z.number().int().min(0),
     updated_at: utcDateTime.nullable(),
   })
   .strict();

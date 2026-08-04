@@ -46,11 +46,16 @@ def rsi(values: Sequence[float], period: int = 14) -> float | None:
     return round(100.0 - 100.0 / (1.0 + rs), 4)
 
 
-def drawdown_52w(values: Sequence[float]) -> float | None:
-    """52-week high drawdown (0 = no drawdown; -12.5 = -12.5% from the 52-week high)."""
+def drawdown_52w(values: Sequence[float], window: int = 252) -> float | None:
+    """52-week high drawdown, measured against the TRAILING 52-week high (#70).
+
+    0 = no drawdown; -12.5 = -12.5% from the trailing 52-week high. A peak older than the
+    trailing window is history, not the reference — the longer the series, the more wrong
+    ``max(values)`` would be.
+    """
     if not values:
         return None
-    high = max(values)
+    high = max(values[-window:])
     if high == 0:
         return None
     return round((values[-1] - high) / high * 100.0, 4)
@@ -82,19 +87,24 @@ def realized_vol(values: Sequence[float], window: int = 20, annualize: bool = Tr
     return round(std * 100.0, 4)
 
 
-def percentile_in_window(values: Sequence[float]) -> float | None:
-    """Percentile of the latest value within the window (0-100). Approximate 5Y percentile window (MVP)."""
+def percentile_in_window(values: Sequence[float]) -> tuple[float | None, int]:
+    """Percentile of the latest value within the window (0-100) + the observation count (#70).
+
+    The second element is how many observations the rank is computed over, so a thin sample
+    (30 points) is published differently from a full one (250 points).
+    """
     if not values:
-        return None
+        return None, 0
     last = values[-1]
     window = values[:-1] or [last]
     below = sum(1 for v in window if v <= last)
-    return round(below / len(window) * 100.0, 2)
+    return round(below / len(window) * 100.0, 2), len(window)
 
 
 def technical_snapshot(rows: list[dict[str, Any]]) -> dict[str, Any]:
     """Output all basic technical indicators for a history segment."""
     values = closes_of(rows)
+    percentile, percentile_obs = percentile_in_window(values)
     return {
         "ma20": moving_average(values, 20),
         "ma50": moving_average(values, 50),
@@ -105,5 +115,8 @@ def technical_snapshot(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "drawdown_52w": drawdown_52w(values),
         "momentum_3m": momentum(values, 63),
         "realized_vol": realized_vol(values, 20),
-        "percentile_5y": percentile_in_window(values),
+        # #70: the field states the window actually used (1y history) and how many
+        # observations back it.
+        "percentile_1y": percentile,
+        "percentile_1y_obs": percentile_obs,
     }

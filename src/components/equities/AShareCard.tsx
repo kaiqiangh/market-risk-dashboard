@@ -53,9 +53,9 @@ export function AShareCard({ asset }: AShareCardProps) {
             </dd>
           </div>
           <div className="rounded bg-muted/50 px-1.5 py-1">
-            <dt className="text-[9px] uppercase text-muted-foreground">{t("metric.percentile5y")}</dt>
+            <dt className="text-[9px] uppercase text-muted-foreground">{t("metric.percentile1y")}</dt>
             <dd className="font-medium tabular-nums">
-              {asset.percentile_5y === null ? t("common:data.na") : formatNumber(asset.percentile_5y, locale, 1)}
+              {asset.percentile_1y === null ? t("common:data.na") : formatNumber(asset.percentile_1y, locale, 1)}
             </dd>
           </div>
         </dl>
