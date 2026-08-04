@@ -21,6 +21,7 @@ from pipeline.collectors.macro import MacroCollector
 from pipeline.collectors.market import MarketCollector
 from pipeline.collectors.news import NewsCollector
 from pipeline.degrade import (
+    CONFIG_KEY,
     DEFAULT_DEGRADE_FACTOR,
     MIN_DATA_QUALITY,
     degrade_factor,
@@ -245,26 +246,61 @@ def _max_failures(collector: str) -> int:
 _DEGRADE_LITERAL = re.compile(r"(?<![\w.])0\.8(?![\d])")
 
 #: `pipeline/risk/scoring.py` holds indicator threshold tables where 0.8 is a credit-spread
-#: level in percent, not a degrade factor. #62 names these as unrelated and leaves them.
-_UNRELATED_TO_DEGRADE = frozenset({"risk/scoring.py"})
+#: level in percent (`ig_oas`) or a breadth ratio (`breadth_above_ma200`), not a degrade
+#: factor. #62 names these as unrelated and leaves them.
+_UNRELATED_TO_DEGRADE = frozenset({"pipeline/risk/scoring.py"})
 
 
-def test_only_one_degrade_literal_in_pipeline() -> None:
-    """AC: a grep for a bare 0.8 used as a degrade factor in pipeline/ returns exactly one site."""
+def _degrade_literal_hits() -> list[str]:
+    """Every bare 0.8 in the pipeline and config trees that a reader could take for a degrade factor."""
+    searched = sorted(PIPELINE_DIR.rglob("*.py")) + sorted(REAL_CONFIG_DIR.rglob("*.yaml"))
     hits: list[str] = []
-    for path in sorted(PIPELINE_DIR.rglob("*.py")):
-        relative = path.relative_to(PIPELINE_DIR).as_posix()
+    for path in searched:
+        relative = path.relative_to(REPO_ROOT).as_posix()
         if relative in _UNRELATED_TO_DEGRADE:
             continue
         for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
             if _DEGRADE_LITERAL.search(line):
                 hits.append(f"{relative}:{lineno}: {line.strip()}")
+    return hits
 
-    assert len(hits) == 1, (
-        "the degrade factor must have exactly one literal home in pipeline/; found:\n" + "\n".join(hits)
+
+def test_only_one_degrade_literal_in_pipeline() -> None:
+    """AC: the degrade factor has exactly one home in code and exactly one in config.
+
+    Scans both trees. Scoping this to `pipeline/` alone would let a phantom knob live in
+    `config/` — which is exactly how `confidence.degrade_factor_per_fallback` survived in
+    `risk_model.yaml`, one line beneath a block that *is* read.
+    """
+    hits = _degrade_literal_hits()
+
+    assert len(hits) == 2, (
+        "the degrade factor must have exactly one home in pipeline/ and one in config/; found:\n" + "\n".join(hits)
     )
-    assert hits[0].startswith("degrade.py:"), f"the one home must be pipeline/degrade.py, found {hits[0]}"
-    assert "DEFAULT_DEGRADE_FACTOR" in hits[0], f"the one literal must define the default, found {hits[0]}"
+    config_hit, code_hit = sorted(hits)  # "config/…" sorts before "pipeline/…"
+    assert config_hit.startswith("config/sources.yaml:"), f"the config home must be sources.yaml, found {config_hit}"
+    assert CONFIG_KEY in config_hit, f"the config literal must be {CONFIG_KEY}, found {config_hit}"
+    assert code_hit.startswith("pipeline/degrade.py:"), f"the code home must be pipeline/degrade.py, found {code_hit}"
+    assert "DEFAULT_DEGRADE_FACTOR" in code_hit, f"the code literal must define the default, found {code_hit}"
+
+
+def test_no_second_degrade_key_in_risk_model_config() -> None:
+    """`confidence.degrade_factor_per_fallback` is gone and does not come back.
+
+    It was read by nothing while sitting directly beneath `confidence.weights`, which is
+    read at `pipeline/risk/model.py:88` — so every signal a reader uses to judge it live
+    was real. The `confidence:` block itself stays; `weights` is its live content.
+    """
+    raw = Settings(_env_file=None).load_risk_model()
+    confidence_cfg = raw.get("confidence", {})
+
+    assert "degrade_factor_per_fallback" not in confidence_cfg, (
+        "the degrade factor must not have a second config key; sources.yaml owns it"
+    )
+    assert confidence_cfg.get("weights"), "confidence.weights is live (risk/model.py:88) and must survive"
+
+    text = (REAL_CONFIG_DIR / "risk_model.yaml").read_text(encoding="utf-8")
+    assert "degrade_factor_per_fallback" not in text, "the dead key must be deleted, not merely overridden"
 
 
 def test_degrade_factor_is_single_sourced(tmp_path) -> None:

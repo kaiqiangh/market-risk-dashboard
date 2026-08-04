@@ -96,6 +96,5 @@ thresholds:
 # Confidence = f(data quality, indicator coverage, signal consistency) (product-level definition, not statistically strict, architecture P0-5)
 confidence:
   weights: { data_quality: 0.4, coverage: 0.4, consistency: 0.2 }
-  degrade_factor_per_fallback: 0.8
 
 disclaimer: "The risk score on this page is a model-based estimate of market stress, not a precise probability of a market crash, and should not be considered investment advice."
