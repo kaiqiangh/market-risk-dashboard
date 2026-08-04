@@ -6,28 +6,48 @@ before 7 days accumulate the snapshot status=accumulating, change_1d=None (front
 
 from __future__ import annotations
 
-import json
-from datetime import datetime, timezone
 from pathlib import Path
 
 from pipeline.schemas import FedWatchSnapshot
+from pipeline.storage.writer import CorruptDataError, StorageWriter
 from pipeline.utils import now_utc
+
+#: Carry-only StorageWriter. `write_json`/`_read_json` take full paths and never read
+#: `self.data_dir`, so the instance carries no state; constructing one normally would
+#: mkdir the standard data directories as a side effect of every history read/write.
+#: Routing through these primitives keeps atomic-write and corrupt-JSON detection in
+#: their single home (pipeline/storage/writer.py) instead of reimplementing them here.
+_WRITER = StorageWriter.__new__(StorageWriter)
 
 
 def load_history(path: Path) -> list[dict]:
-    """Read accumulated history (empty list when the file does not exist)."""
+    """Read accumulated history.
+
+    Absent and corrupt are different facts. A first run legitimately has no file, so an
+    absent file reads as `[]`. A file that exists but will not parse — or is zero-length,
+    the signature of an interrupted write — raises `CorruptDataError` naming the path
+    (reusing `StorageWriter._read_json`). Answering corruption with `[]` is how a
+    truncated history became an empty one and the next save replaced months of data with
+    a single row. Valid JSON that is not a list is treated the same way: it is not a
+    history, and handing it to the merge would corrupt the file.
+    """
     if not path.exists():
         return []
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-        return data if isinstance(data, list) else []
-    except (json.JSONDecodeError, OSError):
-        return []
+    data = _WRITER._read_json(path, default=[])
+    if not isinstance(data, list):
+        raise CorruptDataError(path, "is not a list of history rows")
+    return data
 
 
 def save_history(path: Path, history: list[dict]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8")
+    """Write accumulated history atomically.
+
+    Delegates to `StorageWriter.write_json`: a temp file in the target's own directory,
+    fsync, `os.replace`, and cleanup on `BaseException` (including `KeyboardInterrupt`).
+    A reader observes either the previous complete file or the new complete one — never
+    a half-written one.
+    """
+    _WRITER.write_json(path, history)
 
 
 def enrich_with_history(
