@@ -1,8 +1,9 @@
 # MRD Automation Overview
 
-Consolidated map of the **four WorkBuddy automations** that keep the Market Risk
-Dashboard's `public/data` fresh and bilingual. All four are ACTIVE and run on the
-**machine-local schedule (Dublin, Europe/Dublin — currently IST = UTC+1)**.
+Consolidated map of the **WorkBuddy automations** that keep the Market Risk
+Dashboard's `public/data` fresh and bilingual. There are **four logical tasks / five
+scheduled entries** (Data Pipeline Refresh is split into two single-hour runs). All are
+ACTIVE and run on the **machine-local schedule (Dublin, Europe/Dublin — currently IST = UTC+1)**.
 
 > Detailed procedures live in the sibling manuals:
 > - Pipeline / data refresh → `docs/operations/scheduled-task.md`
@@ -16,7 +17,8 @@ Dashboard's `public/data` fresh and bilingual. All four are ACTIVE and run on th
 
 | Automation | ID | Dublin schedule | ET window | Role | Commit prefix |
 |---|---|---|---|---|---|
-| **Data Pipeline Refresh** | `automation-1785778453973` | **11:30 & 20:30** daily | 06:30 / 15:30 | Collects market + macro + crypto → writes the structured **fact layer** `facts.json`. **Does not** generate AI analysis. | `data:` |
+| **Data Pipeline Refresh** (11:30) | `automation-1785778453973` | **11:30** daily | 06:30 | Collects market + macro + crypto → writes the structured **fact layer** `facts.json`. **Does not** generate AI analysis. | `data:` |
+| **Data Pipeline Refresh** (20:30) | `automation-1785863308601` | **20:30** daily | 15:30 | Same as the 11:30 run (post-market refresh). Split into a **separate single-hour automation** so the 20:30 slot is guaranteed to fire (avoids relying on multi-value `BYHOUR` support). | `data:` |
 | **Overnight News Refresh** | `automation-1785787482565` | **04:30** daily | 23:30 (prev. day) | News RSS only → `news.json` + `metadata/sources.json`. Touches no other dataset or analysis. | `data:` |
 | **Pre-market AI Brief** | `automation-1785778436340` | **12:30** daily | 07:30 | Reads fresh `facts.json` (from 11:30 refresh) → bilingual `analysis.*.json` + full news translation. | `AI:` |
 | **Post-market AI Brief** | `automation-1785778445021` | **21:30** daily | 16:30 | Same, post-market perspective (reads 20:30 refresh). | `AI:` |
