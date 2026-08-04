@@ -1,21 +1,26 @@
 {
- "schema_version": "1.1.0",
- "generated_at": "2026-08-04T20:34:11Z",
+ "schema_version": "1.0.0",
+ "generated_at": "2026-08-04T11:30:08Z",
  "language": "en",
  "market_state": "caution",
  "market_regime": "goldilocks",
- "summary": "Post-market: the risk score stands at 42.82 (caution, goldilocks), up 0.44 on the day and the week. It was a strong risk-on session - the Dow jumped 1000 points, the S&P 500 hit records and oil tumbled on hopes of a Strait of Hormuz deal - led by a semis surge (AMD +8.76%, MU +8.01%, AVGO +7.03%, NVDA +2.92%) while VIX eased to 15.86. The offset is macro: the 10Y yield rose to 4.75% and the 10Y real rate to 2.47% (99.84th percentile), keeping macro the dominant risk. Breadth is healthy (87.5% above the 200-day average) but new-high participation is thin (0.25). Data coverage is degraded; model confidence is 0.77.",
+ "summary": "Pre-market: the total risk score is 42.38 (caution, goldilocks regime), up 0.49 on the day and the week. The macro dimension remains the dominant risk at 63.76: the 10Y real rate of 2.47% sits at the 99.84th percentile and the 10Y yield is 4.75%. Credit stays benign (HY OAS 2.84, IG OAS 0.8) and VIX eased to 15.99. Asia overnight risk appetite firmed (ChiNext +5.64%, NVDA +2.93%) while the memory complex stayed under pressure (MU -5.90%, GigaDevice limit-down). Data coverage is degraded; model confidence is 0.79.",
  "top_risk_drivers": [
   {
-   "claim": "The 10Y real rate of 2.47% (99.84th percentile) is the top macro risk driver, with the 10Y yield at 4.75% (98.65th percentile).",
+   "claim": "The 10Y real rate of 2.47% sits at the 99.84th percentile — the top macro (63.76) risk contributor.",
    "evidence_refs": [
     {
      "dataset": "risk",
      "path": "payload.dimensions[0].indicators[0].value",
      "metric": "real_rate_dfii10",
      "value": 2.47,
-     "updated_at": "2026-08-04T19:39:38Z"
-    },
+     "updated_at": "2026-08-04T10:26:40Z"
+    }
+   ]
+  },
+  {
+   "claim": "The 10Y yield of 4.75% (98.65th percentile) keeps rates elevated.",
+   "evidence_refs": [
     {
      "dataset": "macro",
      "path": "payload.rates[0].value",
@@ -26,259 +31,191 @@
    ]
   },
   {
-   "claim": "The 10Y-2Y curve at 0.47% keeps the macro term-structure backdrop stretched.",
-   "evidence_refs": [
-    {
-     "dataset": "risk",
-     "path": "payload.dimensions[0].indicators[1].value",
-     "metric": "yield_curve_10y2y",
-     "value": 0.46999999999999975,
-     "updated_at": "2026-08-04T19:39:38Z"
-    }
-   ]
-  },
-  {
-   "claim": "New-high participation is thin at 0.25 despite 87.5% of names above their 200-day average, leaving the record run without broad confirmation.",
+   "claim": "New-highs breadth is absent (0.0) even as 87.5% of names hold above their 200-day average.",
    "evidence_refs": [
     {
      "dataset": "risk",
      "path": "payload.dimensions[2].indicators[1].value",
      "metric": "new_highs_ratio",
-     "value": 0.25,
-     "updated_at": "2026-08-04T19:39:38Z"
+     "value": 0.0,
+     "updated_at": "2026-08-04T10:26:40Z"
     },
     {
      "dataset": "risk",
      "path": "payload.dimensions[2].indicators[0].value",
      "metric": "breadth_above_ma200",
      "value": 0.875,
-     "updated_at": "2026-08-04T19:39:38Z"
+     "updated_at": "2026-08-04T10:26:40Z"
     }
    ]
   },
   {
-   "claim": "Semis relative strength of 10.05 concentrates momentum in one complex, raising unwind risk.",
+   "claim": "The yield curve spread of 0.47% (10Y over 2Y) adds a modest macro constraint.",
    "evidence_refs": [
     {
      "dataset": "risk",
-     "path": "payload.dimensions[2].indicators[4].value",
-     "metric": "semis_relative",
-     "value": 10.0502,
-     "updated_at": "2026-08-04T19:39:38Z"
+     "path": "payload.dimensions[0].indicators[1].value",
+     "metric": "yield_curve_10y2y",
+     "value": 0.46999999999999975,
+     "updated_at": "2026-08-04T10:26:40Z"
     }
    ]
   }
  ],
  "supporting_signals": [
   {
-   "claim": "Credit remains benign - HY OAS 2.85 and IG OAS 0.79.",
+   "claim": "Credit stress is low — HY OAS 2.84 and IG OAS 0.8 — a risk-on tailwind.",
    "evidence_refs": [
     {
      "dataset": "risk",
-     "path": "payload.dimensions[1].indicators[2].value",
+     "path": "payload.dimensions[0].indicators[2].value",
      "metric": "hy_oas",
-     "value": 2.85,
-     "updated_at": "2026-08-04T19:39:38Z"
+     "value": 2.84,
+     "updated_at": "2026-08-04T10:26:40Z"
     },
     {
      "dataset": "risk",
-     "path": "payload.dimensions[1].indicators[3].value",
+     "path": "payload.dimensions[0].indicators[3].value",
      "metric": "ig_oas",
-     "value": 0.79,
-     "updated_at": "2026-08-04T19:39:38Z"
+     "value": 0.8,
+     "updated_at": "2026-08-04T10:26:40Z"
     }
    ]
   },
   {
-   "claim": "Volatility stayed calm: VIX 15.86, consistent with the goldilocks regime (low vol + positive momentum + healthy breadth).",
+   "claim": "VIX fell to 15.99, a calmer volatility backdrop.",
    "evidence_refs": [
     {
      "dataset": "risk",
      "path": "payload.dimensions[3].indicators[0].value",
      "metric": "vix",
-     "value": 15.86,
-     "updated_at": "2026-08-04T19:39:38Z"
-    },
-    {
-     "dataset": "risk",
-     "path": "payload.regime",
-     "metric": "regime",
-     "value": "goldilocks",
-     "updated_at": "2026-08-04T19:39:38Z"
+     "value": 15.99,
+     "updated_at": "2026-08-04T10:26:40Z"
     }
    ]
   },
   {
-   "claim": "Today's tape was strongly risk-on in semis: AMD +8.76%, MU +8.01%, AVGO +7.03%, NVDA +2.92%.",
+   "claim": "Overnight risk appetite firmed: NVDA +2.93%, BTC at 63481 (+1.20%).",
    "evidence_refs": [
-    {
-     "dataset": "equities",
-     "path": "payload.assets[3].change_1d",
-     "metric": "change_1d",
-     "value": 8.7634,
-     "updated_at": "2026-08-04T19:38:58Z"
-    },
-    {
-     "dataset": "equities",
-     "path": "payload.assets[2].change_1d",
-     "metric": "change_1d",
-     "value": 8.0102,
-     "updated_at": "2026-08-04T19:38:58Z"
-    },
-    {
-     "dataset": "equities",
-     "path": "payload.assets[1].change_1d",
-     "metric": "change_1d",
-     "value": 7.0316,
-     "updated_at": "2026-08-04T19:38:58Z"
-    },
     {
      "dataset": "equities",
      "path": "payload.assets[0].change_1d",
      "metric": "change_1d",
-     "value": 2.9205,
-     "updated_at": "2026-08-04T19:38:58Z"
+     "value": 2.9276,
+     "updated_at": "2026-08-04T10:25:56Z"
+    },
+    {
+     "dataset": "crypto",
+     "path": "payload.assets[0].price",
+     "metric": "price",
+     "value": 63481.0,
+     "updated_at": "2026-08-04T10:26:11Z"
     }
    ]
   }
  ],
  "contradicting_signals": [
   {
-   "claim": "Rates rose even on a risk-on day - the 10Y yield moved to 4.75% (from 4.68%) and the real rate to 2.47% (from 2.41%) - a tightening macro headwind at extremes.",
+   "claim": "Semis diverged: MU -5.90% on the day (-10.63% weekly), AMD -1.90% (-8.77% weekly), versus NVDA +2.93%.",
    "evidence_refs": [
     {
-     "dataset": "macro",
-     "path": "payload.rates[0].value",
-     "metric": "dgs10",
-     "value": 4.75,
-     "updated_at": "2026-07-31T00:00:00Z"
+     "dataset": "equities",
+     "path": "payload.assets[2].change_1d",
+     "metric": "change_1d",
+     "value": -5.9029,
+     "updated_at": "2026-08-04T10:25:56Z"
     },
     {
-     "dataset": "risk",
-     "path": "payload.dimensions[0].indicators[0].value",
-     "metric": "real_rate_dfii10",
-     "value": 2.47,
-     "updated_at": "2026-08-04T19:39:38Z"
+     "dataset": "equities",
+     "path": "payload.assets[3].change_1d",
+     "metric": "change_1d",
+     "value": -1.9036,
+     "updated_at": "2026-08-04T10:25:56Z"
     }
    ]
   },
   {
-   "claim": "Cross-asset confirmation is weak at 0.17 and memory-cost inflation is biting downstream (Apple downgraded), both at odds with the equity rally.",
+   "claim": "Cross-asset confirmation is weak at 0.17, offering little corroboration of risk appetite.",
    "evidence_refs": [
     {
      "dataset": "risk",
      "path": "payload.dimensions[4].indicators[0].value",
      "metric": "cross_asset_confirmation",
      "value": 0.1667,
-     "updated_at": "2026-08-04T19:39:38Z"
-    },
-    {
-     "dataset": "news",
-     "path": "payload.items[1].importance",
-     "metric": "importance",
-     "value": 50.72,
-     "updated_at": "2026-08-04T15:23:41Z"
+     "updated_at": "2026-08-04T10:26:40Z"
     }
    ]
   }
  ],
  "what_changed_today": [
-  "Risk score rose to 42.82, up 0.44 on the day and the week.",
-  "10Y yield rose to 4.75% (from 4.68%) and the 10Y real rate to 2.47% (from 2.41%).",
-  "VIX eased to 15.86 (from 15.99); IG OAS edged down to 0.79 (from 0.80) while HY OAS ticked up to 2.85 (from 2.84).",
-  "Strong risk-on session: semis surged (AMD +8.76%, MU +8.01%, AVGO +7.03%, NVDA +2.92%), oil tumbled on Strait of Hormuz deal hopes and the S&P 500 set record highs."
+  "Total risk score rose to 42.38 (up 0.49 on the day and the week).",
+  "The 10Y real rate rose to 2.47% (from 2.41%) and the 10Y yield to 4.75% (from 4.68%).",
+  "VIX eased from 17.09 to 15.99.",
+  "Overnight Asia: ChiNext surged 5.64% (140 limit-ups) while memory leader GigaDevice hit limit-down."
  ],
  "watch_next": [
-  "AMD earnings are due after today's close - a key test for chips and momentum stocks.",
-  "Hormuz Strait deal timing (Bessent flagged Tuesday or Wednesday) - oil and risk sentiment hinge on it.",
-  "Watch whether the new-highs ratio (0.25) expands to confirm the record-level index."
+  "AMD earnings are due today (12:00Z) — a key catalyst for the semis complex.",
+  "Watch whether new highs return while 87.5% of names sit above their 200-day average.",
+  "Track the 10Y real rate at 2.47% and HY OAS at 2.84 for any credit stress pickup."
  ],
  "bull_case": {
-  "title": "Bull case: goldilocks regime extends",
+  "title": "Bull case: risk appetite broadens",
   "points": [
-   "Calm volatility (VIX 15.86) with tight credit (HY OAS 2.85, IG OAS 0.79) and healthy breadth (87.5% above the 200-day average) supports further upside.",
-   "A pickup in the new-highs ratio from 0.25 would confirm the record run."
+   "If credit stays tight (HY OAS 2.84, IG OAS 0.8) and VIX holds 15.99, equities can extend.",
+   "A pickup in new highs from the current 0.0 would confirm healthier participation."
   ],
   "evidence_refs": [
    {
     "dataset": "risk",
+    "path": "payload.dimensions[0].indicators[2].value",
+    "metric": "hy_oas",
+    "value": 2.84,
+    "updated_at": "2026-08-04T10:26:40Z"
+   },
+   {
+    "dataset": "risk",
+    "path": "payload.dimensions[0].indicators[3].value",
+    "metric": "ig_oas",
+    "value": 0.8,
+    "updated_at": "2026-08-04T10:26:40Z"
+   },
+   {
+    "dataset": "risk",
     "path": "payload.dimensions[3].indicators[0].value",
     "metric": "vix",
-    "value": 15.86,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[1].indicators[2].value",
-    "metric": "hy_oas",
-    "value": 2.85,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[1].indicators[3].value",
-    "metric": "ig_oas",
-    "value": 0.79,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[2].indicators[0].value",
-    "metric": "breadth_above_ma200",
-    "value": 0.875,
-    "updated_at": "2026-08-04T19:39:38Z"
+    "value": 15.99,
+    "updated_at": "2026-08-04T10:26:40Z"
    },
    {
     "dataset": "risk",
     "path": "payload.dimensions[2].indicators[1].value",
     "metric": "new_highs_ratio",
-    "value": 0.25,
-    "updated_at": "2026-08-04T19:39:38Z"
+    "value": 0.0,
+    "updated_at": "2026-08-04T10:26:40Z"
    }
   ]
  },
  "base_case": {
-  "title": "Base case: caution persists under a goldilocks tape",
+  "title": "Base case: caution persists",
   "points": [
-   "The score holds near 42.82 with macro the dominant risk and benign credit the offset.",
-   "Equities grind higher with the 200-day average as support (price vs MA200 +10.18%, 52-week drawdown 0.0)."
+   "The score stays near 42.38, with macro risk (63.76) balanced by benign credit.",
+   "Markets grind higher with the 200-day average as support."
   ],
   "evidence_refs": [
    {
     "dataset": "risk",
     "path": "payload.total_score",
     "metric": "total_score",
-    "value": 42.82,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[0].indicators[0].value",
-    "metric": "real_rate_dfii10",
-    "value": 2.47,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[5].indicators[0].value",
-    "metric": "price_vs_ma200",
-    "value": 10.1823,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[5].indicators[1].value",
-    "metric": "drawdown_52w",
-    "value": 0.0,
-    "updated_at": "2026-08-04T19:39:38Z"
+    "value": 42.38,
+    "updated_at": "2026-08-04T10:26:40Z"
    }
   ]
  },
  "bear_case": {
   "title": "Bear case: rates break higher",
   "points": [
-   "A 10Y push beyond 4.75% with the real rate at 2.47% (99.84th percentile) would stress multiples.",
-   "Memory-cost inflation is already hitting downstream names (Apple downgraded) and a semis unwind would strike the market's largest relative winner (semis relative 10.05)."
+   "A 10Y yield push beyond 4.75% with real rates at 2.47% would stress multiples.",
+   "Breadth could roll over if the 87.5% above the 200-day average erodes."
   ],
   "evidence_refs": [
    {
@@ -293,46 +230,32 @@
     "path": "payload.dimensions[0].indicators[0].value",
     "metric": "real_rate_dfii10",
     "value": 2.47,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "news",
-    "path": "payload.items[1].importance",
-    "metric": "importance",
-    "value": 50.72,
-    "updated_at": "2026-08-04T15:23:41Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[2].indicators[4].value",
-    "metric": "semis_relative",
-    "value": 10.0502,
-    "updated_at": "2026-08-04T19:39:38Z"
+    "updated_at": "2026-08-04T10:26:40Z"
    }
   ]
  },
- "confidence": 0.77,
+ "confidence": 0.79,
  "evidence_refs": [
   {
    "dataset": "risk",
    "path": "payload.total_score",
    "metric": "total_score",
-   "value": 42.82,
-   "updated_at": "2026-08-04T19:39:38Z"
-  },
-  {
-   "dataset": "risk",
-   "path": "payload.confidence",
-   "metric": "confidence",
-   "value": 0.7742,
-   "updated_at": "2026-08-04T19:39:38Z"
+   "value": 42.38,
+   "updated_at": "2026-08-04T10:26:40Z"
   },
   {
    "dataset": "risk",
    "path": "payload.regime",
    "metric": "regime",
    "value": "goldilocks",
-   "updated_at": "2026-08-04T19:39:38Z"
+   "updated_at": "2026-08-04T10:26:40Z"
+  },
+  {
+   "dataset": "risk",
+   "path": "payload.confidence",
+   "metric": "confidence",
+   "value": 0.7873,
+   "updated_at": "2026-08-04T10:26:40Z"
   }
  ],
  "data_freshness": "degraded"

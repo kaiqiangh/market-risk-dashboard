@@ -1,21 +1,26 @@
 {
- "schema_version": "1.1.0",
- "generated_at": "2026-08-04T20:34:11Z",
+ "schema_version": "1.0.0",
+ "generated_at": "2026-08-04T11:30:08Z",
  "language": "zh-CN",
  "market_state": "caution",
  "market_regime": "goldilocks",
- "summary": "盘后：风险评分 42.82（警戒 caution、金发姑娘 goldilocks 状态），日内与周度均上升 0.44。今日为强势风险偏好行情——道指大涨 1000 点，标普 500 创历史新高，油价因霍尔木兹海峡协议预期而大跌——半导体板块领涨（AMD +8.76%、MU +8.01%、AVGO +7.03%、NVDA +2.92%），VIX 回落至 15.86。压制因素在宏观：10 年期收益率升至 4.75%，10 年期实际利率升至 2.47%（99.84 分位），宏观仍是最主要风险。市场广度健康（87.5% 个股位于 200 日均线上方），但创新高占比偏薄（0.25）。数据覆盖为 degraded，模型置信度 0.77。",
+ "summary": "盘前简报：总风险分 42.38，处于\"谨慎\"（caution）状态、goldilocks 市场体制，日内与周度均上升 0.49。宏观维度仍是主导风险（63.76）：10 年期实际利率 2.47% 处于 99.84 百分位，10 年期收益率 4.75%。信用环境保持良性（HY OAS 2.84、IG OAS 0.8），VIX 回落至 15.99。亚洲时段风险偏好回暖（创业板指 +5.64%、NVDA +2.93%），但存储链承压（MU -5.90%、兆易创新跌停）。数据覆盖降级，模型置信度 0.79。",
  "top_risk_drivers": [
   {
-   "claim": "10 年期实际利率 2.47%（99.84 分位）是首要宏观风险驱动，10 年期收益率 4.75%（98.65 分位）。",
+   "claim": "10 年期实际利率 2.47% 处于 99.84 百分位，是宏观维度（63.76）的首要风险贡献。",
    "evidence_refs": [
     {
      "dataset": "risk",
      "path": "payload.dimensions[0].indicators[0].value",
      "metric": "real_rate_dfii10",
      "value": 2.47,
-     "updated_at": "2026-08-04T19:39:38Z"
-    },
+     "updated_at": "2026-08-04T10:26:40Z"
+    }
+   ]
+  },
+  {
+   "claim": "10 年期收益率 4.75% 处于 98.65 百分位，利率维持高位。",
+   "evidence_refs": [
     {
      "dataset": "macro",
      "path": "payload.rates[0].value",
@@ -26,259 +31,191 @@
    ]
   },
   {
-   "claim": "10Y-2Y 利差 0.47%，宏观期限结构背景依然偏紧。",
-   "evidence_refs": [
-    {
-     "dataset": "risk",
-     "path": "payload.dimensions[0].indicators[1].value",
-     "metric": "yield_curve_10y2y",
-     "value": 0.46999999999999975,
-     "updated_at": "2026-08-04T19:39:38Z"
-    }
-   ]
-  },
-  {
-   "claim": "创新高占比仅 0.25，而 87.5% 个股位于 200 日均线上方，纪录行情缺乏广泛确认。",
+   "claim": "新高低点比率为 0.0，尽管 87.5% 的个股位于 200 日均线上方。",
    "evidence_refs": [
     {
      "dataset": "risk",
      "path": "payload.dimensions[2].indicators[1].value",
      "metric": "new_highs_ratio",
-     "value": 0.25,
-     "updated_at": "2026-08-04T19:39:38Z"
+     "value": 0.0,
+     "updated_at": "2026-08-04T10:26:40Z"
     },
     {
      "dataset": "risk",
      "path": "payload.dimensions[2].indicators[0].value",
      "metric": "breadth_above_ma200",
      "value": 0.875,
-     "updated_at": "2026-08-04T19:39:38Z"
+     "updated_at": "2026-08-04T10:26:40Z"
     }
    ]
   },
   {
-   "claim": "半导体相对强度 10.05，动量高度集中于单一板块，放大回调风险。",
+   "claim": "10 年期与 2 年期利差 0.47%，构成温和的宏观约束。",
    "evidence_refs": [
     {
      "dataset": "risk",
-     "path": "payload.dimensions[2].indicators[4].value",
-     "metric": "semis_relative",
-     "value": 10.0502,
-     "updated_at": "2026-08-04T19:39:38Z"
+     "path": "payload.dimensions[0].indicators[1].value",
+     "metric": "yield_curve_10y2y",
+     "value": 0.46999999999999975,
+     "updated_at": "2026-08-04T10:26:40Z"
     }
    ]
   }
  ],
  "supporting_signals": [
   {
-   "claim": "信用环境依然宽松——HY OAS 2.85、IG OAS 0.79。",
+   "claim": "信用压力处于低位——HY OAS 2.84、IG OAS 0.8，构成风险偏好支撑。",
    "evidence_refs": [
     {
      "dataset": "risk",
-     "path": "payload.dimensions[1].indicators[2].value",
+     "path": "payload.dimensions[0].indicators[2].value",
      "metric": "hy_oas",
-     "value": 2.85,
-     "updated_at": "2026-08-04T19:39:38Z"
+     "value": 2.84,
+     "updated_at": "2026-08-04T10:26:40Z"
     },
     {
      "dataset": "risk",
-     "path": "payload.dimensions[1].indicators[3].value",
+     "path": "payload.dimensions[0].indicators[3].value",
      "metric": "ig_oas",
-     "value": 0.79,
-     "updated_at": "2026-08-04T19:39:38Z"
+     "value": 0.8,
+     "updated_at": "2026-08-04T10:26:40Z"
     }
    ]
   },
   {
-   "claim": "波动率保持温和：VIX 15.86，与金发姑娘（goldilocks）状态一致（低波动 + 正动量 + 健康广度）。",
+   "claim": "VIX 回落至 15.99，波动率环境温和。",
    "evidence_refs": [
     {
      "dataset": "risk",
      "path": "payload.dimensions[3].indicators[0].value",
      "metric": "vix",
-     "value": 15.86,
-     "updated_at": "2026-08-04T19:39:38Z"
-    },
-    {
-     "dataset": "risk",
-     "path": "payload.regime",
-     "metric": "regime",
-     "value": "goldilocks",
-     "updated_at": "2026-08-04T19:39:38Z"
+     "value": 15.99,
+     "updated_at": "2026-08-04T10:26:40Z"
     }
    ]
   },
   {
-   "claim": "今日半导体行情强势：AMD +8.76%、MU +8.01%、AVGO +7.03%、NVDA +2.92%。",
+   "claim": "隔夜风险偏好回暖：NVDA +2.93%，BTC 报 63481 美元（+1.20%）。",
    "evidence_refs": [
-    {
-     "dataset": "equities",
-     "path": "payload.assets[3].change_1d",
-     "metric": "change_1d",
-     "value": 8.7634,
-     "updated_at": "2026-08-04T19:38:58Z"
-    },
-    {
-     "dataset": "equities",
-     "path": "payload.assets[2].change_1d",
-     "metric": "change_1d",
-     "value": 8.0102,
-     "updated_at": "2026-08-04T19:38:58Z"
-    },
-    {
-     "dataset": "equities",
-     "path": "payload.assets[1].change_1d",
-     "metric": "change_1d",
-     "value": 7.0316,
-     "updated_at": "2026-08-04T19:38:58Z"
-    },
     {
      "dataset": "equities",
      "path": "payload.assets[0].change_1d",
      "metric": "change_1d",
-     "value": 2.9205,
-     "updated_at": "2026-08-04T19:38:58Z"
+     "value": 2.9276,
+     "updated_at": "2026-08-04T10:25:56Z"
+    },
+    {
+     "dataset": "crypto",
+     "path": "payload.assets[0].price",
+     "metric": "price",
+     "value": 63481.0,
+     "updated_at": "2026-08-04T10:26:11Z"
     }
    ]
   }
  ],
  "contradicting_signals": [
   {
-   "claim": "即使风险偏好日，收益率仍在走高——10 年期收益率升至 4.75%（前值 4.68%），实际利率升至 2.47%（前值 2.41%），处于极端的宏观紧缩压力。",
+   "claim": "半导体内部分化：MU 单日 -5.90%（周度 -10.63%）、AMD 单日 -1.90%（周度 -8.77%），与 NVDA +2.93% 形成对比。",
    "evidence_refs": [
     {
-     "dataset": "macro",
-     "path": "payload.rates[0].value",
-     "metric": "dgs10",
-     "value": 4.75,
-     "updated_at": "2026-07-31T00:00:00Z"
+     "dataset": "equities",
+     "path": "payload.assets[2].change_1d",
+     "metric": "change_1d",
+     "value": -5.9029,
+     "updated_at": "2026-08-04T10:25:56Z"
     },
     {
-     "dataset": "risk",
-     "path": "payload.dimensions[0].indicators[0].value",
-     "metric": "real_rate_dfii10",
-     "value": 2.47,
-     "updated_at": "2026-08-04T19:39:38Z"
+     "dataset": "equities",
+     "path": "payload.assets[3].change_1d",
+     "metric": "change_1d",
+     "value": -1.9036,
+     "updated_at": "2026-08-04T10:25:56Z"
     }
    ]
   },
   {
-   "claim": "跨资产确认度仅 0.17，且存储成本通胀开始冲击下游（苹果遭下调评级），均与股市上涨相悖。",
+   "claim": "跨资产确认度偏弱（0.17），风险偏好缺乏共振。",
    "evidence_refs": [
     {
      "dataset": "risk",
      "path": "payload.dimensions[4].indicators[0].value",
      "metric": "cross_asset_confirmation",
      "value": 0.1667,
-     "updated_at": "2026-08-04T19:39:38Z"
-    },
-    {
-     "dataset": "news",
-     "path": "payload.items[1].importance",
-     "metric": "importance",
-     "value": 50.72,
-     "updated_at": "2026-08-04T15:23:41Z"
+     "updated_at": "2026-08-04T10:26:40Z"
     }
    ]
   }
  ],
  "what_changed_today": [
-  "风险评分升至 42.82，日内与周度均上升 0.44。",
-  "10 年期收益率升至 4.75%（前值 4.68%），10 年期实际利率升至 2.47%（前值 2.41%）。",
-  "VIX 回落至 15.86（前值 15.99）；IG OAS 微降至 0.79（前值 0.80），HY OAS 微升至 2.85（前值 2.84）。",
-  "强势风险偏好行情：半导体大涨（AMD +8.76%、MU +8.01%、AVGO +7.03%、NVDA +2.92%），油价因霍尔木兹海峡协议预期大跌，标普 500 创历史新高。"
+  "总风险分升至 42.38（日内与周度均上升 0.49）。",
+  "10 年期实际利率升至 2.47%（前值 2.41%），10 年期收益率升至 4.75%（前值 4.68%）。",
+  "VIX 从 17.09 回落至 15.99。",
+  "亚洲时段创业板指飙升 5.64%（140 只个股涨停），存储龙头兆易创新跌停。"
  ],
  "watch_next": [
-  "AMD 财报将于今日收盘后公布——半导体与动量股的关键考验。",
-  "关注霍尔木兹海峡协议时间表（贝森特称可能在周二或周三达成）——油价与风险情绪将随之波动。",
-  "关注创新高占比（0.25）能否扩大，以确认纪录行情的广度。"
+  "AMD 今日公布财报（12:00Z），是半导体板块的关键催化剂。",
+  "关注新高低点比率能否回升，当前 87.5% 的个股位于 200 日均线上方。",
+  "跟踪 10 年期实际利率 2.47% 与 HY OAS 2.84，警惕信用压力抬头。"
  ],
  "bull_case": {
-  "title": "看涨情形：金发姑娘状态延续",
+  "title": "牛市情景：风险偏好进一步扩散",
   "points": [
-   "波动温和（VIX 15.86）、信用收紧（HY OAS 2.85、IG OAS 0.79）、广度健康（87.5% 个股高于 200 日均线）支撑进一步上行。",
-   "创新高占比若从 0.25 回升，将确认纪录行情的参与度。"
+   "若信用利差保持低位（HY OAS 2.84、IG OAS 0.8）且 VIX 守住 15.99，股市有望进一步上行。",
+   "新高低点比率若从 0.0 回升，将确认更健康的参与度。"
   ],
   "evidence_refs": [
    {
     "dataset": "risk",
+    "path": "payload.dimensions[0].indicators[2].value",
+    "metric": "hy_oas",
+    "value": 2.84,
+    "updated_at": "2026-08-04T10:26:40Z"
+   },
+   {
+    "dataset": "risk",
+    "path": "payload.dimensions[0].indicators[3].value",
+    "metric": "ig_oas",
+    "value": 0.8,
+    "updated_at": "2026-08-04T10:26:40Z"
+   },
+   {
+    "dataset": "risk",
     "path": "payload.dimensions[3].indicators[0].value",
     "metric": "vix",
-    "value": 15.86,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[1].indicators[2].value",
-    "metric": "hy_oas",
-    "value": 2.85,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[1].indicators[3].value",
-    "metric": "ig_oas",
-    "value": 0.79,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[2].indicators[0].value",
-    "metric": "breadth_above_ma200",
-    "value": 0.875,
-    "updated_at": "2026-08-04T19:39:38Z"
+    "value": 15.99,
+    "updated_at": "2026-08-04T10:26:40Z"
    },
    {
     "dataset": "risk",
     "path": "payload.dimensions[2].indicators[1].value",
     "metric": "new_highs_ratio",
-    "value": 0.25,
-    "updated_at": "2026-08-04T19:39:38Z"
+    "value": 0.0,
+    "updated_at": "2026-08-04T10:26:40Z"
    }
   ]
  },
  "base_case": {
-  "title": "基准情形：金发姑娘行情下保持谨慎",
+  "title": "基准情景：谨慎延续",
   "points": [
-   "评分维持在 42.82 附近，宏观是主要风险、信用宽松是对冲。",
-   "股市在 200 日均线上方震荡上行（价格较 200 日均线 +10.18%，52 周回撤 0.0）。"
+   "风险分维持在 42.38 附近，宏观风险（63.76）与良性信用相平衡。",
+   "市场在 200 日均线上方震荡上行。"
   ],
   "evidence_refs": [
    {
     "dataset": "risk",
     "path": "payload.total_score",
     "metric": "total_score",
-    "value": 42.82,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[0].indicators[0].value",
-    "metric": "real_rate_dfii10",
-    "value": 2.47,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[5].indicators[0].value",
-    "metric": "price_vs_ma200",
-    "value": 10.1823,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[5].indicators[1].value",
-    "metric": "drawdown_52w",
-    "value": 0.0,
-    "updated_at": "2026-08-04T19:39:38Z"
+    "value": 42.38,
+    "updated_at": "2026-08-04T10:26:40Z"
    }
   ]
  },
  "bear_case": {
-  "title": "看跌情形：收益率突破上行",
+  "title": "熊市情景：利率破位上行",
   "points": [
-   "若 10 年期收益率突破 4.75%，叠加实际利率 2.47%（99.84 分位），估值将承压。",
-   "存储成本通胀已冲击下游（苹果遭下调评级），半导体一旦回调将重创市场最大的相对强势板块（相对强度 10.05）。"
+   "若 10 年期收益率突破 4.75%、实际利率维持 2.47%，估值将承压。",
+   "若高于 200 日均线的 87.5% 广度回落，市场宽度可能恶化。"
   ],
   "evidence_refs": [
    {
@@ -293,46 +230,32 @@
     "path": "payload.dimensions[0].indicators[0].value",
     "metric": "real_rate_dfii10",
     "value": 2.47,
-    "updated_at": "2026-08-04T19:39:38Z"
-   },
-   {
-    "dataset": "news",
-    "path": "payload.items[1].importance",
-    "metric": "importance",
-    "value": 50.72,
-    "updated_at": "2026-08-04T15:23:41Z"
-   },
-   {
-    "dataset": "risk",
-    "path": "payload.dimensions[2].indicators[4].value",
-    "metric": "semis_relative",
-    "value": 10.0502,
-    "updated_at": "2026-08-04T19:39:38Z"
+    "updated_at": "2026-08-04T10:26:40Z"
    }
   ]
  },
- "confidence": 0.77,
+ "confidence": 0.79,
  "evidence_refs": [
   {
    "dataset": "risk",
    "path": "payload.total_score",
    "metric": "total_score",
-   "value": 42.82,
-   "updated_at": "2026-08-04T19:39:38Z"
-  },
-  {
-   "dataset": "risk",
-   "path": "payload.confidence",
-   "metric": "confidence",
-   "value": 0.7742,
-   "updated_at": "2026-08-04T19:39:38Z"
+   "value": 42.38,
+   "updated_at": "2026-08-04T10:26:40Z"
   },
   {
    "dataset": "risk",
    "path": "payload.regime",
    "metric": "regime",
    "value": "goldilocks",
-   "updated_at": "2026-08-04T19:39:38Z"
+   "updated_at": "2026-08-04T10:26:40Z"
+  },
+  {
+   "dataset": "risk",
+   "path": "payload.confidence",
+   "metric": "confidence",
+   "value": 0.7873,
+   "updated_at": "2026-08-04T10:26:40Z"
   }
  ],
  "data_freshness": "degraded"
