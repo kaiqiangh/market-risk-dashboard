@@ -70,7 +70,7 @@ function checkLatest() {
         if (!["zh-CN", "en"].includes(lang)) errors.push(`${name}: unknown language key ${lang}`);
         if (data.language !== lang) errors.push(`${name}: language field does not match filename`);
       }
-    } else if (name !== "dashboard.json") {
+    } else {
       warnings.push(`${name}: unregistered dataset file (unknown schema)`);
     }
   }

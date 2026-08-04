@@ -20,6 +20,12 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 WORKFLOWS_DIR = REPO_ROOT / ".github" / "workflows"
 
 _YAML_KEY = re.compile(r"^\s*([a-zA-Z0-9_-]+)\s*:", re.MULTILINE)
+#: The F821 gate must be a real workflow step (`run: ruff check . --select F821`), not
+#: merely quoted in a comment — the comment at the top of test-pipeline.yml contains the
+#: exact command text, so a substring match stays green even if the gate line is deleted.
+_F821_RUN_LINE = re.compile(r"^\s*run:\s*ruff check \.\s*--select F821", re.MULTILINE)
+#: The `ENVELOPE_FILES = new Set([...])` literal in validate-json.mjs.
+_ENVELOPE_FILES_SET = re.compile(r"ENVELOPE_FILES = new Set\(\[(.*?)\]\)", re.DOTALL)
 
 
 def _read_workflow(name: str) -> str:
@@ -68,16 +74,28 @@ def test_python_suite_runs_on_every_pull_request_and_push() -> None:
     )
 
 
+def _envelope_files_members(text: str) -> set[str]:
+    """Parse the string members of the `ENVELOPE_FILES = new Set([...])` literal."""
+    match = _ENVELOPE_FILES_SET.search(text)
+    assert match, "validate-json.mjs must declare an ENVELOPE_FILES = new Set([...]) literal"
+    return set(re.findall(r'"([^"]+)"', match.group(1)))
+
+
 def test_f821_is_the_fatal_lint_gate() -> None:
     """F821 (undefined name) fails the build; everything else is advisory.
 
     Ruling (#60, board item 5): F821 pinned fatal, never a numeric threshold. The ruff
-    invocation in CI must select F821 so no warning-count ratchet can be gamed.
+    invocation in CI must select F821 so no warning-count ratchet can be gamed. The
+    check anchors on the workflow `run:` line — a comment quoting the command must not
+    satisfy it (QA mutation: deleting the run line while keeping the comment stayed
+    green under the substring check).
     """
     text = _read_workflow("test-pipeline.yml")
 
     assert "ruff" in text, "the Python job must run ruff"
-    assert "--select F821" in text, "F821 must be the fatal gate (ruff check . --select F821)"
+    assert _F821_RUN_LINE.search(text), (
+        "the F821 gate must be a real run step: `run: ruff check . --select F821`"
+    )
 
 
 def test_validate_json_mjs_is_aligned_with_the_schema_homes() -> None:
@@ -86,11 +104,15 @@ def test_validate_json_mjs_is_aligned_with_the_schema_homes() -> None:
     `validate-json.mjs` is deliberately zero-dependency, so it cannot import the Zod
     enum; instead it declares the canonical homes and must stay in sync. `dashboard.json`
     is an envelope (pipeline/schemas/dashboard.py, src/schemas/dashboard.ts) and is
-    validated by the Python gate — the Node gate skipping it was a divergence.
+    validated by the Python gate — the Node gate skipping it was a divergence. The
+    membership check parses the set literal, so a dead `name !== "dashboard.json"` skip
+    guard elsewhere in the file must not satisfy it (QA mutation).
     """
     text = (REPO_ROOT / "scripts" / "validate-json.mjs").read_text(encoding="utf-8")
 
-    assert '"dashboard.json"' in text, "dashboard.json must be validated as an envelope, not skipped"
+    assert "dashboard.json" in _envelope_files_members(text), (
+        "dashboard.json must be a member of ENVELOPE_FILES, not merely mentioned in the file"
+    )
     assert "src/schemas/envelope.ts" in text, (
         "the FRESHNESS copy must document its canonical home (Zod enum)"
     )
