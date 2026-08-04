@@ -19,6 +19,7 @@ from pipeline.schemas import (
     RiskModelResult,
     SectorsEnvelope,
 )
+from pipeline.schemas.envelope import SCHEMA_VERSION
 from pipeline.utils import now_utc
 
 
@@ -58,7 +59,7 @@ class FactLayerBuilder:
 
         return FactLayer(
             generated_at=generated_at or now_utc(),
-            schema_version="1.0.0",
+            schema_version=SCHEMA_VERSION,
             data_freshness=data_freshness,
             risk=risk.payload,
             macro_summary=self._macro_summary(macro),

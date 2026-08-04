@@ -228,9 +228,17 @@ def test_factory_output_matches_golden_structure(name: str) -> None:
 # ---------- schema_version support and backward compatibility ----------
 
 def test_schema_version_supported() -> None:
-    for name, model in ENVELOPE_FIXTURES.items():
+    """Every published artifact (envelope AND standalone, e.g. facts.json) carries SCHEMA_VERSION.
+
+    #78: facts.json is a standalone contract, not an envelope; a stale literal in the
+    builder used to slip past the envelope-only iteration. A SCHEMA_VERSION bump must fail
+    here until every producer follows.
+    """
+    for name, model in {**ENVELOPE_FIXTURES, **STANDALONE_FIXTURES}.items():
         data = generated_document(name)
-        assert data["schema_version"] == SCHEMA_VERSION
+        assert data["schema_version"] == SCHEMA_VERSION, (
+            f"{name} must carry schema_version == SCHEMA_VERSION, got {data['schema_version']!r}"
+        )
         model.model_validate(data)
 
 
@@ -247,6 +255,42 @@ def test_schema_version_supported() -> None:
 )
 def test_is_schema_compatible(file_version: str, expected: bool) -> None:
     assert is_schema_compatible(file_version, SCHEMA_VERSION) is expected
+
+
+def test_factlayer_builder_emits_schema_version() -> None:
+    """#78: the builder emits SCHEMA_VERSION, not the stale 1.0.0 literal.
+
+    `generated_document("facts.json")` goes through the factory (which already uses
+    SCHEMA_VERSION) and would mask a stale literal in `FactLayerBuilder.build`. This
+    asserts the builder's own output — the real pipeline path — carries the current
+    version. Mutation probe: bump SCHEMA_VERSION and this fails until the builder follows.
+    """
+    from pipeline.factlayer.builder import FactLayerBuilder
+    from pipeline.schemas import (
+        CalendarEnvelope,
+        CryptoEnvelope,
+        EquitiesEnvelope,
+        MacroEnvelope,
+        NewsEnvelope,
+        RiskEnvelope,
+        SectorsEnvelope,
+    )
+
+    def _env(name: str, model: Any) -> Any:
+        return model.model_validate(generated_document(name))
+
+    facts = FactLayerBuilder().build(
+        risk=_env("risk.json", RiskEnvelope),
+        macro=_env("macro.json", MacroEnvelope),
+        equities=_env("equities.json", EquitiesEnvelope),
+        crypto=_env("crypto.json", CryptoEnvelope),
+        news=_env("news.json", NewsEnvelope),
+        calendar=_env("calendar.json", CalendarEnvelope),
+        sectors=_env("sectors.json", SectorsEnvelope),
+    )
+    assert facts.schema_version == SCHEMA_VERSION, (
+        f"facts builder must emit SCHEMA_VERSION, got {facts.schema_version!r}"
+    )
 
 
 # ---------- Copy isolation: negative cases do not pollute shared documents ----------
