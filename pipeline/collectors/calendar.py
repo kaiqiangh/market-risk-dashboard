@@ -8,6 +8,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
+from pipeline.degrade import degraded_quality
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import CalendarDataset, CalendarEnvelope, CalendarEvent
 from pipeline.settings import Settings
@@ -20,6 +21,15 @@ class CalendarCollector:
         self.settings = settings or Settings()
         self.degraded: list[str] = []
         self.provider_status: dict[str, Any] = {}
+
+    # ---- Summary ----
+
+    def _quality(self) -> float:
+        """Data quality degrades by the configured factor when the calendar source degraded.
+
+        The calendar has a single logical source, so any number of failures counts as one.
+        """
+        return degraded_quality(1 if self.degraded else 0, settings=self.settings)
 
     def collect(self) -> tuple[CalendarEnvelope, dict[str, Any]]:
         today = datetime.now(timezone.utc).date()
@@ -51,7 +61,7 @@ class CalendarCollector:
             self.degraded.append(f"calendar: {exc}")
             self.provider_status["calendar"] = {"degraded": True, "error": str(exc)}
 
-        quality = 0.8 if self.degraded else 1.0  # degrade ×0.8 per failed source
+        quality = self._quality()
         envelope = CalendarEnvelope(
             generated_at=now_utc(), schema_version="1.0.0",
             source=["fmp", "yfinance"], source_updated_at=now_utc(),

@@ -20,6 +20,7 @@ from typing import Any, Callable, Generic, TypeVar
 
 from pydantic import BaseModel, Field
 
+from pipeline.degrade import degrade_factor as resolve_degrade_factor
 from pipeline.settings import Settings
 
 # Default timeout/retry (overridable by config/sources.yaml degrade)
@@ -142,7 +143,9 @@ class ProviderRegistry:
         self.max_retries = int(degrade.get("max_retries", DEFAULT_MAX_RETRIES))
         self.backoff_base = float(degrade.get("backoff_base_seconds", DEFAULT_BACKOFF_BASE))
         self.jitter = bool(degrade.get("jitter", True))
-        self.degrade_factor = float(degrade.get("data_quality_degrade_factor", 0.8))
+        # Single source of truth (#62): pass the already-parsed mapping so this does not
+        # re-read sources.yaml.
+        self.degrade_factor = resolve_degrade_factor(sources=sources)
         cache_dir = self.settings.artifacts_dir / "cache"
         cache_dir.mkdir(parents=True, exist_ok=True)
         self.cache_dir: Path = cache_dir

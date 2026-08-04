@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from pipeline.degrade import degraded_quality
 from pipeline.fedwatch import (
     FedWatchInput,
     compute_fedwatch,
@@ -147,9 +148,12 @@ class MacroCollector:
     # ---- Summary ----
 
     def _quality(self) -> float:
-        """Data quality degrades ×0.8 per failed source: FRED partial failure counts as 1, FedWatch failure counts as 1."""
+        """Data quality degrades by the configured factor per failed source.
+
+        FRED partial failure counts as one source, FedWatch failure counts as one.
+        """
         failed = (1 if self._fred_failures > 0 else 0) + (1 if self._fedwatch_failed else 0)
-        return round(max(0.1, 0.8 ** failed), 3)
+        return degraded_quality(failed, settings=self.settings)
 
     def collect(self) -> tuple[MacroEnvelope, dict[str, Any]]:
         dataset = self._collect_macro()

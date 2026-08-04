@@ -1,9 +1,31 @@
-"""Provider degradation chain tests (architecture §1.4; acceptance #3: yfinance outage → Stooq → degraded)."""
+"""Provider degradation chain tests (architecture §1.4; acceptance #3: yfinance outage → Stooq → degraded).
+
+Also covers #62: the data-quality degrade factor has exactly one home, `pipeline/degrade.py`,
+sourced from `config/sources.yaml` under `degrade.data_quality_degrade_factor`. Every consumer
+— the four collectors, `risk.confidence.quality_factor`, and `ProviderRegistry` — resolves it
+from there, so editing the config key moves all of them together.
+"""
 
 from __future__ import annotations
 
-import pytest
+import re
+import shutil
+from pathlib import Path
+from typing import Any
 
+import pytest
+import yaml
+
+from pipeline.collectors.calendar import CalendarCollector
+from pipeline.collectors.macro import MacroCollector
+from pipeline.collectors.market import MarketCollector
+from pipeline.collectors.news import NewsCollector
+from pipeline.degrade import (
+    DEFAULT_DEGRADE_FACTOR,
+    MIN_DATA_QUALITY,
+    degrade_factor,
+    degraded_quality,
+)
 from pipeline.providers import ProviderRegistry
 from pipeline.providers.base import (
     HistoryResult,
@@ -14,7 +36,18 @@ from pipeline.providers.base import (
 )
 from pipeline.providers.stooq import StooqProvider
 from pipeline.providers.yahoo import YahooProvider
+from pipeline.risk.confidence import quality_factor
 from pipeline.settings import Settings
+from pipeline.universe import AssetUniverse
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+REAL_CONFIG_DIR = REPO_ROOT / "config"
+PIPELINE_DIR = REPO_ROOT / "pipeline"
+
+#: The factor as it was hardcoded at 41b11b9, before #62 extracted it. Tests that assert
+#: "behaviour is unchanged at the default value" compare against this literal deliberately:
+#: it is a frozen historical constant, not a reference to the current configuration.
+LEGACY_FACTOR = 0.8
 
 
 class _FailingYahoo(YahooProvider):
@@ -127,3 +160,263 @@ def test_confidence_drops_when_data_quality_drops() -> None:
     high = compute_confidence(1.0, 0.9, 1.0)
     low = compute_confidence(0.64, 0.9, 1.0)  # dq=0.8 after one degrade
     assert low < high
+
+
+# ---------------------------------------------------------------------------
+# #62 — one degrade factor, read from config, used everywhere
+# ---------------------------------------------------------------------------
+
+
+def _settings_with_factor(tmp_path: Path, value: float | None) -> Settings:
+    """Copy the real config tree into tmp_path, optionally rewriting the degrade factor.
+
+    Copying the real tree (rather than synthesising a minimal one) is deliberate: the
+    acceptance criterion is that a value edited in a real-shaped `config/sources.yaml`
+    reaches every consumer, so the test edits a real-shaped file.
+
+    Passing ``value=None`` leaves the config untouched, which pins the default behaviour.
+    """
+    config_dir = tmp_path / "config"
+    shutil.copytree(REAL_CONFIG_DIR, config_dir)
+    if value is not None:
+        path = config_dir / "sources.yaml"
+        doc = yaml.safe_load(path.read_text(encoding="utf-8"))
+        doc["degrade"]["data_quality_degrade_factor"] = value
+        path.write_text(yaml.safe_dump(doc, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    return Settings(
+        _env_file=None,
+        config_dir=config_dir,
+        data_dir=tmp_path / "data",
+        artifacts_dir=tmp_path / "artifacts",
+    )
+
+
+#: news and calendar degrade as a single unit — any number of failures is one failed source.
+_BINARY_COLLECTORS = frozenset({"news", "calendar"})
+
+#: Every collector whose published `data_quality` must track the configured factor.
+COLLECTOR_NAMES = ("macro", "market", "news", "calendar")
+
+
+def _effective_failures(collector: str, failed: int) -> int:
+    """How many times the factor is actually applied for `failed` failed sources."""
+    return min(failed, 1) if collector in _BINARY_COLLECTORS else failed
+
+
+def _quality_at(settings: Settings, collector: str, failed: int) -> float:
+    """Build `collector` against `settings`, drive it to `failed` failed sources, read its quality.
+
+    The private attributes poked here are exactly the ones each collector's own error paths
+    set when a provider raises, so this reproduces a degraded run without needing providers.
+    """
+    registry = ProviderRegistry(settings)
+    if collector == "macro":
+        assert failed <= 2, "macro counts at most two failed sources (FRED, FedWatch)"
+        macro = MacroCollector(registry, settings)
+        macro._fred_failures = 1 if failed >= 1 else 0
+        macro._fedwatch_failed = failed >= 2
+        return macro._quality()
+    if collector == "market":
+        market = MarketCollector(registry, AssetUniverse(settings.load_universe()), settings)
+        market._domain_down = {f"domain-{i}" for i in range(failed)}
+        return market._quality()
+    if collector == "news":
+        news = NewsCollector(registry, settings)
+        news.degraded = ["source down"] * failed
+        return news._quality()
+    if collector == "calendar":
+        calendar = CalendarCollector(registry, settings)
+        calendar.degraded = ["source down"] * failed
+        return calendar._quality()
+    raise AssertionError(f"unknown collector: {collector}")
+
+
+def _max_failures(collector: str) -> int:
+    """The largest failed-source count `collector` can represent."""
+    if collector == "macro":
+        return 2
+    if collector in _BINARY_COLLECTORS:
+        return 1
+    return 4
+
+
+# ---- The factor has exactly one home ----
+
+_DEGRADE_LITERAL = re.compile(r"(?<![\w.])0\.8(?![\d])")
+
+#: `pipeline/risk/scoring.py` holds indicator threshold tables where 0.8 is a credit-spread
+#: level in percent, not a degrade factor. #62 names these as unrelated and leaves them.
+_UNRELATED_TO_DEGRADE = frozenset({"risk/scoring.py"})
+
+
+def test_only_one_degrade_literal_in_pipeline() -> None:
+    """AC: a grep for a bare 0.8 used as a degrade factor in pipeline/ returns exactly one site."""
+    hits: list[str] = []
+    for path in sorted(PIPELINE_DIR.rglob("*.py")):
+        relative = path.relative_to(PIPELINE_DIR).as_posix()
+        if relative in _UNRELATED_TO_DEGRADE:
+            continue
+        for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+            if _DEGRADE_LITERAL.search(line):
+                hits.append(f"{relative}:{lineno}: {line.strip()}")
+
+    assert len(hits) == 1, (
+        "the degrade factor must have exactly one literal home in pipeline/; found:\n" + "\n".join(hits)
+    )
+    assert hits[0].startswith("degrade.py:"), f"the one home must be pipeline/degrade.py, found {hits[0]}"
+    assert "DEFAULT_DEGRADE_FACTOR" in hits[0], f"the one literal must define the default, found {hits[0]}"
+
+
+def test_degrade_factor_is_single_sourced(tmp_path) -> None:
+    """Every consumer reflects a patched config value — not just the one that reads config."""
+    patched = 0.5
+    settings = _settings_with_factor(tmp_path, patched)
+
+    assert degrade_factor(settings) == patched
+    assert ProviderRegistry(settings).degrade_factor == patched
+    assert quality_factor(1, settings=settings) == patched
+
+    for collector in COLLECTOR_NAMES:
+        assert _quality_at(settings, collector, 1) == patched, f"{collector} ignored the configured factor"
+
+
+def test_degrade_factor_honours_config_override(tmp_path) -> None:
+    """A non-default factor in config/sources.yaml reaches quality_factor and all four collectors."""
+    settings = _settings_with_factor(tmp_path, 0.5)
+
+    assert quality_factor(1, settings=settings) == 0.5
+    assert quality_factor(2, settings=settings) == 0.25
+
+    assert _quality_at(settings, "macro", 1) == 0.5
+    assert _quality_at(settings, "macro", 2) == 0.25
+    assert _quality_at(settings, "market", 1) == 0.5
+    assert _quality_at(settings, "market", 2) == 0.25
+    assert _quality_at(settings, "news", 1) == 0.5
+    assert _quality_at(settings, "calendar", 1) == 0.5
+
+    # …and an undegraded run is still a clean 1.0 whatever the factor is.
+    for collector in COLLECTOR_NAMES:
+        assert _quality_at(settings, collector, 0) == 1.0
+
+
+def test_degrade_factor_override_reaches_zero_arg_callers(tmp_path, monkeypatch) -> None:
+    """A caller that passes no Settings still picks the value up from config, not from a default."""
+    settings = _settings_with_factor(tmp_path, 0.25)
+    monkeypatch.setenv("DATA_CONFIG_DIR", str(settings.config_dir))
+
+    assert degrade_factor() == 0.25
+    assert quality_factor(1) == 0.25
+
+
+def test_degrade_factor_still_compounds(tmp_path) -> None:
+    """Two failures yield factor ** 2, not factor. Compounding is deliberate precedent."""
+    factor = 0.5
+    settings = _settings_with_factor(tmp_path, factor)
+
+    assert _quality_at(settings, "macro", 2) == factor**2
+    assert _quality_at(settings, "market", 2) == factor**2
+    assert quality_factor(2, settings=settings) == factor**2
+
+    # Not the same as a single application — the bug this guards against.
+    assert _quality_at(settings, "macro", 2) != factor
+    assert _quality_at(settings, "market", 2) != factor
+    assert quality_factor(2, settings=settings) != factor
+
+    # …and it keeps compounding beyond two.
+    assert _quality_at(settings, "market", 3) == pytest.approx(factor**3)
+
+
+# ---- Behaviour is unchanged at the default value ----
+
+
+@pytest.mark.parametrize("collector", COLLECTOR_NAMES)
+def test_default_factor_preserves_published_quality(tmp_path, collector) -> None:
+    """AC: at the default factor every published data_quality matches 41b11b9 exactly.
+
+    This change touches no field other than `data_quality`, so pinning `data_quality`
+    across the full degraded range is the byte-identity guarantee for the artifacts.
+    """
+    settings = _settings_with_factor(tmp_path, None)
+    for failed in range(_max_failures(collector) + 1):
+        applied = _effective_failures(collector, failed)
+        # The pre-#62 expression, reproduced verbatim from each collector.
+        expected = round(max(0.1, LEGACY_FACTOR**applied), 3)
+        assert _quality_at(settings, collector, failed) == expected, (
+            f"{collector} at {failed} failed source(s) drifted from the 41b11b9 value"
+        )
+
+
+def test_default_factor_preserves_quality_factor_output() -> None:
+    """quality_factor keeps its 41b11b9 outputs when config carries the default."""
+    for degraded_count in range(0, 11):
+        expected = round(max(0.1, LEGACY_FACTOR**degraded_count), 4)
+        assert quality_factor(degraded_count) == expected
+
+
+def test_default_constant_matches_shipped_config() -> None:
+    """The in-code fallback and the shipped config agree, so neither can drift unnoticed."""
+    assert DEFAULT_DEGRADE_FACTOR == LEGACY_FACTOR
+    assert degrade_factor(Settings(_env_file=None)) == DEFAULT_DEGRADE_FACTOR
+
+
+# ---- The accessor itself ----
+
+
+def test_degrade_factor_falls_back_when_key_absent(tmp_path) -> None:
+    config_dir = tmp_path / "config"
+    shutil.copytree(REAL_CONFIG_DIR, config_dir)
+    path = config_dir / "sources.yaml"
+    doc = yaml.safe_load(path.read_text(encoding="utf-8"))
+    del doc["degrade"]["data_quality_degrade_factor"]
+    path.write_text(yaml.safe_dump(doc, allow_unicode=True, sort_keys=False), encoding="utf-8")
+
+    settings = Settings(_env_file=None, config_dir=config_dir, artifacts_dir=tmp_path / "artifacts")
+    assert degrade_factor(settings) == DEFAULT_DEGRADE_FACTOR
+
+
+def test_degrade_factor_falls_back_when_section_absent(tmp_path) -> None:
+    config_dir = tmp_path / "config"
+    shutil.copytree(REAL_CONFIG_DIR, config_dir)
+    path = config_dir / "sources.yaml"
+    doc = yaml.safe_load(path.read_text(encoding="utf-8"))
+    del doc["degrade"]
+    path.write_text(yaml.safe_dump(doc, allow_unicode=True, sort_keys=False), encoding="utf-8")
+
+    settings = Settings(_env_file=None, config_dir=config_dir, artifacts_dir=tmp_path / "artifacts")
+    assert degrade_factor(settings) == DEFAULT_DEGRADE_FACTOR
+
+
+@pytest.mark.parametrize("bad", [0.0, -0.1, 1.5, float("nan"), float("inf")])
+def test_degrade_factor_rejects_values_outside_unit_interval(bad) -> None:
+    """A factor outside (0, 1] would raise quality on degradation, or zero it. Refuse loudly."""
+    with pytest.raises(ValueError, match="data_quality_degrade_factor"):
+        degrade_factor(sources={"degrade": {"data_quality_degrade_factor": bad}})
+
+
+@pytest.mark.parametrize("bad", ["zero point eight", None, [], {}])
+def test_degrade_factor_rejects_non_numeric(bad: Any) -> None:
+    with pytest.raises(ValueError, match="data_quality_degrade_factor"):
+        degrade_factor(sources={"degrade": {"data_quality_degrade_factor": bad}})
+
+
+def test_degrade_factor_accepts_a_preloaded_sources_mapping() -> None:
+    """Callers holding sources.yaml already (ProviderRegistry) need not re-read it."""
+    assert degrade_factor(sources={"degrade": {"data_quality_degrade_factor": 0.42}}) == 0.42
+
+
+def test_degraded_quality_floors_at_minimum() -> None:
+    """However many sources fail, published quality never claims less than the floor."""
+    assert degraded_quality(50, factor=0.5) == MIN_DATA_QUALITY
+    assert degraded_quality(0, factor=0.5) == 1.0
+
+
+def test_degraded_quality_rejects_negative_count() -> None:
+    with pytest.raises(ValueError, match="degraded_count"):
+        degraded_quality(-1, factor=0.5)
+
+
+@pytest.mark.parametrize("collector", COLLECTOR_NAMES)
+def test_collector_quality_never_falls_below_floor(tmp_path, collector) -> None:
+    settings = _settings_with_factor(tmp_path, 0.5)
+    for failed in range(_max_failures(collector) + 1):
+        assert _quality_at(settings, collector, failed) >= MIN_DATA_QUALITY

@@ -7,6 +7,9 @@ from __future__ import annotations
 
 import math
 
+from pipeline.degrade import degraded_quality
+from pipeline.settings import Settings
+
 
 def compute_confidence(
     data_quality: float,
@@ -34,7 +37,22 @@ def consistency_from_dimension_scores(scores: list[float]) -> float:
     return round(max(0.0, min(1.0, 1.0 - std / 50.0)), 4)
 
 
-def quality_factor(degraded_count: int, base: float = 1.0, per_degrade: float = 0.8) -> float:
-    """Degrade count → data quality (×0.8 per degrade, architecture §1.4)."""
-    factor = base * (per_degrade ** degraded_count)
-    return round(max(0.1, factor), 4)
+def quality_factor(
+    degraded_count: int,
+    base: float = 1.0,
+    per_degrade: float | None = None,
+    *,
+    settings: Settings | None = None,
+) -> float:
+    """Degrade count → data quality (architecture §1.4).
+
+    The per-degrade factor comes from `config/sources.yaml` (see :mod:`pipeline.degrade`)
+    unless `per_degrade` pins one explicitly.
+    """
+    return degraded_quality(
+        degraded_count,
+        base=base,
+        factor=per_degrade,
+        digits=4,
+        settings=settings,
+    )

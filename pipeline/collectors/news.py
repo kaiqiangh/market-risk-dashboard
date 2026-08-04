@@ -13,6 +13,7 @@ import re
 from datetime import datetime, timezone
 from typing import Any
 
+from pipeline.degrade import degraded_quality
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import NewsDataset, NewsEnvelope, NewsItem, NewsTranslationsDataset
 from pipeline.settings import Settings
@@ -89,6 +90,16 @@ class NewsCollector:
             return ["earnings"]
         return ["other"]
 
+    # ---- Summary ----
+
+    def _quality(self) -> float:
+        """Data quality degrades by the configured factor when the feed set degraded.
+
+        News degrades as a unit: the collector either assembled its feed set or fell back,
+        so any number of failures counts as one failed source.
+        """
+        return degraded_quality(1 if self.degraded else 0, settings=self.settings)
+
     def collect(self) -> tuple[NewsEnvelope, dict[str, Any]]:
         try:
             out = self.registry.call("news", "fetch_news", "rss_all")
@@ -144,7 +155,7 @@ class NewsCollector:
         items.sort(key=lambda n: n.importance, reverse=True)
         items = items[:50]
 
-        quality = 0.8 if self.degraded else 1.0  # degrade ×0.8 per failed source
+        quality = self._quality()
         envelope = NewsEnvelope(
             generated_at=now_utc(), schema_version="1.0.0",
             source=[provider], source_updated_at=now_utc(),

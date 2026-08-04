@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from pipeline.degrade import degraded_quality
 from pipeline.indicators.technical import technical_snapshot
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import (
@@ -168,7 +169,7 @@ class MarketCollector:
     # ---- Summary ----
 
     def _quality(self) -> float:
-        """Data quality degrades ×0.8 per failed domain (provider), not per failed asset count."""
+        """Data quality degrades by the configured factor per failed domain (provider), not per failed asset."""
         failed = set(self._domain_down)
         for domain, count in self._domain_failures.items():
             if count > 0:
@@ -176,7 +177,7 @@ class MarketCollector:
         crypto_status = self.provider_status.get("crypto")
         if isinstance(crypto_status, dict) and crypto_status.get("degraded"):
             failed.add("crypto")
-        return round(max(0.1, 0.8 ** len(failed)), 3)
+        return degraded_quality(len(failed), settings=self.settings)
 
     def collect(self) -> dict[str, Any]:
         equities = self._collect_equities()
