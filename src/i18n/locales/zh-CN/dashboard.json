@@ -5,6 +5,9 @@
     "title": "跨资产热力图",
     "empty": "暂无跨资产数据",
     "axis": "涨跌",
+    "asset": "资产",
+    "change": "涨跌",
+    "details": "显示数据表",
     "catEquities": "美股",
     "catCrypto": "加密",
     "catSectors": "板块",
@@ -15,7 +18,8 @@
     "score": "风险分",
     "empty": "暂无风险趋势数据",
     "emptyHint": "历史切片尚未产出",
-    "date": "日期"
+    "date": "日期",
+    "details": "显示数据表"
   },
   "catalysts": {
     "title": "未来催化剂",

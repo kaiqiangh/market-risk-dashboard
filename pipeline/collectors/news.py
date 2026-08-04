@@ -105,13 +105,20 @@ class NewsCollector:
             if hasattr(p, "source_status"):
                 source_status.update(p.source_status)
 
+        source_failures = [source_id for source_id, status in source_status.items() if not status.get("ok", False)]
+        if source_failures:
+            self.degraded.append("RSS sources degraded: " + ", ".join(sorted(source_failures)))
+
         now = datetime.now(timezone.utc)
         items: list[NewsItem] = []
         seen: set[str] = set()
         for raw in raw_items:
             title = _clean(raw.get("title", ""))
             source = raw.get("source", "unknown")
-            published = raw.get("published_at", now_utc())
+            published = raw.get("published_at")
+            if not published:
+                self.degraded.append(f"news item missing published_at: {title[:80]}")
+                continue
             dedupe_id = self._dedupe_id(title, source, published)
             if dedupe_id in seen:
                 continue

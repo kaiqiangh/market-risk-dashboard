@@ -19,10 +19,10 @@ export function LanguageSwitch() {
       onClick={toggleLocale}
       aria-label={t("lang.switch")}
       data-testid="lang-switch"
-      className="gap-1.5"
+      className="h-10 w-10 px-0 sm:h-8 sm:w-auto sm:px-3"
     >
       <Languages className="h-4 w-4" aria-hidden />
-      <span>{next}</span>
+      <span className="hidden sm:inline">{next}</span>
     </Button>
   );
 }

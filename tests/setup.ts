@@ -2,6 +2,23 @@ import "@testing-library/jest-dom/vitest";
 import { beforeEach } from "vitest";
 import i18n from "@/i18n";
 
+if (typeof window !== "undefined" && !window.localStorage) {
+  const values = new Map<string, string>();
+  Object.defineProperty(window, "localStorage", {
+    configurable: true,
+    value: {
+      clear: () => values.clear(),
+      getItem: (key: string) => values.get(key) ?? null,
+      key: (index: number) => Array.from(values.keys())[index] ?? null,
+      removeItem: (key: string) => values.delete(key),
+      setItem: (key: string, value: string) => values.set(key, String(value)),
+      get length() {
+        return values.size;
+      },
+    } satisfies Storage,
+  });
+}
+
 /**
  * Global test setup:
  * - jest-dom matchers

@@ -66,10 +66,11 @@ export function LocaleSync(): null {
 
   useEffect(() => {
     const target = localeFromHash(window.location.hash);
+    const resolved: SupportedLocale = target ?? (lang === "zh" ? "zh-CN" : "en");
+    document.documentElement.lang = resolved === "zh-CN" ? "zh-CN" : "en";
     if (target && i18n.language !== target) {
       void i18n.changeLanguage(target);
     } else if (!target) {
-      const resolved: SupportedLocale = lang === "zh" ? "zh-CN" : "en";
       if (i18n.language !== resolved) void i18n.changeLanguage(resolved);
     }
     setTick((n) => n + 1);

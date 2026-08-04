@@ -39,5 +39,6 @@ degrade:
   max_retries: 2
   backoff_base_seconds: 1.0
   jitter: true
+  cache_max_age_hours: 24
   data_quality_degrade_factor: 0.8
   last_good_cache_dir: "artifacts/cache"

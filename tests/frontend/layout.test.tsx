@@ -4,7 +4,7 @@
  * responsive classes and document order.
  */
 import { describe, expect, it, vi, afterEach } from "vitest";
-import { cleanup, configure, render, screen } from "@testing-library/react";
+import { cleanup, configure, fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@/i18n";
 import App from "@/App";
@@ -80,13 +80,29 @@ describe("mobile layout", () => {
     expect(wrappedInCard).toBe(false);
   });
 
-  it("Navbar scrolls horizontally on mobile (overflow-x-auto)", async () => {
+  it("Navbar keeps four direct mobile destinations and groups the rest under More", async () => {
     installFixtureFetch();
     window.history.replaceState(null, "", "#/zh/overview");
     const { container } = renderApp();
     await screen.findByTestId("page-title");
     const nav = container.querySelector("nav");
-    expect(nav?.getAttribute("class") ?? "").toContain("overflow-x-auto");
+    expect(nav?.getAttribute("class") ?? "").not.toContain("overflow-x-auto");
+    expect(screen.getByRole("link", { name: /总览/ })).toBeVisible();
+    expect(screen.getByRole("link", { name: /宏观/ })).toBeVisible();
+    expect(screen.getByRole("link", { name: /股票/ })).toBeVisible();
+    expect(screen.getByRole("link", { name: /新闻/ })).toBeVisible();
+    const more = screen.getByRole("button", { name: "更多" });
+    expect(more).toBeVisible();
+    expect(more.className).toContain("min-h-11");
+    fireEvent.click(more);
+    expect(screen.getByRole("menuitem", { name: /主题/ })).toBeVisible();
+    fireEvent.click(screen.getByRole("menuitem", { name: /主题/ }));
+    expect(screen.queryByRole("menu")).toBeNull();
+
+    fireEvent.click(screen.getByRole("link", { name: /系统状态/ }));
+    const activeMore = await screen.findByRole("button", { name: /更多 \(当前\)/ });
+    expect(activeMore).toHaveAttribute("aria-current", "page");
+    expect(container.querySelector("nav")?.className ?? "").toContain("basis-full");
   });
 
   it("Equities A-share cards use a mobile single-column responsive grid", async () => {

@@ -7,6 +7,7 @@ import { formatDate, formatNumber } from "@/lib/format";
 
 /** jsdom / no-canvas environment → fall back to HTML (avoid zrender animation loop crashes). */
 function canvasSupported(): boolean {
+  if (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent)) return false;
   try {
     const canvas = document.createElement("canvas");
     return !!(canvas.getContext && canvas.getContext("2d"));
@@ -135,5 +136,30 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
     );
   }
 
-  return <div ref={ref} style={{ height }} data-testid="risk-trend-chart" className="w-full" />;
+  return (
+    <>
+      <div ref={ref} style={{ height }} data-testid="risk-trend-chart" className="w-full" />
+      <details className="mt-2 rounded-md border border-border px-3 py-2 text-xs">
+        <summary className="cursor-pointer font-medium text-muted-foreground">{t("trend.details")}</summary>
+        <div className="mt-2 overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
+                <th className="py-1.5 pr-2 font-medium">{t("trend.date")}</th>
+                <th className="py-1.5 text-right font-medium">{t("trend.score")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {points.map((point) => (
+                <tr key={point.date} className="border-b border-border/50 last:border-0">
+                  <td className="py-1.5 pr-2">{formatDate(point.date, locale)}</td>
+                  <td className="py-1.5 text-right tabular-nums">{formatNumber(point.total_score, locale)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </>
+  );
 }

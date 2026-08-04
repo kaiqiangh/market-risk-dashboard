@@ -7,6 +7,7 @@ import { formatNumber } from "@/lib/format";
 
 /** jsdom / no-canvas environment → fall back to HTML (avoid zrender animation loop crashes). */
 function canvasSupported(): boolean {
+  if (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent)) return false;
   try {
     const canvas = document.createElement("canvas");
     return !!(canvas.getContext && canvas.getContext("2d"));
@@ -31,7 +32,8 @@ export interface MacroChartProps {
 }
 
 export function MacroChart({ items, height = 260 }: MacroChartProps) {
-  const { t } = useTranslation("macro");
+  const { t, i18n } = useTranslation("macro");
+  const locale = i18n.language;
   const ref = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<"echarts" | "fallback">("echarts");
 
@@ -55,7 +57,7 @@ export function MacroChart({ items, height = 260 }: MacroChartProps) {
             if (!Array.isArray(list) || list.length === 0) return "";
             const p = list[0];
             const item = items.find((i) => i.label === p.axisValue);
-            return `${p.axisValue}<br/>${formatNumber(p.data, "en")}${item?.unit ? ` ${item.unit}` : ""}`;
+            return `${p.axisValue}<br/>${formatNumber(p.data, locale)}${item?.unit ? ` ${item.unit}` : ""}`;
           },
         },
         xAxis: {
@@ -87,7 +89,7 @@ export function MacroChart({ items, height = 260 }: MacroChartProps) {
       setMode("fallback");
       return;
     }
-  }, [items]);
+  }, [items, locale, t]);
 
   if (items.length === 0) {
     return <EmptyState title={t("chart.empty")} data-testid="chart-empty" />;
@@ -115,5 +117,32 @@ export function MacroChart({ items, height = 260 }: MacroChartProps) {
     );
   }
 
-  return <div ref={ref} style={{ height }} data-testid="macro-chart" className="w-full" />;
+  return (
+    <>
+      <div ref={ref} style={{ height }} data-testid="macro-chart" className="w-full" />
+      <details className="mt-2 rounded-md border border-border px-3 py-2 text-xs">
+        <summary className="cursor-pointer font-medium text-muted-foreground">{t("chart.details")}</summary>
+        <div className="mt-2 overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
+                <th className="py-1.5 pr-2 font-medium">{t("indicator.name")}</th>
+                <th className="py-1.5 text-right font-medium">{t("indicator.unit")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item) => (
+                <tr key={item.label} className="border-b border-border/50 last:border-0">
+                  <td className="break-words py-1.5 pr-2">{item.label}</td>
+                  <td className="py-1.5 text-right tabular-nums">
+                    {formatNumber(item.value, locale)}{item.unit ? ` ${item.unit}` : ""}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </>
+  );
 }

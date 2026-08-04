@@ -13,7 +13,9 @@
     "news": "新闻",
     "calendar": "日历",
     "risklab": "风险实验室",
-    "status": "系统状态"
+    "status": "系统状态",
+    "more": "更多",
+    "current": "当前"
   },
   "status": {
     "fresh": "正常",

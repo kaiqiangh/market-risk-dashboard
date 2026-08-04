@@ -36,7 +36,7 @@ export function ThemeToggle() {
             title={t(key)}
             onClick={() => setPreference(value)}
             className={cn(
-              "inline-flex h-7 items-center gap-1 px-2 text-xs transition-colors duration-150",
+              "inline-flex min-h-11 min-w-11 items-center justify-center gap-1 px-1.5 text-xs transition-colors duration-150 sm:h-7 sm:min-h-0 sm:min-w-0 sm:justify-start sm:px-2",
               active
                 ? "bg-surface-2 text-foreground"
                 : "text-muted-foreground hover:text-foreground",
@@ -44,7 +44,7 @@ export function ThemeToggle() {
             data-testid={`theme-option-${value}`}
           >
             <Icon className="h-3.5 w-3.5" aria-hidden />
-            <span>{t(key)}</span>
+            <span className="hidden sm:inline">{t(key)}</span>
           </button>
         );
       })}

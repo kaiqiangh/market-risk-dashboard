@@ -66,4 +66,4 @@ artifacts/
 *.timestamp-*.mjs
 
 # playwright
-.playwright-cli
+.playwright-*

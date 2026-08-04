@@ -5,6 +5,9 @@
     "title": "Cross-Asset Heatmap",
     "empty": "No cross-asset data",
     "axis": "Change",
+    "asset": "Asset",
+    "change": "Change",
+    "details": "Show data table",
     "catEquities": "Equities",
     "catCrypto": "Crypto",
     "catSectors": "Sectors",
@@ -15,7 +18,8 @@
     "score": "Risk score",
     "empty": "No risk trend data",
     "emptyHint": "History slice not yet produced",
-    "date": "Date"
+    "date": "Date",
+    "details": "Show data table"
   },
   "catalysts": {
     "title": "Upcoming Catalysts",
