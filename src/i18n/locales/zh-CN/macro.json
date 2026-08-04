@@ -16,6 +16,7 @@
     "empty": "该分类暂无数据"
   },
   "indicator": {
+    "name": "指标",
     "change1m": "月环比",
     "value": "数值",
     "unit": "单位"

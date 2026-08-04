@@ -36,7 +36,7 @@ export function ThemeToggle() {
             title={t(key)}
             onClick={() => setPreference(value)}
             className={cn(
-              "inline-flex min-h-10 min-w-11 items-center justify-center gap-1 px-1.5 text-xs transition-colors duration-150 sm:h-7 sm:min-h-0 sm:min-w-0 sm:justify-start sm:px-2",
+              "inline-flex min-h-11 min-w-11 items-center justify-center gap-1 px-1.5 text-xs transition-colors duration-150 sm:h-7 sm:min-h-0 sm:min-w-0 sm:justify-start sm:px-2",
               active
                 ? "bg-surface-2 text-foreground"
                 : "text-muted-foreground hover:text-foreground",

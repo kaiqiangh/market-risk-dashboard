@@ -2,7 +2,6 @@ import * as echarts from "echarts/core";
 import { BarChart, HeatmapChart, LineChart } from "echarts/charts";
 import {
   DataZoomComponent,
-  AriaComponent,
   GridComponent,
   LegendComponent,
   TitleComponent,
@@ -25,7 +24,6 @@ echarts.use([
   TitleComponent,
   VisualMapComponent,
   DataZoomComponent,
-  AriaComponent,
   CanvasRenderer,
 ]);
 

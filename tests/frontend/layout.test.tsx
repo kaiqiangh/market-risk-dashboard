@@ -93,7 +93,7 @@ describe("mobile layout", () => {
     expect(screen.getByRole("link", { name: /新闻/ })).toBeVisible();
     const more = screen.getByRole("button", { name: "更多" });
     expect(more).toBeVisible();
-    expect(more.className).toContain("min-h-10");
+    expect(more.className).toContain("min-h-11");
     fireEvent.click(more);
     expect(screen.getByRole("menuitem", { name: /主题/ })).toBeVisible();
     fireEvent.click(screen.getByRole("menuitem", { name: /主题/ }));

@@ -16,6 +16,7 @@
     "empty": "No data in this category"
   },
   "indicator": {
+    "name": "Indicator",
     "change1m": "MoM",
     "value": "Value",
     "unit": "Unit"

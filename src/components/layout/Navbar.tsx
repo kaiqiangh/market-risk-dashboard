@@ -80,7 +80,7 @@ export function Navbar() {
               to={`/${segment}/${page}`}
               className={({ isActive }) =>
                 cn(
-                  "flex min-h-10 shrink-0 items-center gap-1 rounded-md px-1 py-2 text-[10px] font-medium transition-colors sm:min-h-0 sm:gap-1.5 sm:px-2.5 sm:py-1.5 sm:text-xs",
+                  "flex min-h-11 shrink-0 items-center gap-1 rounded-md px-1 py-2 text-[10px] font-medium transition-colors sm:min-h-0 sm:gap-1.5 sm:px-2.5 sm:py-1.5 sm:text-xs",
                   !directPages.has(page) && "hidden sm:flex",
                   isActive
                     ? "bg-primary/10 text-primary"
@@ -99,7 +99,7 @@ export function Navbar() {
             <button
               type="button"
               className={cn(
-                "flex min-h-10 items-center gap-1 rounded-md px-1 py-2 text-[10px] font-medium text-muted-foreground hover:bg-accent hover:text-foreground",
+                "flex min-h-11 items-center gap-1 rounded-md px-1 py-2 text-[10px] font-medium text-muted-foreground hover:bg-accent hover:text-foreground",
                 moreActive && "bg-primary/10 text-primary",
               )}
               aria-expanded={moreOpen}
@@ -120,7 +120,7 @@ export function Navbar() {
                     to={`/${segment}/${page}`}
                     className={({ isActive }) =>
                       cn(
-                        "flex min-h-10 items-center gap-2 rounded px-2 py-2 text-xs font-medium",
+                        "flex min-h-11 items-center gap-2 rounded px-2 py-2 text-xs font-medium",
                         isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-accent hover:text-foreground",
                       )
                     }

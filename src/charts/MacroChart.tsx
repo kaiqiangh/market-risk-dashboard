@@ -126,7 +126,7 @@ export function MacroChart({ items, height = 260 }: MacroChartProps) {
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
-                <th className="py-1.5 pr-2 font-medium">{t("indicator.value")}</th>
+                <th className="py-1.5 pr-2 font-medium">{t("indicator.name")}</th>
                 <th className="py-1.5 text-right font-medium">{t("indicator.unit")}</th>
               </tr>
             </thead>
