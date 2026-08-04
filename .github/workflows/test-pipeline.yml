@@ -1,0 +1,51 @@
+# Python suite + F821 gate (part of #74).
+#
+# Why this exists: the repo had zero CI that ran `pytest tests/pipeline/` — the hermetic
+# suite #61 built, the fixture work in #73, and the named tests on every ticket on this
+# board only ran if a developer remembered to run them by hand.
+#
+# Deliberately NOT path-filtered. A path filter on the Python job would be the exact
+# defect #74 exists to fix: a PR touching only `tests/` or `pipeline/` would silently
+# skip the suite. This job runs on every pull request and on every push to dev/main.
+#
+# Lint policy (board ruling on #60, item 5): F821 (undefined name) is the only fatal
+# lint — `ruff check . --select F821`. Everything else is advisory; there is never a
+# numeric threshold, because a "fewer than N warnings" gate is a ratchet nobody reads
+# and everyone games.
+name: Test Pipeline
+
+on:
+  pull_request:
+  push:
+    branches: [dev, main]
+
+# Minimal CI permissions (Architecture §8.14: read-only)
+permissions:
+  contents: read
+
+concurrency:
+  group: test-pipeline-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pipeline dependencies (incl. dev extras)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run pipeline test suite
+        run: python -m pytest tests/pipeline/
+
+      - name: F821 must fail the build (everything else advisory)
+        run: ruff check . --select F821

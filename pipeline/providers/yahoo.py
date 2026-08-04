@@ -135,11 +135,9 @@ class YahooProvider(BaseProvider):
             raise ProviderError(f"{symbol}: yfinance history_range failed: {exc}") from exc
 
     # Earnings calendar fallback (when the FMP primary source fails)
-    def get_earnings_calendar(self, start: str, end: str) -> list[dict[str, Any]]:
+    def get_earnings_calendar(self, start: str, end: str) -> list[dict[str, str | None]]:
         """yfinance earnings calendar fallback: fetch earnings dates per US equity, filtered to the window."""
-        from datetime import datetime
-
-        items: list[dict[str, Any]] = []
+        items: list[dict[str, str | None]] = []
         errors: list[str] = []
         start_dt = _parse_date(start)
         end_dt = _parse_date(end)

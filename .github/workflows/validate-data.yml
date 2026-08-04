@@ -10,6 +10,13 @@ on:
     paths:
       - "public/data/**"
       - "pipeline/validation/**"
+      # pipeline/schemas/** is watched because every downstream ticket on this board adds
+      # required fields there. When a schema changes, the committed public/data does not
+      # yet match the new contract, so this gate turns RED and must stay red until the
+      # scheduled run regenerates the data (docs/operations/scheduled-task.md §3).
+      # expected-red window: a red run on a schema-change PR is the system working, not
+      # a mistake — do not add a bypass, continue-on-error, or a label-gated skip.
+      - "pipeline/schemas/**"
       - "scripts/validate_data.sh"
       - "scripts/validate-json.mjs"
       - "config/sources.yaml"

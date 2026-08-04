@@ -26,10 +26,14 @@ let filesChecked = 0;
 
 const ISO_UTC_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+// FreshnessStatus enum (#74 QA note): this is a zero-dependency script, so it cannot
+// import the canonical definitions — keep this set in sync with
+// src/schemas/envelope.ts (Zod `FreshnessStatus`) and pipeline/schemas/envelope.py
+// (`FreshnessStatus = Literal[...]`). The values are identical in all three homes.
 const FRESHNESS = new Set(["fresh", "delayed", "stale", "missing", "degraded"]);
 const ENVELOPE_FILES = new Set([
   "macro.json", "equities.json", "sectors.json", "crypto.json",
-  "news.json", "calendar.json", "risk.json",
+  "news.json", "calendar.json", "risk.json", "dashboard.json",
 ]);
 const STANDALONE_FILES = new Set(["facts.json", "analysis.zh-CN.json", "analysis.en.json"]);
 
