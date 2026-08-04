@@ -9,12 +9,46 @@
 from __future__ import annotations
 
 import json
+import os
+import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
 from pipeline.schemas import BaseEnvelope
 from pipeline.utils import now_utc
+
+
+class StorageError(Exception):
+    """Base class for storage faults that must reach a human instead of a default value."""
+
+
+class CorruptDataError(StorageError):
+    """An existing file is present but could not be parsed.
+
+    Raised in place of returning the caller's default. Returning the default is what
+    turned a truncated history file into an empty one: the merge saw no rows, and the
+    next write replaced months of data with a single row.
+    """
+
+    def __init__(self, path: Path, reason: str) -> None:
+        self.path: Path = Path(path)
+        self.reason: str = reason
+        super().__init__(f"{self.path} {reason}")
+
+
+class UndatedRowError(StorageError):
+    """A history row carries no usable `date`.
+
+    History rows are keyed by date when merging. A row with no date keyed to `""`, so
+    every undated row silently overwrote the previous one and the loss left no trace.
+    """
+
+    def __init__(self, row: dict[str, Any], *, series: str, reason: str) -> None:
+        self.row: dict[str, Any] = row
+        self.series: str = series
+        self.reason: str = reason
+        super().__init__(f"history row in {series!r} {reason}: {row!r}")
 
 
 class StorageWriter:
@@ -39,8 +73,32 @@ class StorageWriter:
             return json.dumps(obj, ensure_ascii=False, indent=2)
 
     def write_json(self, path: Path, obj: Any) -> Path:
+        """Write `obj` to `path` atomically.
+
+        The payload is written to a temp file **in the target's own directory** and then
+        moved onto the target with `os.replace`, which is atomic within a filesystem. A
+        reader therefore observes either the previous complete file or the new complete
+        one — never a half-written one.
+
+        The same-directory requirement is not cosmetic. A temp file on another filesystem
+        (`/tmp`, typically) degrades `os.replace` into a copy, which is interruptible, and
+        the guarantee quietly disappears.
+        """
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(self._dump(obj), encoding="utf-8")
+        payload = self._dump(obj)
+        fd, tmp_name = tempfile.mkstemp(dir=str(path.parent), prefix=f".{path.name}.", suffix=".tmp")
+        tmp_path = Path(tmp_name)
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as handle:
+                handle.write(payload)
+                handle.flush()
+                os.fsync(handle.fileno())
+            os.replace(tmp_path, path)
+        except BaseException:
+            # BaseException, not Exception: KeyboardInterrupt and SystemExit are precisely
+            # the interruptions this method exists to survive, and neither is an Exception.
+            tmp_path.unlink(missing_ok=True)
+            raise
         return path
 
     # ---- Datasets ----
@@ -61,7 +119,8 @@ class StorageWriter:
         series_dir.mkdir(parents=True, exist_ok=True)
         # Full append (dedupe by date)
         existing = self._read_json(series_dir / "daily.json", default=[])
-        merged = _merge_by_date(existing, daily)
+        # Validate before the first write: a rejected batch must leave the series untouched.
+        merged = _merge_by_date(existing, daily, series=series_name)
         self.write_json(series_dir / "daily.json", merged)
         # Pre-slices (the first screen loads only 30d, never the full history)
         self.write_json(series_dir / "30d.json", merged[-30:])
@@ -72,7 +131,7 @@ class StorageWriter:
         series_dir = self.history_dir / series_name
         series_dir.mkdir(parents=True, exist_ok=True)
         existing = self._read_json(series_dir / "daily.json", default=[])
-        merged = _merge_by_date(existing, [row])
+        merged = _merge_by_date(existing, [row], series=series_name)
         self.write_json(series_dir / "daily.json", merged)
         self.write_json(series_dir / "30d.json", merged[-30:])
         self.write_json(series_dir / "90d.json", merged[-90:])
@@ -128,24 +187,70 @@ class StorageWriter:
     # ---- Utilities ----
 
     def _read_json(self, path: Path, default: Any) -> Any:
+        """Read JSON from `path`; `default` is returned only when the file is absent.
+
+        Absent and corrupt are different facts about the world. A first run legitimately
+        has no file. A file that exists but will not parse is a fault, and answering it
+        with `default` is how a truncated history became an empty one.
+
+        `OSError` is deliberately not caught either: an unreadable file is not an empty
+        one, and the exception already names the path loudly. Wrapping it in
+        `CorruptDataError` would mislabel a permissions problem as data corruption.
+        """
         if not path.exists():
             return default
+        text = path.read_text(encoding="utf-8")
+        if not text.strip():
+            raise CorruptDataError(path, "is empty (the signature of an interrupted write)")
         try:
-            return json.loads(path.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, OSError):
-            return default
+            return json.loads(text)
+        except json.JSONDecodeError as exc:
+            raise CorruptDataError(path, f"is not valid JSON: {exc}") from exc
 
     def read_latest(self, name: str) -> dict[str, Any] | None:
         return self._read_json(self.latest_dir / f"{name}.json", default=None)
+
+    def read_freshness(self) -> dict[str, Any]:
+        """Public read of metadata/freshness.json's `datasets` map (empty before the first run)."""
+        data = self._read_json(self.metadata_dir / "freshness.json", default={})
+        datasets = data.get("datasets", {}) if isinstance(data, dict) else {}
+        return datasets if isinstance(datasets, dict) else {}
 
     def read_history(self, series_name: str, slice_name: str = "daily") -> list[dict[str, Any]]:
         """Public read of history/{series}/{slice}.json (P2-9: replaces run.py's private _read_json access)."""
         return self._read_json(self.history_dir / series_name / f"{slice_name}.json", default=[])
 
 
-def _merge_by_date(existing: list[dict[str, Any]], incoming: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    by_date = {str(row.get("date", "")): row for row in existing}
+def _row_date(row: dict[str, Any], *, series: str) -> str:
+    """Return the merge key for `row`, refusing rows that have none.
+
+    Every row that reaches here becomes a dictionary key. Rows without a date used to
+    share the key `""`, which made them overwrite one another; the merge then reported
+    success and the caller never learned that rows had vanished.
+    """
+    raw = row.get("date")
+    if raw is None:
+        raise UndatedRowError(row, series=series, reason="has no `date`")
+    key = str(raw).strip()
+    if not key:
+        raise UndatedRowError(row, series=series, reason="has a blank `date`")
+    return key
+
+
+def _merge_by_date(
+    existing: list[dict[str, Any]],
+    incoming: list[dict[str, Any]],
+    *,
+    series: str = "<unknown>",
+) -> list[dict[str, Any]]:
+    """Merge `incoming` onto `existing`, deduplicating by date.
+
+    Raises `UndatedRowError` — before anything is written — if either side contains a
+    row with no usable date. Rows already on disk are checked as well as new ones: an
+    undated row that predates this fix is still a row that will be lost silently.
+    """
+    by_date = {_row_date(row, series=series): row for row in existing}
     for row in incoming:
-        by_date[str(row.get("date", ""))] = row
+        by_date[_row_date(row, series=series)] = row
     merged = sorted(by_date.values(), key=lambda r: str(r.get("date", "")))
     return merged

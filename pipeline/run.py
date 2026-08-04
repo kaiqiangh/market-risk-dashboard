@@ -167,6 +167,64 @@ def _read_prev_risk(writer: StorageWriter) -> tuple[float | None, dict[str, floa
 
 
 # ============================================================
+# Dataset health for the run report (#63)
+# ============================================================
+
+#: Every dataset a `--full` run is expected to publish.
+FULL_RUN_DATASETS: tuple[str, ...] = (
+    "macro", "equities", "sectors", "crypto", "news", "calendar", "risk", "facts", "dashboard",
+)
+
+#: Datasets each command attempts. Anything in FULL_RUN_DATASETS and not listed here was
+#: skipped by design — still worth naming, because a `--market-only` run leaves most of
+#: the dashboard on yesterday's data and an operator should not have to infer that.
+COMMAND_DATASETS: dict[str, tuple[str, ...]] = {
+    "full": FULL_RUN_DATASETS,
+    "market-only": ("equities", "sectors", "crypto"),
+    "macro-only": ("macro",),
+    "news-only": ("news",),
+    "fact-layer": ("facts",),
+}
+
+#: metadata/freshness.json status meaning the dataset produced nothing at all.
+FAILED_FRESHNESS_STATUSES: frozenset[str] = frozenset({"missing"})
+
+#: Statuses meaning the dataset published something we do not fully trust.
+#: `delayed` is deliberately excluded: it is the ordinary state of a dataset whose
+#: provider updates on a slower cadence than the run, and counting it would make
+#: `clean` false on nearly every run, which would make the field useless.
+DEGRADED_FRESHNESS_STATUSES: frozenset[str] = frozenset({"degraded", "stale"})
+
+
+def dataset_health(writer: StorageWriter, command: str) -> dict[str, list[str]]:
+    """Classify this run's datasets into failed / degraded / skipped.
+
+    Reads the freshness metadata the run just wrote, which is already the system's
+    record of per-dataset outcome, rather than threading a parallel tally through
+    `_run_collection`. Datasets the command never attempted are reported as skipped.
+    """
+    attempted = COMMAND_DATASETS.get(command, FULL_RUN_DATASETS)
+    metadata = writer.read_freshness()
+
+    failed: list[str] = []
+    degraded: list[str] = []
+    for name in attempted:
+        entry = metadata.get(name)
+        if not isinstance(entry, dict):
+            # Attempted but no record written: the write did not complete.
+            failed.append(name)
+            continue
+        status = str(entry.get("status", ""))
+        if status in FAILED_FRESHNESS_STATUSES:
+            failed.append(name)
+        elif status in DEGRADED_FRESHNESS_STATUSES:
+            degraded.append(name)
+
+    skipped = [name for name in FULL_RUN_DATASETS if name not in attempted]
+    return {"failed": failed, "degraded": degraded, "skipped": skipped}
+
+
+# ============================================================
 # Unified freshness write (P1-7)
 # ============================================================
 
@@ -533,6 +591,8 @@ def main(argv: list[str] | None = None) -> int:
         ok, error = _run_risk_and_write(results, writer, command)
         results["durations"]["total"] = time.monotonic() - started
 
+    health = dataset_health(StorageWriter(settings.data_dir), command)
+
     if ok:
         write_run_report(
             settings.artifacts_dir,
@@ -542,6 +602,9 @@ def main(argv: list[str] | None = None) -> int:
             provider_status=results.get("provider_status", {}),
             degraded=results.get("degraded", []),
             dataset_counts={"latest": len(list((settings.data_dir / "latest").glob("*.json")))},
+            failed_datasets=health["failed"],
+            skipped_datasets=health["skipped"],
+            degraded_datasets=health["degraded"],
         )
         _print_summary(command, results, results.get("durations", {}).get("total", 0.0))
         return 0
@@ -554,6 +617,9 @@ def main(argv: list[str] | None = None) -> int:
         provider_status=results.get("provider_status", {}),
         degraded=results.get("degraded", []),
         dataset_counts={}, error=error,
+        failed_datasets=health["failed"],
+        skipped_datasets=health["skipped"],
+        degraded_datasets=health["degraded"],
     )
     return 1
 
@@ -566,7 +632,15 @@ def _run_fact_layer_only() -> tuple[bool, str | None]:
         data = writer.read_latest(name)
         return model.model_validate(data) if data else None
 
-    from pipeline.schemas import CalendarEnvelope, CryptoEnvelope, EquitiesEnvelope, MacroEnvelope, NewsEnvelope, RiskEnvelope
+    from pipeline.schemas import (
+        CalendarEnvelope,
+        CryptoEnvelope,
+        EquitiesEnvelope,
+        MacroEnvelope,
+        NewsEnvelope,
+        RiskEnvelope,
+        SectorsEnvelope,
+    )
 
     macro = load("macro", MacroEnvelope)
     equities = load("equities", EquitiesEnvelope)
