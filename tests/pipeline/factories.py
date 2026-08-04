@@ -631,13 +631,18 @@ def make_envelope(dataset: str, payload: Any = None, **overrides: Any) -> dict[s
     """
     key = _dataset_key(dataset)
     resolved_payload = PAYLOAD_BUILDERS[key]() if payload is None else payload
+    # The factory's envelope carries a provenance descriptor (#65): the first candidate as
+    # the resolved provider (the factory builds a clean, primary-provider document).
+    source = _ENVELOPE_SOURCE[key]
+    resolved_provider = source[0] if isinstance(source, list) else source
     defaults: dict[str, Any] = {
         "generated_at": NOW_ISO,
         "schema_version": SCHEMA_VERSION,
-        "source": _ENVELOPE_SOURCE[key],
+        "source": resolved_provider,
         "source_updated_at": NOW_ISO,
         "freshness_status": "fresh",
         "data_quality": 0.98,
+        "provenance": {"provider": resolved_provider, "used_fallback": False, "from_cache": False},
         "payload": resolved_payload,
     }
     return _build(defaults, overrides)

@@ -14,6 +14,30 @@ export type FreshnessStatus = z.infer<typeof FreshnessStatus>;
 export const utcDateTime = z.string().datetime();
 
 /**
+ * ProviderProvenance: which provider actually served the dataset (#65, ADR 0004).
+ * Isomorphic with pipeline/schemas/envelope.py::ProviderProvenance.
+ */
+export const ProviderProvenance = z
+  .object({
+    provider: z.string().min(1),
+    used_fallback: z.boolean(),
+    from_cache: z.boolean(),
+  })
+  .strict();
+export type ProviderProvenance = z.infer<typeof ProviderProvenance>;
+
+/** The shared envelope field set (isomorphic with BaseEnvelope in pipeline/schemas/envelope.py). */
+const ENVELOPE_FIELDS = {
+  generated_at: utcDateTime,
+  schema_version: z.string().min(1),
+  source: z.union([z.string(), z.array(z.string())]),
+  source_updated_at: utcDateTime.nullable(),
+  freshness_status: FreshnessStatus,
+  data_quality: z.number().finite().min(0).max(1),
+  provenance: ProviderProvenance,
+};
+
+/**
  * EvidenceRef: evidence reference (architecture §3.3).
  * Note: the Python side defines it in pipeline/schemas/factlayer.py (forward reference resolved via model_rebuild);
  * the frontend keeps it in the shared primitive module envelope.ts to avoid a runtime circular dependency between risk ↔ factlayer.
@@ -32,12 +56,7 @@ export type EvidenceRef = z.infer<typeof EvidenceRef>;
 
 export const BaseEnvelope = z
   .object({
-    generated_at: utcDateTime,
-    schema_version: z.string().min(1),
-    source: z.union([z.string(), z.array(z.string())]),
-    source_updated_at: utcDateTime.nullable(),
-    freshness_status: FreshnessStatus,
-    data_quality: z.number().finite().min(0).max(1),
+    ...ENVELOPE_FIELDS,
     payload: z.record(z.unknown()),
   })
   .strict();
@@ -47,12 +66,7 @@ export type BaseEnvelope = z.infer<typeof BaseEnvelope>;
 export function datasetEnvelope<T extends z.ZodTypeAny>(payloadSchema: T) {
   return z
     .object({
-      generated_at: utcDateTime,
-      schema_version: z.string().min(1),
-      source: z.union([z.string(), z.array(z.string())]),
-      source_updated_at: utcDateTime.nullable(),
-      freshness_status: FreshnessStatus,
-      data_quality: z.number().finite().min(0).max(1),
+      ...ENVELOPE_FIELDS,
       payload: payloadSchema,
     })
     .strict();

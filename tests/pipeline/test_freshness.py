@@ -56,7 +56,7 @@ def test_degraded_run_publishes_non_fresh_risk() -> None:
         ),
         dataset="risk",
         degraded=True,
-        source=["risk_model", "fred", "yfinance"],
+        provider="risk_model",
         data_quality=0.9,
     )
     assert env.freshness_status != "fresh"
@@ -77,7 +77,7 @@ def test_clean_run_publishes_fresh_risk() -> None:
         ),
         dataset="risk",
         degraded=False,
-        source=["risk_model", "fred", "yfinance"],
+        provider="risk_model",
         data_quality=0.9,
     )
     assert env.freshness_status == "fresh"

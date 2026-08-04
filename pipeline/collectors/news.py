@@ -15,7 +15,7 @@ from typing import Any
 
 from pipeline.degrade import degraded_quality
 from pipeline.providers.base import ProviderError, ProviderRegistry
-from pipeline.schemas import NewsDataset, NewsEnvelope, NewsItem, NewsTranslationsDataset
+from pipeline.schemas import NewsDataset, NewsItem, NewsTranslationsDataset
 from pipeline.settings import Settings
 from pipeline.utils import now_utc
 
@@ -93,18 +93,24 @@ class NewsCollector:
     # ---- Summary ----
 
     def _quality(self) -> float:
-        """Data quality degrades by the configured factor when the feed set degraded.
+        """Data quality degrades by the configured factor per degraded domain (#65).
 
-        News degrades as a unit: the collector either assembled its feed set or fell back,
-        so any number of failures counts as one failed source.
+        News degrades as a unit: the registry's `degraded_domains` is the reader — a news
+        fallback or cache replay lowers published quality.
         """
-        return degraded_quality(1 if self.degraded else 0, settings=self.settings)
+        return degraded_quality(len(self.registry.degraded_domains), settings=self.settings)
 
-    def collect(self) -> tuple[NewsEnvelope, dict[str, Any]]:
+    def collect(self) -> tuple[NewsDataset, dict[str, Any]]:
+        outcome: dict[str, Any] = {"provider": "rss_news", "used_fallback": False, "from_cache": False}
         try:
             out = self.registry.call("news", "fetch_news", "rss_all")
             raw_items: list[dict[str, Any]] = out["result"]
-            provider = out["meta"].get("provider", "rss_news")
+            outcome = {
+                "provider": str(out["meta"].get("provider", "rss_news")),
+                "used_fallback": bool(out["meta"].get("used_fallback", False)),
+                "from_cache": bool(out["meta"].get("from_cache", False)),
+            }
+            provider = outcome["provider"]
         except ProviderError as exc:
             self.degraded.append(str(exc))
             raw_items = []
@@ -163,7 +169,7 @@ class NewsCollector:
             "degraded": self.degraded,
             "provider": provider,
             "source_status": source_status,
-            "source": [provider],
+            "provider_outcome": outcome,
             "data_quality": round(quality, 3),
         }
 

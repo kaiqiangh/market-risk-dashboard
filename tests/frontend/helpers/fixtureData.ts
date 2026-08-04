@@ -10,7 +10,8 @@
 export const macroFixture = {
   generated_at: "2026-08-03T10:00:00Z",
   schema_version: "1.0.0",
-  source: ["fred"],
+  source: "fred",
+  provenance: { provider: "fred", used_fallback: false, from_cache: false },
   source_updated_at: "2026-08-03T09:30:00Z",
   freshness_status: "fresh",
   data_quality: 0.95,
@@ -40,7 +41,8 @@ export const macroFixture = {
 export const equitiesFixture = {
   generated_at: "2026-08-03T10:00:00Z",
   schema_version: "1.0.0",
-  source: ["yfinance", "akshare"],
+  source: "yfinance",
+  provenance: { provider: "yfinance", used_fallback: false, from_cache: false },
   source_updated_at: "2026-08-03T09:45:00Z",
   freshness_status: "fresh",
   data_quality: 0.9,
@@ -99,7 +101,8 @@ export const equitiesFixture = {
 export const sectorsFixture = {
   generated_at: "2026-08-03T10:00:00Z",
   schema_version: "1.0.0",
-  source: ["yfinance"],
+  source: "yfinance",
+  provenance: { provider: "yfinance", used_fallback: false, from_cache: false },
   source_updated_at: "2026-08-03T09:45:00Z",
   freshness_status: "fresh",
   data_quality: 0.85,
@@ -142,7 +145,8 @@ export const sectorsFixture = {
 export const cryptoFixture = {
   generated_at: "2026-08-03T10:00:00Z",
   schema_version: "1.0.0",
-  source: ["coingecko"],
+  source: "coingecko",
+  provenance: { provider: "coingecko", used_fallback: false, from_cache: false },
   source_updated_at: "2026-08-03T09:50:00Z",
   freshness_status: "fresh",
   data_quality: 0.88,
@@ -171,7 +175,8 @@ export const cryptoFixture = {
 export const newsFixture = {
   generated_at: "2026-08-03T10:00:00Z",
   schema_version: "1.0.0",
-  source: ["rss_news"],
+  source: "rss_news",
+  provenance: { provider: "rss_news", used_fallback: false, from_cache: false },
   source_updated_at: "2026-08-03T09:55:00Z",
   freshness_status: "fresh",
   data_quality: 0.8,
@@ -201,7 +206,8 @@ export const newsFixture = {
 export const calendarFixture = {
   generated_at: "2026-08-03T10:00:00Z",
   schema_version: "1.0.0",
-  source: ["fmp", "fred"],
+  source: "fmp",
+  provenance: { provider: "fmp", used_fallback: false, from_cache: false },
   source_updated_at: "2026-08-03T08:00:00Z",
   freshness_status: "fresh",
   data_quality: 0.9,
@@ -243,7 +249,8 @@ export const calendarFixture = {
 export const dashboardFixture = {
   generated_at: "2026-08-03T10:00:00Z",
   schema_version: "1.0.0",
-  source: ["risk_model", "yfinance", "coingecko", "fmp", "rss_news"],
+  source: "risk_model",
+  provenance: { provider: "risk_model", used_fallback: false, from_cache: false },
   source_updated_at: "2026-08-03T09:45:00Z",
   freshness_status: "fresh",
   data_quality: 0.9,

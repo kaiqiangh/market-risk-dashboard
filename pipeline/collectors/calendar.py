@@ -25,11 +25,12 @@ class CalendarCollector:
     # ---- Summary ----
 
     def _quality(self) -> float:
-        """Data quality degrades by the configured factor when the calendar source degraded.
+        """Data quality degrades by the configured factor per degraded domain (#65).
 
-        The calendar has a single logical source, so any number of failures counts as one.
+        The calendar has a single logical source; the registry's `degraded_domains` is the
+        reader — a fallback or cache replay lowers published quality.
         """
-        return degraded_quality(1 if self.degraded else 0, settings=self.settings)
+        return degraded_quality(len(self.registry.degraded_domains), settings=self.settings)
 
     def collect(self) -> tuple[CalendarEnvelope, dict[str, Any]]:
         today = datetime.now(timezone.utc).date()
@@ -40,6 +41,11 @@ class CalendarCollector:
         try:
             out = self.registry.call("calendar", "get_earnings_calendar", "earnings_7d", args=(start, end))
             self.provider_status["calendar"] = out["meta"]
+            self._provider_outcome = {
+                "provider": str(out["meta"].get("provider", "unavailable")),
+                "used_fallback": bool(out["meta"].get("used_fallback", False)),
+                "from_cache": bool(out["meta"].get("from_cache", False)),
+            }
             for row in out["result"]:
                 events.append(
                     CalendarEvent(
@@ -68,7 +74,7 @@ class CalendarCollector:
         return payload, {
             "degraded": self.degraded,
             "provider_status": self.provider_status,
-            "source": ["fmp", "yfinance"],
+            "provider_outcome": getattr(self, "_provider_outcome", {"provider": "unavailable", "used_fallback": False, "from_cache": False}),
             "data_quality": round(quality, 3),
         }
 

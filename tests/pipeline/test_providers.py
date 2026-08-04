@@ -81,6 +81,28 @@ class _OkStooq(StooqProvider):
         return ProviderHealth(provider=self.name, ok=True)
 
 
+class _OkSeries(StooqProvider):
+    """A single-provider success for the macro domain (get_series)."""
+    name = "ok_series"
+
+    def get_series(self, series_id: str) -> list[dict]:
+        return [{"date": "2026-08-03", "value": 4.2}]
+
+    def health(self) -> ProviderHealth:
+        return ProviderHealth(provider=self.name, ok=True)
+
+
+class _FailSeries(StooqProvider):
+    """A single-provider failure for the macro domain (get_series)."""
+    name = "fail_series"
+
+    def get_series(self, series_id: str) -> list[dict]:
+        raise ProviderError(f"{series_id}: mock outage")
+
+    def health(self) -> ProviderHealth:
+        return ProviderHealth(provider=self.name, ok=False)
+
+
 def _registry(cache_dir=None) -> ProviderRegistry:
     settings = Settings(_env_file=None)
     reg = ProviderRegistry(settings)
@@ -205,30 +227,23 @@ def _effective_failures(collector: str, failed: int) -> int:
 
 
 def _quality_at(settings: Settings, collector: str, failed: int) -> float:
-    """Build `collector` against `settings`, drive it to `failed` failed sources, read its quality.
+    """Build `collector` against `settings`, degrade `failed` domains, read its quality.
 
-    The private attributes poked here are exactly the ones each collector's own error paths
-    set when a provider raises, so this reproduces a degraded run without needing providers.
+    #65: the collectors' published quality is driven by `ProviderRegistry.degraded_domains`
+    (its first reader), so a degraded run is reproduced by degrading that many domains on the
+    registry rather than by poking private failure counters. The factor math is unchanged —
+    `failed` degraded domains still cost `factor ** failed`.
     """
     registry = ProviderRegistry(settings)
+    registry.degraded_domains.update({f"{collector}-{i}" for i in range(failed)})
     if collector == "macro":
-        assert failed <= 2, "macro counts at most two failed sources (FRED, FedWatch)"
-        macro = MacroCollector(registry, settings)
-        macro._fred_failures = 1 if failed >= 1 else 0
-        macro._fedwatch_failed = failed >= 2
-        return macro._quality()
+        return MacroCollector(registry, settings)._quality()
     if collector == "market":
-        market = MarketCollector(registry, AssetUniverse(settings.load_universe()), settings)
-        market._domain_down = {f"domain-{i}" for i in range(failed)}
-        return market._quality()
+        return MarketCollector(registry, AssetUniverse(settings.load_universe()), settings)._quality()
     if collector == "news":
-        news = NewsCollector(registry, settings)
-        news.degraded = ["source down"] * failed
-        return news._quality()
+        return NewsCollector(registry, settings)._quality()
     if collector == "calendar":
-        calendar = CalendarCollector(registry, settings)
-        calendar.degraded = ["source down"] * failed
-        return calendar._quality()
+        return CalendarCollector(registry, settings)._quality()
     raise AssertionError(f"unknown collector: {collector}")
 
 
@@ -456,3 +471,47 @@ def test_collector_quality_never_falls_below_floor(tmp_path, collector) -> None:
     settings = _settings_with_factor(tmp_path, 0.5)
     for failed in range(_max_failures(collector) + 1):
         assert _quality_at(settings, collector, failed) >= MIN_DATA_QUALITY
+
+
+# ---------- #65: provenance names the answering provider ----------
+
+def test_meta_names_the_answering_provider(tmp_path) -> None:
+    """#65: a fallback chain reports the provider that succeeded, not the first tried."""
+    reg = _registry(tmp_path)
+    reg.register("quotes", _FailingYahoo())
+    reg.register("quotes", _FailingYahoo())
+    reg.register("quotes", _OkStooq())
+    out = reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))
+    assert out["meta"]["provider"] == "stooq_ok", (
+        f"meta must name the provider that answered, got {out['meta']['provider']}"
+    )
+    assert out["meta"]["used_fallback"] is True
+    # The registry exposes the resolved provider for the domain.
+    assert reg.resolved_provider("quotes")["provider"] == "stooq_ok"
+
+
+def test_single_provider_domain_degrades_via_cache(tmp_path) -> None:
+    """Ruling D: a single-provider domain degrades via the last-good cache path.
+
+    crypto/macro/a_share/news each have one enabled provider but still degrade when it
+    fails: `registry.call` replays the last-good cache and reports degraded/from_cache.
+    """
+    cache_dir = tmp_path / "cache"
+    reg = _registry(cache_dir)
+    reg.register("macro", _OkSeries())  # single provider
+    reg.call("macro", "get_series", "fred_dgs10", args=("DGS10",))  # success → writes cache
+
+    reg2 = _registry(cache_dir)
+    reg2.register("macro", _FailSeries())  # sole provider now fails
+    out = reg2.call("macro", "get_series", "fred_dgs10", args=("DGS10",))
+    assert out["meta"]["degraded"] is True
+    assert out["meta"]["from_cache"] is True
+    assert out["meta"]["provider"] == "last-good"
+    assert "macro" in reg2.degraded_domains
+    assert reg2.resolved_provider("macro")["provider"] == "last-good"
+
+    # The degraded domain lowers published quality (degraded_domains is the #65 reader).
+    from pipeline.collectors.macro import MacroCollector
+
+    collector = MacroCollector(reg2, Settings(_env_file=None))
+    assert collector._quality() == degraded_quality(1, settings=Settings(_env_file=None))

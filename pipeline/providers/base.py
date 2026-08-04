@@ -152,6 +152,8 @@ class ProviderRegistry:
         self._providers: dict[str, list[BaseProvider]] = {}
         self.health_map: dict[str, ProviderHealth] = {}
         self.degraded_domains: set[str] = set()
+        #: Domain → meta of the most recent successful call (#65): the provider that answered.
+        self._last_outcome: dict[str, dict[str, Any]] = {}
 
     # ---- Registration ----
 
@@ -235,6 +237,7 @@ class ProviderRegistry:
                 }
                 if index > 0:
                     self.degraded_domains.add(domain)
+                self._last_outcome[domain] = meta
                 self._save_last_good(domain, key, method, result)
                 return {"result": result, "meta": meta}
             except Exception as exc:  # noqa: BLE001 - the degradation chain must swallow Provider exceptions
@@ -245,18 +248,28 @@ class ProviderRegistry:
         cached = self._load_last_good(domain, key, method)
         if cached is not None:
             self.degraded_domains.add(domain)
+            meta = {
+                "provider": "last-good",
+                "used_fallback": True,
+                "from_cache": True,
+                "degraded": True,
+                "errors": errors,
+            }
+            self._last_outcome[domain] = meta
             return {
                 "result": cached,
-                "meta": {
-                    "provider": "last-good",
-                    "used_fallback": True,
-                    "from_cache": True,
-                    "degraded": True,
-                    "errors": errors,
-                },
+                "meta": meta,
             }
 
         raise ProviderError(f"[{domain}] all Providers failed: {'; '.join(errors)}")
+
+    def resolved_provider(self, domain: str) -> dict[str, Any] | None:
+        """The provider outcome of the most recent successful call for `domain` (#65).
+
+        Returns the meta (provider/used_fallback/from_cache/degraded) of the provider that
+        actually answered, or ``None`` if nothing succeeded (or was served from cache).
+        """
+        return self._last_outcome.get(domain)
 
     # ---- Status ----
 

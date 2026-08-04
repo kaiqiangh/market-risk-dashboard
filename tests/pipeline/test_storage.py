@@ -775,3 +775,31 @@ def test_dataset_health_surfaces_corrupt_freshness_metadata(tmp_path: Path) -> N
 
     with pytest.raises(CorruptDataError):
         dataset_health(writer, "full", run_started_at=_RUN_START)
+
+
+# ---------- #65: degraded_domains has a reader ----------
+
+def test_degraded_domain_lowers_published_quality(tmp_path: Path) -> None:
+    """`ProviderRegistry.degraded_domains` measurably lowers published data_quality."""
+    from pipeline.degrade import degraded_quality
+    from pipeline.providers import ProviderRegistry
+    from pipeline.settings import Settings
+    from tests.pipeline.factories import make_envelope
+    from pipeline.schemas import MacroEnvelope
+    from pipeline.schemas.envelope import assemble_envelope
+
+    settings = Settings(_env_file=None, data_dir=tmp_path / "data", artifacts_dir=tmp_path / "artifacts")
+    registry = ProviderRegistry(settings)
+    registry.degraded_domains.update({"macro", "quotes"})  # two degraded domains
+
+    clean = assemble_envelope(
+        MacroEnvelope, make_envelope("macro")["payload"], dataset="macro",
+        degraded=False, provider="fred", data_quality=1.0,
+    )
+    degraded = assemble_envelope(
+        MacroEnvelope, make_envelope("macro")["payload"], dataset="macro",
+        degraded=False, provider="fred",
+        data_quality=degraded_quality(len(registry.degraded_domains), settings=settings),
+    )
+    assert degraded.data_quality < clean.data_quality
+    assert degraded.data_quality == degraded_quality(2, settings=settings)

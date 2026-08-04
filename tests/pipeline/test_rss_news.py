@@ -118,6 +118,9 @@ class _NewsProvider:
 
 
 class _Registry:
+    def __init__(self) -> None:
+        self.degraded_domains: set[str] = set()
+
     def providers_for(self, domain):
         return [_NewsProvider()] if domain == "news" else []
 
@@ -134,26 +137,39 @@ class _Registry:
                     "summary": "Rates stayed steady.",
                 }
             ],
-            "meta": {"provider": "rss_news"},
+            "meta": {"provider": "rss_news", "used_fallback": False, "from_cache": False},
         }
 
 
 def test_collector_propagates_partial_source_failure_to_news_freshness() -> None:
     """A partial source failure reaches the caller's freshness determination.
 
-    #64: the collector no longer assigns freshness_status — it reports the provider outcome
-    (meta["degraded"]), and the single assembly path turns that into a degraded envelope.
+    #64/#65: the collector no longer assigns freshness_status — it reports the provider
+    outcome (meta["degraded"]), and the single assembly path turns that into a degraded
+    envelope. Published quality is driven by `degraded_domains` (its first reader): a
+    partial source failure inside the primary provider is not a fallback/cache replay, so
+    quality stays high unless a domain actually degraded.
     """
     from pipeline.schemas import NewsEnvelope
     from pipeline.schemas.envelope import assemble_envelope
 
-    news, meta = NewsCollector(_Registry()).collect()
+    registry = _Registry()
+    news, meta = NewsCollector(registry).collect()
     assert meta["degraded"]
-    assert meta["data_quality"] == 0.8
+    assert meta["data_quality"] == 1.0  # no degraded domain -> no quality reduction
     assert meta["source_status"]["bad"]["ok"] is False
 
+    outcome = meta["provider_outcome"]
     env = assemble_envelope(
         NewsEnvelope, news, dataset="news", degraded=meta["degraded"],
-        source=meta["source"], data_quality=meta["data_quality"],
+        provider=outcome["provider"],
+        used_fallback=outcome["used_fallback"],
+        from_cache=outcome["from_cache"],
+        data_quality=meta["data_quality"],
     )
     assert env.freshness_status == "degraded"
+
+    # A degraded domain lowers published quality (#65: degraded_domains is the reader).
+    registry.degraded_domains.add("news")
+    _, degraded_meta = NewsCollector(registry).collect()
+    assert degraded_meta["data_quality"] == 0.8

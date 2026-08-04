@@ -92,6 +92,20 @@ describe("Zod contract: a golden that lies is rejected (cross-language backstop,
   });
 });
 
+describe("Zod contract: provenance is required and strict (#65)", () => {
+  it("rejects an envelope without provenance", () => {
+    const bad = structuredClone(macroFixture) as Record<string, any>;
+    delete bad.provenance;
+    expect(MacroEnvelope.safeParse(bad).success).toBe(false);
+  });
+
+  it("rejects an unknown provenance key", () => {
+    const bad = structuredClone(macroFixture) as Record<string, any>;
+    (bad.provenance as Record<string, unknown>).cache_replay = true;
+    expect(MacroEnvelope.safeParse(bad).success).toBe(false);
+  });
+});
+
 describe("Zod contract: hard constraints", () => {
   it("rejects NaN payload value", () => {
     const bad = structuredClone(macroFixture) as Record<string, any>;

@@ -269,26 +269,51 @@ def _assemble(
     payload: Any,
     degraded: bool,
     *,
-    source: str | list[str],
+    provider: str,
+    used_fallback: bool = False,
+    from_cache: bool = False,
     data_quality: float,
     generated_at: str | None = None,
     source_updated_at: str | None = None,
 ) -> BaseEnvelope:
-    """Build the envelope for `name` through the single assembly path (#64).
+    """Build the envelope for `name` through the single assembly path (#64/#65).
 
     Freshness is computed by :func:`pipeline.schemas.envelope.assemble_envelope` via
-    ``finalize_freshness`` — the only producer. No caller builds an envelope by hand.
+    ``finalize_freshness`` — the only producer. `provider` is the resolved provider that
+    actually served the dataset (#65): it becomes the envelope's source and provenance.
     """
     return assemble_envelope(
         _ENVELOPE_MODELS[name],
         payload,
         dataset=name,
         degraded=degraded,
-        source=source,
+        provider=provider,
+        used_fallback=used_fallback,
+        from_cache=from_cache,
         data_quality=data_quality,
         generated_at=generated_at,
         source_updated_at=source_updated_at,
     )
+
+
+def _provider_kwargs(meta: dict[str, Any], dataset: str | None, default: str = "unavailable") -> dict[str, Any]:
+    """Extract assemble_envelope provider kwargs from a collector meta (#65).
+
+    ``dataset`` names the per-dataset outcome (market returns a ``providers`` dict); ``None``
+    reads the single ``provider_outcome`` key (news/calendar).
+    """
+    outcome = None
+    if dataset is not None:
+        outcome = meta.get("providers", {}).get(dataset)
+    else:
+        outcome = meta.get("provider_outcome")
+    if not isinstance(outcome, dict):
+        outcome = {"provider": default, "used_fallback": False, "from_cache": False}
+    return {
+        "provider": str(outcome.get("provider", default)),
+        "used_fallback": bool(outcome.get("used_fallback", False)),
+        "from_cache": bool(outcome.get("from_cache", False)),
+    }
 
 
 def _write_finalized(writer: StorageWriter, name: str, env: BaseEnvelope, extra_reason: str = "") -> BaseEnvelope:
@@ -308,20 +333,25 @@ def _finalize_and_write(
     payload: Any,
     degraded: bool,
     *,
-    source: str | list[str],
+    provider: str,
+    used_fallback: bool = False,
+    from_cache: bool = False,
     data_quality: float,
     generated_at: str | None = None,
     source_updated_at: str | None = None,
     extra_reason: str = "",
 ) -> BaseEnvelope:
-    """Assemble through the single path, write, and update metadata/freshness.json (#64).
+    """Assemble through the single path, write, and update metadata/freshness.json (#64/#65).
 
     Collectors no longer fill freshness_status themselves; this recomputes against the
     expected frequency from sources.yaml (fresh/delayed/stale/missing/degraded), then
-    persists to the envelope and freshness.json.
+    persists to the envelope and freshness.json. The resolved provider (and whether it was a
+    fallback / cache replay) is published as source + provenance (#65).
     """
-    env = _assemble(name, payload, degraded, source=source, data_quality=data_quality,
-                    generated_at=generated_at, source_updated_at=source_updated_at)
+    env = _assemble(name, payload, degraded, provider=provider,
+                    used_fallback=used_fallback, from_cache=from_cache,
+                    data_quality=data_quality, generated_at=generated_at,
+                    source_updated_at=source_updated_at)
     return _write_finalized(writer, name, env, extra_reason)
 
 
@@ -504,24 +534,28 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
     news_meta = results.get("news_meta", {})
     calendar_meta = results.get("calendar_meta", {})
     try:
-        # #64: assemble every envelope through the single path (freshness = finalize_freshness).
+        # #64/#65: assemble every envelope through the single path (freshness = finalize_freshness;
+        # source + provenance = the resolved provider from the collector's outcome).
+        macro_outcome = macro_meta.get("provider", {"provider": "unavailable", "used_fallback": False, "from_cache": False})
         macro = _assemble("macro", results["macro"], bool(macro_meta.get("degraded")),
-                          source=macro_meta.get("source", ["fred", "yahoo"]),
+                          provider=str(macro_outcome.get("provider", "unavailable")),
+                          used_fallback=bool(macro_outcome.get("used_fallback", False)),
+                          from_cache=bool(macro_outcome.get("from_cache", False)),
                           data_quality=macro_meta.get("data_quality", 1.0))
         equities = _assemble("equities", results["equities"], degraded,
-                             source=market_meta.get("sources", {}).get("equities", ["yfinance", "akshare"]),
+                             **_provider_kwargs(market_meta, "equities"),
                              data_quality=market_meta.get("data_quality", 1.0))
         sectors = _assemble("sectors", results["sectors"], degraded,
-                            source=market_meta.get("sources", {}).get("sectors", ["yfinance"]),
+                            **_provider_kwargs(market_meta, "sectors"),
                             data_quality=market_meta.get("data_quality", 1.0))
         crypto = _assemble("crypto", results["crypto"], degraded,
-                           source=market_meta.get("sources", {}).get("crypto", ["coingecko"]),
+                           **_provider_kwargs(market_meta, "crypto"),
                            data_quality=market_meta.get("data_quality", 1.0))
         news = _assemble("news", results["news"], bool(results.get("news_degraded", False)),
-                         source=news_meta.get("source", ["rss_news"]),
+                         **_provider_kwargs(news_meta, None, default="rss_news"),
                          data_quality=news_meta.get("data_quality", 1.0))
         calendar = _assemble("calendar", results["calendar"], bool(results.get("calendar_degraded", False)),
-                             source=calendar_meta.get("source", ["fmp", "yfinance"]),
+                             **_provider_kwargs(calendar_meta, None, default="fmp"),
                              data_quality=calendar_meta.get("data_quality", 1.0))
 
         risk_model = RiskModel(settings)
@@ -539,7 +573,7 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         )
         risk_result = risk_model.score(ctx)
         risk_env = _assemble("risk", risk_result, degraded,
-                             source=["risk_model", "fred", "yfinance"],
+                             provider="risk_model",
                              data_quality=ctx["data_quality"])
 
         builder = FactLayerBuilder()
@@ -578,7 +612,7 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         )
         dashboard_env = _finalize_and_write(
             writer, "dashboard", dashboard_payload, degraded,
-            source=["risk_model", "yfinance", "coingecko", "fmp", "rss_news"],
+            provider="risk_model",
             data_quality=round(ctx["data_quality"], 3),
         )
 
@@ -679,13 +713,13 @@ def main(argv: list[str] | None = None) -> int:
         market_meta = results.get("market_meta", {})
         degraded = bool(results["degraded"])
         _finalize_and_write(writer, "equities", results["equities"], degraded,
-                            source=market_meta.get("sources", {}).get("equities", ["yfinance", "akshare"]),
+                            **_provider_kwargs(market_meta, "equities"),
                             data_quality=market_meta.get("data_quality", 1.0))
         _finalize_and_write(writer, "crypto", results["crypto"], degraded,
-                            source=market_meta.get("sources", {}).get("crypto", ["coingecko"]),
+                            **_provider_kwargs(market_meta, "crypto"),
                             data_quality=market_meta.get("data_quality", 1.0))
         _finalize_and_write(writer, "sectors", results["sectors"], degraded,
-                            source=market_meta.get("sources", {}).get("sectors", ["yfinance"]),
+                            **_provider_kwargs(market_meta, "sectors"),
                             data_quality=market_meta.get("data_quality", 1.0))
         writer.write_sources_metadata(results["provider_status"])
         health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
@@ -695,7 +729,7 @@ def main(argv: list[str] | None = None) -> int:
         writer = StorageWriter(settings.data_dir)
         macro_meta = results.get("macro_meta", {})
         _finalize_and_write(writer, "macro", results["macro"], bool(macro_meta.get("degraded")),
-                            source=macro_meta.get("source", ["fred", "yahoo"]),
+                            **_provider_kwargs(macro_meta, None, default="fred"),
                             data_quality=macro_meta.get("data_quality", 1.0))
         _write_analysis_freshness(writer)
         writer.write_sources_metadata(results["provider_status"])
@@ -706,7 +740,7 @@ def main(argv: list[str] | None = None) -> int:
         writer = StorageWriter(settings.data_dir)
         news_meta = results.get("news_meta", {})
         _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)),
-                            source=news_meta.get("source", ["rss_news"]),
+                            **_provider_kwargs(news_meta, None, default="rss_news"),
                             data_quality=news_meta.get("data_quality", 1.0))
         writer.write_sources_metadata(results["provider_status"])
         health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)

@@ -257,3 +257,21 @@ def test_generated_documents_remain_valid_after_negative_tests() -> None:
         model.model_validate(generated_document(name))
     for name, model in GOLDEN_MODELS.items():
         model.model_validate(load_fixture(name))
+
+
+# ---------- #65: provenance is required and strict ----------
+
+def test_envelope_requires_provenance() -> None:
+    """A dataset that omits provenance is rejected (extra="forbid" + required field)."""
+    data = generated_document("macro.json")
+    del data["provenance"]
+    with pytest.raises(ValidationError):
+        MacroEnvelope.model_validate(data)
+
+
+def test_envelope_rejects_unknown_provenance_field() -> None:
+    """Provenance is strict — an unknown provenance field is rejected."""
+    data = generated_document("macro.json")
+    data["provenance"]["cache_replay"] = True
+    with pytest.raises(ValidationError):
+        MacroEnvelope.model_validate(data)

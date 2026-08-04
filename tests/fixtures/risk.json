@@ -1,11 +1,7 @@
 {
   "generated_at": "2026-08-03T10:00:00Z",
   "schema_version": "1.1.0",
-  "source": [
-    "risk_model",
-    "fred",
-    "yfinance"
-  ],
+  "source": "risk_model",
   "source_updated_at": "2026-08-03T09:45:00Z",
   "freshness_status": "fresh",
   "data_quality": 0.9,
@@ -331,5 +327,10 @@
       "consistency": 0.6
     },
     "disclaimer": "The risk score on this page is a model-based estimate of market stress, not a precise probability of a market crash, and should not be considered investment advice."
+  },
+  "provenance": {
+    "provider": "risk_model",
+    "used_fallback": false,
+    "from_cache": false
   }
 }

@@ -48,6 +48,8 @@ class MacroCollector:
         self.series_history: dict[str, list[dict[str, Any]]] = {}
         self._fred_failures = 0
         self._fedwatch_failed = False
+        #: Domain → provider outcome of the most recent successful call (#65).
+        self._provider_outcomes: dict[str, dict[str, Any]] = {}
 
     # ---- FRED ----
 
@@ -55,6 +57,7 @@ class MacroCollector:
         try:
             out = self.registry.call("macro", "get_series", f"fred_{series_id}", args=(series_id,))
             self.provider_status.setdefault("macro", out["meta"])
+            self._provider_outcomes["macro"] = out["meta"]
             rows = out["result"]
             # Normalize to lowercase keys: the risk model 5Y percentile looks up by the lowercase
             # series name of the indicator key
@@ -151,20 +154,28 @@ class MacroCollector:
 
         FRED partial failure counts as one source, FedWatch failure counts as one.
         """
-        failed = (1 if self._fred_failures > 0 else 0) + (1 if self._fedwatch_failed else 0)
-        return degraded_quality(failed, settings=self.settings)
+        # #65: the registry's degraded_domains is the reader — every domain that fell back or
+        # replayed from cache lowers published quality, compounding with the factor.
+        return degraded_quality(len(self.registry.degraded_domains), settings=self.settings)
 
     def collect(self) -> tuple[MacroDataset, dict[str, Any]]:
         dataset = self._collect_macro()
         quality = self._quality()
         # #64: return payload + provider outcome; the caller assembles the envelope and
         # finalizes freshness through the single assembly path.
+        outcome = self._provider_outcomes.get("macro") or self.registry.resolved_provider("macro")
+        if outcome is None:
+            outcome = {"provider": "unavailable", "used_fallback": False, "from_cache": False}
         return dataset, {
             "degraded": self.degraded,
             "provider_status": self.provider_status,
             "series_history": self.series_history,
             "data_quality": round(quality, 3),
-            "source": ["fred", "yahoo"],
+            "provider": {
+                "provider": str(outcome.get("provider", "unavailable")),
+                "used_fallback": bool(outcome.get("used_fallback", False)),
+                "from_cache": bool(outcome.get("from_cache", False)),
+            },
         }
 
 

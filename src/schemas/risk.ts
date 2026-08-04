@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EvidenceRef, FreshnessStatus, utcDateTime } from "./envelope";
+import { EvidenceRef, FreshnessStatus, ProviderProvenance, utcDateTime } from "./envelope";
 
 export const RiskDimensionKey = z.enum([
   "macro",
@@ -99,6 +99,7 @@ export const RiskEnvelope = z
     source_updated_at: utcDateTime.nullable(),
     freshness_status: FreshnessStatus,
     data_quality: z.number().finite().min(0).max(1),
+    provenance: ProviderProvenance,
     payload: RiskModelResult,
   })
   .strict();

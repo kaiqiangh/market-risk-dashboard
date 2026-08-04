@@ -38,6 +38,23 @@ class MarketCollector:
         self.histories: dict[str, list[dict[str, Any]]] = {}
         self._domain_failures: dict[str, int] = {}
         self._domain_down: set[str] = set()
+        #: Domain → provider outcome of the most recent successful call (#65).
+        self._provider_outcomes: dict[str, dict[str, Any]] = {}
+
+    def _record_outcome(self, domain: str, meta: dict[str, Any]) -> None:
+        """Remember which provider answered a successful `registry.call` for `domain` (#65)."""
+        self._provider_outcomes[domain] = meta
+
+    def _provider_for(self, domain: str) -> dict[str, Any]:
+        """The provenance for `domain`: the answering provider, or last-good, or unavailable."""
+        outcome = self._provider_outcomes.get(domain) or self.registry.resolved_provider(domain)
+        if outcome is not None:
+            return {
+                "provider": str(outcome.get("provider", "unavailable")),
+                "used_fallback": bool(outcome.get("used_fallback", False)),
+                "from_cache": bool(outcome.get("from_cache", False)),
+            }
+        return {"provider": "unavailable", "used_fallback": False, "from_cache": False}
 
     # ---- Quotes (US + A-shares) ----
 
@@ -50,6 +67,8 @@ class MarketCollector:
         try:
             quote_out = self.registry.call(domain, "get_quote", f"quote_{asset.symbol}", args=(asset.symbol,))
             hist_out = self.registry.call(domain, "get_history", f"hist_{asset.symbol}_1y", args=(asset.symbol, "1y"))
+            self._record_outcome(domain, quote_out["meta"])
+            self._record_outcome(domain, hist_out["meta"])
         except ProviderError as exc:
             self.degraded.append(f"{asset.symbol}: {exc}")
             self.provider_status.setdefault(domain, {})["error"] = str(exc)
@@ -100,6 +119,7 @@ class MarketCollector:
         for symbol, period in INDEX_HISTORIES.items():
             try:
                 out = self.registry.call("quotes", "get_history", f"hist_{symbol}_{period}", args=(symbol, period))
+                self._record_outcome("quotes", out["meta"])
                 self.histories[symbol] = out["result"].rows
             except ProviderError as exc:
                 self.degraded.append(f"{symbol}: {exc}")
@@ -111,6 +131,7 @@ class MarketCollector:
             out = self.registry.call("crypto", "get_crypto_market", "crypto_market")
             data = out["result"]
             self.provider_status["crypto"] = out["meta"]
+            self._record_outcome("crypto", out["meta"])
         except ProviderError as exc:
             self.degraded.append(f"crypto: {exc}")
             self.provider_status["crypto"] = {"degraded": True, "error": str(exc)}
@@ -166,15 +187,12 @@ class MarketCollector:
     # ---- Summary ----
 
     def _quality(self) -> float:
-        """Data quality degrades by the configured factor per failed domain (provider), not per failed asset."""
-        failed = set(self._domain_down)
-        for domain, count in self._domain_failures.items():
-            if count > 0:
-                failed.add(domain)
-        crypto_status = self.provider_status.get("crypto")
-        if isinstance(crypto_status, dict) and crypto_status.get("degraded"):
-            failed.add("crypto")
-        return degraded_quality(len(failed), settings=self.settings)
+        """Data quality degrades by the configured factor per degraded domain (#65).
+
+        `ProviderRegistry.degraded_domains` is the reader: every domain that fell back or
+        replayed from cache lowers published quality, compounding with the factor.
+        """
+        return degraded_quality(len(self.registry.degraded_domains), settings=self.settings)
 
     def collect(self) -> dict[str, Any]:
         equities = self._collect_equities()
@@ -183,8 +201,8 @@ class MarketCollector:
         sectors = self._collect_sectors(equities)
         quality = self._quality()
 
-        # #64: collectors return payloads + provider outcome; the caller (run.py) assembles
-        # the envelope through the single assembly path and finalizes freshness.
+        # #64/#65: collectors return payloads + provider outcome; the caller (run.py) assembles
+        # the envelope through the single assembly path and finalizes freshness + provenance.
         return {
             "equities": equities,
             "crypto": crypto,
@@ -193,9 +211,9 @@ class MarketCollector:
             "degraded": self.degraded,
             "provider_status": self.provider_status,
             "data_quality": round(quality, 3),
-            "sources": {
-                "equities": ["yfinance", "akshare"],
-                "crypto": ["coingecko"],
-                "sectors": ["yfinance"],
+            "providers": {
+                "equities": self._provider_for("quotes") or self._provider_for("a_share"),
+                "crypto": self._provider_for("crypto"),
+                "sectors": self._provider_for("quotes"),
             },
         }
