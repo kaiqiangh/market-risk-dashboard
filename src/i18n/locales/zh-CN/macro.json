@@ -3,7 +3,8 @@
   "subtitle": "利率 / 信用 / 通胀 / 就业 / 流动性 / 外汇 + FedWatch 利率预期",
   "chart": {
     "title": "宏观指标概览",
-    "empty": "暂无宏观指标"
+    "empty": "暂无宏观指标",
+    "details": "显示数据表"
   },
   "section": {
     "rates": "利率",

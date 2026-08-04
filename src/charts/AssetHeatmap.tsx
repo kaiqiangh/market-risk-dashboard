@@ -146,5 +146,32 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
     );
   }
 
-  return <div ref={ref} style={{ height }} data-testid="asset-heatmap" className="w-full" />;
+  return (
+    <>
+      <div ref={ref} style={{ height }} data-testid="asset-heatmap" className="w-full" />
+      <details className="mt-2 rounded-md border border-border px-3 py-2 text-xs">
+        <summary className="cursor-pointer font-medium text-muted-foreground">{t("heatmap.details")}</summary>
+        <div className="mt-2 overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
+                <th className="py-1.5 pr-2 font-medium">{t("heatmap.asset")}</th>
+                <th className="py-1.5 pr-2 font-medium">{t("heatmap.axis")}</th>
+                <th className="py-1.5 text-right font-medium">{t("heatmap.change")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {validCells.map((cell) => (
+                <tr key={`${cell.category}-${cell.asset}`} className="border-b border-border/50 last:border-0">
+                  <td className="break-words py-1.5 pr-2">{cell.asset}</td>
+                  <td className="break-words py-1.5 pr-2">{cell.category}</td>
+                  <td className="py-1.5 text-right tabular-nums">{formatChange(cell.change1d, locale)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </>
+  );
 }

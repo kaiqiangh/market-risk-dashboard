@@ -3,7 +3,8 @@
   "subtitle": "Rates / Credit / Inflation / Labor / Liquidity / FX + FedWatch expectations",
   "chart": {
     "title": "Macro Indicator Overview",
-    "empty": "No macro indicators"
+    "empty": "No macro indicators",
+    "details": "Show data table"
   },
   "section": {
     "rates": "Rates",
