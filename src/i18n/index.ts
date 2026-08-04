@@ -51,7 +51,12 @@ export function detectInitialLocale(): SupportedLocale {
   const fromHash = localeFromHash(window.location.hash);
   if (fromHash) return fromHash;
 
-  const stored = window.localStorage.getItem(LOCALE_STORAGE_KEY);
+  let stored: string | null = null;
+  try {
+    stored = window.localStorage?.getItem(LOCALE_STORAGE_KEY) ?? null;
+  } catch {
+    // Some test/private-browser environments expose localStorage without storage access.
+  }
   if (stored && (SUPPORTED_LOCALES as readonly string[]).includes(stored)) {
     return stored as SupportedLocale;
   }

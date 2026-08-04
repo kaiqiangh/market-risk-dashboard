@@ -80,13 +80,21 @@ describe("mobile layout", () => {
     expect(wrappedInCard).toBe(false);
   });
 
-  it("Navbar scrolls horizontally on mobile (overflow-x-auto)", async () => {
+  it("Navbar keeps four direct mobile destinations and groups the rest under More", async () => {
     installFixtureFetch();
     window.history.replaceState(null, "", "#/zh/overview");
     const { container } = renderApp();
     await screen.findByTestId("page-title");
     const nav = container.querySelector("nav");
-    expect(nav?.getAttribute("class") ?? "").toContain("overflow-x-auto");
+    expect(nav?.getAttribute("class") ?? "").not.toContain("overflow-x-auto");
+    expect(screen.getByRole("link", { name: /总览/ })).toBeVisible();
+    expect(screen.getByRole("link", { name: /宏观/ })).toBeVisible();
+    expect(screen.getByRole("link", { name: /股票/ })).toBeVisible();
+    expect(screen.getByRole("link", { name: /新闻/ })).toBeVisible();
+    const more = screen.getByText("更多");
+    expect(more).toBeVisible();
+    more.closest("details")?.setAttribute("open", "true");
+    expect(more.closest("details")?.querySelector('a[href="#/zh/themes"]')).not.toBeNull();
   });
 
   it("Equities A-share cards use a mobile single-column responsive grid", async () => {

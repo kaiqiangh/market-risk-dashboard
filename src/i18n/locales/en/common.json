@@ -13,7 +13,8 @@
     "news": "News",
     "calendar": "Calendar",
     "risklab": "Risk Lab",
-    "status": "Status"
+    "status": "Status",
+    "more": "More"
   },
   "status": {
     "fresh": "Fresh",

@@ -19,7 +19,12 @@ export type Theme = ResolvedTheme;
 
 function readStoredPreference(): ThemePreference {
   if (typeof window === "undefined") return "dark";
-  const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+  let stored: string | null = null;
+  try {
+    stored = window.localStorage?.getItem(THEME_STORAGE_KEY) ?? null;
+  } catch {
+    // Some test/private-browser environments expose localStorage without storage access.
+  }
   // Legacy binary values migrate directly; anything unrecognized means dark (ADR-0001)
   if (stored === "light" || stored === "dark" || stored === "system") return stored;
   return "dark";
