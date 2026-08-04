@@ -358,10 +358,14 @@ def _build_dashboard(
     crypto: Any,
     sectors: Any,
     calendar: Any,
-    data_quality: float,
-    degraded: bool,
-) -> DashboardEnvelope:
-    """Aggregate key fields from risk/crypto/equities/sectors/calendar (architecture §2 L299 + §3.6)."""
+) -> DashboardPayload:
+    """Aggregate key fields from risk/crypto/equities/sectors/calendar (architecture §2 L299 + §3.6).
+
+    Returns the payload only (#64 follow-up): the envelope's schema_version / source /
+    source_updated_at / freshness_status / data_quality are supplied by the caller through
+    the single assembly path — the values a hand-built envelope carries are discarded by
+    ``_finalize_and_write`` and were a latent trap.
+    """
     r = risk_env.payload
 
     cross_asset: list[DashboardAsset] = []
@@ -379,22 +383,13 @@ def _build_dashboard(
         for t in sectors.payload.themes:
             sector_performance.append({"key": t.key, "label": t.label, "label_zh": t.label_zh, "change_1d": t.change_1d})
 
-    payload = DashboardPayload(
+    return DashboardPayload(
         risk=r,
         regime=r.regime,
         top_drivers=r.top_drivers,
         cross_asset=cross_asset,
         catalysts=catalysts,
         sector_performance=sector_performance,
-    )
-    return DashboardEnvelope(
-        generated_at=now_utc(),
-        schema_version="1.0.0",
-        source=["risk_model", "yfinance", "coingecko", "fmp", "rss_news"],
-        source_updated_at=now_utc(),
-        freshness_status="degraded" if degraded else "fresh",
-        data_quality=round(data_quality, 3),
-        payload=payload,
     )
 
 
@@ -574,21 +569,17 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         writer.update_freshness("facts", facts_status, "degraded" if facts_status == "degraded" else "ok")
 
         # dashboard (P1-5)
-        dashboard_env = _build_dashboard(
+        dashboard_payload = _build_dashboard(
             risk_env=risk_env,
             equities=equities,
             crypto=crypto,
             sectors=sectors,
             calendar=calendar,
-            data_quality=ctx["data_quality"],
-            degraded=degraded,
         )
         dashboard_env = _finalize_and_write(
-            writer, "dashboard", dashboard_env.payload, degraded,
-            source=dashboard_env.source,
-            data_quality=dashboard_env.data_quality,
-            generated_at=dashboard_env.generated_at,
-            source_updated_at=dashboard_env.source_updated_at,
+            writer, "dashboard", dashboard_payload, degraded,
+            source=["risk_model", "yfinance", "coingecko", "fmp", "rss_news"],
+            data_quality=round(ctx["data_quality"], 3),
         )
 
         # AI analysis freshness (P0-4)
