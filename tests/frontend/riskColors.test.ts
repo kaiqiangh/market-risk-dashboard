@@ -71,6 +71,14 @@ describe("direction family", () => {
   });
 });
 
+describe("regime family (#71)", () => {
+  it("indeterminate maps to risk-na — never a risk-bearing colour", () => {
+    expect(regimeTone("indeterminate")).toBe("na");
+    expect(regimeTone("indeterminate")).not.toBe("high");
+    expect(regimeTone("indeterminate")).not.toBe("severe");
+  });
+});
+
 describe("freshness family", () => {
   it("fresh/delayed are muted; only stale and missing earn warm tones (#66/CONTEXT.md)", () => {
     expect(freshTone("fresh")).toBe("ok");

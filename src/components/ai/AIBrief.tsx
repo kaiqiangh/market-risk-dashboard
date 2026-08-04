@@ -177,6 +177,13 @@ export function AIBrief({ analysis, loading = false, error = false }: AIBriefPro
             {t("aiBrief.confidence")}: <span className="font-semibold tabular-nums text-foreground">{formatRatio(analysis.confidence, locale)}</span>
           </span>
         </div>
+        {/* #71 / ruling G: on `indeterminate` the regime section is KEPT and states WHY —
+            a missing section would be indistinguishable from a rendering bug. */}
+        {analysis.market_regime === "indeterminate" ? (
+          <p className="mt-2 rounded-sm border border-border bg-surface-2/40 px-2 py-1.5 text-[11px] text-muted-foreground">
+            {t("aiBrief.regimeIndeterminate")}
+          </p>
+        ) : null}
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <p className="text-sm leading-relaxed text-foreground">{analysis.summary}</p>

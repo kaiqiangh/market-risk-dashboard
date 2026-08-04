@@ -28,6 +28,7 @@ export const MarketRegime = z.enum([
   "liquidity_stress",
   "risk_off",
   "crisis",
+  "indeterminate",
 ]);
 export const RiskTrend = z.enum(["rising", "falling", "flat"]);
 

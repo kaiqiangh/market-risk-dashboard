@@ -313,7 +313,6 @@ class RiskModel:
             "breadth_above_ma200": ctx.get("breadth", {}).get("breadth_above_ma200"),
             "cross_asset_confirmation": ctx.get("cross_asset", {}).get("confirmation"),
             "momentum_3m": ctx.get("trend", {}).get("momentum_3m"),
-            "dollar_index": _first_value(ctx, "fx", "dtwexbgs"),
         }
         regime, regime_evidence = regime_mod.infer_regime(regime_ctx)
 

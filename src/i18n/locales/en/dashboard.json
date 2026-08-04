@@ -48,7 +48,8 @@
     "watchNext": "Watch next",
     "generatedAt": "Generated at",
     "noFreshBasis": "AI brief has no fresh basis",
-    "noFreshBasisHint": "Input data is degraded or missing; the brief will resume when its inputs are fresh."
+    "noFreshBasisHint": "Input data is degraded or missing; the brief will resume when its inputs are fresh.",
+    "regimeIndeterminate": "The market regime is indeterminate: no condition fired on the current inputs — the model has no read rather than a calm or alarming one."
   },
   "kpi": {
     "trend1d": "1D change",

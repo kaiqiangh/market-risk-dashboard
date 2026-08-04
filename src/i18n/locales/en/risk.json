@@ -27,7 +27,8 @@
     "stagflation": "Stagflation",
     "liquidityStress": "Liquidity Stress",
     "riskOff": "Risk Off",
-    "crisis": "Crisis"
+    "crisis": "Crisis",
+    "indeterminate": "Indeterminate"
   },
   "dim": {
     "macro": "Macro",

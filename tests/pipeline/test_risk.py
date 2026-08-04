@@ -418,8 +418,8 @@ def test_proxy_dimension_confidence_baseline_reduced() -> None:
 
 def test_proxy_and_degrade_compound() -> None:
     """#69 ruling F: proxy AND degraded-provider discounts compound to 0.64, not 0.8."""
-    from pipeline.risk.confidence import DEFAULT_PROXY_DISCOUNT_FACTOR
     from pipeline.degrade import degrade_factor
+    from pipeline.risk.confidence import DEFAULT_PROXY_DISCOUNT_FACTOR
 
     ctx = _synthetic_context()
     ctx["data_quality"] = 0.8  # a degraded run (degrade factor applied upstream)
@@ -448,3 +448,73 @@ def test_discount_uses_shared_constant(monkeypatch) -> None:
     result = RiskModel().score(_synthetic_context())
     es = next(d for d in result.dimensions if d.key == "equity_structure")
     assert es.coverage == pytest.approx(0.5, abs=1e-4)
+
+
+# ---------- #71: the regime says indeterminate when nothing fired ----------
+
+def test_empty_context_yields_indeterminate() -> None:
+    """#71: with no condition firing, the regime is indeterminate, not a benign fallback."""
+    regime, evidence = regime_mod.infer_regime({})
+    assert regime == "indeterminate", (
+        f"all-absent input must not guess a benign regime, got {regime!r}"
+    )
+    assert evidence == []
+
+
+def test_evidence_contains_only_fired_conditions() -> None:
+    """#71: nothing is appended unconditionally to the evidence list."""
+    _, evidence = regime_mod.infer_regime({})
+    assert evidence == []
+    assert all("default:" not in line for line in evidence)
+
+
+def test_indeterminate_confidence_is_not_full() -> None:
+    """#71: an all-absent run is indeterminate and its confidence reflects the absence
+    of evidence — not full confidence."""
+    result = RiskModel().score({})
+    assert result.regime == "indeterminate"
+    assert result.confidence < 1.0
+
+
+def test_dollar_index_absent_from_regime_context(monkeypatch) -> None:
+    """#71: no dxy/dollar_index key reaches infer_regime (the dead path is gone)."""
+    captured: dict = {}
+
+    def capture(ctx: dict) -> tuple[str, list[str]]:
+        captured["ctx"] = ctx
+        return "goldilocks", ["captured"]
+
+    monkeypatch.setattr(regime_mod, "infer_regime", capture)
+    RiskModel().score(_synthetic_context())
+    assert "dxy" not in captured["ctx"]
+    assert "dollar_index" not in captured["ctx"]
+
+
+def test_dollar_index_removal_changes_no_regime() -> None:
+    """#71: dxy was never read by any condition — a dollar value changes NO regime outcome.
+
+    This is the regression pin for the dead-code claim: the same context with and without
+    a dollar value yields the identical regime and evidence.
+    """
+    from pipeline.schemas import MacroEnvelope
+    from tests.pipeline.factories import make_envelope, make_macro_indicator, make_macro_payload
+
+    # Identical to _synthetic_context()'s macro EXCEPT for the fx group (dollar present).
+    with_dollar = dict(_synthetic_context())
+    payload = make_macro_payload(
+        rates=[
+            make_macro_indicator(key="dgs10", label="10Y", value=4.2, source="FRED"),
+            make_macro_indicator(key="dgs2", label="2Y", value=3.8, source="FRED"),
+            make_macro_indicator(key="dfii10", label="Real", value=1.9, source="FRED"),
+            make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED"),
+        ],
+        credit=[make_macro_indicator(key="bamlh0a0hym2", label="HY", value=4.5, source="FRED")],
+        fx=[make_macro_indicator(key="dtwexbgs", label="Dollar", value=98.0, source="FRED")],
+    )
+    with_dollar["macro"] = MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload
+    without = _synthetic_context()  # fx=[] — everything else identical
+
+    r_with = RiskModel().score(with_dollar)
+    r_without = RiskModel().score(without)
+    assert r_with.regime == r_without.regime
+    assert r_with.regime_evidence == r_without.regime_evidence

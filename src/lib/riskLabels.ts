@@ -26,6 +26,7 @@ export const REGIME_KEYS: Record<MarketRegime, string> = {
   liquidity_stress: "regime.liquidityStress",
   risk_off: "regime.riskOff",
   crisis: "regime.crisis",
+  indeterminate: "regime.indeterminate",
 };
 
 export const RISK_DIMENSION_KEYS: Record<RiskDimensionKey, string> = {

@@ -97,6 +97,8 @@ export function regimeTone(regime: MarketRegime): RiskTone {
       return "high";
     case "crisis":
       return "severe";
+    case "indeterminate":
+      return "na";
     default:
       return "na";
   }

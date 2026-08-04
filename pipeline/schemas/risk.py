@@ -25,6 +25,7 @@ RiskLevel = Literal["risk_on", "low_risk", "caution", "high_risk", "severe_risk"
 MarketRegime = Literal[
     "goldilocks", "risk_on", "disinflation", "reflation",
     "late_cycle", "stagflation", "liquidity_stress", "risk_off", "crisis",
+    "indeterminate",
 ]
 RiskTrend = Literal["rising", "falling", "flat"]
 
