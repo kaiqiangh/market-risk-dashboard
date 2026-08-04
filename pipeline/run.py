@@ -673,9 +673,35 @@ def _finish_run(command: str, results: dict[str, Any], elapsed: float, health: d
         failed_datasets=health["failed"],
         skipped_datasets=health["skipped"],
         degraded_datasets=health["degraded"],
+        proxy_discounts=_risk_proxy_discounts(results),
     )
     _print_summary(command, results, elapsed)
     return 0
+
+
+def _risk_proxy_discounts(results: dict[str, Any]) -> list[dict[str, Any]]:
+    """The trust discounts that applied to the top drivers (#69), for the run report.
+
+    Each entry names the indicator and the combined discount (1.0 none; proxy discount;
+    proxy × degrade factor), so a 0.64 is never an unexplained number.
+    """
+    risk_env = results.get("risk")
+    payload = getattr(risk_env, "payload", None)
+    if payload is None:
+        return []
+    out: list[dict[str, Any]] = []
+    for d in getattr(payload, "top_drivers", []):
+        if d.discount < 1.0:
+            out.append(
+                {
+                    "indicator_key": d.indicator_key,
+                    "dimension_key": d.dimension_key,
+                    "label": d.label,
+                    "is_proxy": d.is_proxy,
+                    "discount": d.discount,
+                }
+            )
+    return out
 
 
 def main(argv: list[str] | None = None) -> int:

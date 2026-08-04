@@ -12,8 +12,14 @@ from typing import Any
 from pipeline.indicators.technical import closes_of
 
 
-def breadth_above_ma200(history: dict[str, list[dict[str, Any]]], window: int = 200) -> float | None:
-    """Share of closes above the 200-day moving average (based on the passed-in index close series)."""
+def breadth_above_ma200(
+    history: dict[str, list[dict[str, Any]]], window: int = 200
+) -> dict[str, Any]:
+    """Share of closes above the 200-day moving average, plus the sample counts (#69).
+
+    Returns ``{"ratio", "qualifying", "considered"}`` so a thinning sample (4 of 18
+    constituents vs 18 of 18) is visible, not hidden behind a confidently-stated ratio.
+    """
     above = 0
     total = 0
     for symbol, rows in history.items():
@@ -26,8 +32,8 @@ def breadth_above_ma200(history: dict[str, list[dict[str, Any]]], window: int = 
         above += 1 if values[-1] > ma else 0
         total += 1
     if total == 0:
-        return None
-    return round(above / total, 4)
+        return {"ratio": None, "qualifying": 0, "considered": 0}
+    return {"ratio": round(above / total, 4), "qualifying": above, "considered": total}
 
 
 def new_highs_lows(history: dict[str, list[dict[str, Any]]], lookback: int = 63) -> dict[str, float]:
@@ -44,11 +50,13 @@ def new_highs_lows(history: dict[str, list[dict[str, Any]]], lookback: int = 63)
         lows += 1 if values[-1] <= min(window) else 0
         total += 1
     if total == 0:
-        return {"new_highs": 0, "new_lows": 0, "total": 0}
+        return {"new_highs": 0, "new_lows": 0, "total": 0, "highs_count": 0, "lows_count": 0}
     return {
         "new_highs": round(highs / total, 4),
         "new_lows": round(lows / total, 4),
         "total": total,
+        "highs_count": highs,
+        "lows_count": lows,
     }
 
 
@@ -64,12 +72,22 @@ def relative_strength(history: dict[str, list[dict[str, Any]]], target: str, ben
 
 
 def breadth_snapshot(history: dict[str, list[dict[str, Any]]]) -> dict[str, Any]:
-    """Summarize breadth indicators (including the is_proxy marker: MVP uses index proxies)."""
+    """Summarize breadth indicators (including the is_proxy marker: MVP uses index proxies).
+
+    #69: publishes the qualifying and considered counts alongside every ratio, so a
+    shrinking sample is visible in the published data.
+    """
     hl = new_highs_lows(history)
+    above = breadth_above_ma200(history)
     return {
-        "breadth_above_ma200": breadth_above_ma200(history),
+        "breadth_above_ma200": above["ratio"],
+        "breadth_qualifying": above["qualifying"],
+        "breadth_considered": above["considered"],
         "new_highs_ratio": hl["new_highs"],
         "new_lows_ratio": hl["new_lows"],
+        "new_highs_qualifying": hl.get("highs_count", 0),
+        "new_lows_qualifying": hl.get("lows_count", 0),
+        "new_considered": hl["total"],
         "small_cap_relative": relative_strength(history, "IWM", "SPY"),
         "semis_relative": relative_strength(history, "SOXX", "SPY"),
         "is_proxy": True,

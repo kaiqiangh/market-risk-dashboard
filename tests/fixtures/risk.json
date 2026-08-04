@@ -304,7 +304,9 @@
           "metric": "real_rate_dfii10",
           "value": 1.9,
           "updated_at": "2026-08-03T09:30:00Z"
-        }
+        },
+        "is_proxy": false,
+        "discount": 1.0
       },
       {
         "dimension_key": "cross_asset",
@@ -312,7 +314,9 @@
         "label": "Cross-asset confirmation",
         "contribution": 9.0,
         "change_1d": 0.3,
-        "evidence_ref": null
+        "evidence_ref": null,
+        "is_proxy": true,
+        "discount": 0.8
       }
     ],
     "regime": "late_cycle",
@@ -326,7 +330,21 @@
       "coverage": 0.83,
       "consistency": 0.6
     },
-    "disclaimer": "The risk score on this page is a model-based estimate of market stress, not a precise probability of a market crash, and should not be considered investment advice."
+    "disclaimer": "The risk score on this page is a model-based estimate of market stress, not a precise probability of a market crash, and should not be considered investment advice.",
+    "breadth": {
+      "breadth_above_ma200": 0.55,
+      "breadth_qualifying": 10,
+      "breadth_considered": 18,
+      "new_highs_ratio": 0.4,
+      "new_lows_ratio": 0.2,
+      "new_highs_qualifying": 7,
+      "new_lows_qualifying": 4,
+      "new_considered": 18,
+      "small_cap_relative": -1.0,
+      "semis_relative": 2.0,
+      "is_proxy": true,
+      "note": "MVP breadth uses index proxies (SPY/IWM/SOXX); 2008-2012 history requires approximate reconstruction (noted in the T05 calibration report)"
+    }
   },
   "provenance": {
     "provider": "risk_model",

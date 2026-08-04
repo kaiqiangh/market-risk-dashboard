@@ -16,10 +16,12 @@ from __future__ import annotations
 
 from typing import Any
 
+from pipeline.degrade import degrade_factor
 from pipeline.risk import confidence as conf_mod
 from pipeline.risk import regime as regime_mod
 from pipeline.risk.scoring import compute_indicator_score
 from pipeline.schemas import (
+    BreadthSnapshot,
     DriverContribution,
     RiskDimension,
     RiskIndicator,
@@ -216,11 +218,17 @@ class RiskModel:
         }
 
         prev_dim_scores: dict[str, float] = ctx.get("_prev_dim_scores") or {}
+        proxy_discount = conf_mod.proxy_discount_factor()
         dimensions: list[RiskDimension] = []
         for dim_key, builder in builders.items():
             indicators = builder(ctx)
             available = [i for i in indicators if i.value is not None]
-            coverage = round(len(available) / len(indicators), 4) if indicators else 0.0
+            # #69: a proxy-backed indicator counts for less than a measured one in coverage —
+            # its own knob (confidence.proxy_discount_factor), NOT the degrade factor.
+            effective_available = sum(
+                proxy_discount if i.is_proxy else 1.0 for i in available
+            )
+            coverage = round(effective_available / len(indicators), 4) if indicators else 0.0
             if available:
                 dim_score = round(sum(i.risk_score * i.weight for i in available) / sum(i.weight for i in available), 2)
             else:
@@ -267,6 +275,10 @@ class RiskModel:
         #   contribution = (d.effective_weight / W) * (i.weight / V_d) * i.risk_score
         # where W = total effective weight and V_d = sum of available indicator weights in d.
         # Summing over every indicator reconciles exactly with the composite score.
+        # Each driver also discloses its trust discount (#69): a proxy is discounted by the
+        # proxy knob; when the run's providers degraded, the degrade factor compounds in.
+        data_quality_now = float(ctx.get("data_quality", 1.0))
+        degrade_discount = degrade_factor() if data_quality_now < 1.0 else 1.0
         drivers: list[DriverContribution] = []
         for d in dimensions:
             available = [i for i in d.indicators if i.value is not None]
@@ -274,6 +286,9 @@ class RiskModel:
             for ind in available:
                 contribution = round(
                     d.effective_weight / denom * (ind.weight / dim_weight_sum) * ind.risk_score, 4
+                )
+                ind_discount = round(
+                    (proxy_discount if ind.is_proxy else 1.0) * degrade_discount, 4
                 )
                 drivers.append(
                     DriverContribution(
@@ -283,6 +298,8 @@ class RiskModel:
                         contribution=contribution,
                         change_1d=None,
                         evidence_ref=None,
+                        is_proxy=ind.is_proxy,
+                        discount=ind_discount,
                     )
                 )
         drivers.sort(key=lambda x: x.contribution, reverse=True)
@@ -311,6 +328,13 @@ class RiskModel:
         consistency = conf_mod.consistency_from_dimension_scores([d.score for d in dimensions])
         confidence = conf_mod.compute_confidence(data_quality, coverage, consistency, self.conf_weights)
 
+        # #69: publish the breadth sample disclosure (qualifying/considered counts) so a
+        # thinning sample is visible in the data.
+        breadth_data = ctx.get("breadth")
+        breadth_snapshot_value: BreadthSnapshot | None = None
+        if isinstance(breadth_data, dict):
+            breadth_snapshot_value = BreadthSnapshot.model_validate(breadth_data)
+
         return RiskModelResult(
             model_version=self.model_version,
             generated_at=now_utc(),
@@ -321,6 +345,7 @@ class RiskModel:
             trend_1m=trend_1m,
             dimensions=dimensions,
             top_drivers=top_drivers,
+            breadth=breadth_snapshot_value,
             regime=regime,
             regime_evidence=regime_evidence,
             confidence=confidence,

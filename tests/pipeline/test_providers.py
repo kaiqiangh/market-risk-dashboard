@@ -267,9 +267,22 @@ _DEGRADE_LITERAL = re.compile(r"(?<![\w.])0\.8(?![\d])")
 #: factor. #62 names these as unrelated and leaves them.
 _UNRELATED_TO_DEGRADE = frozenset({"pipeline/risk/scoring.py"})
 
+#: The proxy discount is its OWN knob (#69 board ruling), deliberately independent of the
+#: degrade factor: it answers "how much less do we trust an estimate than a measurement".
+#: Its literal lives in exactly one code home (`DEFAULT_PROXY_DISCOUNT_FACTOR`) and one
+#: config home (`confidence.proxy_discount_factor`), so the per-knob guards below can tell
+#: it apart from the degrade factor's two homes. The `_UNRELATED_TO_DEGRADE` pattern is
+#: used the same way to document scoring.py's unrelated 0.8s.
+_PROXY_DISCOUNT_NAME = "DEFAULT_PROXY_DISCOUNT_FACTOR"
+_PROXY_DISCOUNT_CONFIG_KEY = "proxy_discount_factor"
+
+
+def _is_proxy_discount_line(line: str) -> bool:
+    return _PROXY_DISCOUNT_NAME in line or _PROXY_DISCOUNT_CONFIG_KEY in line
+
 
 def _degrade_literal_hits() -> list[str]:
-    """Every bare 0.8 in the pipeline and config trees that a reader could take for a degrade factor."""
+    """Every bare 0.8 in the pipeline and config trees that a reader could take for the DEGRADE factor."""
     searched = sorted(PIPELINE_DIR.rglob("*.py")) + sorted(REAL_CONFIG_DIR.rglob("*.yaml"))
     hits: list[str] = []
     for path in searched:
@@ -277,7 +290,19 @@ def _degrade_literal_hits() -> list[str]:
         if relative in _UNRELATED_TO_DEGRADE:
             continue
         for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
-            if _DEGRADE_LITERAL.search(line):
+            if _DEGRADE_LITERAL.search(line) and not _is_proxy_discount_line(line):
+                hits.append(f"{relative}:{lineno}: {line.strip()}")
+    return hits
+
+
+def _proxy_discount_literal_hits() -> list[str]:
+    """Every bare 0.8 that is the proxy discount (its own knob, #69 ruling)."""
+    searched = sorted(PIPELINE_DIR.rglob("*.py")) + sorted(REAL_CONFIG_DIR.rglob("*.yaml"))
+    hits: list[str] = []
+    for path in searched:
+        relative = path.relative_to(REPO_ROOT).as_posix()
+        for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+            if _DEGRADE_LITERAL.search(line) and _is_proxy_discount_line(line):
                 hits.append(f"{relative}:{lineno}: {line.strip()}")
     return hits
 
@@ -299,6 +324,34 @@ def test_only_one_degrade_literal_in_pipeline() -> None:
     assert CONFIG_KEY in config_hit, f"the config literal must be {CONFIG_KEY}, found {config_hit}"
     assert code_hit.startswith("pipeline/degrade.py:"), f"the code home must be pipeline/degrade.py, found {code_hit}"
     assert "DEFAULT_DEGRADE_FACTOR" in code_hit, f"the code literal must define the default, found {code_hit}"
+
+
+def test_only_one_proxy_discount_literal_in_pipeline() -> None:
+    """AC (#69 ruling): the proxy discount has exactly one home in code and one in config.
+
+    The proxy discount is its own knob — NOT the degrade factor. Tuning
+    `degrade.data_quality_degrade_factor` must never move the proxy penalty, and vice
+    versa. This guard pins the proxy literal to its two named homes so neither knob can
+    silently borrow the other's literal.
+    """
+    hits = _proxy_discount_literal_hits()
+
+    assert len(hits) == 2, (
+        "the proxy discount must have exactly one home in pipeline/ and one in config/; found:\n" + "\n".join(hits)
+    )
+    config_hit, code_hit = sorted(hits)
+    assert config_hit.startswith("config/risk_model.yaml:"), (
+        f"the proxy config home must be risk_model.yaml (confidence block), found {config_hit}"
+    )
+    assert _PROXY_DISCOUNT_CONFIG_KEY in config_hit, (
+        f"the config literal must be confidence.{_PROXY_DISCOUNT_CONFIG_KEY}, found {config_hit}"
+    )
+    assert code_hit.startswith("pipeline/risk/confidence.py:"), (
+        f"the proxy code home must be pipeline/risk/confidence.py, found {code_hit}"
+    )
+    assert _PROXY_DISCOUNT_NAME in code_hit, (
+        f"the code literal must define {_PROXY_DISCOUNT_NAME}, found {code_hit}"
+    )
 
 
 def test_no_second_degrade_key_in_risk_model_config() -> None:

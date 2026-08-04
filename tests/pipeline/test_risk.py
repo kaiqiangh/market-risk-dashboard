@@ -384,3 +384,67 @@ def test_driver_ordering_is_pinned() -> None:
         result.top_drivers[i].contribution >= result.top_drivers[i + 1].contribution
         for i in range(len(result.top_drivers) - 1)
     )
+
+
+# ---------- #69: proxy-backed indicators stop inflating coverage and confidence ----------
+
+def _synthetic_ctx_confidence() -> float:
+    """The overall confidence for `_synthetic_context()` (equity_structure is 5/5 proxies)."""
+    return RiskModel().score(_synthetic_context()).confidence
+
+
+def test_proxy_indicator_discounts_coverage() -> None:
+    """#69: a proxy-backed indicator counts for less than a measured one in coverage."""
+    result = RiskModel().score(_synthetic_context())
+    es = next(d for d in result.dimensions if d.key == "equity_structure")
+    assert all(i.is_proxy for i in es.indicators if i.value is not None)
+    assert es.coverage < 1.0, (
+        "equity_structure is 5/5 proxy indicators; coverage must be discounted below 1.0"
+    )
+    # The discount is the proxy knob (0.8), not a full 1.0.
+    assert es.coverage == pytest.approx(0.8, abs=1e-4)
+
+
+def test_proxy_dimension_confidence_baseline_reduced() -> None:
+    """#69: equity_structure/cross_asset show a permanently reduced confidence baseline."""
+    result = RiskModel().score(_synthetic_context())
+    es = next(d for d in result.dimensions if d.key == "equity_structure")
+    ca = next(d for d in result.dimensions if d.key == "cross_asset")
+    assert es.coverage < 1.0 and ca.coverage < 1.0
+    # A fully-covered run would score higher; the baseline is honest, not a regression.
+    assert result.confidence < 1.0
+    assert "coverage" in result.confidence_factors
+
+
+def test_proxy_and_degrade_compound() -> None:
+    """#69 ruling F: proxy AND degraded-provider discounts compound to 0.64, not 0.8."""
+    from pipeline.risk.confidence import DEFAULT_PROXY_DISCOUNT_FACTOR
+    from pipeline.degrade import degrade_factor
+
+    ctx = _synthetic_context()
+    ctx["data_quality"] = 0.8  # a degraded run (degrade factor applied upstream)
+    result = RiskModel().score(ctx)
+    # A proxy driver in the same run compounds both discounts.
+    proxy_driver = next(d for d in result.top_drivers if d.is_proxy)
+    assert proxy_driver.discount == pytest.approx(
+        DEFAULT_PROXY_DISCOUNT_FACTOR * degrade_factor(), rel=1e-4
+    ), "proxy + degraded provider must compound to factor × proxy_discount (0.64)"
+
+
+def test_discount_uses_shared_constant(monkeypatch) -> None:
+    """#69: the proxy discount is its own knob — patching the config key moves it, and
+    patching the degrade factor does NOT."""
+    import pipeline.risk.confidence as conf_mod
+
+    # The accessor reads its own config key (range-checked), independent of the degrade factor.
+    assert conf_mod.proxy_discount_factor(risk_model={"confidence": {"proxy_discount_factor": 0.5}}) == 0.5
+    with pytest.raises(ValueError):
+        conf_mod.proxy_discount_factor(risk_model={"confidence": {"proxy_discount_factor": 0.0}})
+    with pytest.raises(ValueError):
+        conf_mod.proxy_discount_factor(risk_model={"confidence": {"proxy_discount_factor": 1.5}})
+
+    # The model's coverage discount follows the knob.
+    monkeypatch.setattr(conf_mod, "proxy_discount_factor", lambda *a, **k: 0.5)
+    result = RiskModel().score(_synthetic_context())
+    es = next(d for d in result.dimensions if d.key == "equity_structure")
+    assert es.coverage == pytest.approx(0.5, abs=1e-4)

@@ -150,6 +150,18 @@ describe("Zod contract: hard constraints", () => {
     badRisk.payload.total_score = 120;
     expect(RiskEnvelope.safeParse(badRisk).success).toBe(false);
   });
+
+  it("rejects a risk envelope without breadth counts (#69)", () => {
+    const bad = structuredClone(riskFixture) as Record<string, any>;
+    delete bad.payload.breadth;
+    expect(RiskEnvelope.safeParse(bad).success).toBe(false);
+  });
+
+  it("rejects a risk envelope without per-driver discount disclosure (#69)", () => {
+    const bad = structuredClone(riskFixture) as Record<string, any>;
+    delete bad.payload.top_drivers[0].is_proxy;
+    expect(RiskEnvelope.safeParse(bad).success).toBe(false);
+  });
 });
 
 describe("DatasetClient path rules (architecture §3.6)", () => {

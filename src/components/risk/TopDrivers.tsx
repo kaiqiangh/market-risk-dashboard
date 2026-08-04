@@ -61,7 +61,15 @@ export function TopDrivers({ drivers }: TopDriversProps) {
                 {i + 1}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-foreground">{driver.label}</p>
+                <p className="truncate text-sm font-medium text-foreground">
+                  {driver.label}
+                  {/* #69: disclose that the driver is an estimate — muted outline, NOT a warm tone */}
+                  {driver.is_proxy ? (
+                    <span className="ml-1.5 rounded-sm border border-border px-1 py-0 text-[9px] font-normal text-muted-foreground">
+                      {t("indicator.proxy")}
+                    </span>
+                  ) : null}
+                </p>
                 <p className="truncate text-[11px] text-muted-foreground">
                   {t(RISK_DIMENSION_KEYS[driver.dimension_key as RiskDimensionKey])}
                 </p>

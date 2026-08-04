@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from pipeline.indicators import breadth, flow, technical, trend
 
 
@@ -73,3 +75,51 @@ def test_trend_snapshot() -> None:
     assert snap["price_vs_ma200"] is not None
     assert snap["drawdown_52w"] is not None
     assert snap["last_close"] == 120.0
+
+
+# ---------- #69: breadth discloses its sample ----------
+
+def _breadth_history(considered: int) -> dict[str, list[dict]]:
+    """A history dict with `considered` series long enough to qualify; all but the last four
+    close above their 200-day MA (the last four make new 63-day lows)."""
+    rows: dict[str, list[dict]] = {}
+    for i in range(considered):
+        symbol = f"SYM{i:02d}"
+        above = i < considered - 4  # all but the last four close above the MA
+        close = 110.0 if above else 90.0
+        # 260 rows so every series clears the 200-day MA window and the 64-day lookback.
+        rows[symbol] = [
+            {"date": f"2025-01-{d % 28 + 1:02d}", "open": 100.0, "high": 100.0, "low": 100.0, "close": 100.0}
+            for d in range(260)
+        ] + [
+            {"date": "2026-08-03", "open": close, "high": close, "low": close, "close": close}
+        ]
+    return rows
+
+
+def test_breadth_publishes_qualifying_and_considered() -> None:
+    """#69: breadth_snapshot publishes qualifying + considered counts alongside the ratio."""
+    from pipeline.indicators.breadth import breadth_snapshot
+
+    snap = breadth_snapshot(_breadth_history(18))
+    assert "breadth_qualifying" in snap
+    assert "breadth_considered" in snap
+    assert snap["breadth_considered"] == 18
+    assert snap["breadth_qualifying"] == 14
+    assert snap["breadth_above_ma200"] == pytest.approx(14 / 18, abs=1e-4)
+    assert snap["new_considered"] == 18
+    # The four below-MA series close at a 63-day low; the rest make new highs.
+    assert snap["new_highs_qualifying"] == 14
+    assert snap["new_lows_qualifying"] == 4
+
+
+def test_thin_breadth_sample_is_visible() -> None:
+    """#69: a 4-of-18 sample is distinguishable from an 18-of-18 sample in the output."""
+    from pipeline.indicators.breadth import breadth_snapshot
+
+    thin = breadth_snapshot(_breadth_history(4))
+    full = breadth_snapshot(_breadth_history(18))
+    # Same ratio, different basis — the counts make the thinning visible.
+    assert thin["breadth_qualifying"] < full["breadth_qualifying"]
+    assert thin["breadth_considered"] < full["breadth_considered"]
+    assert thin["breadth_considered"] == 4
