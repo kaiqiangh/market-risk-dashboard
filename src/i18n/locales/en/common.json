@@ -14,7 +14,8 @@
     "calendar": "Calendar",
     "risklab": "Risk Lab",
     "status": "Status",
-    "more": "More"
+    "more": "More",
+    "current": "current"
   },
   "status": {
     "fresh": "Fresh",
