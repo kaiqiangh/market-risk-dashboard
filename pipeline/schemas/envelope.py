@@ -19,7 +19,7 @@ from pydantic import AfterValidator, BaseModel, ConfigDict, Field
 FreshnessStatus = Literal["fresh", "delayed", "stale", "missing", "degraded"]
 
 # Data contract version (single source of truth; reused by analysis/contract.py)
-SCHEMA_VERSION = "1.0.0"
+SCHEMA_VERSION = "1.1.0"
 
 
 def is_schema_compatible(file_version: str, current_version: str = SCHEMA_VERSION) -> bool:

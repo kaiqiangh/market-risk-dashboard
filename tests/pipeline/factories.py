@@ -499,8 +499,30 @@ def make_risk_payload(**overrides: Any) -> dict[str, Any]:
             "trend_1d": 0.8,
             "trend_1w": 2.1,
             "trend_1m": -1.4,
+            # Indicator keys mirror the model.py registrations (#67): macro carries the four
+            # real macro indicators (real_rate / curve / dollar / dgs10); liquidity_credit
+            # carries the full credit set including ig_oas.
             "dimensions": [
-                make_risk_dimension(),
+                make_risk_dimension(
+                    indicators=[
+                        make_risk_indicator(key="real_rate_dfii10", label="10Y Real Rate", risk_score=64.0),
+                        make_risk_indicator(key="yield_curve_10y2y", label="10Y-2Y Curve", risk_score=60.0),
+                        make_risk_indicator(key="dollar_index", label="Dollar Index", risk_score=55.0),
+                        make_risk_indicator(key="dgs10", label="10Y Yield", risk_score=52.0, direction="neutral"),
+                    ]
+                ),
+                make_risk_dimension(
+                    key="liquidity_credit",
+                    label="Liquidity & Credit",
+                    score=52.0,
+                    indicators=[
+                        make_risk_indicator(key="hy_oas", label="HY OAS", risk_score=55.0),
+                        make_risk_indicator(key="ig_oas", label="IG OAS", risk_score=45.0),
+                        make_risk_indicator(key="fed_balance_sheet", label="Fed Balance Sheet", risk_score=50.0, direction="neutral"),
+                        make_risk_indicator(key="reverse_repo", label="Reverse Repo", risk_score=50.0, direction="neutral"),
+                    ],
+                    trend="flat",
+                ),
                 make_risk_dimension(
                     key="volatility",
                     label="Volatility",

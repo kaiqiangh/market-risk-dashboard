@@ -46,7 +46,7 @@ INDICATOR_HISTORY_SERIES: dict[str, str | tuple[str, str]] = {
     "yield_curve_10y2y": ("dgs10", "dgs2"),
     "hy_oas": "bamlh0a0hym2",
     "ig_oas": "bamlc0a0cm",
-    "dxy": "dtwexbgs",
+    "dollar_index": "dtwexbgs",
     "dgs10": "dgs10",
     "fed_balance_sheet": "walcl",
     "reverse_repo": "rrpontsyd",
@@ -138,25 +138,18 @@ class RiskModel:
     def _macro_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
         macro = ctx.get("macro")
         rates = {m.key: m for m in getattr(macro, "rates", [])}
-        credit = {m.key: m for m in getattr(macro, "credit", [])}
         dgs10 = rates.get("dgs10")
         dfii10 = rates.get("dfii10")
         dgs2 = rates.get("dgs2")
         curve = (dgs10.value - dgs2.value) if (dgs10 and dgs2 and dgs10.value is not None and dgs2.value is not None) else None
-        hy = credit.get("bamlh0a0hym2")
-        ig = credit.get("bamlc0a0cm")
-        dxy = next((m for m in getattr(macro, "fx", []) if m.key == "dtwexbgs"), None)
+        dollar = next((m for m in getattr(macro, "fx", []) if m.key == "dtwexbgs"), None)
         return [
             _ind("real_rate_dfii10", "10Y Real Rate", dfii10.value if dfii10 else None, "higher_is_riskier", "FRED", 5.0,
                  history=self._indicator_history(ctx, "real_rate_dfii10")),
-            _ind("yield_curve_10y2y", "10Y-2Y Curve", curve, "higher_is_riskier", "FRED", 5.0,
+            _ind("yield_curve_10y2y", "10Y-2Y Curve", curve, "lower_is_riskier", "FRED", 5.0,
                  history=self._indicator_history(ctx, "yield_curve_10y2y")),
-            _ind("hy_oas", "HY OAS", hy.value if hy else None, "higher_is_riskier", "FRED", 5.0,
-                 history=self._indicator_history(ctx, "hy_oas")),
-            _ind("ig_oas", "IG OAS", ig.value if ig else None, "higher_is_riskier", "FRED", 5.0,
-                 history=self._indicator_history(ctx, "ig_oas")),
-            _ind("dxy", "Dollar Index", dxy.value if dxy else None, "higher_is_riskier", "FRED", 5.0,
-                 history=self._indicator_history(ctx, "dxy")),
+            _ind("dollar_index", "Dollar Index", dollar.value if dollar else None, "higher_is_riskier", "FRED", 5.0,
+                 history=self._indicator_history(ctx, "dollar_index")),
             _ind("dgs10", "10Y Yield", dgs10.value if dgs10 else None, "neutral", "FRED", 5.0,
                  history=self._indicator_history(ctx, "dgs10")),
         ]
@@ -173,6 +166,8 @@ class RiskModel:
                  history=self._indicator_history(ctx, "reverse_repo")),
             _ind("hy_oas", "HY OAS", _first_value(ctx, "credit", "bamlh0a0hym2"), "higher_is_riskier", "FRED", 10.0,
                  history=self._indicator_history(ctx, "hy_oas")),
+            _ind("ig_oas", "IG OAS", _first_value(ctx, "credit", "bamlc0a0cm"), "higher_is_riskier", "FRED", 5.0,
+                 history=self._indicator_history(ctx, "ig_oas")),
         ]
 
     def _equity_structure_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
@@ -295,7 +290,7 @@ class RiskModel:
             "breadth_above_ma200": ctx.get("breadth", {}).get("breadth_above_ma200"),
             "cross_asset_confirmation": ctx.get("cross_asset", {}).get("confirmation"),
             "momentum_3m": ctx.get("trend", {}).get("momentum_3m"),
-            "dxy": _first_value(ctx, "fx", "dtwexbgs"),
+            "dollar_index": _first_value(ctx, "fx", "dtwexbgs"),
         }
         regime, regime_evidence = regime_mod.infer_regime(regime_ctx)
 

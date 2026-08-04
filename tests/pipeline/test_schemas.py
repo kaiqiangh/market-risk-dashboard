@@ -237,9 +237,9 @@ def test_schema_version_supported() -> None:
 @pytest.mark.parametrize(
     "file_version,expected",
     [
-        ("1.0.0", True),   # current version
+        ("1.0.0", True),   # previous minor: accepted (minor backward compatible)
         ("1.0.1", True),   # same major, patch ignored
-        ("1.1.0", False),  # future minor: new fields may be incompatible (extra=forbid)
+        ("1.2.0", False),  # future minor: new fields may be incompatible (extra=forbid)
         ("2.0.0", False),  # different major: structure incompatible
         ("0.9.0", False),  # earlier major
         ("not-a-version", False),

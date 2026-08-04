@@ -200,3 +200,83 @@ def test_confidence_consistency() -> None:
     assert conf_mod.consistency_from_dimension_scores([20, 20, 20]) == 1.0
     assert conf_mod.consistency_from_dimension_scores([0, 100]) < 0.5
 
+
+
+# ---------- #67: config == code, direction agrees with the scoring table ----------
+
+def _risk_result() -> RiskModelResult:
+    """Score the standard synthetic context once (shared by the #67 assertions)."""
+    return RiskModel().score(_synthetic_context())
+
+
+def _indicator_by_key(result: RiskModelResult, key: str):
+    for dim in result.dimensions:
+        for ind in dim.indicators:
+            if ind.key == key:
+                return dim.key, ind
+    return None, None
+
+
+def test_inverted_curve_scores_high_risk() -> None:
+    """A negative 10Y-2Y spread (inverted curve) must score as HIGH risk.
+
+    HEURISTIC_RULES["yield_curve_10y2y"] maps -0.5 -> 95; the declaration used to say
+    `higher_is_riskier`, which contradicted the table (#67 group 5).
+    """
+    from pipeline.schemas import MacroIndicator
+    from tests.pipeline.factories import make_macro_indicator
+
+    ctx = _synthetic_context()
+    # dgs10 = 3.0, dgs2 = 4.0 -> curve = -1.0 (inverted), no history -> heuristic path
+    macro = _macro_with_rates().model_copy(
+        update={"rates": [
+            MacroIndicator.model_validate(make_macro_indicator(key="dgs10", label="10Y", value=3.0, source="FRED")),
+            MacroIndicator.model_validate(make_macro_indicator(key="dgs2", label="2Y", value=4.0, source="FRED")),
+        ]}
+    )
+    ctx["macro"] = macro
+    result = RiskModel().score(ctx)
+    dim_key, ind = _indicator_by_key(result, "yield_curve_10y2y")
+    assert dim_key == "macro"
+    assert ind is not None
+    assert ind.risk_score >= 90, f"inverted curve must score high, got {ind.risk_score}"
+    assert ind.direction == "lower_is_riskier", (
+        "yield_curve_10y2y declares lower_is_riskier (inversion is high risk), got "
+        f"{ind.direction}"
+    )
+
+
+def test_hy_oas_counted_once_in_a_scored_result() -> None:
+    """hy_oas appears in exactly one dimension of a scored result, at weight 10.0."""
+    result = _risk_result()
+    sites = [
+        (dim.key, ind.weight)
+        for dim in result.dimensions
+        for ind in dim.indicators
+        if ind.key == "hy_oas"
+    ]
+    assert sites == [("liquidity_credit", 10.0)], f"hy_oas must be scored once at 10.0, found {sites}"
+
+
+def test_ig_oas_is_scored_under_liquidity_credit() -> None:
+    """ig_oas moved from macro to liquidity_credit, preserving weight 5.0 (#67 group 4)."""
+    result = _risk_result()
+    dim_key, ind = _indicator_by_key(result, "ig_oas")
+    assert dim_key == "liquidity_credit", f"ig_oas must live under liquidity_credit, found {dim_key}"
+    assert ind is not None and ind.weight == 5.0
+    assert "bamlc0a0cm" not in {i.key for i in result.dimensions[0].indicators}  # macro has no credit keys
+    # No indicator key is registered in two dimensions in the scored output (ruling B).
+    seen: dict[str, str] = {}
+    for dim in result.dimensions:
+        for ind in dim.indicators:
+            assert ind.key not in seen, f"{ind.key} registered in {seen[ind.key]} and {dim.key}"
+            seen[ind.key] = dim.key
+
+
+def test_macro_dimension_has_exactly_four_indicators() -> None:
+    """After the hy_oas/ig_oas removals, macro is rates + curve + dollar + nominal yield."""
+    result = _risk_result()
+    macro = next(d for d in result.dimensions if d.key == "macro")
+    assert {i.key for i in macro.indicators} == {
+        "real_rate_dfii10", "yield_curve_10y2y", "dollar_index", "dgs10",
+    }

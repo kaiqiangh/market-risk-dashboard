@@ -18,36 +18,17 @@ indicators:
   macro:
     - { key: real_rate_dfii10, source: FRED, metric: DFII10, label: "10Y Real Rate" }
     - { key: yield_curve_10y2y, source: FRED, metric: DGS10-DGS2, label: "10Y-2Y Term Spread" }
-    - { key: inflation_surprise, source: FRED, metric: CPIAUCSL, label: "Inflation Surprise" }
-    - {
-        key: labor_deterioration,
-        source: FRED,
-        metric: UNRATE/PAYEMS,
-        label: "Labor Deterioration",
-      }
     - { key: dollar_index, source: FRED, metric: DTWEXBGS, label: "Dollar Index" }
+    - { key: dgs10, source: FRED, metric: DGS10, label: "10Y Yield" }
   liquidity_credit:
     - { key: hy_oas, source: FRED, metric: BAMLH0A0HYM2, label: "High Yield OAS" }
     - { key: ig_oas, source: FRED, metric: BAMLC0A0CM, label: "Investment Grade OAS" }
     - { key: fed_balance_sheet, source: FRED, metric: WALCL, label: "Fed Balance Sheet" }
     - { key: reverse_repo, source: FRED, metric: RRPONTSYD, label: "Reverse Repo" }
-    - {
-        key: treasury_general_account,
-        source: FRED,
-        metric: WTREGEN,
-        label: "Treasury General Account (TGA)",
-      }
-    - { key: bank_reserves, source: FRED, metric: WRESBAL, label: "Bank Reserves" }
-    - { key: move_index, source: FRED, metric: MOVE, label: "MOVE Index" }
   equity_structure:
     - { key: breadth_above_ma200, source: computed, metric: breadth, label: "Pct Above 200-Day MA" }
-    - { key: new_highs_lows, source: computed, metric: breadth, label: "New Highs vs Lows" }
-    - {
-        key: equal_weight_divergence,
-        source: computed,
-        metric: breadth,
-        label: "Equal-Weight vs Cap-Weight Divergence",
-      }
+    - { key: new_highs_ratio, source: computed, metric: breadth, label: "New Highs Ratio" }
+    - { key: new_lows_ratio, source: computed, metric: breadth, label: "New Lows Ratio" }
     - {
         key: small_cap_relative,
         source: computed,
@@ -62,9 +43,7 @@ indicators:
       }
   volatility:
     - { key: vix, source: FRED, metric: VIXCLS, label: "VIX" }
-    - { key: vix_term_structure, source: CBOE, metric: VIX9D/VIX3M, label: "VIX Term Structure" }
     - { key: realized_vol, source: computed, metric: vol, label: "Realized Volatility" }
-    - { key: vol_risk_premium, source: computed, metric: vol, label: "Volatility Risk Premium" }
   cross_asset:
     - {
         key: cross_asset_confirmation,
@@ -73,7 +52,6 @@ indicators:
         label: "Cross-Asset Confirmation Signal",
       }
   trend:
-    - { key: price_vs_ma50, source: computed, metric: trend, label: "Price vs MA50" }
     - { key: price_vs_ma200, source: computed, metric: trend, label: "Price vs MA200" }
     - { key: drawdown_52w, source: computed, metric: trend, label: "52-Week High Drawdown" }
     - { key: momentum_3m, source: computed, metric: trend, label: "3M Momentum" }
