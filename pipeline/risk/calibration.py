@@ -5,6 +5,12 @@ Evaluation metrics (PRD §15 subset): early-warning lead time, risk score change
 maximum drawdown, future 5/10/20/30-day volatility, risk level stability.
 Calibration red line: before calibration completes, the UI must not call the risk score
 an "exact crash probability".
+
+#72: this harness evaluates the HEURISTIC FALLBACK path (`heuristic_risk_score`), not
+the production percentile path in `compute_indicator_score` (pipeline/risk/scoring.py).
+Every output carries `scoring_path: "heuristic_fallback"` so the results are never
+mistaken for production behaviour. Sign convention: `early_warning_days_vs_peak` is
+POSITIVE when the warning fired BEFORE the peak (days early).
 """
 
 from __future__ import annotations
@@ -51,11 +57,12 @@ def evaluate_segment(
     peak_idx = spx_series.index(max(spx_series)) if spx_series else 0
     max_dd = _max_drawdown(spx_series) if spx_series else None
 
-    # Early warning: days from the peak when the risk score first reaches ≥ 60 (negative = warned before the peak)
+    # Early warning (#72): days BEFORE the peak when the risk score first reaches ≥ 60.
+    # Positive = warned early (score crossed 60 before the peak); negative = warned late.
     early_warning_days: int | None = None
     for i, s in enumerate(scores):
         if s >= 60:
-            early_warning_days = i - peak_idx
+            early_warning_days = peak_idx - i
             break
 
     # Change speed: fewest days for the risk score to go from 40 → 60
@@ -85,6 +92,7 @@ def evaluate_segment(
     return {
         "segment": segment,
         "note": CALIBRATION_WINDOWS[segment]["note"],
+        "scoring_path": "heuristic_fallback",
         "n_days": len(dates),
         "max_drawdown_pct": round(max_dd * 100.0, 2) if max_dd is not None else None,
         "early_warning_days_vs_peak": early_warning_days,
