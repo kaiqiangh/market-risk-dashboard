@@ -17,6 +17,7 @@ from pydantic import ValidationError
 
 from pipeline.collectors.news import NewsCollector
 from pipeline.schemas import NewsDataset, NewsEnvelope, NewsItem, NewsTranslation, NewsTranslationsDataset
+from pipeline.schemas.envelope import SCHEMA_VERSION
 
 UTC = "2026-08-03T00:00:00Z"
 
@@ -43,7 +44,7 @@ def _item(**overrides) -> NewsItem:
 def _envelope(items: list[NewsItem]) -> NewsEnvelope:
     return NewsEnvelope(
         generated_at=UTC,
-        schema_version="1.0.0",
+        schema_version=SCHEMA_VERSION,
         source=["rss_news"],
         source_updated_at=UTC,
         freshness_status="fresh",

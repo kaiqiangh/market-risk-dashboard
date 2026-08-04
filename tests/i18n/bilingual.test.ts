@@ -1,6 +1,7 @@
 /**
  * Bilingual AI conclusion consistency tests (PRD §25.2: bilingual AI conclusion consistency / architecture §3.4).
- * Based on tests/fixtures analysis.zh-CN.json / analysis.en.json:
+ * Based on the analysis.zh-CN.json golden (tests/fixtures/) and the hand-written English document
+ * in tests/frontend/helpers/fixtureData.ts (the static analysis.en.json was deleted by #73):
  * market_state / market_regime / confidence / evidence_refs set / list lengths must match;
  * only the prose language differs. The full bilingual validation on the pytest side is in
  * pipeline/analysis/validate.py.
@@ -9,6 +10,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { analysisEnFixture } from "../frontend/helpers/fixtureData";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixturesDir = path.resolve(__dirname, "../fixtures");
@@ -51,6 +53,9 @@ interface AnalysisFixture {
 }
 
 function loadAnalysis(lang: "zh-CN" | "en"): AnalysisFixture {
+  // The en document is no longer a committed file (#73): it is the hand-written inline
+  // document shared by the frontend suite, bilingually consistent with the zh-CN golden.
+  if (lang === "en") return analysisEnFixture as unknown as AnalysisFixture;
   const p = path.join(fixturesDir, `analysis.${lang}.json`);
   return JSON.parse(readFileSync(p, "utf-8")) as AnalysisFixture;
 }

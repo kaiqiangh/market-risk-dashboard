@@ -13,24 +13,21 @@ from pipeline.settings import Settings
 from pipeline.storage import StorageWriter
 from pipeline.validation.validate_all import validate_all, validate_file
 
-FIXTURES = Path(__file__).resolve().parent.parent / "fixtures"
-
 
 # ---------- StorageWriter ----------
 
 def test_write_dataset_and_slices(tmp_path: Path) -> None:
-    from pipeline.schemas import MacroDataset, MacroEnvelope
+    from pipeline.schemas import MacroEnvelope
+    from pipeline.schemas.envelope import SCHEMA_VERSION
+    from tests.pipeline.factories import make_envelope
 
     writer = StorageWriter(tmp_path / "data")
-    env = MacroEnvelope(
-        generated_at="2026-08-03T10:00:00Z", schema_version="1.0.0", source="fred",
-        source_updated_at="2026-08-03T10:00:00Z", freshness_status="fresh", data_quality=0.9,
-        payload=MacroDataset(),
-    )
+    env = MacroEnvelope.model_validate(make_envelope("macro"))
+    assert env.schema_version == SCHEMA_VERSION
     path = writer.write_dataset("macro", env)
     assert path.exists()
     data = json.loads(path.read_text(encoding="utf-8"))
-    assert data["payload"] == {"rates": [], "credit": [], "inflation": [], "labor": [], "liquidity": [], "fx": [], "fedwatch": None}
+    assert data["payload"]["rates"][0]["key"] == "dgs10"
 
     daily = [{"date": f"2026-07-{i:02d}", "total_score": i} for i in range(1, 100)]
     writer.write_slices("risk", daily)
@@ -49,10 +46,12 @@ def test_history_dedupe_by_date(tmp_path: Path) -> None:
 
 
 def test_metadata_writes(tmp_path: Path) -> None:
+    from pipeline.schemas.envelope import SCHEMA_VERSION
+
     writer = StorageWriter(tmp_path / "data")
     writer.update_freshness("macro", "fresh", "ok")
     writer.write_sources_metadata({"quotes": [{"provider": "yfinance", "ok": True}]})
-    writer.write_schema_version("1.0.0")
+    writer.write_schema_version(SCHEMA_VERSION)
     assert (tmp_path / "data/metadata/freshness.json").exists()
     assert (tmp_path / "data/metadata/sources.json").exists()
     assert (tmp_path / "data/metadata/schema-version.json").exists()
@@ -122,22 +121,34 @@ def test_frontend_freshness_sync() -> None:
     assert frontend_keys.issubset(expected_keys), f"frontend has unregistered keys: {frontend_keys - expected_keys}"
 
 
-# ---------- validate_all (reuses tests/fixtures) ----------
-# Static fixtures are exempt from the time-based freshness annotation: validate_file evaluates
-# freshness against the real clock, so fixed generated_at values would age out and flake the suite.
-# These tests verify schema/format (T02 intent); staleness is evaluated on live data, not fixtures.
+# ---------- validate_all (generated documents since #73) ----------
+# Generated documents carry DEFAULT_NOW timestamps; the real clock ages them, so freshness
+# annotation is exempted exactly as it was for the deleted static fixtures: these tests verify
+# schema/format (T02 intent); staleness is evaluated on live data, not generated documents.
 
-def _issues_without_freshness(name: str) -> list[str]:
-    return [i for i in validate_file(FIXTURES / name) if "stale" not in i]
+def _write_generated_latest(tmp_path: Path) -> Path:
+    """Write the 11 known documents (factory-generated) to a tmp latest/ dir."""
+    from tests.pipeline.factories import default_latest_files
+
+    latest = tmp_path / "latest"
+    latest.mkdir(parents=True)
+    for filename, content in default_latest_files().items():
+        (latest / filename).write_text(json.dumps(content, ensure_ascii=False), encoding="utf-8")
+    return latest
+
+
+def _issues_without_freshness(path: Path) -> list[str]:
+    return [i for i in validate_file(path) if "stale" not in i]
 
 
 @pytest.mark.parametrize("name", ["macro.json", "equities.json", "sectors.json", "crypto.json", "news.json", "calendar.json", "risk.json", "dashboard.json", "facts.json", "analysis.zh-CN.json", "analysis.en.json"])
-def test_validate_file_on_fixtures(name: str) -> None:
-    assert _issues_without_freshness(name) == []
+def test_validate_file_on_generated_documents(tmp_path: Path, name: str) -> None:
+    assert _issues_without_freshness(_write_generated_latest(tmp_path) / name) == []
 
 
-def test_validate_all_fixtures_pass() -> None:
-    report = validate_all(FIXTURES, strict=False)
+def test_validate_all_generated_documents_pass(tmp_path: Path) -> None:
+    latest = _write_generated_latest(tmp_path)
+    report = validate_all(latest, strict=False)
     issues = [i for i in report.issues if "stale" not in i]
     assert not issues
     assert report.files_checked == 11
@@ -256,9 +267,11 @@ def test_write_json_fsyncs_before_replace(tmp_path: Path, monkeypatch: pytest.Mo
 
 def test_write_json_still_writes_readable_output(tmp_path: Path) -> None:
     """Atomicity must not change what lands on disk."""
+    from pipeline.schemas.envelope import SCHEMA_VERSION
+
     writer = StorageWriter(tmp_path / "data")
     target = tmp_path / "data" / "latest" / "macro.json"
-    payload = {"schema_version": "1.0.0", "values": [1, 2, 3], "nested": {"zh": "中文"}}
+    payload = {"schema_version": SCHEMA_VERSION, "values": [1, 2, 3], "nested": {"zh": "中文"}}
 
     writer.write_json(target, payload)
 
@@ -548,12 +561,14 @@ _RUN_START = "2026-08-04T00:00:00Z"
 
 def _write_freshness(data_dir: Path, statuses: dict[str, str], *, updated_at: str = _RUN_START) -> None:
     """Seed metadata/freshness.json the way a run would leave it."""
+    from pipeline.schemas.envelope import SCHEMA_VERSION
+
     path = data_dir / "metadata" / "freshness.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
         json.dumps(
             {
-                "schema_version": "1.0.0",
+                "schema_version": SCHEMA_VERSION,
                 "datasets": {
                     name: {"status": status, "reason": "", "updated_at": updated_at}
                     for name, status in statuses.items()
@@ -704,6 +719,7 @@ def test_partial_command_writes_a_run_report(tmp_path: Path, monkeypatch: pytest
         SectorsDataset,
         SectorsEnvelope,
     )
+    from pipeline.schemas.envelope import SCHEMA_VERSION
 
     data_dir = tmp_path / "data"
     artifacts_dir = tmp_path / "artifacts"
@@ -722,17 +738,17 @@ def test_partial_command_writes_a_run_report(tmp_path: Path, monkeypatch: pytest
             "qualities": [0.8, 0.8, 0.8],
             "macro_meta": {},
             "equities": EquitiesEnvelope(
-                generated_at="2026-08-05T00:00:00Z", schema_version="1.0.0", source="yfinance",
+                generated_at="2026-08-05T00:00:00Z", schema_version=SCHEMA_VERSION, source="yfinance",
                 source_updated_at="2026-08-05T00:00:00Z", freshness_status="fresh",
                 data_quality=0.9, payload=EquitiesDataset(),
             ),
             "crypto": CryptoEnvelope(
-                generated_at="2026-08-05T00:00:00Z", schema_version="1.0.0", source="coingecko",
+                generated_at="2026-08-05T00:00:00Z", schema_version=SCHEMA_VERSION, source="coingecko",
                 source_updated_at="2026-08-05T00:00:00Z", freshness_status="fresh",
                 data_quality=0.9, payload=CryptoDataset(),
             ),
             "sectors": SectorsEnvelope(
-                generated_at="2026-08-05T00:00:00Z", schema_version="1.0.0", source="yfinance",
+                generated_at="2026-08-05T00:00:00Z", schema_version=SCHEMA_VERSION, source="yfinance",
                 source_updated_at="2026-08-05T00:00:00Z", freshness_status="fresh",
                 data_quality=0.9, payload=SectorsDataset(),
             ),

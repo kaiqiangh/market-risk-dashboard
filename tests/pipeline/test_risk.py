@@ -12,7 +12,7 @@ from pipeline.risk.scoring import (
     percentile_risk_score,
     z_score,
 )
-from pipeline.schemas import MacroDataset, MacroIndicator, RiskModelResult
+from pipeline.schemas import MacroDataset, RiskModelResult
 
 
 def test_heuristic_risk_score_bounds() -> None:
@@ -78,19 +78,35 @@ def test_regime_goldilocks() -> None:
     assert regime in ("goldilocks", "risk_on")
 
 
+def _macro_with_rates(*, value: float | None = None) -> MacroDataset:
+    """A MacroDataset built entirely from the factory (#73: no direct constructor calls).
+
+    Defaults to the four indicators the risk model reads; passing ``value`` swaps the VIX
+    indicator in (used by the level-threshold test).
+    """
+    from pipeline.schemas import MacroEnvelope
+    from tests.pipeline.factories import make_envelope, make_macro_indicator, make_macro_payload
+
+    if value is not None:
+        rates = [make_macro_indicator(key="vixcls", label="VIX", value=value, unit="index", source="FRED")]
+        payload = make_macro_payload(rates=rates, credit=[], inflation=[], labor=[], liquidity=[], fx=[])
+    else:
+        payload = make_macro_payload(
+            rates=[
+                make_macro_indicator(key="dgs10", label="10Y", value=4.2, source="FRED"),
+                make_macro_indicator(key="dgs2", label="2Y", value=3.8, source="FRED"),
+                make_macro_indicator(key="dfii10", label="Real", value=1.9, source="FRED"),
+                make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED"),
+            ],
+            credit=[make_macro_indicator(key="bamlh0a0hym2", label="HY", value=4.5, source="FRED")],
+            fx=[],
+        )
+    return MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload
+
+
 def _synthetic_context() -> dict:
-    macro = MacroDataset(
-        rates=[
-            MacroIndicator(key="dgs10", label="10Y", value=4.2, unit="pct", source="FRED"),
-            MacroIndicator(key="dgs2", label="2Y", value=3.8, unit="pct", source="FRED"),
-            MacroIndicator(key="dfii10", label="Real", value=1.9, unit="pct", source="FRED"),
-            MacroIndicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED"),
-        ],
-        credit=[MacroIndicator(key="bamlh0a0hym2", label="HY", value=4.5, unit="pct", source="FRED")],
-        fx=[],
-    )
     return {
-        "macro": macro,
+        "macro": _macro_with_rates(),
         "breadth": {"breadth_above_ma200": 0.55, "new_highs_ratio": 0.4, "new_lows_ratio": 0.2,
                     "small_cap_relative": -1.0, "semis_relative": 2.0},
         "trend": {"price_vs_ma200": 8.0, "drawdown_52w": -5.0, "momentum_3m": 3.0, "realized_vol": 18.0},
@@ -170,10 +186,10 @@ def test_risk_model_level_thresholds() -> None:
     model = RiskModel()
     # low-risk context → score should be lower than the high-VIX context
     low_ctx = _synthetic_context()
-    low_ctx["macro"].rates = [MacroIndicator(key="vixcls", label="VIX", value=12.0, unit="index", source="FRED")]
+    low_ctx["macro"] = _macro_with_rates(value=12.0)
     low = model.score(low_ctx)
     high_ctx = _synthetic_context()
-    high_ctx["macro"].rates = [MacroIndicator(key="vixcls", label="VIX", value=45.0, unit="index", source="FRED")]
+    high_ctx["macro"] = _macro_with_rates(value=45.0)
     high = model.score(high_ctx)
     assert high.total_score > low.total_score
 

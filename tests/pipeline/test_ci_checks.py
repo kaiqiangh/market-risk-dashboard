@@ -88,8 +88,8 @@ def test_standalone_factories_validate_against_real_model(filename: str) -> None
     """facts.json and both analysis files satisfy their production contracts."""
     builders: dict[str, Any] = {
         "facts.json": make_facts,
-        "analysis.zh-CN.json": lambda: make_analysis("zh-CN"),
-        "analysis.en.json": lambda: make_analysis("en"),
+        "analysis.zh-CN.json": lambda: make_analysis(language="zh-CN"),
+        "analysis.en.json": lambda: make_analysis(language="en"),
     }
     STANDALONE_MODELS[filename].model_validate(builders[filename]())
 
@@ -413,18 +413,33 @@ def test_risk_range_recheck_is_defence_in_depth(payload: dict[str, Any], expecte
 # =====================================================================================
 
 
-def test_analysis_pair_missing_one_side(make_data_dir: Any, now: datetime) -> None:
-    """analysis.zh-CN.json exists but en is missing → bilingual missing error."""
-    root = make_data_dir(latest={"analysis.en.json": REMOVE})
+@pytest.mark.parametrize("missing_side", ["analysis.en.json", "analysis.zh-CN.json"])
+def test_analysis_pair_missing_one_side(make_data_dir: Any, now: datetime, missing_side: str) -> None:
+    """Either side missing → bilingual missing error (#73: both branches pinned)."""
+    root = make_data_dir(latest={missing_side: REMOVE})
     report = run_all(root, now=now)
     assert any("missing bilingual analysis file" in e for e in report.errors), report.errors
+
+
+def test_make_analysis_language_is_overridable() -> None:
+    """#73 wart: every field of every builder is overridable the same way.
+
+    `make_analysis` used to take `language` positionally, so `make_analysis("en",
+    language="fr")` raised `TypeError: got multiple values`. `language` is keyword-only now:
+    the keyword form works, and the positional form is a clean signature error.
+    """
+    assert make_analysis(language="fr")["language"] == "fr"
+    assert make_analysis(language="en")["language"] == "en"
+    with pytest.raises(TypeError) as excinfo:
+        make_analysis("en", language="fr")  # type: ignore[call-arg]
+    assert "multiple values for argument" not in str(excinfo.value)
 
 
 def test_unknown_language_key_detected(
     synthetic_latest_dir: Path, synthetic_data_dir: Path, now: datetime
 ) -> None:
     """Unknown language analysis.fr.json → error."""
-    write_json(synthetic_latest_dir / "analysis.fr.json", make_analysis("fr"))
+    write_json(synthetic_latest_dir / "analysis.fr.json", make_analysis(language="fr"))
     report = run_all(synthetic_data_dir, now=now)
     assert any("unknown language key" in e for e in report.errors), report.errors
 
@@ -435,7 +450,7 @@ def test_bilingual_inconsistency_detected(
     """Bilingual market_state mismatch → error."""
     write_json(
         synthetic_latest_dir / "analysis.en.json",
-        make_analysis("en", market_state="different_value"),
+        make_analysis(language="en", market_state="different_value"),
     )
     report = run_all(synthetic_data_dir, now=now)
     assert any(
@@ -447,7 +462,7 @@ def test_bilingual_regime_mismatch_detected(
     synthetic_latest_dir: Path, synthetic_data_dir: Path, now: datetime
 ) -> None:
     """The two languages must agree on the market regime."""
-    write_json(synthetic_latest_dir / "analysis.en.json", make_analysis("en", market_regime="crisis"))
+    write_json(synthetic_latest_dir / "analysis.en.json", make_analysis(language="en", market_regime="crisis"))
     report = run_all(synthetic_data_dir, now=now)
     assert any("market_regime mismatch" in e for e in report.errors), report.errors
 
@@ -456,7 +471,7 @@ def test_bilingual_confidence_mismatch_detected(
     synthetic_latest_dir: Path, synthetic_data_dir: Path, now: datetime
 ) -> None:
     """The two languages must report the same confidence."""
-    write_json(synthetic_latest_dir / "analysis.en.json", make_analysis("en", confidence=0.31))
+    write_json(synthetic_latest_dir / "analysis.en.json", make_analysis(language="en", confidence=0.31))
     report = run_all(synthetic_data_dir, now=now)
     assert any("confidence mismatch" in e for e in report.errors), report.errors
 
@@ -467,7 +482,7 @@ def test_bilingual_evidence_refs_mismatch_detected(
     """Both languages must cite exactly the same evidence."""
     write_json(
         synthetic_latest_dir / "analysis.en.json",
-        make_analysis("en", top_risk_drivers=[{"claim": "Unsourced claim.", "evidence_refs": []}]),
+        make_analysis(language="en", top_risk_drivers=[{"claim": "Unsourced claim.", "evidence_refs": []}]),
     )
     report = run_all(synthetic_data_dir, now=now)
     assert any("evidence_refs set mismatch" in e for e in report.errors), report.errors
@@ -477,7 +492,7 @@ def test_bilingual_list_length_mismatch_detected(
     synthetic_latest_dir: Path, synthetic_data_dir: Path, now: datetime
 ) -> None:
     """Parallel lists must be structurally equivalent across languages."""
-    write_json(synthetic_latest_dir / "analysis.en.json", make_analysis("en", watch_next=[]))
+    write_json(synthetic_latest_dir / "analysis.en.json", make_analysis(language="en", watch_next=[]))
     report = run_all(synthetic_data_dir, now=now)
     assert any("watch_next length mismatch" in e for e in report.errors), report.errors
 
@@ -488,7 +503,7 @@ def test_bilingual_number_mismatch_detected(
     """Only the prose language may differ; the numbers inside it may not."""
     write_json(
         synthetic_latest_dir / "analysis.en.json",
-        make_analysis("en", summary="Total score 99.9 places the market in caution."),
+        make_analysis(language="en", summary="Total score 99.9 places the market in caution."),
     )
     report = run_all(synthetic_data_dir, now=now)
     assert any("text number mismatch" in e for e in report.errors), report.errors

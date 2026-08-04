@@ -1,19 +1,19 @@
 /**
- * Zod contract tests (T02 acceptance: the same fixture passes both Pydantic and Zod validation).
- * Fixtures are identical to tests/fixtures/*.json (the Python tests reuse the same files).
+ * Zod contract tests (T02 acceptance + #73 cross-language backstop).
+ *
+ * Since #73 the static fixture bundle is gone: the only committed documents are the three
+ * hand-written GOLDENS at tests/fixtures/ (risk.json, analysis.zh-CN.json, facts.json), which
+ * both this file and the Python suite read. The remaining datasets are tested here with
+ * hand-written inline documents, independent of both the Python factory and the goldens.
+ *
+ * The goldens are the hinge of release convention #3: the Python suite forces them to follow
+ * Pydantic (extra="forbid"), and the Zod `.strict()` mirrors below force src/schemas/*.ts to
+ * follow them. If a golden lies — an unknown key — BOTH sides must reject it.
  */
 import { describe, expect, it } from "vitest";
-import macroFixture from "../fixtures/macro.json";
-import equitiesFixture from "../fixtures/equities.json";
-import sectorsFixture from "../fixtures/sectors.json";
-import cryptoFixture from "../fixtures/crypto.json";
-import newsFixture from "../fixtures/news.json";
-import calendarFixture from "../fixtures/calendar.json";
 import riskFixture from "../fixtures/risk.json";
-import dashboardFixture from "../fixtures/dashboard.json";
 import factsFixture from "../fixtures/facts.json";
 import analysisZhFixture from "../fixtures/analysis.zh-CN.json";
-import analysisEnFixture from "../fixtures/analysis.en.json";
 
 import { AnalysisDataset } from "@/schemas/analysis";
 import { CalendarEnvelope } from "@/schemas/calendar";
@@ -34,6 +34,23 @@ import {
   staleTimeFor,
 } from "@/lib/freshness";
 
+// -------------------------------------------------------------------------------------
+// Hand-written inline documents for the datasets without goldens (#73) live in
+// ./helpers/fixtureData.ts (shared with the fetch mock). They are frozen on purpose:
+// independent of the Python factory, and valid against the mirrors.
+// -------------------------------------------------------------------------------------
+import {
+  analysisEnFixture,
+  calendarFixture,
+  cryptoFixture,
+  dashboardFixture,
+  equitiesFixture,
+  macroFixture,
+  newsFixture,
+  sectorsFixture,
+} from "./helpers/fixtureData";
+// -------------------------------------------------------------------------------------
+
 const ENVELOPE_CASES: Array<[string, unknown, { safeParse: (v: unknown) => { success: boolean } }]> = [
   ["macro", macroFixture, MacroEnvelope],
   ["equities", equitiesFixture, EquitiesEnvelope],
@@ -45,7 +62,13 @@ const ENVELOPE_CASES: Array<[string, unknown, { safeParse: (v: unknown) => { suc
   ["dashboard", dashboardFixture, DashboardEnvelope],
 ];
 
-describe("Zod contract: fixtures pass", () => {
+const GOLDEN_CASES: Array<[string, unknown, { safeParse: (v: unknown) => { success: boolean } }]> = [
+  ["risk", riskFixture, RiskEnvelope],
+  ["facts", factsFixture, FactLayer],
+  ["analysis.zh-CN", analysisZhFixture, AnalysisDataset],
+];
+
+describe("Zod contract: documents pass", () => {
   it.each(ENVELOPE_CASES)("%s envelope parses", (_key, fixture, schema) => {
     const result = schema.safeParse(fixture);
     expect(result.success).toBe(true);
@@ -58,6 +81,14 @@ describe("Zod contract: fixtures pass", () => {
   it("analysis.zh-CN.json / analysis.en.json parse as AnalysisDataset", () => {
     expect(AnalysisDataset.safeParse(analysisZhFixture).success).toBe(true);
     expect(AnalysisDataset.safeParse(analysisEnFixture).success).toBe(true);
+  });
+});
+
+describe("Zod contract: a golden that lies is rejected (cross-language backstop, #73)", () => {
+  it.each(GOLDEN_CASES)("%s golden rejects an unknown key (strict)", (_key, fixture, schema) => {
+    const bad = structuredClone(fixture) as Record<string, any>;
+    bad.sneaky_extra = 1;
+    expect(schema.safeParse(bad).success).toBe(false);
   });
 });
 

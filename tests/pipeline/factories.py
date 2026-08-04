@@ -492,7 +492,7 @@ def make_risk_payload(**overrides: Any) -> dict[str, Any]:
     """
     return _build(
         {
-            "model_version": "1.0.0",
+            "model_version": SCHEMA_VERSION,
             "generated_at": NOW_ISO,
             "total_score": 62.5,
             "risk_level": "caution",
@@ -513,7 +513,9 @@ def make_risk_payload(**overrides: Any) -> dict[str, Any]:
             "regime": "late_cycle",
             "regime_evidence": ["Curve steepening with credit spreads widening."],
             "confidence": 0.72,
-            "confidence_factors": {"coverage": 1.0, "freshness": 0.9},
+            # Superset of the risk golden's confidence_factors (#73 conformance): the golden
+            # carries data_quality/coverage/consistency; freshness is the factory's own extra.
+            "confidence_factors": {"coverage": 1.0, "freshness": 0.9, "data_quality": 0.9, "consistency": 0.6},
             "disclaimer": "This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice.",
         },
         overrides,
@@ -625,18 +627,70 @@ def make_envelope(dataset: str, payload: Any = None, **overrides: Any) -> dict[s
 
 
 def make_facts(**overrides: Any) -> dict[str, Any]:
-    """``facts.json`` (``pipeline.schemas.factlayer.FactLayer``)."""
+    """``facts.json`` (``pipeline.schemas.factlayer.FactLayer``).
+
+    Structure is a superset of the hand-written facts golden (#73 conformance): every key the
+    golden carries must be producible, or a factory drift would silently narrow what the suite
+    covers. ``data_freshness`` therefore names every dataset, ``evidence_index`` carries the
+    three golden evidence ids, and the summaries cover the golden's fields.
+    """
     return _build(
         {
             "generated_at": NOW_ISO,
             "schema_version": SCHEMA_VERSION,
-            "data_freshness": {"macro": "fresh", "market": "fresh", "news": "fresh"},
+            "data_freshness": {
+                "macro": "fresh",
+                "market": "fresh",
+                "news": "fresh",
+                "equities": "fresh",
+                "sectors": "fresh",
+                "crypto": "fresh",
+                "calendar": "fresh",
+                "risk": "fresh",
+            },
             "risk": make_risk_payload(),
-            "macro_summary": {"policy_rate": 4.33, "curve_10y2y": 0.34},
-            "market_summary": {"spx_change_1d": 0.4},
-            "news_top": [{"id": "e3b0c44298fc1c149afbf4c8996fb924", "importance": 72.0}],
-            "calendar_next7d": [{"id": "econ-CPI-2026-08-13", "importance": "high"}],
-            "evidence_index": {"macro_dimension_score": make_evidence_ref()},
+            "macro_summary": {
+                "policy_rate": 4.33,
+                "curve_10y2y": 0.34,
+                "dgs10": 4.21,
+                "real_rate_dfii10": 1.9,
+                "change_1d_dgs10": 0.03,
+            },
+            "market_summary": {
+                "spx_change_1d": 0.4,
+                "nvda_change_1d": -2.1,
+                "btc_change_1d": -0.8,
+                "memory_theme_change_1d": -2.4,
+            },
+            "news_top": [
+                {
+                    "id": "e3b0c44298fc1c149afbf4c8996fb924",
+                    "title": "Fed signals patience on rate cuts as inflation lingers",
+                    "source": "CNBC",
+                    "importance": 72.0,
+                }
+            ],
+            "calendar_next7d": [
+                {
+                    "id": "econ-CPI-2026-08-13",
+                    "type": "economic",
+                    "title": "CPI YoY",
+                    "datetime": iso(DEFAULT_NOW + timedelta(days=9)),
+                    "importance": "high",
+                }
+            ],
+            "evidence_index": {
+                "macro_dimension_score": make_evidence_ref(),
+                "ev_total_score": make_evidence_ref(
+                    dataset="risk", path="payload.total_score", metric="total_score", value=52.3
+                ),
+                "ev_real_rate": make_evidence_ref(
+                    dataset="macro", path="payload.rates[0].value", metric="real_rate_dfii10", value=1.9
+                ),
+                "ev_nvda_1d": make_evidence_ref(
+                    dataset="equities", path="payload.assets[0].change_1d", metric="change_1d", value=-2.1
+                ),
+            },
         },
         overrides,
     )
@@ -676,13 +730,21 @@ _ANALYSIS_PROSE: dict[str, dict[str, Any]] = {
 }
 
 
-def make_analysis(language: str = "zh-CN", **overrides: Any) -> dict[str, Any]:
+def make_analysis(*, language: str = "zh-CN", **overrides: Any) -> dict[str, Any]:
     """``analysis.{language}.json`` (``pipeline.schemas.analysis.AnalysisDataset``).
+
+    ``language`` is keyword-only so that every field is overridable the same way
+    (``make_analysis("en", language="fr")`` is a clean signature error, not
+    ``TypeError: got multiple values``).
 
     The two languages produced by this builder are bilingually consistent by construction:
     identical ``market_state`` / ``market_regime`` / ``confidence`` / evidence refs, identical
     list lengths, and identical numbers inside every text field. Override one of those on a
     single side to build the inconsistency case.
+
+    Structure is a superset of the hand-written analysis golden (#73 conformance): the golden
+    carries evidence refs inside ``supporting_signals`` / ``contradicting_signals`` /
+    ``bull_case`` and at the top level, so the factory's lists are non-empty too.
     """
     prose = _ANALYSIS_PROSE.get(language, _ANALYSIS_PROSE["en"])
     evidence = make_evidence_ref()
@@ -695,15 +757,15 @@ def make_analysis(language: str = "zh-CN", **overrides: Any) -> dict[str, Any]:
             "market_regime": "late_cycle",
             "summary": prose["summary"],
             "top_risk_drivers": [{"claim": prose["top_risk_driver"], "evidence_refs": [evidence]}],
-            "supporting_signals": [{"claim": prose["supporting_signal"], "evidence_refs": []}],
-            "contradicting_signals": [{"claim": prose["contradicting_signal"], "evidence_refs": []}],
+            "supporting_signals": [{"claim": prose["supporting_signal"], "evidence_refs": [evidence]}],
+            "contradicting_signals": [{"claim": prose["contradicting_signal"], "evidence_refs": [evidence]}],
             "what_changed_today": [prose["what_changed_today"]],
             "watch_next": [prose["watch_next"]],
-            "bull_case": {"title": prose["bull_title"], "points": [prose["bull_point"]], "evidence_refs": []},
+            "bull_case": {"title": prose["bull_title"], "points": [prose["bull_point"]], "evidence_refs": [evidence]},
             "base_case": {"title": prose["base_title"], "points": [prose["base_point"]], "evidence_refs": []},
             "bear_case": {"title": prose["bear_title"], "points": [prose["bear_point"]], "evidence_refs": []},
             "confidence": 0.72,
-            "evidence_refs": [],
+            "evidence_refs": [evidence],
             "data_freshness": "fresh",
         },
         overrides,
@@ -797,8 +859,8 @@ def default_latest_files() -> dict[str, Any]:
         filename: make_envelope(name) for name, filename in DATASET_FILENAMES.items()
     }
     files["facts.json"] = make_facts()
-    files["analysis.zh-CN.json"] = make_analysis("zh-CN")
-    files["analysis.en.json"] = make_analysis("en")
+    files["analysis.zh-CN.json"] = make_analysis(language="zh-CN")
+    files["analysis.en.json"] = make_analysis(language="en")
     return files
 
 
