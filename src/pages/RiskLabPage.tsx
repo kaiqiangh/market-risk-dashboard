@@ -23,7 +23,7 @@ export default function RiskLabPage() {
           {t("title")}
         </h1>
         <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
-        {riskQ.data ? <span className="ml-auto"><StatusBadge status={riskQ.data.freshness_status} withDescription /></span> : null}
+        {riskQ.data ? <span className="ml-auto"><StatusBadge status={riskQ.data.freshness_status} fromCache={riskQ.data.provenance?.from_cache} withDescription /></span> : null}
       </header>
 
       {riskQ.isLoading ? (

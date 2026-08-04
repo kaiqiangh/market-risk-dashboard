@@ -232,3 +232,24 @@ def test_fact_layer_rebuild_uses_overridden_sectors_payload(
 
     assert ok is True, f"rebuild failed: {error}"
     assert _facts(data_dir)["data_freshness"]["sectors"] == "degraded"
+
+
+def test_rebuild_preserves_fetched_at(fact_layer_env: Path) -> None:
+    """Ruling E: a rebuild preserves the original fetched_at; it never re-stamps as fresh.
+
+    The fact layer is an aggregation of observed datasets, not an observation itself.
+    `--fact-layer` reads existing latest/*.json and reassembles facts.json; the rebuilt
+    facts must carry the original generated_at (recomputed status from it), not `now`.
+    """
+    import pipeline.run as run_module
+
+    original = _facts(fact_layer_env)
+    original_fetched_at = str(original["generated_at"])
+
+    assert run_module.main(["--fact-layer"]) == 0
+
+    rebuilt = _facts(fact_layer_env)
+    assert str(rebuilt["generated_at"]) == original_fetched_at, (
+        "a rebuild must preserve the original fetched_at, got "
+        f"{rebuilt['generated_at']!r} instead of {original_fetched_at!r}"
+    )

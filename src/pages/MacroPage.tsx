@@ -25,7 +25,7 @@ export default function MacroPage() {
           {t("title")}
         </h1>
         <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
-        {macroQ.data ? <span className="ml-auto"><StatusBadge status={macroQ.data.freshness_status} withDescription /></span> : null}
+        {macroQ.data ? <span className="ml-auto"><StatusBadge status={macroQ.data.freshness_status} fromCache={macroQ.data.provenance?.from_cache} withDescription /></span> : null}
       </header>
 
       {macroQ.isLoading ? (

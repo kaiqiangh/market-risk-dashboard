@@ -96,7 +96,18 @@ const BADGE_MAP: Record<FreshnessStatus, FreshnessBadge> = {
 };
 
 /** Five states → UI badge/notice. */
-export function badgeFor(status: FreshnessStatus): FreshnessBadge {
+export function badgeFor(status: FreshnessStatus, fromCache = false): FreshnessBadge {
+  // #66: a cache replay is visibly distinct from a live-but-delayed fetch. The freshness
+  // status is degraded, but the reader needs to know the numbers are REPLAYED, not fresh-ish.
+  if (fromCache) {
+    return {
+      status: "degraded",
+      labelKey: "status.cacheReplay",
+      tone: "neutral",
+      prominent: false,
+      descriptionKey: "status.cacheReplayDesc",
+    };
+  }
   return BADGE_MAP[status];
 }
 

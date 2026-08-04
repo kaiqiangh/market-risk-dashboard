@@ -13,6 +13,8 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+import json
+
 import pytest
 import yaml
 
@@ -506,12 +508,83 @@ def test_single_provider_domain_degrades_via_cache(tmp_path) -> None:
     out = reg2.call("macro", "get_series", "fred_dgs10", args=("DGS10",))
     assert out["meta"]["degraded"] is True
     assert out["meta"]["from_cache"] is True
-    assert out["meta"]["provider"] == "last-good"
     assert "macro" in reg2.degraded_domains
-    assert reg2.resolved_provider("macro")["provider"] == "last-good"
+    # #66 upgrade: the replay names the originating provider, not the last-good placeholder.
+    assert out["meta"]["provider"] == "ok_series"
+    assert reg2.resolved_provider("macro")["provider"] == "ok_series"
 
     # The degraded domain lowers published quality (degraded_domains is the #65 reader).
     from pipeline.collectors.macro import MacroCollector
 
     collector = MacroCollector(reg2, Settings(_env_file=None))
     assert collector._quality() == degraded_quality(1, settings=Settings(_env_file=None))
+
+
+# ---------- #66: cache entries carry an age ----------
+
+def _write_cache(cache_dir: Path, domain: str, key: str, entry: dict) -> None:
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    (cache_dir / f"{domain}__{key}.json").write_text(json.dumps(entry), encoding="utf-8")
+
+
+def test_cache_entry_records_fetched_at_and_provider(tmp_path) -> None:
+    """Every cache entry records fetched_at and the provider that produced it."""
+    cache_dir = tmp_path / "cache"
+    reg = _registry(cache_dir)
+    reg.register("quotes", _OkStooq())
+    reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))
+
+    entry = json.loads((cache_dir / "quotes__NVDA.json").read_text(encoding="utf-8"))
+    assert "fetched_at" in entry, "cache entry must record fetched_at"
+    assert entry["provider"] == "stooq_ok", "cache entry must record the originating provider"
+
+
+def test_expired_cache_is_not_served(tmp_path) -> None:
+    """A cache entry older than cache_max_age_hours is not served as data (-> missing)."""
+    cache_dir = tmp_path / "cache"
+    reg = _registry(cache_dir)
+    reg.register("quotes", _OkStooq())
+    reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))
+    path = cache_dir / "quotes__NVDA.json"
+    entry = json.loads(path.read_text(encoding="utf-8"))
+    entry["fetched_at"] = "2026-07-01T00:00:00Z"  # weeks old, beyond the 24h cap
+    path.write_text(json.dumps(entry), encoding="utf-8")
+
+    reg2 = _registry(cache_dir)
+    reg2.register("quotes", _FailingYahoo())
+    with pytest.raises(ProviderError):
+        reg2.call("quotes", "get_quote", "NVDA", args=("NVDA",))
+
+
+def test_undated_cache_treated_as_expired(tmp_path) -> None:
+    """Ruling C: a legacy cache entry with no fetched_at is treated as beyond the max age."""
+    cache_dir = tmp_path / "cache"
+    reg = _registry(cache_dir)
+    reg.register("quotes", _OkStooq())
+    reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))
+    path = cache_dir / "quotes__NVDA.json"
+    entry = json.loads(path.read_text(encoding="utf-8"))
+    del entry["fetched_at"]
+    path.write_text(json.dumps(entry), encoding="utf-8")
+
+    reg2 = _registry(cache_dir)
+    reg2.register("quotes", _FailingYahoo())
+    with pytest.raises(ProviderError):
+        reg2.call("quotes", "get_quote", "NVDA", args=("NVDA",))
+
+
+def test_cache_replay_names_originating_provider(tmp_path) -> None:
+    """#66 upgrade: a cache replay names the provider that originally produced the data."""
+    cache_dir = tmp_path / "cache"
+    reg = _registry(cache_dir)
+    reg.register("quotes", _OkStooq())
+    reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))  # stooq_ok writes the cache
+
+    reg2 = _registry(cache_dir)
+    reg2.register("quotes", _FailingYahoo())
+    out = reg2.call("quotes", "get_quote", "NVDA", args=("NVDA",))
+    assert out["meta"]["from_cache"] is True
+    assert out["meta"]["provider"] == "stooq_ok", (
+        "cache replay must name the originating provider, got "
+        f"{out['meta']['provider']!r} instead of 'last-good'"
+    )

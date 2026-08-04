@@ -27,7 +27,9 @@
     "delayedDesc": "数据更新延迟（超过预期间隔 1.5~3 倍）",
     "staleDesc": "数据明显过期（超过预期间隔 3 倍），请谨慎解读",
     "missingDesc": "该数据集从未有数据，暂不展示正常内容",
-    "degradedDesc": "部分数据源降级/回退，模型置信度已下调"
+    "degradedDesc": "部分数据源降级/回退，模型置信度已下调",
+    "cacheReplay": "缓存回放",
+    "cacheReplayDesc": "数据来自最近一次成功缓存，而非实时获取；请视为过期数据处理"
   },
   "error": {
     "title": "数据加载失败",

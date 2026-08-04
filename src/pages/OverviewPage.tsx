@@ -109,7 +109,7 @@ export default function OverviewPage() {
         <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
         {riskQ.data ? (
           <span className="ml-auto">
-            <StatusBadge status={riskQ.data.freshness_status} withDescription />
+            <StatusBadge status={riskQ.data.freshness_status} fromCache={riskQ.data.provenance?.from_cache} withDescription />
           </span>
         ) : null}
       </header>

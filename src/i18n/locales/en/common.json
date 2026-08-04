@@ -27,7 +27,9 @@
     "delayedDesc": "Data is delayed (1.5x-3x the expected interval)",
     "staleDesc": "Data is stale (over 3x the expected interval); interpret with caution",
     "missingDesc": "Dataset has never been produced; normal content is hidden",
-    "degradedDesc": "Some providers degraded/fell back; model confidence has been reduced"
+    "degradedDesc": "Some providers degraded/fell back; model confidence has been reduced",
+    "cacheReplay": "Cache replay",
+    "cacheReplayDesc": "Served from the last-good cache, not fetched live; treat as stale"
   },
   "error": {
     "title": "Failed to load data",

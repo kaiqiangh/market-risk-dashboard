@@ -161,8 +161,10 @@ export type FreshTone = "ok" | "warn" | "bad" | "na";
 export function freshTone(status: FreshnessStatus): FreshTone {
   switch (status) {
     case "fresh":
-      return "ok";
     case "delayed":
+      // CONTEXT.md: "only stale/missing earn a warm tone" — delayed is a normal operational
+      // state (data is a little old but within cadence); it uses no saturated color.
+      return "ok";
     case "degraded":
     case "stale":
       return "warn";

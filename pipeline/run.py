@@ -805,9 +805,27 @@ def _run_fact_layer_only() -> tuple[bool, str | None]:
         return False, "fact layer rebuild requires latest/*.json to exist (run --full first)"
 
     builder = FactLayerBuilder()
-    facts = builder.build(risk=risk, macro=macro, equities=equities, crypto=crypto, news=news, calendar=calendar, sectors=sectors)
+    # Ruling E (#66): a rebuild is not an observation — preserve the original fetched_at
+    # and recompute status from it; never re-stamp the facts as freshly fetched.
+    original_generated_at = None
+    existing_facts = writer.read_latest("facts")
+    if isinstance(existing_facts, dict) and isinstance(existing_facts.get("generated_at"), str):
+        original_generated_at = existing_facts["generated_at"]
+    if original_generated_at is None:
+        # First rebuild without an existing facts.json: the facts aggregate every input,
+        # so they are only as fresh as their oldest observation.
+        original_generated_at = min(
+            str(env.generated_at) for env in (macro, equities, crypto, news, calendar, risk)
+        )
+    facts = builder.build(
+        risk=risk, macro=macro, equities=equities, crypto=crypto, news=news, calendar=calendar,
+        sectors=sectors, generated_at=original_generated_at,
+    )
     writer.write_standalone("facts", facts.model_dump(mode="json"))
-    writer.update_freshness("facts", "fresh", "rebuilt")
+    # Ruling E: recompute the freshness status from the preserved fetched_at, never re-stamp
+    # the rebuild as freshly observed.
+    facts_status = finalize_freshness("facts", original_generated_at, False)
+    writer.update_freshness("facts", facts_status, "rebuilt")
     _write_analysis_freshness(writer)
     return True, None
 

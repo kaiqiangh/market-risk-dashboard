@@ -72,9 +72,9 @@ describe("direction family", () => {
 });
 
 describe("freshness family", () => {
-  it("fresh is the expected state (ok, muted); stale/missing earn warm tones", () => {
+  it("fresh/delayed are muted; only stale and missing earn warm tones (#66/CONTEXT.md)", () => {
     expect(freshTone("fresh")).toBe("ok");
-    expect(freshTone("delayed")).toBe("warn");
+    expect(freshTone("delayed")).toBe("ok"); // live-but-delayed is a normal operational state
     expect(freshTone("degraded")).toBe("warn");
     expect(freshTone("stale")).toBe("warn");
     expect(freshTone("missing")).toBe("bad");

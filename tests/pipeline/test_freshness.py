@@ -18,6 +18,7 @@ from pydantic import ValidationError
 from pipeline.risk.model import RiskModelResult
 from pipeline.schemas.envelope import SCHEMA_VERSION, assemble_envelope
 from pipeline.schemas.risk import RiskEnvelope
+from pipeline.validation.freshness import finalize_freshness
 
 COLLECTORS_DIR = Path(__file__).resolve().parents[2] / "pipeline" / "collectors"
 
@@ -117,3 +118,15 @@ def test_risk_envelope_has_no_freshness_default() -> None:
     """The schema no longer defaults freshness to fresh (the self-certifying trap)."""
     assert "freshness_status" in RiskEnvelope.model_fields
     assert RiskEnvelope.model_fields["freshness_status"].is_required()
+
+
+def test_missing_priority_over_degraded() -> None:
+    """#66: a dataset with no usable data resolves to `missing` even when degraded.
+
+    An expired-cache dataset is exactly this case: every provider failed (degraded) and
+    the last-good cache was rejected as too old/undated (no data at all). The existing
+    priority `missing` > `degraded` > time resolves it without a rewrite.
+    """
+    assert finalize_freshness("crypto", None, True) == "missing"
+    assert finalize_freshness("crypto", None, False) == "missing"
+    assert finalize_freshness("crypto", "2026-08-04T12:00:00Z", True) == "degraded"
