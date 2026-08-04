@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from pipeline.risk import confidence as conf_mod
 from pipeline.risk import regime as regime_mod
 from pipeline.risk.model import RiskModel
@@ -280,3 +282,105 @@ def test_macro_dimension_has_exactly_four_indicators() -> None:
     assert {i.key for i in macro.indicators} == {
         "real_rate_dfii10", "yield_curve_10y2y", "dollar_index", "dgs10",
     }
+
+
+
+# ---------- #68: top drivers reflect each indicator's own weight ----------
+
+def _liquidity_only_context() -> dict:
+    """A synthetic context where the ONLY available indicators live in liquidity_credit:
+    hy_oas (weight 10.0) and fed_balance_sheet (weight 5.0), both scoring exactly 50
+    (hy_oas heuristic maps 3.8 -> 50; fed_balance_sheet has no heuristic and falls back).
+    The old computation credited both with the dimension's whole weight, making them
+    indistinguishable in the driver list.
+    """
+    from pipeline.schemas import MacroEnvelope
+    from tests.pipeline.factories import make_envelope, make_macro_indicator, make_macro_payload
+
+    payload = make_macro_payload(
+        rates=[],
+        credit=[make_macro_indicator(key="bamlh0a0hym2", label="HY", value=3.8, source="FRED")],
+        liquidity=[make_macro_indicator(key="walcl", label="Fed Balance Sheet", value=8.2e6, source="FRED")],
+        fx=[],
+    )
+    ctx = _synthetic_context()
+    ctx["macro"] = MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload
+    return ctx
+
+
+def _expected_contributions(result: RiskModelResult) -> dict[str, float]:
+    """The #68 spec: indicator i's contribution is its own share of weight within its
+    dimension, times the dimension's share of total weight, times the risk score:
+    (d.effective_weight / W) * (i.weight / V_d) * i.risk_score."""
+    out: dict[str, float] = {}
+    denom = sum(d.effective_weight for d in result.dimensions) or 1.0
+    for d in result.dimensions:
+        available = [i for i in d.indicators if i.value is not None]
+        v = sum(i.weight for i in available) or 1.0
+        for ind in available:
+            out[ind.key] = round(d.effective_weight / denom * (ind.weight / v) * ind.risk_score, 4)
+    return out
+
+
+def test_driver_contribution_uses_indicator_weight() -> None:
+    """#68: an indicator's contribution scales with its OWN weight, not the dimension's."""
+    result = RiskModel().score(_liquidity_only_context())
+    drivers = {d.indicator_key: d.contribution for d in result.top_drivers}
+
+    hy = next(d for d in result.dimensions if d.key == "liquidity_credit")
+    scores = {i.key: i.risk_score for i in hy.indicators if i.value is not None}
+    assert scores["hy_oas"] == scores["fed_balance_sheet"] == 50.0
+
+    expected = _expected_contributions(result)
+    # Both liquidity indicators land in the published top-5 (they are the only drivers).
+    assert drivers["hy_oas"] == pytest.approx(expected["hy_oas"], rel=1e-3)
+    assert drivers["fed_balance_sheet"] == pytest.approx(expected["fed_balance_sheet"], rel=1e-3)
+    # hy_oas (10.0) outranks fed_balance_sheet (5.0) by exactly the weight ratio.
+    assert drivers["hy_oas"] > drivers["fed_balance_sheet"]
+    assert abs(drivers["hy_oas"] / drivers["fed_balance_sheet"] - 2.0) < 1e-3
+
+
+def test_same_dimension_different_weights_differ() -> None:
+    """The specific defect: same dimension, same score, different weight -> different
+    contribution. hy_oas (10.0) and fed_balance_sheet (5.0) are no longer identical."""
+    result = RiskModel().score(_liquidity_only_context())
+    drivers = {d.indicator_key: d.contribution for d in result.top_drivers}
+    assert drivers["hy_oas"] != drivers["fed_balance_sheet"]
+    assert drivers["hy_oas"] == pytest.approx(2.0 * drivers["fed_balance_sheet"], rel=1e-3)
+
+
+def test_contributions_reconcile_with_composite() -> None:
+    """The sum of all indicator contributions reconciles with the composite score.
+
+    Tolerance: 0.01 — the composite is rounded to 2 decimals and each contribution to 4,
+    so the sum cannot drift by more than dimension-score rounding (each ≤ 0.005) plus
+    total-score rounding (≤ 0.005).
+    """
+    result = RiskModel().score(_synthetic_context())
+    expected = _expected_contributions(result)
+    assert abs(sum(expected.values()) - result.total_score) <= 0.01, (
+        f"indicator contributions must reconcile with the composite: "
+        f"sum={sum(expected.values()):.4f} total_score={result.total_score}"
+    )
+    # The model's published top-5 must match the spec formula (not a different one).
+    for d in result.top_drivers:
+        assert d.contribution == pytest.approx(expected[d.indicator_key], rel=1e-3), (
+            f"published contribution for {d.indicator_key} does not match the indicator-share formula"
+        )
+
+
+def test_driver_ordering_is_pinned() -> None:
+    """Regression pin: the top-driver ordering over `_synthetic_context()`.
+
+    Changes to the contribution computation must show up here deliberately, not silently.
+    """
+    result = RiskModel().score(_synthetic_context())
+    keys = [d.indicator_key for d in result.top_drivers]
+    # The pinned ordering after #68 (indicator-share contributions, sorted descending).
+    assert keys == ["hy_oas", "cross_asset_confirmation", "real_rate_dfii10", "vix", "yield_curve_10y2y"], (
+        f"top-driver ordering drifted: {keys}"
+    )
+    assert all(
+        result.top_drivers[i].contribution >= result.top_drivers[i + 1].contribution
+        for i in range(len(result.top_drivers) - 1)
+    )

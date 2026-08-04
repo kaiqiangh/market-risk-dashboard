@@ -262,13 +262,19 @@ class RiskModel:
         # Risk level
         risk_level = self._level_for(total_score)
 
-        # Top drivers (contribution = effective weight × risk score / 100)
+        # Top drivers (#68): an indicator's contribution reflects its OWN share of weight
+        # within its dimension, not the dimension's weight. For indicator i in dimension d:
+        #   contribution = (d.effective_weight / W) * (i.weight / V_d) * i.risk_score
+        # where W = total effective weight and V_d = sum of available indicator weights in d.
+        # Summing over every indicator reconciles exactly with the composite score.
         drivers: list[DriverContribution] = []
         for d in dimensions:
-            for ind in d.indicators:
-                if ind.value is None:
-                    continue
-                contribution = round(d.effective_weight * ind.risk_score / 100.0, 4)
+            available = [i for i in d.indicators if i.value is not None]
+            dim_weight_sum = sum(i.weight for i in available) or 1.0
+            for ind in available:
+                contribution = round(
+                    d.effective_weight / denom * (ind.weight / dim_weight_sum) * ind.risk_score, 4
+                )
                 drivers.append(
                     DriverContribution(
                         dimension_key=d.key,
