@@ -7,6 +7,7 @@ import { formatChange } from "@/lib/format";
 
 /** jsdom / no-canvas environment → fall back to HTML (avoid zrender animation loop crashes). */
 function canvasSupported(): boolean {
+  if (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent)) return false;
   try {
     const canvas = document.createElement("canvas");
     return !!(canvas.getContext && canvas.getContext("2d"));
