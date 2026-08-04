@@ -48,6 +48,7 @@ class RssNewsProvider(BaseProvider):
         self.jitter = bool(degrade.get("jitter", True))
         self.cache_max_age_hours = float(degrade.get("cache_max_age_hours", 24))
         self.cache_dir = self.settings.artifacts_dir / "cache"
+        self._last_attempts = 0
         # Source reachability: source_id → {"ok": bool, "error": str|None, "updated_at": str}
         self.source_status: dict[str, dict[str, Any]] = {}
 
@@ -96,6 +97,7 @@ class RssNewsProvider(BaseProvider):
                     "degraded": False,
                     "from_cache": False,
                     "error": None,
+                    "attempts": self._last_attempts,
                     "item_count": len(normalized),
                     "invalid_entries": invalid_entries,
                     "last_good_at": fetched_at,
@@ -109,6 +111,7 @@ class RssNewsProvider(BaseProvider):
                     "degraded": True,
                     "from_cache": bool(cached),
                     "error": f"{type(exc).__name__}: {exc}",
+                    "attempts": self._last_attempts,
                     "updated_at": now_utc(),
                 }
                 if cached:
@@ -128,6 +131,7 @@ class RssNewsProvider(BaseProvider):
 
     def _fetch_feed(self, url: str) -> list[Any]:
         for attempt in range(self.max_retries + 1):
+            self._last_attempts = attempt + 1
             try:
                 resp = self._client.get(url)
             except httpx.RequestError:

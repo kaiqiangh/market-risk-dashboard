@@ -88,6 +88,28 @@ def test_missing_date_is_rejected_instead_of_using_now(tmp_path, monkeypatch) ->
         provider.fetch_news()
 
 
+def test_expired_cache_is_not_served(tmp_path, monkeypatch) -> None:
+    from datetime import datetime, timedelta, timezone
+    import json
+
+    provider = _provider(tmp_path)
+    provider.max_retries = 0
+    provider._source_cache_path("test").parent.mkdir(parents=True, exist_ok=True)
+    provider._source_cache_path("test").write_text(
+        json.dumps(
+            {
+                "fetched_at": (datetime.now(timezone.utc) - timedelta(hours=25)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "items": [{"title": "Old", "source": "Test", "url": ENTRY["link"], "published_at": "2026-08-03T10:00:00Z"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(provider, "_fetch_feed", lambda _url: (_ for _ in ()).throw(ProviderError("outage")))
+    with pytest.raises(ProviderError, match="all sources failed"):
+        provider.fetch_news()
+    assert provider.source_status["test"]["from_cache"] is False
+
+
 class _NewsProvider:
     source_status = {
         "good": {"ok": True, "degraded": False},
