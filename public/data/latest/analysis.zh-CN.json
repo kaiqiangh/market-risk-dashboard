@@ -1,39 +1,37 @@
 {
   "schema_version": "1.1.0",
-  "generated_at": "2026-08-05T11:30:00Z",
+  "generated_at": "2026-08-05T20:32:18Z",
+  "language": "zh-CN",
   "market_state": "caution",
   "market_regime": "goldilocks",
-  "confidence": 0.77,
-  "data_freshness": "degraded",
-  "language": "zh-CN",
-  "summary": "盘前观察：综合风险分维持在 41.05，仍处于 caution 区间，市场状态为 goldilocks。隔夜整体偏向风险友好——10年期收益率由 4.75% 回落至 4.7%，10年期实际利率由 2.47% 降至 2.43%，VIX 由 15.99 降至 15.86，高收益债利差由 2.85 收窄至 2.78；亚洲科技股跟随华尔街 AI 行情走强，软银上涨 13%。真正的张力在于：宏观维度得分 76.4，为六个维度中最高，而流动性与信用维度仅 17.84，为最低——承压点在利率，而非融资条件。跨资产确认度仅 0.1667，仍是风险分的最大单一贡献项，说明本轮上涨在各资产类别之间的相互印证依然不足。开盘需关注个股层面的“空气袋”——AMD 在业绩超预期的情况下盘前指示下跌 8%——是否会扩散至更广泛的 AI 板块。",
+  "summary": "周三收盘后看，市场仍偏建设性，但推进力明显减弱。综合风险分收于 41.85，全天回落 0.25，市场维持在 goldilocks 状态下的 caution 区间。指数层面标普 500 收平，回吐盘中创下的历史新高，4 日连涨势头就此停滞；但表层之下分化极为剧烈：英伟达上涨 4.70%，AMD 财报后下跌 6.36%。宏观与信用环境实际上有所改善，10 年期收益率回落至 4.70，高收益利差收窄至 2.73；但 VIX 仍小幅升至 16.50，跨资产确认度维持在 0.3333 的偏弱水平。模型置信度为 0.77，且多数数据源被标记为 degraded，因此该读数应视为方向可靠而非精度可靠。",
   "top_risk_drivers": [
     {
-      "claim": "跨资产确认度仅为 0.1667，是综合风险分的最大单一贡献项：股票、信用与加密资产之间缺乏相互印证，本轮上涨建立在狭窄且未获确认的基础之上。",
+      "claim": "跨资产确认度是最大的单一风险贡献项，仅为 0.3333：股票、信用与加密资产未形成一致方向，因此今日指数层面的平静建立在狭窄基础之上。",
       "evidence_refs": [
         {
           "dataset": "risk",
           "path": "payload.dimensions[4].indicators[0].value",
           "metric": "cross_asset_confirmation",
-          "value": 0.1667,
-          "updated_at": "2026-08-05T10:27:35Z"
+          "value": 0.3333,
+          "updated_at": "2026-08-05T19:27:00Z"
         }
       ]
     },
     {
-      "claim": "10年期实际利率为 2.43%，处于历史第 99.05 百分位——是宏观维度的首要风险贡献项，也是通胀意外冲击估值的主要传导渠道。",
+      "claim": "10 年期实际利率为 2.43，处于历史 99.05 百分位，即便今日有所回落，仍使宏观成为得分最高的风险维度，达 76.4。",
       "evidence_refs": [
         {
           "dataset": "risk",
           "path": "payload.dimensions[0].indicators[0].value",
           "metric": "real_rate_dfii10",
           "value": 2.43,
-          "updated_at": "2026-08-05T10:27:35Z"
+          "updated_at": "2026-08-05T19:27:00Z"
         }
       ]
     },
     {
-      "claim": "10年期名义收益率 4.7%，处于第 98.25 百分位，使宏观维度得分维持在 76.4，为所有维度中最高，尽管其数据覆盖度仅为 0.75。",
+      "claim": "名义 10 年期收益率为 4.70，仍位列前三大贡献项；当日回落 5 个基点，但仍处于其区间的 98.25 百分位。",
       "evidence_refs": [
         {
           "dataset": "macro",
@@ -45,171 +43,214 @@
       ]
     },
     {
-      "claim": "VIX 为 15.86，波动率维度得分 29.13；隐含波动率被压缩意味着，一旦 AI 硬件板块的盘前波动演变为全天的估值下修，持仓几乎没有缓冲。",
+      "claim": "尽管指数收平，VIX 仍从 15.86 升至 16.50，表明在表面价格不动的同时对冲需求有所升温。",
       "evidence_refs": [
         {
           "dataset": "risk",
           "path": "payload.dimensions[3].indicators[0].value",
           "metric": "vix",
-          "value": 15.86,
-          "updated_at": "2026-08-05T10:27:35Z"
+          "value": 16.5,
+          "updated_at": "2026-08-05T19:27:00Z"
         }
       ]
     },
     {
-      "claim": "AMD 在业绩超预期的情况下盘前指示下跌 8%，其新闻重要性评分为 52.46——这种“利好出货”式反应暴露出 AI 半导体板块的持仓已相当拥挤。",
+      "claim": "领涨面偏窄：新高比率仅为 0.125，意味着只有一小部分样本真正随指数创出新高。",
       "evidence_refs": [
         {
-          "dataset": "news",
-          "path": "payload.items[3].importance",
-          "metric": "importance",
-          "value": 52.46,
-          "updated_at": "2026-08-05T10:21:14Z"
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[1].value",
+          "metric": "new_highs_ratio",
+          "value": 0.125,
+          "updated_at": "2026-08-05T19:27:00Z"
         }
       ]
     }
   ],
   "supporting_signals": [
     {
-      "claim": "领涨结构正在收窄：尽管有 0.875 的成分位于 200 日均线上方，创新高的比例仅为 0.25——强势面广，但并未加深。",
-      "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[2].indicators[1].value",
-          "metric": "new_highs_ratio",
-          "value": 0.25,
-          "updated_at": "2026-08-05T10:27:35Z"
-        },
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[2].indicators[0].value",
-          "metric": "breadth_above_ma200",
-          "value": 0.875,
-          "updated_at": "2026-08-05T10:27:35Z"
-        }
-      ]
-    },
-    {
-      "claim": "半导体板块相对强度达 9.9202，使指数涨幅高度集中于单一板块——而该板块恰恰正面临盘前抛压。",
-      "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[2].indicators[4].value",
-          "metric": "semis_relative",
-          "value": 9.9202,
-          "updated_at": "2026-08-05T10:27:35Z"
-        }
-      ]
-    },
-    {
-      "claim": "价格高于 200 日均线 9.971%，52 周回撤为 0.0——市场已处于拉伸状态，没有任何折价可用于吸收冲击。",
-      "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[5].indicators[0].value",
-          "metric": "price_vs_ma200",
-          "value": 9.971,
-          "updated_at": "2026-08-05T10:27:35Z"
-        },
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[5].indicators[1].value",
-          "metric": "drawdown_52w",
-          "value": 0.0,
-          "updated_at": "2026-08-05T10:27:35Z"
-        }
-      ]
-    }
-  ],
-  "contradicting_signals": [
-    {
-      "claim": "信用是反驳谨慎判断的最有力论据：高收益债利差 2.78（第 18.22 百分位）、投资级利差 0.78（第 17.09 百分位），使流动性与信用维度维持在 17.84，为六个维度中最低。",
+      "claim": "信用端完全没有压力：高收益利差收窄至 2.73，投资级利差维持在 0.78，使流动性与信用成为风险最低的维度，仅 14.1。",
       "evidence_refs": [
         {
           "dataset": "risk",
           "path": "payload.dimensions[1].indicators[2].value",
           "metric": "hy_oas",
-          "value": 2.78,
-          "updated_at": "2026-08-05T10:27:35Z"
+          "value": 2.73,
+          "updated_at": "2026-08-05T19:27:00Z"
         },
         {
           "dataset": "risk",
           "path": "payload.dimensions[1].indicators[3].value",
           "metric": "ig_oas",
           "value": 0.78,
-          "updated_at": "2026-08-05T10:27:35Z"
+          "updated_at": "2026-08-05T19:27:00Z"
         }
       ]
     },
     {
-      "claim": "三个月动量为 7.4261%，创新低比例为 0.0，内部结构没有恶化迹象；水面之下并无破位。",
+      "claim": "市场结构完好：87.5% 的样本位于 MA200 上方，新低比率为 0.00，内部结构未见恶化迹象。",
       "evidence_refs": [
         {
           "dataset": "risk",
-          "path": "payload.dimensions[5].indicators[2].value",
-          "metric": "momentum_3m",
-          "value": 7.4261,
-          "updated_at": "2026-08-05T10:27:35Z"
+          "path": "payload.dimensions[2].indicators[0].value",
+          "metric": "breadth_above_ma200",
+          "value": 0.875,
+          "updated_at": "2026-08-05T19:27:00Z"
         },
         {
           "dataset": "risk",
           "path": "payload.dimensions[2].indicators[2].value",
           "metric": "new_lows_ratio",
           "value": 0.0,
-          "updated_at": "2026-08-05T10:27:35Z"
+          "updated_at": "2026-08-05T19:27:00Z"
         }
       ]
     },
     {
-      "claim": "收益率曲线维持正斜率 0.45，经典的衰退信号并未出现，宏观得分主要由利率的绝对水平而非曲线形态驱动。",
+      "claim": "趋势维度依旧偏正面：指数高于 MA200 达 9.97%，52 周回撤为 0.00，3 个月动量为 6.66。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[5].indicators[0].value",
+          "metric": "price_vs_ma200",
+          "value": 9.9707,
+          "updated_at": "2026-08-05T19:27:00Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[5].indicators[1].value",
+          "metric": "drawdown_52w",
+          "value": 0.0,
+          "updated_at": "2026-08-05T19:27:00Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[5].indicators[2].value",
+          "metric": "momentum_3m",
+          "value": 6.6554,
+          "updated_at": "2026-08-05T19:27:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "收益率曲线维持正斜率 0.45，联邦基金利率稳定在 3.63，因此当日利率变动属于平行下移而非增长恐慌。",
       "evidence_refs": [
         {
           "dataset": "risk",
           "path": "payload.dimensions[0].indicators[1].value",
           "metric": "yield_curve_10y2y",
           "value": 0.4500000000000002,
-          "updated_at": "2026-08-05T10:27:35Z"
+          "updated_at": "2026-08-05T19:27:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.rates[4].value",
+          "metric": "dff",
+          "value": 3.63,
+          "updated_at": "2026-08-03T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "contradicting_signals": [
+    {
+      "claim": "个股分化与平静的指数表现相矛盾：同一交易日英伟达上涨 4.70% 至 221.90，而 AMD 下跌 6.36% 至 485.61，横盘的盘面掩盖了剧烈轮动。",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[0].change_1d",
+          "metric": "change_1d",
+          "value": 4.7018,
+          "updated_at": "2026-08-05T19:26:03Z"
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[0].price",
+          "metric": "price",
+          "value": 221.90499877929688,
+          "updated_at": "2026-08-05T19:26:03Z"
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[3].change_1d",
+          "metric": "change_1d",
+          "value": -6.3578,
+          "updated_at": "2026-08-05T19:26:03Z"
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[3].price",
+          "metric": "price",
+          "value": 485.6099853515625,
+          "updated_at": "2026-08-05T19:26:03Z"
+        }
+      ]
+    },
+    {
+      "claim": "宽度质量弱于表面数据：小盘股相对落后 0.2816，而半导体相对领先 4.8292，说明上涨依赖于单一且集中的主题。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[3].value",
+          "metric": "small_cap_relative",
+          "value": -0.2816,
+          "updated_at": "2026-08-05T19:27:00Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[4].value",
+          "metric": "semis_relative",
+          "value": 4.8292,
+          "updated_at": "2026-08-05T19:27:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "加密资产仅提供了象征性确认，比特币报 64847.00，以太坊报 1917.50，涨幅过小，不足以验证广泛的风险偏好回升。",
+      "evidence_refs": [
+        {
+          "dataset": "crypto",
+          "path": "payload.assets[0].price",
+          "metric": "price",
+          "value": 64847.0,
+          "updated_at": "2026-08-05T19:26:34Z"
+        },
+        {
+          "dataset": "crypto",
+          "path": "payload.assets[1].price",
+          "metric": "price",
+          "value": 1917.5,
+          "updated_at": "2026-08-05T19:26:34Z"
         }
       ]
     }
   ],
   "what_changed_today": [
-    "综合风险分维持 41.05，1 日趋势为 0.0——总分没有变化，但其内部构成发生了变化。",
-    "隔夜收益率全线回落：10年期由 4.75% 降至 4.7%，2年期由 4.28% 降至 4.25%，利差由此前的 0.47 收窄至 0.45。",
-    "实际利率由 2.47% 降至 2.43%，盈亏平衡通胀率由 2.27% 降至 2.23%，说明本轮回落由通胀补偿走低推动，而非增长预期转弱。",
-    "信用利差收窄、波动率回落：高收益债利差由 2.85 降至 2.78，投资级利差由 0.79 降至 0.78，VIX 由 15.99 降至 15.86。",
-    "油价因地缘政治走出往返行情——胡塞武装声称袭击沙特油轮一度推高油价，但在华盛顿释放霍尔木兹海峡协议可能于数日内达成的信号后，涨幅回吐。",
-    "中国商务部宣布对美方一系列涉华消极措施实施反制，为涉华供应链增添政策不确定性。"
+    "综合风险分回落 0.25 至 41.85，继续维持在 caution 区间。",
+    "标普 500 回吐盘中创下的历史新高并收平，4 日连涨就此停滞。",
+    "在 SpaceX 表示将仅采用英伟达芯片构建其 AI 之后，英伟达大涨 4.70% 至 221.90，并独力拉动道指。",
+    "AMD 财报后下跌 6.36% 至 485.61，在道指创下纪录的同时拖累纳斯达克。",
+    "收益率全线下行：10 年期降至 4.70，2 年期降至 4.25，10 年期实际利率降至 2.43。",
+    "尽管收盘持平，VIX 仍从 15.86 升至 16.50，是当日最明显的风险侧背离。",
+    "高收益利差从 2.78 收窄至 2.73，延续了温和的信用环境。",
+    "存储与半导体继续获得买盘，美光上涨 2.40% 至 914.09，博通上涨 0.93% 至 422.05。"
   ],
   "watch_next": [
-    "AMD 在业绩超预期下盘前下跌 8% 的走势，是否会扩散至相对强度达 9.9202 的整个 AI 半导体板块。",
-    "10年期实际利率 2.43%：已处于第 99.05 百分位，任何再度上行都将直接冲击权重最高的风险贡献项。",
-    "跨资产确认度 0.1667——若各类资产走向一致将验证本轮上涨；若分歧进一步扩大，则更可能是假突破。",
-    "霍尔木兹海峡的相关消息能否落地为正式协议；油价是宏观维度中通胀分项的关键摆动因素。",
-    "事实层显示未来七天没有已排定的日程事件，因此本交易日主导的是消息面风险而非数据风险。"
+    "英伟达能否守住因背书驱动的 4.70% 涨幅；一旦回吐，道指将失去主要支撑。",
+    "AMD 财报后 6.36% 的跌幅是否会扩散至更广泛的半导体板块，该板块目前仍相对领先 4.8292。",
+    "VIX 是否继续升破 16.50；若持续走高将直接挑战 goldilocks 判断。",
+    "10 年期在回落至 4.70 后能否守在 4.75 下方，因为 2.43 的实际利率再度承压是主要宏观风险。",
+    "新高比率能否从 0.125 回升，或宽度是否开始跟随小盘股走弱。",
+    "数据新鲜度：多数数据源为 degraded，在依据 41.85 读数行动前请确认下一次刷新。"
   ],
   "bull_case": {
-    "title": "牛市情景：利率回落、信用维持紧密，goldilocks 延续",
+    "title": "牛市情景：利率回落带动行情从少数 AI 龙头扩散",
     "points": [
-      "信用利差处于周期低位——高收益债 2.78、投资级 0.78——融资条件继续对风险资产形成支撑。",
-      "隔夜利率压力缓解，10年期报 4.7%、2年期报 4.25%，叠加 VIX 处于 15.86，为股市继续上行留出空间。",
-      "0.875 的成分位于 200 日均线上方，且创新低比例为 0.0，表明指数层面的上涨尚未收窄。"
+      "收益率全线回落，10 年期为 4.70，2 年期为 4.25，10 年期实际利率为 2.43，这直接缓解了得分最高的宏观风险维度，其得分为 76.4。",
+      "信用市场拒绝确认任何压力：高收益利差 2.73，投资级利差 0.78，风险溢价维持在周期低位。",
+      "结构足以支撑行情扩散：87.5% 的样本位于 MA200 上方，新低比率为 0.00，指数高于自身 MA200 达 9.97%。"
     ],
     "evidence_refs": [
-      {
-        "dataset": "risk",
-        "path": "payload.dimensions[1].indicators[2].value",
-        "metric": "hy_oas",
-        "value": 2.78,
-        "updated_at": "2026-08-05T10:27:35Z"
-      },
-      {
-        "dataset": "risk",
-        "path": "payload.dimensions[1].indicators[3].value",
-        "metric": "ig_oas",
-        "value": 0.78,
-        "updated_at": "2026-08-05T10:27:35Z"
-      },
       {
         "dataset": "macro",
         "path": "payload.rates[0].value",
@@ -226,56 +267,99 @@
       },
       {
         "dataset": "risk",
-        "path": "payload.dimensions[3].indicators[0].value",
-        "metric": "vix",
-        "value": 15.86,
-        "updated_at": "2026-08-05T10:27:35Z"
+        "path": "payload.dimensions[0].indicators[0].value",
+        "metric": "real_rate_dfii10",
+        "value": 2.43,
+        "updated_at": "2026-08-05T19:27:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[1].indicators[2].value",
+        "metric": "hy_oas",
+        "value": 2.73,
+        "updated_at": "2026-08-05T19:27:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[1].indicators[3].value",
+        "metric": "ig_oas",
+        "value": 0.78,
+        "updated_at": "2026-08-05T19:27:00Z"
       },
       {
         "dataset": "risk",
         "path": "payload.dimensions[2].indicators[0].value",
         "metric": "breadth_above_ma200",
         "value": 0.875,
-        "updated_at": "2026-08-05T10:27:35Z"
+        "updated_at": "2026-08-05T19:27:00Z"
       },
       {
         "dataset": "risk",
-        "path": "payload.dimensions[2].indicators[2].value",
-        "metric": "new_lows_ratio",
-        "value": 0.0,
-        "updated_at": "2026-08-05T10:27:35Z"
+        "path": "payload.dimensions[5].indicators[0].value",
+        "metric": "price_vs_ma200",
+        "value": 9.9707,
+        "updated_at": "2026-08-05T19:27:00Z"
       }
     ]
   },
   "base_case": {
-    "title": "基准情景：谨慎延续，风险分锚定在 41.05 附近",
+    "title": "基准情景：风险分维持在 41.85 附近，行情由窄幅轮动主导",
     "points": [
-      "宏观维度 76.4 与流动性及信用维度 17.84 相互抵消，综合分继续处于谨慎区间。",
-      "指数层面的强势与 AI 硬件个股的“空气袋”并存：分化度上升，方向不变。"
+      "在温和的信用环境与健康的宽度抵消 2.43 的高实际利率之后，综合分维持在 caution 区间。",
+      "指数波动率维持在 VIX 16.50 附近可控水平，真正的变化由个股分化完成，例如英伟达上涨 4.70% 而 AMD 下跌 6.36%。",
+      "跨资产确认度维持在 0.3333 附近的偏弱水平，限制了 goldilocks 状态的延展空间。"
     ],
     "evidence_refs": [
       {
         "dataset": "risk",
         "path": "payload.total_score",
         "metric": "total_score",
-        "value": 41.05,
-        "updated_at": "2026-08-05T10:27:35Z"
+        "value": 41.85,
+        "updated_at": "2026-08-05T19:27:00Z"
       },
       {
         "dataset": "risk",
-        "path": "payload.regime",
-        "metric": "regime",
-        "value": "goldilocks",
-        "updated_at": "2026-08-05T10:27:35Z"
+        "path": "payload.dimensions[0].indicators[0].value",
+        "metric": "real_rate_dfii10",
+        "value": 2.43,
+        "updated_at": "2026-08-05T19:27:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[3].indicators[0].value",
+        "metric": "vix",
+        "value": 16.5,
+        "updated_at": "2026-08-05T19:27:00Z"
+      },
+      {
+        "dataset": "equities",
+        "path": "payload.assets[0].change_1d",
+        "metric": "change_1d",
+        "value": 4.7018,
+        "updated_at": "2026-08-05T19:26:03Z"
+      },
+      {
+        "dataset": "equities",
+        "path": "payload.assets[3].change_1d",
+        "metric": "change_1d",
+        "value": -6.3578,
+        "updated_at": "2026-08-05T19:26:03Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[4].indicators[0].value",
+        "metric": "cross_asset_confirmation",
+        "value": 0.3333,
+        "updated_at": "2026-08-05T19:27:00Z"
       }
     ]
   },
   "bear_case": {
-    "title": "熊市情景：利率约束松动，跨资产分歧向下收敛",
+    "title": "熊市情景：窄幅领涨结构瓦解，宏观压力重新主导",
     "points": [
-      "10年期实际利率位于第 99.05 百分位（2.43%），只需一次超预期的通胀数据就可能重新收紧金融条件。",
-      "跨资产确认度仅 0.1667，同时价格高于 200 日均线 9.971%，市场既拉伸又缺乏印证。",
-      "创新高比例仅 0.25，说明领涨面已在收窄；若 AI 半导体板块出现平仓潮，本轮上涨的主要引擎将不复存在。"
+      "若 2.43 的实际利率与 4.70 的名义 10 年期收益率重新走高，得分 76.4 的宏观维度将把综合分推出 caution 区间。",
+      "领涨结构薄弱到足以引发连锁反应：0.125 的新高比率与相对落后 0.2816 的小盘股意味着，类似 AMD 下跌 6.36% 这样的个股反转可能迅速扩散。",
+      "VIX 升破 16.50 并叠加 0.3333 的跨资产确认度，将标志着 goldilocks 状态见顶回落。"
     ],
     "evidence_refs": [
       {
@@ -283,115 +367,75 @@
         "path": "payload.dimensions[0].indicators[0].value",
         "metric": "real_rate_dfii10",
         "value": 2.43,
-        "updated_at": "2026-08-05T10:27:35Z"
+        "updated_at": "2026-08-05T19:27:00Z"
       },
       {
-        "dataset": "risk",
-        "path": "payload.dimensions[4].indicators[0].value",
-        "metric": "cross_asset_confirmation",
-        "value": 0.1667,
-        "updated_at": "2026-08-05T10:27:35Z"
-      },
-      {
-        "dataset": "risk",
-        "path": "payload.dimensions[5].indicators[0].value",
-        "metric": "price_vs_ma200",
-        "value": 9.971,
-        "updated_at": "2026-08-05T10:27:35Z"
+        "dataset": "macro",
+        "path": "payload.rates[0].value",
+        "metric": "dgs10",
+        "value": 4.7,
+        "updated_at": "2026-08-03T00:00:00Z"
       },
       {
         "dataset": "risk",
         "path": "payload.dimensions[2].indicators[1].value",
         "metric": "new_highs_ratio",
-        "value": 0.25,
-        "updated_at": "2026-08-05T10:27:35Z"
+        "value": 0.125,
+        "updated_at": "2026-08-05T19:27:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[3].value",
+        "metric": "small_cap_relative",
+        "value": -0.2816,
+        "updated_at": "2026-08-05T19:27:00Z"
+      },
+      {
+        "dataset": "equities",
+        "path": "payload.assets[3].change_1d",
+        "metric": "change_1d",
+        "value": -6.3578,
+        "updated_at": "2026-08-05T19:26:03Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[3].indicators[0].value",
+        "metric": "vix",
+        "value": 16.5,
+        "updated_at": "2026-08-05T19:27:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[4].indicators[0].value",
+        "metric": "cross_asset_confirmation",
+        "value": 0.3333,
+        "updated_at": "2026-08-05T19:27:00Z"
       }
     ]
   },
+  "confidence": 0.7668,
   "evidence_refs": [
     {
       "dataset": "risk",
       "path": "payload.total_score",
       "metric": "total_score",
-      "value": 41.05,
-      "updated_at": "2026-08-05T10:27:35Z"
+      "value": 41.85,
+      "updated_at": "2026-08-05T19:27:00Z"
     },
     {
       "dataset": "risk",
       "path": "payload.confidence",
       "metric": "confidence",
-      "value": 0.7673,
-      "updated_at": "2026-08-05T10:27:35Z"
+      "value": 0.7668,
+      "updated_at": "2026-08-05T19:27:00Z"
     },
     {
       "dataset": "risk",
       "path": "payload.regime",
       "metric": "regime",
       "value": "goldilocks",
-      "updated_at": "2026-08-05T10:27:35Z"
-    },
-    {
-      "dataset": "risk",
-      "path": "payload.dimensions[0].indicators[0].value",
-      "metric": "real_rate_dfii10",
-      "value": 2.43,
-      "updated_at": "2026-08-05T10:27:35Z"
-    },
-    {
-      "dataset": "macro",
-      "path": "payload.rates[0].value",
-      "metric": "dgs10",
-      "value": 4.7,
-      "updated_at": "2026-08-03T00:00:00Z"
-    },
-    {
-      "dataset": "risk",
-      "path": "payload.dimensions[3].indicators[0].value",
-      "metric": "vix",
-      "value": 15.86,
-      "updated_at": "2026-08-05T10:27:35Z"
-    },
-    {
-      "dataset": "risk",
-      "path": "payload.dimensions[1].indicators[2].value",
-      "metric": "hy_oas",
-      "value": 2.78,
-      "updated_at": "2026-08-05T10:27:35Z"
-    },
-    {
-      "dataset": "risk",
-      "path": "payload.dimensions[1].indicators[3].value",
-      "metric": "ig_oas",
-      "value": 0.78,
-      "updated_at": "2026-08-05T10:27:35Z"
-    },
-    {
-      "dataset": "risk",
-      "path": "payload.dimensions[4].indicators[0].value",
-      "metric": "cross_asset_confirmation",
-      "value": 0.1667,
-      "updated_at": "2026-08-05T10:27:35Z"
-    },
-    {
-      "dataset": "risk",
-      "path": "payload.dimensions[2].indicators[0].value",
-      "metric": "breadth_above_ma200",
-      "value": 0.875,
-      "updated_at": "2026-08-05T10:27:35Z"
-    },
-    {
-      "dataset": "risk",
-      "path": "payload.dimensions[5].indicators[2].value",
-      "metric": "momentum_3m",
-      "value": 7.4261,
-      "updated_at": "2026-08-05T10:27:35Z"
-    },
-    {
-      "dataset": "news",
-      "path": "payload.items[3].importance",
-      "metric": "importance",
-      "value": 52.46,
-      "updated_at": "2026-08-05T10:21:14Z"
+      "updated_at": "2026-08-05T19:27:00Z"
     }
-  ]
+  ],
+  "data_freshness": "degraded"
 }
