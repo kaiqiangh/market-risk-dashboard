@@ -40,10 +40,6 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
 
   const validCells = cells.filter((c) => c.change1d !== null && c.change1d !== undefined);
   const categories = Array.from(new Set(cells.map((c) => c.category)));
-  // One row per asset so cells never collapse onto the same (x, y) coordinate. The
-  // previous layout pinned y = 0, so every asset in a category stacked into one cell
-  // and their % labels overlapped in the centre.
-  const rows = validCells.map((c) => c.asset);
   // Grow the chart with the row count so each cell keeps enough height for its label.
   const computedHeight = Math.min(560, Math.max(height, validCells.length * 26 + 64));
 
@@ -53,6 +49,10 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
       setMode("fallback");
       return;
     }
+    // One row per asset so cells never collapse onto the same (x, y) coordinate. The
+    // previous layout pinned y = 0, so every asset in a category stacked into one cell
+    // and their % labels overlapped in the centre.
+    const rows = validCells.map((c) => c.asset);
     let chart: echarts.ECharts | undefined;
     try {
       chart = echarts.init(ref.current);
