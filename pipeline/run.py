@@ -51,7 +51,7 @@ from pipeline.settings import settings
 from pipeline.storage import StorageWriter
 from pipeline.universe import AssetUniverse
 from pipeline.utils import now_utc
-from pipeline.validation.freshness import finalize_freshness
+from pipeline.validation.freshness import aggregate_freshness, finalize_freshness
 from pipeline.validation.validate_all import validate_all
 
 COMMANDS = (
@@ -848,9 +848,13 @@ def _run_fact_layer_only() -> tuple[bool, str | None]:
         sectors=sectors, generated_at=original_generated_at,
     )
     writer.write_standalone("facts", facts.model_dump(mode="json"))
-    # Ruling E: recompute the freshness status from the preserved fetched_at, never re-stamp
-    # the rebuild as freshly observed.
-    facts_status = finalize_freshness("facts", original_generated_at, False)
+    # Ruling E: the facts preserve the original fetched_at (set on builder.build above),
+    # never re-stamping the rebuild as freshly observed. The facts *status* is an
+    # aggregation, not a wall-clock comparison of the facts' own timestamp: the fact
+    # layer is only as fresh as its stalest input, so we derive it from the per-dataset
+    # freshness the builder already assembled. This keeps a rebuild deterministic — fresh
+    # inputs always rebuild to a fresh facts regardless of how much real time has passed.
+    facts_status = aggregate_freshness(facts.data_freshness.values())
     writer.update_freshness("facts", facts_status, "rebuilt")
     _write_analysis_freshness(writer)
     return True, None

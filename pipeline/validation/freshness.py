@@ -10,10 +10,22 @@ missing/degraded five states), then persists to metadata/freshness.json and each
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from datetime import datetime, timezone
 from typing import Literal
 
 FreshnessStatus = Literal["fresh", "delayed", "stale", "missing", "degraded"]
+
+#: Precedence for aggregating a composite dataset's freshness. A higher rank is a
+#: *worse* (lower-confidence) status: a composite is only as fresh as its stalest
+#: input, so the worst status among its constituents wins.
+_AGGREGATE_RANK: dict[str, int] = {
+    "fresh": 0,
+    "delayed": 1,
+    "stale": 2,
+    "degraded": 3,
+    "missing": 4,
+}
 
 
 def evaluate_freshness(
@@ -66,6 +78,29 @@ def finalize_freshness(
     if degraded:
         return "degraded"
     return evaluate_freshness(generated_at, expected_interval_minutes_for(dataset, 480), now)
+
+
+def aggregate_freshness(statuses: Iterable[str]) -> FreshnessStatus:
+    """Aggregate per-dataset freshness into one status for a composite dataset.
+
+    A composite (e.g. ``facts``) is only as fresh as its stalest input, so the worst
+    (lowest-confidence) status among ``statuses`` wins. ``missing`` dominates because a
+    composite cannot be sound if a constituent was never produced; ``degraded`` follows
+    because a quality problem in any source taints the aggregation.
+
+    Unlike :func:`finalize_freshness`, this does **not** compare anything against the wall
+    clock, which is what makes a fact-layer rebuild deterministic: rebuilding from inputs
+    that are all ``fresh`` yields ``fresh`` regardless of how much real time has elapsed
+    since the inputs were first observed.
+    """
+    worst: str = "fresh"
+    worst_rank = -1
+    for status in statuses:
+        rank = _AGGREGATE_RANK.get(str(status), 0)
+        if rank > worst_rank:
+            worst_rank = rank
+            worst = str(status)
+    return worst  # type: ignore[return-value]
 
 
 def expected_interval_minutes_for(dataset: str, fallback: int) -> int:
