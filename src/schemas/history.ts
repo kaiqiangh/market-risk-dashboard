@@ -1,11 +1,16 @@
 import { z } from "zod";
-import { MarketRegime, RiskLevel } from "./risk";
+import { MarketRegime, RiskLevel } from "./generated/contracts";
 
 /**
  * History slice contract (architecture §1.7 / §3.6).
  * The pipeline produces history/{series}/{slice}.json as **plain arrays** (not envelopes),
  * with very narrow rows: date + score + per-dimension scores (risk) / date + symbol + close (market).
  * The frontend explicitly passes this schema via DatasetClient.fetch(key, { slice }, historySchema).
+ *
+ * Hand-written on purpose: history slices are assembled by the storage layer from already
+ * validated datasets and have no pydantic model to generate from. Kept .passthrough() for
+ * the same reason the generated contracts are (#88) — a new column in a history row must
+ * not blank the trend chart.
  */
 
 /** Risk history slice row (history/risk/30d.json etc.). */
@@ -18,7 +23,7 @@ export const RiskTrendPoint = z
     confidence: z.number().finite().min(0).max(1).optional(),
     dim_scores: z.record(z.number().finite()).optional(),
   })
-  .strict();
+  .passthrough();
 
 export const RiskTrendSlice = z.array(RiskTrendPoint);
 
@@ -29,7 +34,7 @@ export const MarketSlicePoint = z
     symbol: z.string().min(1),
     close: z.number().finite(),
   })
-  .strict();
+  .passthrough();
 
 export const MarketSlice = z.array(MarketSlicePoint);
 

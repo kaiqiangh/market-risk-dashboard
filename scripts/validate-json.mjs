@@ -26,16 +26,29 @@ let filesChecked = 0;
 
 const ISO_UTC_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-// FreshnessStatus enum (#74 QA note): this is a zero-dependency script, so it cannot
-// import the canonical definitions — keep this set in sync with
-// src/schemas/envelope.ts (Zod `FreshnessStatus`) and pipeline/schemas/envelope.py
-// (`FreshnessStatus = Literal[...]`). The values are identical in all three homes.
-const FRESHNESS = new Set(["fresh", "delayed", "stale", "missing", "degraded"]);
-const ENVELOPE_FILES = new Set([
-  "macro.json", "equities.json", "sectors.json", "crypto.json",
-  "news.json", "calendar.json", "risk.json", "dashboard.json",
-]);
-const STANDALONE_FILES = new Set(["facts.json", "analysis.zh-CN.json", "analysis.en.json"]);
+
+/**
+ * Contract vocabularies and the dataset registry, generated from pipeline/schemas/ by
+ * scripts/gen_ts_contracts.py (#101). This script used to keep its own copy of the
+ * freshness enum and its own list of dataset filenames "in sync by hand"; both fell
+ * behind. The enum never learned about `empty`, and news.zh-translations.json was
+ * reported as an unregistered file on every run. Reading the generated JSON keeps the
+ * script zero-dependency while removing the third home for the same facts.
+ */
+const CONTRACTS = JSON.parse(
+  readFileSync(join(ROOT, "src", "schemas", "generated", "constants.json"), "utf-8"),
+);
+const FRESHNESS = new Set(CONTRACTS.freshness_status);
+const REASON_CODES = new Set(CONTRACTS.reason_codes);
+const CANONICAL_KEYS = CONTRACTS.canonical_dataset_keys;
+
+/** filename → dataset spec, for every published file. */
+const SPEC_BY_FILENAME = new Map();
+for (const [key, spec] of Object.entries(CONTRACTS.datasets)) {
+  for (const filename of spec.filenames) {
+    SPEC_BY_FILENAME.set(filename, { key, ...spec });
+  }
+}
 
 function loadJson(rel) {
   const p = join(DATA_DIR, rel);
@@ -60,18 +73,23 @@ function checkLatest() {
       errors.push(`${name}: cannot parse JSON (contains NaN/Infinity?): ${e.message}`);
       continue;
     }
-    if (ENVELOPE_FILES.has(name)) {
+    const spec = SPEC_BY_FILENAME.get(name);
+    if (!spec) {
+      warnings.push(`${name}: unregistered dataset file (unknown schema)`);
+      continue;
+    }
+    if (spec.enveloped) {
       checkEnvelope(name, data);
       if (name === "risk.json") checkRiskRanges(name, data);
-    } else if (STANDALONE_FILES.has(name)) {
-      if (typeof data.schema_version !== "string") errors.push(`${name}: missing schema_version`);
+    } else {
+      if (spec.has_schema_version && typeof data.schema_version !== "string") {
+        errors.push(`${name}: missing schema_version`);
+      }
       if (name.startsWith("analysis.")) {
         const lang = name.slice("analysis.".length, -".json".length);
         if (!["zh-CN", "en"].includes(lang)) errors.push(`${name}: unknown language key ${lang}`);
         if (data.language !== lang) errors.push(`${name}: language field does not match filename`);
       }
-    } else {
-      warnings.push(`${name}: unregistered dataset file (unknown schema)`);
     }
   }
 }
@@ -163,9 +181,101 @@ function checkHistory() {
   }
 }
 
+/**
+ * metadata/freshness.json and metadata/sources.json (#89, #101).
+ *
+ * These two files are projections of one run record, and the reason a dataset can be
+ * `fresh` in one and `degraded` in the other is that nothing ever checked them. The
+ * structured reason is the point of #89: a free-text reason let eight datasets publish
+ * the literal word "degraded" as their explanation.
+ */
+function checkFreshnessReason(where, reason) {
+  if (!reason || typeof reason !== "object" || Array.isArray(reason)) {
+    errors.push(`${where}: reason must be an object {code, detail}`);
+    return;
+  }
+  if (!REASON_CODES.has(reason.code)) {
+    errors.push(`${where}: unknown reason code: ${reason.code}`);
+  }
+  if (reason.detail != null && typeof reason.detail !== "string") {
+    errors.push(`${where}: reason.detail must be a string`);
+  }
+}
+
+function checkMetadata() {
+  const freshness = loadJson("metadata/freshness.json");
+  const datasets = (freshness && freshness.datasets) || {};
+  if (!freshness) {
+    warnings.push("metadata/freshness.json missing");
+  } else {
+    filesChecked += 1;
+    for (const key of CANONICAL_KEYS) {
+      if (!(key in datasets)) {
+        // Every registered dataset reports on every run, including the failed ones —
+        // an absent key used to read as "healthy, nothing to report".
+        errors.push(`metadata/freshness.json: registered dataset ${key} has no entry`);
+      }
+    }
+    for (const [key, entry] of Object.entries(datasets)) {
+      const where = `metadata/freshness.json[${key}]`;
+      if (!CANONICAL_KEYS.includes(key)) {
+        errors.push(`${where}: not a registered dataset key`);
+      }
+      if (!FRESHNESS.has(entry?.status)) {
+        errors.push(`${where}: invalid status: ${entry?.status}`);
+      }
+      checkFreshnessReason(where, entry?.reason);
+    }
+  }
+
+  const sources = loadJson("metadata/sources.json");
+  if (!sources) {
+    warnings.push("metadata/sources.json missing");
+    return;
+  }
+  filesChecked += 1;
+  for (const [domain, entry] of Object.entries(sources.domains || {})) {
+    const where = `metadata/sources.json[${domain}]`;
+    if (!FRESHNESS.has(entry?.status)) errors.push(`${where}: invalid status: ${entry?.status}`);
+    if (typeof entry?.degraded !== "boolean") errors.push(`${where}: degraded must be a boolean`);
+    checkFreshnessReason(where, entry?.reason);
+    // The contradiction #89 was written to make impossible: a domain cannot be flagged
+    // degraded while claiming a healthy status, or vice versa.
+    const healthy = entry?.status === "fresh";
+    if (healthy && entry?.degraded === true) {
+      errors.push(`${where}: status is fresh but degraded is true`);
+    }
+  }
+
+  // #89/#101: both files are projections of one run record, so a domain's `degraded` must
+  // exactly match whether any dataset it serves is degraded in freshness.json. Mirrors
+  // pipeline/storage/outcomes.py (the sole renderer): a domain is degraded iff any of its
+  // datasets is degraded/missing/stale. Before this check, calendar could be `fresh` in one
+  // file and `degraded` in the other.
+  if (freshness && sources) {
+    const UNHEALTHY = new Set(["degraded", "missing", "stale"]);
+    for (const [domain, entry] of Object.entries(sources.domains || {})) {
+      const keys = Array.isArray(entry?.datasets) ? entry.datasets : [];
+      for (const key of keys) {
+        if (!CANONICAL_KEYS.includes(key)) {
+          errors.push(`metadata/sources.json[${domain}].datasets: ${key} is not a registered dataset key`);
+        }
+      }
+      if (typeof entry?.degraded !== "boolean") continue;
+      const expected = keys.some((k) => UNHEALTHY.has(datasets[k]?.status));
+      if (entry.degraded !== expected) {
+        errors.push(
+          `metadata/sources.json[${domain}]: degraded ${entry.degraded} disagrees with freshness.json (expected ${expected})`,
+        );
+      }
+    }
+  }
+}
+
 checkLatest();
 checkNewsDuplicates();
 checkHistory();
+checkMetadata();
 
 console.log(`[validate-json] checked ${filesChecked} files, ${errors.length} ERROR(s), ${warnings.length} WARNING(s)`);
 for (const e of errors) console.log(`  [ERROR] ${e}`);

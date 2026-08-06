@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pytest
 
+from pipeline.schemas.envelope import FreshnessReason
 from pipeline.settings import Settings
 from pipeline.storage import StorageWriter
 from pipeline.validation.validate_all import validate_all, validate_file
@@ -47,10 +48,13 @@ def test_history_dedupe_by_date(tmp_path: Path) -> None:
 
 def test_metadata_writes(tmp_path: Path) -> None:
     from pipeline.schemas.envelope import SCHEMA_VERSION
+    from pipeline.storage.outcomes import RunOutcomes
 
     writer = StorageWriter(tmp_path / "data")
-    writer.update_freshness("macro", "fresh", "ok")
-    writer.write_sources_metadata({"quotes": [{"provider": "yfinance", "ok": True}]})
+    outcomes = RunOutcomes(scope={"macro"})
+    outcomes.record("macro", "fresh", FreshnessReason(code="ok", detail=""), provider="fred")
+    writer.write_freshness_metadata(outcomes.freshness_projection(writer.read_freshness_raw()))
+    writer.write_sources_metadata(outcomes.sources_projection({"macro": {"provider": "fred", "ok": True}}))
     writer.write_schema_version(SCHEMA_VERSION)
     assert (tmp_path / "data/metadata/freshness.json").exists()
     assert (tmp_path / "data/metadata/sources.json").exists()
@@ -89,36 +93,57 @@ def test_finalize_freshness_unified(tmp_path: Path) -> None:
     now = datetime(2026, 8, 3, 12, 0, tzinfo=timezone.utc)
     fresh_ts = "2026-08-03T10:00:00Z"
     # no data → missing
-    assert finalize_freshness("macro", None, False, now=now) == "missing"
+    assert finalize_freshness("macro", None, False, now=now).status == "missing"
     # time fresh + not degraded → fresh
-    assert finalize_freshness("macro", fresh_ts, False, now=now) == "fresh"
+    assert finalize_freshness("macro", fresh_ts, False, now=now).status == "fresh"
     # degraded → degraded (independent of time)
-    assert finalize_freshness("macro", fresh_ts, True, now=now) == "degraded"
+    assert finalize_freshness("macro", fresh_ts, True, now=now).status == "degraded"
     # stale → stale (macro expected 240min; fresh_ts is 2h ago → fresh; earlier → delayed/stale)
-    assert finalize_freshness("macro", "2026-08-03T04:00:00Z", False, now=now) == "delayed"
-    assert finalize_freshness("macro", "2026-08-02T12:00:00Z", False, now=now) == "stale"
+    assert finalize_freshness("macro", "2026-08-03T04:00:00Z", False, now=now).status == "delayed"
+    assert finalize_freshness("macro", "2026-08-02T12:00:00Z", False, now=now).status == "stale"
 
 
 def test_frontend_freshness_sync() -> None:
-    """P2-10: src/lib/freshness.ts expected frequencies stay in sync with config/sources.yaml."""
+    """P2-10/#101: the frontend's expected frequencies come from config/sources.yaml.
+
+    This used to grep `src/lib/freshness.ts` for the literal text `equities: 480`, which
+    only worked while the frontend kept a hand-typed copy of the table. It did, and the
+    copy drifted: it was keyed by UI grouping ("market") rather than by dataset key, so a
+    grep for the registered keys passed against a table that had none of them.
+
+    Since #101 the table is generated into src/schemas/generated/constants.json, so the
+    assertion moves to where the values actually live — and adds the two things the grep
+    could not check: that the frontend imports the generated table instead of retyping it,
+    and that the two sides agree in BOTH directions.
+    """
+    import json
+
     from pipeline.settings import PROJECT_ROOT, settings
 
     expectations = settings.load_sources().get("expectations", {})
-    ts_source = (PROJECT_ROOT / "src" / "lib" / "freshness.ts").read_text(encoding="utf-8")
     assert expectations, "config/sources.yaml expectations must not be empty"
+
+    ts_source = (PROJECT_ROOT / "src" / "lib" / "freshness.ts").read_text(encoding="utf-8")
+    assert "generated/constants.json" in ts_source, (
+        "src/lib/freshness.ts must read the generated contract constants, not retype the table"
+    )
+
+    constants_path = PROJECT_ROOT / "src" / "schemas" / "generated" / "constants.json"
+    generated = json.loads(constants_path.read_text(encoding="utf-8"))["expected_interval_minutes"]
+
     for key, entry in expectations.items():
         minutes = int(entry.get("interval_minutes", 0))
         assert minutes > 0, f"sources.yaml {key} interval_minutes invalid"
-        assert f"{key}: {minutes}" in ts_source, (
-            f"src/lib/freshness.ts missing {key}: {minutes} (out of sync with config/sources.yaml)"
+        assert generated.get(key) == minutes, (
+            f"constants.json {key}={generated.get(key)} but sources.yaml says {minutes} "
+            f"— run `npm run gen:contracts`"
         )
-    # Reverse: frontend EXPECTED_INTERVALS_MIN must not contain keys unregistered in sources.yaml
-    import re
 
-    block = ts_source.split("export const EXPECTED_INTERVALS_MIN", 1)[1].split("};", 1)[0]
-    frontend_keys = set(re.findall(r"^\s{2}(\w+): \d+", block, re.MULTILINE))
-    expected_keys = set(expectations.keys())
-    assert frontend_keys.issubset(expected_keys), f"frontend has unregistered keys: {frontend_keys - expected_keys}"
+    assert set(generated) == set(expectations), (
+        f"constants.json and sources.yaml disagree on which keys exist: "
+        f"only in constants={set(generated) - set(expectations)}, "
+        f"only in sources.yaml={set(expectations) - set(generated)}"
+    )
 
 
 # ---------- validate_all (generated documents since #73) ----------
@@ -127,7 +152,7 @@ def test_frontend_freshness_sync() -> None:
 # schema/format (T02 intent); staleness is evaluated on live data, not generated documents.
 
 def _write_generated_latest(tmp_path: Path) -> Path:
-    """Write the 11 known documents (factory-generated) to a tmp latest/ dir."""
+    """Write every registered dataset's files (factory-generated) to a tmp latest/ dir."""
     from tests.pipeline.factories import default_latest_files
 
     latest = tmp_path / "latest"
@@ -151,7 +176,13 @@ def test_validate_all_generated_documents_pass(tmp_path: Path) -> None:
     report = validate_all(latest, strict=False)
     issues = [i for i in report.issues if "stale" not in i]
     assert not issues
-    assert report.files_checked == 11
+
+    # Derived from the registry, not hard-coded: a dataset added to the registry without a
+    # factory should fail loudly here rather than silently lower the count.
+    from pipeline.schemas import registry
+
+    expected = sum(len(spec.filenames) for spec in registry.DATASETS)
+    assert report.files_checked == expected
 
 
 def test_validate_all_strict_missing_fails(tmp_path: Path) -> None:
@@ -339,7 +370,9 @@ def test_corrupt_error_is_raised_for_every_reader(tmp_path: Path) -> None:
     with pytest.raises(CorruptDataError):
         writer.read_latest("macro")
     with pytest.raises(CorruptDataError):
-        writer.update_freshness("macro", "fresh", "ok")
+        writer.read_freshness_raw()
+    with pytest.raises(CorruptDataError):
+        writer.read_freshness()
 
 
 def test_missing_file_still_returns_default(tmp_path: Path) -> None:
@@ -642,7 +675,7 @@ def test_dataset_health_reports_datasets_a_partial_command_skipped(tmp_path: Pat
 
     assert health["failed"] == []
     assert health["degraded"] == []
-    assert health["skipped"] == ["macro", "news", "calendar", "risk", "facts", "dashboard"]
+    assert health["skipped"] == ["macro", "calendar", "news", "risk", "dashboard", "factlayer"]
 
 
 def test_dataset_health_treats_an_unrecorded_attempt_as_failed(tmp_path: Path) -> None:
@@ -711,12 +744,6 @@ def test_partial_command_writes_a_run_report(tmp_path: Path, monkeypatch: pytest
     zero run reports — the skipped-dataset machinery was dead code in the real flow.
     """
     import pipeline.run as run_mod
-    from pipeline.schemas import (
-        CryptoDataset,
-        EquitiesDataset,
-        SectorsDataset,
-    )
-    from pipeline.schemas.envelope import SCHEMA_VERSION
 
     data_dir = tmp_path / "data"
     artifacts_dir = tmp_path / "artifacts"
@@ -725,30 +752,7 @@ def test_partial_command_writes_a_run_report(tmp_path: Path, monkeypatch: pytest
         "settings",
         Settings(_env_file=None, data_dir=data_dir, artifacts_dir=artifacts_dir),
     )
-
-    def _fake_collection(command: str) -> dict:
-        return {
-            "durations": {"market": 1.0, "collection": 1.0},
-            "degraded": ["crypto: coingecko rate limited"],
-            "provider_status": {"quotes": [{"provider": "yfinance", "ok": True}]},
-            "histories": {},
-            "qualities": [0.8],
-            "macro_meta": {},
-            "market_meta": {
-                "data_quality": 0.9,
-                "sources": {
-                    "equities": ["yfinance", "akshare"],
-                    "crypto": ["coingecko"],
-                    "sectors": ["yfinance"],
-                },
-            },
-            # #64: collectors return payloads; run.py assembles the envelopes.
-            "equities": EquitiesDataset(),
-            "crypto": CryptoDataset(),
-            "sectors": SectorsDataset(),
-        }
-
-    monkeypatch.setattr(run_mod, "_run_collection", _fake_collection)
+    monkeypatch.setattr(run_mod, "_run_collection", _fake_market_collection)
 
     assert run_mod.main(["--market-only"]) == 0
 
@@ -762,6 +766,84 @@ def test_partial_command_writes_a_run_report(tmp_path: Path, monkeypatch: pytest
     assert "macro" in report["skipped_datasets"] and "news" in report["skipped_datasets"]
     assert report["degraded"] == ["crypto: coingecko rate limited"]
     assert set(report["degraded_datasets"]) == {"equities", "crypto", "sectors"}
+
+
+def _fake_market_collection(command: str) -> dict:
+    """A `--market-only` collection that degraded but still returned rows.
+
+    The rows matter. Degraded-with-data is `degraded`; degraded-with-nothing is `missing`
+    (#89), and a fixture built from empty payloads would silently test the second case while
+    claiming to test the first.
+    """
+    from pipeline.schemas import CryptoDataset, EquitiesDataset, SectorsDataset
+    from pipeline.schemas.crypto import CryptoAsset
+    from pipeline.schemas.equities import EquityAsset
+    from pipeline.schemas.sectors import SectorItem
+
+    now = "2026-08-04T12:00:00Z"
+    return {
+        "durations": {"market": 1.0, "collection": 1.0},
+        "degraded": ["crypto: coingecko rate limited"],
+        "provider_status": {"quotes": [{"provider": "yfinance", "ok": True}]},
+        "histories": {},
+        "qualities": [0.8],
+        "macro_meta": {},
+        "market_meta": {
+            "data_quality": 0.9,
+            "sources": {
+                "equities": ["yfinance", "akshare"],
+                "crypto": ["coingecko"],
+                "sectors": ["yfinance"],
+            },
+        },
+        # #64: collectors return payloads; run.py assembles the envelopes.
+        "equities": EquitiesDataset(
+            assets=[EquityAsset(symbol="SPY", name="S&P 500 ETF", price=500.0, source="yfinance", updated_at=now)]
+        ),
+        "crypto": CryptoDataset(
+            assets=[CryptoAsset(symbol="BTC", name="Bitcoin", price=60000.0, source="coingecko", updated_at=now)]
+        ),
+        "sectors": SectorsDataset(sectors=[SectorItem(key="tech", label="Technology")]),
+    }
+
+
+def test_a_degraded_run_that_returned_nothing_is_reported_as_failed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """#89 / E-2: degraded *and* empty is a failure, not a quiet day.
+
+    The counterpart to `test_partial_command_writes_a_run_report`: same run, empty payloads.
+    Before the six-state model these datasets published `fresh` with zero rows, so the run
+    report called the run clean while the dashboard rendered blank panels.
+    """
+    import pipeline.run as run_mod
+    from pipeline.schemas import CryptoDataset, EquitiesDataset, SectorsDataset
+
+    data_dir = tmp_path / "data"
+    artifacts_dir = tmp_path / "artifacts"
+    monkeypatch.setattr(
+        run_mod,
+        "settings",
+        Settings(_env_file=None, data_dir=data_dir, artifacts_dir=artifacts_dir),
+    )
+
+    def _empty_collection(command: str) -> dict:
+        results = _fake_market_collection(command)
+        results["equities"] = EquitiesDataset()
+        results["crypto"] = CryptoDataset()
+        results["sectors"] = SectorsDataset()
+        return results
+
+    monkeypatch.setattr(run_mod, "_run_collection", _empty_collection)
+
+    assert run_mod.main(["--market-only"]) == 0
+
+    report = json.loads(sorted((artifacts_dir / "logs").glob("run-report-*.json"))[0].read_text(encoding="utf-8"))
+    assert set(report["failed_datasets"]) == {"equities", "crypto", "sectors"}
+
+    freshness = json.loads((data_dir / "metadata" / "freshness.json").read_text(encoding="utf-8"))
+    assert freshness["datasets"]["equities"]["status"] == "missing"
+    assert freshness["datasets"]["equities"]["reason"]["code"] == "all_providers_failed"
 
 
 def test_dataset_health_surfaces_corrupt_freshness_metadata(tmp_path: Path) -> None:

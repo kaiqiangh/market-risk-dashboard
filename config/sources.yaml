@@ -4,17 +4,30 @@
 # ============================================================
 schema_version: "1.0.0"
 
-# Expected update frequency (frozen G4; kept in sync with the frontend src/lib/freshness.ts)
+# Expected update frequency, keyed by canonical dataset key (pipeline/schemas/registry.py).
+#
+# Previously keyed by a mixture of dataset names and provider domains: `market` covered three
+# datasets while `equities`/`sectors`/`crypto` had no entry at all and silently fell back to
+# 480, and `risk` was read as 480 by the envelope but 720 by CI. One key per dataset, and
+# every canonical key must appear here — a config drift test enforces both directions (N-1).
+#
+# The frontend reads these through the generated src/schemas/generated/constants.json rather
+# than keeping its own copy in src/lib/freshness.ts.
 expectations:
-  market: { interval_minutes: 480, note: "Market/data and news 2-3 times/day" }
-  news: { interval_minutes: 480, note: "2-3 times/day" }
+  equities: { interval_minutes: 480, note: "Market data 2-3 times/day" }
+  sectors: { interval_minutes: 480, note: "Sector/theme aggregation runs with market collection" }
+  crypto: { interval_minutes: 480, note: "Crypto 2-3 times/day, alongside market" }
   macro:
     { interval_minutes: 240, note: "Macro 2-4h (FRED is actually T+1; judged by release schedule)" }
-  calendar: { interval_minutes: 1440, note: "Earnings calendar once per day" }
-  analysis: { interval_minutes: 720, note: "AI briefs 2 times/day" }
+  calendar: { interval_minutes: 1440, note: "Economic and earnings calendar once per day" }
+  news: { interval_minutes: 480, note: "2-3 times/day" }
   risk: { interval_minutes: 480, note: "Risk model recalculated with pipeline 2-3 times/day" }
   dashboard:
     { interval_minutes: 480, note: "Homepage aggregation recalculated with pipeline 2-3 times/day" }
+  factlayer: { interval_minutes: 480, note: "Fact layer rebuilt on every pipeline run" }
+  analysis: { interval_minutes: 720, note: "AI briefs 2 times/day" }
+  news_translations:
+    { interval_minutes: 720, note: "Chinese translations produced by the AI brief automations" }
 
 # Provider registry (smaller priority number = higher priority)
 providers:

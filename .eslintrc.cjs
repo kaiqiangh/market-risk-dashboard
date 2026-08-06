@@ -7,7 +7,11 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "prettier",
   ],
-  ignorePatterns: ["dist", "coverage", "node_modules", "public/data"],
+  // src/schemas/generated is emitted by scripts/gen_ts_contracts.py (#101). Linting it is a
+  // dead end in both directions: a violation cannot be fixed in place (the file is
+  // regenerated on the next model change), and the blanket disable the emitter writes is
+  // itself reported as unused under --report-unused-disable-directives.
+  ignorePatterns: ["dist", "coverage", "node_modules", "public/data", "src/schemas/generated"],
   parser: "@typescript-eslint/parser",
   plugins: ["react-refresh"],
   overrides: [

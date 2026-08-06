@@ -46,12 +46,23 @@ from pipeline.schemas import (
     RiskEnvelope,
     SectorsEnvelope,
 )
-from pipeline.schemas.envelope import assemble_envelope
+from pipeline.schemas import registry as dataset_registry
+from pipeline.schemas.envelope import (
+    AssembledDataset,
+    FreshnessReason,
+    FreshnessStatus,
+    assemble_dataset,
+)
 from pipeline.settings import settings
 from pipeline.storage import StorageWriter
+from pipeline.storage.outcomes import RunOutcomes
 from pipeline.universe import AssetUniverse
 from pipeline.utils import now_utc
-from pipeline.validation.freshness import aggregate_freshness, finalize_freshness
+from pipeline.validation.freshness import (
+    FreshnessVerdict,
+    aggregate_freshness,
+    finalize_freshness,
+)
 from pipeline.validation.validate_all import validate_all
 
 COMMANDS = (
@@ -178,9 +189,14 @@ def _read_prev_risk(writer: StorageWriter) -> tuple[float | None, dict[str, floa
 # Dataset health for the run report (#63)
 # ============================================================
 
-#: Every dataset a `--full` run is expected to publish.
-FULL_RUN_DATASETS: tuple[str, ...] = (
-    "macro", "equities", "sectors", "crypto", "news", "calendar", "risk", "facts", "dashboard",
+#: Every dataset a `--full` run is expected to publish, in canonical registry keys.
+#:
+#: Derived from the registry rather than listed by hand: a dataset added to the registry and
+#: forgotten here would be collected, written, and then quietly excluded from the health
+#: report. `analysis` and `news_translations` are `required=False` — the AI automations
+#: produce them out of band, so a collection run that lacks them is degraded, not failed.
+FULL_RUN_DATASETS: tuple[str, ...] = tuple(
+    spec.key for spec in dataset_registry.DATASETS if spec.required
 )
 
 #: Datasets each command attempts. Anything in FULL_RUN_DATASETS and not listed here was
@@ -191,8 +207,27 @@ COMMAND_DATASETS: dict[str, tuple[str, ...]] = {
     "market-only": ("equities", "sectors", "crypto"),
     "macro-only": ("macro",),
     "news-only": ("news",),
-    "fact-layer": ("facts",),
+    "fact-layer": ("factlayer",),
+    "analysis-only": (),
 }
+
+#: Datasets the AI automations produce out of band, rather than the collection run (P0-4).
+AI_PRODUCED_DATASETS: tuple[str, ...] = ("analysis", "news_translations")
+
+
+def _run_scope(command: str) -> set[str]:
+    """Datasets this command *observes* — a wider question than the one COMMAND_DATASETS answers.
+
+    A ``--macro-only`` run does not produce the AI brief, but it does read it back and record
+    what it found, so the brief is in scope: leaving it out would make the outcome record
+    carry forward a stale entry the run had just disproved. The distinction cuts the other way
+    too — a dataset in neither set keeps its previous entry rather than being reported
+    ``missing`` by a run that never intended to touch it.
+    """
+    scope = set(COMMAND_DATASETS.get(command, FULL_RUN_DATASETS))
+    if command in {"full", "macro-only", "fact-layer", "analysis-only"}:
+        scope |= set(AI_PRODUCED_DATASETS)
+    return scope
 
 #: metadata/freshness.json status meaning the dataset produced nothing at all.
 FAILED_FRESHNESS_STATUSES: frozenset[str] = frozenset({"missing"})
@@ -251,17 +286,21 @@ def dataset_health(writer: StorageWriter, command: str, *, run_started_at: str) 
 # Unified freshness write (P1-7 / #64 single freshness author)
 # ============================================================
 
-#: Envelope model per published dataset (the single assembly path maps name -> model).
-_ENVELOPE_MODELS: dict[str, type[BaseEnvelope]] = {
-    "macro": MacroEnvelope,
-    "equities": EquitiesEnvelope,
-    "sectors": SectorsEnvelope,
-    "crypto": CryptoEnvelope,
-    "news": NewsEnvelope,
-    "calendar": CalendarEnvelope,
-    "risk": RiskEnvelope,
-    "dashboard": DashboardEnvelope,
-}
+def _row_count(name: str, payload: Any) -> int | None:
+    """How many rows a payload carries, or ``None`` when the question does not apply.
+
+    This is what makes ``empty`` reachable and enforces "``fresh`` requires a non-empty
+    payload" (#89). Derived datasets (``risk``, ``dashboard``) are a single object rather than
+    a collection, so asking whether they are empty is a category error — they return ``None``
+    and skip the check rather than being scored as empty forever.
+    """
+    spec = dataset_registry.BY_KEY.get(name)
+    if spec is None or not spec.row_counted or spec.row_key is None:
+        return None
+    rows = payload.get(spec.row_key) if isinstance(payload, dict) else getattr(payload, spec.row_key, None)
+    if isinstance(rows, (list, tuple, dict)):
+        return len(rows)
+    return None
 
 
 def _assemble(
@@ -275,15 +314,21 @@ def _assemble(
     data_quality: float,
     generated_at: str | None = None,
     source_updated_at: str | None = None,
-) -> BaseEnvelope:
+    error_code: str | None = None,
+    detail: str = "",
+) -> AssembledDataset:
     """Build the envelope for `name` through the single assembly path (#64/#65).
 
-    Freshness is computed by :func:`pipeline.schemas.envelope.assemble_envelope` via
-    ``finalize_freshness`` — the only producer. `provider` is the resolved provider that
-    actually served the dataset (#65): it becomes the envelope's source and provenance.
+    Freshness and its reason are computed by
+    :func:`pipeline.schemas.envelope.assemble_dataset` via ``finalize_freshness`` — the only
+    producer of either. `provider` is the resolved provider that actually served the dataset
+    (#65): it becomes the envelope's source and provenance.
+
+    Returns the envelope *and* its reason, because the caller has to record both into the run
+    outcome that ``freshness.json`` and ``sources.json`` are rendered from.
     """
-    return assemble_envelope(
-        _ENVELOPE_MODELS[name],
+    return assemble_dataset(
+        dataset_registry.require(name).model,
         payload,
         dataset=name,
         degraded=degraded,
@@ -293,6 +338,9 @@ def _assemble(
         data_quality=data_quality,
         generated_at=generated_at,
         source_updated_at=source_updated_at,
+        row_count=_row_count(name, payload),
+        error_code=error_code,
+        detail=detail,
     )
 
 
@@ -316,15 +364,23 @@ def _provider_kwargs(meta: dict[str, Any], dataset: str | None, default: str = "
     }
 
 
-def _write_finalized(writer: StorageWriter, name: str, env: BaseEnvelope, extra_reason: str = "") -> BaseEnvelope:
-    """Persist an already-assembled envelope and record its freshness metadata."""
-    writer.write_dataset(name, env)
-    status = env.freshness_status
-    reason = {"degraded": "degraded", "missing": "missing"}.get(status, "ok")
-    if extra_reason:
-        reason = f"{reason} ({extra_reason})"
-    writer.update_freshness(name, status, reason)
-    return env
+def _write_finalized(
+    writer: StorageWriter,
+    name: str,
+    assembled: AssembledDataset,
+    outcomes: RunOutcomes,
+) -> BaseEnvelope:
+    """Persist an assembled dataset and record its outcome.
+
+    Previously this both wrote the file and did a read-modify-write of ``freshness.json`` with
+    a reason string produced right here — which is how eight datasets came to publish the
+    literal word ``"degraded"`` as their diagnostic (E-1). The reason now arrives from the
+    single freshness author, and the metadata file is rendered once, at the end of the run,
+    from the complete outcome record.
+    """
+    writer.write_dataset(name, assembled.envelope)
+    outcomes.record_envelope(name, assembled.envelope, assembled.reason)
+    return assembled.envelope
 
 
 def _finalize_and_write(
@@ -332,6 +388,7 @@ def _finalize_and_write(
     name: str,
     payload: Any,
     degraded: bool,
+    outcomes: RunOutcomes,
     *,
     provider: str,
     used_fallback: bool = False,
@@ -339,43 +396,126 @@ def _finalize_and_write(
     data_quality: float,
     generated_at: str | None = None,
     source_updated_at: str | None = None,
-    extra_reason: str = "",
+    error_code: str | None = None,
+    detail: str = "",
 ) -> BaseEnvelope:
-    """Assemble through the single path, write, and update metadata/freshness.json (#64/#65).
+    """Assemble through the single path, write, and record the outcome (#64/#65/#89).
 
-    Collectors no longer fill freshness_status themselves; this recomputes against the
-    expected frequency from sources.yaml (fresh/delayed/stale/missing/degraded), then
-    persists to the envelope and freshness.json. The resolved provider (and whether it was a
-    fallback / cache replay) is published as source + provenance (#65).
+    Collectors no longer fill freshness_status themselves; this recomputes the six-state
+    status against the expected frequency from sources.yaml and records it, together with
+    its structured reason, into the run's outcome record. The metadata files are rendered
+    from that record once, at the end of the run. The resolved provider (and whether it was
+    a fallback / cache replay) is published as source + provenance (#65).
+
+    ``extra_reason`` used to exist here as a free-text string appended by the caller. It is
+    gone: reasons are now authored in one place, from a closed vocabulary.
     """
-    env = _assemble(name, payload, degraded, provider=provider,
-                    used_fallback=used_fallback, from_cache=from_cache,
-                    data_quality=data_quality, generated_at=generated_at,
-                    source_updated_at=source_updated_at)
-    return _write_finalized(writer, name, env, extra_reason)
+    assembled = _assemble(name, payload, degraded, provider=provider,
+                          used_fallback=used_fallback, from_cache=from_cache,
+                          data_quality=data_quality, generated_at=generated_at,
+                          source_updated_at=source_updated_at,
+                          error_code=error_code, detail=detail)
+    return _write_finalized(writer, name, assembled, outcomes)
 
 
-def _write_analysis_freshness(writer: StorageWriter) -> None:
-    """AI analysis freshness (P0-4, architecture §1.5): missing/failed → analysis=degraded."""
-    zh = writer.latest_dir / "analysis.zh-CN.json"
-    en = writer.latest_dir / "analysis.en.json"
-    if not (zh.exists() and en.exists()):
-        writer.update_freshness(
-            "analysis", "degraded", "AI analysis files missing (no quota/exhausted retries) → degraded"
-        )
-        return
+def _aggregate_outcome(
+    own: FreshnessVerdict,
+    inputs: dict[str, Any],
+) -> tuple[FreshnessStatus, FreshnessReason]:
+    """Combine a derived dataset's own verdict with the freshness of its inputs.
+
+    A derived dataset (the fact layer, the dashboard) is only as trustworthy as its worst
+    input. When an input drags the status down, the reason has to say so: reporting
+    ``stale`` with reason ``ok`` — which the previous free-text reason effectively did by
+    writing the status back as its own explanation — tells the operator nothing about which
+    dataset to go and fix.
+    """
+    worst_status = aggregate_freshness([own.status, *(str(v) for v in inputs.values())])
+    if worst_status == own.status:
+        return own.status, own.reason
+    culprits = sorted(k for k, v in inputs.items() if str(v) == worst_status)
+    return worst_status, FreshnessReason(
+        code="input_dataset_unhealthy",
+        detail=f"aggregated from inputs; {worst_status}: {', '.join(culprits) or 'unknown'}"[:200],
+    )
+
+
+def _record_ai_outcomes(writer: StorageWriter, outcomes: RunOutcomes) -> None:
+    """Record the datasets the AI automations produce, from what is on disk (P0-4, §1.5).
+
+    These are not collected by the pipeline, so their outcome is read back from the published
+    files rather than observed during a fetch: absent → ``degraded`` (no quota, or retries
+    exhausted), present → the ordinary time ladder against their expected interval.
+
+    Recording rather than writing matters. Both files previously reached ``freshness.json``
+    through their own read-modify-write, which is why ``news_translations`` never appeared in
+    it at all — nothing ever called the writer for that key, and an absent entry is
+    indistinguishable from a healthy one.
+    """
     import json as _json
 
-    generated_at = ""
-    try:
-        for path in (zh, en):
-            data = _json.loads(path.read_text(encoding="utf-8"))
-            generated_at = max(generated_at, str(data.get("generated_at", "")))
-    except (_json.JSONDecodeError, OSError):
-        generated_at = ""
-    status = finalize_freshness("analysis", generated_at or None, False)
-    reason = "ok" if status == "fresh" else status
-    writer.update_freshness("analysis", status, reason)
+    for key in AI_PRODUCED_DATASETS:
+        spec = dataset_registry.require(key)
+        paths = [writer.latest_dir / name for name in spec.filenames]
+        absent = [p.name for p in paths if not p.exists()]
+        if absent:
+            outcomes.record(
+                key,
+                "degraded",
+                FreshnessReason(
+                    code="all_providers_failed",
+                    detail=f"{', '.join(absent)} absent (no quota or retries exhausted)"[:200],
+                ),
+                provider="ai_automation",
+            )
+            continue
+
+        # The pair is only as fresh as its *oldest* half: a Chinese brief regenerated against
+        # yesterday's English one is not a fresh bilingual pair.
+        timestamps: list[str] = []
+        failure: str | None = None
+        for path in paths:
+            try:
+                data = _json.loads(path.read_text(encoding="utf-8"))
+            except (_json.JSONDecodeError, OSError) as exc:
+                failure = f"{path.name} unreadable: {type(exc).__name__}"
+                break
+            stamp = data.get("generated_at") or data.get("updated_at") or ""
+            timestamps.append(str(stamp))
+
+        if failure is not None:
+            outcomes.record(
+                key,
+                "degraded",
+                FreshnessReason(code="provider_parse_error", detail=failure[:200]),
+                provider="ai_automation",
+            )
+            continue
+
+        oldest = min(timestamps) if timestamps and all(timestamps) else ""
+        verdict = finalize_freshness(key, oldest or None, False)
+        outcomes.record(key, verdict.status, verdict.reason, provider="ai_automation")
+
+
+def _publish_metadata(
+    writer: StorageWriter,
+    outcomes: RunOutcomes,
+    provider_status: dict[str, Any] | None = None,
+) -> None:
+    """Render both metadata files from the one outcome record (#89).
+
+    Writing them together, from the same source, is the mechanism that makes the old
+    contradiction unrepresentable: ``sources.json`` cannot call a domain healthy while
+    ``freshness.json`` calls its dataset degraded, because ``degraded`` in the first file is
+    *derived* from the outcomes in the second.
+
+    ``provider_status`` is omitted by commands that fetch nothing (``--fact-layer``,
+    ``--analysis-only``); rewriting provider health from a run that contacted no provider
+    would replace real information with an empty guess.
+    """
+    writer.write_freshness_metadata(outcomes.freshness_projection(writer.read_freshness_raw()))
+    if provider_status is not None:
+        writer.write_sources_metadata(outcomes.sources_projection(provider_status))
 
 
 # ============================================================
@@ -590,17 +730,26 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         return False, f"risk/fact layer computation failed: {exc}"
 
     # ---- Write (persist after unified freshness determination, P1-7) ----
+    outcomes = RunOutcomes(scope=_run_scope(command))
     try:
-        macro = _write_finalized(writer, "macro", macro)
-        equities = _write_finalized(writer, "equities", equities)
-        sectors = _write_finalized(writer, "sectors", sectors)
-        crypto = _write_finalized(writer, "crypto", crypto)
-        news = _write_finalized(writer, "news", news)
-        calendar = _write_finalized(writer, "calendar", calendar)
-        risk_env = _write_finalized(writer, "risk", risk_env)
+        macro = _write_finalized(writer, "macro", macro, outcomes)
+        equities = _write_finalized(writer, "equities", equities, outcomes)
+        sectors = _write_finalized(writer, "sectors", sectors, outcomes)
+        crypto = _write_finalized(writer, "crypto", crypto, outcomes)
+        news = _write_finalized(writer, "news", news, outcomes)
+        calendar = _write_finalized(writer, "calendar", calendar, outcomes)
+        risk_env = _write_finalized(writer, "risk", risk_env, outcomes)
+
         writer.write_standalone("facts", facts.model_dump(mode="json"))
-        facts_status = "degraded" if degraded else finalize_freshness("facts", str(risk_env.generated_at), False)
-        writer.update_freshness("facts", facts_status, "degraded" if facts_status == "degraded" else "ok")
+        # The fact layer is an aggregation, so its status is the worst of its inputs rather
+        # than a wall-clock comparison against its own timestamp — the same rule the rebuild
+        # path uses, so `--full` and `--fact-layer` cannot disagree about the same facts.
+        facts_verdict = finalize_freshness(
+            "factlayer", str(risk_env.generated_at), degraded,
+            row_count=len(facts.data_freshness) or None,
+        )
+        status, reason = _aggregate_outcome(facts_verdict, facts.data_freshness)
+        outcomes.record("factlayer", status, reason, provider="fact_layer")
 
         # dashboard (P1-5)
         dashboard_payload = _build_dashboard(
@@ -611,13 +760,13 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             calendar=calendar,
         )
         dashboard_env = _finalize_and_write(
-            writer, "dashboard", dashboard_payload, degraded,
+            writer, "dashboard", dashboard_payload, degraded, outcomes,
             provider="risk_model",
             data_quality=round(ctx["data_quality"], 3),
         )
 
         # AI analysis freshness (P0-4)
-        _write_analysis_freshness(writer)
+        _record_ai_outcomes(writer, outcomes)
 
         # History slices
         today = now_utc()[:10]
@@ -635,8 +784,9 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             market_row = {"date": spy_rows[-1]["date"], "symbol": "SPY", "close": spy_rows[-1]["close"]}
             writer.write_slices("market", [market_row])
 
-        # Metadata
-        writer.write_sources_metadata(results["provider_status"])
+        # Metadata: both files rendered from the one outcome record, last, so a dataset that
+        # died mid-run is reported as missing rather than silently omitted.
+        _publish_metadata(writer, outcomes, results["provider_status"])
         writer.write_schema_version("1.0.0")
     except Exception as exc:  # noqa: BLE001
         return False, f"write to disk failed: {exc}"
@@ -736,39 +886,42 @@ def main(argv: list[str] | None = None) -> int:
     # Single-domain commands write only the corresponding dataset (unified freshness, P1-7)
     if command == "market-only":
         writer = StorageWriter(settings.data_dir)
+        outcomes = RunOutcomes(scope=_run_scope(command))
         market_meta = results.get("market_meta", {})
         degraded = bool(results["degraded"])
-        _finalize_and_write(writer, "equities", results["equities"], degraded,
+        _finalize_and_write(writer, "equities", results["equities"], degraded, outcomes,
                             **_provider_kwargs(market_meta, "equities"),
                             data_quality=market_meta.get("data_quality", 1.0))
-        _finalize_and_write(writer, "crypto", results["crypto"], degraded,
+        _finalize_and_write(writer, "crypto", results["crypto"], degraded, outcomes,
                             **_provider_kwargs(market_meta, "crypto"),
                             data_quality=market_meta.get("data_quality", 1.0))
-        _finalize_and_write(writer, "sectors", results["sectors"], degraded,
+        _finalize_and_write(writer, "sectors", results["sectors"], degraded, outcomes,
                             **_provider_kwargs(market_meta, "sectors"),
                             data_quality=market_meta.get("data_quality", 1.0))
-        writer.write_sources_metadata(results["provider_status"])
+        _publish_metadata(writer, outcomes, results["provider_status"])
         health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
         return _finish_run(command, results, time.monotonic() - started, health)
 
     if command == "macro-only":
         writer = StorageWriter(settings.data_dir)
+        outcomes = RunOutcomes(scope=_run_scope(command))
         macro_meta = results.get("macro_meta", {})
-        _finalize_and_write(writer, "macro", results["macro"], bool(macro_meta.get("degraded")),
+        _finalize_and_write(writer, "macro", results["macro"], bool(macro_meta.get("degraded")), outcomes,
                             **_provider_kwargs(macro_meta, None, default="fred"),
                             data_quality=macro_meta.get("data_quality", 1.0))
-        _write_analysis_freshness(writer)
-        writer.write_sources_metadata(results["provider_status"])
+        _record_ai_outcomes(writer, outcomes)
+        _publish_metadata(writer, outcomes, results["provider_status"])
         health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
         return _finish_run(command, results, time.monotonic() - started, health)
 
     if command == "news-only":
         writer = StorageWriter(settings.data_dir)
+        outcomes = RunOutcomes(scope=_run_scope(command))
         news_meta = results.get("news_meta", {})
-        _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)),
+        _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)), outcomes,
                             **_provider_kwargs(news_meta, None, default="rss_news"),
                             data_quality=news_meta.get("data_quality", 1.0))
-        writer.write_sources_metadata(results["provider_status"])
+        _publish_metadata(writer, outcomes, results["provider_status"])
         health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
         return _finish_run(command, results, time.monotonic() - started, health)
 
@@ -855,8 +1008,23 @@ def _run_fact_layer_only() -> tuple[bool, str | None]:
     # freshness the builder already assembled. This keeps a rebuild deterministic — fresh
     # inputs always rebuild to a fresh facts regardless of how much real time has passed.
     facts_status = aggregate_freshness(facts.data_freshness.values())
-    writer.update_freshness("facts", facts_status, "rebuilt")
-    _write_analysis_freshness(writer)
+    outcomes = RunOutcomes(scope=_run_scope("fact-layer"))
+    culprits = sorted(k for k, v in facts.data_freshness.items() if str(v) == facts_status)
+    outcomes.record(
+        "factlayer",
+        facts_status,
+        FreshnessReason(code="ok", detail="rebuilt from latest/*.json")
+        if facts_status == "fresh"
+        else FreshnessReason(
+            code="input_dataset_unhealthy",
+            detail=f"rebuilt; {facts_status}: {', '.join(culprits) or 'unknown'}"[:200],
+        ),
+        provider="fact_layer",
+    )
+    _record_ai_outcomes(writer, outcomes)
+    # No provider was contacted, so provider health is deliberately left as the last real run
+    # left it rather than being overwritten with an empty map.
+    _publish_metadata(writer, outcomes)
     return True, None
 
 
@@ -875,7 +1043,9 @@ def _run_analysis_only() -> int:
     if not zh_path.exists() or not en_path.exists():
         print("[pipeline] analysis-only: analysis file missing (validate after AI automation output), skipped", file=sys.stderr)
         writer = StorageWriter(settings.data_dir)
-        writer.update_freshness("analysis", "degraded", "AI analysis files missing (no quota/exhausted retries) → degraded")
+        outcomes = RunOutcomes(scope=_run_scope("analysis-only"))
+        _record_ai_outcomes(writer, outcomes)
+        _publish_metadata(writer, outcomes)
         return 0
 
     try:
@@ -908,7 +1078,9 @@ def _run_analysis_only() -> int:
     elif news_data:
         writer.record_translations("missing", 0, "news.zh-translations.json not found (AI did not produce Chinese translation)")
 
-    writer.update_freshness("analysis", "fresh", "AI analysis file validation passed")
+    outcomes = RunOutcomes(scope=_run_scope("analysis-only"))
+    _record_ai_outcomes(writer, outcomes)
+    _publish_metadata(writer, outcomes)
     print("[pipeline] analysis-only: validation passed ✓")
     return 0
 

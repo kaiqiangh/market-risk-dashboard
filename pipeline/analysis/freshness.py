@@ -1,6 +1,6 @@
-"""Analysis freshness check (architecture §8.5 five-state semantics; used by AI automation to decide whether to skip).
+"""Analysis freshness check (architecture §8.5 six-state semantics; used by AI automation to decide whether to skip).
 
-Five-state determination reuses pipeline/validation/freshness.py (unified pipeline determination, architecture §8.4).
+Six-state determination reuses pipeline/validation/freshness.py (unified pipeline determination, architecture §8.4).
 
 Usage:
     python -m pipeline.analysis.freshness [--facts path] [--interval-min 720]

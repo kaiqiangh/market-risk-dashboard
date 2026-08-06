@@ -8,7 +8,7 @@ Covered checks (equivalent to validate-data.yml / scripts/validate_data.sh):
 5. Risk score ranges: total_score / dimension.score / indicator.risk_score ∈ [0,100].
 6. NaN/Infinity: illegal constants in JSON text (Python json.loads accepts them by default; rejected here).
 7. Duplicate news: duplicate id / (title+source+published_at) in news.json.
-8. Stale data: check generated_at against the expected frequency using the five-state freshness
+8. Stale data: check generated_at against the expected frequency using the six-state freshness
    (stale is a WARNING, it does not block publishing — data is a static snapshot, and a code PR
    should not fail because of data timestamps).
 9. Unknown language key: the language of analysis.*.json must be a supported language (zh-CN/en).
@@ -32,39 +32,22 @@ from typing import Any
 
 from pipeline.analysis.contract import SUPPORTED_LANGUAGES
 from pipeline.analysis.validate import compare_bilingual
-from pipeline.schemas import (
-    AnalysisDataset,
-    CalendarEnvelope,
-    CryptoEnvelope,
-    DashboardEnvelope,
-    EquitiesEnvelope,
-    FactLayer,
-    MacroEnvelope,
-    NewsEnvelope,
-    RiskEnvelope,
-    SectorsEnvelope,
-)
-from pipeline.schemas.envelope import is_schema_compatible
-from pipeline.validation.freshness import evaluate_freshness
+from pipeline.schemas import registry
+from pipeline.schemas.envelope import FreshnessStatus, is_schema_compatible
+from pipeline.validation.freshness import evaluate_freshness, expected_interval_minutes_for
 
-# latest filename → (model, expected-frequency dataset key); consistent with validate_all
+# Views onto pipeline/schemas/registry.py. These used to be byte-identical copies of the tables
+# in validate_all.py under a different name (D-3), which is how risk.json ended up mapped to the
+# "analysis" interval here (720 min) and the "risk" interval in the envelope (480 min) — the same
+# file could be fresh in its envelope and delayed in CI.
 ENVELOPE_MODELS: dict[str, tuple[Any, str]] = {
-    "macro.json": (MacroEnvelope, "macro"),
-    "equities.json": (EquitiesEnvelope, "market"),
-    "sectors.json": (SectorsEnvelope, "market"),
-    "crypto.json": (CryptoEnvelope, "market"),
-    "news.json": (NewsEnvelope, "news"),
-    "calendar.json": (CalendarEnvelope, "calendar"),
-    "risk.json": (RiskEnvelope, "analysis"),
-    "dashboard.json": (DashboardEnvelope, "dashboard"),
+    name: (spec.model, spec.key) for name, spec in registry.enveloped_specs().items()
 }
 
 # Self-describing contract files (no envelope): must pass validation if present; presence not required.
 # facts.json is produced on every pipeline run; analysis.*.json is produced by AI automation (missing = degraded mode).
 STANDALONE_MODELS: dict[str, Any] = {
-    "facts.json": FactLayer,
-    "analysis.zh-CN.json": AnalysisDataset,
-    "analysis.en.json": AnalysisDataset,
+    name: spec.model for name, spec in registry.standalone_specs().items()
 }
 
 # Optional envelope files (must pass validation if present; presence not required)
@@ -75,7 +58,8 @@ _ISO_UTC_RE = re.compile(
     r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$"
 )
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-_FRESHNESS_ENUM = {"fresh", "delayed", "stale", "missing", "degraded"}
+# Derived from the single definition in pipeline/schemas/envelope.py rather than restated (D-4).
+_FRESHNESS_ENUM: frozenset[str] = frozenset(FreshnessStatus.__args__)  # type: ignore[attr-defined]
 
 
 def _reject_constant(name: str) -> Any:
@@ -153,8 +137,9 @@ def check_latest(latest_dir: Path, report: CheckReport, now: datetime) -> None:
     # Bilingual consistency (when both exist)
     if zh.exists() and en.exists():
         try:
-            zh_obj = AnalysisDataset.model_validate(load_json_strict(zh))
-            en_obj = AnalysisDataset.model_validate(load_json_strict(en))
+            analysis_model = registry.require("analysis").model
+            zh_obj = analysis_model.model_validate(load_json_strict(zh))
+            en_obj = analysis_model.model_validate(load_json_strict(en))
             issues = compare_bilingual(zh_obj, en_obj)
             for issue in issues:
                 report.error(f"AI bilingual conclusion mismatch: {issue}")
@@ -191,6 +176,15 @@ def _check_one(path: Path, name: str, model_spec: tuple[Any, str] | Any, report:
         # freshness enum
         if env.freshness_status not in _FRESHNESS_ENUM:
             report.error(f"{name}: invalid freshness_status: {env.freshness_status}")
+        # E-2 re-assertion (#89/#101): `fresh` requires a non-empty payload. finalize_freshness
+        # enforces this at assembly time; this re-checks the committed file so a hand-edited or
+        # pre-#89 envelope cannot certify itself healthy again (the calendar published
+        # `freshness_status: "fresh"` with `events: []` for weeks before this check existed).
+        spec = registry.require(dataset_key)
+        if env.freshness_status == "fresh" and spec.row_counted and spec.row_key is not None:
+            rows = getattr(env.payload, spec.row_key, None)
+            if rows is not None and len(rows) == 0:
+                report.error(f"{name}: reports fresh but payload.{spec.row_key} is empty (E-2)")
         # Stale data (time dimension; WARNING does not block)
         status = evaluate_freshness(str(env.generated_at), _expected_minutes(dataset_key), now)
         if status == "stale":
@@ -218,15 +212,13 @@ def _check_one(path: Path, name: str, model_spec: tuple[Any, str] | Any, report:
 
 
 def _expected_minutes(dataset_key: str) -> int:
-    """Expected update interval (minutes), read from config/sources.yaml, fallback 480 on failure."""
-    try:
-        from pipeline.settings import settings
+    """Expected update interval (minutes) for a dataset.
 
-        expectations = settings.load_sources().get("expectations", {})
-        minutes = int(expectations.get(dataset_key, {}).get("interval_minutes", 480))
-        return minutes if minutes > 0 else 480
-    except Exception:  # noqa: BLE001
-        return 480
+    Delegates to the single reader in ``validation/freshness.py`` instead of reimplementing the
+    config lookup — this was the third of three copies (D-2), and the only one that could
+    disagree with the envelope about how fresh a file is.
+    """
+    return expected_interval_minutes_for(dataset_key, 480)
 
 
 def _check_risk_ranges(payload: dict[str, Any], report: CheckReport, name: str) -> None:

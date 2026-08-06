@@ -4,7 +4,7 @@
  * Fixture-compatible: absent `summary_zh` must still parse (old data + old automation output).
  */
 import { describe, expect, it } from "vitest";
-import { NewsItem, NewsTranslation } from "@/schemas/news";
+import { NewsItem, NewsTranslation } from "@/schemas";
 
 const EN_BASE = {
   id: "a",

@@ -55,16 +55,13 @@ def analysis_path(lang: str) -> Path:
 
 
 def expected_interval_minutes(dataset: str, fallback: int = 720) -> int:
-    """Expected update interval (minutes).
+    """Expected update interval (minutes) for a dataset.
 
-    Prefers config/sources.yaml expectations; returns fallback when missing.
-    Frozen frequencies (architecture §8.5): market/news 480, macro 240, calendar 1440, analysis 720.
+    Kept as a named function because the analysis layer imports it, but it no longer reads the
+    config itself: this was the second of three independent implementations of the same lookup
+    (D-2), and the one whose different default (720 vs 480) meant the analysis layer and the
+    envelope could disagree about whether the same file was late.
     """
-    try:
-        sources = settings.load_sources()
-        expectations = sources.get("expectations", {})
-        entry = expectations.get(dataset, {})
-        minutes = int(entry.get("interval_minutes", fallback))
-        return minutes if minutes > 0 else fallback
-    except (FileNotFoundError, ValueError, TypeError):
-        return fallback
+    from pipeline.validation.freshness import expected_interval_minutes_for
+
+    return expected_interval_minutes_for(dataset, fallback)

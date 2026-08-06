@@ -12,38 +12,20 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from pipeline.schemas import (
-    AnalysisDataset,
-    CalendarEnvelope,
-    CryptoEnvelope,
-    DashboardEnvelope,
-    EquitiesEnvelope,
-    FactLayer,
-    MacroEnvelope,
-    NewsEnvelope,
-    RiskEnvelope,
-    SectorsEnvelope,
-)
+from pipeline.schemas import registry
 from pipeline.schemas.envelope import is_schema_compatible
 from pipeline.validation.freshness import expected_interval_minutes_for, evaluate_freshness
 
-# latest filename → (model, expected-interval dataset key)
+# These were hand-maintained tables duplicated byte-for-byte in ci_checks.py (D-3). They are
+# now views onto pipeline/schemas/registry.py, kept as module-level names because tests and
+# callers import them. Adding a dataset means editing the registry, not these.
 DATASET_MODELS: dict[str, tuple[Any, str]] = {
-    "macro.json": (MacroEnvelope, "macro"),
-    "equities.json": (EquitiesEnvelope, "market"),
-    "sectors.json": (SectorsEnvelope, "market"),
-    "crypto.json": (CryptoEnvelope, "market"),
-    "news.json": (NewsEnvelope, "news"),
-    "calendar.json": (CalendarEnvelope, "calendar"),
-    "risk.json": (RiskEnvelope, "analysis"),
-    "dashboard.json": (DashboardEnvelope, "dashboard"),
+    name: (spec.model, spec.key) for name, spec in registry.enveloped_specs().items()
 }
 
 # Self-describing contract files
 STANDALONE_MODELS: dict[str, Any] = {
-    "facts.json": FactLayer,
-    "analysis.zh-CN.json": AnalysisDataset,
-    "analysis.en.json": AnalysisDataset,
+    name: spec.model for name, spec in registry.standalone_specs().items()
 }
 
 
@@ -94,18 +76,34 @@ def validate_file(path: Path) -> list[str]:
 
 
 def validate_all(latest_dir: Path, strict: bool = True) -> ValidationReport:
-    """Validate all known files under latest/. When strict=False, missing files are not treated as failures."""
+    """Validate every registered dataset under ``latest/``, and refuse to ignore strangers.
+
+    Two directions, both required (S-4):
+
+    - **every registered file must be present and valid** — subject to ``spec.required``, since
+      the AI-authored files (``analysis.*``, ``news.zh-translations.json``) are produced by a
+      different automation and their absence is a degraded mode, not a broken run
+    - **every file present must be registered** — previously an unregistered file was simply
+      never looked at, which is how 7 of 25 published files went unvalidated while the log
+      cheerfully reported "checked 18 files"
+
+    ``strict=False`` relaxes only the first direction.
+    """
     report = ValidationReport()
-    known = {**DATASET_MODELS, **STANDALONE_MODELS}
-    for name, _model in known.items():
+    for name, spec in registry.BY_FILENAME.items():
         path = latest_dir / name
         if not path.exists():
-            if strict:
+            if strict and spec.required:
                 report.add_issue(f"{name}: file missing")
             continue
         report.files_checked += 1
         for issue in validate_file(path):
             report.add_issue(issue)
+
+    if latest_dir.exists():
+        for path in sorted(latest_dir.iterdir()):
+            if path.is_file() and not registry.is_known_file(path.name):
+                report.add_issue(f"{path.name}: unregistered file under latest/ (not validated)")
     return report
 
 

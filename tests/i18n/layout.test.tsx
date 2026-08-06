@@ -53,6 +53,7 @@ function makeItem(overrides: Partial<NewsItem> = {}): NewsItem {
     importance: 50,
     sentiment: "neutral",
     summary: "A short summary.",
+    summary_zh: null,
     impact_window: null,
     ...overrides,
   };
