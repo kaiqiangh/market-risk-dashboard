@@ -1,355 +1,347 @@
 {
   "items": [
     {
-      "id": "e09294301fc4222b6cef401610021b23729b1381",
-      "title": "Lisa Su brushes off Musk's Nvidia commitment as AMD stock sinks after earnings",
-      "summary": "The chip giant has been a big beneficiary of the AI boom, with stock trading 132% up so far in 2026.",
-      "title_zh": "AMD 财报后股价下挫，苏姿丰淡化马斯克对英伟达的承诺",
-      "summary_zh": "这家芯片巨头是 AI 热潮的主要受益者之一，其股价 2026 年迄今已上涨 132%。"
+      "id": "fe3798346a5443baaac7cd3d92efd1dbf1ee14f3",
+      "title": "SpaceX ramps up Tesla Megapack purchases in Q2 to power its AI data centers",
+      "summary": "SpaceX is using Tesla's big Megapack backup batteries to help power its Colossus AI data centers in Greater Memphis.",
+      "title_zh": "SpaceX 第二季度加大特斯拉 Megapack 采购，为其 AI 数据中心供电",
+      "summary_zh": "SpaceX 正在使用特斯拉的大型 Megapack 备用电池，为其位于大孟菲斯地区的 Colossus AI 数据中心供电。"
     },
     {
-      "id": "12cbd236e9ce79f74d5e7767ad8c76043ae510c4",
-      "title": "S&P 500 is flat as 4-day rally loses momentum; Dow boosted by Nvidia: Live updates: Live updates",
-      "summary": "The S&amp;P 500 was little changed on Wednesday, pulling back from record highs set earlier in the day, weighed by declines in some major tech stocks",
-      "title_zh": "标普 500 收平，4 日连涨动能减弱；道指获英伟达提振：实时更新：实时更新",
-      "summary_zh": "标普 500 周三变动不大，回落于当日稍早创下的历史新高，受部分大型科技股下跌拖累"
-    },
-    {
-      "id": "452cbf5aca584745de4086750b7241785ca42291",
-      "title": "Manager of DRAM memory chip stock trade blockbuster ETF is back with new AI thematic bet",
-      "summary": "Roundhill Investments' DRAM became a blockbuster ETF in record time on the memory trade",
-      "title_zh": "押注 DRAM 存储芯片交易的爆款 ETF 管理人携全新 AI 主题押注归来",
-      "summary_zh": "Roundhill Investments 旗下的 DRAM 凭借存储行情以创纪录的速度成为爆款 ETF"
-    },
-    {
-      "id": "fd8a970926226e85813aa1e15e6578e07b47d84c",
-      "title": "SpaceX gives Nvidia a much-needed boost. Plus, Cramer on an 'undervalued' stock",
-      "summary": "The Investing Club holds its \"Morning Meeting\" every weekday at 10:20 a.m",
-      "title_zh": "SpaceX 为英伟达带来急需的提振；另附克莱默点评一只“被低估”的股票",
-      "summary_zh": "投资俱乐部于每个工作日上午 10:20 举行“晨会”"
-    },
-    {
-      "id": "737d3ab4306f9385d2d16a29511f544c2e27976e",
-      "title": "Nvidia’s stock is basking in the glow of a high-profile endorsement",
-      "summary": "SpaceX CEO Elon Musk said his company will only use Nvidia’s chips to build its AI.",
-      "title_zh": "英伟达股价正沐浴在一份高调背书的光环之中",
-      "summary_zh": "SpaceX 首席执行官埃隆·马斯克表示，公司将仅使用英伟达的芯片来构建其 AI。"
+      "id": "9e410930852ddcd6f45357a34f28a705459e7a63",
+      "title": "Fed Governor Cook says she's 'prepared to act' on rate hike to address inflation",
+      "summary": "Cook was part of a 9-3 majority that voted last week to keep the central bank's benchmark borrowing rate in a range between 3.5%-3.75%.",
+      "title_zh": "美联储理事库克表示已「准备好采取行动」加息以应对通胀",
+      "summary_zh": "库克是上周以 9 比 3 多数票决定将央行基准借贷利率维持在 3.5%–3.75% 区间的投票成员之一。"
     },
     {
       "id": "492e11b1fbddc2b4f792e131efab3875e40f68f3",
       "title": "Federal Reserve Board announces approval of the application by Coastal Bend Bancshares, Inc.",
       "summary": "Federal Reserve Board announces approval of the application by Coastal Bend Bancshares, Inc.",
-      "title_zh": "美联储理事会宣布批准 Coastal Bend Bancshares, Inc. 提交的申请。",
+      "title_zh": "美联储理事会宣布批准 Coastal Bend Bancshares, Inc. 提交的申请",
       "summary_zh": "美联储理事会宣布批准 Coastal Bend Bancshares, Inc. 提交的申请。"
     },
     {
       "id": "c680c122cbba91812d956d822be1dbf67fe71a81",
       "title": "Federal Reserve Board announces approval of the application by FS Bancorp, Inc.",
       "summary": "Federal Reserve Board announces approval of the application by FS Bancorp, Inc.",
-      "title_zh": "美联储理事会宣布批准 FS Bancorp, Inc. 提交的申请。",
+      "title_zh": "美联储理事会宣布批准 FS Bancorp, Inc. 提交的申请",
       "summary_zh": "美联储理事会宣布批准 FS Bancorp, Inc. 提交的申请。"
     },
     {
       "id": "a29277f3b5826c01e78f88ce3213a65aab627188",
       "title": "Federal Reserve Board announces approval of the application by Banco Santander, S.A. and Santander Holdings USA, Inc.",
       "summary": "Federal Reserve Board announces approval of the application by Banco Santander, S.A",
-      "title_zh": "美联储理事会宣布批准 Banco Santander, S.A. 与 Santander Holdings USA, Inc. 提交的申请。",
+      "title_zh": "美联储理事会宣布批准 Banco Santander, S.A. 与 Santander Holdings USA, Inc. 提交的申请",
       "summary_zh": "美联储理事会宣布批准 Banco Santander, S.A 提交的申请"
     },
     {
-      "id": "653d6b665f78af3f1e5cf90e2b506b1c3cab147c",
-      "title": "Fed's Kashkari says 'now is the time to start slowly moving' rates up",
-      "summary": "Kashkari was one of three dissenters at last week's Federal Open Market Committee meeting.",
-      "title_zh": "美联储卡什卡利表示“现在是开始缓慢上调”利率的时候",
-      "summary_zh": "卡什卡利是上周联邦公开市场委员会会议上三位投反对票者之一。"
+      "id": "3aa03655cf69adb3776286676ac9a22b5f89efed",
+      "title": "Google is expanding its AI empire — and losing the people who built it",
+      "summary": "Google’s cloud boom is testing the company's commitment to frontier AI as commercial returns take priority.",
+      "title_zh": "谷歌正在扩张其 AI 帝国——却在失去缔造它的人",
+      "summary_zh": "在商业回报优先的背景下，谷歌的云业务繁荣正在考验该公司对前沿 AI 的投入决心。"
     },
     {
-      "id": "236eb3c2af459dfe18047f4a404a522880a2f4b3",
-      "title": "Mideast deal hopes lift Dow, S&P to records; SpaceX, AMD drag Nasdaq",
-      "summary": null,
-      "title_zh": "中东协议前景推动道指与标普创新高；SpaceX、AMD 拖累纳斯达克",
-      "summary_zh": null
+      "id": "530484762b81b5730ffed45847da993ce53d9d9e",
+      "title": "U.S. ready to return to ‘commitments,’ Iran says as Strait of Hormuz deal looms",
+      "summary": "Iran denied it was in talks with Washington, despite claims by Trump to the contrary.",
+      "title_zh": "伊朗称美国已准备好重返「承诺」，霍尔木兹海峡协议渐近",
+      "summary_zh": "尽管特朗普声称双方正在谈判，伊朗方面否认其正与华盛顿进行会谈。"
     },
     {
-      "id": "042b65653c61e412fa939539fe71dbe5e5785a24",
-      "title": "How Disney parks are bucking a travel slowdown",
-      "summary": "Disney posted record quarterly revenue at its parks division despite a continued slump in international travel to the U.S.",
-      "title_zh": "迪士尼乐园如何逆势对抗旅游业放缓",
-      "summary_zh": "尽管赴美国际旅游持续低迷，迪士尼乐园部门仍录得创纪录的季度营收。"
+      "id": "a8a42303132cc827689220cb30788c18f7f504ff",
+      "title": "Futures inch higher after Dow record close, SpaceX shares rise ahead of lock-up release: Live updates",
+      "summary": "Markets ended divided Wednesday as a record close in the Dow Industrials contrasted with losses in the Nasdaq Composite and S&amp;P 500.",
+      "title_zh": "道指创纪录收盘后期货小幅走高，SpaceX 股价在解禁前上涨：实时更新",
+      "summary_zh": "周三市场收盘分化，道琼斯工业指数创纪录收盘，而纳斯达克综合指数与标普 500 指数则录得下跌。"
     },
     {
-      "id": "4655a376637188ac2f962d03b2229c3b58f26768",
-      "title": "The worst may be over for beaten-down Adobe shares. These charts show why",
-      "summary": "A more attractive risk/reward opportunity may be emerging for long-term investors in the software stock.",
-      "title_zh": "遭重挫的 Adobe 股价最糟阶段或已过去，这些图表给出了原因",
-      "summary_zh": "对于这只软件股的长期投资者而言，更具吸引力的风险回报机会可能正在浮现。"
+      "id": "9bb8a08f90b182a83ed6af0b61b830382ccd04d9",
+      "title": "Ukraine’s military hits one of Russia’s biggest oil refineries in long-range drone attack",
+      "summary": "The Slavneft-Yanos facility in Yaroslavl, which is situated hundreds of miles from the Ukraine border, is one of Russia's biggest oil refineries.",
+      "title_zh": "乌克兰军方以远程无人机袭击俄罗斯最大炼油厂之一",
+      "summary_zh": "位于雅罗斯拉夫尔的 Slavneft-Yanos 炼油厂距离乌克兰边境数百英里，是俄罗斯最大的炼油厂之一。"
     },
     {
-      "id": "d5cdc936bd28b2f7c4a98f080245db09be38b4ca",
-      "title": "Google's AI reshuffle: Chief scientist Jeff Dean exits and Demis Hassabis steps down as DeepMind CEO",
-      "summary": "Google's AI divisions are getting reshuffled, the search giant announced on Wednesday.",
-      "title_zh": "谷歌 AI 大调整：首席科学家杰夫·迪恩离职，戴密斯·哈萨比斯卸任 DeepMind 首席执行官",
-      "summary_zh": "这家搜索巨头周三宣布，谷歌的 AI 部门将进行重组。"
+      "id": "9e1e5cf1d2f6590d036f0d44a6802d25991fbf3b",
+      "title": "Hadrian valued at nearly $8 billion after fresh funding as money pours into defense tech",
+      "summary": "Hadrian is one of a number of defense tech startups raising large sums and benefiting from President Trump's plans to upgrade the U.S",
+      "title_zh": "资金涌入国防科技，Hadrian 完成新一轮融资后估值接近 80 亿美元",
+      "summary_zh": "Hadrian 是众多募集巨额资金的国防科技初创公司之一，并受益于特朗普总统升级美国国防的计划"
     },
     {
-      "id": "5b3ec59362abea71ed1accde348db9369f362013",
-      "title": "Iran, Oman say Strait of Hormuz talks in final stages, as Trump again teases a deal being close",
-      "summary": "Trump's latest remarks signaling again that a deal with Iran to reopen the Hormuz Strait is close at hand drove oil prices lower and sent stocks soaring.",
-      "title_zh": "伊朗与阿曼称霍尔木兹海峡谈判已进入最后阶段，特朗普再度暗示协议临近",
-      "summary_zh": "特朗普最新表态再次暗示与伊朗达成重启霍尔木兹海峡的协议近在咫尺，推动油价走低、股市大涨。"
+      "id": "2b2899ff1fc32b3ddb679705731e206ca4abd2e2",
+      "title": "Mexican jalapenos tied to Salmonella outbreak in 27 U.S. states",
+      "summary": "U.S",
+      "title_zh": "墨西哥墨西哥辣椒被认定与美国 27 个州的沙门氏菌疫情有关"
     },
     {
-      "id": "577c7e9a204ab9f5fc2103c6d9baa40bbe0c4583",
-      "title": "Abdul El-Sayed wins Michigan Democratic Senate primary as voters pivot to the left",
-      "summary": "Abdul El-Sayed won the Michigan Democratic Senate primary, setting up a context with former Rep",
-      "title_zh": "选民转向左翼，阿卜杜勒·埃尔-赛义德赢得密歇根州民主党参议员初选",
-      "summary_zh": "阿卜杜勒·埃尔-赛义德赢得密歇根州民主党参议员初选，将与前众议员展开对决"
+      "id": "f211d1769dcb7d1e73ad1195bcb8716ed7089333",
+      "title": "AstraZeneca may buck a decade of pharma strategy to buy U.S. scale",
+      "summary": "Reports of preliminary talks between AstraZeneca and Bristol Myers Squibb moved shares and reignited debate over Big Pharma consolidation.",
+      "title_zh": "阿斯利康或打破长达十年的制药战略，收购美国规模资产",
+      "summary_zh": "有关阿斯利康与百时美施贵宝进行初步谈判的报道推动了股价，并重新点燃了对大型制药企业整合的讨论。"
     },
     {
-      "id": "f0fd6afa2bf47683d0a825136934326a1d8e97d8",
-      "title": "Activist investor Starboard takes stake in Shake Shack, source says: Reuters",
-      "summary": "Starboard Value previously made investments in other restaurant companies such as french fry supplier Lamb Weston as well as coffee chain Starbucks.",
-      "title_zh": "消息人士称，激进投资者 Starboard 入股 Shake Shack：路透社",
-      "summary_zh": "Starboard Value 此前曾投资其他餐饮企业，如薯条供应商 Lamb Weston 以及咖啡连锁星巴克。"
+      "id": "68090d68d697e82b1aa0b7090cc32d68b7aeebbe",
+      "title": "Khanna to introduce 'Data Center Bill of Rights' as fight over AI power plants heats up",
+      "summary": "Michigan Democratic Senate candidate Abdul El-Sayed, who won a competitive primary Tuesday, has endorsed state and local moratoriums on data centers.",
+      "title_zh": "AI 电厂之争升温，卡纳将提出《数据中心权利法案》",
+      "summary_zh": "周二赢得激烈初选的密歇根州民主党参议员候选人 Abdul El-Sayed 已支持在州与地方层面暂停数据中心建设。"
     },
     {
-      "id": "5da95376f3e4d5d9def1df8304d861e04dc814a5",
-      "title": "Kids Online Safety Act social media safety bill advances in Senate",
-      "summary": "The Kids Online Safety Act, a measure aimed at protecting children on social media, advanced to the Senate floor after it stalled in the last Congress.",
-      "title_zh": "《儿童在线安全法案》社交媒体安全立法在参议院取得进展",
-      "summary_zh": "旨在保护社交媒体上儿童的《儿童在线安全法案》在上届国会搁浅后，现已提交参议院全院审议。"
+      "id": "9774dd4b73c643e51965fcf7635314d12e6f0414",
+      "title": "SoftBank gets $8.2 billion boost from Intel as OpenAI takes a backseat",
+      "summary": "SoftBank on Thursday reported profit for its fiscal first quarter that beat market expectations.",
+      "title_zh": "OpenAI 退居其次，软银从英特尔获得 82 亿美元提振",
+      "summary_zh": "软银周四公布的财年第一季度利润超出市场预期。"
     },
     {
-      "id": "9c2b14d474fa0f395cb36350737c81ec30f14ba5",
-      "title": "SpaceX stock falls 12% as AI spending surge rattles investors and massive share unlock looms",
-      "summary": "CEO Elon Musk said SpaceX would hit $1 trillion in annual revenue in 2030 versus a previous forecast of 2031 as he looked to strike an bullish tone.",
-      "title_zh": "AI 支出激增令投资者不安且巨量股份解禁在即，SpaceX 股价下跌 12%",
-      "summary_zh": "首席执行官埃隆·马斯克试图释放乐观基调，称 SpaceX 将在 2030 年实现 1 万亿美元年度营收，早于此前预测的 2031 年。"
+      "id": "e3423e57eff35cfbd5db36fe99c5b909216d88cc",
+      "title": "Beijing flips the script on the U.S. tech war — and tests the truce weeks before Xi's visit",
+      "summary": "China unleashed its broadest package of trade countermeasures since last October's trade truce, pushing back against a string of recent U.S",
+      "title_zh": "北京扭转美国科技战剧本——在习近平访问前数周考验休战",
+      "summary_zh": "中国推出自去年十月贸易休战以来范围最广的一揽子贸易反制措施，以回应美国近期的一系列举措"
     },
     {
-      "id": "24a6d730a6798bc4558734db11a4d1e7b9152dc4",
-      "title": "Lucid stock plunges as EV maker begins 'operational reset,' delays midsize vehicle",
-      "summary": "The company didn't provide updated guidance",
-      "title_zh": "这家电动车制造商启动“运营重置”并推迟中型车型，Lucid 股价暴跌",
-      "summary_zh": "公司未提供更新后的业绩指引"
+      "id": "06d51a0df4e882758111a081a3686f700bfb68e5",
+      "title": "Nintendo's fiscal first-quarter profit and revenue beat estimates, despite Switch 2 sales slump",
+      "summary": "Nintendo reported fiscal first-quarter earnings Thursday.",
+      "title_zh": "尽管 Switch 2 销量下滑，任天堂财年第一季度利润与营收仍超预期",
+      "summary_zh": "任天堂于周四公布了财年第一季度业绩。"
     },
     {
-      "id": "cae3b88080ee751dd776562ca4aa5ecceae46240",
-      "title": "A bunch of small, under-the-radar stocks got Wall Street endorsements today, including one expected to surge nearly 30%",
-      "summary": "Early this week, several shops on the Street upgraded their ratings and raised their price targets on lesser known and smaller stocks, including e.l.f Beauty.",
-      "title_zh": "一批不受关注的小盘股今日获得华尔街力挺，其中一只预计将飙升近 30%",
-      "summary_zh": "本周早些时候，华尔街多家机构上调了包括 e.l.f Beauty 在内的一些知名度较低的小盘股的评级与目标价。"
+      "id": "5ccf8022a333b3526ee3e6c831324d40200abb19",
+      "title": "China's three major A-share indexes end mixed as coal and electronic chemicals sectors surge",
+      "summary": "China's three major A-share indexes closed mixed today. At the close the Shanghai Composite rose 0.57% to 3900.35, the Shenzhen Component fell 0.24% to 14110.12, and the ChiNext Index fell 0.55% to 3515.56.",
+      "title_zh": "A股三大指数涨跌不一 煤炭与电子化学品板块大涨",
+      "summary_zh": "A股三大指数今日涨跌不一，截止收盘，沪指涨0.57%，收报3900.35点；深证成指跌0.24%，收报14110.12点；创业板指跌0.55%，收报3515.56点"
     },
     {
-      "id": "be0099f21238dc952638303ebedbbe94c3ab9603",
-      "title": "Shopify shares soar as forecast shows AI is boosting business, not disrupting",
-      "summary": "Shopify issued a rosy third-quarter forecast on Wednesday as the company's AI efforts draw more merchants to its suite of e-commerce services, assuaging fears o",
-      "title_zh": "业绩指引显示 AI 在助推而非颠覆业务，Shopify 股价飙升",
-      "summary_zh": "Shopify 周三发布乐观的第三季度业绩指引，公司的 AI 举措吸引更多商家使用其电商服务套件，缓解了市场对"
+      "id": "66a5b6bf6376f73c613dfa95031d2ffda4961d4a",
+      "title": "Asian tech stocks drop with SK Hynix plunging 10% after Wall Street AI names fall",
+      "summary": "Despite heightened volatility analysts remain optimistic over the outlook of the tech sector, with J.P",
+      "title_zh": "华尔街 AI 股下跌后亚洲科技股走低，SK 海力士暴跌 10%",
+      "summary_zh": "尽管波动加剧，分析师对科技板块前景仍持乐观态度，摩根大通"
     },
     {
-      "id": "e9fa6aaaa7dc51c08fcf5b3417e75103a1f6ce12",
-      "title": "Salad and Go files for Chapter 11 bankruptcy after cyclospora fears worsened its challenges",
-      "summary": "The upstart salad chain aimed to take on Sweetgreen and expanded rapidly under the ownership of Volt Investment.",
-      "title_zh": "环孢子虫担忧加剧经营困境后，Salad and Go 申请第 11 章破产保护",
-      "summary_zh": "这家新兴沙拉连锁品牌曾意图叫板 Sweetgreen，并在 Volt Investment 控股下迅速扩张。"
-    },
-    {
-      "id": "e63e99d6e98fc0991f0d712ac7e787266c387594",
-      "title": "Trump admin refunds $100 billion in 'liberation day' tariffs",
-      "summary": "The Trump administration has taken steps to effectively re-create the IEEPA tariff regime using other legal authorities",
-      "title_zh": "特朗普政府退还 1000 亿美元“解放日”关税",
-      "summary_zh": "特朗普政府已采取措施，利用其他法律授权实质上重建 IEEPA 关税体系"
-    },
-    {
-      "id": "60b2a7af591835889bc13b9f47cb0da27f62d4b7",
-      "title": "Bank of America spends $250 million a year on GLP-1 drugs for its employees, CEO says",
-      "summary": "Employers have grappled with soaring demand for GLP-1 drugs such as Ozempic and Wegovy, which can cost thousands of dollars per patient annually.",
-      "title_zh": "首席执行官称，美国银行每年为员工的 GLP-1 药物支出 2.5 亿美元",
-      "summary_zh": "雇主们正应对 Ozempic 和 Wegovy 等 GLP-1 药物需求激增的问题，这类药物每位患者每年可能花费数千美元。"
-    },
-    {
-      "id": "ce09907b93a87b7efeafc96052a42d8a96588ad9",
-      "title": "Ken Griffin's Citadel posts best month in years after scooping up Situational Awareness stocks",
-      "summary": "The July gains came after Citadel acquired the bulk of the public-stock portfolio formerly held by Situational Awareness late last month.",
-      "title_zh": "在抄底 Situational Awareness 持仓股后，肯·格里芬旗下 Citadel 创下多年来最佳月度表现",
-      "summary_zh": "此前 Citadel 于上月底收购了 Situational Awareness 原持有的大部分公开市场股票组合，随后录得 7 月的涨幅。"
-    },
-    {
-      "id": "ab7b21c6492500c1a54228ea40ea016ad5a89c23",
-      "title": "Uber stock sinks 7% after weak guidance despite revenue growth",
-      "summary": "Uber's earnings were in line with estimates, but the company's guidance for the third quarter trailed expectations.",
-      "title_zh": "尽管营收增长，Uber 因指引疲弱股价下跌 7%",
-      "summary_zh": "Uber 的盈利符合预期，但公司对第三季度的指引低于预期。"
-    },
-    {
-      "id": "3f8c4612d644aa8c21e477603e827648744d9871",
-      "title": "SpaceX moon crash is a perfect metaphor for rocket maker’s share price, analysts say",
-      "summary": "Parts of a SpaceX rocket reportedly crashed into the moon on Wednesday",
-      "title_zh": "分析师称，SpaceX 火箭撞月是其股价的完美隐喻",
-      "summary_zh": "据报道，SpaceX 一枚火箭的部分残骸于周三撞击月球"
-    },
-    {
-      "id": "6f94b047810b97c9755d7a15b223ca6cd87aeb72",
-      "title": "Situational Awareness hedge fund meltdown was a warning shot for leveraged markets, BofA CEO says",
-      "summary": "Bank of America was among the prime brokers for the hedge fund, which is run by Leopold Aschenbrenner.",
-      "title_zh": "美银首席执行官称，Situational Awareness 对冲基金崩盘是对杠杆市场的一记警告",
-      "summary_zh": "美国银行是这家由利奥波德·阿申布伦纳管理的对冲基金的主经纪商之一。"
-    },
-    {
-      "id": "a0d0d488fef5d3e7105b166c53ffd4b21505f936",
-      "title": "Tanger CEO says World Cup drove up traffic, sales this summer",
-      "summary": "Tanger CEO Stephen Yalof told CNBC that the company saw increased store traffic and sales this summer because of the World Cup.",
-      "title_zh": "Tanger 首席执行官称，世界杯拉动了今夏客流与销售",
-      "summary_zh": "Tanger 首席执行官 Stephen Yalof 向 CNBC 表示，受世界杯带动，公司今夏门店客流与销售均有所增长。"
-    },
-    {
-      "id": "d9e2d14e07811f77bd17e2a13ec0ec73cb655aa4",
-      "title": "Disney weighs free, ad-supported streaming, says it has sold out Super Bowl ad spots",
-      "summary": "Disney is considering a free streaming product as advertising takes a bigger role in making streaming profitable.",
-      "title_zh": "迪士尼考虑推出免费广告支持型流媒体，并称超级碗广告位已售罄",
-      "summary_zh": "随着广告在流媒体盈利中扮演更重要角色，迪士尼正考虑推出免费流媒体产品。"
-    },
-    {
-      "id": "2408e948e2e473f310dd08ec763441fadb261620",
-      "title": "Private companies added just 44,000 workers in July, below expectations, ADP reports",
-      "summary": "Hiring at private companies slowed considerably in July, with most of the job growth coming health care.",
-      "title_zh": "ADP 报告显示，7 月私营企业仅新增 4.4 万个就业岗位，低于预期",
-      "summary_zh": "7 月私营企业招聘明显放缓，其中大部分就业增长来自医疗保健行业。"
+      "id": "51d62ac7c568419e0c63f5a2733e883a202ecb9a",
+      "title": "Bain Capital to acquire bubble tea chain Gong cha as rival MBK grapples with regulatory pressure at home",
+      "summary": "Bain Capital announced it will acquire Gong cha as MBK faces regulatory pressure in South Korea.",
+      "title_zh": "贝恩资本将收购珍珠奶茶连锁品牌贡茶，竞争对手 MBK 正应对本土监管压力",
+      "summary_zh": "贝恩资本宣布将收购贡茶，此时 MBK 正在韩国面临监管压力。"
     },
     {
       "id": "12b1a89f5980ba0253fa5d35fbb4d24ca457ce54",
       "title": "Federal Reserve Board requests comment on a proposal to modernize its rule governing the extension of credit to bank \"insiders\"—bank executives, board members and major shareholders who could potentially influence a bank's lending decisions",
       "summary": "Federal Reserve Board requests comment on a proposal to modernize its rule governing the extension of credit to bank &quot;insiders&quot;—bank executives, board",
-      "title_zh": "美联储理事会就一项提案征求意见，拟对有关向银行“内部人士”——即可能影响银行放贷决策的银行高管、董事会成员及主要股东——发放信贷的规则进行现代化改造",
-      "summary_zh": "美联储理事会就一项提案征求意见，拟对有关向银行“内部人士”——银行高管、董事会——发放信贷的规则进行现代化改造"
+      "title_zh": "美联储理事会就现代化银行「内部人士」授信规则的提案征求意见——内部人士指可能影响银行放贷决策的银行高管、董事会成员及主要股东",
+      "summary_zh": "美联储理事会就现代化银行「内部人士」授信规则的提案征求意见——包括银行高管、董事会"
     },
     {
       "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
       "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
       "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-      "title_zh": "美联储理事会就一项旨在使互助制银行机构规则现代化的提案征求意见",
-      "summary_zh": "美联储理事会就一项旨在使互助制银行机构规则现代化的提案征求意见"
+      "title_zh": "美联储理事会就现代化互助银行组织相关规则的提案征求意见",
+      "summary_zh": "美联储理事会就现代化互助银行组织相关规则的提案征求意见"
     },
     {
       "id": "1935945161d7d46d837e2245329ad1f8ee93c902",
       "title": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank",
       "summary": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank",
-      "title_zh": "美联储理事会对 Regions Bank 前员工与 First Interstate Bank 前员工作出执法处置",
-      "summary_zh": "美联储理事会对 Regions Bank 前员工与 First Interstate Bank 前员工作出执法处置"
+      "title_zh": "美联储理事会对 Regions Bank 前员工与 First Interstate Bank 前员工作出执法处理",
+      "summary_zh": "美联储理事会对 Regions Bank 前员工与 First Interstate Bank 前员工作出执法处理"
     },
     {
       "id": "d877d3916bea617dbdf1e67428e25470afc2c6a6",
       "title": "Federal Reserve Board issues enforcement action with Iuka Bancshares, Inc. and The Iuka State Bank",
       "summary": "Federal Reserve Board issues enforcement action with Iuka Bancshares, Inc",
-      "title_zh": "美联储理事会对 Iuka Bancshares, Inc. 与 The Iuka State Bank 作出执法处置",
-      "summary_zh": "美联储理事会对 Iuka Bancshares, Inc 作出执法处置"
+      "title_zh": "美联储理事会对 Iuka Bancshares, Inc. 与 The Iuka State Bank 作出执法处理",
+      "summary_zh": "美联储理事会对 Iuka Bancshares, Inc 作出执法处理"
     },
     {
       "id": "84553b0b5ba2a255e4602f6c3a9318c2557a1160",
       "title": "Federal Reserve issues FOMC statement",
       "summary": "Federal Reserve issues FOMC statement",
-      "title_zh": "美联储发布联邦公开市场委员会（FOMC）声明",
-      "summary_zh": "美联储发布联邦公开市场委员会（FOMC）声明"
+      "title_zh": "美联储发布联邦公开市场委员会声明",
+      "summary_zh": "美联储发布联邦公开市场委员会声明"
     },
     {
       "id": "bd761959afffcb14b72576ca78ddc0fce548d7cb",
       "title": "Federal Reserve Board issues enforcement action with former chief lending officer of Heritage State Bank",
       "summary": "Federal Reserve Board issues enforcement action with former chief lending officer of Heritage State Bank",
-      "title_zh": "美联储理事会对 Heritage State Bank 前首席信贷官作出执法处置",
-      "summary_zh": "美联储理事会对 Heritage State Bank 前首席信贷官作出执法处置"
+      "title_zh": "美联储理事会对 Heritage State Bank 前首席信贷官作出执法处理",
+      "summary_zh": "美联储理事会对 Heritage State Bank 前首席信贷官作出执法处理"
     },
     {
       "id": "129c769c5fd2c675a0395c0a41c34d0bbe14b499",
       "title": "Federal Reserve announces the leadership and objectives of its task forces to advance the conduct of monetary policy",
       "summary": "Federal Reserve announces the leadership and objectives of its task forces to advance the conduct of monetary policy",
-      "title_zh": "美联储公布其为改进货币政策实施而设立的各工作组的领导层与目标",
-      "summary_zh": "美联储公布其为改进货币政策实施而设立的各工作组的领导层与目标"
+      "title_zh": "美联储公布其推进货币政策实施的工作组负责人与目标",
+      "summary_zh": "美联储公布其推进货币政策实施的工作组负责人与目标"
     },
     {
       "id": "a478b6d30be0ff02ce8fbff3e4c6ced827bacaaa",
       "title": "Federal Reserve Board issues enforcement action with TS Banking Group, Inc. and TS Contrarian Bancshares, Inc.",
       "summary": "Federal Reserve Board issues enforcement action with TS Banking Group, Inc",
-      "title_zh": "美联储理事会对 TS Banking Group, Inc. 与 TS Contrarian Bancshares, Inc. 作出执法处置",
-      "summary_zh": "美联储理事会对 TS Banking Group, Inc 作出执法处置"
+      "title_zh": "美联储理事会对 TS Banking Group, Inc. 与 TS Contrarian Bancshares, Inc. 作出执法处理",
+      "summary_zh": "美联储理事会对 TS Banking Group, Inc 作出执法处理"
     },
     {
       "id": "89fbbc9f5277b4e2f4116fa5d097883e511686e3",
       "title": "Minutes of the Federal Open Market Committee, June 16-17, 2026",
       "summary": "Minutes of the Federal Open Market Committee, June 16-17, 2026",
-      "title_zh": "联邦公开市场委员会 2026 年 6 月 16-17 日会议纪要",
-      "summary_zh": "联邦公开市场委员会 2026 年 6 月 16-17 日会议纪要"
+      "title_zh": "联邦公开市场委员会会议纪要（2026 年 6 月 16–17 日）",
+      "summary_zh": "联邦公开市场委员会会议纪要（2026 年 6 月 16–17 日）"
     },
     {
       "id": "79586fed69426969b0d14826911fe85b352a542a",
       "title": "Federal Reserve Board requests comment on a proposal to amend its requirements for banks to maintain anti-money laundering programs",
       "summary": "Federal Reserve Board requests comment on a proposal to amend its requirements for banks to maintain anti-money laundering programs",
-      "title_zh": "美联储理事会就一项修订银行反洗钱合规项目要求的提案征求意见",
-      "summary_zh": "美联储理事会就一项修订银行反洗钱合规项目要求的提案征求意见"
+      "title_zh": "美联储理事会就修订银行反洗钱合规项目要求的提案征求意见",
+      "summary_zh": "美联储理事会就修订银行反洗钱合规项目要求的提案征求意见"
     },
     {
       "id": "51bdb202dd58e4b5d03a7f03beae1d271730a57a",
       "title": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, Inc., BNP Paribas Securities Corp., and Community Bankshares, Inc.",
       "summary": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, I",
-      "title_zh": "美联储理事会对 Small Business Bank 作出执法处置，并宣布终止对 BNP Paribas S.A.、BNP Paribas USA, Inc.、BNP Paribas Securities Corp. 与 Community Bankshares, Inc. 的执法处置",
-      "summary_zh": "美联储理事会对 Small Business Bank 作出执法处置，并宣布终止对 BNP Paribas S.A.、BNP Paribas USA, I 的执法处置"
+      "title_zh": "美联储理事会对 Small Business Bank 作出执法处理，并宣布终止对法国巴黎银行 S.A.、BNP Paribas USA, Inc.、BNP Paribas Securities Corp. 与 Community Bankshares, Inc. 的执法处理",
+      "summary_zh": "美联储理事会对 Small Business Bank 作出执法处理，并宣布终止对法国巴黎银行 S.A.、BNP Paribas USA, I 的执法处理"
     },
     {
       "id": "97fdc4145f5aaffb5f95cbf1540b013a3ce60d45",
       "title": "Federal Reserve issues initial findings from its 2025 triennial payments study",
       "summary": "Federal Reserve issues initial findings from its 2025 triennial payments study",
-      "title_zh": "美联储发布其 2025 年三年期支付研究的初步结果",
-      "summary_zh": "美联储发布其 2025 年三年期支付研究的初步结果"
+      "title_zh": "美联储发布 2025 年三年期支付研究的初步结论",
+      "summary_zh": "美联储发布 2025 年三年期支付研究的初步结论"
     },
     {
       "id": "8847ef554928b58c506879a4b20b22b857295b91",
       "title": "Federal Reserve Board issues enforcement action with employee of Bank of Eufaula and S N B Bancshares, Inc.",
       "summary": "Federal Reserve Board issues enforcement action with employee of Bank of Eufaula and S N B Bancshares, Inc.",
-      "title_zh": "美联储理事会对 Bank of Eufaula 与 S N B Bancshares, Inc. 的员工作出执法处置",
-      "summary_zh": "美联储理事会对 Bank of Eufaula 与 S N B Bancshares, Inc. 的员工作出执法处置"
+      "title_zh": "美联储理事会对 Bank of Eufaula 员工与 S N B Bancshares, Inc. 作出执法处理",
+      "summary_zh": "美联储理事会对 Bank of Eufaula 员工与 S N B Bancshares, Inc. 作出执法处理"
     },
     {
       "id": "b41293d4ce475ee8a409ea9e4fc04024801b0fd9",
       "title": "Federal Reserve Board announces termination of enforcement action with Jiko Group, Inc.",
       "summary": "Federal Reserve Board announces termination of enforcement action with Jiko Group, Inc.",
-      "title_zh": "美联储理事会宣布终止对 Jiko Group, Inc. 的执法处置",
-      "summary_zh": "美联储理事会宣布终止对 Jiko Group, Inc. 的执法处置"
+      "title_zh": "美联储理事会宣布终止对 Jiko Group, Inc. 的执法处理",
+      "summary_zh": "美联储理事会宣布终止对 Jiko Group, Inc. 的执法处理"
     },
     {
-      "id": "fe38f8b668d77000eafba638a31fac2318f0f3b3",
-      "title": "Eastmoney Evening Financial Report for August 5 (with Xinwen Lianbo roundup)",
-      "summary": "Hot topics — MOFCOM responds: Asked what considerations lay behind the announcement by the Ministry of Commerce and other relevant departments of countermeasures against a series of negative China-related actions by the U.S. Federal Communications Commission and the Department of Homeland Security, MOFCOM answered: I want to stress that China's countermeasures are on the whole restrained",
-      "title_zh": "8月5日东方财富财经晚报（附新闻联播）",
-      "summary_zh": "热点聚焦 商务部回应 ： 记者问：商务部等有关部门宣布对美国联邦 通信 委员会、美国土安全部系列涉华消极措施实施反制，请问有何考虑？商务部答：我想强调的是，中方的反制措施总体上是克制的"
+      "id": "585de53fd4d431ece338ea189201425e1463b5a4",
+      "title": "JPMorgan's Jamie Dimon warns of high leverage: 'Somebody will disrupt the market'",
+      "summary": "JPMorgan Chief Executive Officer Jamie Dimon warned that leverage across financial markets remains elevated, adding that investors should be mindful that hidden",
+      "title_zh": "摩根大通戴蒙警告高杠杆风险：「总会有人扰乱市场」",
+      "summary_zh": "摩根大通首席执行官杰米·戴蒙警告称，金融市场整体杠杆水平依然偏高，并提醒投资者留意隐藏的"
     },
     {
-      "id": "7e96e1b71ae974597bd20471414ab398e6697bd2",
-      "title": "Roundup of positive news from listed companies on the evening of August 5 (with list)",
-      "summary": "A number of Shanghai- and Shenzhen-listed companies released important announcements on the evening of August 5. The following is a roundup of the positive items: China Merchants Energy Shipping — plans to build five new Aframax tankers for a total of about 2.485 billion yuan. China Merchants Energy Shipping (601872) announced on August 5 that its wholly owned subsidiary Hai Hong Shipping (Hong Kong) Co., Ltd. recently signed five shipbuilding agreements with Dalian Shipbuilding Industry Group Co., Ltd. (\"Dalian Shipbuilding\") to order five vessels fitted with desulfurization scrubbers and shaft generators",
-      "title_zh": "8月5日晚间上市公司利好消息一览(附名单)",
-      "summary_zh": "沪深两市多家上市公司8月5日晚间发布重要公告，以下为利好的消息汇总： 招商轮船 ：拟新建5艘阿芙拉型油轮 总价约24.85亿元 招商轮船 (601872)8月5日公告，公司近日通过全资子公司海宏轮船（香港）有限公司与大连船舶重工集团有限公司（简称“大连造船”）签署5份《船舶订造协议》，订造5艘配备脱硫洗涤塔和轴带发电机"
+      "id": "2225ad2228dc7950dd98261c41ec68e25ed5aba3",
+      "title": "Inside India newsletter: What's behind India’s rush to sell shares in state-owned firms",
+      "summary": "India is ramping up stake sales in state-owned companies to keep the growth engine running amid growing fiscal constraints",
+      "title_zh": "印度内参：印度加速出售国有企业股权的背后原因",
+      "summary_zh": "在财政约束加剧之际，印度正加快出售国有企业股权，以维持增长引擎运转"
     },
     {
-      "id": "db12f62f83e004f8e93c02826f2b8fd0cded9d03",
-      "title": "The IRS is getting better at spotting crypto tax mistakes. Here's what it means for investors",
-      "summary": "Many investors who hold cryptocurrency like bitcoin and ether have a difficult time figuring out how much tax to pay on transactions.",
-      "title_zh": "美国国税局在识别加密货币税务错误方面日益精进，这对投资者意味着什么",
-      "summary_zh": "许多持有比特币、以太坊等加密货币的投资者难以厘清交易应缴纳多少税款。"
+      "id": "ddd5a04283be5ec2f12e836b89c6a795b0025630",
+      "title": "Jim Cramer says investors should consider buying SpaceX for their kids",
+      "summary": "CNBC’s Jim Cramer said investors should view SpaceX as a multigenerational investment, whose biggest opportunities may take decades to fully materialize.",
+      "title_zh": "克莱默称投资者应考虑为子女买入 SpaceX",
+      "summary_zh": "CNBC 的吉姆·克莱默表示，投资者应将 SpaceX 视为一项跨代际投资，其最大机遇可能需要数十年才能完全兑现。"
     },
     {
-      "id": "320abf6f18f043fd0deb94371f89d9239a2d617b",
-      "title": "Saudi wealth fund and Jared Kushner's Affinity finalize $55 billion EA Sports deal",
-      "summary": "EA said its stock has ceased trading and will be delisted from the Nasdaq",
-      "title_zh": "沙特主权财富基金与贾里德·库什纳旗下 Affinity 敲定 550 亿美元的 EA Sports 交易",
-      "summary_zh": "EA 表示其股票已停止交易，并将从纳斯达克退市"
+      "id": "d18e87f383ef0ef42a1b9ad58a98ce04761d74f2",
+      "title": "Etsy laying off 12% of staff in bid to streamline business, position for growth",
+      "summary": "Etsy announced the layoffs along with second-quarter earnings.",
+      "title_zh": "Etsy 裁员 12%，以精简业务并为增长布局",
+      "summary_zh": "Etsy 在公布第二季度业绩的同时宣布了此次裁员。"
     },
     {
-      "id": "60c03bfe49728de0bf6174dc6b4c31f6c05fc00f",
-      "title": "Latest roundup of major-event announcements from Shanghai- and Shenzhen-listed companies on the evening of August 5",
-      "summary": "A number of Shanghai- and Shenzhen-listed companies issued corporate announcements on the evening of August 5; the following is a roundup of the important announcements",
-      "title_zh": "8月5日晚间沪深上市公司重大事项公告最新快递",
-      "summary_zh": "沪深两市多家上市公司8月5日晚间发布公司公告，以下为重要公告汇总"
+      "id": "0fc8e7771d11c5a30eb4593e2cbdfcf3b4039ee3",
+      "title": "August 6: Front-page highlights from China's four major securities newspapers and leading financial media",
+      "summary": "Thursday, August 6 — key front-page highlights from today's press: China Securities Journal — convertible bond issuance is accelerating and newly listed issues are performing strongly; on August 5, N Jiangnong Convertible surged 57.30% on its trading debut, and Sanxin Convertible disclosed its online allotment ratio.",
+      "title_zh": "8月6日国内四大证券报纸、重要财经媒体头版头条内容精华摘要",
+      "summary_zh": "8月6日(星期四)，今日报刊头条主要内容精华如下： 中国证券报 可转债发行节奏加快 新券上市表现亮眼 8月5日，N江农转上市首日大涨57.30%，三鑫转债公布网上中签率情况"
+    },
+    {
+      "id": "7df6411424210811d1f7ed0e90d18635d7a9843f",
+      "title": "Hollywood is cranking out billion-dollar movies again. 'Spider-Man' just joined the ranks",
+      "summary": "Box office analysts say the resurgence of billion-dollar releases bodes well for a film industry that's still chasing pre-Covid levels, even with higher prices.",
+      "title_zh": "好莱坞重新批量产出十亿美元级影片，《蜘蛛侠》刚刚跻身其中",
+      "summary_zh": "票房分析师表示，十亿美元级影片的回归对仍在追赶疫情前水平的电影行业是利好，即便票价已经上涨。"
+    },
+    {
+      "id": "6ee27d739d4fab831e53e8c4b315e335f9995304",
+      "title": "S&P 500 is experiencing violent surge often seen at major market tops. One chart analyst is worried",
+      "summary": "One chart analyst sees echoes of the dot-com bubble in the S&amp;P 500's latest run-up, as the index has had a sharp surge often seen at major market tops.",
+      "title_zh": "标普 500 指数出现常见于重大市场顶部的剧烈飙升，一位图表分析师表示担忧",
+      "summary_zh": "一位图表分析师在标普 500 指数最近的上涨中看到了互联网泡沫的影子，该指数出现了常见于重大市场顶部的急剧飙升。"
+    },
+    {
+      "id": "f0eba63671abece66b72ae930e6f0c248c9c79db",
+      "title": "Fun isn't cheap anymore. Here's how your credit card can help cut the cost",
+      "summary": "If you're looking to save funds on fun, CNBC Select dives into a variety of credit card perks that can help.",
+      "title_zh": "娱乐消费不再便宜，你的信用卡可以这样帮你省钱",
+      "summary_zh": "如果你想在娱乐支出上省钱，CNBC Select 梳理了多种可以帮上忙的信用卡权益。"
+    },
+    {
+      "id": "df03f0ce6e5322252a0c00eed9355b77a0825ee5",
+      "title": "Meta debuts first AI coding agent to take on Anthropic and OpenAI",
+      "summary": "Meta released its first coding agent called Muse Code as the company ramps up its investments in AI models and services to try and take on Anthropic and OpenAI.",
+      "title_zh": "Meta 推出首款 AI 编程智能体，正面对抗 Anthropic 与 OpenAI",
+      "summary_zh": "Meta 发布了名为 Muse Code 的首款编程智能体，该公司正加大对 AI 模型与服务的投入，以求与 Anthropic 和 OpenAI 竞争。"
+    },
+    {
+      "id": "036c0a44fb0e57190a0cf847512b126f0ce34b6f",
+      "title": "E.l.f. Beauty sees $50 million windfall in tariff refunds as profits surge 100%",
+      "summary": "E.l.f",
+      "title_zh": "e.l.f. Beauty 获得 5000 万美元关税退款收益，利润激增 100%"
+    },
+    {
+      "id": "43ae2cd00faad8cd67880d3d974b74abe010451d",
+      "title": "Marc Benioff gets a new operating chief, as Salesforce promotes Miguel Milano",
+      "summary": "Salesforce promoted revenue head and former Oracle executive Miguel Milano to role of operating chief.",
+      "title_zh": "贝尼奥夫迎来新任首席运营官，Salesforce 提拔 Miguel Milano",
+      "summary_zh": "Salesforce 将营收业务负责人、前甲骨文高管 Miguel Milano 提拔为首席运营官。"
+    },
+    {
+      "id": "42c836203c4af8bb4abb9eb373420a46ece16958",
+      "title": "JPMorgan CEO Jamie Dimon says he is not worried about AI data center boom fizzling out",
+      "summary": "JPMorgan Chase CEO Jamie Dimon sits down with CNBC's Leslie Picker in Los Angeles to talk JPMorgan's partnership with the 2028 Olympics, his take on current mar",
+      "title_zh": "摩根大通首席执行官戴蒙表示，他并不担心 AI 数据中心热潮熄火",
+      "summary_zh": "摩根大通首席执行官杰米·戴蒙在洛杉矶接受 CNBC 记者 Leslie Picker 专访，谈及摩根大通与 2028 年奥运会的合作、他对当前市场的看法"
+    },
+    {
+      "id": "fab162d35f363ddc855228fd5f833128d573d843",
+      "title": "Income investors should add global bonds, Invesco says. Where the firm is finding solid yields",
+      "summary": "The Invesco Flexible Income ETF has roughly 40% of its holdings in international bonds.",
+      "title_zh": "景顺表示收益型投资者应增配全球债券，该机构在哪里找到了扎实的收益率",
+      "summary_zh": "景顺灵活收益 ETF 约 40% 的持仓配置于国际债券。"
+    },
+    {
+      "id": "60b2a7af591835889bc13b9f47cb0da27f62d4b7",
+      "title": "Bank of America spends $250 million a year on GLP-1 drugs for its employees, CEO says",
+      "summary": "Employers have grappled with soaring demand for GLP-1 drugs such as Ozempic and Wegovy, which can cost thousands of dollars per patient annually.",
+      "title_zh": "美国银行首席执行官称，公司每年为员工的 GLP-1 类药物支出 2.5 亿美元",
+      "summary_zh": "雇主们一直在应对 Ozempic、Wegovy 等 GLP-1 类药物的需求激增，这类药物每位患者每年可能花费数千美元。"
+    },
+    {
+      "id": "58d291efd9b9dfee0d2c7f3f01ea4d45e726f42c",
+      "title": "Clear Channel earnings missed, revenue topped estimates",
+      "title_zh": "Clear Channel 盈利不及预期，营收超出预期"
+    },
+    {
+      "id": "15732dcd34216541649b8eca935518fcc0e7992c",
+      "title": "Why is Inseego stock sliding today?",
+      "title_zh": "Inseego 股价今日为何下挫？"
+    },
+    {
+      "id": "1d5dca2ace35a2b17b83e525530771740c7bb53b",
+      "title": "Ireland’s jobless rate rises to 5.1% in July",
+      "title_zh": "爱尔兰 7 月失业率升至 5.1%"
     }
   ],
-  "updated_at": "2026-08-05T20:37:02Z"
+  "updated_at": "2026-08-06T11:34:30Z"
 }
