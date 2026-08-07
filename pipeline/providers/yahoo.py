@@ -57,6 +57,11 @@ class YahooProvider(BaseProvider):
     #: the CN mapper (#97/#85: 603986.SH → 603986.SS).
     _symbol_mapper = staticmethod(lambda symbol: symbol)
 
+    def _ticker(self, symbol: str) -> Any:
+        """yfinance Ticker for a repo symbol, mapped to the Yahoo form (#97). One place
+        the mapper is applied, so the hook cannot be skipped by a future call site."""
+        return yf.Ticker(self._symbol_mapper(symbol))
+
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
         # #103 (P-1): one 1y fetch per symbol — get_quote derives from the tail and
@@ -69,7 +74,7 @@ class YahooProvider(BaseProvider):
         if mapped in self._history_1y:
             return self._history_1y[mapped]
         try:
-            hist = yf.Ticker(mapped).history(period="1y", auto_adjust=False)
+            hist = self._ticker(symbol).history(period="1y", auto_adjust=False)
             if hist is None or len(hist) == 0:
                 raise ProviderError(f"{symbol}: yfinance history is empty")
             rows = _to_rows(hist)
@@ -147,7 +152,7 @@ class YahooProvider(BaseProvider):
             # #103 (P-1): reuse the fetch get_quote already made — one 1y fetch per symbol.
             return HistoryResult(symbol=symbol, provider=self.name, rows=self._fetch_1y(symbol), period="1y")
         try:
-            hist = yf.Ticker(self._symbol_mapper(symbol)).history(period=_PERIOD_MAP[period], auto_adjust=False)
+            hist = self._ticker(symbol).history(period=_PERIOD_MAP[period], auto_adjust=False)
             if hist is None or len(hist) == 0:
                 raise ProviderError(f"{symbol}: yfinance history is empty")
             return HistoryResult(symbol=symbol, provider=self.name, rows=_to_rows(hist), period=period)
@@ -159,7 +164,7 @@ class YahooProvider(BaseProvider):
     def get_history_range(self, symbol: str, start: str, end: str) -> HistoryResult:
         """Fetch history by date range (for calibration 2008/2018/2020 windows, architecture §1.8)."""
         try:
-            hist = yf.Ticker(self._symbol_mapper(symbol)).history(start=start, end=end, auto_adjust=False)
+            hist = self._ticker(symbol).history(start=start, end=end, auto_adjust=False)
             if hist is None or len(hist) == 0:
                 raise ProviderError(f"{symbol}: yfinance range history is empty ({start}~{end})")
             return HistoryResult(symbol=symbol, provider=self.name, rows=_to_rows(hist), period=f"{start}~{end}")

@@ -123,8 +123,12 @@ class MarketCollector:
             rows = hist_out["result"].rows
         except ProviderError as exc:
             degraded.append(f"{asset.symbol}: history unavailable: {exc}")
-            if status_error is None:
-                status_error = str(exc)
+            status_error = str(exc)
+            # ADR 0004: degradation costs quality. The registry marks the domain degraded
+            # on fallback/cache reads — a history-only failure does not reach it (the call
+            # raised), so the collector records it here or the None-technical assets ship
+            # at full data_quality.
+            self.registry.degraded_domains.add(domain)
         tech = technical_snapshot(rows)
         return _EquityFetch(
             EquityAsset(

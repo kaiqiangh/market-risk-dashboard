@@ -127,6 +127,89 @@ class TestQuoteHistoryDecoupling:
         assert any("boom" in d for d in degraded)
 
 
+class TestLastGoodReplay:
+    def test_cache_replays_through_the_real_registry(self, tmp_path: Path) -> None:
+        """#97 DoD 3/5: the last-good cache actually replays for a_share through the REAL
+        registry path (not a mocked call) — a provider failure falls through to the cache
+        and the #85 cross-check values come back (385.44 / 8.2636)."""
+        import json
+
+        from pipeline.providers.base import ProviderRegistry
+        from pipeline.providers.yahoo import YahooAShareProvider
+        from pipeline.schemas.envelope import SCHEMA_VERSION
+        from pipeline.utils import now_utc
+
+        registry = ProviderRegistry(Settings(_env_file=None, artifacts_dir=tmp_path))
+        registry.cache_dir = tmp_path / "cache"
+        registry.max_retries = 0
+        registry.backoff_base = 0.0
+
+        class _Down(YahooAShareProvider):
+            def get_quote(self, symbol: str):
+                raise ProviderError("yfinance_a_share down")
+
+            def get_history(self, symbol: str, period: str = "1y"):
+                raise ProviderError("yfinance_a_share down")
+
+        registry.register("a_share", _Down(Settings(_env_file=None)))
+
+        # Seed a valid last-good entry (schema_version present — the pre-#103 legacy file
+        # on disk is quarantined, this is the format a current run writes).
+        registry.cache_dir.mkdir(parents=True, exist_ok=True)
+        (registry.cache_dir / "a_share__quote_603986.SH.json").write_text(
+            json.dumps(
+                {
+                    "method": "get_quote",
+                    "data": {
+                        "symbol": "603986.SH", "price": 385.44, "change_1d": 8.2636,
+                        "change_1w": None, "change_1m": None, "volume": None,
+                        "source": "yahoo", "provider": "yfinance_a_share",
+                        "updated_at": now_utc(), "is_proxy": False,
+                    },
+                    "fetched_at": now_utc(),
+                    "provider": "yfinance_a_share",
+                    "schema_version": SCHEMA_VERSION,
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+
+        out = registry.call("a_share", "get_quote", "quote_603986.SH", args=("603986.SH",))
+        assert out["meta"]["from_cache"] is True
+        assert out["meta"]["provider"] == "yfinance_a_share"
+        assert out["result"].price == 385.44
+        assert out["result"].change_1d == 8.2636  # the #85 cross-check values
+
+    def test_legacy_entry_without_schema_version_is_quarantined(self, tmp_path: Path) -> None:
+        """S-2 trust: a pre-#103 cache entry (no schema_version) is a miss and quarantined
+        — that is why the real a_share__quote_603986.SH.json sits as .corrupt today; the
+        next successful run re-seeds the cache in the current format."""
+        import json
+
+        from pipeline.providers.base import ProviderError, ProviderRegistry
+        from pipeline.providers.yahoo import YahooAShareProvider
+
+        registry = ProviderRegistry(Settings(_env_file=None, artifacts_dir=tmp_path))
+        registry.cache_dir = tmp_path / "cache"
+        registry.max_retries = 0
+        registry.cache_dir.mkdir(parents=True, exist_ok=True)
+        (registry.cache_dir / "a_share__quote_603986.SH.json").write_text(
+            json.dumps({"method": "get_quote", "data": {"symbol": "603986.SH", "price": 385.44},
+                        "fetched_at": "2026-08-05T19:26:09Z", "provider": "yfinance_a_share"}),
+            encoding="utf-8",
+        )
+
+        class _Down(YahooAShareProvider):
+            def get_quote(self, symbol: str):
+                raise ProviderError("down")
+
+        registry.register("a_share", _Down(Settings(_env_file=None)))
+        with pytest.raises(ProviderError):
+            registry.call("a_share", "get_quote", "quote_603986.SH", args=("603986.SH",))
+        assert (registry.cache_dir / "a_share__quote_603986.SH.json.corrupt").exists()
+
+
 def test_a_share_chain_has_two_rungs(tmp_path: Path) -> None:
     """#97 DoD: a second provider is registered for a_share — yfinance_a_share primary,
     akshare fallback (the domain previously had one provider, degradation was

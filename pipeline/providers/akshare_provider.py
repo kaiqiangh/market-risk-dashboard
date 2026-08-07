@@ -7,9 +7,10 @@ history endpoint now goes through the Tencent backend (stock_zh_a_hist_tx), whic
 verified answers from this host. Fallback chain: yfinance_a_share (p1, US-hosted) →
 akshare-Tencent (p2, CN-hosted) → last-good cache.
 
-Refresh cadence vs the CN session clock (#97): the scheduled full run lands before the CN
-open (US morning), so A-share values serve the PREVIOUS CN close (15:00 CST = 07:00 UTC)
-— that is fresh data, not a delay; the freshness expectation for a_share is set for that.
+Refresh cadence vs the CN session clock (#97): the scheduled full run lands before the
+CN open (US morning), so A-share values serve the PREVIOUS CN close (15:00 CST = 07:00
+UTC). A-share assets live inside equities.json (market=CN), whose freshness interval
+reflects the run cadence — the CN-close vintage at that hour is expected, not a defect.
 """
 
 from __future__ import annotations
