@@ -56,7 +56,12 @@ providers:
     # official FOMC calendar (~8 lightweight calls/run, #83 §3A).
     - { name: fred_calendar, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 600 }
   a_share:
-    - { name: akshare, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 800 }
+    # #97/#85: yfinance via the CN symbol mapper is the primary (US-hosted, 20/20 from
+    # this host; the Eastmoney history tier akshare used is geo-blocked). akshare now
+    # talks to the Tencent backend (stock_zh_a_hist_tx) as the second rung — two
+    # independent networks, Eastmoney leaves the hot path.
+    - { name: yfinance_a_share, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 2000 }
+    - { name: akshare, priority: 2, kind: fallback, max_concurrency: 2, min_interval_ms: 800 }
   news:
     - { name: rss_news, priority: 1, kind: primary, max_concurrency: 4, min_interval_ms: 400 }
 
