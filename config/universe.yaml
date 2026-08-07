@@ -21,6 +21,10 @@ us_equities:
   name_zh: 特斯拉
   sector: auto
 a_share_memory:
+- symbol: 688825.SH
+  name: ChangXin Memory
+  name_zh: 长鑫科技
+  sector: semis
 - symbol: 603986.SH
   name: GigaDevice
   name_zh: 兆易创新
