@@ -20,10 +20,15 @@ _SYSTEM_TASKS: dict[str, str] = {
     "zh-CN": (
         "你是全球市场风险情报看板（Market Risk Dashboard）的资深市场分析师。"
         "基于给定的事实层，撰写一份中文市场风险简报。"
+        "注意：财联社/华尔街见闻等中文新闻源经 RSSHub 第三方聚合中转（trust: relay），"
+        "属于二手聚合信息，引用时按行业资讯对待，勿当作一手官方信源。"
     ),
     "en": (
         "You are a senior market analyst for the Market Risk Dashboard. "
-        "Write an English market risk brief based on the given fact layer."
+        "Write an English market risk brief based on the given fact layer. "
+        "Note: the Chinese news sources (CLS / Wall Street CN) are relayed through the "
+        "third-party RSSHub aggregator (trust: relay, S-3) — treat them as second-hand "
+        "industry aggregation, not first-party official statements."
     ),
 }
 
@@ -85,6 +90,28 @@ _CITATION_RULES: dict[str, str] = {
 }
 
 
+_THEME_LABELS: dict[str, str] | None = None
+
+
+def _theme_labels() -> dict[str, str]:
+    """EN sector/theme labels — read from the SAME file the frontend renders (one source,
+    #98: build_prompt's English-label need tracked from the #93/#102 label removal, C-1)."""
+    global _THEME_LABELS
+    if _THEME_LABELS is not None:
+        return _THEME_LABELS
+    labels: dict[str, str] = {}
+    path = Path(__file__).resolve().parents[2] / "src" / "i18n" / "locales" / "en" / "themes.json"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        data = {}
+    for key, value in data.items():
+        if isinstance(value, str):
+            labels[key] = value
+    _THEME_LABELS = labels
+    return labels
+
+
 def _render_facts(facts: FactLayer) -> str:
     """Fact layer → text summary (deterministic, language-neutral)."""
     risk = facts.risk
@@ -101,6 +128,13 @@ def _render_facts(facts: FactLayer) -> str:
         f"  - [{key}] dataset={ref.dataset} path={ref.path} metric={ref.metric} value={ref.value}"
         for key, ref in facts.evidence_index.items()
     )
+    labels = _theme_labels()
+    sector_rows = facts.market_summary.get("sector_performance", [])
+    sector_lines = "\n".join(
+        f"  - {labels.get(str(row['key']), str(row['key']))}: {row['change_1d']:+.2f}%"
+        for row in sector_rows
+    ) if sector_rows else "  (none)"
+
     return f"""## Fact Layer (generated_at={facts.generated_at}, schema_version={facts.schema_version})
 
 ### Risk snapshot
@@ -120,6 +154,9 @@ def _render_facts(facts: FactLayer) -> str:
 
 ### Market summary
 {json.dumps(facts.market_summary, ensure_ascii=False)}
+
+### Sector / theme performance (1d)
+{sector_lines}
 
 ### Top news (Top 15 by importance)
 {json.dumps(facts.news_top, ensure_ascii=False)}

@@ -263,3 +263,44 @@ def test_rebuild_preserves_fetched_at(fact_layer_env: Path) -> None:
         "a rebuild must preserve the original fetched_at, got "
         f"{rebuilt['generated_at']!r} instead of {original_fetched_at!r}"
     )
+
+
+def test_market_summary_carries_sector_performance_and_prompt_labels_it() -> None:
+    """#98: the 20-theme taxonomy reaches the AI brief — the fact layer carries
+    sector/theme keys + numbers (C-1, no display labels in payloads) and build_prompt
+    resolves the EN labels from the same themes.json the frontend renders."""
+    from pipeline.analysis.build_prompt import _render_facts
+    from pipeline.factlayer.builder import FactLayerBuilder
+    from pipeline.schemas import CryptoEnvelope, EquitiesEnvelope, FactLayer, MacroEnvelope, NewsEnvelope, RiskEnvelope, CalendarEnvelope, SectorsEnvelope
+    from pipeline.schemas.sectors import SectorItem, SectorsDataset
+    from pipeline.settings import Settings
+    from tests.pipeline.factories import make_envelope
+
+    builder = FactLayerBuilder()
+    equities = make_envelope("equities")
+
+    sectors = SectorsEnvelope.model_validate({
+        **make_envelope("sectors"),
+        "payload": SectorsDataset(
+            sectors=[SectorItem(key="semis", change_1d=2.5)],
+            themes=[SectorItem(key="ai_infrastructure", change_1d=-1.2)],
+            memory=None,
+        ).model_dump(),
+    })
+    facts: FactLayer = builder.build(
+        risk=RiskEnvelope.model_validate(make_envelope("risk")),
+        macro=MacroEnvelope.model_validate(make_envelope("macro")),
+        equities=EquitiesEnvelope.model_validate(equities),
+        crypto=CryptoEnvelope.model_validate(make_envelope("crypto")),
+        news=NewsEnvelope.model_validate(make_envelope("news")),
+        calendar=CalendarEnvelope.model_validate(make_envelope("calendar")),
+        sectors=sectors,
+    )
+    perf = facts.market_summary["sector_performance"]
+    assert {"key": "semis", "change_1d": 2.5} in perf
+    assert {"key": "ai_infrastructure", "change_1d": -1.2} in perf
+
+    prompt = _render_facts(facts)
+    assert "Sector / theme performance (1d)" in prompt
+    assert "Semiconductors: +2.50%" in prompt  # label resolved from en themes.json
+    assert "AI Infrastructure: -1.20%" in prompt

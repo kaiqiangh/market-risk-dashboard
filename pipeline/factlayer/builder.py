@@ -63,7 +63,7 @@ class FactLayerBuilder:
             data_freshness=data_freshness,
             risk=risk.payload,
             macro_summary=self._macro_summary(macro),
-            market_summary=self._market_summary(equities, crypto),
+            market_summary=self._market_summary(equities, crypto, sectors),
             news_top=[n.model_dump() for n in news.payload.items[:15]],
             calendar_next7d=[e.model_dump() for e in calendar.payload.events[:20]],
             evidence_index=evidence_index,
@@ -89,7 +89,8 @@ class FactLayerBuilder:
             summary["fedwatch_status"] = fw.status
         return summary
 
-    def _market_summary(self, equities: EquitiesEnvelope, crypto: CryptoEnvelope) -> dict[str, Any]:
+    def _market_summary(self, equities: EquitiesEnvelope, crypto: CryptoEnvelope,
+                        sectors: SectorsEnvelope | None = None) -> dict[str, Any]:
         summary: dict[str, Any] = {}
         for asset in equities.payload.assets[:8]:
             summary[f"{asset.symbol.lower()}_price"] = asset.price
@@ -99,6 +100,15 @@ class FactLayerBuilder:
             summary[f"{asset.symbol.lower()}_price"] = asset.price
             summary[f"{asset.symbol.lower()}_change_1d"] = asset.change_1d
         summary["btc_dominance"] = crypto.payload.btc_dominance
+        if sectors is not None:
+            # #98: the 20-theme taxonomy reaches the AI brief. Labels are resolved at
+            # render time (build_prompt reads the SAME en themes.json the frontend uses) —
+            # the fact layer carries keys + numbers only (C-1, no display labels in payloads).
+            summary["sector_performance"] = [
+                {"key": s.key, "change_1d": s.change_1d}
+                for s in [*sectors.payload.sectors, *sectors.payload.themes]
+                if s.change_1d is not None
+            ]
         return summary
 
     # ---- Evidence index ----
