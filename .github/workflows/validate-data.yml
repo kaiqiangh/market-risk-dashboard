@@ -57,7 +57,7 @@ jobs:
       - name: Validate committed data (Node structural, fallback)
         run: node scripts/validate-json.mjs --data-dir public/data
 
-      - name: Contract drift gate (#101): regenerate and diff
+      - name: "Contract drift gate (#101): regenerate and diff"
         run: npm run check:contracts
 
       - name: Check i18n translation files

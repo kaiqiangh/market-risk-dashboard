@@ -174,3 +174,17 @@ def test_validate_data_runs_contract_drift_gate() -> None:
     assert '"src/schemas/generated/**"' in text, (
         "validate-data.yml paths: must watch src/schemas/generated/** so a drift PR triggers the gate"
     )
+
+
+def test_workflow_files_are_valid_yaml() -> None:
+    """CI workflows must parse as YAML — an unparseable gate silently never runs.
+
+    Regression: the "Contract drift gate (#101): …" step name contained `#101`, which YAML
+    treats as a comment, so validate-data.yml failed to parse and the gate was red-without-
+    running on every PR until someone read the Actions page. A step name containing `:` or
+    `#` must be quoted.
+    """
+    import yaml
+
+    for path in sorted(WORKFLOWS_DIR.glob("*.yml")):
+        yaml.safe_load(path.read_text(encoding="utf-8"))
