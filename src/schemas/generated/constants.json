@@ -173,6 +173,9 @@
     "crypto": [
       "crypto"
     ],
+    "economic": [
+      "calendar"
+    ],
     "macro": [
       "macro"
     ],
