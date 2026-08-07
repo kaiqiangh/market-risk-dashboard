@@ -66,10 +66,10 @@ export default function OverviewPage() {
   }
   if (sectorsQ.data) {
     for (const s of sectorsQ.data.payload.sectors) {
-      heatmapCells.push({ asset: s.label_zh ?? s.label, category: t("heatmap.catSectors"), change1d: s.change_1d });
+      heatmapCells.push({ asset: t(`themes:${s.key}`, { defaultValue: s.key }), category: t("heatmap.catSectors"), change1d: s.change_1d });
     }
     for (const th of sectorsQ.data.payload.themes) {
-      heatmapCells.push({ asset: th.label_zh ?? th.label, category: t("heatmap.catThemes"), change1d: th.change_1d });
+      heatmapCells.push({ asset: t(`themes:${th.key}`, { defaultValue: th.key }), category: t("heatmap.catThemes"), change1d: th.change_1d });
     }
   }
 
@@ -304,7 +304,8 @@ export default function OverviewPage() {
             <div data-testid="sector-performance">
               {sectorsQ.data.payload.sectors.map((s) => {
                 const dTone = dirTone(s.change_1d);
-                const label = locale.startsWith("zh") && s.label_zh ? s.label_zh : s.label;
+                // #102 (C-1): labels come from the themes namespace, keyed by the canonical key.
+                const label = t(`themes:${s.key}`, { defaultValue: s.key });
                 return (
                   <div
                     key={s.key}

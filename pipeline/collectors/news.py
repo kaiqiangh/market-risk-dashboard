@@ -17,30 +17,32 @@ from pipeline.degrade import degraded_quality
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import NewsDataset, NewsItem, NewsTranslationsDataset
 from pipeline.settings import Settings
+from pipeline.universe import AssetUniverse
 from pipeline.utils import now_utc
 
 _HTML_RE = re.compile(r"<[^>]+>")
-_ASSET_ALIASES = {
-    "NVDA": ["nvidia", "英伟达"],
-    "AVGO": ["broadcom", "博通"],
-    "MU": ["micron", "美光"],
-    "AMD": ["amd", "超威"],
-    "TSLA": ["tesla", "特斯拉"],
-    "BTC": ["bitcoin", "比特币", "btc"],
-    "ETH": ["ethereum", "以太坊", "eth"],
-}
 
 
 class NewsCollector:
     def __init__(self, registry: ProviderRegistry, settings: Settings | None = None) -> None:
         self.registry = registry
         self.settings = settings or Settings()
-        rules = self.settings.load_news_sources().get("importance", {})
-        self.source_weight = float(rules.get("source_weight", 30))
-        self.keyword_weight = float(rules.get("keyword_weight", 30))
-        self.asset_hit_weight = float(rules.get("asset_hit_weight", 20))
-        self.recency_weight = float(rules.get("recency_weight", 20))
-        self.high_keywords = [k.lower() for k in rules.get("keywords", {}).get("high", [])]
+        # #102: importance rules come from the VALIDATED news_sources config (single shape,
+        # extra="forbid") rather than a raw dict the model cannot govern.
+        self._news_config = self.settings.load_news_sources_config()
+        importance = self._news_config.importance
+        self.source_weight = float(importance.source_weight)
+        self.keyword_weight = float(importance.keyword_weight)
+        self.asset_hit_weight = float(importance.asset_hit_weight)
+        self.recency_weight = float(importance.recency_weight)
+        self.high_keywords = [k.lower() for k in importance.keywords.get("high", [])]
+        # #102 (D-8): asset-hit aliases derive from the universe (symbol/name/name_zh),
+        # replacing the hardcoded table. Ops knobs (M-5) come from sources.yaml:operations.
+        self._asset_aliases = AssetUniverse.load(self.settings).news_aliases()
+        operations = self.settings.load_sources_config().operations
+        self.recency_half_life_hours = float(operations.recency_half_life_hours)
+        self.news_max_items = int(operations.news_max_items)
+        self.news_summary_max_chars = int(operations.news_summary_max_chars)
         self.degraded: list[str] = []
 
     def _dedupe_id(self, title: str, source: str, published: str) -> str:
@@ -49,8 +51,10 @@ class NewsCollector:
     def _score_importance(self, item: dict[str, Any], now: datetime) -> float:
         title = item["title"].lower()
         # Source weight (per news_sources.yaml source weight, default 1)
-        source_cfg = self.settings.load_news_sources().get("sources", [])
-        weight = next((float(s.get("weight", 1)) for s in source_cfg if s.get("id") == item.get("source_id")), 1.0)
+        weight = next(
+            (float(s.weight) for s in self._news_config.sources if s.id == item.get("source_id")),
+            1.0,
+        )
         source_score = self.source_weight * min(weight / 4.0, 1.0)
 
         keyword_hits = sum(1 for kw in self.high_keywords if kw in title)
@@ -64,14 +68,14 @@ class NewsCollector:
         except ValueError:
             published = now
         age_hours = max(0.0, (now - published).total_seconds() / 3600.0)
-        recency_score = self.recency_weight * max(0.0, 1.0 - age_hours / 48.0)
+        recency_score = self.recency_weight * max(0.0, 1.0 - age_hours / self.recency_half_life_hours)
 
         return round(min(100.0, source_score + keyword_score + asset_score + recency_score), 2)
 
     def _map_assets(self, title: str) -> list[str]:
         low = title.lower()
         hits: list[str] = []
-        for symbol, aliases in _ASSET_ALIASES.items():
+        for symbol, aliases in self._asset_aliases.items():
             if any(a in low for a in aliases):
                 hits.append(symbol)
         return hits
@@ -153,13 +157,13 @@ class NewsCollector:
                     assets=self._map_assets(title),
                     importance=self._score_importance(raw, now),
                     sentiment=None,
-                    summary=raw.get("summary", "")[:160],
+                    summary=raw.get("summary", "")[: self.news_summary_max_chars],
                     impact_window=None,
                 )
             )
 
         items.sort(key=lambda n: n.importance, reverse=True)
-        items = items[:50]
+        items = items[: self.news_max_items]
 
         quality = self._quality()
         # #64: return payload + provider outcome; the caller assembles the envelope and

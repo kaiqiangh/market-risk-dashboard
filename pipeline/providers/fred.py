@@ -50,7 +50,6 @@ SERIES_CATALOG: dict[str, dict[str, str]] = {
 
 class FredProvider(BaseProvider):
     name = "fred"
-    priority = 1
     domain = "macro"
 
     def __init__(self, settings=None) -> None:

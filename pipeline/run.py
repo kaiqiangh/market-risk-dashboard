@@ -548,10 +548,12 @@ def _build_dashboard(
 
     sector_performance: list[dict[str, Any]] = []
     if sectors is not None:
+        # #102 (C-1): no labels here — the payload carries key + change; the frontend renders
+        # t(themes.<key>) from i18n, so dashboard.json has nothing to display-label.
         for s in sectors.payload.sectors:
-            sector_performance.append({"key": s.key, "label": s.label, "label_zh": s.label_zh, "change_1d": s.change_1d})
+            sector_performance.append({"key": s.key, "change_1d": s.change_1d})
         for t in sectors.payload.themes:
-            sector_performance.append({"key": t.key, "label": t.label, "label_zh": t.label_zh, "change_1d": t.change_1d})
+            sector_performance.append({"key": t.key, "change_1d": t.change_1d})
 
     return DashboardPayload(
         risk=r,

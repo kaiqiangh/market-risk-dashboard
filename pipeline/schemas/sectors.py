@@ -11,11 +11,14 @@ from .envelope import BaseEnvelope, ContractModel, UTCDateTime
 
 
 class SectorItem(ContractModel):
-    """Sector or theme entry."""
+    """Sector or theme entry.
+
+    No ``label``/``label_zh``: display labels live in ``src/i18n/locales/{en,zh-CN}/themes.json``,
+    keyed by ``key`` (C-1/#102). The payload carries the key and the numbers; the frontend
+    renders ``t(themes.<key>)`` and ``check:i18n`` catches a key with no Chinese label.
+    """
 
     key: str = Field(min_length=1)
-    label: str = Field(min_length=1)
-    label_zh: str | None = None
     change_1d: float | None = None
     change_1w: float | None = None
     change_1m: float | None = None

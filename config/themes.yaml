@@ -1,0 +1,42 @@
+# ============================================================
+# Sector/theme taxonomy (decision #90, ADR 0005: config holds keys + structure, i18n holds labels).
+# This file carries NO display labels — the frontend renders t(themes.<key>) from
+# src/i18n/locales/{en,zh-CN}/themes.json (C-1).
+# ============================================================
+schema_version: "1.0.0"
+
+# Sector/theme membership: theme → constituents. Every `symbol` must resolve to an entry in
+# universe.yaml; a dangling reference fails the run at load time (checked before any provider
+# is constructed). `weight`: 1.0 = primary, 0.5 = secondary (#86). This ticket delivers the
+# mechanism only — #93 populates the full 20-theme taxonomy with its constituents.
+sectors:
+  semis:
+    constituents:
+      - { symbol: NVDA, weight: 1.0 }
+      - { symbol: AVGO, weight: 1.0 }
+      - { symbol: MU, weight: 1.0 }
+      - { symbol: AMD, weight: 1.0 }
+  auto:
+    constituents:
+      - { symbol: TSLA, weight: 1.0 }
+
+themes:
+  memory:
+    # MVP proxy: Micron + the A-share memory makers (review P0-1); no ETF proxy yet (#93).
+    constituents:
+      - { symbol: MU, weight: 1.0 }
+      - { symbol: "603986.SH", weight: 1.0 }
+      - { symbol: "301308.SZ", weight: 1.0 }
+      - { symbol: "688525.SH", weight: 1.0 }
+      - { symbol: "000021.SZ", weight: 1.0 }
+      - { symbol: "300223.SZ", weight: 1.0 }
+      - { symbol: "001309.SZ", weight: 1.0 }
+      - { symbol: "300475.SZ", weight: 1.0 }
+      - { symbol: "688008.SH", weight: 1.0 }
+      - { symbol: "600584.SH", weight: 1.0 }
+      - { symbol: "002156.SZ", weight: 1.0 }
+  ai:
+    constituents:
+      - { symbol: NVDA, weight: 1.0 }
+      - { symbol: AVGO, weight: 1.0 }
+      - { symbol: AMD, weight: 1.0 }

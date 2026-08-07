@@ -37,7 +37,6 @@ def _stooq_symbol(symbol: str) -> str:
 
 class StooqProvider(BaseProvider):
     name = "stooq"
-    priority = 2
     domain = "quotes"
 
     def __init__(self, settings=None) -> None:

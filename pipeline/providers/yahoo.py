@@ -26,7 +26,6 @@ _PERIOD_MAP = {"1mo": "1mo", "1y": "1y", "3mo": "3mo", "6mo": "6mo", "2y": "2y",
 
 class YahooProvider(BaseProvider):
     name = "yfinance"
-    priority = 1
     domain = "quotes"
 
     def health(self) -> ProviderHealth:
@@ -141,7 +140,7 @@ class YahooProvider(BaseProvider):
         errors: list[str] = []
         start_dt = _parse_date(start)
         end_dt = _parse_date(end)
-        for symbol in _default_symbols():
+        for symbol in _default_symbols(self.settings):
             try:
                 cal = yf.Ticker(symbol).get_earnings_dates(limit=4)
                 if cal is None or len(cal) == 0:
@@ -161,8 +160,15 @@ class YahooProvider(BaseProvider):
         return items
 
 
-def _default_symbols() -> list[str]:
-    return ["NVDA", "AVGO", "MU", "AMD", "TSLA"]
+def _default_symbols(settings=None) -> list[str]:
+    """US equity symbols for the earnings-calendar fallback, from the universe (D-8/#102).
+
+    This used to be a hardcoded five-ticker list that had already drifted from
+    config/universe.yaml; the universe is now the single home for the pool.
+    """
+    from pipeline.universe import AssetUniverse
+
+    return AssetUniverse.load(settings).symbols("US")
 
 
 def _parse_date(value: str) -> str | None:
@@ -173,7 +179,6 @@ class YahooCalendarProvider(YahooProvider):
     """Earnings calendar fallback Provider (registered to the calendar domain, architecture §1.3 fmp→yfinance)."""
 
     name = "yfinance_calendar"
-    priority = 2
     domain = "calendar"
 
 

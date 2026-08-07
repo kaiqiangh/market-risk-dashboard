@@ -1,6 +1,10 @@
 {
   "title": "Themes",
   "subtitle": "Semiconductors / Memory (incl. 10 A-shares) / Metals / Crypto / Themes",
+  "semis": "Semiconductors",
+  "auto": "Autos",
+  "memory": "Memory (Micron + A-share memory)",
+  "ai": "AI / GPU",
   "section": {
     "semis": "Semiconductors",
     "memory": "Memory (Micron + A-share memory)",

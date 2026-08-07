@@ -49,7 +49,7 @@ export default function ThemesPage() {
             {sectors.map((s) => (
               <AssetCard
                 key={s.key}
-                symbol={locale.startsWith("zh") && s.label_zh ? s.label_zh : s.label}
+                symbol={t(`${s.key}`, { defaultValue: s.key })}
                 change1d={s.change_1d}
                 sub={`1W ${s.change_1w === null ? t("common:data.na") : `${s.change_1w > 0 ? "+" : ""}${s.change_1w}%`}`}
               />
@@ -130,7 +130,7 @@ export default function ThemesPage() {
             {themes.map((th) => (
               <AssetCard
                 key={th.key}
-                symbol={locale.startsWith("zh") && th.label_zh ? th.label_zh : th.label}
+                symbol={t(`${th.key}`, { defaultValue: th.key })}
                 change1d={th.change_1d}
                 sub={`1M ${th.change_1m === null ? t("common:data.na") : `${th.change_1m > 0 ? "+" : ""}${th.change_1m}%`}`}
               />

@@ -140,17 +140,25 @@ class ProviderRegistry:
 
     def __init__(self, settings: Settings | None = None) -> None:
         self.settings = settings or Settings()
-        sources = self.settings.load_sources()
-        degrade = sources.get("degrade", {})
-        self.max_retries = int(degrade.get("max_retries", DEFAULT_MAX_RETRIES))
-        self.backoff_base = float(degrade.get("backoff_base_seconds", DEFAULT_BACKOFF_BASE))
-        self.jitter = bool(degrade.get("jitter", True))
-        # Single source of truth (#62): pass the already-parsed mapping so this does not
+        # #102: retries/backoff/jitter and the cache directory come from the VALIDATED
+        # SourcesConfig.degrade, not the raw dict — a typo in the degrade block now fails
+        # loudly at construction instead of silently falling back to a Python default.
+        cfg = self.settings.load_sources_config()
+        degrade = cfg.degrade
+        self.max_retries = degrade.max_retries
+        self.backoff_base = degrade.backoff_base_seconds
+        self.jitter = degrade.jitter
+        # Single source of truth (#62): pass the validated mapping so the accessor does not
         # re-read sources.yaml.
-        self.degrade_factor = resolve_degrade_factor(sources=sources)
-        cache_dir = self.settings.artifacts_dir / "cache"
-        cache_dir.mkdir(parents=True, exist_ok=True)
-        self.cache_dir: Path = cache_dir
+        self.degrade_factor = resolve_degrade_factor(sources=cfg.model_dump())
+        # #102: the cache directory is config (`degrade.last_good_cache_dir`), resolved
+        # against the project root when relative — it used to be hardcoded to
+        # `artifacts/cache` here while the config key sat unused.
+        cache_path = Path(degrade.last_good_cache_dir)
+        self.cache_dir: Path = (
+            cache_path if cache_path.is_absolute() else self.settings.project_root / cache_path
+        )
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
         self._providers: dict[str, list[BaseProvider]] = {}
         self.health_map: dict[str, ProviderHealth] = {}
         self.degraded_domains: set[str] = set()

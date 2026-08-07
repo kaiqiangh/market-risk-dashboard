@@ -43,13 +43,4 @@ importance:
       - "通胀"
       - "存储"
       - "减产"
-  assets:
-    - NVDA
-    - AVGO
-    - MU
-    - AMD
-    - TSLA
-    - BTC
-    - ETH
 
-categories: [macro, monetary_policy, equities, memory, crypto, geopolitics, earnings, other]

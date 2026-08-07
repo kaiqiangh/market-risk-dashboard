@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from pipeline.collectors.news import NewsCollector
+from pipeline.config.models import NewsSource
 from pipeline.providers.base import ProviderError
 from pipeline.providers.rss_news import RssNewsProvider
 from pipeline.settings import Settings
@@ -23,10 +24,14 @@ ENTRY = {
 def _provider(tmp_path: Path) -> RssNewsProvider:
     settings = Settings(_env_file=None, artifacts_dir=tmp_path)
     provider = RssNewsProvider(settings)
-    provider.sources = [{"id": "test", "name": "Test", "url": "https://example.com/feed", "lang": "en"}]
+    provider.sources = [NewsSource(id="test", name="Test", url="https://example.com/feed", lang="en")]
     provider.max_retries = 1
     provider.backoff_base = 0
     provider.jitter = False
+    # #102: the provider resolves its cache dir from sources.yaml:degrade.last_good_cache_dir
+    # (project-rooted). Tests override it to their own tmp_path so per-source cache entries
+    # cannot leak across tests via the shared repo artifacts/cache.
+    provider.cache_dir = tmp_path / "cache"
     return provider
 
 
