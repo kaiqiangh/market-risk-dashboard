@@ -122,10 +122,10 @@ def _build_risk_context(
     breadth = breadth_snapshot(histories)
     trend = trend_snapshot(histories)
 
-    # Cross-asset confirmation signals (PRD §14.7: 9-signal design; the 8 implemented here are
-    # the defensible subset — 周期股弱于防御股 / 高收益债弱于国债 need extra series and are
-    # explicitly deferred. Signals 7-8 are commodity-driven: copper falling = growth stress,
-    # gold rising = classic risk-off confirmation).
+    # Cross-asset confirmation signals (#118; PRD §14.7 designs 9, of which 8 are
+    # implemented here — the cyclicals-vs-defensives and HY-vs-treasury spreads need extra
+    # series and are deliberately deferred). Signals 7-8 are commodity-driven: copper
+    # falling = growth stress, gold rising = classic risk-off confirmation.
     vix = _macro_value(macro, "rates", "vixcls")
     hy = _macro_value(macro, "credit", "bamlh0a0hym2")
     dxy = _macro_value(macro, "fx", "dtwexbgs")

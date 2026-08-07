@@ -7,12 +7,12 @@
   "section": {
     "semis": "Semiconductors",
     "memory": "Memory (Micron + A-share memory)",
-    "metals": "Metals",
+    "commodities": "Commodities",
     "crypto": "Crypto",
     "themes": "Sectors",
     "empty": "No data"
   },
-  "metals": {
+  "commodities": {
     "na": "No commodity data",
     "naHint": "The commodity source returned nothing; it will resume automatically."
   },

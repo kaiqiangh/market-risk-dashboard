@@ -7,12 +7,12 @@
   "section": {
     "semis": "半导体",
     "memory": "存储（美光 + A 股存储）",
-    "metals": "金属",
+    "commodities": "商品",
     "crypto": "加密",
     "themes": "板块",
     "empty": "暂无数据"
   },
-  "metals": {
+  "commodities": {
     "na": "暂无商品数据",
     "naHint": "商品数据源暂未返回数据，稍后自动恢复。"
   },

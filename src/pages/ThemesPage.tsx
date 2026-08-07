@@ -7,7 +7,7 @@ import { ErrorState } from "@/components/ui/ErrorState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { StatusBadge } from "@/components/layout/StatusBadge";
-import { formatCompactNumber, formatRatio } from "@/lib/format";
+import { formatChange, formatCompactNumber, formatRatio } from "@/lib/format";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/Card";
 import { dirTone, dirClasses } from "@/lib/riskColors";
@@ -131,8 +131,8 @@ export default function ThemesPage() {
       </section>
 
       {/* Commodities (gold/silver/copper/oil, #118) */}
-      <section className="border-t border-hairline pt-4" data-testid="section-metals">
-        <h2 className="mb-2 text-sm font-medium text-foreground">{t("section.metals")}</h2>
+      <section className="border-t border-hairline pt-4" data-testid="section-commodities">
+        <h2 className="mb-2 text-sm font-medium text-foreground">{t("section.commodities")}</h2>
         {commoditiesQ.isLoading ? (
           <Skeleton className="h-32 w-full" />
         ) : commoditiesQ.isError ? (
@@ -146,12 +146,12 @@ export default function ThemesPage() {
                 name={locale === "en" ? c.name : (c.name_zh ?? c.name)}
                 value={c.price}
                 change1d={c.change_1d}
-                sub={`1M ${c.change_1m === null ? t("common:data.na") : `${c.change_1m > 0 ? "+" : ""}${c.change_1m}%`}`}
+                sub={`1W ${c.change_1w === null ? t("common:data.na") : formatChange(c.change_1w, locale)} · 1M ${c.change_1m === null ? t("common:data.na") : formatChange(c.change_1m, locale)}`}
               />
             ))}
           </div>
         ) : (
-          <EmptyState title={t("metals.na")} message={t("metals.naHint")} />
+          <EmptyState title={t("commodities.na")} message={t("commodities.naHint")} />
         )}
       </section>
 
