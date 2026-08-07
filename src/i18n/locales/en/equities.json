@@ -39,7 +39,7 @@
     "change1m": "1M"
   },
   "aShare": {
-    "degraded": "A-share memory source degraded (10 expected, 0 currently available)",
+    "degraded": "A-share memory source degraded (11 expected, 0 currently available)",
     "note": "AKShare anti-scraping fallback: retains last good data on failure"
   }
 }
