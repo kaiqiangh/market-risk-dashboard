@@ -1,4 +1,4 @@
-"""Equities dataset contract (architecture §8.10/§8.11: 5 US equities + 10 A-share card-level indicators).
+"""Equities dataset contract (architecture §8.10/§8.11: 5 US equities + 11 A-share card-level indicators).
 
 Filled by the T03 MarketCollector; this module only defines the contract.
 """

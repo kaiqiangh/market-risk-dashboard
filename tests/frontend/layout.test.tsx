@@ -95,8 +95,8 @@ describe("mobile layout", () => {
     expect(more).toBeVisible();
     expect(more.className).toContain("min-h-11");
     fireEvent.click(more);
-    expect(screen.getByRole("menuitem", { name: /主题/ })).toBeVisible();
-    fireEvent.click(screen.getByRole("menuitem", { name: /主题/ }));
+    expect(screen.getByRole("menuitem", { name: /板块/ })).toBeVisible();
+    fireEvent.click(screen.getByRole("menuitem", { name: /板块/ }));
     expect(screen.queryByRole("menu")).toBeNull();
 
     fireEvent.click(screen.getByRole("link", { name: /系统状态/ }));

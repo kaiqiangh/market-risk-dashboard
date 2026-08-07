@@ -72,7 +72,7 @@
 | English | 中文 | 说明 |
 |---|---|---|
 | Cross-Asset | 跨资产 | 股票/债券/汇率/商品/加密等多资产类别。 |
-| Equities | 股票 / 美股 | 本产品"Equities"页展示美股 5 只（NVDA/AVGO/MU/AMD/TSLA）+ A 股存储 10 只。 |
+| Equities | 股票 / 美股 | 本产品"Equities"页展示美股 5 只（NVDA/AVGO/MU/AMD/TSLA）+ A 股存储 11 只。 |
 | A-Shares | A 股 | 沪深交易所上市股票（如 603986.SH 兆易创新）。 |
 | Crypto | 加密货币 | 如 BTC（比特币）。 |
 | Semiconductors | 半导体 | 主题板块（SOXX 等）。 |

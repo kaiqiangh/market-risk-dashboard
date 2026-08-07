@@ -10,8 +10,7 @@
     "details": "显示数据表",
     "catEquities": "美股",
     "catCrypto": "加密",
-    "catSectors": "板块",
-    "catThemes": "主题"
+    "catSectors": "板块"
   },
   "trend": {
     "title": "风险趋势（近 30 日）",

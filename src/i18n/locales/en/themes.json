@@ -1,20 +1,20 @@
 {
-  "title": "Themes",
-  "subtitle": "Semiconductors / Memory (incl. 10 A-shares) / Metals / Crypto / Themes",
-  "semis": "Semiconductors",
+  "title": "Sectors",
+  "subtitle": "Semiconductors / Memory (incl. 11 A-shares) / Commodities / Crypto / Sectors",
+  "semis": "Semis Leaders",
   "auto": "Autos",
   "memory": "Memory",
   "section": {
     "semis": "Semiconductors",
     "memory": "Memory (Micron + A-share memory)",
-    "metals": "Metals",
+    "commodities": "Commodities",
     "crypto": "Crypto",
-    "themes": "Themes",
+    "themes": "Sectors",
     "empty": "No data"
   },
-  "metals": {
-    "na": "Metals data not yet connected",
-    "naHint": "MVP proxies metals via sectors/themes; commodity sources to be added."
+  "commodities": {
+    "na": "No commodity data",
+    "naHint": "The commodity source returned nothing; it will resume automatically."
   },
   "crypto": {
     "marketCap": "Total market cap",

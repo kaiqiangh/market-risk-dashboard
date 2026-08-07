@@ -43,4 +43,13 @@ describe("ThemesPage", () => {
     // cybersecurity percentile null with obs 30 → "warming up 30/100" (zh: 累积中 30/100).
     expect(screen.getByText("累积中 30 个观测")).toBeInTheDocument();
   });
+
+  it("renders the commodities section from commodities.json (#118)", async () => {
+    renderPage();
+    // fixture commodities: GC=F gold / CL=F WTI crude → cards with zh names + symbol.
+    expect(await screen.findByText("黄金")).toBeInTheDocument();
+    expect(screen.getByText("GC=F")).toBeInTheDocument();
+    expect(screen.getByText("WTI 原油")).toBeInTheDocument();
+    expect(screen.getByText("CL=F")).toBeInTheDocument();
+  });
 });
