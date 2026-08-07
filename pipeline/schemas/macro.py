@@ -57,6 +57,7 @@ class MacroDataset(ContractModel):
 
     rates: list[MacroIndicator] = Field(default_factory=list)
     credit: list[MacroIndicator] = Field(default_factory=list)
+    volatility: list[MacroIndicator] = Field(default_factory=list)
     inflation: list[MacroIndicator] = Field(default_factory=list)
     labor: list[MacroIndicator] = Field(default_factory=list)
     liquidity: list[MacroIndicator] = Field(default_factory=list)

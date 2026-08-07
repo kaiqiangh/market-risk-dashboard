@@ -19,31 +19,50 @@ from pipeline.providers.base import (
 
 FRED_BASE = "https://api.stlouisfed.org/fred/series/observations"
 
-# FRED series used by the MVP (architecture §3.2 indicator mapping + calibration §1.8)
+# FRED series catalog (#96, uses #84): every entry is the 27-series roster (plus EFFR for
+# the FedWatch anchor) with the metadata the collector and the history manifest need —
+# `frequency` (frequency-aware change/status lookbacks), `units` (server-side transform,
+# #84 §1: CPI/PCE are indexes at ~330, published as YoY percent; PAYEMS is a level,
+# published as the monthly change), `scale` (WALCL is Mil-$ vs RRPONTSYD Bil-$ — the
+# same `usd` unit at different magnitudes). Dead IDs (NAPM/MOVE/GOLDPMGBD228NLBM) that
+# FRED rejects with HTTP 400 are gone.
 SERIES_CATALOG: dict[str, dict[str, str]] = {
-    "DGS10": {"label": "10-Year Treasury Yield", "unit": "pct"},
-    "DGS2": {"label": "2-Year Treasury Yield", "unit": "pct"},
-    "DFII10": {"label": "10-Year Real Yield", "unit": "pct"},
-    "T10YIE": {"label": "10Y Breakeven Inflation", "unit": "pct"},
-    "DFF": {"label": "Effective Federal Funds Rate", "unit": "pct"},
-    "EFFR": {"label": "Effective Federal Funds Rate", "unit": "pct"},
-    "VIXCLS": {"label": "CBOE Volatility Index (VIX)", "unit": "index"},
-    "BAMLH0A0HYM2": {"label": "ICE BofA US High Yield OAS", "unit": "pct"},
-    "BAMLC0A0CM": {"label": "ICE BofA US Corporate OAS", "unit": "pct"},
-    "WALCL": {"label": "Fed Total Assets", "unit": "usd"},
-    "RRPONTSYD": {"label": "Overnight Reverse Repo", "unit": "usd"},
-    "WTREGEN": {"label": "Treasury General Account", "unit": "usd"},
-    "WRESBAL": {"label": "Bank Reserves", "unit": "usd"},
-    "CPIAUCSL": {"label": "CPI All Urban Consumers", "unit": "index"},
-    "PCEPI": {"label": "PCE Price Index", "unit": "index"},
-    "UNRATE": {"label": "Unemployment Rate", "unit": "pct"},
-    "PAYEMS": {"label": "Nonfarm Payrolls", "unit": "level"},
-    "NAPM": {"label": "ISM Manufacturing PMI (proxy)", "unit": "index"},
-    "M2SL": {"label": "M2 Money Stock", "unit": "usd"},
-    "DTWEXBGS": {"label": "Nominal Broad Dollar Index", "unit": "index"},
-    "MOVE": {"label": "Merrill Option Volatility Estimate", "unit": "index"},
-    "GOLDPMGBD228NLBM": {"label": "Gold Fixing Price", "unit": "usd"},
-    "DCOILWTICO": {"label": "WTI Crude Oil", "unit": "usd"},
+    # rates
+    "DGS10": {"label": "10-Year Treasury Yield", "unit": "pct", "frequency": "daily", "scale": "pct"},
+    "DGS2": {"label": "2-Year Treasury Yield", "unit": "pct", "frequency": "daily", "scale": "pct"},
+    "DFII10": {"label": "10-Year Real Yield", "unit": "pct", "frequency": "daily", "scale": "pct"},
+    "DFF": {"label": "Effective Federal Funds Rate", "unit": "pct", "frequency": "daily", "scale": "pct"},
+    # credit
+    "BAMLH0A0HYM2": {"label": "ICE BofA US High Yield OAS", "unit": "pct", "frequency": "daily", "scale": "pct"},
+    "BAMLC0A0CM": {"label": "ICE BofA US Corporate OAS", "unit": "pct", "frequency": "daily", "scale": "pct"},
+    # volatility (#84 §5: VIX belongs in its own group, not under rates)
+    "VIXCLS": {"label": "CBOE Volatility Index (VIX)", "unit": "index", "frequency": "daily", "scale": "index"},
+    # inflation (#84 §1: indexes published as YoY percent via units=pc1; T10YIE moves here)
+    "CPIAUCSL": {"label": "CPI All Urban Consumers (YoY)", "unit": "pct", "frequency": "monthly", "scale": "pct", "units": "pc1"},
+    "CPILFESL": {"label": "Core CPI (YoY)", "unit": "pct", "frequency": "monthly", "scale": "pct", "units": "pc1"},
+    "PCEPILFE": {"label": "Core PCE (YoY)", "unit": "pct", "frequency": "monthly", "scale": "pct", "units": "pc1"},
+    "T5YIFR": {"label": "5Y5Y Forward Inflation Expectation", "unit": "pct", "frequency": "daily", "scale": "pct"},
+    "T10YIE": {"label": "10Y Breakeven Inflation", "unit": "pct", "frequency": "daily", "scale": "pct"},
+    # labor (#84 §1: PAYEMS is total employed — published as the monthly change via units=chg)
+    "PAYEMS": {"label": "Nonfarm Payrolls (MoM change)", "unit": "level", "frequency": "monthly", "scale": "k", "units": "chg"},
+    "UNRATE": {"label": "Unemployment Rate", "unit": "pct", "frequency": "monthly", "scale": "pct"},
+    "ICSA": {"label": "Initial Jobless Claims", "unit": "level", "frequency": "weekly", "scale": "k"},
+    "CCSA": {"label": "Continued Claims", "unit": "level", "frequency": "weekly", "scale": "k"},
+    "CIVPART": {"label": "Labor Force Participation Rate", "unit": "pct", "frequency": "monthly", "scale": "pct"},
+    # liquidity (#84 §1: WALCL/WRESBAL/WTREGEN are Mil-$, RRPONTSYD is Bil-$)
+    "WALCL": {"label": "Fed Total Assets", "unit": "usd", "frequency": "weekly", "scale": "mil_usd"},
+    "WRESBAL": {"label": "Bank Reserves", "unit": "usd", "frequency": "weekly", "scale": "mil_usd"},
+    "WTREGEN": {"label": "Treasury General Account", "unit": "usd", "frequency": "weekly", "scale": "mil_usd"},
+    "RRPONTSYD": {"label": "Overnight Reverse Repo", "unit": "usd", "frequency": "daily", "scale": "bil_usd"},
+    "SOFR": {"label": "Secured Overnight Financing Rate", "unit": "pct", "frequency": "daily", "scale": "pct"},
+    # fx (#84 §1: DTWEX* lag 3-7 calendar days routinely — see freshness note)
+    "DTWEXBGS": {"label": "Nominal Broad Dollar Index", "unit": "index", "frequency": "daily", "scale": "index"},
+    "DTWEXAFEGS": {"label": "Dollar Index (Advanced FE)", "unit": "index", "frequency": "daily", "scale": "index"},
+    "DEXUSEU": {"label": "USD per EUR", "unit": "level", "frequency": "daily", "scale": "level"},
+    "DEXJPUS": {"label": "JPY per USD", "unit": "level", "frequency": "daily", "scale": "level"},
+    "DEXCHUS": {"label": "CNY per USD", "unit": "level", "frequency": "daily", "scale": "level"},
+    # FedWatch anchor (not a published card)
+    "EFFR": {"label": "Effective Federal Funds Rate", "unit": "pct", "frequency": "daily", "scale": "pct"},
 }
 
 
@@ -78,12 +97,10 @@ class FredProvider(BaseProvider):
                 error=str(exc)[:200], checked_at=None,
             )
 
-    def get_series(self, series_id: str, start: str | None = None, end: str | None = None, limit: int | None = None) -> list[dict[str, Any]]:
+    def get_series(self, series_id: str, start: str | None = None, end: str | None = None,
+                   limit: int | None = None, units: str = "lin") -> list[dict[str, Any]]:
         if not self.api_key:
             raise ProviderError("FRED: missing DATA_FRED_API_KEY (local .env)")
-        if series_id not in SERIES_CATALOG and series_id not in ("DFF",):
-            # Allow any known series; unknown series are still fetched (FRED will return empty)
-            pass
 
         def _fetch() -> dict[str, Any]:
             params: dict[str, Any] = {
@@ -99,6 +116,11 @@ class FredProvider(BaseProvider):
             if limit:
                 params["limit"] = limit
                 params["sort_order"] = "desc"
+            # #84 §1: server-side transform (lin/chg/ch1/pch/pc1/pca/cch/cca/log) — CPI/PCE
+            # are indexes published as YoY percent; PAYEMS is a level published as the
+            # monthly change. No extra request, no hand-rolled YoY maths.
+            if units != "lin":
+                params["units"] = units
             resp = self._client.get(FRED_BASE, params=params)
             if resp.status_code != 200:
                 # #103/E-3: classification + redaction at the one boundary (no nested retry).

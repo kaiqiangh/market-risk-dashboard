@@ -1,22 +1,42 @@
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import { z } from "zod";
+import { datasetClient } from "@/lib/api";
 import { useDataset } from "@/hooks/useDataset";
 import type { MacroEnvelope } from "@/schemas";
 import { MacroIndicatorCard } from "@/components/macro/MacroIndicatorCard";
 import { RateExpectationCard } from "@/components/macro/RateExpectationCard";
 import { MacroChart } from "@/charts/MacroChart";
+import { MacroHistoryChart, type MacroBundle } from "@/charts/MacroHistoryChart";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { StatusBadge } from "@/components/layout/StatusBadge";
 
-const SECTIONS = ["rates", "credit", "inflation", "labor", "liquidity", "fx"] as const;
+// #96 (uses #84): eight groups incl. the new `volatility` (VIX is an implied-volatility
+// index, not a rate) — mirrors risk_model.yaml's dimensions.
+const SECTIONS = ["rates", "credit", "volatility", "inflation", "labor", "liquidity", "fx"] as const;
+type MacroGroup = (typeof SECTIONS)[number];
+
+/** history/macro/{group}.{slice}.json — sparse column-oriented per-series history (#84 §3). */
+const MacroBundleSchema = z.record(z.object({ d: z.array(z.string()), v: z.array(z.number()) }));
 
 /**
- * MacroPage: macro page (rates / credit / inflation / labor / liquidity / fx + FedWatch + charts).
+ * MacroPage: macro page (rates / credit / volatility / inflation / labor / liquidity / fx
+ * + FedWatch + cross-sectional chart + per-group 30d history chart).
  */
 export default function MacroPage() {
   const { t } = useTranslation("macro");
   const macroQ = useDataset<MacroEnvelope>("macro");
+  const [historyGroup, setHistoryGroup] = useState<MacroGroup>("fx");
+
+  const historyQ = useQuery({
+    queryKey: ["history", "macro", historyGroup],
+    queryFn: () => datasetClient.fetch<MacroBundle>("macro", { slice: `${historyGroup}.30d` }, MacroBundleSchema),
+    staleTime: 60_000,
+    retry: 1,
+  });
 
   return (
     <div className="flex flex-col gap-4">
@@ -34,11 +54,11 @@ export default function MacroPage() {
         <ErrorState onRetry={macroQ.refetch} />
       ) : macroQ.data ? (
         <>
-          {/* Chart (merges rates + credit values) — open chart region, no card chrome */}
+          {/* Cross-sectional chart (market pricing: rates + credit + volatility) — open region */}
           <section className="border-t border-hairline pt-4">
             <h2 className="mb-2 text-sm font-medium text-foreground">{t("chart.title")}</h2>
             <MacroChart
-                items={[...macroQ.data.payload.rates, ...macroQ.data.payload.credit]
+                items={[...macroQ.data.payload.rates, ...macroQ.data.payload.credit, ...macroQ.data.payload.volatility]
                   .filter((ind) => ind.value !== null)
                   .map((ind) => ({ label: ind.label, value: ind.value as number, unit: ind.unit }))}
               />
@@ -68,6 +88,36 @@ export default function MacroPage() {
               );
             })}
           </div>
+
+          {/* Per-group 30d history (#96: history stored in the #84 shape, charted here) */}
+          <section className="border-t border-hairline pt-4" data-testid="section-history">
+            <h2 className="mb-2 text-sm font-medium text-foreground">{t("history.title")}</h2>
+            <div className="mb-2 flex flex-wrap gap-1.5">
+              {SECTIONS.map((group) => (
+                <button
+                  key={group}
+                  type="button"
+                  onClick={() => setHistoryGroup(group)}
+                  className={`rounded-full border px-2.5 py-0.5 text-[11px] transition-colors ${
+                    historyGroup === group
+                      ? "border-fresh-ok/40 bg-fresh-ok/10 text-fresh-ok"
+                      : "border-hairline text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {t(`section.${group}`)}
+                </button>
+              ))}
+            </div>
+            {historyQ.isLoading ? (
+              <Skeleton className="h-64 w-full" />
+            ) : historyQ.isError ? (
+              <ErrorState onRetry={historyQ.refetch} />
+            ) : historyQ.data ? (
+              <MacroHistoryChart bundle={historyQ.data} />
+            ) : (
+              <EmptyState title={t("history.empty")} />
+            )}
+          </section>
 
           {/* FedWatch */}
           <section className="border-t border-hairline pt-4" data-testid="section-fedwatch">

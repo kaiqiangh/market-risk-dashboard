@@ -2,10 +2,18 @@
 
 FRED series + FedWatch probabilities (Yahoo ZQ futures + EFFR anchor + local snapshot accumulation).
 Any Provider failure → degradation chain → degraded, does not interrupt the pipeline.
+
+#96 (uses #84): the 27-series roster across 8 groups (incl. a new `volatility` group for
+VIXCLS), every request bounded to the 5y window and memoised, units transformed
+server-side (pc1/chg), frequency-aware change/status, per-series history archived for the
+risk model's percentile windows. Refresh cadence: FRED runs on `--full`/`--macro-only`
+(2 runs/day against the automation schedule); 27 bounded requests ≈ 2 MB/run — payload
+size, not rate limits, was the constraint (#84 §4).
 """
 
 from __future__ import annotations
 
+from datetime import date, datetime, timedelta, timezone
 from typing import Any
 
 from pipeline.degrade import degraded_quality
@@ -25,17 +33,34 @@ from pipeline.providers.fred import SERIES_CATALOG
 from pipeline.schemas import FedWatchSnapshot, MacroDataset, MacroIndicator
 from pipeline.settings import Settings
 
-# FRED series → group
+# FRED series → group (#96, uses #84 §1 roster). VIXCLS moved to its own `volatility`
+# group (it is an equity implied-volatility index, not a rate); T10YIE moved to
+# `inflation` (an expectation measure, not a rate).
 SERIES_GROUPS: dict[str, list[str]] = {
-    "rates": ["DGS10", "DGS2", "DFII10", "T10YIE", "DFF"],
+    "rates": ["DGS10", "DGS2", "DFII10", "DFF"],
     "credit": ["BAMLH0A0HYM2", "BAMLC0A0CM"],
-    "inflation": ["CPIAUCSL", "PCEPI"],
-    "labor": ["UNRATE", "PAYEMS"],
-    "liquidity": ["WALCL", "RRPONTSYD", "WTREGEN", "WRESBAL"],
-    "fx": ["DTWEXBGS"],
+    "volatility": ["VIXCLS"],
+    "inflation": ["CPIAUCSL", "CPILFESL", "PCEPILFE", "T5YIFR", "T10YIE"],
+    "labor": ["PAYEMS", "UNRATE", "ICSA", "CCSA", "CIVPART"],
+    "liquidity": ["WALCL", "WRESBAL", "WTREGEN", "RRPONTSYD", "SOFR"],
+    "fx": ["DTWEXBGS", "DTWEXAFEGS", "DEXUSEU", "DEXJPUS", "DEXCHUS"],
 }
 
-DEFAULT_SERIES = ["DGS10", "DGS2", "DFII10", "T10YIE", "DFF", "BAMLH0A0HYM2", "BAMLC0A0CM", "VIXCLS"]
+# #84 §0: the four empty categories were a wiring gap between SERIES_GROUPS (15 ids) and
+# DEFAULT_SERIES (8 ids) that drifted apart. One list now: the fetch loop iterates the
+# grouping table, so a new series added to a group is fetched by construction.
+DEFAULT_SERIES: list[str] = [s for group in SERIES_GROUPS.values() for s in group]
+
+#: Frequency → change_1m lookback in ROWS (#84 §6a: 21 rows is ~1 month only for daily
+#: series; a monthly series would show 21 months labelled "1m") and staleness threshold
+#: in DAYS since the last observation (a row-count "fresh" is not a freshness measure).
+FREQ_CHANGE_LOOKBACK = {"daily": 21, "weekly": 4, "monthly": 1}
+FREQ_STALE_DAYS = {"daily": 7, "weekly": 21, "monthly": 75}
+
+#: FRED fetch window (#84 §4): bound every request to 5y — the full-history download was
+#: 7.26 MB/run for 8 series (DGS10 alone 1563 KB back to 1962); the 27-series roster with
+#: observation_start ≈ 2 MB.
+MACRO_LOOKBACK_DAYS = 5 * 365
 
 
 class MacroCollector:
@@ -48,20 +73,34 @@ class MacroCollector:
         self.series_history: dict[str, list[dict[str, Any]]] = {}
         self._fred_failures = 0
         self._fedwatch_failed = False
+        # #84 §4: memoise _fred_series — DFF used to be fetched twice per run (DEFAULT_SERIES
+        # + the FedWatch anchor), a wasted 2.4 MB.
+        self._fred_cache: dict[str, list[dict[str, Any]]] = {}
         #: Domain → provider outcome of the most recent successful call (#65).
         self._provider_outcomes: dict[str, dict[str, Any]] = {}
 
     # ---- FRED ----
 
     def _fred_series(self, series_id: str) -> list[dict[str, Any]]:
+        if series_id in self._fred_cache:
+            return self._fred_cache[series_id]
+        catalog = SERIES_CATALOG.get(series_id, {})
+        # #84 §4: observation_start bounds every request to the 5y window (the risk model's
+        # percentile window) — the full-history download was ~7 MB/run for 8 series.
+        start = (datetime.now(timezone.utc).date() - timedelta(days=MACRO_LOOKBACK_DAYS)).isoformat()
+        units = catalog.get("units", "lin")
         try:
-            out = self.registry.call("macro", "get_series", f"fred_{series_id}", args=(series_id,))
+            out = self.registry.call(
+                "macro", "get_series", f"fred_{series_id}",
+                args=(series_id,), kwargs={"start": start, "units": units},
+            )
             self.provider_status.setdefault("macro", out["meta"])
             self._provider_outcomes["macro"] = out["meta"]
             rows = out["result"]
             # Normalize to lowercase keys: the risk model 5Y percentile looks up by the lowercase
             # series name of the indicator key
             self.series_history[series_id.lower()] = rows
+            self._fred_cache[series_id] = rows
             return rows
         except ProviderError as exc:
             self.degraded.append(str(exc))
@@ -75,23 +114,30 @@ class MacroCollector:
             rows = self._fred_series(series_id)
             if not rows:
                 continue
-            catalog = SERIES_CATALOG.get(series_id, {"label": series_id, "unit": "level"})
+            catalog = SERIES_CATALOG.get(series_id, {"label": series_id, "unit": "level", "frequency": "daily"})
+            frequency = catalog.get("frequency", "daily")
             indicator = MacroIndicator(
                 key=series_id.lower(),
                 label=catalog["label"],
                 value=rows[-1]["value"],
                 previous=rows[-2]["value"] if len(rows) > 1 else None,
-                change_1m=_change(rows, 21),
+                # #84 §6a: the change lookback derives from the series' frequency — 21
+                # rows is one month only for daily series.
+                change_1m=_change(rows, FREQ_CHANGE_LOOKBACK.get(frequency, 21)),
                 unit=_unit(catalog.get("unit", "level")),
                 source="FRED",
                 updated_at=_utc_from_date(rows[-1]["date"]),
-                status="fresh" if len(rows) >= 2 else "stale",
+                # #84 §6b: per-indicator status is judged against the series' own cadence
+                # (a monthly series unchanged for 30 days is fresh; a daily series 10 days
+                # behind is stale), not a row count.
+                status=_series_status(rows[-1]["date"], frequency),
             )
             group = _group_of(series_id)
             groups[group].append(indicator)
         return MacroDataset(
             rates=groups["rates"],
             credit=groups["credit"],
+            volatility=groups["volatility"],
             inflation=groups["inflation"],
             labor=groups["labor"],
             liquidity=groups["liquidity"],
@@ -205,7 +251,26 @@ def _group_of(series_id: str) -> str:
     for group, series_list in SERIES_GROUPS.items():
         if series_id in series_list:
             return group
-    return "rates"
+    # #84 §5: an unmapped series used to misfile itself under "rates" silently. With the
+    # roster now derived from this table an unmapped id is a wiring mistake — fail loud.
+    raise KeyError(f"macro: {series_id!r} is not mapped in SERIES_GROUPS")
+
+
+def _series_status(last_date: str, frequency: str) -> str:
+    """Per-indicator status against the series' OWN cadence (#84 §6b).
+
+    A row-count "fresh" is not a freshness measure: a discontinued series with thousands
+    of rows ending in 2019 reported `fresh`. A monthly series unchanged for 30 days IS
+    fresh; a daily series 10 days behind is stale. Thresholds are a grace multiple of the
+    frequency. (The full release-calendar model — next_expected_release per series in the
+    history manifest — is future work; this is the minimal honest version.)
+    """
+    try:
+        age_days = (date.today() - date.fromisoformat(last_date)).days
+    except ValueError:
+        return "stale"
+    threshold = FREQ_STALE_DAYS.get(frequency, 7)
+    return "fresh" if age_days <= threshold else "stale"
 
 
 def _utc_from_date(date_str: str) -> str | None:

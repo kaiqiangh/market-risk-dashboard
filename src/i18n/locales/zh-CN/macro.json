@@ -13,7 +13,8 @@
     "labor": "就业",
     "liquidity": "流动性",
     "fx": "外汇",
-    "empty": "该分类暂无数据"
+    "empty": "该分类暂无数据",
+    "volatility": "波动率"
   },
   "indicator": {
     "name": "指标",
@@ -35,5 +36,12 @@
     "ready": "已就绪",
     "probability": "概率",
     "change1d": "较昨日"
+  },
+  "history": {
+    "title": "历史走势（30 日）",
+    "series": "序列",
+    "latest": "最新值",
+    "date": "日期",
+    "empty": "该组暂无历史数据"
   }
 }

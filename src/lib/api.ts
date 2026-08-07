@@ -19,13 +19,16 @@ import { collectUnknownFields } from "@/lib/unknownFields";
 
 export type DatasetOptions = {
   lang?: "zh-CN" | "en";
-  slice?: "30d" | "90d" | "daily";
+  /** History slice: classic per-key slices (risk/market) or the macro per-GROUP bundles
+   * (`{group}.30d`/`{group}.90d`, #96/#84 §3). */
+  slice?: "30d" | "90d" | "daily" | `${string}.30d` | `${string}.90d`;
 };
 
 export type MetadataKey = "sources" | "freshness" | "schema-version" | "translations";
 
-/** History series key (architecture §1.7: history/risk/*, history/market/*) */
-export type HistoryKey = "market" | "risk";
+/** History series key (architecture §1.7: history/risk/*, history/market/*).
+ * "macro" is the per-GROUP 30d/90d bundle (history/macro/{group}.{slice}.json, #96/#84 §3). */
+export type HistoryKey = "market" | "risk" | "macro";
 
 export class SchemaError extends Error {
   readonly key: string;

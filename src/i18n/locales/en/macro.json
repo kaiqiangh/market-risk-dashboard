@@ -13,7 +13,8 @@
     "labor": "Labor",
     "liquidity": "Liquidity",
     "fx": "FX",
-    "empty": "No data in this category"
+    "empty": "No data in this category",
+    "volatility": "Volatility"
   },
   "indicator": {
     "name": "Indicator",
@@ -35,5 +36,12 @@
     "ready": "Ready",
     "probability": "Probability",
     "change1d": "vs yesterday"
+  },
+  "history": {
+    "title": "History (30d)",
+    "series": "Series",
+    "latest": "Latest",
+    "date": "Date",
+    "empty": "No history for this group"
   }
 }

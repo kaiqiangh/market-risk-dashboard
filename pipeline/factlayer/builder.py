@@ -73,7 +73,8 @@ class FactLayerBuilder:
 
     def _macro_summary(self, macro: MacroEnvelope) -> dict[str, Any]:
         summary: dict[str, Any] = {}
-        for group in ("rates", "credit", "inflation", "labor", "liquidity", "fx"):
+        # #96: volatility is a first-class group — the summary enumerates it like the rest.
+        for group in ("rates", "credit", "volatility", "inflation", "labor", "liquidity", "fx"):
             for ind in getattr(macro.payload, group):
                 summary[ind.key] = ind.value
                 if ind.previous is not None:
