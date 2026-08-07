@@ -27,11 +27,14 @@ def _write_json(path: Path, obj: object) -> None:
     path.write_text(json.dumps(obj, ensure_ascii=False), encoding="utf-8")
 
 
+_FIXTURES = Path(__file__).resolve().parent.parent / "fixtures"
+
+
 def _build_analysis_pair(latest: Path) -> None:
     """A valid bilingual pair: the zh fixture + an en twin (identical fields; only the
     `language` field differs). Bilingual consistency requires identical market_state /
     market_regime / confidence / evidence_refs / numbers — identical is a superset."""
-    zh = json.loads(Path("tests/fixtures/analysis.zh-CN.json").read_text(encoding="utf-8"))
+    zh = json.loads((_FIXTURES / "analysis.zh-CN.json").read_text(encoding="utf-8"))
     en = copy.deepcopy(zh)
     en["language"] = "en"
     _write_json(latest / "analysis.zh-CN.json", zh)

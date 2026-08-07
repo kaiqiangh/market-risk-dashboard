@@ -647,20 +647,9 @@ def _run_collection(command: str) -> dict[str, Any]:
         ncc = NewsCollector(registry, settings)
         news, news_meta = ncc.collect()
         # Merge AI Chinese translations (if present) + record merge status (P1-6)
-        translations_path = settings.data_dir / "latest" / "news.zh-translations.json"
-        if translations_path.exists():
-            from pipeline.schemas import NewsTranslationsDataset
-
-            import json as _json
-
-            translations = NewsTranslationsDataset.model_validate(
-                _json.loads(translations_path.read_text(encoding="utf-8"))
-            )
-            news = ncc.merge_translations(news, translations)
-            merged_count = sum(1 for it in news.items if it.title_zh)
-            writer.record_translations("merged", merged_count, "news.zh-translations.json merged into news.json")
-        else:
-            writer.record_translations("missing", 0, "news.zh-translations.json not found (AI did not produce Chinese translation)")
+        merged = _merge_news_translations(writer, ncc, news, settings.data_dir / "latest" / "news.zh-translations.json")
+        if merged is not None:
+            news = merged
         results["news"] = news
         results["news_meta"] = news_meta
         results["news_degraded"] = bool(news_meta["degraded"])
@@ -1055,6 +1044,35 @@ def _run_fact_layer_only() -> tuple[bool, str | None]:
     return True, None
 
 
+def _merge_news_translations(
+    writer: StorageWriter,
+    collector: NewsCollector,
+    news: Any,
+    translations_path: Path,
+) -> Any:
+    """Merge news.zh-translations.json into a NEWS PAYLOAD and record the outcome (P1-6).
+
+    Shared by the full-refresh and --analysis-only call sites (#81: the second hand-rolled
+    copy passed a NewsEnvelope where this takes the payload — one block cannot drift).
+    Returns the merged payload, or None when no translations file exists ("missing" is
+    recorded here and the caller keeps its dataset unchanged).
+    """
+    if not translations_path.exists():
+        writer.record_translations(
+            "missing", 0, "news.zh-translations.json not found (AI did not produce Chinese translation)"
+        )
+        return None
+    from pipeline.schemas import NewsTranslationsDataset
+
+    import json as _json
+
+    translations = NewsTranslationsDataset.model_validate(_json.loads(translations_path.read_text(encoding="utf-8")))
+    merged = collector.merge_translations(news, translations)
+    merged_count = sum(1 for it in merged.items if it.title_zh)
+    writer.record_translations("merged", merged_count, "news.zh-translations.json merged into news.json")
+    return merged
+
+
 def _run_analysis_only() -> int:
     """AI analysis file validation + Chinese translation merge (architecture §1.5 steps 3/4)."""
     import json as _json
@@ -1090,24 +1108,20 @@ def _run_analysis_only() -> int:
     # Merge Chinese translation into news.json (P1-6: record merge status)
     writer = StorageWriter(settings.data_dir)
     news_data = writer.read_latest("news")
-    translations_path = settings.data_dir / "latest" / "news.zh-translations.json"
-    if news_data and translations_path.exists():
+    if news_data:
         from pipeline.schemas import NewsEnvelope
 
         news = NewsEnvelope.model_validate(news_data)
-        translations = NewsTranslationsDataset.model_validate(_json.loads(translations_path.read_text(encoding="utf-8")))
         collector = NewsCollector(build_registry(settings), settings)
-        # #81 (recurrence 4): merge_translations takes a NewsDataset (it iterates
-        # `news.items`) — handing it the envelope raised AttributeError on every
-        # analysis-only run, so the merge never happened. Unwrap and re-wrap, matching
-        # the full-refresh call site (run.py:659).
-        merged_payload = collector.merge_translations(news.payload, translations)
-        merged_count = sum(1 for it in merged_payload.items if it.title_zh)
-        writer.write_dataset("news", news.model_copy(update={"payload": merged_payload}))
-        writer.record_translations("merged", merged_count, "analysis-only merged news.zh-translations.json into news.json")
-        print("[pipeline] analysis-only: Chinese translation merged into news.json")
-    elif news_data:
-        writer.record_translations("missing", 0, "news.zh-translations.json not found (AI did not produce Chinese translation)")
+        # #81: the shared helper takes the PAYLOAD (merge_translations iterates
+        # `news.items`, which an envelope does not have) and re-wrap the result —
+        # the old hand-rolled copy passed the envelope and never merged.
+        merged_payload = _merge_news_translations(
+            writer, collector, news.payload, settings.data_dir / "latest" / "news.zh-translations.json"
+        )
+        if merged_payload is not None:
+            writer.write_dataset("news", news.model_copy(update={"payload": merged_payload}))
+            print("[pipeline] analysis-only: Chinese translation merged into news.json")
 
     outcomes = RunOutcomes(scope=_run_scope("analysis-only"))
     _record_ai_outcomes(writer, outcomes)
