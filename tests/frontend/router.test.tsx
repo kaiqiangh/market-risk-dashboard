@@ -6,7 +6,7 @@
  * - dark/light mode switch + localStorage persistence
  */
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
-import { cleanup, configure, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, configure, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@/i18n";
 import App from "@/App";
@@ -53,13 +53,18 @@ describe("route rendering (fixtures data)", () => {
     expect(await screen.findByTestId("risk-score")).toHaveTextContent("52.3");
     expect(screen.getByTestId("risk-level")).toHaveTextContent("谨慎");
     expect(screen.getByTestId("market-regime")).toHaveTextContent("周期末段");
+    // #121: 板块表现 lists all sector baskets (sectors + themes merged), not just the 2 headline sectors.
+    const sectorPerformance = await screen.findByTestId("sector-performance");
+    expect(within(sectorPerformance).getByText("半导体龙头")).toBeInTheDocument(); // sectors.semis
+    expect(within(sectorPerformance).getByText("存储")).toBeInTheDocument(); // themes.memory
+    expect(within(sectorPerformance).getByText("网络安全")).toBeInTheDocument(); // themes.cybersecurity
     expect(await screen.findByTestId("ai-brief")).toBeInTheDocument();
   });
 
   it.each([
     ["macro", "宏观"],
     ["equities", "股票"],
-    ["themes", "主题"],
+    ["themes", "板块"],
     ["news", "新闻"],
     ["calendar", "日历"],
     ["risklab", "风险实验室"],

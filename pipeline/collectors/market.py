@@ -259,11 +259,11 @@ class MarketCollector:
         # series (the proxy's change_1w/1m are the theme basket's, #93 supersedes the block).
         memory_series = next((t for t in themes if t.key == "memory"), None)
         memory = MemoryProxy(
-            label="Memory cycle proxy (themes: memory basket)",
-            label_zh="存储周期代理（主题：存储篮子）",
+            label="Memory cycle proxy (sector: memory basket)",
+            label_zh="存储周期代理（板块：存储篮子）",
             change_1w=memory_series.change_1w if memory_series else None,
             change_1m=memory_series.change_1m if memory_series else None,
-            note="DRAM/NAND spot prices are paywalled; the memory theme series proxies the cycle (#93 supersedes the MU-only proxy)",
+            note="DRAM/NAND spot prices are paywalled; the memory sector basket series proxies the cycle (#93 supersedes the MU-only proxy)",
             updated_at=now_utc(),
         )
         return SectorsDataset(sectors=sectors, themes=themes, memory=memory)

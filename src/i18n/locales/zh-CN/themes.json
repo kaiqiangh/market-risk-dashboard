@@ -1,7 +1,7 @@
 {
-  "title": "主题",
-  "subtitle": "半导体 / 存储（含 A 股 10 只）/ 金属 / 加密 / 主题",
-  "semis": "半导体",
+  "title": "板块",
+  "subtitle": "半导体 / 存储（含 A 股 10 只）/ 金属 / 加密 / 板块",
+  "semis": "半导体龙头",
   "auto": "汽车",
   "memory": "存储",
   "section": {
@@ -9,12 +9,12 @@
     "memory": "存储（美光 + A 股存储）",
     "metals": "金属",
     "crypto": "加密",
-    "themes": "主题",
+    "themes": "板块",
     "empty": "暂无数据"
   },
   "metals": {
     "na": "金属数据暂未接入",
-    "naHint": "MVP 阶段以板块/主题代理展示，后续接入商品数据源。"
+    "naHint": "MVP 阶段以板块代理展示，后续接入商品数据源。"
   },
   "crypto": {
     "marketCap": "总市值",

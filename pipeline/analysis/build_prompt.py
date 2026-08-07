@@ -121,7 +121,7 @@ def _theme_labels(lang: str) -> dict[str, str]:
     return labels
 
 
-_SECTOR_HEADING: dict[str, str] = {"en": "Sector / theme performance (1d)", "zh-CN": "板块 / 主题表现（1日）"}
+_SECTOR_HEADING: dict[str, str] = {"en": "Sector performance (1d)", "zh-CN": "板块表现（1日）"}
 
 
 def _render_facts(facts: FactLayer, lang: str) -> str:

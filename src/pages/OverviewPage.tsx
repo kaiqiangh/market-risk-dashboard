@@ -54,6 +54,9 @@ export default function OverviewPage() {
 
   // Build cross-asset heatmap cells
   const heatmapCells: HeatmapCell[] = [];
+  // All sector baskets (headline sectors + themed baskets) share one 板块/Sectors
+  // category since the rename — sectors and themes are the same concept now (#121).
+  const sectorBaskets = sectorsQ.data ? [...sectorsQ.data.payload.sectors, ...sectorsQ.data.payload.themes] : [];
   if (equitiesQ.data) {
     for (const a of equitiesQ.data.payload.assets) {
       heatmapCells.push({ asset: a.symbol, category: t("heatmap.catEquities"), change1d: a.change_1d });
@@ -64,13 +67,8 @@ export default function OverviewPage() {
       heatmapCells.push({ asset: a.symbol, category: t("heatmap.catCrypto"), change1d: a.change_1d });
     }
   }
-  if (sectorsQ.data) {
-    for (const s of sectorsQ.data.payload.sectors) {
-      heatmapCells.push({ asset: t(`themes:${s.key}`, { defaultValue: s.key }), category: t("heatmap.catSectors"), change1d: s.change_1d });
-    }
-    for (const th of sectorsQ.data.payload.themes) {
-      heatmapCells.push({ asset: t(`themes:${th.key}`, { defaultValue: th.key }), category: t("heatmap.catThemes"), change1d: th.change_1d });
-    }
+  for (const s of sectorBaskets) {
+    heatmapCells.push({ asset: t(`themes:${s.key}`, { defaultValue: s.key }), category: t("heatmap.catSectors"), change1d: s.change_1d });
   }
 
   // Upcoming catalysts (top 5 by ascending time)
@@ -300,9 +298,9 @@ export default function OverviewPage() {
             <Skeleton className="h-40 w-full" />
           ) : sectorsQ.isError ? (
             <ErrorState onRetry={sectorsQ.refetch} />
-          ) : sectorsQ.data && sectorsQ.data.payload.sectors.length > 0 ? (
+          ) : sectorBaskets.length > 0 ? (
             <div data-testid="sector-performance">
-              {sectorsQ.data.payload.sectors.map((s) => {
+              {sectorBaskets.map((s) => {
                 const dTone = dirTone(s.change_1d);
                 // #102 (C-1): labels come from the themes namespace, keyed by the canonical key.
                 const label = t(`themes:${s.key}`, { defaultValue: s.key });
