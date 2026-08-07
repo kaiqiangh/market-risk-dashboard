@@ -56,20 +56,19 @@ class CalendarCollector:
         economic_key = f"economic_{horizon}d"
 
         events: list[CalendarEvent] = []
-        earnings_outcome: dict[str, Any] = {
-            "provider": "unavailable", "used_fallback": False, "from_cache": False,
-        }
+        outcomes: dict[str, dict[str, Any]] = {}
+        malformed = 0
 
         # ---- Earnings (calendar domain: FMP → Nasdaq) ----
         try:
             out = self.registry.call("calendar", "get_earnings_calendar", earnings_key, args=(start, end))
             self.provider_status["calendar"] = out["meta"]
-            earnings_outcome = {
+            outcomes["earnings"] = {
                 "provider": str(out["meta"].get("provider", "unavailable")),
                 "used_fallback": bool(out["meta"].get("used_fallback", False)),
                 "from_cache": bool(out["meta"].get("from_cache", False)),
             }
-            provider_name = str(out["meta"].get("provider", "fmp"))
+            provider_name = str(out["meta"].get("provider", "unavailable"))
             for row in out["result"]:
                 symbol = str(row["symbol"])
                 day = str(row["date"])
@@ -97,23 +96,32 @@ class CalendarCollector:
         try:
             eco = self.registry.call("economic", "get_economic_calendar", economic_key, args=(start, end))
             self.provider_status["economic"] = eco["meta"]
+            outcomes["economic"] = {
+                "provider": str(eco["meta"].get("provider", "unavailable")),
+                "used_fallback": bool(eco["meta"].get("used_fallback", False)),
+                "from_cache": bool(eco["meta"].get("from_cache", False)),
+            }
             for row in eco["result"]:
-                events.append(
-                    CalendarEvent(
-                        id=str(row["id"]),
-                        type="economic",
-                        title=str(row["title"]),
-                        country=str(row.get("country") or "US"),
-                        datetime=et_instant(str(row["date"]), str(row["time_et"])),
-                        importance=row.get("importance", "medium"),
-                        actual=None,
-                        forecast=None,
-                        previous=None,
-                        unit=None,
-                        related_assets=[],
-                        source=str(row.get("source") or "fred"),
+                try:
+                    events.append(
+                        CalendarEvent(
+                            id=str(row["id"]),
+                            type="economic",
+                            title=str(row["title"]),
+                            country=str(row.get("country") or "US"),
+                            datetime=et_instant(str(row["date"]), str(row["time_et"])),
+                            importance=row.get("importance", "medium"),
+                            actual=None,
+                            forecast=None,
+                            previous=None,
+                            unit=None,
+                            related_assets=[],
+                            source=str(row.get("source") or "fred"),
+                        )
                     )
-                )
+                except (KeyError, TypeError, ValueError):
+                    # A malformed upstream row must degrade the row, never crash the run.
+                    malformed += 1
         except ProviderError as exc:
             self.degraded.append(f"calendar/economic: {exc}")
             self.provider_status["economic"] = {"degraded": True, "error": str(exc)}
@@ -124,10 +132,16 @@ class CalendarCollector:
             if ev.id not in seen:
                 seen[ev.id] = ev
         dropped = len(events) - len(seen)
-        if dropped:
-            self.provider_status.setdefault("calendar", {})["deduped"] = dropped
         events = list(seen.values())
         events.sort(key=lambda e: e.datetime)
+
+        # ---- Provenance: the answering source of record. Both domains feed calendar.json,
+        # so the outcome names whichever answered (earnings primary; economic if earnings
+        # failed) — never a hardcoded "fmp" that could lie about a FRED-only payload.
+        if outcomes:
+            provider_outcome = outcomes.get("earnings") or outcomes["economic"]
+        else:
+            provider_outcome = {"provider": "unavailable", "used_fallback": False, "from_cache": False}
 
         quality = self._quality()
         # #64: return payload + provider outcome; the caller assembles the envelope and
@@ -136,6 +150,8 @@ class CalendarCollector:
         return payload, {
             "degraded": self.degraded,
             "provider_status": self.provider_status,
-            "provider_outcome": earnings_outcome,
+            "provider_outcome": provider_outcome,
             "data_quality": round(quality, 3),
+            "deduped": dropped,
+            "malformed": malformed,
         }

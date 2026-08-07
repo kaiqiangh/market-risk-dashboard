@@ -13,8 +13,6 @@ import math
 import time
 from typing import Any
 
-import httpx
-
 from pipeline.providers.base import (
     BaseProvider,
     ProviderError,
@@ -72,12 +70,8 @@ class FmpProvider(BaseProvider):
             params={"from": start, "to": end, "apikey": self.api_key},
         )
         if resp.status_code != 200:
-            raise ProviderError.from_exception(
-                httpx.HTTPStatusError(
-                    f"FMP calendar HTTP {resp.status_code}", request=resp.request, response=resp
-                ),
-                detail=f"FMP calendar HTTP {resp.status_code}",
-            )
+            # #103/S-1: one error boundary — classification + redaction (from_http).
+            raise ProviderError.from_http("FMP calendar", resp)
         data = resp.json()
         if not isinstance(data, list):
             raise ProviderError("FMP calendar unexpected payload")

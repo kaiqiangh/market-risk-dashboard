@@ -17,8 +17,6 @@ import time
 from datetime import date, datetime, timedelta, timezone
 from typing import Any
 
-import httpx
-
 from pipeline.providers.base import (
     BaseProvider,
     ProviderError,
@@ -87,12 +85,8 @@ class NasdaqCalendarProvider(BaseProvider):
     def _fetch_day(self, day: str) -> list[dict[str, Any]]:
         resp = self._client.get(NASDAQ_EARNINGS, params={"date": day})
         if resp.status_code != 200:
-            raise ProviderError.from_exception(
-                httpx.HTTPStatusError(
-                    f"Nasdaq earnings HTTP {resp.status_code}", request=resp.request, response=resp
-                ),
-                detail=f"Nasdaq earnings HTTP {resp.status_code}",
-            )
+            # #103/S-1: one error boundary — classification + redaction (from_http).
+            raise ProviderError.from_http("Nasdaq earnings", resp)
         data = resp.json()
         rows = (data.get("data") or {}).get("rows") if isinstance(data, dict) else None
         if not isinstance(rows, list):

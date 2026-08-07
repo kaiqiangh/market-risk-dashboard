@@ -91,7 +91,7 @@ def test_dedupe_by_id_keeps_first_source(tmp_path: Path) -> None:
     assert len(events) == 1
     # The FMP (primary) row won → neutral noon instant, not the fallback's AMC time.
     assert events[0].datetime == "2026-08-12T12:00:00Z"
-    assert meta["provider_status"]["calendar"]["deduped"] == 1
+    assert meta["deduped"] == 1
 
 
 def test_session_absent_falls_back_to_noon_utc(tmp_path: Path) -> None:
@@ -107,7 +107,25 @@ def test_earnings_failure_is_degraded_but_economic_survives(tmp_path: Path) -> N
     assert len(payload.events) == 2  # economic only
     assert meta["provider_status"]["calendar"]["degraded"] is True
     assert any("FMP calendar HTTP 403" in d for d in meta["degraded"])
+    # Provenance names the source that actually answered (never a hardcoded "fmp").
+    assert meta["provider_outcome"]["provider"] == "fred_calendar"
+
+
+def test_both_fail_publishes_unavailable_outcome(tmp_path: Path) -> None:
+    registry = _FakeRegistry(earnings_error="boom", economic_error="bam")
+    payload, meta = _collector(registry, tmp_path).collect()
+    assert payload.events == []
     assert meta["provider_outcome"]["provider"] == "unavailable"
+    assert len(meta["degraded"]) == 2
+
+
+def test_malformed_economic_row_is_skipped_not_fatal(tmp_path: Path) -> None:
+    bad = {"id": "econ-fred-9-2026-08-14", "title": "Advance Retail Sales", "date": "not-a-date",
+           "time_et": "08:30", "importance": "high", "country": "US", "source": "fred"}
+    registry = _FakeRegistry(earnings=[], economic=[bad, ECONOMIC[0]])
+    payload, meta = _collector(registry, tmp_path).collect()
+    assert [e.id for e in payload.events] == ["econ-fred-10-2026-08-12"]
+    assert meta["malformed"] == 1
 
 
 def test_both_sources_down_publishes_empty_not_fresh(tmp_path: Path) -> None:

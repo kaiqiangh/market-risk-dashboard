@@ -21,8 +21,6 @@ import time
 from datetime import date, datetime, timezone
 from typing import Any
 
-import httpx
-
 from pipeline.providers.base import (
     BaseProvider,
     ProviderError,
@@ -71,7 +69,9 @@ class FredCalendarProvider(BaseProvider):
             return ProviderHealth(provider=self.name, ok=False, error="missing DATA_FRED_API_KEY", checked_at=None)
         started = time.monotonic()
         try:
-            rows = self.get_economic_calendar(_today(), _today())
+            # Cheap probe: ONE release for today's window — not the full 8-call economic
+            # calendar (the per-call limiter is for the run, not for health checks).
+            rows = self._fred_release_dates(10, _today(), _today())
             ok = isinstance(rows, list)
             return ProviderHealth(
                 provider=self.name, ok=ok,
@@ -90,12 +90,25 @@ class FredCalendarProvider(BaseProvider):
 
         FRED release dates + FOMC meeting dates, filtered to ``[start, end]``, sorted by
         date. Retries live in ProviderRegistry.call (#103/E-3).
+
+        Sources are isolated: one failing release (or the FOMC page) never discards the
+        rows already fetched — the calendar must not be empty because its most fragile
+        (scraped) source hiccupped. An error is raised only when *every* source failed.
         """
         rows: list[dict[str, Any]] = []
+        errors: list[str] = []
         for release_id in RELEASES:
-            rows.extend(self._fred_release_dates(release_id, start, end))
-        rows.extend(self._fomc_meetings(start, end))
+            try:
+                rows.extend(self._fred_release_dates(release_id, start, end))
+            except ProviderError as exc:
+                errors.append(f"release {release_id}: {exc}")
+        try:
+            rows.extend(self._fomc_meetings(start, end))
+        except ProviderError as exc:
+            errors.append(f"fomc: {exc}")
         rows.sort(key=lambda r: (r["date"], r["time_et"]))
+        if not rows and errors:
+            raise ProviderError("FRED calendar all sources failed: " + "; ".join(errors[:3]))
         return rows
 
     # ---- FRED release dates ----
@@ -119,12 +132,8 @@ class FredCalendarProvider(BaseProvider):
             },
         )
         if resp.status_code != 200:
-            raise ProviderError.from_exception(
-                httpx.HTTPStatusError(
-                    f"FRED releases HTTP {resp.status_code}", request=resp.request, response=resp
-                ),
-                detail=f"FRED release {release_id}: HTTP {resp.status_code}",
-            )
+            # #103/S-1: one error boundary — classification + redaction (from_http).
+            raise ProviderError.from_http(f"FRED release {release_id}", resp)
         data = resp.json()
         rows = data.get("release_dates") if isinstance(data, dict) else None
         if not isinstance(rows, list):
@@ -157,12 +166,8 @@ class FredCalendarProvider(BaseProvider):
         """
         resp = self._client.get(FOMC_CALENDAR_URL)
         if resp.status_code != 200:
-            raise ProviderError.from_exception(
-                httpx.HTTPStatusError(
-                    f"FOMC calendar HTTP {resp.status_code}", request=resp.request, response=resp
-                ),
-                detail=f"FOMC calendar HTTP {resp.status_code}",
-            )
+            # #103/S-1: one error boundary — classification + redaction (from_http).
+            raise ProviderError.from_http("FOMC calendar", resp)
         html = resp.text
         out: list[dict[str, Any]] = []
         sections = _year_sections(html)
@@ -181,7 +186,7 @@ class FredCalendarProvider(BaseProvider):
                 days = [int(d) for d in re.findall(r"\d+", day_range)]
                 if not days:
                     continue
-                decision_day = days[-1]  # statement on the second day
+                decision_day = days[1] if len(days) >= 2 else days[0]  # statement on the SECOND day
                 block_end = months[midx + 1].start() if midx + 1 < len(months) else len(section)
                 # date_m offsets are relative to the slice after the month marker — add
                 # m.end() back to address the span within the section.

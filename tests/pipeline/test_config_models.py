@@ -121,6 +121,15 @@ def test_build_default_providers_reads_config_order_and_enabled() -> None:
     assert by_domain["crypto"] == [("coingecko", 1)]
 
 
+def test_economic_domain_serves_the_calendar_dataset() -> None:
+    """#94: the economic provider domain feeds the same calendar dataset — without this
+    join, sources.json would stamp the healthy economic domain `missing` every run."""
+    from pipeline.schemas.registry import DOMAIN_DATASETS
+
+    assert DOMAIN_DATASETS["economic"] == ("calendar",)
+    assert DOMAIN_DATASETS["calendar"] == ("calendar",)
+
+
 def test_build_default_providers_fails_loudly_on_unknown_or_wrong_domain(tmp_path: Path) -> None:
     real = Path(__file__).resolve().parents[2] / "config"
     sources = yaml.safe_load((real / "sources.yaml").read_text(encoding="utf-8"))

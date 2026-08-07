@@ -202,12 +202,23 @@ DATASET_DOMAIN: dict[str, str] = {
     spec.key: spec.domain for spec in DATASETS if spec.domain is not None
 }
 
-#: provider domain → the dataset keys it serves. The inverse of :data:`DATASET_DOMAIN`, and the
-#: join that lets ``sources.json`` and ``freshness.json`` be rendered from one record.
+#: Provider domains that serve an existing dataset but are NOT the dataset's canonical
+#: domain. #94: economic events are first-class alongside earnings, and the economic
+#: provider domain (FRED releases + FOMC) feeds the same ``calendar`` dataset — without
+#: this join, ``sources.json`` would stamp the healthy economic domain ``missing`` every
+#: run (the E-1 class of misleading metadata this repo has been closing).
+EXTRA_DOMAIN_DATASETS: dict[str, tuple[str, ...]] = {
+    "economic": ("calendar",),
+}
+
+#: provider domain → the dataset keys it serves. The inverse of :data:`DATASET_DOMAIN` (+
+#: :data:`EXTRA_DOMAIN_DATASETS`), and the join that lets ``sources.json`` and
+#: ``freshness.json`` be rendered from one record.
 DOMAIN_DATASETS: dict[str, tuple[str, ...]] = {
     domain: tuple(k for k, d in DATASET_DOMAIN.items() if d == domain)
-    for domain in sorted(set(DATASET_DOMAIN.values()))
+    for domain in sorted(set(DATASET_DOMAIN.values()) | set(EXTRA_DOMAIN_DATASETS))
 }
+DOMAIN_DATASETS.update(EXTRA_DOMAIN_DATASETS)
 
 
 def enveloped_specs() -> dict[str, DatasetSpec]:
