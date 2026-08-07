@@ -50,7 +50,6 @@ class ProviderEntry(BaseModel):
 
     name: str = Field(min_length=1)
     priority: int = Field(ge=0)
-    kind: Literal["primary", "fallback"] = "primary"
     enabled: bool = True
     max_concurrency: int = Field(default=2, ge=1)
     min_interval_ms: int = Field(default=500, ge=0)

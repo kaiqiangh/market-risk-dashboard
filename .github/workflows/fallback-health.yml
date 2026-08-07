@@ -1,0 +1,37 @@
+name: fallback-health
+
+on:
+  schedule:
+    # Daily 06:00 UTC — after the CN close (07:00 UTC summer) window so A-share
+    # fallbacks are probed against a settled market, before the US open.
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+# Minimal CI permissions (Architecture §8.14: read-only)
+permissions:
+  contents: read
+
+jobs:
+  check-fallbacks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install pipeline deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pydantic pydantic-settings pyyaml httpx curl_cffi python-dotenv
+      # Key-gated fallbacks (FMP) are SKIPPED here when no credential is present — the
+      # scheduled job must never be permanently red (that noise becomes ignored, the
+      # exact rot #100 exists to prevent). Their real liveness is exercised by the daily
+      # pipeline run, which calls FMP every time.
+      - name: Probe fallback providers
+        run: |
+          python scripts/check_fallbacks.py || exit 1
+      - name: Report
+        if: failure()
+        run: echo "A fallback provider is dead — the degradation chain is one outage away from cache-or-nothing. Investigate before the primary fails."

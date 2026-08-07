@@ -1,4 +1,4 @@
-"""Provider degradation chain tests (architecture §1.4; acceptance #3: yfinance outage → Stooq → degraded).
+"""Provider degradation chain tests (architecture §1.4; acceptance #3: yfinance outage → FMP fallback → degraded).
 
 Also covers #62: the data-quality degrade factor has exactly one home, `pipeline/degrade.py`,
 sourced from `config/sources.yaml` under `degrade.data_quality_degrade_factor`. Every consumer
@@ -36,7 +36,7 @@ from pipeline.providers.base import (
     ProviderHealth,
     QuoteResult,
 )
-from pipeline.providers.stooq import StooqProvider
+from pipeline.providers.fmp import FmpQuotesProvider
 from pipeline.providers.yahoo import YahooProvider
 from pipeline.risk.confidence import quality_factor
 from pipeline.settings import Settings
@@ -65,11 +65,11 @@ class _FailingYahoo(YahooProvider):
         return ProviderHealth(provider=self.name, ok=False, error="mock down")
 
 
-class _OkStooq(StooqProvider):
-    name = "stooq_ok"
+class _OkFmp(FmpQuotesProvider):
+    name = "fmp_quotes_ok"
 
     def get_quote(self, symbol: str) -> QuoteResult:
-        return QuoteResult(symbol=symbol, price=100.0, change_1d=1.2, provider=self.name, source="stooq", is_proxy=True)
+        return QuoteResult(symbol=symbol, price=100.0, change_1d=1.2, provider=self.name, source="fmp", is_proxy=True)
 
     def get_history(self, symbol: str, period: str = "1y") -> HistoryResult:
         rows = [
@@ -82,7 +82,7 @@ class _OkStooq(StooqProvider):
         return ProviderHealth(provider=self.name, ok=True)
 
 
-class _OkSeries(StooqProvider):
+class _OkSeries(FmpQuotesProvider):
     """A single-provider success for the macro domain (get_series)."""
     name = "ok_series"
 
@@ -93,7 +93,7 @@ class _OkSeries(StooqProvider):
         return ProviderHealth(provider=self.name, ok=True)
 
 
-class _FailSeries(StooqProvider):
+class _FailSeries(FmpQuotesProvider):
     """A single-provider failure for the macro domain (get_series)."""
     name = "fail_series"
 
@@ -114,22 +114,22 @@ def _registry(cache_dir=None) -> ProviderRegistry:
 
 def test_primary_ok_no_fallback(tmp_path) -> None:
     reg = _registry(tmp_path)
-    reg.register("quotes", _OkStooq())
+    reg.register("quotes", _OkFmp())
     out = reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))
     assert out["meta"]["used_fallback"] is False
     assert out["meta"]["degraded"] is False
     assert out["result"].price == 100.0
 
 
-def test_yahoo_fail_stooq_fallback_degraded(tmp_path) -> None:
+def test_yahoo_fail_fmp_fallback_degraded(tmp_path) -> None:
     """Acceptance #3: yfinance outage → Stooq fallback → degraded."""
     reg = _registry(tmp_path)
     reg.register("quotes", _FailingYahoo())
-    reg.register("quotes", _OkStooq())
+    reg.register("quotes", _OkFmp())
     out = reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))
     assert out["meta"]["used_fallback"] is True
     assert out["meta"]["degraded"] is True
-    assert out["meta"]["provider"] == "stooq_ok"
+    assert out["meta"]["provider"] == "fmp_quotes_ok"
     assert "quotes" in reg.degraded_domains
     # Fallback result carries the is_proxy marker
     assert out["result"].is_proxy is True
@@ -138,7 +138,7 @@ def test_yahoo_fail_stooq_fallback_degraded(tmp_path) -> None:
 def test_all_fail_uses_last_good_cache(tmp_path) -> None:
     cache_dir = tmp_path / "cache"
     reg = _registry(cache_dir)
-    reg.register("quotes", _OkStooq())
+    reg.register("quotes", _OkFmp())
     reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))  # success → writes cache
 
     reg2 = _registry(cache_dir)
@@ -521,14 +521,14 @@ def test_meta_names_the_answering_provider(tmp_path) -> None:
     reg = _registry(tmp_path)
     reg.register("quotes", _FailingYahoo())
     reg.register("quotes", _FailingYahoo())
-    reg.register("quotes", _OkStooq())
+    reg.register("quotes", _OkFmp())
     out = reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))
-    assert out["meta"]["provider"] == "stooq_ok", (
+    assert out["meta"]["provider"] == "fmp_quotes_ok", (
         f"meta must name the provider that answered, got {out['meta']['provider']}"
     )
     assert out["meta"]["used_fallback"] is True
     # The registry exposes the resolved provider for the domain.
-    assert reg.resolved_provider("quotes")["provider"] == "stooq_ok"
+    assert reg.resolved_provider("quotes")["provider"] == "fmp_quotes_ok"
 
 
 def test_single_provider_domain_degrades_via_cache(tmp_path) -> None:
@@ -570,19 +570,19 @@ def test_cache_entry_records_fetched_at_and_provider(tmp_path) -> None:
     """Every cache entry records fetched_at and the provider that produced it."""
     cache_dir = tmp_path / "cache"
     reg = _registry(cache_dir)
-    reg.register("quotes", _OkStooq())
+    reg.register("quotes", _OkFmp())
     reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))
 
     entry = json.loads((cache_dir / "quotes__NVDA.json").read_text(encoding="utf-8"))
     assert "fetched_at" in entry, "cache entry must record fetched_at"
-    assert entry["provider"] == "stooq_ok", "cache entry must record the originating provider"
+    assert entry["provider"] == "fmp_quotes_ok", "cache entry must record the originating provider"
 
 
 def test_expired_cache_is_not_served(tmp_path) -> None:
     """A cache entry older than cache_max_age_hours is not served as data (-> missing)."""
     cache_dir = tmp_path / "cache"
     reg = _registry(cache_dir)
-    reg.register("quotes", _OkStooq())
+    reg.register("quotes", _OkFmp())
     reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))
     path = cache_dir / "quotes__NVDA.json"
     entry = json.loads(path.read_text(encoding="utf-8"))
@@ -599,7 +599,7 @@ def test_undated_cache_treated_as_expired(tmp_path) -> None:
     """Ruling C: a legacy cache entry with no fetched_at is treated as beyond the max age."""
     cache_dir = tmp_path / "cache"
     reg = _registry(cache_dir)
-    reg.register("quotes", _OkStooq())
+    reg.register("quotes", _OkFmp())
     reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))
     path = cache_dir / "quotes__NVDA.json"
     entry = json.loads(path.read_text(encoding="utf-8"))
@@ -616,14 +616,14 @@ def test_cache_replay_names_originating_provider(tmp_path) -> None:
     """#66 upgrade: a cache replay names the provider that originally produced the data."""
     cache_dir = tmp_path / "cache"
     reg = _registry(cache_dir)
-    reg.register("quotes", _OkStooq())
-    reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))  # stooq_ok writes the cache
+    reg.register("quotes", _OkFmp())
+    reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))  # fmp_quotes_ok writes the cache
 
     reg2 = _registry(cache_dir)
     reg2.register("quotes", _FailingYahoo())
     out = reg2.call("quotes", "get_quote", "NVDA", args=("NVDA",))
     assert out["meta"]["from_cache"] is True
-    assert out["meta"]["provider"] == "stooq_ok", (
+    assert out["meta"]["provider"] == "fmp_quotes_ok", (
         "cache replay must name the originating provider, got "
         f"{out['meta']['provider']!r} instead of 'last-good'"
     )

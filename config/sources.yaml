@@ -31,39 +31,43 @@ expectations:
 
 # Provider registry (smaller priority number = higher priority). LIVE config since #102:
 # build_default_providers() constructs exactly these providers, in this order, skipping
-# enabled: false (C-3). `kind` is descriptive (primary/fallback); the effective order is
-# `priority`. `max_concurrency`/`min_interval_ms` are the per-host token-bucket budget for
+# enabled: false (C-3). `priority` is the ONLY ordering signal (#100: the `kind` labels
+# were removed — two signals for one role is exactly the drift C-3 was about).
+# `max_concurrency`/`min_interval_ms` are the per-host token-bucket budget for
 # #103's host rate limiter — Yahoo is browser-hostile (TLS-fingerprint gating per #87), so it
 # carries the tightest budget.
 providers:
   quotes:
-    - { name: yfinance, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 2000 }
-    - { name: stooq, priority: 2, kind: fallback, max_concurrency: 2, min_interval_ms: 1500 }
+    # #100: Stooq retired (JS proof-of-work challenge, verified unrecoverable) — the
+    # fallback is FMP /stable/quote (same key as the calendar; quote-only on the free
+    # tier, 1w/1m/history honest None via the #97 decoupling).
+    - { name: yfinance, priority: 1, max_concurrency: 2, min_interval_ms: 2000 }
+    - { name: fmp_quotes, priority: 2, max_concurrency: 1, min_interval_ms: 1000 }
   macro:
-    - { name: fred, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 600 }
+    - { name: fred, priority: 1, max_concurrency: 2, min_interval_ms: 600 }
   crypto:
-    - { name: coingecko, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 400 }
+    - { name: coingecko, priority: 1, max_concurrency: 2, min_interval_ms: 400 }
     # Not implemented yet — the disabled entry is inert (never constructed), not a typo gate.
-    - { name: binance_public, priority: 2, kind: fallback, enabled: false }
+    - { name: binance_public, priority: 2, enabled: false }
   calendar:
     # #94 (uses #83): earnings calendar — FMP stable primary (was /api/v3, 403 since 08-03);
     # Nasdaq fallback restores the BMO/AMC session signal FMP's stable payload dropped.
     # yfinance_calendar retired (#83: structurally empty, no bulk range API).
-    - { name: fmp, priority: 1, kind: primary, max_concurrency: 1, min_interval_ms: 1000 }
-    - { name: nasdaq, priority: 2, kind: fallback, max_concurrency: 2, min_interval_ms: 500 }
+    - { name: fmp, priority: 1, max_concurrency: 1, min_interval_ms: 1000 }
+    - { name: nasdaq, priority: 2, max_concurrency: 2, min_interval_ms: 500 }
   economic:
     # #94: economic events are first-class alongside earnings — FRED release dates +
     # official FOMC calendar (~8 lightweight calls/run, #83 §3A).
-    - { name: fred_calendar, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 600 }
+    - { name: fred_calendar, priority: 1, max_concurrency: 2, min_interval_ms: 600 }
   a_share:
     # #97/#85: yfinance via the CN symbol mapper is the primary (US-hosted, 20/20 from
     # this host; the Eastmoney history tier akshare used is geo-blocked). akshare now
     # talks to the Tencent backend (stock_zh_a_hist_tx) as the second rung — two
     # independent networks, Eastmoney leaves the hot path.
-    - { name: yfinance_a_share, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 2000 }
-    - { name: akshare, priority: 2, kind: fallback, max_concurrency: 2, min_interval_ms: 800 }
+    - { name: yfinance_a_share, priority: 1, max_concurrency: 2, min_interval_ms: 2000 }
+    - { name: akshare, priority: 2, max_concurrency: 2, min_interval_ms: 800 }
   news:
-    - { name: rss_news, priority: 1, kind: primary, max_concurrency: 4, min_interval_ms: 400 }
+    - { name: rss_news, priority: 1, max_concurrency: 4, min_interval_ms: 400 }
 
 # Fallback chain (architecture §1.4)
 degrade:
