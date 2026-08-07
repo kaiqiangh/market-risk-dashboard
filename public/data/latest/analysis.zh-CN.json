@@ -1,32 +1,32 @@
 {
   "schema_version": "1.1.0",
-  "generated_at": "2026-08-07T11:34:04Z",
+  "generated_at": "2026-08-07T20:34:58Z",
   "language": "zh-CN",
   "market_state": "caution",
   "market_regime": "goldilocks",
-  "summary": "盘前，综合风险分报 47.49，仍处于 caution 区间、regime 维持 goldilocks，但单日抬升 5.67，且整周涨幅全部由这一个交易时段贡献。本次上行由权重结构驱动而非压力事件驱动：跨资产确认是最大单一贡献项，10Y 收益率持稳于 4.63，2Y 回落至 4.18，10Y 实际利率小幅上行至 2.41，高收益利差仅温和走阔至 2.75。隔夜存储主线按地域分化——中国存储与先进封装个股收盘大涨，兆易创新领涨 8.32，而美国存储链在闪迪与西部数据财报后走弱，美光下跌 1.31。两条机制性提示需要放在首位：本轮波动率维度覆盖度为零，其 15.0 的权重被重新分配至其余五个维度；且股票、新闻与风险三类数据集均标记为 degraded。最直接的催化剂是协调世界时 12:30 公布的美国就业报告，距本简报约一小时。",
+  "summary": "盘后综合风险分收于 46.11，仍处 caution 区间与 goldilocks 情景，单日基本持平（-0.02）。真正值得注意的变化是结构性的而非方向性的：波动率维度覆盖率归零，其 15.0 的名义权重被重新分配，宏观、流动性信用与股票结构三个维度的有效权重各自升至 23.5294，跨资产升至 17.6471。这一点尤其需要点破，因为宏观层自身的 VIX 读数其实从 15.81 回落至 15.15——模型丢掉的是最平静的那个输入，而不是正在恶化的输入。表层之下，最新非农就业录得 -23.0（前值 +20.0），股市却依然收涨，消费电子 +7.0455、AI 软件 +5.9766 领跑，存储以 -1.8127 掉队。模型自评置信度 0.8335，但在一个完整维度失明、新闻源降级的前提下，我们对结论保留更低的确信度。",
   "top_risk_drivers": [
     {
-      "claim": "跨资产确认读数 0.6667，是综合风险分的最大单一贡献项，贡献 8.82——风险在于各类资产同向运动、而非彼此对冲。",
+      "claim": "跨资产确认度 0.5 是综合分中最大的单一贡献项（8.8235）：各类资产正在同向移动而非互相对冲，这意味着一旦出现冲击，分散化能提供的缓冲比表面看起来更少。该指标为代理变量，已按 0.8 折价计入。",
       "evidence_refs": [
         {
           "dataset": "risk",
           "path": "payload.dimensions[4].indicators[0].value",
           "metric": "cross_asset_confirmation",
-          "value": 0.6667,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "value": 0.5,
+          "updated_at": "2026-08-07T19:31:58Z"
         }
       ]
     },
     {
-      "claim": "利率板块贡献第二与第三大推力：10Y 实际利率 2.41 贡献 5.80，10Y 名义利率 4.63 贡献 5.46，使宏观维度以 64.3 保持各维度最高分。",
+      "claim": "10 年期实际利率 2.41 位于 98.56 分位、名义 10 年期 4.63 位于 96.39 分位，两者合计贡献 11.2552，把宏观维度推到 64.31 的高位。在就业数据转负的当天长端仍未下行，说明这是估值层面持续的贴现率压力，而非暂时的避险定价。",
       "evidence_refs": [
         {
           "dataset": "risk",
           "path": "payload.dimensions[0].indicators[0].value",
           "metric": "real_rate_dfii10",
           "value": 2.41,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "updated_at": "2026-08-07T19:31:58Z"
         },
         {
           "dataset": "macro",
@@ -38,14 +38,14 @@
       ]
     },
     {
-      "claim": "隔夜逆回购余额降至 1.429，贡献 4.03——过去吸收流动性冲击的缓冲垫已接近耗尽，后续任何抽水只能从 2993349 的准备金中支取。",
+      "claim": "隔夜逆回购余额降至 1.45，处于 7.38 分位——过去几年吸收缩表冲击的现金缓冲已基本耗尽。准备金余额 2993349 仍然充裕，但边际上再遇到融资压力时，系统已经没有同样的减震器。",
       "evidence_refs": [
         {
           "dataset": "risk",
           "path": "payload.dimensions[1].indicators[1].value",
           "metric": "reverse_repo",
-          "value": 1.429,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "value": 1.45,
+          "updated_at": "2026-08-07T19:31:58Z"
         },
         {
           "dataset": "macro",
@@ -57,54 +57,47 @@
       ]
     },
     {
-      "claim": "领涨面狭窄：仅 0.0467 的标的创出新高，0.6667 站上 MA200，同时小盘股以 -0.7404 落后、半导体以 0.3278 领先。",
+      "claim": "涨势的宽度并未兑现为质量：0.68 的成分股站上 MA200，但创新高比例只有 0.1133。多数股票处在上升趋势中，却只有很小一部分真正在创新高，这是典型的领涨面收窄而非扩散。",
       "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[2].indicators[1].value",
-          "metric": "new_highs_ratio",
-          "value": 0.0467,
-          "updated_at": "2026-08-07T10:38:25Z"
-        },
         {
           "dataset": "risk",
           "path": "payload.dimensions[2].indicators[0].value",
           "metric": "breadth_above_ma200",
-          "value": 0.6667,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "value": 0.68,
+          "updated_at": "2026-08-07T19:31:58Z"
         },
         {
           "dataset": "risk",
-          "path": "payload.dimensions[2].indicators[3].value",
-          "metric": "small_cap_relative",
-          "value": -0.7404,
-          "updated_at": "2026-08-07T10:38:25Z"
-        },
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[2].indicators[4].value",
-          "metric": "semis_relative",
-          "value": 0.3278,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "path": "payload.dimensions[2].indicators[1].value",
+          "metric": "new_highs_ratio",
+          "value": 0.1133,
+          "updated_at": "2026-08-07T19:31:58Z"
         }
       ]
     },
     {
-      "claim": "在总量指标改善之下劳动力质量正在侵蚀：失业率 4.2 走低，但劳动参与率降至 61.5，续请失业金人数升至 1801000。",
+      "claim": "就业市场的改善是统计口径造成的：非农 -23.0，失业率却从 4.2 降至 4.1，而劳动参与率同步从 61.5 降至 61.4。失业率下降来自劳动力退出而非岗位创造，续请失业金人数升至 1801000 也印证了再就业正在变难。",
       "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.labor[0].value",
+          "metric": "payems",
+          "value": -23.0,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
         {
           "dataset": "macro",
           "path": "payload.labor[1].value",
           "metric": "unrate",
-          "value": 4.2,
-          "updated_at": "2026-06-01T00:00:00Z"
+          "value": 4.1,
+          "updated_at": "2026-07-01T00:00:00Z"
         },
         {
           "dataset": "macro",
           "path": "payload.labor[4].value",
           "metric": "civpart",
-          "value": 61.5,
-          "updated_at": "2026-06-01T00:00:00Z"
+          "value": 61.4,
+          "updated_at": "2026-07-01T00:00:00Z"
         },
         {
           "dataset": "macro",
@@ -118,26 +111,33 @@
   ],
   "supporting_signals": [
     {
-      "claim": "信用走弱局限于低评级尾部：高收益利差走阔至 2.75，投资级则持平于 0.78。",
+      "claim": "名义 10 年期利率在就业转负当天仍持平于 4.63，前端 2 年期只从 4.2 回落到 4.18，曲线斜率 0.45。债市拒绝为疲软的就业数据定价出降息，这本身就是一个警示信号。",
       "evidence_refs": [
         {
-          "dataset": "risk",
-          "path": "payload.dimensions[1].indicators[2].value",
-          "metric": "hy_oas",
-          "value": 2.75,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "dataset": "macro",
+          "path": "payload.rates[0].value",
+          "metric": "dgs10",
+          "value": 4.63,
+          "updated_at": "2026-08-05T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.rates[1].value",
+          "metric": "dgs2",
+          "value": 4.18,
+          "updated_at": "2026-08-05T00:00:00Z"
         },
         {
           "dataset": "risk",
-          "path": "payload.dimensions[1].indicators[3].value",
-          "metric": "ig_oas",
-          "value": 0.78,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "path": "payload.dimensions[0].indicators[1].value",
+          "metric": "yield_curve_10y2y",
+          "value": 0.4500000000000002,
+          "updated_at": "2026-08-07T19:31:58Z"
         }
       ]
     },
     {
-      "claim": "通胀预期不降反升，10Y 盈亏平衡通胀率报 2.26，5Y5Y 远期报 2.29——这将持续对实际利率路径形成上行压力。",
+      "claim": "通胀预期在就业走弱的同时反而抬升：10 年期盈亏平衡通胀率升至 2.26，5Y5Y 远期升至 2.29。就业转弱叠加通胀预期上行是轻微的滞胀组合，也正是它让下一次通胀数据的权重显著上升。",
       "evidence_refs": [
         {
           "dataset": "macro",
@@ -156,153 +156,189 @@
       ]
     },
     {
-      "claim": "美元双口径均偏强，广义美元指数 119.7034，发达经济体口径 112.8987——对风险资产构成收紧性的交叉逆风。",
+      "claim": "续请失业金人数 1801000 上行，而初请 199000 大体平稳。这种组合说明裁员并未加速，但失业者重新找到工作的速度在放慢——劳动力市场是在冻结，而不是在断裂。",
       "evidence_refs": [
         {
-          "dataset": "risk",
-          "path": "payload.dimensions[0].indicators[2].value",
-          "metric": "dollar_index",
-          "value": 119.7034,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "dataset": "macro",
+          "path": "payload.labor[3].value",
+          "metric": "ccsa",
+          "value": 1801000.0,
+          "updated_at": "2026-07-25T00:00:00Z"
         },
         {
           "dataset": "macro",
-          "path": "payload.fx[1].value",
-          "metric": "dtwexafegs",
-          "value": 112.8987,
-          "updated_at": "2026-07-31T00:00:00Z"
+          "path": "payload.labor[2].value",
+          "metric": "icsa",
+          "value": 199000.0,
+          "updated_at": "2026-08-01T00:00:00Z"
         }
       ]
     },
     {
-      "claim": "美国半导体并未确认亚洲存储行情：美光当日下跌 1.3122，英伟达小幅回落 0.1049。",
+      "claim": "半导体复合体明显跑输大盘：存储主题 -1.8127，半导体龙头篮子仅 +0.1878，AMD 收跌 -1.7716、美光 -0.6363。在一个普涨的交易日里，AI 行情最核心的硬件环节没有跟上，领涨结构因此更依赖高贝塔的软件端。",
       "evidence_refs": [
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[7].change_1d",
+          "metric": "change_1d",
+          "value": -1.8127,
+          "updated_at": "2026-08-07T19:31:58Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.sectors[0].change_1d",
+          "metric": "change_1d",
+          "value": 0.1878,
+          "updated_at": "2026-08-07T19:31:58Z"
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[3].change_1d",
+          "metric": "change_1d",
+          "value": -1.7716,
+          "updated_at": "2026-08-07T19:28:12Z"
+        },
         {
           "dataset": "equities",
           "path": "payload.assets[2].change_1d",
           "metric": "change_1d",
-          "value": -1.3122,
-          "updated_at": "2026-08-07T10:35:08Z"
-        },
-        {
-          "dataset": "equities",
-          "path": "payload.assets[0].change_1d",
-          "metric": "change_1d",
-          "value": -0.1049,
-          "updated_at": "2026-08-07T10:35:06Z"
+          "value": -0.6363,
+          "updated_at": "2026-08-07T19:28:10Z"
         }
       ]
     }
   ],
   "contradicting_signals": [
     {
-      "claim": "47.49 的读数是在完全没有波动率输入的情况下抬升的——本轮该维度覆盖度为 0.00、有效权重为 0.0，因此这一上行既是信号、也是权重分配的产物。",
+      "claim": "信用市场完全不配合风险抬升的叙事：高收益利差 2.71 处于 10.29 分位并较前值收窄，投资级 0.78 持平于 17.43 分位。如果宏观压力真的在向实体传导，信用利差通常是最早走阔的，而它没有。",
       "evidence_refs": [
         {
           "dataset": "risk",
-          "path": "payload.total_score",
-          "metric": "total_score",
-          "value": 47.49,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "path": "payload.dimensions[1].indicators[2].value",
+          "metric": "hy_oas",
+          "value": 2.71,
+          "updated_at": "2026-08-07T19:31:58Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[1].indicators[3].value",
+          "metric": "ig_oas",
+          "value": 0.78,
+          "updated_at": "2026-08-07T19:31:58Z"
         }
       ]
     },
     {
-      "claim": "趋势结构完好：三个月动量 4.7327，价格高于 MA200 达 9.4097，52 周回撤仅 -0.3591。",
+      "claim": "趋势引擎毫发无伤：52 周回撤为 0.0，即指数就处在一年高点上，价格高于 MA200 达 9.9593，3 个月动量 5.659。在真正的风险事件中，这三个指标不会同时保持这种状态。",
       "evidence_refs": [
         {
           "dataset": "risk",
-          "path": "payload.dimensions[5].indicators[2].value",
-          "metric": "momentum_3m",
-          "value": 4.7327,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "path": "payload.dimensions[5].indicators[1].value",
+          "metric": "drawdown_52w",
+          "value": 0.0,
+          "updated_at": "2026-08-07T19:31:58Z"
         },
         {
           "dataset": "risk",
           "path": "payload.dimensions[5].indicators[0].value",
           "metric": "price_vs_ma200",
-          "value": 9.4097,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "value": 9.9593,
+          "updated_at": "2026-08-07T19:31:58Z"
         },
         {
           "dataset": "risk",
-          "path": "payload.dimensions[5].indicators[1].value",
-          "metric": "drawdown_52w",
-          "value": -0.3591,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "path": "payload.dimensions[5].indicators[2].value",
+          "metric": "momentum_3m",
+          "value": 5.659,
+          "updated_at": "2026-08-07T19:31:58Z"
         }
       ]
     },
     {
-      "claim": "官方通胀序列仍在配合：整体 CPI 报 3.46353，核心 CPI 报 2.56579，核心 PCE 报 3.28653，均低于各自前值。",
+      "claim": "创新低比例仅 0.0133，即 150 只成分股中只有 2 只创新低。领涨面收窄是事实，但收窄的另一端并没有出现真正的抛售——尾部还没有开始破裂。",
       "evidence_refs": [
         {
-          "dataset": "macro",
-          "path": "payload.inflation[0].value",
-          "metric": "cpiaucsl",
-          "value": 3.46353,
-          "updated_at": "2026-06-01T00:00:00Z"
-        },
-        {
-          "dataset": "macro",
-          "path": "payload.inflation[1].value",
-          "metric": "cpilfesl",
-          "value": 2.56579,
-          "updated_at": "2026-06-01T00:00:00Z"
-        },
-        {
-          "dataset": "macro",
-          "path": "payload.inflation[2].value",
-          "metric": "pcepilfe",
-          "value": 3.28653,
-          "updated_at": "2026-06-01T00:00:00Z"
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[2].value",
+          "metric": "new_lows_ratio",
+          "value": 0.0133,
+          "updated_at": "2026-08-07T19:31:58Z"
         }
       ]
     },
     {
-      "claim": "尽管逆回购持续消耗，融资端尚未承压，SOFR 回落至 3.64，对应美联储资产负债表规模 6748567。",
+      "claim": "板块层面的参与度其实相当广泛：消费电子 +7.0455、AI 软件 +5.9766、量子计算 +5.4871、电动车供应链 +4.1244、云计算 +3.4265，22 个板块与主题中仅 2 个收跌。这不是防御性资金流，而是明确的风险偏好扩散。",
       "evidence_refs": [
         {
-          "dataset": "macro",
-          "path": "payload.liquidity[4].value",
-          "metric": "sofr",
-          "value": 3.64,
-          "updated_at": "2026-08-05T00:00:00Z"
+          "dataset": "sectors",
+          "path": "payload.themes[8].change_1d",
+          "metric": "change_1d",
+          "value": 7.0455,
+          "updated_at": "2026-08-07T19:31:58Z"
         },
         {
-          "dataset": "risk",
-          "path": "payload.dimensions[1].indicators[0].value",
-          "metric": "fed_balance_sheet",
-          "value": 6748567.0,
-          "updated_at": "2026-08-07T10:38:25Z"
+          "dataset": "sectors",
+          "path": "payload.themes[1].change_1d",
+          "metric": "change_1d",
+          "value": 5.9766,
+          "updated_at": "2026-08-07T19:31:58Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[14].change_1d",
+          "metric": "change_1d",
+          "value": 5.4871,
+          "updated_at": "2026-08-07T19:31:58Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[13].change_1d",
+          "metric": "change_1d",
+          "value": 4.1244,
+          "updated_at": "2026-08-07T19:31:58Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[2].change_1d",
+          "metric": "change_1d",
+          "value": 3.4265,
+          "updated_at": "2026-08-07T19:31:58Z"
         }
       ]
     }
   ],
   "what_changed_today": [
-    "综合风险分单日上行 5.67 至 47.49；周度变动同样为 5.67，意味着整周的变动全部集中在本时段。",
-    "VIX 从 16.5 回落至 15.81，与风险分上行方向相反——波动率市场并未印证此次抬升。",
-    "2Y 从 4.2 回落至 4.18，10Y 持稳于 4.63，曲线走陡至 0.45 的斜率。",
-    "高收益利差从 2.73 走阔至 2.75，投资级维持 0.78。",
-    "逆回购余额从 1.65 降至 1.429，准备金余额从 2984570 升至 2993349。",
-    "盈亏平衡通胀率走高，10Y 从 2.22 升至 2.26，5Y5Y 远期从 2.26 升至 2.29。",
-    "A 股存储与封装个股收盘大涨——兆易创新 8.3247、江波龙 5.5333、佰维存储 5.1258、北京君正 5.146、通富微电 6.168——与美国市场美光 -1.3122 形成反差。"
+    "波动率维度在今日失明：覆盖率 0.00、有效权重 0.0，VIX 与已实现波动率两个指标状态均为 missing。",
+    "该维度 15.0 的名义权重被摊派给其余维度——宏观、流动性信用、股票结构的有效权重从 20.0 升至 23.5294，跨资产从 15.0 升至 17.6471，趋势从 10.0 升至 11.7647。",
+    "综合分 46.11、单日变动 -0.02、周变动 -0.02：读数几乎没动，但支撑读数的成分已经换了一套。",
+    "宏观层的 VIX 实际是下行的，从 15.81 降至 15.15——被剔除的恰恰是唯一在改善的风险输入。",
+    "最新非农 -23.0（前值 +20.0），失业率 4.1（前值 4.2），劳动参与率 61.4（前值 61.5），续请失业金 1801000（前值 1777000）。",
+    "利率端：2 年期 4.18（前值 4.2），10 年期持平 4.63，实际利率 2.41（前值 2.4）；10 年期盈亏平衡通胀 2.26（前值 2.22）、5Y5Y 远期 2.29（前值 2.26）同步走高。",
+    "信用与流动性：高收益利差收窄至 2.71（前值 2.75），投资级持平 0.78，逆回购 1.45（前值 1.429），美联储资产负债表 6748567（前值 6738190）。",
+    "领涨结构轮动：消费电子 +7.0455、AI 软件 +5.9766、量子计算 +5.4871 领涨，而存储 -1.8127、金融科技 -0.6162、半导体龙头 +0.1878 掉队；英伟达 +1.8014、特斯拉 +2.8636 收涨。"
   ],
   "watch_next": [
-    "协调世界时 12:30 的美国就业报告是最直接的催化剂；上一期非农放缓至 57.0、前值 129.0，劳动参与率降至 61.5，因此若失业率因错误原因回落，将被解读为偏鹰。",
-    "下周将公布 CPI、PPI 与零售销售初值，均标记为高重要性——通胀回落的叙事将在一周内被三次检验。",
-    "存储分化能否收敛：SK 海力士的新增产能承诺与美光 -1.3122 的表现形成对照，供给响应之争将决定亚洲行情是领先信号还是陷阱。",
-    "逆回购降至 1.429 是否开始产生约束——若缓冲耗尽后准备金停止增长，融资压力会最先反映在 3.64 的 SOFR 上。",
-    "波动率维度能否恢复覆盖；在此之前，应将 47.49 的读数视为低估了波动率风险，而非一个干净的读数。"
+    "下周的 CPI 是真正的关键：在非农转负的同时通胀预期还在抬升，这份数据将决定市场把当前组合读成“可以降息的放缓”还是“不能降息的滞胀”。",
+    "波动率数据源是否恢复。若 VIX 以 15.15 重新进入模型，综合分会机械性回落——届时需要分清这是风险真实下降，还是仅仅补回了一个缺失的输入。",
+    "美联储独立性相关的政治新闻流（罢免理事的推进、与主席的私下沟通）。这类风险不会体现在前端利率上，要盯的是长端与盈亏平衡通胀率。",
+    "霍尔木兹海峡航运接近停滞带来的能源供应溢价。市场已多次对未落地的伊朗协议抢跑，反身性风险正在累积。",
+    "宽度能否转化为质量：创新高比例 0.1133 需要向 0.68 的 MA200 上方占比靠拢，否则本轮上涨就仍然是少数股票扛着指数。"
   ],
   "bull_case": {
-    "title": "牛市情景：通胀回落延续，趋势买盘不散",
+    "title": "多头情景：通胀回落兑现，就业走弱被读成降息许可",
     "points": [
-      "核心 PCE 报 3.28653、核心 CPI 报 2.56579，均低于前值；若就业报告的走弱源自需求正常化而非裁员，宽松路径仍然敞开。",
-      "趋势引擎未受损伤，动量 4.7327，价格高于 MA200 达 9.4097，52 周回撤仅 -0.3591。",
-      "信用市场拒绝确认股票端的宽度收窄：投资级持平于 0.78，高收益 2.75 依然处于历史偏窄水平。"
+      "核心 CPI 2.56579 与核心 PCE 3.28653 均低于各自前值，通胀的方向仍是向下的。",
+      "信用市场是最诚实的裁判，而它给出的是绿灯：高收益 2.71、投资级 0.78 都处在历史极窄水平。",
+      "趋势与广度同时成立：52 周回撤 0.0、价格高于 MA200 9.9593，且 22 个板块主题中 20 个收涨。"
     ],
     "evidence_refs": [
+      {
+        "dataset": "macro",
+        "path": "payload.inflation[1].value",
+        "metric": "cpilfesl",
+        "value": 2.56579,
+        "updated_at": "2026-06-01T00:00:00Z"
+      },
       {
         "dataset": "macro",
         "path": "payload.inflation[2].value",
@@ -312,50 +348,71 @@
       },
       {
         "dataset": "risk",
-        "path": "payload.dimensions[5].indicators[2].value",
-        "metric": "momentum_3m",
-        "value": 4.7327,
-        "updated_at": "2026-08-07T10:38:25Z"
+        "path": "payload.dimensions[1].indicators[2].value",
+        "metric": "hy_oas",
+        "value": 2.71,
+        "updated_at": "2026-08-07T19:31:58Z"
       },
       {
         "dataset": "risk",
         "path": "payload.dimensions[1].indicators[3].value",
         "metric": "ig_oas",
         "value": 0.78,
-        "updated_at": "2026-08-07T10:38:25Z"
+        "updated_at": "2026-08-07T19:31:58Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[5].indicators[1].value",
+        "metric": "drawdown_52w",
+        "value": 0.0,
+        "updated_at": "2026-08-07T19:31:58Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[5].indicators[0].value",
+        "metric": "price_vs_ma200",
+        "value": 9.9593,
+        "updated_at": "2026-08-07T19:31:58Z"
       }
     ]
   },
   "base_case": {
-    "title": "基准情景：利率与宽度问题，而非信用事件",
+    "title": "基准情景：caution 区间内震荡，等待通胀数据裁决",
     "points": [
-      "综合风险分在 47.49 附近维持 caution 区间，goldilocks 状态不变，实际利率停留在 2.41。",
-      "领涨面维持狭窄，半导体相对强度 0.3278，对应小盘股 -0.7404，新高比例 0.0467。",
-      "就业报告落在预期附近，曲线维持 0.45 的斜率，使协调世界时 12:30 的数据成为波动率事件而非状态切换。"
+      "综合分 46.11 与单日 -0.02 的组合说明市场并没有在定价新的方向，只是在等待下一个信息。",
+      "宏观维度 64.31 的压力与流动性信用 33.62 的宽松互相抵消，两者都不足以单独主导定价。",
+      "在波动率维度恢复之前，综合分的可比性下降，应更多依赖信用利差与广度这两个未受影响的读数来判断。"
     ],
     "evidence_refs": [
       {
         "dataset": "risk",
         "path": "payload.total_score",
         "metric": "total_score",
-        "value": 47.49,
-        "updated_at": "2026-08-07T10:38:25Z"
+        "value": 46.11,
+        "updated_at": "2026-08-07T19:31:58Z"
       },
       {
         "dataset": "risk",
-        "path": "payload.dimensions[0].indicators[1].value",
-        "metric": "yield_curve_10y2y",
-        "value": 0.4500000000000002,
-        "updated_at": "2026-08-07T10:38:25Z"
+        "path": "payload.confidence",
+        "metric": "confidence",
+        "value": 0.8335,
+        "updated_at": "2026-08-07T19:31:58Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[1].indicators[2].value",
+        "metric": "hy_oas",
+        "value": 2.71,
+        "updated_at": "2026-08-07T19:31:58Z"
       }
     ]
   },
   "bear_case": {
-    "title": "熊市情景：利率与流动性挤压狭窄行情",
+    "title": "空头情景：实际利率高位叠加就业转负，滞胀组合收紧估值",
     "points": [
-      "若实际利率突破 2.41 而盈亏平衡通胀率维持在 2.26 附近，贴现率压力将最猛烈地落在涨幅最大的领涨股上。",
-      "逆回购仅剩 1.429，减震器已经失效，任何对 2993349 准备金的抽水都会直接传导至融资市场。",
-      "0.6667 站上 MA200、却只有 0.0467 创新高，意味着一旦指数层面破位，下方几乎没有支撑。"
+      "10 年期实际利率 2.41 位于 98.56 分位，这是本轮周期估值最直接的压力来源，而它并没有随就业走弱而回落。",
+      "就业 -23.0 与盈亏平衡通胀 2.26 同向恶化，这是最不利的组合：增长在走弱，而通胀预期不允许货币政策去救。",
+      "逆回购缓冲 1.45 已近枯竭，跨资产确认度 0.5 又意味着分散化失效——若冲击到来，系统的吸收能力低于表面读数。"
     ],
     "evidence_refs": [
       {
@@ -363,60 +420,67 @@
         "path": "payload.dimensions[0].indicators[0].value",
         "metric": "real_rate_dfii10",
         "value": 2.41,
-        "updated_at": "2026-08-07T10:38:25Z"
+        "updated_at": "2026-08-07T19:31:58Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.labor[0].value",
+        "metric": "payems",
+        "value": -23.0,
+        "updated_at": "2026-07-01T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.inflation[4].value",
+        "metric": "t10yie",
+        "value": 2.26,
+        "updated_at": "2026-08-06T00:00:00Z"
       },
       {
         "dataset": "risk",
         "path": "payload.dimensions[1].indicators[1].value",
         "metric": "reverse_repo",
-        "value": 1.429,
-        "updated_at": "2026-08-07T10:38:25Z"
+        "value": 1.45,
+        "updated_at": "2026-08-07T19:31:58Z"
       },
       {
         "dataset": "risk",
-        "path": "payload.dimensions[2].indicators[0].value",
-        "metric": "breadth_above_ma200",
-        "value": 0.6667,
-        "updated_at": "2026-08-07T10:38:25Z"
+        "path": "payload.dimensions[4].indicators[0].value",
+        "metric": "cross_asset_confirmation",
+        "value": 0.5,
+        "updated_at": "2026-08-07T19:31:58Z"
       }
     ]
   },
-  "confidence": 0.76,
+  "confidence": 0.74,
   "evidence_refs": [
     {
       "dataset": "risk",
       "path": "payload.total_score",
       "metric": "total_score",
-      "value": 47.49,
-      "updated_at": "2026-08-07T10:38:25Z"
+      "value": 46.11,
+      "updated_at": "2026-08-07T19:31:58Z"
     },
     {
       "dataset": "risk",
       "path": "payload.confidence",
       "metric": "confidence",
-      "value": 0.8333,
-      "updated_at": "2026-08-07T10:38:25Z"
+      "value": 0.8335,
+      "updated_at": "2026-08-07T19:31:58Z"
     },
     {
       "dataset": "risk",
       "path": "payload.regime",
       "metric": "regime",
       "value": "goldilocks",
-      "updated_at": "2026-08-07T10:38:25Z"
-    },
-    {
-      "dataset": "risk",
-      "path": "payload.dimensions[4].indicators[0].value",
-      "metric": "cross_asset_confirmation",
-      "value": 0.6667,
-      "updated_at": "2026-08-07T10:38:25Z"
+      "updated_at": "2026-08-07T19:31:58Z"
     },
     {
       "dataset": "risk",
       "path": "payload.dimensions[0].indicators[0].value",
       "metric": "real_rate_dfii10",
       "value": 2.41,
-      "updated_at": "2026-08-07T10:38:25Z"
+      "updated_at": "2026-08-07T19:31:58Z"
     },
     {
       "dataset": "macro",
@@ -427,31 +491,52 @@
     },
     {
       "dataset": "risk",
-      "path": "payload.dimensions[1].indicators[1].value",
-      "metric": "reverse_repo",
-      "value": 1.429,
-      "updated_at": "2026-08-07T10:38:25Z"
+      "path": "payload.dimensions[1].indicators[2].value",
+      "metric": "hy_oas",
+      "value": 2.71,
+      "updated_at": "2026-08-07T19:31:58Z"
     },
     {
       "dataset": "risk",
-      "path": "payload.dimensions[1].indicators[2].value",
-      "metric": "hy_oas",
-      "value": 2.75,
-      "updated_at": "2026-08-07T10:38:25Z"
+      "path": "payload.dimensions[1].indicators[1].value",
+      "metric": "reverse_repo",
+      "value": 1.45,
+      "updated_at": "2026-08-07T19:31:58Z"
     },
     {
       "dataset": "risk",
       "path": "payload.dimensions[2].indicators[0].value",
       "metric": "breadth_above_ma200",
-      "value": 0.6667,
-      "updated_at": "2026-08-07T10:38:25Z"
+      "value": 0.68,
+      "updated_at": "2026-08-07T19:31:58Z"
     },
     {
       "dataset": "risk",
       "path": "payload.dimensions[2].indicators[1].value",
       "metric": "new_highs_ratio",
-      "value": 0.0467,
-      "updated_at": "2026-08-07T10:38:25Z"
+      "value": 0.1133,
+      "updated_at": "2026-08-07T19:31:58Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[4].indicators[0].value",
+      "metric": "cross_asset_confirmation",
+      "value": 0.5,
+      "updated_at": "2026-08-07T19:31:58Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.labor[0].value",
+      "metric": "payems",
+      "value": -23.0,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[5].indicators[1].value",
+      "metric": "drawdown_52w",
+      "value": 0.0,
+      "updated_at": "2026-08-07T19:31:58Z"
     }
   ],
   "data_freshness": "degraded"
