@@ -2,6 +2,7 @@ import type { z } from "zod";
 import {
   AnalysisDataset,
   CalendarEnvelope,
+  CommoditiesEnvelope,
   CryptoEnvelope,
   DashboardEnvelope,
   EquitiesEnvelope,
@@ -46,6 +47,7 @@ export type DatasetSchemaKey =
   | "equities"
   | "sectors"
   | "crypto"
+  | "commodities"
   | "news"
   | "calendar"
   | "risk"
@@ -62,6 +64,7 @@ export const DATASET_SCHEMAS: Record<DatasetSchemaKey, z.ZodTypeAny> = {
   equities: EquitiesEnvelope,
   sectors: SectorsEnvelope,
   crypto: CryptoEnvelope,
+  commodities: CommoditiesEnvelope,
   news: NewsEnvelope,
   calendar: CalendarEnvelope,
   risk: RiskEnvelope,

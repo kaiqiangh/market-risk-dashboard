@@ -16,6 +16,7 @@ from .envelope import (
 )
 from .analysis import AnalysisDataset, CaseStatement, SignalClaim
 from .calendar import CalendarDataset, CalendarEnvelope, CalendarEvent
+from .commodities import CommoditiesDataset, CommoditiesEnvelope, CommodityAsset
 from .crypto import CryptoAsset, CryptoDataset, CryptoEnvelope
 from .dashboard import DashboardAsset, DashboardEnvelope, DashboardPayload
 from .equities import EquitiesDataset, EquitiesEnvelope, EquityAsset
@@ -46,6 +47,9 @@ __all__ = [
     "CalendarEnvelope",
     "CalendarEvent",
     "CaseStatement",
+    "CommoditiesDataset",
+    "CommoditiesEnvelope",
+    "CommodityAsset",
     "ContractModel",
     "CryptoAsset",
     "CryptoDataset",

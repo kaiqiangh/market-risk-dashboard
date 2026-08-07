@@ -107,6 +107,7 @@ def _build_risk_context(
     macro: Any,
     equities: Any,
     crypto: Any,
+    commodities: Any,
     histories: dict[str, list[dict[str, Any]]],
     qualities: list[float],
     prev_total_score: float | None,
@@ -121,7 +122,10 @@ def _build_risk_context(
     breadth = breadth_snapshot(histories)
     trend = trend_snapshot(histories)
 
-    # Cross-asset confirmation signals (MVP simplified to 7 items)
+    # Cross-asset confirmation signals (#118; PRD §14.7 designs 9, of which 8 are
+    # implemented here — the cyclicals-vs-defensives and HY-vs-treasury spreads need extra
+    # series and are deliberately deferred). Signals 7-8 are commodity-driven: copper
+    # falling = growth stress, gold rising = classic risk-off confirmation.
     vix = _macro_value(macro, "rates", "vixcls")
     hy = _macro_value(macro, "credit", "bamlh0a0hym2")
     dxy = _macro_value(macro, "fx", "dtwexbgs")
@@ -129,6 +133,8 @@ def _build_risk_context(
     spy_change = _latest_change(histories.get("SPY"))
     iwm_relative = breadth.get("small_cap_relative")
     btc_change = crypto.payload.assets[0].change_1d if crypto.payload.assets else None
+    copper_change = _commodity_change(commodities, "HG=F")
+    gold_change = _commodity_change(commodities, "GC=F")
 
     signals = [
         spy_change is not None and spy_change < 0,
@@ -137,6 +143,8 @@ def _build_risk_context(
         real_rate is not None and real_rate > 1.5,
         btc_change is not None and btc_change < 0,
         iwm_relative is not None and iwm_relative < 0,
+        copper_change is not None and copper_change < 0,
+        gold_change is not None and gold_change > 0,
     ]
     confirmation = round(sum(1 for s in signals if s) / len(signals), 4) if signals else None
 
@@ -145,6 +153,7 @@ def _build_risk_context(
         "macro": macro.payload,
         "equities": equities.payload,
         "crypto": crypto.payload,
+        "commodities": commodities.payload,
         "histories": histories,
         "breadth": breadth,
         "trend": trend,
@@ -155,6 +164,14 @@ def _build_risk_context(
         "_prev_dim_scores": prev_dim_scores,
         "_risk_history": risk_history,
     }
+
+
+def _commodity_change(commodities: Any, symbol: str) -> float | None:
+    """1d change of a commodity asset by symbol (None when absent/failed)."""
+    for asset in getattr(getattr(commodities, "payload", None), "assets", []) or []:
+        if asset.symbol == symbol:
+            return asset.change_1d
+    return None
 
 
 def _macro_value(macro: Any, group: str, key: str) -> float | None:
@@ -205,7 +222,7 @@ FULL_RUN_DATASETS: tuple[str, ...] = tuple(
 #: the dashboard on yesterday's data and an operator should not have to infer that.
 COMMAND_DATASETS: dict[str, tuple[str, ...]] = {
     "full": FULL_RUN_DATASETS,
-    "market-only": ("equities", "sectors", "crypto"),
+    "market-only": ("equities", "sectors", "crypto", "commodities"),
     "macro-only": ("macro",),
     "news-only": ("news",),
     "fact-layer": ("factlayer",),
@@ -602,6 +619,7 @@ def _run_collection(command: str) -> dict[str, Any]:
         results.update(
             equities=market["equities"],
             crypto=market["crypto"],
+            commodities=market["commodities"],
             sectors=market["sectors"],
             histories=market["histories"],
         )
@@ -690,6 +708,9 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         crypto = _assemble("crypto", results["crypto"], degraded,
                            **_provider_kwargs(market_meta, "crypto"),
                            data_quality=market_meta.get("data_quality", 1.0))
+        commodities = _assemble("commodities", results["commodities"], degraded,
+                                **_provider_kwargs(market_meta, "commodities"),
+                                data_quality=market_meta.get("data_quality", 1.0))
         news = _assemble("news", results["news"], bool(results.get("news_degraded", False)),
                          **_provider_kwargs(news_meta, None, default="rss_news"),
                          data_quality=news_meta.get("data_quality", 1.0))
@@ -705,6 +726,7 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             macro=macro.envelope,
             equities=equities.envelope,
             crypto=crypto.envelope,
+            commodities=commodities.envelope,
             histories=results.get("histories", {}),
             qualities=results["qualities"],
             prev_total_score=prev_score,
@@ -737,6 +759,7 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         equities = _write_finalized(writer, "equities", equities, outcomes)
         sectors = _write_finalized(writer, "sectors", sectors, outcomes)
         crypto = _write_finalized(writer, "crypto", crypto, outcomes)
+        commodities = _write_finalized(writer, "commodities", commodities, outcomes)
         news = _write_finalized(writer, "news", news, outcomes)
         calendar = _write_finalized(writer, "calendar", calendar, outcomes)
         risk_env = _write_finalized(writer, "risk", risk_env, outcomes)
@@ -916,6 +939,9 @@ def main(argv: list[str] | None = None) -> int:
                                 data_quality=market_meta.get("data_quality", 1.0))
             _finalize_and_write(writer, "sectors", results["sectors"], degraded, outcomes,
                                 **_provider_kwargs(market_meta, "sectors"),
+                                data_quality=market_meta.get("data_quality", 1.0))
+            _finalize_and_write(writer, "commodities", results["commodities"], degraded, outcomes,
+                                **_provider_kwargs(market_meta, "commodities"),
                                 data_quality=market_meta.get("data_quality", 1.0))
             _publish_metadata(writer, outcomes, results["provider_status"])
             health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)

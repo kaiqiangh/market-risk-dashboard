@@ -206,6 +206,44 @@ export const CalendarEnvelope = z
   .passthrough();
 export type CalendarEnvelope = z.infer<typeof CalendarEnvelope>;
 
+export const CommodityAsset = z
+  .object({
+    symbol: z.string().min(1),
+    name: z.string().min(1),
+    name_zh: z.string().nullable().default(null),
+    price: z.number().finite(),
+    currency: z.string().default("USD"),
+    change_1d: z.number().finite().nullable().default(null),
+    change_1w: z.number().finite().nullable().default(null),
+    change_1m: z.number().finite().nullable().default(null),
+    source: z.string().min(1),
+    updated_at: utcDateTime,
+  })
+  .passthrough();
+export type CommodityAsset = z.infer<typeof CommodityAsset>;
+
+/** commodities.json payload. */
+export const CommoditiesDataset = z
+  .object({
+    assets: z.array(CommodityAsset).default([]),
+  })
+  .passthrough();
+export type CommoditiesDataset = z.infer<typeof CommoditiesDataset>;
+
+export const CommoditiesEnvelope = z
+  .object({
+    generated_at: utcDateTime,
+    schema_version: z.string().min(1),
+    source: z.union([z.string(), z.array(z.string())]),
+    source_updated_at: utcDateTime.nullable().default(null),
+    freshness_status: FreshnessStatus,
+    data_quality: z.number().finite().min(0).max(1),
+    provenance: ProviderProvenance,
+    payload: CommoditiesDataset,
+  })
+  .passthrough();
+export type CommoditiesEnvelope = z.infer<typeof CommoditiesEnvelope>;
+
 export const CryptoAsset = z
   .object({
     symbol: z.string().min(1),

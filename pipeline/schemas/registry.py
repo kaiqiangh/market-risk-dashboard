@@ -26,6 +26,7 @@ from typing import Any
 
 from pipeline.schemas.analysis import AnalysisDataset
 from pipeline.schemas.calendar import CalendarEnvelope
+from pipeline.schemas.commodities import CommoditiesEnvelope
 from pipeline.schemas.crypto import CryptoEnvelope
 from pipeline.schemas.dashboard import DashboardEnvelope
 from pipeline.schemas.equities import EquitiesEnvelope
@@ -102,6 +103,16 @@ DATASETS: tuple[DatasetSpec, ...] = (
         model=CryptoEnvelope,
         enveloped=True,
         domain="crypto",
+        required=True,
+        row_counted=True,
+        row_key="assets",
+    ),
+    DatasetSpec(
+        key="commodities",
+        filenames=("commodities.json",),
+        model=CommoditiesEnvelope,
+        enveloped=True,
+        domain="market",
         required=True,
         row_counted=True,
         row_key="assets",
