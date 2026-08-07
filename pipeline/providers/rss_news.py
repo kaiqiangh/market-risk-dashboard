@@ -44,14 +44,14 @@ class RssNewsProvider(BaseProvider):
         # #124: the allowlist covers the FULL fallback chain, not just the primary URL —
         # otherwise a legitimate fallback fetch would be blocked by our own guard.
         chain_hosts = {
-            urlparse(u).hostname for s in self.sources for u in [s.url, *s.fallback_urls] if urlparse(u).hostname
+            urlparse(u).hostname for s in self.sources for u in s.chain_urls if urlparse(u).hostname
         }
         allowed = set(self.hosts) | chain_hosts
         relay_hosts = {
             urlparse(u).hostname
             for s in self.sources
             if s.trust == "relay"
-            for u in [s.url, *s.fallback_urls]
+            for u in s.chain_urls
             if urlparse(u).hostname
         }
         self._client = guarded_client(
@@ -95,7 +95,7 @@ class RssNewsProvider(BaseProvider):
             # fallback. Any failure advances to the next URL (one try per URL per run
             # attempt; wayfinder-46: never retry a 403 in the same run). The registry's
             # single retry layer still covers whole-batch transients.
-            urls = [source.url, *source.fallback_urls]
+            urls = source.chain_urls
             source_id = str(source.id or urlparse(source.url).netloc)
             served = False
             last_error: Exception | None = None
@@ -107,7 +107,7 @@ class RssNewsProvider(BaseProvider):
                     for entry in raw[:max_items]:
                         item = _normalize_entry(
                             entry, source, source_id,
-                            max_chars=self.summary_max_chars, fallback_link=channel_link,
+                            max_chars=self.summary_max_chars, channel_link=channel_link,
                         )
                         if item is None:
                             invalid_entries += 1
@@ -198,23 +198,27 @@ def _entry_date(entry: Any) -> str | None:
     return None
 
 
+def _is_absolute_http(parsed) -> bool:
+    """An absolute http(s) URL with a host — the link contract for every news item."""
+    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
 def _normalize_entry(
     entry: Any, source: "NewsSource", source_id: str,
-    max_chars: int = 160, fallback_link: str | None = None,
+    max_chars: int = 160, channel_link: str | None = None,
 ) -> dict[str, Any] | None:
     title = _clean_text(entry.get("title", ""))
     link = str(entry.get("link", "")).strip()
     published = _entry_date(entry)
     parsed_link = urlparse(link)
-    if parsed_link.scheme not in {"http", "https"} or not parsed_link.netloc:
+    if not _is_absolute_http(parsed_link):
         # #127: linkless flash feeds (财联社 telegraph) publish no per-item URLs. Fall back
         # to the feed's channel link as a valid 'view source' pointer; only an absolute
         # http(s) channel link counts. Without either, the item is dropped.
-        candidate = str(fallback_link or "").strip()
-        parsed_candidate = urlparse(candidate)
-        if parsed_candidate.scheme in {"http", "https"} and parsed_candidate.netloc:
-            link, parsed_link = candidate, parsed_candidate
-    if not title or not published or parsed_link.scheme not in {"http", "https"} or not parsed_link.netloc:
+        parsed_candidate = urlparse(str(channel_link or "").strip())
+        if _is_absolute_http(parsed_candidate):
+            link, parsed_link = str(channel_link).strip(), parsed_candidate
+    if not title or not published or not _is_absolute_http(parsed_link):
         return None
     return {
         "title": title,

@@ -215,13 +215,19 @@ class NewsSource(BaseModel):
     @model_validator(mode="after")
     def _chain_is_https_and_duplicate_free(self) -> "NewsSource":
         seen: set[str] = set()
-        for url in [self.url, *self.fallback_urls]:
+        for url in self.chain_urls:
             if urlparse(url).scheme != "https":
                 raise ValueError(f"news source URL must be https: {url!r}")
             if url in seen:
                 raise ValueError(f"duplicate URL in news source chain: {url!r}")
             seen.add(url)
         return self
+
+    @property
+    def chain_urls(self) -> list[str]:
+        """Primary URL first, then each fallback — the ordered chain the provider walks
+        (#124). One shape for the validator, the S-3 allowlist, and the fetch loop."""
+        return [self.url, *self.fallback_urls]
 
 
 class NewsImportance(BaseModel):
