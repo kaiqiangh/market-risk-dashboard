@@ -255,6 +255,21 @@ class ProviderError(Exception):
             return cls(f"{kind}: {message}", cls=TRANSIENT)
         return cls(f"{kind}: {message}", cls=PERMANENT)
 
+    @classmethod
+    def from_http(cls, prefix: str, response: httpx.Response) -> "ProviderError":
+        """A non-200 httpx response, through the one boundary (S-1).
+
+        The shared idiom every httpx provider uses for its status checks — one copy of the
+        HTTPStatusError construction + classification instead of N (Duplicated Code, #94
+        review). The 429/5xx/408/425 taxonomy lives in :meth:`from_exception`.
+        """
+        return cls.from_exception(
+            httpx.HTTPStatusError(
+                f"{prefix} HTTP {response.status_code}", request=response.request, response=response
+            ),
+            detail=f"{prefix} HTTP {response.status_code}",
+        )
+
 
 class ProviderHealth(BaseModel):
     provider: str

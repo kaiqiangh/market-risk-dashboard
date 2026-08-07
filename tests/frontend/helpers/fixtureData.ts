@@ -638,7 +638,7 @@ export const sourcesFixture = {
     a_share: { degraded: true, error: "all providers failed: akshare timeout" },
     crypto: { provider: "coingecko", used_fallback: false, from_cache: false, degraded: false },
     macro: { provider: "fred", used_fallback: false, from_cache: false, degraded: false },
-    calendar: { provider: "yfinance_calendar", used_fallback: true, from_cache: false, degraded: true },
+    calendar: { provider: "fmp", used_fallback: false, from_cache: false, degraded: false },
     news: { provider: "rss_news", used_fallback: false, from_cache: false, degraded: false },
   },
 };
