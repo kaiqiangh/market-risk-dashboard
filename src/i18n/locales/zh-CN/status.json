@@ -50,11 +50,7 @@
     "provider": "Provider",
     "fallback": "备用",
     "cache": "缓存",
-    "error": "错误/降级",
-    "degraded": "已降级",
-    "ok": "正常",
-    "yes": "是",
-    "no": "否",
-    "none": "暂无数据源信息"
+    "none": "暂无数据源信息",
+    "status": "状态 / 原因"
   }
 }

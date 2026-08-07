@@ -8,8 +8,7 @@ import { ErrorState } from "@/components/ui/ErrorState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { formatDateTime } from "@/lib/format";
-import { freshTone, freshClasses } from "@/lib/riskColors";
-import { FreshnessDocument, SourcesDocument, type DomainStatus } from "@/schemas";
+import { FreshnessDocument, SourcesDocument, utcDateTime, type DomainStatus } from "@/schemas";
 
 /**
  * StatusPage: system status page — the page whose job is truthfulness, so it validates
@@ -22,18 +21,19 @@ import { FreshnessDocument, SourcesDocument, type DomainStatus } from "@/schemas
  */
 
 /** Provider-domain entry. The DomainStatus contract declares the derived fields and
- * permits the rest as passthrough (used_fallback/from_cache/error are provider-added). */
+ * permits the rest as passthrough (used_fallback/from_cache are provider-added). The
+ * provider error text deliberately has NO second channel here: reason.detail is the one
+ * redacted field that may carry provider text (#92/#89), so the table renders only that. */
 type DomainEntry = DomainStatus & {
   used_fallback?: boolean;
   from_cache?: boolean;
-  error?: string;
 };
 
 /** schema-version.json has no pydantic counterpart (tiny, self-describing) — an explicit
  * schema instead of z.unknown() so a shape change fails loudly on this page too. */
 const SchemaVersion = z.object({
-  schema_version: z.string().optional(),
-  updated_at: z.string().optional(),
+  schema_version: z.string().min(1),
+  updated_at: utcDateTime.optional(),
 });
 
 export default function StatusPage() {
@@ -167,7 +167,7 @@ export default function StatusPage() {
             </table>
           </div>
         ) : (
-          <EmptyState title={t("freshness.none")} />
+          <EmptyState title={t("freshness.none")} data-testid="status-freshness-empty" />
         )}
       </section>
 
@@ -185,16 +185,14 @@ export default function StatusPage() {
                 <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
                   <th className="py-1.5 pr-2 font-medium">{t("providers.domain")}</th>
                   <th className="py-1.5 pr-2 font-medium">{t("providers.provider")}</th>
-                  <th className="py-1.5 font-medium">{t("providers.error")}</th>
+                  <th className="py-1.5 font-medium">{t("providers.status")}</th>
                 </tr>
               </thead>
               <tbody>
                 {Object.entries(sourcesQ.data.domains).map(([domain, raw]) => {
                   const info = raw as DomainEntry;
-                  const degraded = info.degraded;
                   const usedFallback = Boolean(info.used_fallback);
                   const fromCache = Boolean(info.from_cache);
-                  const error = typeof info.error === "string" ? info.error : null;
                   const provider = info.provider;
                   // #65: show the resolved provider and how it was served (fallback/cache)
                   // instead of bare Yes/No booleans.
@@ -204,6 +202,8 @@ export default function StatusPage() {
                     : usedFallback
                       ? ` · ${t("providers.fallback")}`
                       : "";
+                  const reasonCode = info.reason?.code;
+                  const reasonDetail = info.reason?.detail;
                   return (
                     <tr key={domain} className="border-b border-border/50 last:border-0">
                       <td className="py-1.5 pr-2">{domain}</td>
@@ -214,17 +214,23 @@ export default function StatusPage() {
                         ) : null}
                       </td>
                       <td className="py-1.5">
-                        {degraded ? (
-                          <span className={freshClasses(freshTone("degraded")).text}>
-                            {t("providers.degraded")}
-                          </span>
-                        ) : error ? (
-                          <span className="max-w-[320px] truncate font-mono text-[10px] text-risk-severe" title={error}>
-                            {error}
-                          </span>
-                        ) : (
-                          <span className="text-risk-low">{t("providers.ok")}</span>
-                        )}
+                        {/* #95: a degraded provider states a specific cause, not the bare
+                            word "Degraded" — same reason rendering as the freshness table,
+                            from the ONE redacted detail channel (#92). */}
+                        <StatusBadge status={info.status} />
+                        <div className="mt-0.5 text-muted-foreground">
+                          {reasonCode
+                            ? t(`freshness.reasonCodes.${reasonCode}`, { defaultValue: reasonCode })
+                            : t("common:data.na")}
+                          {reasonDetail ? (
+                            <div
+                              className="max-w-[340px] truncate font-mono text-[10px] text-muted-foreground/80"
+                              title={reasonDetail}
+                            >
+                              {reasonDetail}
+                            </div>
+                          ) : null}
+                        </div>
                       </td>
                     </tr>
                   );
@@ -233,7 +239,7 @@ export default function StatusPage() {
             </table>
           </div>
         ) : (
-          <EmptyState title={t("providers.none")} />
+          <EmptyState title={t("providers.none")} data-testid="status-providers-empty" />
         )}
       </section>
     </div>
