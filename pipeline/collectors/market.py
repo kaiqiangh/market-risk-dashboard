@@ -263,7 +263,7 @@ class MarketCollector:
             label_zh="存储周期代理（板块：存储篮子）",
             change_1w=memory_series.change_1w if memory_series else None,
             change_1m=memory_series.change_1m if memory_series else None,
-            note="DRAM/NAND spot prices are paywalled; the memory theme series proxies the cycle (#93 supersedes the MU-only proxy)",
+            note="DRAM/NAND spot prices are paywalled; the memory sector basket series proxies the cycle (#93 supersedes the MU-only proxy)",
             updated_at=now_utc(),
         )
         return SectorsDataset(sectors=sectors, themes=themes, memory=memory)

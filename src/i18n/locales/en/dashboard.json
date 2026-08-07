@@ -10,8 +10,7 @@
     "details": "Show data table",
     "catEquities": "Equities",
     "catCrypto": "Crypto",
-    "catSectors": "Sectors",
-    "catThemes": "Sectors"
+    "catSectors": "Sectors"
   },
   "trend": {
     "title": "Risk Trend (30d)",

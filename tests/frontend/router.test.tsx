@@ -53,9 +53,9 @@ describe("route rendering (fixtures data)", () => {
     expect(await screen.findByTestId("risk-score")).toHaveTextContent("52.3");
     expect(screen.getByTestId("risk-level")).toHaveTextContent("谨慎");
     expect(screen.getByTestId("market-regime")).toHaveTextContent("周期末段");
-    // 板块表现 lists all sector baskets (sectors + themes merged), not just the 2 headline sectors.
+    // #121: 板块表现 lists all sector baskets (sectors + themes merged), not just the 2 headline sectors.
     const sectorPerformance = await screen.findByTestId("sector-performance");
-    expect(within(sectorPerformance).getByText("半导体")).toBeInTheDocument(); // sectors.semis
+    expect(within(sectorPerformance).getByText("半导体龙头")).toBeInTheDocument(); // sectors.semis
     expect(within(sectorPerformance).getByText("存储")).toBeInTheDocument(); // themes.memory
     expect(within(sectorPerformance).getByText("网络安全")).toBeInTheDocument(); // themes.cybersecurity
     expect(await screen.findByTestId("ai-brief")).toBeInTheDocument();
