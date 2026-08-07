@@ -11,7 +11,7 @@
     "catEquities": "Equities",
     "catCrypto": "Crypto",
     "catSectors": "Sectors",
-    "catThemes": "Themes"
+    "catThemes": "Sectors"
   },
   "trend": {
     "title": "Risk Trend (30d)",

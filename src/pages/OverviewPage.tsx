@@ -302,7 +302,7 @@ export default function OverviewPage() {
             <ErrorState onRetry={sectorsQ.refetch} />
           ) : sectorsQ.data && sectorsQ.data.payload.sectors.length > 0 ? (
             <div data-testid="sector-performance">
-              {sectorsQ.data.payload.sectors.map((s) => {
+              {[...sectorsQ.data.payload.sectors, ...sectorsQ.data.payload.themes].map((s) => {
                 const dTone = dirTone(s.change_1d);
                 // #102 (C-1): labels come from the themes namespace, keyed by the canonical key.
                 const label = t(`themes:${s.key}`, { defaultValue: s.key });
