@@ -17,8 +17,15 @@ on:
       # expected-red window: a red run on a schema-change PR is the system working, not
       # a mistake — do not add a bypass, continue-on-error, or a label-gated skip.
       - "pipeline/schemas/**"
+      - "scripts/gen_ts_contracts.py"
+      - "scripts/gen_contracts.sh"
+      - "src/schemas/generated/**"
+      # The i18n gate (check:i18n enforces en/zh parity) must fire when translation files
+      # change — otherwise an i18n-only PR skips the only gate that checks it.
+      - "src/i18n/**"
       - "scripts/validate_data.sh"
       - "scripts/validate-json.mjs"
+      - "scripts/scan-secrets.mjs"
       - "config/sources.yaml"
       - ".github/workflows/validate-data.yml"
   workflow_dispatch:
@@ -53,6 +60,12 @@ jobs:
 
       - name: Validate committed data (Node structural, fallback)
         run: node scripts/validate-json.mjs --data-dir public/data
+
+      - name: "Contract drift gate (#101): regenerate and diff"
+        run: npm run check:contracts
+
+      - name: "Secret scan (S-1/#92): keys must not reach the published tree"
+        run: node scripts/scan-secrets.mjs --root .
 
       - name: Check i18n translation files
         run: node scripts/check-i18n.mjs

@@ -16,10 +16,10 @@ sources:
   - { id: eastmoney, name: 东方财富, url: "https://rss.eastmoney.com/rss_partener.xml", lang: zh, weight: 3 }
   # CLS (no official RSS) → via the public RSSHub instance /cls/telegraph; public instances may 403/rate-limit
   # → Provider degrades per source (degraded) without blocking other sources; production can self-host RSSHub and replace the url
-  - { id: clschina, name: 财联社, url: "https://rsshub.app/cls/telegraph", lang: zh, weight: 4 }
+  - { id: clschina, name: 财联社, url: "https://rsshub.app/cls/telegraph", lang: zh, weight: 4, trust: relay }
   # Wallstreetcn: official rss.xml (https://wallstreetcn.com/rss.xml) returned S3
   # NoSuchKey when verified 2026-08 (no publicly available official RSS) → use the RSSHub route /wallstreetcn/news; degrade when unreachable
-  - { id: wallstreetcn, name: 华尔街见闻, url: "https://rsshub.app/wallstreetcn/news", lang: zh, weight: 3 }
+  - { id: wallstreetcn, name: 华尔街见闻, url: "https://rsshub.app/wallstreetcn/news", lang: zh, weight: 3, trust: relay }
 
 # Importance scoring rules (0-100): source weight + keywords + asset hits + recency
 importance:
@@ -43,13 +43,4 @@ importance:
       - "通胀"
       - "存储"
       - "减产"
-  assets:
-    - NVDA
-    - AVGO
-    - MU
-    - AMD
-    - TSLA
-    - BTC
-    - ETH
 
-categories: [macro, monetary_policy, equities, memory, crypto, geopolitics, earnings, other]

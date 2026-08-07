@@ -1,6 +1,9 @@
 """Asset universe loading (architecture §8: config/universe.yaml is the single source of truth).
 
 Used by Collectors/RiskModel since T03; the frontend src/config/universe.ts is a display mirror.
+
+#102 (D-8): universe entries carry no ``theme`` tag — theme membership lives in
+config/themes.yaml (theme → constituents), so the reference runs theme → symbol only.
 """
 
 from __future__ import annotations
@@ -17,7 +20,6 @@ class Asset:
     name: str
     name_zh: str | None
     sector: str
-    theme: list[str]
     market: str  # "US" | "CN" | "CRYPTO" | "METAL" | "OIL"
     extra: dict[str, Any] = field(default_factory=dict)
 
@@ -46,7 +48,6 @@ class AssetUniverse:
                     name=str(entry.get("name", entry["symbol"])),
                     name_zh=entry.get("name_zh"),
                     sector=str(entry.get("sector", "other")),
-                    theme=list(entry.get("theme", [])),
                     market=market,
                 )
             )
@@ -62,7 +63,22 @@ class AssetUniverse:
             assets = [a for a in assets if a.market == market]
         return [a.symbol for a in assets]
 
+    def news_aliases(self) -> dict[str, list[str]]:
+        """symbol → search aliases for news asset hits, derived from the universe (D-8).
+
+        Each symbol matches its ticker (lowercased), its English name and its Chinese
+        name — the shape of the hardcoded table this replaces (``collectors/news.py``).
+        """
+        aliases: dict[str, list[str]] = {}
+        for asset in [*self.all_equities(), *self.crypto]:
+            tokens = [asset.symbol.lower(), asset.name.lower()]
+            if asset.name_zh:
+                tokens.append(asset.name_zh)
+            aliases[asset.symbol] = tokens
+        return aliases
+
     @classmethod
     def load(cls, settings: Settings | None = None) -> "AssetUniverse":
         s = settings or Settings()
-        return cls(s.load_universe())
+        cfg = s.load_universe_config()
+        return cls(cfg.model_dump())

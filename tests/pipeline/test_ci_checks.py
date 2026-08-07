@@ -40,6 +40,7 @@ from tests.pipeline.factories import (
     make_metadata_freshness,
     make_news_item,
     make_news_payload,
+    make_news_translations,
     make_risk_dimension,
     make_risk_indicator,
     make_risk_payload,
@@ -90,7 +91,12 @@ def test_standalone_factories_validate_against_real_model(filename: str) -> None
         "facts.json": make_facts,
         "analysis.zh-CN.json": lambda: make_analysis(language="zh-CN"),
         "analysis.en.json": lambda: make_analysis(language="en"),
+        "news.zh-translations.json": make_news_translations,
     }
+    assert set(builders) == set(STANDALONE_FILENAMES), (
+        "a standalone dataset was registered without a factory; the synthetic tree would be "
+        "missing a file the validator now requires"
+    )
     STANDALONE_MODELS[filename].model_validate(builders[filename]())
 
 
@@ -240,10 +246,44 @@ def test_data_quality_out_of_range_detected(
 def test_invalid_freshness_status_detected(
     synthetic_latest_dir: Path, synthetic_data_dir: Path, now: datetime
 ) -> None:
-    """freshness_status must be one of the five states."""
+    """freshness_status must be one of the six states."""
     write_json(synthetic_latest_dir / "macro.json", make_envelope("macro", freshness_status="unknown"))
     report = run_all(synthetic_data_dir, now=now)
     assert any("macro.json" in e and "freshness_status" in e for e in report.errors), report.errors
+
+
+def test_fresh_requires_non_empty_payload(
+    synthetic_latest_dir: Path, synthetic_data_dir: Path, now: datetime
+) -> None:
+    """E-2 re-assertion: a committed `fresh` file must not actually be empty (#89/#101).
+
+    finalize_freshness enforces this at assembly time; ci_checks re-checks the committed
+    file so a pre-#89 envelope cannot certify itself healthy again — calendar published
+    `fresh` with `events: []` for weeks before this check existed.
+    """
+    write_json(
+        synthetic_latest_dir / "macro.json",
+        make_envelope(
+            "macro",
+            freshness_status="fresh",
+            payload={
+                "rates": [],
+                "credit": [],
+                "inflation": [],
+                "labor": [],
+                "liquidity": [],
+                "fx": [],
+            },
+        ),
+    )
+    report = run_all(synthetic_data_dir, now=now)
+    assert any("macro.json" in e and "E-2" in e for e in report.errors), report.errors
+
+
+def test_fresh_with_rows_passes(synthetic_data_dir: Path, now: datetime) -> None:
+    """The E-2 re-assertion must not false-positive on a genuinely populated fresh file."""
+    report = run_all(synthetic_data_dir, now=now)
+    assert not any("E-2" in e for e in report.errors), report.errors
 
 
 # =====================================================================================

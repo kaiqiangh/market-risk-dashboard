@@ -1,18 +1,35 @@
 {
   "title": "系统状态",
-  "subtitle": "数据新鲜度五态 + 数据源 Provider 健康",
+  "subtitle": "数据新鲜度六态 + 数据源 Provider 健康",
   "meta": {
     "schemaVersion": "Schema 版本",
     "sourcesUpdated": "数据源更新",
     "datasetCount": "数据集数量"
   },
   "freshness": {
-    "title": "数据集新鲜度（五态）",
+    "title": "数据集新鲜度（六态）",
     "dataset": "数据集",
     "status": "状态",
     "updatedAt": "更新时间",
     "reason": "原因",
-    "none": "暂无新鲜度数据"
+    "none": "暂无新鲜度数据",
+    "reasonCodes": {
+      "ok": "正常",
+      "no_rows_returned": "数据源无返回行",
+      "no_events_in_window": "时间窗内无事件",
+      "provider_http_error": "数据源 HTTP 错误",
+      "provider_rate_limited": "数据源限流",
+      "provider_auth_failed": "数据源鉴权失败",
+      "provider_parse_error": "数据源响应解析失败",
+      "served_from_fallback": "来自备用数据源",
+      "served_from_cache": "来自最近一次好缓存",
+      "cache_expired": "缓存已过期",
+      "cache_invalid": "缓存无效",
+      "all_providers_failed": "所有数据源均失败",
+      "not_collected_this_run": "本次运行未采集",
+      "interval_exceeded": "超过更新间隔",
+      "input_dataset_unhealthy": "输入数据集不健康"
+    }
   },
   "datasets": {
     "macro": "宏观",
@@ -22,9 +39,10 @@
     "news": "新闻",
     "calendar": "日历",
     "risk": "风险",
-    "facts": "事实层",
+    "factlayer": "事实层",
     "analysis": "AI 简报",
-    "dashboard": "首页聚合"
+    "dashboard": "首页聚合",
+    "news_translations": "新闻翻译"
   },
   "providers": {
     "title": "数据源健康",
@@ -32,11 +50,7 @@
     "provider": "Provider",
     "fallback": "备用",
     "cache": "缓存",
-    "error": "错误/降级",
-    "degraded": "已降级",
-    "ok": "正常",
-    "yes": "是",
-    "no": "否",
-    "none": "暂无数据源信息"
+    "none": "暂无数据源信息",
+    "status": "状态 / 原因"
   }
 }

@@ -4,26 +4,14 @@ import { CalendarClock } from "lucide-react";
 import { EventCard } from "./EventCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatDate } from "@/lib/format";
+import { groupByDate } from "@/lib/calendar";
 import type { CalendarEvent } from "@/schemas";
 
 /**
- * CalendarList: calendar list (grouped by date; single-column cards on mobile).
+ * CalendarList: calendar list (grouped by local day — see src/lib/calendar.ts, #94).
  */
 export interface CalendarListProps {
   events: CalendarEvent[];
-}
-
-function groupByDate(events: CalendarEvent[]): Array<{ date: string; events: CalendarEvent[] }> {
-  const map = new Map<string, CalendarEvent[]>();
-  for (const ev of events) {
-    const key = ev.datetime.slice(0, 10); // YYYY-MM-DD
-    const list = map.get(key) ?? [];
-    list.push(ev);
-    map.set(key, list);
-  }
-  return Array.from(map.entries())
-    .map(([date, list]) => ({ date, events: list }))
-    .sort((a, b) => a.date.localeCompare(b.date));
 }
 
 export function CalendarList({ events }: CalendarListProps) {

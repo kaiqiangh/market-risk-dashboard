@@ -1,1 +1,1 @@
-export type { EquitiesDataset, EquityAsset, Market } from "@/schemas/equities";
+export type { EquitiesDataset, EquityAsset, Market } from "@/schemas";

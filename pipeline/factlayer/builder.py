@@ -55,7 +55,7 @@ class FactLayerBuilder:
         data_freshness = {key: env.freshness_status for key, env in envs.items()}
         data_freshness["risk"] = risk.freshness_status
 
-        evidence_index = self._build_evidence(risk, macro, equities, crypto, news, calendar)
+        evidence_index = self._build_evidence(risk, macro, equities, crypto, news, calendar, sectors)
 
         return FactLayer(
             generated_at=generated_at or now_utc(),
@@ -63,7 +63,7 @@ class FactLayerBuilder:
             data_freshness=data_freshness,
             risk=risk.payload,
             macro_summary=self._macro_summary(macro),
-            market_summary=self._market_summary(equities, crypto),
+            market_summary=self._market_summary(equities, crypto, sectors),
             news_top=[n.model_dump() for n in news.payload.items[:15]],
             calendar_next7d=[e.model_dump() for e in calendar.payload.events[:20]],
             evidence_index=evidence_index,
@@ -73,7 +73,11 @@ class FactLayerBuilder:
 
     def _macro_summary(self, macro: MacroEnvelope) -> dict[str, Any]:
         summary: dict[str, Any] = {}
-        for group in ("rates", "credit", "inflation", "labor", "liquidity", "fx"):
+        # #96: volatility is a first-class group. The roster is imported — a literal copy
+        # here would recreate the two-lists drift this ticket killed (review, #96).
+        from pipeline.collectors.macro import SERIES_GROUPS
+
+        for group in SERIES_GROUPS:
             for ind in getattr(macro.payload, group):
                 summary[ind.key] = ind.value
                 if ind.previous is not None:
@@ -85,7 +89,8 @@ class FactLayerBuilder:
             summary["fedwatch_status"] = fw.status
         return summary
 
-    def _market_summary(self, equities: EquitiesEnvelope, crypto: CryptoEnvelope) -> dict[str, Any]:
+    def _market_summary(self, equities: EquitiesEnvelope, crypto: CryptoEnvelope,
+                        sectors: SectorsEnvelope | None = None) -> dict[str, Any]:
         summary: dict[str, Any] = {}
         for asset in equities.payload.assets[:8]:
             summary[f"{asset.symbol.lower()}_price"] = asset.price
@@ -95,6 +100,15 @@ class FactLayerBuilder:
             summary[f"{asset.symbol.lower()}_price"] = asset.price
             summary[f"{asset.symbol.lower()}_change_1d"] = asset.change_1d
         summary["btc_dominance"] = crypto.payload.btc_dominance
+        if sectors is not None:
+            # #98: the 20-theme taxonomy reaches the AI brief. Labels are resolved at
+            # render time (build_prompt reads the SAME en themes.json the frontend uses) —
+            # the fact layer carries keys + numbers only (C-1, no display labels in payloads).
+            summary["sector_performance"] = [
+                {"key": s.key, "change_1d": s.change_1d}
+                for s in [*sectors.payload.sectors, *sectors.payload.themes]
+                if s.change_1d is not None
+            ]
         return summary
 
     # ---- Evidence index ----
@@ -107,6 +121,7 @@ class FactLayerBuilder:
         crypto: CryptoEnvelope,
         news: NewsEnvelope,
         calendar: CalendarEnvelope,
+        sectors: SectorsEnvelope | None = None,
     ) -> dict[str, EvidenceRef]:
         index: dict[str, EvidenceRef] = {}
         r = risk.payload
@@ -175,4 +190,20 @@ class FactLayerBuilder:
         for i, event in enumerate(calendar.payload.events[:5]):
             add(f"ev_calendar_{i}", "calendar", f"payload.events[{i}].datetime", "event_datetime", event.datetime)
 
+        # #98: sector/theme 1d moves are citable evidence — the AI brief's rule is
+        # "may ONLY cite entries present in the evidence_index", so the Sector / theme
+        # performance section of the prompt needs refs here or it would be uncitable.
+        if sectors is not None:
+            for group in ("sectors", "themes"):
+                for i, row in enumerate(getattr(sectors.payload, group)):
+                    if row.change_1d is None:
+                        continue
+                    add(
+                        f"ev_sector_{row.key}",
+                        "sectors",
+                        f"payload.{group}[{i}].change_1d",
+                        "change_1d",
+                        row.change_1d,
+                        sectors.generated_at,
+                    )
         return index

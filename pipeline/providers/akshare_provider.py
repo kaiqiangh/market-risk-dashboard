@@ -1,8 +1,16 @@
-"""A-share memory pool primary source: AKShare (architecture §1.3 frozen; pyproject.toml constraint).
+"""A-share memory pool source: AKShare via Tencent (architecture §1.3 frozen; pyproject.toml constraint).
 
 Hard constraint: **akshare is only imported inside AkshareProvider** (isolating the impact of anti-scraping changes).
-AKShare depends on Eastmoney/Sina public interfaces that may be blocked by anti-scraping/proxies → use the
-degradation chain + last-good.
+#97/#85: the Eastmoney history tier (ak.stock_zh_a_hist → push2his.eastmoney.com) is
+geo-tiered and refuses this host (TLS completes, connection dropped, 0/~50 probes) — the
+history endpoint now goes through the Tencent backend (stock_zh_a_hist_tx), which #85
+verified answers from this host. Fallback chain: yfinance_a_share (p1, US-hosted) →
+akshare-Tencent (p2, CN-hosted) → last-good cache.
+
+Refresh cadence vs the CN session clock (#97): the scheduled full run lands before the
+CN open (US morning), so A-share values serve the PREVIOUS CN close (15:00 CST = 07:00
+UTC). A-share assets live inside equities.json (market=CN), whose freshness interval
+reflects the run cadence — the CN-close vintage at that hour is expected, not a defect.
 """
 
 from __future__ import annotations
@@ -17,7 +25,6 @@ from pipeline.providers.base import (
     ProviderError,
     ProviderHealth,
     QuoteResult,
-    retry_with_backoff,
 )
 from pipeline.utils import now_utc
 
@@ -30,8 +37,9 @@ def _to_ak_symbol(symbol: str) -> tuple[str, str]:
 
 class AkshareProvider(BaseProvider):
     name = "akshare"
-    priority = 1
     domain = "a_share"
+    # Tencent backend host (the per-(provider,host) limiter/breaker identity).
+    hosts = ("web.ifzq.gtimg.cn",)
 
     def health(self) -> ProviderHealth:
         started = time.monotonic()
@@ -56,9 +64,10 @@ class AkshareProvider(BaseProvider):
         def _fetch() -> Any:
             import akshare as ak  # constraint: import only here
 
-            df = ak.stock_zh_a_hist(
-                symbol=base,
-                period="daily",
+            # #97/#85: Tencent backend (stock_zh_a_hist_tx) — the Eastmoney history tier
+            # (stock_zh_a_hist) is geo-blocked from this host.
+            df = ak.stock_zh_a_hist_tx(
+                symbol=f"{market}{base}",
                 start_date=_start_date(period),
                 end_date=_today(),
                 adjust="qfq",
@@ -68,11 +77,11 @@ class AkshareProvider(BaseProvider):
             return df
 
         try:
-            # akshare failures are mostly persistent network/anti-scraping issues (ProxyError);
-            # retrying is pointless → no retry, fast degrade
-            df = retry_with_backoff(_fetch, max_retries=0, backoff_base=0.0, jitter=False)
+            # #103/E-3: no nested retry (akshare failures are mostly persistent
+            # ProxyError) — retries/classification live in ProviderRegistry.call.
+            df = _fetch()
         except Exception as exc:  # noqa: BLE001
-            raise ProviderError(f"{symbol}: akshare history failed: {exc}") from exc
+            raise ProviderError.from_exception(exc, detail=f"{symbol}: akshare history failed") from exc
 
         rows: list[dict[str, Any]] = []
         for _, row in df.iterrows():

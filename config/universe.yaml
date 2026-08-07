@@ -1,116 +1,452 @@
-# ============================================================
-# Asset pool configuration (architecture §8 shared knowledge: single source of truth)
-# T03's AssetUniverse loads this file; the frontend src/config/universe.ts mirrors it (display-only mirror).
-# Asset symbols are uppercase; A-share symbols carry the exchange suffix (.SH/.SZ).
-# ============================================================
-version: "1.0.0"
-
-# Key US equities pool (frozen for MVP, architecture §8.11)
+version: 1.0.0
 us_equities:
-  - symbol: NVDA
-    name: NVIDIA
-    name_zh: 英伟达
-    sector: semis
-    theme: [AI, GPU]
-  - symbol: AVGO
-    name: Broadcom
-    name_zh: 博通
-    sector: semis
-    theme: [AI, Networking]
-  - symbol: MU
-    name: Micron Technology
-    name_zh: 美光科技
-    sector: semis
-    theme: [Memory, DRAM, NAND]
-  - symbol: AMD
-    name: Advanced Micro Devices
-    name_zh: 超威半导体
-    sector: semis
-    theme: [AI, CPU, GPU]
-  - symbol: TSLA
-    name: Tesla
-    name_zh: 特斯拉
-    sector: auto
-    theme: [EV, Momentum]
-
-# A-share memory supply chain pool (suggested codes per architecture §8.10, validated with AKShare during implementation)
+- symbol: NVDA
+  name: NVIDIA
+  name_zh: 英伟达
+  sector: semis
+- symbol: AVGO
+  name: Broadcom
+  name_zh: 博通
+  sector: semis
+- symbol: MU
+  name: Micron Technology
+  name_zh: 美光科技
+  sector: semis
+- symbol: AMD
+  name: Advanced Micro Devices
+  name_zh: 超威半导体
+  sector: semis
+- symbol: TSLA
+  name: Tesla
+  name_zh: 特斯拉
+  sector: auto
 a_share_memory:
-  - symbol: "603986.SH"
-    name: GigaDevice
-    name_zh: 兆易创新
-    sector: semis
-    theme: [Memory, NOR, MCU]
-  - symbol: "301308.SZ"
-    name: Longsys
-    name_zh: 江波龙
-    sector: memory_module
-    theme: [Memory, Module]
-  - symbol: "688525.SH"
-    name: Biwin Storage
-    name_zh: 佰维存储
-    sector: memory_module
-    theme: [Memory, Module]
-  - symbol: "000021.SZ"
-    name: Shenzhen Kaifa
-    name_zh: 深科技
-    sector: memory_module
-    theme: [Memory, Module]
-  - symbol: "300223.SZ"
-    name: Ingenic
-    name_zh: 北京君正
-    sector: semis
-    theme: [Memory, SoC]
-  - symbol: "001309.SZ"
-    name: Demingli
-    name_zh: 德明利
-    sector: memory_module
-    theme: [Memory, Module]
-  - symbol: "300475.SZ"
-    name: Shannon Semiconductor
-    name_zh: 香农芯创
-    sector: distribution
-    theme: [Memory, Distribution]
-  - symbol: "688008.SH"
-    name: Montage Technology
-    name_zh: 澜起科技
-    sector: semis
-    theme: [Memory, Interface]
-  - symbol: "600584.SH"
-    name: JCET
-    name_zh: 长电科技
-    sector: packaging
-    theme: [Packaging, OSAT]
-  - symbol: "002156.SZ"
-    name: Tongfu Microelectronics
-    name_zh: 通富微电
-    sector: packaging
-    theme: [Packaging, OSAT]
-
-# Cross-asset (crypto)
+- symbol: 603986.SH
+  name: GigaDevice
+  name_zh: 兆易创新
+  sector: semis
+- symbol: 301308.SZ
+  name: Longsys
+  name_zh: 江波龙
+  sector: memory_module
+- symbol: 688525.SH
+  name: Biwin Storage
+  name_zh: 佰维存储
+  sector: memory_module
+- symbol: 000021.SZ
+  name: Shenzhen Kaifa
+  name_zh: 深科技
+  sector: memory_module
+- symbol: 300223.SZ
+  name: Ingenic
+  name_zh: 北京君正
+  sector: semis
+- symbol: 001309.SZ
+  name: Demingli
+  name_zh: 德明利
+  sector: memory_module
+- symbol: 300475.SZ
+  name: Shannon Semiconductor
+  name_zh: 香农芯创
+  sector: distribution
+- symbol: 688008.SH
+  name: Montage Technology
+  name_zh: 澜起科技
+  sector: semis
+- symbol: 600584.SH
+  name: JCET
+  name_zh: 长电科技
+  sector: packaging
+- symbol: 002156.SZ
+  name: Tongfu Microelectronics
+  name_zh: 通富微电
+  sector: packaging
 crypto:
-  - symbol: BTC
-    name: Bitcoin
-    name_zh: 比特币
-  - symbol: ETH
-    name: Ethereum
-    name_zh: 以太坊
-  - symbol: SOL
-    name: Solana
-    name_zh: 索拉纳
-
-# Metals & commodities (yfinance futures continuous contract symbols)
+- symbol: BTC
+  name: Bitcoin
+  name_zh: 比特币
+- symbol: ETH
+  name: Ethereum
+  name_zh: 以太坊
+- symbol: SOL
+  name: Solana
+  name_zh: 索拉纳
 metals:
-  - symbol: "GC=F"
-    name: Gold
-    name_zh: 黄金
-  - symbol: "SI=F"
-    name: Silver
-    name_zh: 白银
-  - symbol: "HG=F"
-    name: Copper
-    name_zh: 铜
-
+- symbol: GC=F
+  name: Gold
+  name_zh: 黄金
+- symbol: SI=F
+  name: Silver
+  name_zh: 白银
+- symbol: HG=F
+  name: Copper
+  name_zh: 铜
 oil:
-  - symbol: "CL=F"
-    name: WTI Crude
-    name_zh: WTI 原油
+- symbol: CL=F
+  name: WTI Crude
+  name_zh: WTI 原油
+theme_series:
+- symbol: 000660.KS
+  name: 000660.KS
+- symbol: 005930.KS
+  name: 005930.KS
+- symbol: 1810.HK
+  name: 1810.HK
+- symbol: 2317.TW
+  name: 2317.TW
+- symbol: 6861.T
+  name: 6861.T
+- symbol: AAPL
+  name: AAPL
+- symbol: ABB
+  name: ABB
+- symbol: ABNB
+  name: ABNB
+- symbol: ACMR
+  name: ACMR
+- symbol: ADBE
+  name: ADBE
+- symbol: ADI
+  name: ADI
+- symbol: AEIS
+  name: AEIS
+- symbol: AFRM
+  name: AFRM
+- symbol: AI
+  name: AI
+- symbol: AKAM
+  name: AKAM
+- symbol: ALAB
+  name: ALAB
+- symbol: ALB
+  name: ALB
+- symbol: ALV
+  name: ALV
+- symbol: AMAT
+  name: AMAT
+- symbol: AME
+  name: AME
+- symbol: AMZN
+  name: AMZN
+- symbol: ANET
+  name: ANET
+- symbol: APLD
+  name: APLD
+- symbol: APP
+  name: APP
+- symbol: APTV
+  name: APTV
+- symbol: ARQQ
+  name: ARQQ
+- symbol: ASML
+  name: ASML
+- symbol: AUR
+  name: AUR
+- symbol: BABA
+  name: BABA
+- symbol: BIDU
+  name: BIDU
+- symbol: BKNG
+  name: BKNG
+- symbol: BWA
+  name: BWA
+- symbol: BYDDY
+  name: BYDDY
+- symbol: CAMT
+  name: CAMT
+- symbol: CIEN
+  name: CIEN
+- symbol: COHR
+  name: COHR
+- symbol: COIN
+  name: COIN
+- symbol: CORZ
+  name: CORZ
+- symbol: CRDO
+  name: CRDO
+- symbol: CRM
+  name: CRM
+- symbol: CRSR
+  name: CRSR
+- symbol: CRTO
+  name: CRTO
+- symbol: CRWD
+  name: CRWD
+- symbol: CRWV
+  name: CRWV
+- symbol: CSCO
+  name: CSCO
+- symbol: CYBR
+  name: CYBR
+- symbol: DASH
+  name: DASH
+- symbol: DDOG
+  name: DDOG
+- symbol: DELL
+  name: DELL
+- symbol: DLR
+  name: DLR
+- symbol: DOV
+  name: DOV
+- symbol: DV
+  name: DV
+- symbol: EA
+  name: EA
+- symbol: EMR
+  name: EMR
+- symbol: ENTG
+  name: ENTG
+- symbol: EQIX
+  name: EQIX
+- symbol: ESTC
+  name: ESTC
+- symbol: ETN
+  name: ETN
+- symbol: EXTR
+  name: EXTR
+- symbol: F
+  name: F
+- symbol: FANUY
+  name: FANUY
+- symbol: FFIV
+  name: FFIV
+- symbol: FI
+  name: FI
+- symbol: FIS
+  name: FIS
+- symbol: FTNT
+  name: FTNT
+- symbol: GEN
+  name: GEN
+- symbol: GEV
+  name: GEV
+- symbol: GFS
+  name: GFS
+- symbol: GOOGL
+  name: GOOGL
+- symbol: GPN
+  name: GPN
+- symbol: GRMN
+  name: GRMN
+- symbol: GRVY
+  name: GRVY
+- symbol: GTLB
+  name: GTLB
+- symbol: HON
+  name: HON
+- symbol: HPQ
+  name: HPQ
+- symbol: HUBS
+  name: HUBS
+- symbol: IAS
+  name: IAS
+- symbol: IBM
+  name: IBM
+- symbol: INTC
+  name: INTC
+- symbol: INTU
+  name: INTU
+- symbol: IONQ
+  name: IONQ
+- symbol: IRM
+  name: IRM
+- symbol: ISRG
+  name: ISRG
+- symbol: ITW
+  name: ITW
+- symbol: KLAC
+  name: KLAC
+- symbol: KLIC
+  name: KLIC
+- symbol: LAC
+  name: LAC
+- symbol: LAES
+  name: LAES
+- symbol: LAZR
+  name: LAZR
+- symbol: LI
+  name: LI
+- symbol: LITE
+  name: LITE
+- symbol: LOGI
+  name: LOGI
+- symbol: LRCX
+  name: LRCX
+- symbol: MA
+  name: MA
+- symbol: MBLY
+  name: MBLY
+- symbol: MCHP
+  name: MCHP
+- symbol: MDB
+  name: MDB
+- symbol: META
+  name: META
+- symbol: MGNI
+  name: MGNI
+- symbol: MOD
+  name: MOD
+- symbol: MP
+  name: MP
+- symbol: MRVL
+  name: MRVL
+- symbol: MSFT
+  name: MSFT
+- symbol: NBIS
+  name: NBIS
+- symbol: NET
+  name: NET
+- symbol: NFLX
+  name: NFLX
+- symbol: NOW
+  name: NOW
+- symbol: NTES
+  name: NTES
+- symbol: NTGR
+  name: NTGR
+- symbol: NU
+  name: NU
+- symbol: NVMI
+  name: NVMI
+- symbol: NVT
+  name: NVT
+- symbol: NXPI
+  name: NXPI
+- symbol: OKTA
+  name: OKTA
+- symbol: OMC
+  name: OMC
+- symbol: 'ON'
+  name: 'ON'
+- symbol: ONTO
+  name: ONTO
+- symbol: ORCL
+  name: ORCL
+- symbol: OUST
+  name: OUST
+- symbol: PANW
+  name: PANW
+- symbol: PATH
+  name: PATH
+- symbol: PH
+  name: PH
+- symbol: PINS
+  name: PINS
+- symbol: PLTK
+  name: PLTK
+- symbol: PLTR
+  name: PLTR
+- symbol: PONY
+  name: PONY
+- symbol: PWR
+  name: PWR
+- symbol: PYPL
+  name: PYPL
+- symbol: QBTS
+  name: QBTS
+- symbol: QCOM
+  name: QCOM
+- symbol: QLYS
+  name: QLYS
+- symbol: QUBT
+  name: QUBT
+- symbol: RBLX
+  name: RBLX
+- symbol: RBRK
+  name: RBRK
+- symbol: RDDT
+  name: RDDT
+- symbol: RGTI
+  name: RGTI
+- symbol: RIVN
+  name: RIVN
+- symbol: RMBS
+  name: RMBS
+- symbol: ROK
+  name: ROK
+- symbol: S
+  name: S
+- symbol: SAP
+  name: SAP
+- symbol: SE
+  name: SE
+- symbol: SERV
+  name: SERV
+- symbol: SHOP
+  name: SHOP
+- symbol: SIEGY
+  name: SIEGY
+- symbol: SIMO
+  name: SIMO
+- symbol: SMCI
+  name: SMCI
+- symbol: SNDK
+  name: SNDK
+- symbol: SNOW
+  name: SNOW
+- symbol: SOFI
+  name: SOFI
+- symbol: SONO
+  name: SONO
+- symbol: SONY
+  name: SONY
+- symbol: SOUN
+  name: SOUN
+- symbol: SPOT
+  name: SPOT
+- symbol: SQM
+  name: SQM
+- symbol: STX
+  name: STX
+- symbol: SYM
+  name: SYM
+- symbol: TEAM
+  name: TEAM
+- symbol: TEM
+  name: TEM
+- symbol: TENB
+  name: TENB
+- symbol: TER
+  name: TER
+- symbol: TOST
+  name: TOST
+- symbol: TSM
+  name: TSM
+- symbol: TTD
+  name: TTD
+- symbol: TTWO
+  name: TTWO
+- symbol: TWLO
+  name: TWLO
+- symbol: TXN
+  name: TXN
+- symbol: U
+  name: U
+- symbol: UBER
+  name: UBER
+- symbol: V
+  name: V
+- symbol: VEEV
+  name: VEEV
+- symbol: VIAV
+  name: VIAV
+- symbol: VRNS
+  name: VRNS
+- symbol: VRT
+  name: VRT
+- symbol: WDAY
+  name: WDAY
+- symbol: WDC
+  name: WDC
+- symbol: WRD
+  name: WRD
+- symbol: XPEV
+  name: XPEV
+- symbol: XYZ
+  name: XYZ
+- symbol: ZBRA
+  name: ZBRA
+- symbol: ZETA
+  name: ZETA
+- symbol: ZS
+  name: ZS

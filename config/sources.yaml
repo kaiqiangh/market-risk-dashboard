@@ -4,35 +4,70 @@
 # ============================================================
 schema_version: "1.0.0"
 
-# Expected update frequency (frozen G4; kept in sync with the frontend src/lib/freshness.ts)
+# Expected update frequency, keyed by canonical dataset key (pipeline/schemas/registry.py).
+#
+# Previously keyed by a mixture of dataset names and provider domains: `market` covered three
+# datasets while `equities`/`sectors`/`crypto` had no entry at all and silently fell back to
+# 480, and `risk` was read as 480 by the envelope but 720 by CI. One key per dataset, and
+# every canonical key must appear here — a config drift test enforces both directions (N-1).
+#
+# The frontend reads these through the generated src/schemas/generated/constants.json rather
+# than keeping its own copy in src/lib/freshness.ts.
 expectations:
-  market: { interval_minutes: 480, note: "Market/data and news 2-3 times/day" }
-  news: { interval_minutes: 480, note: "2-3 times/day" }
+  equities: { interval_minutes: 480, note: "Market data 2-3 times/day" }
+  sectors: { interval_minutes: 480, note: "Sector/theme aggregation runs with market collection" }
+  crypto: { interval_minutes: 480, note: "Crypto 2-3 times/day, alongside market" }
   macro:
     { interval_minutes: 240, note: "Macro 2-4h (FRED is actually T+1; judged by release schedule)" }
-  calendar: { interval_minutes: 1440, note: "Earnings calendar once per day" }
-  analysis: { interval_minutes: 720, note: "AI briefs 2 times/day" }
+  calendar: { interval_minutes: 1440, note: "Economic and earnings calendar once per day" }
+  news: { interval_minutes: 480, note: "2-3 times/day" }
   risk: { interval_minutes: 480, note: "Risk model recalculated with pipeline 2-3 times/day" }
   dashboard:
     { interval_minutes: 480, note: "Homepage aggregation recalculated with pipeline 2-3 times/day" }
+  factlayer: { interval_minutes: 480, note: "Fact layer rebuilt on every pipeline run" }
+  analysis: { interval_minutes: 720, note: "AI briefs 2 times/day" }
+  news_translations:
+    { interval_minutes: 720, note: "Chinese translations produced by the AI brief automations" }
 
-# Provider registry (smaller priority number = higher priority)
+# Provider registry (smaller priority number = higher priority). LIVE config since #102:
+# build_default_providers() constructs exactly these providers, in this order, skipping
+# enabled: false (C-3). `priority` is the ONLY ordering signal (#100: the `kind` labels
+# were removed — two signals for one role is exactly the drift C-3 was about).
+# `max_concurrency`/`min_interval_ms` are the per-host token-bucket budget for
+# #103's host rate limiter — Yahoo is browser-hostile (TLS-fingerprint gating per #87), so it
+# carries the tightest budget.
 providers:
   quotes:
-    - { name: yfinance, priority: 1, kind: primary }
-    - { name: stooq, priority: 2, kind: fallback }
+    # #100: Stooq retired (JS proof-of-work challenge, verified unrecoverable) — the
+    # fallback is FMP /stable/quote (same key as the calendar; quote-only on the free
+    # tier, 1w/1m/history honest None via the #97 decoupling).
+    - { name: yfinance, priority: 1, max_concurrency: 2, min_interval_ms: 2000 }
+    - { name: fmp_quotes, priority: 2, max_concurrency: 1, min_interval_ms: 1000 }
   macro:
-    - { name: fred, priority: 1, kind: primary }
+    - { name: fred, priority: 1, max_concurrency: 2, min_interval_ms: 600 }
   crypto:
-    - { name: coingecko, priority: 1, kind: primary }
-    - { name: binance_public, priority: 2, kind: fallback, enabled: false }
+    - { name: coingecko, priority: 1, max_concurrency: 2, min_interval_ms: 400 }
+    # Not implemented yet — the disabled entry is inert (never constructed), not a typo gate.
+    - { name: binance_public, priority: 2, enabled: false }
   calendar:
-    - { name: fmp, priority: 1, kind: primary }
-    - { name: yfinance, priority: 2, kind: fallback }
+    # #94 (uses #83): earnings calendar — FMP stable primary (was /api/v3, 403 since 08-03);
+    # Nasdaq fallback restores the BMO/AMC session signal FMP's stable payload dropped.
+    # yfinance_calendar retired (#83: structurally empty, no bulk range API).
+    - { name: fmp, priority: 1, max_concurrency: 1, min_interval_ms: 1000 }
+    - { name: nasdaq, priority: 2, max_concurrency: 2, min_interval_ms: 500 }
+  economic:
+    # #94: economic events are first-class alongside earnings — FRED release dates +
+    # official FOMC calendar (~8 lightweight calls/run, #83 §3A).
+    - { name: fred_calendar, priority: 1, max_concurrency: 2, min_interval_ms: 600 }
   a_share:
-    - { name: akshare, priority: 1, kind: primary }
+    # #97/#85: yfinance via the CN symbol mapper is the primary (US-hosted, 20/20 from
+    # this host; the Eastmoney history tier akshare used is geo-blocked). akshare now
+    # talks to the Tencent backend (stock_zh_a_hist_tx) as the second rung — two
+    # independent networks, Eastmoney leaves the hot path.
+    - { name: yfinance_a_share, priority: 1, max_concurrency: 2, min_interval_ms: 2000 }
+    - { name: akshare, priority: 2, max_concurrency: 2, min_interval_ms: 800 }
   news:
-    - { name: rss_news, priority: 1, kind: primary }
+    - { name: rss_news, priority: 1, max_concurrency: 4, min_interval_ms: 400 }
 
 # Fallback chain (architecture §1.4)
 degrade:
@@ -42,3 +77,14 @@ degrade:
   cache_max_age_hours: 24
   data_quality_degrade_factor: 0.8
   last_good_cache_dir: "artifacts/cache"
+
+# Operations knobs (M-5): tuning constants that used to be magic literals in the collectors.
+# Model parameters (4.0/105/1.5, fact-layer slices 15/20/5/8) deliberately stay in Python as
+# named constants with a derivation comment.
+operations:
+  circuit_breaker_threshold: 3
+  calendar_horizon_days: 14
+  news_max_items: 50
+  news_summary_max_chars: 160
+  recency_half_life_hours: 48.0
+

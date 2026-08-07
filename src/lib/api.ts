@@ -5,6 +5,7 @@ import {
   type DatasetKey,
   type DatasetSchemaKey,
 } from "@/schemas";
+import { collectUnknownFields } from "@/lib/unknownFields";
 
 /**
  * Frontend data access interface (architecture §3.6).
@@ -16,15 +17,21 @@ import {
  * All files are validated with Zod first; on failure throw SchemaError → page renders ErrorState (architecture §8.8).
  */
 
+/** Macro group names (must mirror pipeline/collectors/macro.py SERIES_GROUPS keys, #96). */
+export type MacroGroupName = "rates" | "credit" | "volatility" | "inflation" | "labor" | "liquidity" | "fx";
+
 export type DatasetOptions = {
   lang?: "zh-CN" | "en";
-  slice?: "30d" | "90d" | "daily";
+  /** History slice: classic per-key slices (risk/market) or the macro per-GROUP bundles
+   * (`{group}.30d`/`{group}.90d`, #96/#84 §3) — constrained to real groups. */
+  slice?: "30d" | "90d" | "daily" | `${MacroGroupName}.30d` | `${MacroGroupName}.90d`;
 };
 
 export type MetadataKey = "sources" | "freshness" | "schema-version" | "translations";
 
-/** History series key (architecture §1.7: history/risk/*, history/market/*) */
-export type HistoryKey = "market" | "risk";
+/** History series key (architecture §1.7: history/risk/*, history/market/*).
+ * "macro" is the per-GROUP 30d/90d bundle (history/macro/{group}.{slice}.json, #96/#84 §3). */
+export type HistoryKey = "market" | "risk" | "macro";
 
 export class SchemaError extends Error {
   readonly key: string;
@@ -39,6 +46,36 @@ export class SchemaError extends Error {
     this.url = url;
     this.issues = issues;
   }
+}
+
+/**
+ * Datasets already inspected for unknown fields this session (#101).
+ *
+ * The generated schemas are .passthrough(), so a producer can add a field without
+ * breaking a page — which is the point, and also the risk: nobody would ever find out.
+ * The first response for each dataset is walked and reported once. Module-level rather
+ * than per-client so that a second DatasetClient does not re-log the same drift, and so
+ * a page that refetches every 5 minutes logs once, not 288 times a day.
+ */
+const inspectedForUnknownFields = new Set<string>();
+
+/** Reset the once-per-session unknown-field guard (tests only). */
+export function resetUnknownFieldReports(): void {
+  inspectedForUnknownFields.clear();
+}
+
+function reportUnknownFields(key: string, url: string, schema: z.ZodTypeAny, json: unknown): void {
+  if (inspectedForUnknownFields.has(key)) return;
+  // Marked before the walk, not after: the cost is paid once per dataset per session
+  // whether or not anything turns up.
+  inspectedForUnknownFields.add(key);
+  const unknown = collectUnknownFields(schema, json);
+  if (unknown.length === 0) return;
+  console.warn(
+    `[contracts] ${key} carries ${unknown.length} field(s) the schema does not declare ` +
+      `(accepted, not dropped): ${unknown.join(", ")} @ ${url}. ` +
+      `If the pipeline added them, run \`npm run gen:contracts\`.`,
+  );
 }
 
 export class DatasetClient {
@@ -97,6 +134,7 @@ export class DatasetClient {
     if (!parsed.success) {
       throw new SchemaError(key, url, parsed.error);
     }
+    reportUnknownFields(String(key), url, target, json);
     return parsed.data as T;
   }
 }

@@ -1,17 +1,35 @@
+/**
+ * Type-only view of the contract surface. The schemas themselves live in @/schemas
+ * (generated from pipeline/schemas/ — see src/schemas/index.ts); this module exists so
+ * components can import plain types without pulling Zod into their import graph.
+ */
 export type {
   AnalysisDataset,
+  CalendarDataset,
+  CalendarEvent,
   CaseStatement,
-  SignalClaim,
-} from "@/schemas/analysis";
-export type { CalendarDataset, CalendarEvent, EventImportance, EventType } from "@/schemas/calendar";
-export type { CryptoAsset, CryptoDataset, CryptoSentiment } from "@/schemas/crypto";
-export type { EquitiesDataset, EquityAsset, Market } from "@/schemas/equities";
-export type { FactLayer } from "@/schemas/factlayer";
-export type { FedWatchRateProb, FedWatchSnapshot, MacroDataset, MacroIndicator, MacroUnit } from "@/schemas/macro";
-export type { NewsDataset, NewsItem, NewsSentiment, NewsTranslation, NewsTranslationsDataset } from "@/schemas/news";
-export type {
+  CryptoAsset,
+  CryptoDataset,
+  CryptoSentiment,
   DriverContribution,
+  EquitiesDataset,
+  EquityAsset,
+  EventImportance,
+  EventType,
+  FactLayer,
+  FedWatchRateProb,
+  FedWatchSnapshot,
+  MacroDataset,
+  MacroIndicator,
+  MacroUnit,
+  Market,
   MarketRegime,
+  MemoryProxy,
+  NewsDataset,
+  NewsItem,
+  NewsSentiment,
+  NewsTranslation,
+  NewsTranslationsDataset,
   RiskDimension,
   RiskDimensionKey,
   RiskDirection,
@@ -19,5 +37,7 @@ export type {
   RiskLevel,
   RiskModelResult,
   RiskTrend,
-} from "@/schemas/risk";
-export type { MemoryProxy, SectorItem, SectorsDataset } from "@/schemas/sectors";
+  SectorItem,
+  SectorsDataset,
+  SignalClaim,
+} from "@/schemas";

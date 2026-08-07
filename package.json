@@ -14,6 +14,8 @@
     "test:watch": "vitest",
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:data": "node scripts/validate-json.mjs",
+    "gen:contracts": "bash scripts/gen_contracts.sh",
+    "check:contracts": "bash scripts/gen_contracts.sh --check",
     "precompress": "node scripts/precompress.mjs"
   },
   "dependencies": {

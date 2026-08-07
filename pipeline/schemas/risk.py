@@ -44,7 +44,9 @@ class RiskIndicator(ContractModel):
     source: str = Field(min_length=1)
     updated_at: UTCDateTime | None = None
     status: FreshnessStatus = "fresh"
-    is_proxy: bool = Field(default=False, description="proxy indicator (e.g. fund flow) marked Estimated/Proxy")
+    # No default (#69/#101): an omitted disclosure would read as "not a proxy", which is the
+    # silent under-claim #69 exists to prevent. Every producer already states it explicitly.
+    is_proxy: bool = Field(description="proxy indicator (e.g. fund flow) marked Estimated/Proxy")
 
 
 class RiskDimension(ContractModel):
@@ -77,6 +79,10 @@ class BreadthSnapshot(ContractModel):
     new_considered: int = Field(default=0, ge=0, description="series considered for new highs/lows")
     small_cap_relative: float | None = None
     semis_relative: float | None = None
+    # Keeps its default, unlike the other two is_proxy fields (#101). This one is built by
+    # model_validate() from the untyped ctx["breadth"] bag, and the default leans the
+    # self-incriminating way: an omission over-claims proxy-ness. #69 guards against the
+    # opposite error — a proxy quietly presenting itself as a measurement.
     is_proxy: bool = Field(default=True, description="MVP breadth uses index proxies (SPY/IWM/SOXX)")
     note: str = Field(default="", min_length=0)
 
@@ -90,7 +96,7 @@ class DriverContribution(ContractModel):
     contribution: float
     change_1d: float | None = None
     evidence_ref: EvidenceRef | None = None
-    is_proxy: bool = Field(default=False, description="proxy/estimated indicator, discounted in coverage (#69)")
+    is_proxy: bool = Field(description="proxy/estimated indicator, discounted in coverage (#69)")
     discount: float = Field(
         default=1.0, ge=0.0, le=1.0,
         description="combined trust discount applied (1.0 none; proxy discount; proxy × degrade factor)",
@@ -109,7 +115,9 @@ class RiskModelResult(ContractModel):
     trend_1m: float | None = None
     dimensions: list[RiskDimension] = Field(default_factory=list)
     top_drivers: list[DriverContribution] = Field(default_factory=list)
-    breadth: BreadthSnapshot | None = Field(default=None, description="breadth sample disclosure (#69)")
+    # Required key, nullable value (#69/#101): "we had no breadth sample" must be written down
+    # as `null`, not left out. A missing key is indistinguishable from a forgotten one.
+    breadth: BreadthSnapshot | None = Field(description="breadth sample disclosure (#69)")
     regime: MarketRegime
     regime_evidence: list[str] = Field(default_factory=list, description="decision basis (explainability)")
     confidence: float = Field(ge=0.0, le=1.0)

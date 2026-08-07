@@ -24,8 +24,9 @@ import statusEn from "./locales/en/status.json";
  * Language priority: URL language segment → localStorage `market_dashboard_locale` → default en.
  * Default landing language is English (user decision 2026-08-03); zh-CN remains fully supported via the language switch.
  * Namespaces (PRD §8.5): common/dashboard/macro/equities/sectors/news/calendar/risk/status.
- * Note: PRD originally included the sectors namespace; the frontend carries sector/theme copy in the themes namespace;
- *       sectors data (sectors/themes) itself comes from data files (label/label_zh) and does not occupy a translation namespace.
+ * Note: PRD originally included the sectors namespace; the frontend carries sector/theme
+ *       copy in the themes namespace. Since #102 (C-1), sector/theme display labels come
+ *       from here — t(themes.<key>) — and the sectors.json payload carries no label fields.
  */
 
 export const SUPPORTED_LOCALES = ["zh-CN", "en"] as const;

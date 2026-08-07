@@ -15,23 +15,30 @@ from pipeline.providers.base import (
     BaseProvider,
     ProviderError,
     ProviderHealth,
-    retry_with_backoff,
 )
 from pipeline.utils import now_utc
 
 CG_BASE = "https://api.coingecko.com/api/v3"
-DEFAULT_IDS = "bitcoin,ethereum,solana"
 
 
 class CoinGeckoProvider(BaseProvider):
     name = "coingecko"
-    priority = 1
     domain = "crypto"
+    hosts = ("api.coingecko.com",)
 
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
         self.api_key = self.settings.coingecko_api_key
-        self._client = httpx.Client(timeout=15.0)
+        from pipeline.providers.base import guarded_client
+
+        self._client = guarded_client(set(self.hosts), timeout=15.0)
+        # #102 (D-8): the coin list and id→symbol map derive from the universe's crypto
+        # pool (symbol + name → coingecko id), not a hardcoded "bitcoin,ethereum,solana".
+        from pipeline.universe import AssetUniverse
+
+        crypto = AssetUniverse.load(self.settings).crypto
+        self.cg_ids: list[str] = [a.name.lower() for a in crypto]
+        self.cg_id_map: dict[str, str] = {a.name.lower(): a.symbol for a in crypto}
 
     def _headers(self) -> dict[str, str]:
         if self.api_key:
@@ -58,27 +65,29 @@ class CoinGeckoProvider(BaseProvider):
     def _get(self, path: str, params: dict[str, Any]) -> dict[str, Any]:
         def _fetch() -> dict[str, Any]:
             resp = self._client.get(f"{CG_BASE}{path}", params=params, headers=self._headers())
-            if resp.status_code == 429:
-                raise ProviderError("CoinGecko rate limited (429)")
             if resp.status_code != 200:
-                raise ProviderError(f"CoinGecko HTTP {resp.status_code}")
+                # #103/E-3: classification (429 → rate_limited) + redaction at one boundary.
+                raise ProviderError.from_exception(
+                    httpx.HTTPStatusError(
+                        f"CoinGecko HTTP {resp.status_code}", request=resp.request, response=resp
+                    ),
+                    detail=f"CoinGecko {path}: HTTP {resp.status_code}",
+                )
             data = resp.json()
             if not isinstance(data, dict):
                 raise ProviderError("CoinGecko unexpected payload")
             return data
 
-        try:
-            return retry_with_backoff(_fetch, max_retries=2, backoff_base=1.5, jitter=True)
-        except Exception as exc:  # noqa: BLE001
-            raise ProviderError(f"CoinGecko {path}: {exc}") from exc
+        # #103/E-3: retries live in ProviderRegistry.call, not here.
+        return _fetch()
 
     def _get_simple_price(self) -> dict[str, Any]:
-        return self._get("/simple/price", {"ids": DEFAULT_IDS, "vs_currencies": "usd"})
+        return self._get("/simple/price", {"ids": ",".join(self.cg_ids), "vs_currencies": "usd"})
 
     def get_crypto_market(self) -> dict[str, Any]:
         """Return {assets: [...], btc_dominance, market_cap_total}."""
         price_data = self._get_simple_price()
-        id_map = {"bitcoin": "BTC", "ethereum": "ETH", "solana": "SOL"}
+        id_map = self.cg_id_map
 
         # Per-asset details (market cap/volume) — one call per coin, 3 total, quota is manageable
         assets: list[dict[str, Any]] = []

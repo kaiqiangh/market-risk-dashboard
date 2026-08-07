@@ -40,6 +40,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+from pipeline.schemas import registry
 from pipeline.schemas.envelope import SCHEMA_VERSION
 
 __all__ = [
@@ -240,12 +241,14 @@ def make_crypto_asset(**overrides: Any) -> dict[str, Any]:
 
 
 def make_sector_item(**overrides: Any) -> dict[str, Any]:
-    """A single sector or theme row (``pipeline.schemas.sectors.SectorItem``)."""
+    """A single sector or theme row (``pipeline.schemas.sectors.SectorItem``).
+
+    No label/label_zh: since #102 (C-1) the payload carries the key and the numbers; the
+    frontend renders t(themes.<key>) and check:i18n enforces the Chinese label exists.
+    """
     return _build(
         {
             "key": "information_technology",
-            "label": "Information Technology",
-            "label_zh": "信息技术",
             "change_1d": 0.6,
             "change_1w": 1.9,
             "change_1m": 5.2,
@@ -410,7 +413,7 @@ def make_sectors_payload(**overrides: Any) -> dict[str, Any]:
     return _build(
         {
             "sectors": [make_sector_item()],
-            "themes": [make_sector_item(key="ai_compute", label="AI Compute", label_zh="AI 算力")],
+            "themes": [make_sector_item(key="ai_compute")],
             "memory": {
                 "label": "Memory Cycle Proxy",
                 "label_zh": "存储周期代理",
@@ -839,15 +842,24 @@ def make_history_index(**overrides: Any) -> dict[str, Any]:
 
 
 def make_metadata_freshness(**overrides: Any) -> dict[str, Any]:
-    """``metadata/freshness.json`` — the validator warns unless ``datasets`` and ``schema_version`` exist."""
+    """``metadata/freshness.json`` — one entry per registered dataset, with structured reasons.
+
+    Built from the registry rather than a hand-picked trio, because the file's contract is now
+    "every registered dataset, always present" (#89): a fixture that lists three keys cannot
+    catch the regression where a dataset silently vanishes from the file.
+    """
     return _build(
         {
             "schema_version": SCHEMA_VERSION,
             "generated_at": NOW_ISO,
+            "updated_at": NOW_ISO,
             "datasets": {
-                "macro": {"status": "fresh", "generated_at": NOW_ISO},
-                "market": {"status": "fresh", "generated_at": NOW_ISO},
-                "news": {"status": "fresh", "generated_at": NOW_ISO},
+                key: {
+                    "status": "fresh",
+                    "reason": {"code": "ok", "detail": ""},
+                    "updated_at": NOW_ISO,
+                }
+                for key in registry.CANONICAL_KEYS
             },
         },
         overrides,
@@ -855,14 +867,25 @@ def make_metadata_freshness(**overrides: Any) -> dict[str, Any]:
 
 
 def make_metadata_sources(**overrides: Any) -> dict[str, Any]:
-    """``metadata/sources.json`` — the validator warns unless ``domains`` and ``schema_version`` exist."""
+    """``metadata/sources.json`` — one entry per provider domain, agreeing with freshness.json.
+
+    ``degraded`` is derived from the datasets a domain serves, so the fixture derives it the
+    same way: a fixture in which the two files disagree would make the CI check that asserts
+    they agree untestable.
+    """
     return _build(
         {
             "schema_version": SCHEMA_VERSION,
             "generated_at": NOW_ISO,
+            "updated_at": NOW_ISO,
             "domains": {
-                "macro": [{"name": "FRED", "status": "ok"}],
-                "market": [{"name": "yfinance", "status": "ok"}],
+                domain: {
+                    "degraded": False,
+                    "status": "fresh",
+                    "reason": {"code": "ok", "detail": ""},
+                    "datasets": list(keys),
+                }
+                for domain, keys in registry.DOMAIN_DATASETS.items()
             },
         },
         overrides,
@@ -898,6 +921,30 @@ def write_json(path: Path, obj: Any) -> Path:
     return path
 
 
+def make_news_translations(**overrides: Any) -> dict[str, Any]:
+    """``news.zh-translations.json`` (``pipeline.schemas.news.NewsTranslationsDataset``).
+
+    Produced by the AI automation, not the collection run — but it is a registered dataset, so
+    the synthetic tree must contain it or the validator's "unknown/missing file" checks are
+    exercised against an incomplete world.
+    """
+    return _build(
+        {
+            "items": [
+                {
+                    "id": "news-1",
+                    "title": "Fed holds rates steady",
+                    "summary": "The FOMC left the target range unchanged.",
+                    "title_zh": "美联储维持利率不变",
+                    "summary_zh": "联邦公开市场委员会维持目标区间不变。",
+                }
+            ],
+            "updated_at": NOW_ISO,
+        },
+        overrides,
+    )
+
+
 def default_latest_files() -> dict[str, Any]:
     """Every file the validator looks for under ``latest/``, all valid."""
     files: dict[str, Any] = {
@@ -906,6 +953,7 @@ def default_latest_files() -> dict[str, Any]:
     files["facts.json"] = make_facts()
     files["analysis.zh-CN.json"] = make_analysis(language="zh-CN")
     files["analysis.en.json"] = make_analysis(language="en")
+    files["news.zh-translations.json"] = make_news_translations()
     return files
 
 

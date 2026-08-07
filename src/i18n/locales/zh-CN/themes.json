@@ -1,6 +1,9 @@
 {
   "title": "主题",
   "subtitle": "半导体 / 存储（含 A 股 10 只）/ 金属 / 加密 / 主题",
+  "semis": "半导体",
+  "auto": "汽车",
+  "memory": "存储",
   "section": {
     "semis": "半导体",
     "memory": "存储（美光 + A 股存储）",
@@ -20,5 +23,32 @@
     "riskOn": "风险偏好",
     "riskOff": "风险规避",
     "neutral": "中性"
+  },
+  "ai_infrastructure": "AI 基础设施",
+  "ai_software": "AI 软件",
+  "cloud_computing": "云计算",
+  "cybersecurity": "网络安全",
+  "enterprise_software": "企业软件",
+  "semiconductors": "半导体",
+  "semiconductor_equipment": "半导体设备",
+  "consumer_electronics": "消费电子",
+  "internet_platforms": "互联网平台",
+  "networking": "网络设备",
+  "robotics": "机器人",
+  "autonomous_driving": "自动驾驶",
+  "ev_supply_chain": "电动车产业链",
+  "quantum_computing": "量子计算",
+  "data_centers": "数据中心",
+  "industrial_automation": "工业自动化",
+  "gaming": "游戏",
+  "digital_advertising": "数字广告",
+  "fintech": "金融科技",
+  "percentile": {
+    "veryLow": "极低",
+    "low": "偏低",
+    "normal": "正常",
+    "high": "偏高",
+    "veryHigh": "极高",
+    "warming": "累积中 {{obs}} 个观测"
   }
 }

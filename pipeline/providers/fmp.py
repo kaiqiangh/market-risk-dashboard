@@ -1,6 +1,16 @@
-"""Earnings calendar primary source: Financial Modeling Prep free tier (architecture §1.3 frozen).
+"""FMP free tier providers (architecture §1.3 frozen).
 
-250 req/day free quota is enough for ~40 tickers once daily; on failure degrades to the yfinance fallback.
+Since #83 the free tier lives on the ``/stable`` namespace — ``/api/v3/*`` returns 403
+"Legacy Endpoint" for every path. Two providers:
+
+- :class:`FmpProvider` — earnings calendar primary (field renames eps→epsActual, `time`
+  dropped → session None; Nasdaq restores BMO/AMC, #94). 250 req/day is enough for one
+  range call per day.
+- :class:`FmpQuotesProvider` — quotes FALLBACK (replaces the retired Stooq provider,
+  #100: Stooq now serves a JS proof-of-work challenge that TLS impersonation cannot
+  defeat, verified live). `/stable/quote` answers with price/change/volume; the free tier
+  carries no 1w/1m history, so those fields are honestly None and the #97 quote/history
+  decoupling publishes the price without fabricating technicals.
 """
 
 from __future__ import annotations
@@ -9,27 +19,39 @@ import math
 import time
 from typing import Any
 
-import httpx
-
 from pipeline.providers.base import (
     BaseProvider,
     ProviderError,
     ProviderHealth,
-    retry_with_backoff,
+    QuoteResult,
 )
+from pipeline.utils import now_utc
 
-FMP_BASE = "https://financialmodelingprep.com/api/v3"
+# #83: the whole /api/v3 namespace is retired — FMP_BASE moved to /stable and the
+# earnings endpoint renamed (earning_calendar → earnings-calendar). Both verified live.
+FMP_BASE = "https://financialmodelingprep.com/stable"
+EARNINGS_ENDPOINT = f"{FMP_BASE}/earnings-calendar"
 
 
-class FmpProvider(BaseProvider):
-    name = "fmp"
-    priority = 1
-    domain = "calendar"
+class FmpBaseProvider(BaseProvider):
+    """Shared FMP plumbing (#100 review): the key-guarded client both FMP providers use.
+
+    `health()` skeletons are the repo-wide convention; only the client + key setup was
+    duplicated verbatim between the two classes in this module.
+    """
 
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
         self.api_key = self.settings.fmp_api_key
-        self._client = httpx.Client(timeout=15.0)
+        from pipeline.providers.base import guarded_client
+
+        self._client = guarded_client(set(self.hosts), timeout=15.0)
+
+
+class FmpProvider(FmpBaseProvider):
+    name = "fmp"
+    domain = "calendar"
+    hosts = ("financialmodelingprep.com",)
 
     def health(self) -> ProviderHealth:
         if not self.api_key:
@@ -51,28 +73,27 @@ class FmpProvider(BaseProvider):
             )
 
     def get_earnings_calendar(self, start: str, end: str) -> list[dict[str, Any]]:
+        """Earnings rows in the shared normalized shape (symbol/date/estimates/session).
+
+        ``session`` is always None here — the stable payload dropped ``time`` (#83); the
+        Nasdaq fallback supplies BMO/AMC. Retries live in ProviderRegistry.call (#103/E-3).
+        """
         if not self.api_key:
             raise ProviderError("FMP: missing DATA_FMP_API_KEY (local .env)")
 
-        def _fetch() -> dict[str, Any]:
-            resp = self._client.get(
-                f"{FMP_BASE}/earning_calendar",
-                params={"from": start, "to": end, "apikey": self.api_key},
-            )
-            if resp.status_code != 200:
-                raise ProviderError(f"FMP calendar HTTP {resp.status_code}")
-            data = resp.json()
-            if not isinstance(data, list):
-                raise ProviderError("FMP calendar unexpected payload")
-            return {"items": data}
-
-        try:
-            result = retry_with_backoff(_fetch, max_retries=2, backoff_base=1.0, jitter=True)
-        except Exception as exc:  # noqa: BLE001
-            raise ProviderError(f"FMP calendar: {exc}") from exc
+        resp = self._client.get(
+            EARNINGS_ENDPOINT,
+            params={"from": start, "to": end, "apikey": self.api_key},
+        )
+        if resp.status_code != 200:
+            # #103/S-1: one error boundary — classification + redaction (from_http).
+            raise ProviderError.from_http("FMP calendar", resp)
+        data = resp.json()
+        if not isinstance(data, list):
+            raise ProviderError("FMP calendar unexpected payload")
 
         items: list[dict[str, Any]] = []
-        for row in result["items"]:
+        for row in data:
             symbol = str(row.get("symbol", "")).upper()
             date = str(row.get("date", ""))
             if not symbol or not date:
@@ -82,12 +103,86 @@ class FmpProvider(BaseProvider):
                     "symbol": symbol,
                     "date": date,
                     "eps_estimate": _f(row.get("epsEstimated")),
-                    "eps_actual": _f(row.get("eps")),
+                    # stable renamed `eps` → `epsActual` (#83) — reading the old key would
+                    # silently produce eps_actual=None forever.
+                    "eps_actual": _f(row.get("epsActual")),
                     "revenue_estimate": _f(row.get("revenueEstimated")),
-                    "time": row.get("time") or "AMC",
+                    "revenue_actual": _f(row.get("revenueActual")),
+                    "session": None,
                 }
             )
         return items
+
+
+class FmpQuotesProvider(FmpBaseProvider):
+    """Quotes fallback (domain quotes, priority 2) — `/stable/quote` (#100).
+
+    Replaces Stooq (JS challenge, unrecoverable). Quote-only on the free tier: price,
+    change_1d and volume are real; 1w/1m/history are honestly None (the collector's
+    #97 decoupling publishes the price with None technicals instead of dropping it).
+
+    NOTE on the shared 250 req/day quota: the fallback and the earnings-calendar primary
+    draw on the SAME free-tier account — a quotes outage (each US equity = one quote
+    call) plus the calendar's daily range call stays inside the budget, but a prolonged
+    outage is the one scenario that could starve the calendar.
+    """
+
+    name = "fmp_quotes"
+    domain = "quotes"
+    hosts = ("financialmodelingprep.com",)
+
+    def health(self) -> ProviderHealth:
+        if not self.api_key:
+            return ProviderHealth(provider=self.name, ok=False, error="missing DATA_FMP_API_KEY", checked_at=None)
+        started = time.monotonic()
+        try:
+            quote = self.get_quote("SPY")
+            ok = quote.price is not None
+            return ProviderHealth(
+                provider=self.name, ok=bool(ok),
+                latency_ms=round((time.monotonic() - started) * 1000, 1),
+                error=None if ok else "empty quote", checked_at=None,
+            )
+        except Exception as exc:  # noqa: BLE001
+            return ProviderHealth(
+                provider=self.name, ok=False,
+                latency_ms=round((time.monotonic() - started) * 1000, 1),
+                error=str(exc)[:200], checked_at=None,
+            )
+
+    def get_quote(self, symbol: str) -> QuoteResult:
+        if not self.api_key:
+            raise ProviderError("FMP quotes: missing DATA_FMP_API_KEY (local .env)")
+        resp = self._client.get(
+            f"{FMP_BASE}/quote",
+            params={"symbol": symbol, "apikey": self.api_key},
+        )
+        if resp.status_code != 200:
+            raise ProviderError.from_http("FMP quote", resp)
+        data = resp.json()
+        if not isinstance(data, list) or not data:
+            raise ProviderError(f"FMP quote {symbol}: unexpected payload")
+        row = data[0]
+        price = _f(row.get("price"))
+        if price is None:
+            raise ProviderError(f"FMP quote {symbol}: no price")
+        change_1d = _f(row.get("changePercentage"))
+        return QuoteResult(
+            symbol=symbol,
+            price=price,
+            change_1d=change_1d,
+            change_1w=None,
+            change_1m=None,
+            volume=_f(row.get("volume")),
+            source="fmp",
+            provider=self.name,
+            updated_at=now_utc(),
+            is_proxy=False,
+        )
+
+    # NOTE: no get_history — the free tier has no stable history endpoint (verified live,
+    # #100); the collector's quote/history decoupling (#97) publishes the quote with None
+    # technicals rather than dropping the symbol.
 
 
 def _f(value) -> float | None:

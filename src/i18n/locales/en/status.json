@@ -1,18 +1,35 @@
 {
   "title": "System Status",
-  "subtitle": "Data freshness (five states) + provider health",
+  "subtitle": "Data freshness (six states) + provider health",
   "meta": {
     "schemaVersion": "Schema version",
     "sourcesUpdated": "Sources updated",
     "datasetCount": "Datasets"
   },
   "freshness": {
-    "title": "Dataset Freshness (five states)",
+    "title": "Dataset Freshness (six states)",
     "dataset": "Dataset",
     "status": "Status",
     "updatedAt": "Updated",
     "reason": "Reason",
-    "none": "No freshness data"
+    "none": "No freshness data",
+    "reasonCodes": {
+      "ok": "OK",
+      "no_rows_returned": "Upstream answered with no rows",
+      "no_events_in_window": "No events in the window",
+      "provider_http_error": "Provider HTTP error",
+      "provider_rate_limited": "Provider rate limited",
+      "provider_auth_failed": "Provider authentication failed",
+      "provider_parse_error": "Provider response could not be parsed",
+      "served_from_fallback": "Served from a fallback provider",
+      "served_from_cache": "Served from the last-good cache",
+      "cache_expired": "Cache entry expired",
+      "cache_invalid": "Cache entry invalid",
+      "all_providers_failed": "All providers failed",
+      "not_collected_this_run": "Not collected this run",
+      "interval_exceeded": "Update interval exceeded",
+      "input_dataset_unhealthy": "An input dataset is unhealthy"
+    }
   },
   "datasets": {
     "macro": "Macro",
@@ -22,9 +39,10 @@
     "news": "News",
     "calendar": "Calendar",
     "risk": "Risk",
-    "facts": "Fact layer",
+    "factlayer": "Fact layer",
     "analysis": "AI brief",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "news_translations": "News translations"
   },
   "providers": {
     "title": "Provider Health",
@@ -32,11 +50,7 @@
     "provider": "Provider",
     "fallback": "Fallback",
     "cache": "Cache",
-    "error": "Error/Degraded",
-    "degraded": "Degraded",
-    "ok": "OK",
-    "yes": "Yes",
-    "no": "No",
-    "none": "No provider info"
+    "none": "No provider info",
+    "status": "Status / Reason"
   }
 }

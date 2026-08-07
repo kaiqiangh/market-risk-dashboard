@@ -40,6 +40,8 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
 
   const validCells = cells.filter((c) => c.change1d !== null && c.change1d !== undefined);
   const categories = Array.from(new Set(cells.map((c) => c.category)));
+  // Grow the chart with the row count so each cell keeps enough height for its label.
+  const computedHeight = Math.min(560, Math.max(height, validCells.length * 26 + 64));
 
   useEffect(() => {
     if (!ref.current || validCells.length === 0) return;
@@ -47,21 +49,26 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
       setMode("fallback");
       return;
     }
+    // One row per asset so cells never collapse onto the same (x, y) coordinate. The
+    // previous layout pinned y = 0, so every asset in a category stacked into one cell
+    // and their % labels overlapped in the centre.
+    const rows = validCells.map((c) => c.asset);
     let chart: echarts.ECharts | undefined;
     try {
       chart = echarts.init(ref.current);
       const th = chartTheme();
-      const data = validCells.map((c) => [categories.indexOf(c.category), 0, c.change1d as number]);
-      // Y axis groups by asset (one pool per category row; MVP uses category as the y axis)
+      const data = validCells.map((c, i) => [categories.indexOf(c.category), i, c.change1d as number]);
       chart.setOption({
         grid: { left: 8, right: 24, top: 24, bottom: 8, containLabel: true },
         tooltip: {
           formatter: (params: unknown) => {
             const p = params as { data: number[]; name?: string };
-            const idx = Math.round((p.data?.[0] ?? 0) as number);
-            const cat = categories[idx] ?? "";
+            const catIdx = Math.round((p.data?.[0] ?? 0) as number);
+            const rowIdx = Math.round((p.data?.[1] ?? 0) as number);
+            const cat = categories[catIdx] ?? "";
+            const asset = rows[rowIdx] ?? "";
             const val = p.data?.[2] as number;
-            return `${cat}<br/>${formatChange(val, locale)}`;
+            return `${asset}<br/>${cat}<br/>${formatChange(val, locale)}`;
           },
         },
         xAxis: {
@@ -71,7 +78,7 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
         },
         yAxis: {
           type: "category",
-          data: [t("heatmap.axis")],
+          data: rows,
           axisLabel: { color: th.axis, fontSize: 10 },
         },
         visualMap: {
@@ -149,7 +156,7 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
 
   return (
     <>
-      <div ref={ref} style={{ height }} data-testid="asset-heatmap" className="w-full" />
+      <div ref={ref} style={{ height: computedHeight }} data-testid="asset-heatmap" className="w-full" />
       <details className="mt-2 rounded-md border border-border px-3 py-2 text-xs">
         <summary className="cursor-pointer font-medium text-muted-foreground">{t("heatmap.details")}</summary>
         <div className="mt-2 overflow-x-auto">

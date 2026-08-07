@@ -29,12 +29,98 @@ export const macroFixture = {
         status: "fresh",
       },
     ],
-    credit: [],
-    inflation: [],
-    labor: [],
-    liquidity: [],
-    fx: [],
+    credit: [
+      {
+        key: "bamlh0a0hym2",
+        label: "ICE BofA US High Yield OAS",
+        value: 3.42,
+        previous: 3.5,
+        change_1m: -0.08,
+        unit: "pct",
+        source: "FRED",
+        updated_at: "2026-08-03T09:30:00Z",
+        status: "fresh",
+      },
+    ],
+    // #96: VIX lives in its own volatility group, not under rates.
+    volatility: [
+      {
+        key: "vixcls",
+        label: "CBOE Volatility Index (VIX)",
+        value: 16.8,
+        previous: 17.2,
+        change_1m: -2.4,
+        unit: "index",
+        source: "FRED",
+        updated_at: "2026-08-03T09:30:00Z",
+        status: "fresh",
+      },
+    ],
+    inflation: [
+      {
+        key: "cpiaucsl",
+        label: "CPI All Urban Consumers (YoY)",
+        value: 3.46,
+        previous: 3.5,
+        change_1m: -0.04,
+        unit: "pct",
+        source: "FRED",
+        updated_at: "2026-07-01T00:00:00Z",
+        status: "fresh",
+      },
+    ],
+    labor: [
+      {
+        key: "unrate",
+        label: "Unemployment Rate",
+        value: 4.2,
+        previous: 4.3,
+        change_1m: -0.1,
+        unit: "pct",
+        source: "FRED",
+        updated_at: "2026-07-01T00:00:00Z",
+        status: "fresh",
+      },
+    ],
+    liquidity: [
+      {
+        key: "walcl",
+        label: "Fed Total Assets",
+        value: 6600000,
+        previous: 6580000,
+        change_1m: 20000,
+        unit: "usd",
+        source: "FRED",
+        updated_at: "2026-07-30T00:00:00Z",
+        status: "fresh",
+      },
+    ],
+    fx: [
+      {
+        key: "dtwexbgs",
+        label: "Nominal Broad Dollar Index",
+        value: 118.6,
+        previous: 118.1,
+        change_1m: 0.5,
+        unit: "index",
+        source: "FRED",
+        updated_at: "2026-08-01T00:00:00Z",
+        status: "fresh",
+      },
+    ],
     fedwatch: null,
+  },
+};
+
+/** history/macro/fx.30d.json — sparse column-oriented bundle (#96/#84 §3). */
+export const macroHistoryFxFixture = {
+  DTWEXBGS: {
+    d: ["2026-07-03", "2026-07-06", "2026-07-07"],
+    v: [118.1, 118.3, 118.6],
+  },
+  DEXUSEU: {
+    d: ["2026-07-03", "2026-07-06", "2026-07-07"],
+    v: [1.0842, 1.0831, 1.0824],
   },
 };
 
@@ -109,11 +195,11 @@ export const sectorsFixture = {
   freshness_status: "fresh",
   data_quality: 0.85,
   payload: {
+    // No label/label_zh on sectors/themes rows since #102 (C-1): the payload carries the
+    // key and the numbers; the frontend renders t(themes.<key>).
     sectors: [
       {
         key: "semis",
-        label: "Semiconductors",
-        label_zh: "半导体",
         change_1d: -1.8,
         change_1w: 2.1,
         change_1m: 7.4,
@@ -125,13 +211,22 @@ export const sectorsFixture = {
     themes: [
       {
         key: "memory",
-        label: "Memory",
-        label_zh: "存储",
         change_1d: -2.4,
         change_1w: 1.9,
         change_1m: 12.6,
         percentile_1y: 90.0,
         percentile_1y_obs: 250,
+        constituents: ["MU", "SNDK", "WDC", "STX"],
+        updated_at: "2026-08-03T10:00:00Z",
+      },
+      {
+        key: "cybersecurity",
+        change_1d: 0.8,
+        change_1w: 2.2,
+        change_1m: 4.1,
+        percentile_1y: null,
+        percentile_1y_obs: 30,
+        constituents: ["PANW", "CRWD", "FTNT", "ZS"],
         updated_at: "2026-08-03T10:00:00Z",
       },
     ],
@@ -624,27 +719,94 @@ export const marketHistory30dFixture = [
 
 export const sourcesFixture = {
   schema_version: "1.0.0",
-  updated_at: "2026-08-03T13:59:37Z",
+  updated_at: "2026-08-07T09:00:00Z",
+  // #95: mirrors the current projection shape — each domain carries the derived fields
+  // (status/reason/datasets) plus provider passthrough, exactly as sources.json is
+  // rendered from the one outcomes record (#89/#101, economic domain per #94).
   domains: {
-    a_share: { degraded: true, error: "all providers failed: akshare timeout" },
-    crypto: { provider: "coingecko", used_fallback: false, from_cache: false, degraded: false },
-    macro: { provider: "fred", used_fallback: false, from_cache: false, degraded: false },
-    calendar: { provider: "yfinance_calendar", used_fallback: true, from_cache: false, degraded: true },
-    news: { provider: "rss_news", used_fallback: false, from_cache: false, degraded: false },
+    market: {
+      provider: "yfinance",
+      used_fallback: false,
+      from_cache: false,
+      degraded: true,
+      status: "degraded",
+      reason: { code: "provider_http_error", detail: "yfinance: HTTP 429 rate limited" },
+      datasets: ["equities", "sectors"],
+    },
+    macro: {
+      provider: "fred",
+      used_fallback: false,
+      from_cache: false,
+      degraded: false,
+      status: "fresh",
+      reason: { code: "ok", detail: "" },
+      datasets: ["macro"],
+    },
+    crypto: {
+      provider: "coingecko",
+      used_fallback: false,
+      from_cache: false,
+      degraded: false,
+      status: "fresh",
+      reason: { code: "ok", detail: "" },
+      datasets: ["crypto"],
+    },
+    calendar: {
+      provider: "fmp",
+      used_fallback: false,
+      from_cache: false,
+      degraded: false,
+      status: "empty",
+      reason: { code: "no_events_in_window", detail: "no events in the 14-day window" },
+      datasets: ["calendar"],
+    },
+    economic: {
+      provider: "fred_calendar",
+      used_fallback: false,
+      from_cache: false,
+      degraded: false,
+      status: "fresh",
+      reason: { code: "ok", detail: "" },
+      datasets: ["calendar"],
+    },
+    news: {
+      provider: "rss_news",
+      used_fallback: true,
+      from_cache: false,
+      degraded: true,
+      status: "degraded",
+      reason: { code: "provider_http_error", detail: "clschina: RSS HTTP 403" },
+      datasets: ["news"],
+    },
+    a_share: {
+      provider: "akshare",
+      used_fallback: false,
+      from_cache: false,
+      degraded: true,
+      status: "degraded",
+      reason: { code: "all_providers_failed", detail: "akshare: RemoteDisconnected" },
+      datasets: [],
+    },
   },
 };
 
 export const freshnessFixture = {
   schema_version: "1.0.0",
+  updated_at: "2026-08-07T09:00:00Z",
+  // #95: the published reason is a {code, detail} pair from the closed vocabulary — no
+  // literal "degraded" placeholders remain (E-1/#89). Every registered key appears.
   datasets: {
-    macro: { status: "degraded", reason: "degraded", updated_at: "2026-08-03T13:59:37Z" },
-    equities: { status: "degraded", reason: "degraded", updated_at: "2026-08-03T13:59:37Z" },
-    sectors: { status: "degraded", reason: "degraded", updated_at: "2026-08-03T13:59:37Z" },
-    crypto: { status: "degraded", reason: "degraded", updated_at: "2026-08-03T13:59:37Z" },
-    news: { status: "fresh", reason: "ok", updated_at: "2026-08-03T13:59:37Z" },
-    calendar: { status: "fresh", reason: "ok", updated_at: "2026-08-03T13:59:37Z" },
-    risk: { status: "degraded", reason: "degraded", updated_at: "2026-08-03T13:59:37Z" },
-    facts: { status: "degraded", reason: "degraded", updated_at: "2026-08-03T13:59:37Z" },
+    equities: { status: "degraded", reason: { code: "provider_http_error", detail: "yfinance: HTTP 429 rate limited" }, updated_at: "2026-08-07T09:00:00Z" },
+    sectors: { status: "degraded", reason: { code: "provider_http_error", detail: "yfinance: HTTP 429 rate limited" }, updated_at: "2026-08-07T09:00:00Z" },
+    crypto: { status: "fresh", reason: { code: "ok", detail: "" }, updated_at: "2026-08-07T09:00:00Z" },
+    macro: { status: "fresh", reason: { code: "ok", detail: "" }, updated_at: "2026-08-07T09:00:00Z" },
+    calendar: { status: "empty", reason: { code: "no_events_in_window", detail: "no events in the 14-day window" }, updated_at: "2026-08-07T09:00:00Z" },
+    news: { status: "degraded", reason: { code: "provider_http_error", detail: "clschina: RSS HTTP 403" }, updated_at: "2026-08-07T09:00:00Z" },
+    risk: { status: "degraded", reason: { code: "input_dataset_unhealthy", detail: "equities degraded" }, updated_at: "2026-08-07T09:00:00Z" },
+    dashboard: { status: "degraded", reason: { code: "input_dataset_unhealthy", detail: "equities degraded" }, updated_at: "2026-08-07T09:00:00Z" },
+    factlayer: { status: "degraded", reason: { code: "input_dataset_unhealthy", detail: "equities degraded" }, updated_at: "2026-08-07T09:00:00Z" },
+    analysis: { status: "fresh", reason: { code: "ok", detail: "" }, updated_at: "2026-08-07T09:00:00Z" },
+    news_translations: { status: "fresh", reason: { code: "ok", detail: "" }, updated_at: "2026-08-07T09:00:00Z" },
   },
 };
 
