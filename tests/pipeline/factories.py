@@ -58,6 +58,7 @@ __all__ = [
     "make_analysis",
     "make_calendar_event",
     "make_calendar_payload",
+    "make_commodities_payload",
     "make_crypto_asset",
     "make_crypto_payload",
     "make_dashboard_payload",
@@ -441,6 +442,41 @@ def make_crypto_payload(**overrides: Any) -> dict[str, Any]:
     )
 
 
+def make_commodities_payload(**overrides: Any) -> dict[str, Any]:
+    """``commodities.json`` payload (``pipeline.schemas.commodities.CommoditiesDataset``)."""
+    return _build(
+        {
+            "assets": [
+                {
+                    "symbol": "GC=F",
+                    "name": "Gold",
+                    "name_zh": "黄金",
+                    "price": 2450.5,
+                    "currency": "USD",
+                    "change_1d": 0.8,
+                    "change_1w": 1.2,
+                    "change_1m": 3.4,
+                    "source": "yfinance",
+                    "updated_at": NOW_ISO,
+                },
+                {
+                    "symbol": "CL=F",
+                    "name": "WTI Crude",
+                    "name_zh": "WTI 原油",
+                    "price": 78.4,
+                    "currency": "USD",
+                    "change_1d": -1.5,
+                    "change_1w": -2.1,
+                    "change_1m": -4.2,
+                    "source": "yfinance",
+                    "updated_at": NOW_ISO,
+                },
+            ],
+        },
+        overrides,
+    )
+
+
 def make_news_payload(**overrides: Any) -> dict[str, Any]:
     """``news.json`` payload (``pipeline.schemas.news.NewsDataset``).
 
@@ -589,6 +625,7 @@ PAYLOAD_BUILDERS: dict[str, Callable[..., dict[str, Any]]] = {
     "equities": make_equities_payload,
     "sectors": make_sectors_payload,
     "crypto": make_crypto_payload,
+    "commodities": make_commodities_payload,
     "news": make_news_payload,
     "calendar": make_calendar_payload,
     "risk": make_risk_payload,
@@ -604,6 +641,7 @@ _ENVELOPE_SOURCE: dict[str, Any] = {
     "equities": ["yfinance", "akshare"],
     "sectors": ["yfinance"],
     "crypto": ["coingecko"],
+    "commodities": ["yfinance"],
     "news": ["rss"],
     "calendar": ["fmp"],
     "risk": "pipeline.risk",

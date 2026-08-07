@@ -669,7 +669,7 @@ def test_dataset_health_reports_datasets_a_partial_command_skipped(tmp_path: Pat
     from pipeline.run import dataset_health
 
     data_dir = tmp_path / "data"
-    _write_freshness(data_dir, {"equities": "fresh", "sectors": "fresh", "crypto": "fresh"})
+    _write_freshness(data_dir, {"equities": "fresh", "sectors": "fresh", "crypto": "fresh", "commodities": "fresh"})
 
     health = dataset_health(StorageWriter(data_dir), "market-only", run_started_at=_RUN_START)
 
@@ -687,7 +687,7 @@ def test_dataset_health_treats_an_unrecorded_attempt_as_failed(tmp_path: Path) -
 
     health = dataset_health(StorageWriter(data_dir), "market-only", run_started_at=_RUN_START)
 
-    assert health["failed"] == ["sectors"]
+    assert health["failed"] == ["sectors", "commodities"]
 
 
 def test_dataset_health_treats_a_stale_fresh_entry_from_a_previous_run_as_failed(tmp_path: Path) -> None:
@@ -765,7 +765,7 @@ def test_partial_command_writes_a_run_report(tmp_path: Path, monkeypatch: pytest
     assert report["failed_datasets"] == []
     assert "macro" in report["skipped_datasets"] and "news" in report["skipped_datasets"]
     assert report["degraded"] == ["crypto: coingecko rate limited"]
-    assert set(report["degraded_datasets"]) == {"equities", "crypto", "sectors"}
+    assert set(report["degraded_datasets"]) == {"commodities", "equities", "crypto", "sectors"}
 
 
 def _fake_market_collection(command: str) -> dict:
@@ -775,7 +775,8 @@ def _fake_market_collection(command: str) -> dict:
     (#89), and a fixture built from empty payloads would silently test the second case while
     claiming to test the first.
     """
-    from pipeline.schemas import CryptoDataset, EquitiesDataset, SectorsDataset
+    from pipeline.schemas import CommoditiesDataset, CryptoDataset, EquitiesDataset, SectorsDataset
+    from pipeline.schemas.commodities import CommodityAsset
     from pipeline.schemas.crypto import CryptoAsset
     from pipeline.schemas.equities import EquityAsset
     from pipeline.schemas.sectors import SectorItem
@@ -793,6 +794,7 @@ def _fake_market_collection(command: str) -> dict:
             "sources": {
                 "equities": ["yfinance", "akshare"],
                 "crypto": ["coingecko"],
+                "commodities": ["yfinance"],
                 "sectors": ["yfinance"],
             },
         },
@@ -802,6 +804,9 @@ def _fake_market_collection(command: str) -> dict:
         ),
         "crypto": CryptoDataset(
             assets=[CryptoAsset(symbol="BTC", name="Bitcoin", price=60000.0, source="coingecko", updated_at=now)]
+        ),
+        "commodities": CommoditiesDataset(
+            assets=[CommodityAsset(symbol="GC=F", name="Gold", price=2450.5, source="yfinance", updated_at=now)]
         ),
         "sectors": SectorsDataset(sectors=[SectorItem(key="tech")]),
     }
@@ -817,7 +822,7 @@ def test_a_degraded_run_that_returned_nothing_is_reported_as_failed(
     report called the run clean while the dashboard rendered blank panels.
     """
     import pipeline.run as run_mod
-    from pipeline.schemas import CryptoDataset, EquitiesDataset, SectorsDataset
+    from pipeline.schemas import CommoditiesDataset, CryptoDataset, EquitiesDataset, SectorsDataset
 
     data_dir = tmp_path / "data"
     artifacts_dir = tmp_path / "artifacts"
@@ -831,6 +836,7 @@ def test_a_degraded_run_that_returned_nothing_is_reported_as_failed(
         results = _fake_market_collection(command)
         results["equities"] = EquitiesDataset()
         results["crypto"] = CryptoDataset()
+        results["commodities"] = CommoditiesDataset()
         results["sectors"] = SectorsDataset()
         return results
 
@@ -841,7 +847,7 @@ def test_a_degraded_run_that_returned_nothing_is_reported_as_failed(
     assert run_mod.main(["--market-only"]) == 1
 
     report = json.loads(sorted((artifacts_dir / "logs").glob("run-report-*.json"))[0].read_text(encoding="utf-8"))
-    assert set(report["failed_datasets"]) == {"equities", "crypto", "sectors"}
+    assert set(report["failed_datasets"]) == {"commodities", "equities", "crypto", "sectors"}
 
     freshness = json.loads((data_dir / "metadata" / "freshness.json").read_text(encoding="utf-8"))
     assert freshness["datasets"]["equities"]["status"] == "missing"

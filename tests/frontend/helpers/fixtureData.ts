@@ -271,6 +271,44 @@ export const cryptoFixture = {
   },
 };
 
+export const commoditiesFixture = {
+  generated_at: "2026-08-03T10:00:00Z",
+  schema_version: "1.0.0",
+  source: "yfinance",
+  provenance: { provider: "yfinance", used_fallback: false, from_cache: false },
+  source_updated_at: "2026-08-03T09:45:00Z",
+  freshness_status: "fresh",
+  data_quality: 0.9,
+  payload: {
+    assets: [
+      {
+        symbol: "GC=F",
+        name: "Gold",
+        name_zh: "黄金",
+        price: 2450.5,
+        currency: "USD",
+        change_1d: 0.8,
+        change_1w: 1.2,
+        change_1m: 3.4,
+        source: "yfinance",
+        updated_at: "2026-08-03T10:00:00Z",
+      },
+      {
+        symbol: "CL=F",
+        name: "WTI Crude",
+        name_zh: "WTI 原油",
+        price: 78.4,
+        currency: "USD",
+        change_1d: -1.5,
+        change_1w: -2.1,
+        change_1m: -4.2,
+        source: "yfinance",
+        updated_at: "2026-08-03T10:00:00Z",
+      },
+    ],
+  },
+};
+
 export const newsFixture = {
   generated_at: "2026-08-03T10:00:00Z",
   schema_version: "1.0.0",

@@ -14,6 +14,8 @@ from pipeline.indicators.technical import technical_snapshot
 from pipeline.indicators.themes import changes_from_closes, percentile_of_trailing_return
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import (
+    CommoditiesDataset,
+    CommodityAsset,
     CryptoAsset,
     CryptoDataset,
     EquitiesDataset,
@@ -216,6 +218,42 @@ class MarketCollector:
             sentiment=data.get("sentiment"),
         )
 
+    # ---- Commodities (metals + oil, universe.yaml) ----
+
+    def _collect_commodities(self) -> CommoditiesDataset:
+        """Collect the commodities universe (gold/silver/copper/oil) via the quotes domain.
+
+        Universe symbols (GC=F / SI=F / HG=F / CL=F) pass straight through Yahoo's identity
+        symbol mapper, and FMP serves the same keys as the fallback. A quote failure drops
+        the asset (degraded) — the honest shape, matching ``_fetch_equity``.
+        """
+        targets = [*self.universe.metals, *self.universe.oil]
+        assets: list[CommodityAsset] = []
+        for asset in targets:
+            try:
+                out = self.registry.call("quotes", "get_quote", f"quote_{asset.symbol}", args=(asset.symbol,))
+            except ProviderError as exc:
+                self.degraded.append(f"{asset.symbol}: {exc}")
+                self.provider_status.setdefault("quotes", {})["error"] = str(exc)
+                continue
+            self._record_outcome("quotes", out["meta"])
+            quote = out["result"]
+            assets.append(
+                CommodityAsset(
+                    symbol=asset.symbol,
+                    name=asset.name,
+                    name_zh=asset.name_zh,
+                    price=quote.price,
+                    currency="USD",
+                    change_1d=quote.change_1d,
+                    change_1w=quote.change_1w,
+                    change_1m=quote.change_1m,
+                    source=quote.source,
+                    updated_at=quote.updated_at or now_utc(),
+                )
+            )
+        return CommoditiesDataset(assets=assets)
+
     # ---- Sectors/themes ----
 
     def _collect_sectors(self, equities: EquitiesDataset) -> SectorsDataset:
@@ -353,6 +391,7 @@ class MarketCollector:
         equities = self._collect_equities()
         self._collect_index_histories()
         crypto = self._collect_crypto()
+        commodities = self._collect_commodities()
         sectors = self._collect_sectors(equities)
         quality = self._quality()
 
@@ -361,6 +400,7 @@ class MarketCollector:
         return {
             "equities": equities,
             "crypto": crypto,
+            "commodities": commodities,
             "sectors": sectors,
             "histories": self.histories,
             "degraded": self.degraded,
@@ -369,6 +409,7 @@ class MarketCollector:
             "providers": {
                 "equities": self._provider_for("quotes") or self._provider_for("a_share"),
                 "crypto": self._provider_for("crypto"),
+                "commodities": self._provider_for("quotes"),
                 "sectors": self._provider_for("quotes"),
             },
         }

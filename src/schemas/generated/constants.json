@@ -31,6 +31,7 @@
     "equities",
     "sectors",
     "crypto",
+    "commodities",
     "macro",
     "calendar",
     "news",
@@ -44,6 +45,7 @@
     "equities": 480,
     "sectors": 480,
     "crypto": 480,
+    "commodities": 480,
     "macro": 240,
     "calendar": 1440,
     "news": 480,
@@ -80,6 +82,16 @@
       ],
       "enveloped": true,
       "domain": "crypto",
+      "required": true,
+      "row_counted": true,
+      "has_schema_version": true
+    },
+    "commodities": {
+      "filenames": [
+        "commodities.json"
+      ],
+      "enveloped": true,
+      "domain": "market",
       "required": true,
       "row_counted": true,
       "has_schema_version": true
@@ -181,7 +193,8 @@
     ],
     "market": [
       "equities",
-      "sectors"
+      "sectors",
+      "commodities"
     ],
     "news": [
       "news"

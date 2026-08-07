@@ -9,6 +9,7 @@ import analysisZhFixture from "../../fixtures/analysis.zh-CN.json";
 import {
   analysisEnFixture,
   calendarFixture,
+  commoditiesFixture,
   cryptoFixture,
   equitiesFixture,
   freshnessFixture,
@@ -28,6 +29,7 @@ export const FIXTURE_MAP: Record<string, unknown> = {
   "/latest/equities.json": equitiesFixture,
   "/latest/sectors.json": sectorsFixture,
   "/latest/crypto.json": cryptoFixture,
+  "/latest/commodities.json": commoditiesFixture,
   "/latest/news.json": newsFixture,
   "/latest/calendar.json": calendarFixture,
   "/latest/risk.json": riskFixture,
