@@ -1,6 +1,10 @@
 {
   "title": "主题",
   "subtitle": "半导体 / 存储（含 A 股 10 只）/ 金属 / 加密 / 主题",
+  "semis": "半导体",
+  "auto": "汽车",
+  "memory": "存储（美光 + A 股存储）",
+  "ai": "AI / GPU",
   "section": {
     "semis": "半导体",
     "memory": "存储（美光 + A 股存储）",

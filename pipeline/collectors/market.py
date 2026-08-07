@@ -33,6 +33,19 @@ class MarketCollector:
         self.registry = registry
         self.universe = universe
         self.settings = settings or Settings()
+        # #102 (C-1): the sector/theme taxonomy lives in config/themes.yaml, not in this
+        # module. Loading it validates every constituent resolves in universe.yaml and
+        # raises ConfigError before any provider is constructed. Labels are nowhere here —
+        # the frontend renders t(themes.<key>).
+        self.themes = self.settings.load_themes_config()
+        self.operations = self.settings.load_sources_config().operations
+        # theme membership, reversed: symbol → theme keys, to populate EquityAsset.theme
+        # (the payload keeps the field; universe.yaml no longer carries theme tags, D-8).
+        self._symbol_to_themes: dict[str, list[str]] = {}
+        for section in ("sectors", "themes"):
+            for key, theme in getattr(self.themes, section).items():
+                for constituent in theme.constituents:
+                    self._symbol_to_themes.setdefault(constituent.symbol, []).append(key)
         self.degraded: list[str] = []
         self.provider_status: dict[str, Any] = {}
         self.histories: dict[str, list[dict[str, Any]]] = {}
@@ -73,7 +86,9 @@ class MarketCollector:
             self.degraded.append(f"{asset.symbol}: {exc}")
             self.provider_status.setdefault(domain, {})["error"] = str(exc)
             self._domain_failures[domain] = self._domain_failures.get(domain, 0) + 1
-            if self._domain_failures[domain] >= 2:
+            # #102 (M-5): the circuit-breaker threshold is config
+            # (operations.circuit_breaker_threshold), not a magic literal.
+            if self._domain_failures[domain] >= self.operations.circuit_breaker_threshold:
                 self._domain_down.add(domain)
             return None
 
@@ -87,7 +102,7 @@ class MarketCollector:
             name_zh=asset.name_zh,
             market="US" if asset.market == "US" else "CN",
             sector=asset.sector,
-            theme=asset.theme,
+            theme=list(self._symbol_to_themes.get(asset.symbol, [])),
             price=quote.price,
             currency="USD" if asset.market == "US" else "CNY",
             change_1d=quote.change_1d,
@@ -154,27 +169,45 @@ class MarketCollector:
     # ---- Sectors/themes ----
 
     def _collect_sectors(self, equities: EquitiesDataset) -> SectorsDataset:
-        us = [a for a in equities.assets if a.market == "US"]
-        cn = [a for a in equities.assets if a.market == "CN"]
+        by_symbol = {a.symbol: a for a in equities.assets}
 
         def _avg_change(assets: list[EquityAsset], key: str) -> float | None:
             values = [getattr(a, key) for a in assets if getattr(a, key) is not None]
             return round(sum(values) / len(values), 4) if values else None
 
-        semis = [a for a in us if a.sector == "semis"]
-        memory_assets = [a for a in us if "Memory" in a.theme] + cn
-        auto = [a for a in us if a.sector == "auto"]
+        def _row(key: str, theme: Any) -> SectorItem:
+            """Build one SectorItem from a themes.yaml definition (C-1/#102).
+
+            Constituents are resolved against the assets that actually collected — a symbol
+            whose fetch failed simply does not contribute, which is what the old sector/
+            theme filter did implicitly over the collected asset list.
+            """
+            assets = [by_symbol[c.symbol] for c in theme.constituents if c.symbol in by_symbol]
+            return SectorItem(
+                key=key,
+                change_1d=_avg_change(assets, "change_1d"),
+                change_1w=_avg_change(assets, "change_1w"),
+                change_1m=_avg_change(assets, "change_1m"),
+                percentile_1y=None,
+                percentile_1y_obs=0,
+                updated_at=now_utc(),
+            )
 
         sectors = [
-            SectorItem(key="semis", label="Semiconductors", label_zh="半导体", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_1y=None, percentile_1y_obs=0, updated_at=now_utc()),
-            SectorItem(key="auto", label="Autos", label_zh="汽车", change_1d=_avg_change(auto, "change_1d"), change_1w=_avg_change(auto, "change_1w"), change_1m=_avg_change(auto, "change_1m"), percentile_1y=None, percentile_1y_obs=0, updated_at=now_utc()),
+            _row(key, theme) for key, theme in self.themes.sectors.items()
         ]
         themes = [
-            SectorItem(key="memory", label="Memory", label_zh="存储", change_1d=_avg_change(memory_assets, "change_1d"), change_1w=_avg_change(memory_assets, "change_1w"), change_1m=_avg_change(memory_assets, "change_1m"), percentile_1y=None, percentile_1y_obs=0, updated_at=now_utc()),
-            SectorItem(key="ai", label="AI / GPU", label_zh="AI/GPU", change_1d=_avg_change(semis, "change_1d"), change_1w=_avg_change(semis, "change_1w"), change_1m=_avg_change(semis, "change_1m"), percentile_1y=None, percentile_1y_obs=0, updated_at=now_utc()),
+            _row(key, theme) for key, theme in self.themes.themes.items()
         ]
 
-        mu = next((a for a in us if a.symbol == "MU"), None)
+        # Memory cycle proxy (review P0-1): Micron + A-share memory makers — the same
+        # membership as themes.yaml:themes.memory, which the memory theme row above is
+        # built from. Kept as its own object because the frontend renders it as a single
+        # prose proxy card, not a numbered row.
+        memory_assets = [
+            by_symbol[c.symbol] for c in self.themes.themes["memory"].constituents if c.symbol in by_symbol
+        ]
+        mu = next((a for a in memory_assets if a.symbol == "MU"), None)
         memory = MemoryProxy(
             label="Memory proxy (MU + A-share memory makers)",
             label_zh="存储周期代理（美光 + A股存储）",

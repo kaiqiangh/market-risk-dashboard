@@ -627,12 +627,10 @@ export const RiskEnvelope = z
   .passthrough();
 export type RiskEnvelope = z.infer<typeof RiskEnvelope>;
 
-/** Sector or theme entry. */
+/** Sector or theme entry. No ``label``/``label_zh``: display labels live in ``src/i18n/locales/{en,zh-CN}/themes.json``, keyed by ``key`` (C-1/#102). The payload carries the key and the numbers; the frontend renders ``t(themes.<key>)`` and ``check:i18n`` catches a key with no Chinese label. */
 export const SectorItem = z
   .object({
     key: z.string().min(1),
-    label: z.string().min(1),
-    label_zh: z.string().nullable().default(null),
     change_1d: z.number().finite().nullable().default(null),
     change_1w: z.number().finite().nullable().default(null),
     change_1m: z.number().finite().nullable().default(null),

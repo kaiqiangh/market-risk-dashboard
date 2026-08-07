@@ -109,11 +109,11 @@ export const sectorsFixture = {
   freshness_status: "fresh",
   data_quality: 0.85,
   payload: {
+    // No label/label_zh on sectors/themes rows since #102 (C-1): the payload carries the
+    // key and the numbers; the frontend renders t(themes.<key>).
     sectors: [
       {
         key: "semis",
-        label: "Semiconductors",
-        label_zh: "半导体",
         change_1d: -1.8,
         change_1w: 2.1,
         change_1m: 7.4,
@@ -125,8 +125,6 @@ export const sectorsFixture = {
     themes: [
       {
         key: "memory",
-        label: "Memory",
-        label_zh: "存储",
         change_1d: -2.4,
         change_1w: 1.9,
         change_1m: 12.6,

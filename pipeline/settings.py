@@ -70,6 +70,52 @@ class Settings(BaseSettings):
         """News sources and importance rules (config/news_sources.yaml)."""
         return self._load_yaml("news_sources")
 
+    # ---- Validated config (#102, pipeline/config/models.py) ----
+    #
+    # The raw loaders above remain for the loose readers (freshness expectations,
+    # importance rules). The validated loaders below are what the provider factory, the
+    # collectors and the universe use — a typo now raises ConfigError before any provider
+    # is constructed, instead of silently disabling a theme.
+
+    def load_sources_config(self) -> "SourcesConfig":
+        """Validated sources.yaml (providers/degrade/operations) — raises ConfigError on drift."""
+        from pipeline.config.models import SourcesConfig, load_config
+
+        return load_config(self.config_dir / "sources.yaml", SourcesConfig)
+
+    def load_universe_config(self) -> "UniverseConfig":
+        """Validated universe.yaml — no theme tags (#102)."""
+        from pipeline.config.models import UniverseConfig, load_config
+
+        return load_config(self.config_dir / "universe.yaml", UniverseConfig)
+
+    def load_themes_config(self) -> "ThemesConfig":
+        """Validated themes.yaml; every constituent must resolve in universe.yaml."""
+        from pipeline.config.models import ConfigError, ThemesConfig, load_config
+
+        themes = load_config(self.config_dir / "themes.yaml", ThemesConfig)
+        universe = self.load_universe_config()
+        known = {
+            a.symbol
+            for pool in (universe.us_equities, universe.a_share_memory)
+            for a in pool
+        }
+        for section in ("sectors", "themes"):
+            for key, theme in getattr(themes, section).items():
+                for constituent in theme.constituents:
+                    if constituent.symbol not in known:
+                        raise ConfigError(
+                            f"themes.yaml:{section}.{key}: constituent "
+                            f"{constituent.symbol!r} does not resolve in universe.yaml"
+                        )
+        return themes
+
+    def load_news_sources_config(self) -> "NewsSourcesConfig":
+        """Validated news_sources.yaml — the assets/categories blocks are gone (#102)."""
+        from pipeline.config.models import NewsSourcesConfig, load_config
+
+        return load_config(self.config_dir / "news_sources.yaml", NewsSourcesConfig)
+
 
 # Module-level singleton (reused by run.py and Collectors since T03)
 settings = Settings()

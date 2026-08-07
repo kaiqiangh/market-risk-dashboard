@@ -35,7 +35,9 @@ class CalendarCollector:
     def collect(self) -> tuple[CalendarEnvelope, dict[str, Any]]:
         today = datetime.now(timezone.utc).date()
         start = today.isoformat()
-        end = (today + timedelta(days=14)).isoformat()
+        # #102 (M-5): the horizon is config (operations.calendar_horizon_days), not a literal.
+        horizon = int(self.settings.load_sources_config().operations.calendar_horizon_days)
+        end = (today + timedelta(days=horizon)).isoformat()
         events: list[CalendarEvent] = []
 
         try:

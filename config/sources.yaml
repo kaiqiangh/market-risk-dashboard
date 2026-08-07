@@ -29,7 +29,10 @@ expectations:
   news_translations:
     { interval_minutes: 720, note: "Chinese translations produced by the AI brief automations" }
 
-# Provider registry (smaller priority number = higher priority)
+# Provider registry (smaller priority number = higher priority). LIVE config since #102:
+# build_default_providers() constructs exactly these providers, in this order, skipping
+# enabled: false (C-3). `kind` is descriptive (primary/fallback); the effective order is
+# `priority`.
 providers:
   quotes:
     - { name: yfinance, priority: 1, kind: primary }
@@ -38,10 +41,11 @@ providers:
     - { name: fred, priority: 1, kind: primary }
   crypto:
     - { name: coingecko, priority: 1, kind: primary }
+    # Not implemented yet — the disabled entry is inert (never constructed), not a typo gate.
     - { name: binance_public, priority: 2, kind: fallback, enabled: false }
   calendar:
     - { name: fmp, priority: 1, kind: primary }
-    - { name: yfinance, priority: 2, kind: fallback }
+    - { name: yfinance_calendar, priority: 2, kind: fallback }
   a_share:
     - { name: akshare, priority: 1, kind: primary }
   news:
@@ -55,3 +59,14 @@ degrade:
   cache_max_age_hours: 24
   data_quality_degrade_factor: 0.8
   last_good_cache_dir: "artifacts/cache"
+
+# Operations knobs (M-5): tuning constants that used to be magic literals in the collectors.
+# Model parameters (4.0/105/1.5, fact-layer slices 15/20/5/8) deliberately stay in Python as
+# named constants with a derivation comment.
+operations:
+  circuit_breaker_threshold: 2
+  calendar_horizon_days: 14
+  news_max_items: 50
+  news_summary_max_chars: 160
+  recency_half_life_hours: 48.0
+

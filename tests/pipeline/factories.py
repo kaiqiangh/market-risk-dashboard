@@ -241,12 +241,14 @@ def make_crypto_asset(**overrides: Any) -> dict[str, Any]:
 
 
 def make_sector_item(**overrides: Any) -> dict[str, Any]:
-    """A single sector or theme row (``pipeline.schemas.sectors.SectorItem``)."""
+    """A single sector or theme row (``pipeline.schemas.sectors.SectorItem``).
+
+    No label/label_zh: since #102 (C-1) the payload carries the key and the numbers; the
+    frontend renders t(themes.<key>) and check:i18n enforces the Chinese label exists.
+    """
     return _build(
         {
             "key": "information_technology",
-            "label": "Information Technology",
-            "label_zh": "信息技术",
             "change_1d": 0.6,
             "change_1w": 1.9,
             "change_1m": 5.2,
@@ -411,7 +413,7 @@ def make_sectors_payload(**overrides: Any) -> dict[str, Any]:
     return _build(
         {
             "sectors": [make_sector_item()],
-            "themes": [make_sector_item(key="ai_compute", label="AI Compute", label_zh="AI 算力")],
+            "themes": [make_sector_item(key="ai_compute")],
             "memory": {
                 "label": "Memory Cycle Proxy",
                 "label_zh": "存储周期代理",

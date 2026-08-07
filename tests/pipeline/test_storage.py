@@ -803,7 +803,7 @@ def _fake_market_collection(command: str) -> dict:
         "crypto": CryptoDataset(
             assets=[CryptoAsset(symbol="BTC", name="Bitcoin", price=60000.0, source="coingecko", updated_at=now)]
         ),
-        "sectors": SectorsDataset(sectors=[SectorItem(key="tech", label="Technology")]),
+        "sectors": SectorsDataset(sectors=[SectorItem(key="tech")]),
     }
 
 

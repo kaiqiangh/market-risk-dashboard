@@ -148,9 +148,15 @@ class ProviderRegistry:
         # Single source of truth (#62): pass the already-parsed mapping so this does not
         # re-read sources.yaml.
         self.degrade_factor = resolve_degrade_factor(sources=sources)
-        cache_dir = self.settings.artifacts_dir / "cache"
-        cache_dir.mkdir(parents=True, exist_ok=True)
-        self.cache_dir: Path = cache_dir
+        # #102: the cache directory is config (`degrade.last_good_cache_dir`), resolved
+        # against the project root when relative — it used to be hardcoded to
+        # `artifacts/cache` here while the config key sat unused.
+        raw_cache_dir = str(degrade.get("last_good_cache_dir", "artifacts/cache"))
+        cache_path = Path(raw_cache_dir)
+        self.cache_dir: Path = (
+            cache_path if cache_path.is_absolute() else self.settings.project_root / cache_path
+        )
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
         self._providers: dict[str, list[BaseProvider]] = {}
         self.health_map: dict[str, ProviderHealth] = {}
         self.degraded_domains: set[str] = set()

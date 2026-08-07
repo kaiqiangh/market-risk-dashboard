@@ -20,7 +20,6 @@ from pipeline.providers.base import (
 from pipeline.utils import now_utc
 
 CG_BASE = "https://api.coingecko.com/api/v3"
-DEFAULT_IDS = "bitcoin,ethereum,solana"
 
 
 class CoinGeckoProvider(BaseProvider):
@@ -32,6 +31,13 @@ class CoinGeckoProvider(BaseProvider):
         super().__init__(settings)
         self.api_key = self.settings.coingecko_api_key
         self._client = httpx.Client(timeout=15.0)
+        # #102 (D-8): the coin list and id→symbol map derive from the universe's crypto
+        # pool (symbol + name → coingecko id), not a hardcoded "bitcoin,ethereum,solana".
+        from pipeline.universe import AssetUniverse
+
+        crypto = AssetUniverse.load(self.settings).crypto
+        self.cg_ids: list[str] = [a.name.lower() for a in crypto]
+        self.cg_id_map: dict[str, str] = {a.name.lower(): a.symbol for a in crypto}
 
     def _headers(self) -> dict[str, str]:
         if self.api_key:
@@ -73,12 +79,12 @@ class CoinGeckoProvider(BaseProvider):
             raise ProviderError(f"CoinGecko {path}: {exc}") from exc
 
     def _get_simple_price(self) -> dict[str, Any]:
-        return self._get("/simple/price", {"ids": DEFAULT_IDS, "vs_currencies": "usd"})
+        return self._get("/simple/price", {"ids": ",".join(self.cg_ids), "vs_currencies": "usd"})
 
     def get_crypto_market(self) -> dict[str, Any]:
         """Return {assets: [...], btc_dominance, market_cap_total}."""
         price_data = self._get_simple_price()
-        id_map = {"bitcoin": "BTC", "ethereum": "ETH", "solana": "SOL"}
+        id_map = self.cg_id_map
 
         # Per-asset details (market cap/volume) — one call per coin, 3 total, quota is manageable
         assets: list[dict[str, Any]] = []

@@ -50,6 +50,11 @@ class RssNewsProvider(BaseProvider):
         # #66: the cache cap is read from one place (pipeline.degrade.cache_max_age_hours).
         self.cache_max_age_hours = cache_max_age_hours()
         self.cache_dir = self.settings.artifacts_dir / "cache"
+        # #102 (M-5): the news cap and the copyright-boundary summary cap are operations
+        # knobs from sources.yaml:operations, not magic literals.
+        operations = self.settings.load_sources_config().operations
+        self.default_max_items = int(operations.news_max_items)
+        self.summary_max_chars = int(operations.news_summary_max_chars)
         self._last_attempts = 0
         # Source reachability: source_id → {"ok": bool, "error": str|None, "updated_at": str}
         self.source_status: dict[str, dict[str, Any]] = {}
@@ -73,7 +78,9 @@ class RssNewsProvider(BaseProvider):
                 error=str(exc)[:200], checked_at=None,
             )
 
-    def fetch_news(self, max_items: int = 50) -> list[dict[str, Any]]:
+    def fetch_news(self, max_items: int | None = None) -> list[dict[str, Any]]:
+        if max_items is None:
+            max_items = self.default_max_items
         items: list[dict[str, Any]] = []
         errors: list[str] = []
         self.source_status = {}
@@ -85,7 +92,7 @@ class RssNewsProvider(BaseProvider):
                 normalized: list[dict[str, Any]] = []
                 invalid_entries = 0
                 for entry in raw[:max_items]:
-                    item = _normalize_entry(entry, source, source_id)
+                    item = _normalize_entry(entry, source, source_id, max_chars=self.summary_max_chars)
                     if item is None:
                         invalid_entries += 1
                         continue
@@ -208,7 +215,7 @@ def _entry_date(entry: Any) -> str | None:
     return None
 
 
-def _normalize_entry(entry: Any, source: dict[str, Any], source_id: str) -> dict[str, Any] | None:
+def _normalize_entry(entry: Any, source: dict[str, Any], source_id: str, max_chars: int = 160) -> dict[str, Any] | None:
     title = _clean_text(entry.get("title", ""))
     link = str(entry.get("link", "")).strip()
     published = _entry_date(entry)
@@ -222,7 +229,7 @@ def _normalize_entry(entry: Any, source: dict[str, Any], source_id: str) -> dict
         "url": link,
         "published_at": published,
         "lang": source.get("lang", "en"),
-        "summary": _make_summary(entry),
+        "summary": _make_summary(entry, max_chars=max_chars),
         "category_hint": source.get("category"),
     }
 
@@ -234,8 +241,8 @@ def _sleep_before_retry(attempt: int, backoff_base: float, jitter: bool) -> None
     time.sleep(delay)
 
 
-def _make_summary(entry: Any) -> str:
-    """Self-written one-sentence summary: prefers the first sentence of description/summary, max 160 chars (copyright boundary)."""
+def _make_summary(entry: Any, max_chars: int = 160) -> str:
+    """Self-written one-sentence summary: prefers the first sentence of description/summary, max ``max_chars`` chars (copyright boundary, #102 M-5)."""
     raw = entry.get("summary") or entry.get("description") or ""
     text = _clean_text(raw)
     # Strip HTML
@@ -244,4 +251,4 @@ def _make_summary(entry: Any) -> str:
     text = re.sub(r"<[^>]+>", " ", text)
     text = " ".join(text.split())
     first = text.split("。")[0].split(". ")[0] if text else ""
-    return first[:160]
+    return first[:max_chars]
