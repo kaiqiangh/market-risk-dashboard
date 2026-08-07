@@ -300,7 +300,17 @@ def test_market_summary_carries_sector_performance_and_prompt_labels_it() -> Non
     assert {"key": "semis", "change_1d": 2.5} in perf
     assert {"key": "ai_infrastructure", "change_1d": -1.2} in perf
 
-    prompt = _render_facts(facts)
-    assert "Sector / theme performance (1d)" in prompt
-    assert "Semiconductors: +2.50%" in prompt  # label resolved from en themes.json
-    assert "AI Infrastructure: -1.20%" in prompt
+    # The sector/theme moves are citable: they land in the evidence_index (#98 — the
+    # brief's rule is "may ONLY cite entries present in the evidence_index").
+    assert "ev_sector_semis" in facts.evidence_index
+    assert facts.evidence_index["ev_sector_ai_infrastructure"].value == -1.2
+
+    prompt_en = _render_facts(facts, "en")
+    assert "Sector / theme performance (1d)" in prompt_en
+    assert "Semiconductors: +2.50%" in prompt_en  # EN label resolved from en themes.json
+    assert "AI Infrastructure: -1.20%" in prompt_en
+
+    # The zh-CN brief resolves the zh labels — no EN leak into the zh prompt (#98 review).
+    prompt_zh = _render_facts(facts, "zh-CN")
+    assert "板块 / 主题表现（1日）" in prompt_zh
+    assert "半导体: +2.50%" in prompt_zh

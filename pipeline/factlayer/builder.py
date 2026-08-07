@@ -55,7 +55,7 @@ class FactLayerBuilder:
         data_freshness = {key: env.freshness_status for key, env in envs.items()}
         data_freshness["risk"] = risk.freshness_status
 
-        evidence_index = self._build_evidence(risk, macro, equities, crypto, news, calendar)
+        evidence_index = self._build_evidence(risk, macro, equities, crypto, news, calendar, sectors)
 
         return FactLayer(
             generated_at=generated_at or now_utc(),
@@ -121,6 +121,7 @@ class FactLayerBuilder:
         crypto: CryptoEnvelope,
         news: NewsEnvelope,
         calendar: CalendarEnvelope,
+        sectors: SectorsEnvelope | None = None,
     ) -> dict[str, EvidenceRef]:
         index: dict[str, EvidenceRef] = {}
         r = risk.payload
@@ -189,4 +190,20 @@ class FactLayerBuilder:
         for i, event in enumerate(calendar.payload.events[:5]):
             add(f"ev_calendar_{i}", "calendar", f"payload.events[{i}].datetime", "event_datetime", event.datetime)
 
+        # #98: sector/theme 1d moves are citable evidence — the AI brief's rule is
+        # "may ONLY cite entries present in the evidence_index", so the Sector / theme
+        # performance section of the prompt needs refs here or it would be uncitable.
+        if sectors is not None:
+            for group in ("sectors", "themes"):
+                for i, row in enumerate(getattr(sectors.payload, group)):
+                    if row.change_1d is None:
+                        continue
+                    add(
+                        f"ev_sector_{row.key}",
+                        "sectors",
+                        f"payload.{group}[{i}].change_1d",
+                        "change_1d",
+                        row.change_1d,
+                        sectors.generated_at,
+                    )
         return index

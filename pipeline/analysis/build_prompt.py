@@ -10,8 +10,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import sys
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 from pipeline.analysis.contract import SCHEMA_VERSION, SUPPORTED_LANGUAGES, input_path
 from pipeline.schemas import FactLayer
@@ -27,7 +30,7 @@ _SYSTEM_TASKS: dict[str, str] = {
         "You are a senior market analyst for the Market Risk Dashboard. "
         "Write an English market risk brief based on the given fact layer. "
         "Note: the Chinese news sources (CLS / Wall Street CN) are relayed through the "
-        "third-party RSSHub aggregator (trust: relay, S-3) — treat them as second-hand "
+        "third-party RSSHub aggregator (trust: relay) — treat them as second-hand "
         "industry aggregation, not first-party official statements."
     ),
 }
@@ -90,30 +93,40 @@ _CITATION_RULES: dict[str, str] = {
 }
 
 
-_THEME_LABELS: dict[str, str] | None = None
+_THEME_LABELS: dict[str, dict[str, str]] = {}
 
 
-def _theme_labels() -> dict[str, str]:
-    """EN sector/theme labels — read from the SAME file the frontend renders (one source,
-    #98: build_prompt's English-label need tracked from the #93/#102 label removal, C-1)."""
-    global _THEME_LABELS
-    if _THEME_LABELS is not None:
-        return _THEME_LABELS
+def _theme_labels(lang: str) -> dict[str, str]:
+    """Sector/theme labels for a language — read from the SAME per-locale file the
+    frontend renders (one source, #98: the #93/#102 label removal tracked the prompt-side
+    English-label need here; the zh-CN brief resolves the zh labels, not a leak of EN).
+
+    A missing/unreadable file degrades to raw keys but is PUBLISHED as a warning
+    (ADR-0004 / §8.8: never swallow silently) — the brief still works, it just loses
+    labels.
+    """
+    if lang in _THEME_LABELS:
+        return _THEME_LABELS[lang]
     labels: dict[str, str] = {}
-    path = Path(__file__).resolve().parents[2] / "src" / "i18n" / "locales" / "en" / "themes.json"
+    path = Path(__file__).resolve().parents[2] / "src" / "i18n" / "locales" / lang / "themes.json"
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
+    except (OSError, json.JSONDecodeError) as exc:
+        logger.warning("[build_prompt] themes.json unreadable for %s (%s) — sector labels fall back to raw keys", lang, exc)
         data = {}
     for key, value in data.items():
         if isinstance(value, str):
             labels[key] = value
-    _THEME_LABELS = labels
+    _THEME_LABELS[lang] = labels
     return labels
 
 
-def _render_facts(facts: FactLayer) -> str:
-    """Fact layer → text summary (deterministic, language-neutral)."""
+_SECTOR_HEADING: dict[str, str] = {"en": "Sector / theme performance (1d)", "zh-CN": "板块 / 主题表现（1日）"}
+
+
+def _render_facts(facts: FactLayer, lang: str) -> str:
+    """Fact layer → text summary (labels resolved per language — the section heading and
+    the sector/theme names follow the brief's language; all numbers stay identical)."""
     risk = facts.risk
     dims = "\n".join(
         f"  - {d.key}: score={d.score:.1f} weight={d.weight} effective_weight={d.effective_weight:.1f} "
@@ -128,8 +141,11 @@ def _render_facts(facts: FactLayer) -> str:
         f"  - [{key}] dataset={ref.dataset} path={ref.path} metric={ref.metric} value={ref.value}"
         for key, ref in facts.evidence_index.items()
     )
-    labels = _theme_labels()
-    sector_rows = facts.market_summary.get("sector_performance", [])
+    labels = _theme_labels(lang)
+    sector_rows = [
+        row for row in facts.market_summary.get("sector_performance", [])
+        if isinstance(row, dict) and isinstance(row.get("change_1d"), (int, float))
+    ]
     sector_lines = "\n".join(
         f"  - {labels.get(str(row['key']), str(row['key']))}: {row['change_1d']:+.2f}%"
         for row in sector_rows
@@ -155,7 +171,7 @@ def _render_facts(facts: FactLayer) -> str:
 ### Market summary
 {json.dumps(facts.market_summary, ensure_ascii=False)}
 
-### Sector / theme performance (1d)
+### {_SECTOR_HEADING[lang]}
 {sector_lines}
 
 ### Top news (Top 15 by importance)
@@ -178,7 +194,7 @@ def build_prompt(facts: FactLayer, lang: str) -> str:
     citation = _CITATION_RULES[lang]
     return (
         f"# System\n{system}\n\n"
-        f"# Input\n{_render_facts(facts)}\n"
+        f"# Input\n{_render_facts(facts, lang)}\n"
         f"# Output contract\n{output_contract}\n"
         f"# Rules\n{citation}\n"
     )
