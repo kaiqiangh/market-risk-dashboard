@@ -8,11 +8,22 @@ YAML loading utilities; used by Collectors since T03.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import yaml
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+if TYPE_CHECKING:  # pragma: no cover - import-time only, resolves the lazy-typed annotations
+    # Imported here so ruff F821 can resolve the return annotations below; the real import is
+    # lazy inside each loader to avoid the module-level cycle (config.models → degrade →
+    # settings).
+    from pipeline.config.models import (
+        NewsSourcesConfig,
+        SourcesConfig,
+        ThemesConfig,
+        UniverseConfig,
+    )
 
 # Project root directory (pipeline/settings.py → parent)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
