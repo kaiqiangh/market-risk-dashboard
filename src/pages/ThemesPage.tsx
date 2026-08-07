@@ -13,7 +13,7 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { dirTone, dirClasses } from "@/lib/riskColors";
 
 /**
- * ThemesPage: themes page (semis / memory (incl. 10 A-shares) / metals / crypto).
+ * ThemesPage: themes page (semis / memory (incl. 11 A-shares) / metals / crypto).
  * Shows degraded when T03 is degraded (A-share collection failure → notice + empty state).
  *
  * #93: the 20 themes render from sectors.json themes — labels via t(themes.<key>),
@@ -120,7 +120,7 @@ export default function ThemesPage() {
         )}
       </section>
 
-      {/* Memory (incl. 10 A-shares) */}
+      {/* Memory (incl. 11 A-shares) */}
       <section className="border-t border-hairline pt-4" data-testid="section-memory">
         <MemorySectorTable assets={cnAssets} memory={memory} />
       </section>

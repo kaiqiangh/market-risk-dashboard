@@ -237,6 +237,8 @@ themes:
       weight: 1.0
     - symbol: 688008.SH
       weight: 1.0
+    - symbol: 688825.SH
+      weight: 1.0
   consumer_electronics:
     constituents:
     - symbol: AAPL
