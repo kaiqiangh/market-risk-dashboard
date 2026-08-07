@@ -1097,9 +1097,13 @@ def _run_analysis_only() -> int:
         news = NewsEnvelope.model_validate(news_data)
         translations = NewsTranslationsDataset.model_validate(_json.loads(translations_path.read_text(encoding="utf-8")))
         collector = NewsCollector(build_registry(settings), settings)
-        merged = collector.merge_translations(news, translations)
-        merged_count = sum(1 for it in merged.payload.items if it.title_zh)
-        writer.write_dataset("news", merged)
+        # #81 (recurrence 4): merge_translations takes a NewsDataset (it iterates
+        # `news.items`) — handing it the envelope raised AttributeError on every
+        # analysis-only run, so the merge never happened. Unwrap and re-wrap, matching
+        # the full-refresh call site (run.py:659).
+        merged_payload = collector.merge_translations(news.payload, translations)
+        merged_count = sum(1 for it in merged_payload.items if it.title_zh)
+        writer.write_dataset("news", news.model_copy(update={"payload": merged_payload}))
         writer.record_translations("merged", merged_count, "analysis-only merged news.zh-translations.json into news.json")
         print("[pipeline] analysis-only: Chinese translation merged into news.json")
     elif news_data:
