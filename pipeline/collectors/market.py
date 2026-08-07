@@ -209,11 +209,10 @@ class MarketCollector:
             return round(sum(values) / len(values), 4) if values else None
 
         def _row(key: str, theme: Any) -> SectorItem:
-            """Build one SectorItem from a themes.yaml definition (C-1/#102).
+            """Build one SECTOR row from a themes.yaml definition (C-1/#102).
 
-            Constituents are resolved against the assets that actually collected — a symbol
-            whose fetch failed simply does not contribute, which is what the old sector/
-            theme filter did implicitly over the collected asset list.
+            Sectors (semis/auto) aggregate the collected equity cards; the 20 THEMES use the
+            series machinery in :meth:`_collect_themes` instead (#93).
             """
             assets = [by_symbol[c.symbol] for c in theme.constituents if c.symbol in by_symbol]
             return SectorItem(
@@ -223,33 +222,106 @@ class MarketCollector:
                 change_1m=_avg_change(assets, "change_1m"),
                 percentile_1y=None,
                 percentile_1y_obs=0,
+                constituents=[c.symbol for c in theme.constituents],
                 updated_at=now_utc(),
             )
 
-        sectors = [
-            _row(key, theme) for key, theme in self.themes.sectors.items()
-        ]
-        themes = [
-            _row(key, theme) for key, theme in self.themes.themes.items()
-        ]
+        sectors = [_row(key, theme) for key, theme in self.themes.sectors.items()]
+        themes = self._collect_themes()
 
-        # Memory cycle proxy (review P0-1): Micron + A-share memory makers — the same
-        # membership as themes.yaml:themes.memory, which the memory theme row above is
-        # built from. Kept as its own object because the frontend renders it as a single
-        # prose proxy card, not a numbered row.
-        memory_assets = [
-            by_symbol[c.symbol] for c in self.themes.themes["memory"].constituents if c.symbol in by_symbol
-        ]
-        mu = next((a for a in memory_assets if a.symbol == "MU"), None)
+        # Memory cycle proxy (review P0-1): kept as its own object because the frontend
+        # renders it as a single prose card; its numbers now come from the memory THEME
+        # series (the proxy's change_1w/1m are the theme basket's, #93 supersedes the block).
+        memory_series = next((t for t in themes if t.key == "memory"), None)
         memory = MemoryProxy(
-            label="Memory proxy (MU + A-share memory makers)",
-            label_zh="存储周期代理（美光 + A股存储）",
-            change_1w=mu.change_1w if mu else _avg_change(memory_assets, "change_1w"),
-            change_1m=mu.change_1m if mu else _avg_change(memory_assets, "change_1m"),
-            note="DRAM/NAND spot prices are paywalled; MVP uses share prices as proxies (review P0-1)",
+            label="Memory cycle proxy (themes: memory basket)",
+            label_zh="存储周期代理（主题：存储篮子）",
+            change_1w=memory_series.change_1w if memory_series else None,
+            change_1m=memory_series.change_1m if memory_series else None,
+            note="DRAM/NAND spot prices are paywalled; the memory theme series proxies the cycle (#93 supersedes the MU-only proxy)",
             updated_at=now_utc(),
         )
         return SectorsDataset(sectors=sectors, themes=themes, memory=memory)
+
+    def _collect_themes(self) -> list[SectorItem]:
+        """Build the 20 theme rows from their SERIES (#93/#86 §4).
+
+        An ETF-proxied theme publishes the ETF's own 1y series (one fetch; SOXX is already
+        in INDEX_HISTORIES). A basket theme chains an equal-weight daily-return index from its
+        constituents' 1y histories (A-share members are skipped: akshare's historical tier is
+        blocked from this host per #85 — they contribute nothing until #97). Card numbers and
+        ``percentile_1y`` both come from that one series, so they provably describe the same
+        object.
+        """
+        from pipeline.indicators.themes import (
+            chain_equal_weight_daily,
+            changes_from_closes,
+            percentile_of_trailing_return,
+        )
+
+        out: list[SectorItem] = []
+        for key, theme in self.themes.themes.items():
+            constituents = [c.symbol for c in theme.constituents]
+            rows = self._theme_series(theme)
+            item = SectorItem(key=key, constituents=constituents, updated_at=now_utc())
+            closes = [r["close"] for r in rows if r.get("close") is not None]
+            if len(closes) >= 2:
+                item.change_1d, item.change_1w, item.change_1m = changes_from_closes(closes)
+                percentile_cfg = theme.percentile or self.themes.percentile
+                if percentile_cfg is not None:
+                    percentile, obs = percentile_of_trailing_return(
+                        closes,
+                        window=percentile_cfg.window_sessions,
+                        lookback=percentile_cfg.lookback_sessions,
+                        min_observations=percentile_cfg.min_observations,
+                    )
+                    item.percentile_1y = percentile
+                    item.percentile_1y_obs = obs
+            out.append(item)
+
+        # #86 §1 / D-1 regression: no two themes may publish identical series. The old
+        # `ai` row was byte-identical to `semis`; a repeat of that is a hard fail.
+        seen: dict[tuple, str] = {}
+        for item in out:
+            signature = (item.change_1d, item.change_1w, item.change_1m)
+            if signature in seen and signature != (None, None, None):
+                raise RuntimeError(
+                    f"themes {seen[signature]!r} and {item.key!r} publish identical "
+                    f"series {signature} (D-1 guard, #93)"
+                )
+            seen[signature] = item.key
+        return out
+
+    def _theme_series(self, theme: Any) -> list[dict[str, Any]]:
+        """The 1y close series behind one theme (#93): the ETF's own series, or the
+        equal-weight basket chained from constituent histories."""
+        from pipeline.indicators.themes import chain_equal_weight_daily
+
+        if theme.proxy is not None and theme.proxy.kind == "etf":
+            return self._series_rows(theme.proxy.symbol)
+        series_by_symbol: dict[str, list[dict[str, Any]]] = {}
+        for constituent in theme.constituents:
+            if constituent.symbol.endswith((".SH", ".SZ")):
+                continue  # #85: akshare's historical kline tier is blocked — no fake series
+            rows = self._series_rows(constituent.symbol)
+            if rows and len(rows) >= 2:
+                series_by_symbol[constituent.symbol] = rows
+        if not series_by_symbol:
+            return []
+        return chain_equal_weight_daily(series_by_symbol)
+
+    def _series_rows(self, symbol: str) -> list[dict[str, Any]]:
+        """1y OHLCV rows for a symbol, reusing whatever the run already fetched (#93 P-1)."""
+        if symbol in self.histories:
+            return self.histories[symbol]
+        try:
+            out = self.registry.call("quotes", "get_history", f"hist_{symbol}_1y", args=(symbol, "1y"))
+            rows = out["result"].rows
+            self.histories[symbol] = rows
+            self._record_outcome("quotes", out["meta"])
+            return rows
+        except ProviderError:
+            return []
 
     # ---- Summary ----
 

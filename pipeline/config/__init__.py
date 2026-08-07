@@ -17,6 +17,7 @@ from pipeline.config.models import (
     ThemesConfig,
     UniverseAsset,
     UniverseConfig,
+    ValidationConfig,
     load_config,
 )
 
@@ -37,5 +38,6 @@ __all__ = [
     "ThemesConfig",
     "UniverseAsset",
     "UniverseConfig",
+    "ValidationConfig",
     "load_config",
 ]

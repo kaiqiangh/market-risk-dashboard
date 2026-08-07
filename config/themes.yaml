@@ -1,42 +1,542 @@
-# ============================================================
-# Sector/theme taxonomy (decision #90, ADR 0005: config holds keys + structure, i18n holds labels).
-# This file carries NO display labels — the frontend renders t(themes.<key>) from
-# src/i18n/locales/{en,zh-CN}/themes.json (C-1).
-# ============================================================
-schema_version: "1.0.0"
-
-# Sector/theme membership: theme → constituents. Every `symbol` must resolve to an entry in
-# universe.yaml; a dangling reference fails the run at load time (checked before any provider
-# is constructed). `weight`: 1.0 = primary, 0.5 = secondary (#86). This ticket delivers the
-# mechanism only — #93 populates the full 20-theme taxonomy with its constituents.
+schema_version: 1.2.0
+percentile:
+  window_sessions: 20
+  lookback_sessions: 252
+  min_observations: 100
+validation:
+  max_primaries_per_symbol: 1
+  max_themes_per_symbol: 3
+  max_pairwise_jaccard: 0.4
 sectors:
   semis:
     constituents:
-      - { symbol: NVDA, weight: 1.0 }
-      - { symbol: AVGO, weight: 1.0 }
-      - { symbol: MU, weight: 1.0 }
-      - { symbol: AMD, weight: 1.0 }
+    - symbol: NVDA
+      weight: 1.0
+    - symbol: AVGO
+      weight: 1.0
+    - symbol: MU
+      weight: 1.0
+    - symbol: AMD
+      weight: 1.0
   auto:
     constituents:
-      - { symbol: TSLA, weight: 1.0 }
-
+    - symbol: TSLA
+      weight: 1.0
 themes:
+  ai_infrastructure:
+    constituents:
+    - symbol: NVDA
+      weight: 1.0
+    - symbol: AVGO
+      weight: 1.0
+    - symbol: AMD
+      weight: 1.0
+    - symbol: MRVL
+      weight: 1.0
+    - symbol: SMCI
+      weight: 1.0
+    - symbol: VRT
+      weight: 1.0
+    - symbol: DELL
+      weight: 1.0
+    - symbol: ALAB
+      weight: 1.0
+    - symbol: CRDO
+      weight: 1.0
+    - symbol: TSM
+      weight: 0.5
+    - symbol: ANET
+      weight: 0.5
+    - symbol: CRWV
+      weight: 0.5
+  ai_software:
+    constituents:
+    - symbol: PLTR
+      weight: 1.0
+    - symbol: SNOW
+      weight: 1.0
+    - symbol: MDB
+      weight: 1.0
+    - symbol: PATH
+      weight: 1.0
+    - symbol: TEM
+      weight: 1.0
+    - symbol: SOUN
+      weight: 1.0
+    - symbol: AI
+      weight: 1.0
+    - symbol: APP
+      weight: 0.5
+    - symbol: ADBE
+      weight: 0.5
+    - symbol: MSFT
+      weight: 0.5
+    - symbol: DDOG
+      weight: 0.5
+  cloud_computing:
+    constituents:
+    - symbol: MSFT
+      weight: 1.0
+    - symbol: ORCL
+      weight: 1.0
+    - symbol: DDOG
+      weight: 1.0
+    - symbol: NET
+      weight: 1.0
+    - symbol: AKAM
+      weight: 1.0
+    - symbol: NBIS
+      weight: 1.0
+    - symbol: ESTC
+      weight: 1.0
+    - symbol: GTLB
+      weight: 1.0
+    - symbol: TWLO
+      weight: 1.0
+    - symbol: AMZN
+      weight: 0.5
+    - symbol: GOOGL
+      weight: 0.5
+    proxy:
+      kind: etf
+      symbol: SKYY
+  cybersecurity:
+    constituents:
+    - symbol: PANW
+      weight: 1.0
+    - symbol: CRWD
+      weight: 1.0
+    - symbol: FTNT
+      weight: 1.0
+    - symbol: ZS
+      weight: 1.0
+    - symbol: S
+      weight: 1.0
+    - symbol: OKTA
+      weight: 1.0
+    - symbol: CYBR
+      weight: 1.0
+    - symbol: QLYS
+      weight: 1.0
+    - symbol: TENB
+      weight: 1.0
+    - symbol: RBRK
+      weight: 1.0
+    - symbol: VRNS
+      weight: 1.0
+    - symbol: GEN
+      weight: 1.0
+    proxy:
+      kind: etf
+      symbol: CIBR
+  enterprise_software:
+    constituents:
+    - symbol: CRM
+      weight: 1.0
+    - symbol: NOW
+      weight: 1.0
+    - symbol: SAP
+      weight: 1.0
+    - symbol: WDAY
+      weight: 1.0
+    - symbol: INTU
+      weight: 1.0
+    - symbol: ADBE
+      weight: 1.0
+    - symbol: TEAM
+      weight: 1.0
+    - symbol: HUBS
+      weight: 1.0
+    - symbol: VEEV
+      weight: 1.0
+    - symbol: MSFT
+      weight: 0.5
+    - symbol: ORCL
+      weight: 0.5
+    proxy:
+      kind: etf
+      symbol: IGV
+  semiconductors:
+    constituents:
+    - symbol: TSM
+      weight: 1.0
+    - symbol: INTC
+      weight: 1.0
+    - symbol: QCOM
+      weight: 1.0
+    - symbol: TXN
+      weight: 1.0
+    - symbol: ADI
+      weight: 1.0
+    - symbol: NXPI
+      weight: 1.0
+    - symbol: 'ON'
+      weight: 1.0
+    - symbol: MCHP
+      weight: 1.0
+    - symbol: GFS
+      weight: 1.0
+    - symbol: NVDA
+      weight: 0.5
+    - symbol: AVGO
+      weight: 0.5
+    - symbol: AMD
+      weight: 0.5
+    proxy:
+      kind: etf
+      symbol: SOXX
+  semiconductor_equipment:
+    constituents:
+    - symbol: ASML
+      weight: 1.0
+    - symbol: AMAT
+      weight: 1.0
+    - symbol: LRCX
+      weight: 1.0
+    - symbol: KLAC
+      weight: 1.0
+    - symbol: TER
+      weight: 1.0
+    - symbol: ENTG
+      weight: 1.0
+    - symbol: ONTO
+      weight: 1.0
+    - symbol: ACMR
+      weight: 1.0
+    - symbol: CAMT
+      weight: 1.0
+    - symbol: NVMI
+      weight: 1.0
+    - symbol: KLIC
+      weight: 1.0
+    - symbol: AEIS
+      weight: 1.0
   memory:
-    # MVP proxy: Micron + the A-share memory makers (review P0-1); no ETF proxy yet (#93).
     constituents:
-      - { symbol: MU, weight: 1.0 }
-      - { symbol: "603986.SH", weight: 1.0 }
-      - { symbol: "301308.SZ", weight: 1.0 }
-      - { symbol: "688525.SH", weight: 1.0 }
-      - { symbol: "000021.SZ", weight: 1.0 }
-      - { symbol: "300223.SZ", weight: 1.0 }
-      - { symbol: "001309.SZ", weight: 1.0 }
-      - { symbol: "300475.SZ", weight: 1.0 }
-      - { symbol: "688008.SH", weight: 1.0 }
-      - { symbol: "600584.SH", weight: 1.0 }
-      - { symbol: "002156.SZ", weight: 1.0 }
-  ai:
+    - symbol: MU
+      weight: 1.0
+    - symbol: SNDK
+      weight: 1.0
+    - symbol: WDC
+      weight: 1.0
+    - symbol: STX
+      weight: 1.0
+    - symbol: SIMO
+      weight: 1.0
+    - symbol: RMBS
+      weight: 1.0
+    - symbol: 000660.KS
+      weight: 1.0
+    - symbol: 005930.KS
+      weight: 1.0
+    - symbol: 603986.SH
+      weight: 1.0
+    - symbol: 301308.SZ
+      weight: 1.0
+    - symbol: 688525.SH
+      weight: 1.0
+    - symbol: 688008.SH
+      weight: 1.0
+  consumer_electronics:
     constituents:
-      - { symbol: NVDA, weight: 1.0 }
-      - { symbol: AVGO, weight: 1.0 }
-      - { symbol: AMD, weight: 1.0 }
+    - symbol: AAPL
+      weight: 1.0
+    - symbol: SONY
+      weight: 1.0
+    - symbol: HPQ
+      weight: 1.0
+    - symbol: LOGI
+      weight: 1.0
+    - symbol: GRMN
+      weight: 1.0
+    - symbol: CRSR
+      weight: 1.0
+    - symbol: SONO
+      weight: 1.0
+    - symbol: 1810.HK
+      weight: 1.0
+    - symbol: 2317.TW
+      weight: 1.0
+    - symbol: DELL
+      weight: 0.5
+  internet_platforms:
+    constituents:
+    - symbol: AMZN
+      weight: 1.0
+    - symbol: NFLX
+      weight: 1.0
+    - symbol: BKNG
+      weight: 1.0
+    - symbol: ABNB
+      weight: 1.0
+    - symbol: UBER
+      weight: 1.0
+    - symbol: DASH
+      weight: 1.0
+    - symbol: SPOT
+      weight: 1.0
+    - symbol: SHOP
+      weight: 1.0
+    - symbol: BABA
+      weight: 1.0
+    - symbol: SE
+      weight: 1.0
+    - symbol: GOOGL
+      weight: 0.5
+    - symbol: META
+      weight: 0.5
+    proxy:
+      kind: etf
+      symbol: FDN
+  networking:
+    constituents:
+    - symbol: ANET
+      weight: 1.0
+    - symbol: CSCO
+      weight: 1.0
+    - symbol: CIEN
+      weight: 1.0
+    - symbol: COHR
+      weight: 1.0
+    - symbol: LITE
+      weight: 1.0
+    - symbol: FFIV
+      weight: 1.0
+    - symbol: EXTR
+      weight: 1.0
+    - symbol: VIAV
+      weight: 1.0
+    - symbol: NTGR
+      weight: 1.0
+    - symbol: AVGO
+      weight: 0.5
+    - symbol: MRVL
+      weight: 0.5
+    - symbol: ALAB
+      weight: 0.5
+  robotics:
+    constituents:
+    - symbol: ISRG
+      weight: 1.0
+    - symbol: ABB
+      weight: 1.0
+    - symbol: FANUY
+      weight: 1.0
+    - symbol: ZBRA
+      weight: 1.0
+    - symbol: SYM
+      weight: 1.0
+    - symbol: SERV
+      weight: 1.0
+    - symbol: 6861.T
+      weight: 1.0
+    - symbol: TER
+      weight: 0.5
+    - symbol: ROK
+      weight: 0.5
+    - symbol: PATH
+      weight: 0.5
+    etf_reference: BOTZ
+  autonomous_driving:
+    constituents:
+    - symbol: MBLY
+      weight: 1.0
+    - symbol: AUR
+      weight: 1.0
+    - symbol: APTV
+      weight: 1.0
+    - symbol: ALV
+      weight: 1.0
+    - symbol: LAZR
+      weight: 1.0
+    - symbol: OUST
+      weight: 1.0
+    - symbol: PONY
+      weight: 1.0
+    - symbol: WRD
+      weight: 1.0
+    - symbol: BIDU
+      weight: 1.0
+    - symbol: TSLA
+      weight: 1.0
+    - symbol: QCOM
+      weight: 0.5
+    - symbol: XPEV
+      weight: 0.5
+  ev_supply_chain:
+    constituents:
+    - symbol: TSLA
+      weight: 0.5
+    - symbol: ALB
+      weight: 1.0
+    - symbol: SQM
+      weight: 1.0
+    - symbol: MP
+      weight: 1.0
+    - symbol: LAC
+      weight: 1.0
+    - symbol: BWA
+      weight: 1.0
+    - symbol: F
+      weight: 1.0
+    - symbol: RIVN
+      weight: 1.0
+    - symbol: LI
+      weight: 1.0
+    - symbol: BYDDY
+      weight: 1.0
+    - symbol: XPEV
+      weight: 1.0
+    - symbol: APTV
+      weight: 0.5
+    etf_reference: LIT
+  quantum_computing:
+    constituents:
+    - symbol: IONQ
+      weight: 1.0
+    - symbol: RGTI
+      weight: 1.0
+    - symbol: QBTS
+      weight: 1.0
+    - symbol: QUBT
+      weight: 1.0
+    - symbol: ARQQ
+      weight: 1.0
+    - symbol: LAES
+      weight: 1.0
+    - symbol: IBM
+      weight: 1.0
+    - symbol: HON
+      weight: 0.5
+    etf_reference: QTUM
+  data_centers:
+    constituents:
+    - symbol: EQIX
+      weight: 1.0
+    - symbol: DLR
+      weight: 1.0
+    - symbol: IRM
+      weight: 1.0
+    - symbol: GEV
+      weight: 1.0
+    - symbol: PWR
+      weight: 1.0
+    - symbol: MOD
+      weight: 1.0
+    - symbol: CRWV
+      weight: 1.0
+    - symbol: APLD
+      weight: 1.0
+    - symbol: CORZ
+      weight: 1.0
+    - symbol: VRT
+      weight: 0.5
+    - symbol: ETN
+      weight: 0.5
+    - symbol: NVDA
+      weight: 0.5
+    etf_reference: DTCR
+  industrial_automation:
+    constituents:
+    - symbol: ETN
+      weight: 1.0
+    - symbol: EMR
+      weight: 1.0
+    - symbol: ROK
+      weight: 1.0
+    - symbol: HON
+      weight: 1.0
+    - symbol: PH
+      weight: 1.0
+    - symbol: AME
+      weight: 1.0
+    - symbol: DOV
+      weight: 1.0
+    - symbol: NVT
+      weight: 1.0
+    - symbol: ITW
+      weight: 1.0
+    - symbol: SIEGY
+      weight: 1.0
+    - symbol: ABB
+      weight: 0.5
+  gaming:
+    constituents:
+    - symbol: EA
+      weight: 1.0
+    - symbol: TTWO
+      weight: 1.0
+    - symbol: RBLX
+      weight: 1.0
+    - symbol: U
+      weight: 1.0
+    - symbol: PLTK
+      weight: 1.0
+    - symbol: NTES
+      weight: 1.0
+    - symbol: GRVY
+      weight: 1.0
+    - symbol: SE
+      weight: 0.5
+    - symbol: SONY
+      weight: 0.5
+    - symbol: CRSR
+      weight: 0.5
+    - symbol: LOGI
+      weight: 0.5
+    proxy:
+      kind: etf
+      symbol: ESPO
+  digital_advertising:
+    constituents:
+    - symbol: GOOGL
+      weight: 1.0
+    - symbol: META
+      weight: 1.0
+    - symbol: TTD
+      weight: 1.0
+    - symbol: APP
+      weight: 1.0
+    - symbol: PINS
+      weight: 1.0
+    - symbol: RDDT
+      weight: 1.0
+    - symbol: MGNI
+      weight: 1.0
+    - symbol: CRTO
+      weight: 1.0
+    - symbol: DV
+      weight: 1.0
+    - symbol: IAS
+      weight: 1.0
+    - symbol: ZETA
+      weight: 1.0
+    - symbol: OMC
+      weight: 1.0
+  fintech:
+    constituents:
+    - symbol: V
+      weight: 1.0
+    - symbol: MA
+      weight: 1.0
+    - symbol: PYPL
+      weight: 1.0
+    - symbol: XYZ
+      weight: 1.0
+    - symbol: FI
+      weight: 1.0
+    - symbol: FIS
+      weight: 1.0
+    - symbol: GPN
+      weight: 1.0
+    - symbol: TOST
+      weight: 1.0
+    - symbol: AFRM
+      weight: 1.0
+    - symbol: SOFI
+      weight: 1.0
+    - symbol: NU
+      weight: 1.0
+    - symbol: COIN
+      weight: 0.5
+    etf_reference: FINX

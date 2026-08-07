@@ -3,7 +3,7 @@
   "subtitle": "Semiconductors / Memory (incl. 10 A-shares) / Metals / Crypto / Themes",
   "semis": "Semiconductors",
   "auto": "Autos",
-  "memory": "Memory (Micron + A-share memory)",
+  "memory": "Memory",
   "ai": "AI / GPU",
   "section": {
     "semis": "Semiconductors",
@@ -24,5 +24,32 @@
     "riskOn": "Risk On",
     "riskOff": "Risk Off",
     "neutral": "Neutral"
+  },
+  "ai_infrastructure": "AI Infrastructure",
+  "ai_software": "AI Software",
+  "cloud_computing": "Cloud Computing",
+  "cybersecurity": "Cybersecurity",
+  "enterprise_software": "Enterprise Software",
+  "semiconductors": "Semiconductors",
+  "semiconductor_equipment": "Semiconductor Equipment",
+  "consumer_electronics": "Consumer Electronics",
+  "internet_platforms": "Internet Platforms",
+  "networking": "Networking",
+  "robotics": "Robotics",
+  "autonomous_driving": "Autonomous Driving",
+  "ev_supply_chain": "EV Supply Chain",
+  "quantum_computing": "Quantum Computing",
+  "data_centers": "Data Centers",
+  "industrial_automation": "Industrial Automation",
+  "gaming": "Gaming",
+  "digital_advertising": "Digital Advertising",
+  "fintech": "FinTech",
+  "percentile": {
+    "veryLow": "Very Low",
+    "low": "Low",
+    "normal": "Normal",
+    "high": "High",
+    "veryHigh": "Very High",
+    "warming": "warming up {{obs}}/100"
   }
 }
