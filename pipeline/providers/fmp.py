@@ -33,10 +33,12 @@ FMP_BASE = "https://financialmodelingprep.com/stable"
 EARNINGS_ENDPOINT = f"{FMP_BASE}/earnings-calendar"
 
 
-class FmpProvider(BaseProvider):
-    name = "fmp"
-    domain = "calendar"
-    hosts = ("financialmodelingprep.com",)
+class FmpBaseProvider(BaseProvider):
+    """Shared FMP plumbing (#100 review): the key-guarded client both FMP providers use.
+
+    `health()` skeletons are the repo-wide convention; only the client + key setup was
+    duplicated verbatim between the two classes in this module.
+    """
 
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
@@ -44,6 +46,12 @@ class FmpProvider(BaseProvider):
         from pipeline.providers.base import guarded_client
 
         self._client = guarded_client(set(self.hosts), timeout=15.0)
+
+
+class FmpProvider(FmpBaseProvider):
+    name = "fmp"
+    domain = "calendar"
+    hosts = ("financialmodelingprep.com",)
 
     def health(self) -> ProviderHealth:
         if not self.api_key:
@@ -106,24 +114,22 @@ class FmpProvider(BaseProvider):
         return items
 
 
-class FmpQuotesProvider(BaseProvider):
+class FmpQuotesProvider(FmpBaseProvider):
     """Quotes fallback (domain quotes, priority 2) — `/stable/quote` (#100).
 
     Replaces Stooq (JS challenge, unrecoverable). Quote-only on the free tier: price,
     change_1d and volume are real; 1w/1m/history are honestly None (the collector's
     #97 decoupling publishes the price with None technicals instead of dropping it).
+
+    NOTE on the shared 250 req/day quota: the fallback and the earnings-calendar primary
+    draw on the SAME free-tier account — a quotes outage (each US equity = one quote
+    call) plus the calendar's daily range call stays inside the budget, but a prolonged
+    outage is the one scenario that could starve the calendar.
     """
 
     name = "fmp_quotes"
     domain = "quotes"
     hosts = ("financialmodelingprep.com",)
-
-    def __init__(self, settings=None) -> None:
-        super().__init__(settings)
-        self.api_key = self.settings.fmp_api_key
-        from pipeline.providers.base import guarded_client
-
-        self._client = guarded_client(set(self.hosts), timeout=15.0)
 
     def health(self) -> ProviderHealth:
         if not self.api_key:

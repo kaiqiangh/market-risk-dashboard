@@ -24,10 +24,11 @@ jobs:
       - name: Install pipeline deps
         run: |
           python -m pip install --upgrade pip
-          pip install -e . 2>/dev/null || pip install -r requirements.txt 2>/dev/null || true
-          pip install pydantic pydantic-settings pyyaml httpx curl_cffi
-      # Keys are only needed for key-gated fallbacks (FMP). The check still runs —
-      # a missing key is reported as a dead fallback, which is honest.
+          pip install pydantic pydantic-settings pyyaml httpx curl_cffi python-dotenv
+      # Key-gated fallbacks (FMP) are SKIPPED here when no credential is present — the
+      # scheduled job must never be permanently red (that noise becomes ignored, the
+      # exact rot #100 exists to prevent). Their real liveness is exercised by the daily
+      # pipeline run, which calls FMP every time.
       - name: Probe fallback providers
         run: |
           python scripts/check_fallbacks.py || exit 1

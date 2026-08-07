@@ -139,7 +139,7 @@ def test_build_default_providers_fails_loudly_on_unknown_or_wrong_domain(tmp_pat
     # Unknown enabled provider → ConfigError.
     bad = dict(sources)
     bad["providers"] = dict(sources["providers"])
-    bad["providers"]["quotes"] = [{"name": "not_a_provider", "priority": 1, "kind": "primary"}]
+    bad["providers"]["quotes"] = [{"name": "not_a_provider", "priority": 1}]
     _write(tmp_path, "sources.yaml", bad)
     settings = _settings_with_config_dir(tmp_path)
     with pytest.raises(ConfigError, match="unknown provider"):
@@ -148,7 +148,7 @@ def test_build_default_providers_fails_loudly_on_unknown_or_wrong_domain(tmp_pat
     # Provider in the wrong domain → ConfigError (would sit in a chain it does not belong to).
     wrong = dict(sources)
     wrong["providers"] = dict(sources["providers"])
-    wrong["providers"]["news"] = [{"name": "yfinance", "priority": 1, "kind": "primary"}]
+    wrong["providers"]["news"] = [{"name": "yfinance", "priority": 1}]
     _write(tmp_path, "sources.yaml", wrong)
     settings = _settings_with_config_dir(tmp_path)
     with pytest.raises(ConfigError, match=r"is a 'quotes' provider, not 'news'"):
@@ -158,8 +158,8 @@ def test_build_default_providers_fails_loudly_on_unknown_or_wrong_domain(tmp_pat
     inert = dict(sources)
     inert["providers"] = dict(sources["providers"])
     inert["providers"]["quotes"] = [
-        {"name": "not_implemented_yet", "priority": 9, "kind": "fallback", "enabled": False},
-        {"name": "yfinance", "priority": 1, "kind": "primary"},
+        {"name": "not_implemented_yet", "priority": 9, "enabled": False},
+        {"name": "yfinance", "priority": 1},
     ]
     _write(tmp_path, "sources.yaml", inert)
     settings = _settings_with_config_dir(tmp_path)

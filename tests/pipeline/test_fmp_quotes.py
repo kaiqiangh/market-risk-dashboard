@@ -111,5 +111,23 @@ def test_check_fallbacks_reports_dead_fallbacks() -> None:
     result = check_fallbacks(providers)  # type: ignore[arg-type]
     assert len(result.probes) == 1
     assert result.probes[0].provider == "fmp_quotes"
-    assert result.probes[0].ok is False
+    assert result.probes[0].status == "dead"
     assert [p.provider for p in result.dead] == ["fmp_quotes"]
+
+
+def test_key_gated_fallback_without_key_is_skipped_not_failed() -> None:
+    """#100 review: a credential-gated fallback with no credential is SKIPPED — a
+    permanently red scheduled job becomes ignored noise, the exact rot this check
+    exists to prevent. Its real liveness is exercised by the daily pipeline run."""
+
+    class _KeyedFake(_FakeProvider):
+        api_key = ""
+
+    providers = [
+        _FakeProvider("yfinance", "quotes", 1),
+        _KeyedFake("fmp_quotes", "quotes", 2),
+    ]
+    result = check_fallbacks(providers)  # type: ignore[arg-type]
+    assert result.probes[0].status == "skipped"
+    assert result.dead == []
+    assert "SKIPPED" in (result.probes[0].note or "")
