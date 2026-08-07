@@ -710,10 +710,12 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
 
         risk_model = RiskModel(settings)
         prev_score, prev_dims, risk_history = _read_prev_risk(writer)
+        # #99 (verified end to end): _assemble returns AssembledDataset (the #101 single
+        # assembly path); the risk context and the fact layer operate on ENVELOPES.
         ctx = _build_risk_context(
-            macro=macro,
-            equities=equities,
-            crypto=crypto,
+            macro=macro.envelope,
+            equities=equities.envelope,
+            crypto=crypto.envelope,
             histories=results.get("histories", {}),
             qualities=results["qualities"],
             prev_total_score=prev_score,
@@ -728,13 +730,13 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
 
         builder = FactLayerBuilder()
         facts = builder.build(
-            risk=risk_env,
-            macro=macro,
-            equities=equities,
-            crypto=crypto,
-            news=news,
-            calendar=calendar,
-            sectors=sectors,
+            risk=risk_env.envelope,
+            macro=macro.envelope,
+            equities=equities.envelope,
+            crypto=crypto.envelope,
+            news=news.envelope,
+            calendar=calendar.envelope,
+            sectors=sectors.envelope if sectors is not None else None,
         )
     except Exception as exc:  # noqa: BLE001
         return False, f"risk/fact layer computation failed: {exc}"
