@@ -30,14 +30,14 @@ function ThemeCard({ theme }: { theme: { key: string; change_1d: number | null; 
     pct === null
       ? null
       : pct < 20
-        ? { label: "percentile.veryLow", cls: "text-risk-low" }
+        ? { label: "percentile.veryLow", cls: "text-muted-foreground" }
         : pct < 40
-          ? { label: "percentile.low", cls: "text-risk-low" }
+          ? { label: "percentile.low", cls: "text-muted-foreground" }
           : pct < 60
             ? { label: "percentile.normal", cls: "text-foreground" }
             : pct < 80
-              ? { label: "percentile.high", cls: "text-risk-severe" }
-              : { label: "percentile.veryHigh", cls: "text-risk-severe" };
+              ? { label: "percentile.high", cls: "text-foreground" }
+              : { label: "percentile.veryHigh", cls: "text-foreground" };
   return (
     <Card data-testid={`theme-card-${theme.key}`}>
       <CardContent className="flex flex-col gap-2 p-3">

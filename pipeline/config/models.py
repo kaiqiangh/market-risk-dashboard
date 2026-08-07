@@ -158,13 +158,11 @@ class ThemeConstituent(BaseModel):
 class ThemeDef(BaseModel):
     """One theme (#93/#86). ``proxy`` with ``kind: etf`` publishes the ETF's own series;
     ``kind: basket`` (or no proxy) builds an equal-weight series from constituents.
-    ``etf_reference`` is a chart-comparison ETF for basket themes (never published as the
-    series). ``weight`` 1.0 primary / 0.5 secondary."""
+    ``weight`` 1.0 primary / 0.5 secondary."""
 
     model_config = ConfigDict(extra="forbid")
 
     proxy: ThemeProxy | None = None
-    etf_reference: str | None = None
     percentile: ThemePercentile | None = None
     constituents: list[ThemeConstituent] = Field(default_factory=list)
 

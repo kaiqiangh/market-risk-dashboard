@@ -4,7 +4,6 @@
   "semis": "Semiconductors",
   "auto": "Autos",
   "memory": "Memory",
-  "ai": "AI / GPU",
   "section": {
     "semis": "Semiconductors",
     "memory": "Memory (Micron + A-share memory)",
@@ -50,6 +49,6 @@
     "normal": "Normal",
     "high": "High",
     "veryHigh": "Very High",
-    "warming": "warming up {{obs}}/100"
+    "warming": "warming up {{obs}} obs"
   }
 }

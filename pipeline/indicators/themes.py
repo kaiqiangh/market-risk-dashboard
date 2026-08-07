@@ -90,7 +90,9 @@ def changes_from_closes(closes: list[float]) -> tuple[float | None, float | None
         return None, None, None
 
     def pct(offset: int) -> float | None:
-        prev = closes[-1 - offset] if len(closes) > offset else closes[0]
+        if len(closes) <= offset:
+            return None  # honest: fewer sessions than the window — never fabricate a return
+        prev = closes[-1 - offset]
         if not prev:
             return None
         return round((closes[-1] / prev - 1.0) * 100.0, 4)

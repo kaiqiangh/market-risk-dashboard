@@ -11,6 +11,7 @@ from typing import Any, NamedTuple
 
 from pipeline.degrade import degraded_quality
 from pipeline.indicators.technical import technical_snapshot
+from pipeline.indicators.themes import changes_from_closes, percentile_of_trailing_return
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import (
     CryptoAsset,
@@ -202,32 +203,40 @@ class MarketCollector:
     # ---- Sectors/themes ----
 
     def _collect_sectors(self, equities: EquitiesDataset) -> SectorsDataset:
-        by_symbol = {a.symbol: a for a in equities.assets}
-
-        def _avg_change(assets: list[EquityAsset], key: str) -> float | None:
-            values = [getattr(a, key) for a in assets if getattr(a, key) is not None]
-            return round(sum(values) / len(values), 4) if values else None
-
         def _row(key: str, theme: Any) -> SectorItem:
-            """Build one SECTOR row from a themes.yaml definition (C-1/#102).
+            """Build one row from a themes.yaml definition (C-1/#102).
 
-            Sectors (semis/auto) aggregate the collected equity cards; the 20 THEMES use the
-            series machinery in :meth:`_collect_themes` instead (#93).
+            Sectors AND themes are both series-based (#93/#86 §4.5): card numbers and
+            ``percentile_1y`` come from the same series, so they provably describe the same
+            object, and no row ships the banned ``percentile None / obs 0`` shape.
             """
-            assets = [by_symbol[c.symbol] for c in theme.constituents if c.symbol in by_symbol]
-            return SectorItem(
+            rows = self._theme_series(theme)
+            item = SectorItem(
                 key=key,
-                change_1d=_avg_change(assets, "change_1d"),
-                change_1w=_avg_change(assets, "change_1w"),
-                change_1m=_avg_change(assets, "change_1m"),
-                percentile_1y=None,
-                percentile_1y_obs=0,
                 constituents=[c.symbol for c in theme.constituents],
                 updated_at=now_utc(),
             )
+            closes = [r["close"] for r in rows if r.get("close") is not None]
+            if len(closes) >= 2:
+                item.change_1d, item.change_1w, item.change_1m = changes_from_closes(closes)
+                percentile_cfg = theme.percentile or self.themes.percentile
+                if percentile_cfg is not None:
+                    percentile, obs = percentile_of_trailing_return(
+                        closes,
+                        window=percentile_cfg.window_sessions,
+                        lookback=percentile_cfg.lookback_sessions,
+                        min_observations=percentile_cfg.min_observations,
+                    )
+                    item.percentile_1y = percentile
+                    item.percentile_1y_obs = obs
+            return item
 
+        # Fetch every series symbol ONCE, in a bounded thread pool, before any row is built
+        # (#93 DoD 7: the #91 run budget is kept by parallelism + the registry's per-host
+        # limiter instead of ~130 sequential fetches).
+        self._prefetch_theme_series()
         sectors = [_row(key, theme) for key, theme in self.themes.sectors.items()]
-        themes = self._collect_themes()
+        themes = self._collect_themes(_row)
 
         # Memory cycle proxy (review P0-1): kept as its own object because the frontend
         # renders it as a single prose card; its numbers now come from the memory THEME
@@ -243,85 +252,76 @@ class MarketCollector:
         )
         return SectorsDataset(sectors=sectors, themes=themes, memory=memory)
 
-    def _collect_themes(self) -> list[SectorItem]:
-        """Build the 20 theme rows from their SERIES (#93/#86 §4).
+    def _prefetch_theme_series(self) -> None:
+        """Fetch every symbol behind the sector/theme series once, in a bounded thread pool.
 
-        An ETF-proxied theme publishes the ETF's own 1y series (one fetch; SOXX is already
-        in INDEX_HISTORIES). A basket theme chains an equal-weight daily-return index from its
-        constituents' 1y histories (A-share members are skipped: akshare's historical tier is
-        blocked from this host per #85 — they contribute nothing until #97). Card numbers and
-        ``percentile_1y`` both come from that one series, so they provably describe the same
-        object.
+        ETF proxies and basket constituents are deduplicated (a symbol in several themes is
+        fetched once), the already-fetched card histories are reused, and A-share members are
+        skipped (akshare's historical kline tier is blocked from this host per #85). Results
+        are merged into ``self.histories`` in the caller's thread — workers never write
+        shared state.
         """
-        from pipeline.indicators.themes import (
-            chain_equal_weight_daily,
-            changes_from_closes,
-            percentile_of_trailing_return,
-        )
+        needed: set[str] = set()
+        for theme in [*self.themes.sectors.values(), *self.themes.themes.values()]:
+            if theme.proxy is not None and theme.proxy.kind == "etf":
+                needed.add(theme.proxy.symbol)
+            else:
+                needed |= {c.symbol for c in theme.constituents if not c.symbol.endswith((".SH", ".SZ"))}
+        targets = sorted(s for s in needed if s not in self.histories)
+        if not targets:
+            return
+        with ThreadPoolExecutor(max_workers=min(8, len(targets))) as pool:
+            fetched = list(pool.map(self._fetch_series_rows, targets))
+        for symbol, rows in fetched:
+            if rows and len(rows) >= 2:
+                self.histories[symbol] = rows
 
-        out: list[SectorItem] = []
-        for key, theme in self.themes.themes.items():
-            constituents = [c.symbol for c in theme.constituents]
-            rows = self._theme_series(theme)
-            item = SectorItem(key=key, constituents=constituents, updated_at=now_utc())
-            closes = [r["close"] for r in rows if r.get("close") is not None]
-            if len(closes) >= 2:
-                item.change_1d, item.change_1w, item.change_1m = changes_from_closes(closes)
-                percentile_cfg = theme.percentile or self.themes.percentile
-                if percentile_cfg is not None:
-                    percentile, obs = percentile_of_trailing_return(
-                        closes,
-                        window=percentile_cfg.window_sessions,
-                        lookback=percentile_cfg.lookback_sessions,
-                        min_observations=percentile_cfg.min_observations,
-                    )
-                    item.percentile_1y = percentile
-                    item.percentile_1y_obs = obs
-            out.append(item)
+    def _fetch_series_rows(self, symbol: str) -> tuple[str, list[dict[str, Any]]]:
+        """One thread worker: fetch a symbol's 1y history (no shared-state writes)."""
+        try:
+            out = self.registry.call("quotes", "get_history", f"hist_{symbol}_1y", args=(symbol, "1y"))
+            return symbol, out["result"].rows
+        except ProviderError:
+            return symbol, []
 
-        # #86 §1 / D-1 regression: no two themes may publish identical series. The old
-        # `ai` row was byte-identical to `semis`; a repeat of that is a hard fail.
-        seen: dict[tuple, str] = {}
-        for item in out:
-            signature = (item.change_1d, item.change_1w, item.change_1m)
-            if signature in seen and signature != (None, None, None):
+    def _collect_themes(self, row_builder: Any) -> list[SectorItem]:
+        """Build the 20 theme rows, then run the D-1 identical-series guard (#93/#86 §4)."""
+        themes = [row_builder(key, theme) for key, theme in self.themes.themes.items()]
+
+        # D-1 regression: no two themes may publish identical series. The old `ai` row was
+        # byte-identical to `semis`; a repeat is a config/collection bug and fails loudly
+        # (like the taxonomy guards) — a true identical-series is not a coincidence.
+        fingerprints: dict[tuple, str] = {}
+        for item in themes:
+            series = self._theme_series(self.themes.themes[item.key])
+            fingerprint = tuple(round(r["close"], 4) for r in series if r.get("close") is not None)[:120]
+            if not fingerprint:
+                continue
+            if fingerprint in fingerprints:
                 raise RuntimeError(
-                    f"themes {seen[signature]!r} and {item.key!r} publish identical "
-                    f"series {signature} (D-1 guard, #93)"
+                    f"themes {fingerprints[fingerprint]!r} and {item.key!r} publish identical "
+                    f"series (D-1 guard, #93)"
                 )
-            seen[signature] = item.key
-        return out
+            fingerprints[fingerprint] = item.key
+        return themes
 
     def _theme_series(self, theme: Any) -> list[dict[str, Any]]:
-        """The 1y close series behind one theme (#93): the ETF's own series, or the
-        equal-weight basket chained from constituent histories."""
+        """The 1y close series behind one sector/theme (#93): the ETF's own series, or the
+        equal-weight basket chained from constituent histories already in ``self.histories``."""
         from pipeline.indicators.themes import chain_equal_weight_daily
 
         if theme.proxy is not None and theme.proxy.kind == "etf":
-            return self._series_rows(theme.proxy.symbol)
+            return self.histories.get(theme.proxy.symbol, [])
         series_by_symbol: dict[str, list[dict[str, Any]]] = {}
         for constituent in theme.constituents:
             if constituent.symbol.endswith((".SH", ".SZ")):
                 continue  # #85: akshare's historical kline tier is blocked — no fake series
-            rows = self._series_rows(constituent.symbol)
+            rows = self.histories.get(constituent.symbol, [])
             if rows and len(rows) >= 2:
                 series_by_symbol[constituent.symbol] = rows
         if not series_by_symbol:
             return []
         return chain_equal_weight_daily(series_by_symbol)
-
-    def _series_rows(self, symbol: str) -> list[dict[str, Any]]:
-        """1y OHLCV rows for a symbol, reusing whatever the run already fetched (#93 P-1)."""
-        if symbol in self.histories:
-            return self.histories[symbol]
-        try:
-            out = self.registry.call("quotes", "get_history", f"hist_{symbol}_1y", args=(symbol, "1y"))
-            rows = out["result"].rows
-            self.histories[symbol] = rows
-            self._record_outcome("quotes", out["meta"])
-            return rows
-        except ProviderError:
-            return []
 
     # ---- Summary ----
 

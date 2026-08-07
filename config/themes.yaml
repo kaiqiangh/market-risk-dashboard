@@ -336,7 +336,6 @@ themes:
       weight: 0.5
     - symbol: PATH
       weight: 0.5
-    etf_reference: BOTZ
   autonomous_driving:
     constituents:
     - symbol: MBLY
@@ -389,7 +388,6 @@ themes:
       weight: 1.0
     - symbol: APTV
       weight: 0.5
-    etf_reference: LIT
   quantum_computing:
     constituents:
     - symbol: IONQ
@@ -408,7 +406,6 @@ themes:
       weight: 1.0
     - symbol: HON
       weight: 0.5
-    etf_reference: QTUM
   data_centers:
     constituents:
     - symbol: EQIX
@@ -435,7 +432,6 @@ themes:
       weight: 0.5
     - symbol: NVDA
       weight: 0.5
-    etf_reference: DTCR
   industrial_automation:
     constituents:
     - symbol: ETN
@@ -539,4 +535,3 @@ themes:
       weight: 1.0
     - symbol: COIN
       weight: 0.5
-    etf_reference: FINX

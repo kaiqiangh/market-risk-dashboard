@@ -4,7 +4,6 @@
   "semis": "半导体",
   "auto": "汽车",
   "memory": "存储",
-  "ai": "AI / GPU",
   "section": {
     "semis": "半导体",
     "memory": "存储（美光 + A 股存储）",
@@ -50,6 +49,6 @@
     "normal": "正常",
     "high": "偏高",
     "veryHigh": "极高",
-    "warming": "累积中 {{obs}}/100"
+    "warming": "累积中 {{obs}} 个观测"
   }
 }

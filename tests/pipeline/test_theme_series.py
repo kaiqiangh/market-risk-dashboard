@@ -14,11 +14,6 @@ from pipeline.indicators.themes import (
 )
 
 
-def _rising(closes: list[float]) -> list[float]:
-    """A strictly rising close series."""
-    return closes
-
-
 def test_percentile_of_trending_series_is_not_stuck_at_100() -> None:
     """#86 §4.1: a rising price with noisy returns must NOT sit at ~100 — the percentile
     ranks the trailing *return* against its own 1y return distribution, so a normal day is
@@ -68,4 +63,4 @@ def test_changes_from_closes_session_offsets() -> None:
     c1d, c1w, c1m = changes_from_closes(closes)
     assert c1d == 0.9524  # (106/105 - 1) * 100
     assert c1w == 6.0  # (106/100 - 1) * 100 (6 sessions back)
-    assert c1m is not None  # falls back to the first close when < 21 sessions
+    assert c1m is None  # honest: fewer than 21 sessions — no fabricated "1M"

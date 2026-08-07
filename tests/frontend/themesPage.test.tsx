@@ -41,6 +41,6 @@ describe("ThemesPage", () => {
     // memory percentile 90 → "Very High" band (zh: 极高).
     expect(screen.getByText("极高")).toBeInTheDocument();
     // cybersecurity percentile null with obs 30 → "warming up 30/100" (zh: 累积中 30/100).
-    expect(screen.getByText("累积中 30/100")).toBeInTheDocument();
+    expect(screen.getByText("累积中 30 个观测")).toBeInTheDocument();
   });
 });
