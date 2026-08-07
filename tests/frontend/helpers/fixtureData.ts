@@ -633,27 +633,94 @@ export const marketHistory30dFixture = [
 
 export const sourcesFixture = {
   schema_version: "1.0.0",
-  updated_at: "2026-08-03T13:59:37Z",
+  updated_at: "2026-08-07T09:00:00Z",
+  // #95: mirrors the current projection shape — each domain carries the derived fields
+  // (status/reason/datasets) plus provider passthrough, exactly as sources.json is
+  // rendered from the one outcomes record (#89/#101, economic domain per #94).
   domains: {
-    a_share: { degraded: true, error: "all providers failed: akshare timeout" },
-    crypto: { provider: "coingecko", used_fallback: false, from_cache: false, degraded: false },
-    macro: { provider: "fred", used_fallback: false, from_cache: false, degraded: false },
-    calendar: { provider: "fmp", used_fallback: false, from_cache: false, degraded: false },
-    news: { provider: "rss_news", used_fallback: false, from_cache: false, degraded: false },
+    market: {
+      provider: "yfinance",
+      used_fallback: false,
+      from_cache: false,
+      degraded: true,
+      status: "degraded",
+      reason: { code: "provider_http_error", detail: "yfinance: HTTP 429 rate limited" },
+      datasets: ["equities", "sectors"],
+    },
+    macro: {
+      provider: "fred",
+      used_fallback: false,
+      from_cache: false,
+      degraded: false,
+      status: "fresh",
+      reason: { code: "ok", detail: "" },
+      datasets: ["macro"],
+    },
+    crypto: {
+      provider: "coingecko",
+      used_fallback: false,
+      from_cache: false,
+      degraded: false,
+      status: "fresh",
+      reason: { code: "ok", detail: "" },
+      datasets: ["crypto"],
+    },
+    calendar: {
+      provider: "fmp",
+      used_fallback: false,
+      from_cache: false,
+      degraded: false,
+      status: "empty",
+      reason: { code: "no_events_in_window", detail: "no events in the 14-day window" },
+      datasets: ["calendar"],
+    },
+    economic: {
+      provider: "fred_calendar",
+      used_fallback: false,
+      from_cache: false,
+      degraded: false,
+      status: "fresh",
+      reason: { code: "ok", detail: "" },
+      datasets: ["calendar"],
+    },
+    news: {
+      provider: "rss_news",
+      used_fallback: true,
+      from_cache: false,
+      degraded: true,
+      status: "degraded",
+      reason: { code: "provider_http_error", detail: "clschina: RSS HTTP 403" },
+      datasets: ["news"],
+    },
+    a_share: {
+      provider: "akshare",
+      used_fallback: false,
+      from_cache: false,
+      degraded: true,
+      status: "degraded",
+      reason: { code: "all_providers_failed", detail: "akshare: RemoteDisconnected" },
+      datasets: [],
+    },
   },
 };
 
 export const freshnessFixture = {
   schema_version: "1.0.0",
+  updated_at: "2026-08-07T09:00:00Z",
+  // #95: the published reason is a {code, detail} pair from the closed vocabulary — no
+  // literal "degraded" placeholders remain (E-1/#89). Every registered key appears.
   datasets: {
-    macro: { status: "degraded", reason: "degraded", updated_at: "2026-08-03T13:59:37Z" },
-    equities: { status: "degraded", reason: "degraded", updated_at: "2026-08-03T13:59:37Z" },
-    sectors: { status: "degraded", reason: "degraded", updated_at: "2026-08-03T13:59:37Z" },
-    crypto: { status: "degraded", reason: "degraded", updated_at: "2026-08-03T13:59:37Z" },
-    news: { status: "fresh", reason: "ok", updated_at: "2026-08-03T13:59:37Z" },
-    calendar: { status: "fresh", reason: "ok", updated_at: "2026-08-03T13:59:37Z" },
-    risk: { status: "degraded", reason: "degraded", updated_at: "2026-08-03T13:59:37Z" },
-    facts: { status: "degraded", reason: "degraded", updated_at: "2026-08-03T13:59:37Z" },
+    equities: { status: "degraded", reason: { code: "provider_http_error", detail: "yfinance: HTTP 429 rate limited" }, updated_at: "2026-08-07T09:00:00Z" },
+    sectors: { status: "degraded", reason: { code: "provider_http_error", detail: "yfinance: HTTP 429 rate limited" }, updated_at: "2026-08-07T09:00:00Z" },
+    crypto: { status: "fresh", reason: { code: "ok", detail: "" }, updated_at: "2026-08-07T09:00:00Z" },
+    macro: { status: "fresh", reason: { code: "ok", detail: "" }, updated_at: "2026-08-07T09:00:00Z" },
+    calendar: { status: "empty", reason: { code: "no_events_in_window", detail: "no events in the 14-day window" }, updated_at: "2026-08-07T09:00:00Z" },
+    news: { status: "degraded", reason: { code: "provider_http_error", detail: "clschina: RSS HTTP 403" }, updated_at: "2026-08-07T09:00:00Z" },
+    risk: { status: "degraded", reason: { code: "input_dataset_unhealthy", detail: "equities degraded" }, updated_at: "2026-08-07T09:00:00Z" },
+    dashboard: { status: "degraded", reason: { code: "input_dataset_unhealthy", detail: "equities degraded" }, updated_at: "2026-08-07T09:00:00Z" },
+    factlayer: { status: "degraded", reason: { code: "input_dataset_unhealthy", detail: "equities degraded" }, updated_at: "2026-08-07T09:00:00Z" },
+    analysis: { status: "fresh", reason: { code: "ok", detail: "" }, updated_at: "2026-08-07T09:00:00Z" },
+    news_translations: { status: "fresh", reason: { code: "ok", detail: "" }, updated_at: "2026-08-07T09:00:00Z" },
   },
 };
 
