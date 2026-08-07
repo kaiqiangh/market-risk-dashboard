@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+import traceback
 import time
 from pathlib import Path
 from typing import Any
@@ -807,6 +808,21 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
 # main
 # ============================================================
 
+def _write_failure_report(command: str, results: dict[str, Any], error: str) -> None:
+    """Write an ok=False run report — shared by the explicit failure path and the
+    crash path (E-5), so a dead run always leaves a record with the reason."""
+    write_run_report(
+        settings.artifacts_dir,
+        command=command, ok=False,
+        durations=results.get("durations", {}),
+        provider_status=results.get("provider_status", {}),
+        degraded=results.get("degraded", []),
+        dataset_counts={},
+        error=error,
+        failed_datasets=[], skipped_datasets=[], degraded_datasets=[],
+    )
+
+
 def _finish_run(command: str, results: dict[str, Any], elapsed: float, health: dict[str, list[str]]) -> int:
     """Write the run report for a successful command and print the summary.
 
@@ -828,7 +844,9 @@ def _finish_run(command: str, results: dict[str, Any], elapsed: float, health: d
         proxy_discounts=_risk_proxy_discounts(results),
     )
     _print_summary(command, results, elapsed)
-    return 0
+    # E-5: an exit code of 0 on a run where a dataset ended missing is a silent green —
+    # the scheduled task must be able to see the failure in the exit status.
+    return 1 if health["failed"] else 0
 
 
 def _risk_proxy_discounts(results: dict[str, Any]) -> list[dict[str, Any]]:
@@ -881,78 +899,76 @@ def main(argv: list[str] | None = None) -> int:
     if args.backfill:
         return _run_backfill()
 
-    started = time.monotonic()
-    run_started_at = now_utc()
-    results = _run_collection(command)
+    try:
+        started = time.monotonic()
+        run_started_at = now_utc()
+        results = _run_collection(command)
 
-    # Single-domain commands write only the corresponding dataset (unified freshness, P1-7)
-    if command == "market-only":
-        writer = StorageWriter(settings.data_dir)
-        outcomes = RunOutcomes(scope=_run_scope(command))
-        market_meta = results.get("market_meta", {})
-        degraded = bool(results["degraded"])
-        _finalize_and_write(writer, "equities", results["equities"], degraded, outcomes,
-                            **_provider_kwargs(market_meta, "equities"),
-                            data_quality=market_meta.get("data_quality", 1.0))
-        _finalize_and_write(writer, "crypto", results["crypto"], degraded, outcomes,
-                            **_provider_kwargs(market_meta, "crypto"),
-                            data_quality=market_meta.get("data_quality", 1.0))
-        _finalize_and_write(writer, "sectors", results["sectors"], degraded, outcomes,
-                            **_provider_kwargs(market_meta, "sectors"),
-                            data_quality=market_meta.get("data_quality", 1.0))
-        _publish_metadata(writer, outcomes, results["provider_status"])
+        # Single-domain commands write only the corresponding dataset (unified freshness, P1-7)
+        if command == "market-only":
+            writer = StorageWriter(settings.data_dir)
+            outcomes = RunOutcomes(scope=_run_scope(command))
+            market_meta = results.get("market_meta", {})
+            degraded = bool(results["degraded"])
+            _finalize_and_write(writer, "equities", results["equities"], degraded, outcomes,
+                                **_provider_kwargs(market_meta, "equities"),
+                                data_quality=market_meta.get("data_quality", 1.0))
+            _finalize_and_write(writer, "crypto", results["crypto"], degraded, outcomes,
+                                **_provider_kwargs(market_meta, "crypto"),
+                                data_quality=market_meta.get("data_quality", 1.0))
+            _finalize_and_write(writer, "sectors", results["sectors"], degraded, outcomes,
+                                **_provider_kwargs(market_meta, "sectors"),
+                                data_quality=market_meta.get("data_quality", 1.0))
+            _publish_metadata(writer, outcomes, results["provider_status"])
+            health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
+            return _finish_run(command, results, time.monotonic() - started, health)
+
+        if command == "macro-only":
+            writer = StorageWriter(settings.data_dir)
+            outcomes = RunOutcomes(scope=_run_scope(command))
+            macro_meta = results.get("macro_meta", {})
+            _finalize_and_write(writer, "macro", results["macro"], bool(macro_meta.get("degraded")), outcomes,
+                                **_provider_kwargs(macro_meta, None, default="fred"),
+                                data_quality=macro_meta.get("data_quality", 1.0))
+            _record_ai_outcomes(writer, outcomes)
+            _publish_metadata(writer, outcomes, results["provider_status"])
+            health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
+            return _finish_run(command, results, time.monotonic() - started, health)
+
+        if command == "news-only":
+            writer = StorageWriter(settings.data_dir)
+            outcomes = RunOutcomes(scope=_run_scope(command))
+            news_meta = results.get("news_meta", {})
+            _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)), outcomes,
+                                **_provider_kwargs(news_meta, None, default="rss_news"),
+                                data_quality=news_meta.get("data_quality", 1.0))
+            _publish_metadata(writer, outcomes, results["provider_status"])
+            health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
+            return _finish_run(command, results, time.monotonic() - started, health)
+
+        # full / fact-layer
+        if command == "fact-layer":
+            ok, error = _run_fact_layer_only()
+        else:
+            writer = StorageWriter(settings.data_dir)
+            ok, error = _run_risk_and_write(results, writer, command)
+            results["durations"]["total"] = time.monotonic() - started
+
         health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
-        return _finish_run(command, results, time.monotonic() - started, health)
 
-    if command == "macro-only":
-        writer = StorageWriter(settings.data_dir)
-        outcomes = RunOutcomes(scope=_run_scope(command))
-        macro_meta = results.get("macro_meta", {})
-        _finalize_and_write(writer, "macro", results["macro"], bool(macro_meta.get("degraded")), outcomes,
-                            **_provider_kwargs(macro_meta, None, default="fred"),
-                            data_quality=macro_meta.get("data_quality", 1.0))
-        _record_ai_outcomes(writer, outcomes)
-        _publish_metadata(writer, outcomes, results["provider_status"])
-        health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
-        return _finish_run(command, results, time.monotonic() - started, health)
+        if ok:
+            return _finish_run(command, results, results.get("durations", {}).get("total", 0.0), health)
 
-    if command == "news-only":
-        writer = StorageWriter(settings.data_dir)
-        outcomes = RunOutcomes(scope=_run_scope(command))
-        news_meta = results.get("news_meta", {})
-        _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)), outcomes,
-                            **_provider_kwargs(news_meta, None, default="rss_news"),
-                            data_quality=news_meta.get("data_quality", 1.0))
-        _publish_metadata(writer, outcomes, results["provider_status"])
-        health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
-        return _finish_run(command, results, time.monotonic() - started, health)
-
-    # full / fact-layer
-    if command == "fact-layer":
-        ok, error = _run_fact_layer_only()
-    else:
-        writer = StorageWriter(settings.data_dir)
-        ok, error = _run_risk_and_write(results, writer, command)
-        results["durations"]["total"] = time.monotonic() - started
-
-    health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
-
-    if ok:
-        return _finish_run(command, results, results.get("durations", {}).get("total", 0.0), health)
-
-    print(f"[pipeline] failed: {error}", file=sys.stderr)
-    write_run_report(
-        settings.artifacts_dir,
-        command=command, ok=False,
-        durations=results.get("durations", {}),
-        provider_status=results.get("provider_status", {}),
-        degraded=results.get("degraded", []),
-        dataset_counts={}, error=error,
-        failed_datasets=health["failed"],
-        skipped_datasets=health["skipped"],
-        degraded_datasets=health["degraded"],
-    )
-    return 1
+        print(f"[pipeline] failed: {error}", file=sys.stderr)
+        _write_failure_report(command, results, error)
+        return 1
+    except Exception as exc:  # E-5: a crashed run still writes a run-report with a traceback summary
+        traceback.print_exc()
+        try:
+            _write_failure_report(command, results, f"{type(exc).__name__}: {exc}")
+        except Exception:  # noqa: BLE001 - never mask the original crash with a report failure
+            pass
+        return 1
 
 
 def _run_fact_layer_only() -> tuple[bool, str | None]:

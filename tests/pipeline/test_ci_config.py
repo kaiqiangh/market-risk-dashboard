@@ -188,3 +188,15 @@ def test_workflow_files_are_valid_yaml() -> None:
 
     for path in sorted(WORKFLOWS_DIR.glob("*.yml")):
         yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+def test_secret_gate_is_wired_into_local_and_ci_validation() -> None:
+    """S-1/#92: the publish secret gate must run in both the local script and CI."""
+    workflow = _read_workflow("validate-data.yml")
+    assert "scan-secrets.mjs" in workflow, (
+        "validate-data.yml must run the secret scan before publish"
+    )
+    script = (REPO_ROOT / "scripts" / "validate_data.sh").read_text(encoding="utf-8")
+    assert "scan-secrets.mjs" in script, (
+        "validate_data.sh must run the secret scan before the data checks"
+    )

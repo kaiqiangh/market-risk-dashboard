@@ -22,6 +22,7 @@ on:
       - "src/schemas/generated/**"
       - "scripts/validate_data.sh"
       - "scripts/validate-json.mjs"
+      - "scripts/scan-secrets.mjs"
       - "config/sources.yaml"
       - ".github/workflows/validate-data.yml"
   workflow_dispatch:
@@ -59,6 +60,9 @@ jobs:
 
       - name: "Contract drift gate (#101): regenerate and diff"
         run: npm run check:contracts
+
+      - name: "Secret scan (S-1/#92): keys must not reach the published tree"
+        run: node scripts/scan-secrets.mjs --root .
 
       - name: Check i18n translation files
         run: node scripts/check-i18n.mjs

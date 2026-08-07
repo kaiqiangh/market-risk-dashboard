@@ -15,7 +15,6 @@ from pipeline.providers.base import (
     BaseProvider,
     ProviderError,
     ProviderHealth,
-    retry_with_backoff,
 )
 
 FRED_BASE = "https://api.stlouisfed.org/fred/series/observations"
@@ -51,11 +50,14 @@ SERIES_CATALOG: dict[str, dict[str, str]] = {
 class FredProvider(BaseProvider):
     name = "fred"
     domain = "macro"
+    hosts = ("api.stlouisfed.org",)
 
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
         self.api_key = self.settings.fred_api_key
-        self._client = httpx.Client(timeout=15.0)
+        from pipeline.providers.base import guarded_client
+
+        self._client = guarded_client(set(self.hosts), timeout=15.0)
 
     def health(self) -> ProviderHealth:
         if not self.api_key:
@@ -99,13 +101,17 @@ class FredProvider(BaseProvider):
                 params["sort_order"] = "desc"
             resp = self._client.get(FRED_BASE, params=params)
             if resp.status_code != 200:
-                raise ProviderError(f"FRED {series_id}: HTTP {resp.status_code}")
+                # #103/E-3: classification + redaction at the one boundary (no nested retry).
+                raise ProviderError.from_exception(
+                    httpx.HTTPStatusError(
+                        f"FRED {series_id} HTTP {resp.status_code}", request=resp.request, response=resp
+                    ),
+                    detail=f"FRED {series_id}: HTTP {resp.status_code}",
+                )
             return resp.json()
 
-        try:
-            data = retry_with_backoff(_fetch, max_retries=2, backoff_base=1.0, jitter=True)
-        except Exception as exc:  # noqa: BLE001
-            raise ProviderError(f"FRED {series_id}: {exc}") from exc
+        # #103/E-3: retries live in ProviderRegistry.call, not here.
+        data = _fetch()
 
         observations = data.get("observations", [])
         rows: list[dict[str, Any]] = []

@@ -42,12 +42,18 @@ class Expectation(BaseModel):
 
 
 class ProviderEntry(BaseModel):
+    """One provider in the degradation chain. ``max_concurrency``/``min_interval_ms`` are
+    the per-host token-bucket budget used by the registry's rate limiter (#103/P-1): a
+    browser-hostile host like Yahoo gets the tightest budget."""
+
     model_config = ConfigDict(extra="forbid")
 
     name: str = Field(min_length=1)
     priority: int = Field(ge=0)
     kind: Literal["primary", "fallback"] = "primary"
     enabled: bool = True
+    max_concurrency: int = Field(default=2, ge=1)
+    min_interval_ms: int = Field(default=500, ge=0)
 
 
 class DegradeConfig(BaseModel):
@@ -177,6 +183,9 @@ class NewsSource(BaseModel):
     weight: int = Field(default=1, ge=0)
     category: str | None = None
     enabled: bool = True
+    # S-3: a relay source (rsshub.app) is allowed to redirect anywhere — it is trusted as a
+    # forwarding relay, not as a terminal host.
+    trust: Literal["relay"] | None = None
 
 
 class NewsImportance(BaseModel):

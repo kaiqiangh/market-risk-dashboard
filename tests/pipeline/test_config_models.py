@@ -181,7 +181,7 @@ def test_operations_knobs_are_typed_and_defaulted(tmp_path: Path) -> None:
     }
     cfg = load_config(real / "sources.yaml", SourcesConfig)
     ops = cfg.operations
-    assert ops.circuit_breaker_threshold == 2
+    assert ops.circuit_breaker_threshold == 3  # #103: 3 consecutive transient failures
     assert ops.calendar_horizon_days == 14
     assert ops.news_max_items == 50
     assert ops.news_summary_max_chars == 160

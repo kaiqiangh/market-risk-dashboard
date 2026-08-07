@@ -35,22 +35,25 @@ def _provider(tmp_path: Path) -> RssNewsProvider:
     return provider
 
 
-def test_transient_http_failure_retries_per_source(tmp_path, monkeypatch) -> None:
+def test_transient_http_failure_does_not_retry_inside_provider(tmp_path, monkeypatch) -> None:
+    """#103/D-6: the per-source retry loop is gone — a single attempt, one call.
+
+    Retries now live in ProviderRegistry.call (the one retry layer, E-3); a direct
+    fetch_news() call surfaces the failure after exactly one HTTP attempt.
+    """
     provider = _provider(tmp_path)
-    responses = iter([(503, b"busy"), (200, b"<rss />")])
     calls = {"count": 0}
 
     class Client:
         def get(self, _url):
             calls["count"] += 1
-            status, content = next(responses)
-            return type("Response", (), {"status_code": status, "content": content})()
+            return type("Response", (), {"status_code": 503, "content": b"busy"})()
 
     provider._client = Client()
-    monkeypatch.setattr("pipeline.providers.rss_news.feedparser.parse", lambda _content: type("Feed", (), {"bozo": False, "entries": [ENTRY]})())
-    assert len(provider.fetch_news()) == 1
-    assert calls["count"] == 2
-    assert provider.source_status["test"]["ok"] is True
+    with pytest.raises(ProviderError, match="all sources failed"):
+        provider.fetch_news()
+    assert calls["count"] == 1
+    assert provider.source_status["test"]["ok"] is False
 
 
 def test_auth_failure_does_not_retry(tmp_path) -> None:
@@ -69,7 +72,8 @@ def test_auth_failure_does_not_retry(tmp_path) -> None:
     assert provider.source_status["test"]["ok"] is False
 
 
-def test_failed_source_uses_fresh_last_good_cache_and_stays_degraded(tmp_path, monkeypatch) -> None:
+def test_failed_source_is_reported_degraded_without_per_source_cache(tmp_path, monkeypatch) -> None:
+    """#103/D-6: per-source last-good cache removed — a source outage is degraded, not replayed."""
     provider = _provider(tmp_path)
     monkeypatch.setattr(provider, "_fetch_feed", lambda _url: [ENTRY])
     assert len(provider.fetch_news()) == 1
@@ -78,41 +82,18 @@ def test_failed_source_uses_fresh_last_good_cache_and_stays_degraded(tmp_path, m
         raise ProviderError("temporary outage")
 
     monkeypatch.setattr(provider, "_fetch_feed", fail)
-    assert len(provider.fetch_news()) == 1
+    with pytest.raises(ProviderError, match="all sources failed"):
+        provider.fetch_news()
     status = provider.source_status["test"]
     assert status["ok"] is False
-    assert status["from_cache"] is True
-    assert status["cache_age_hours"] < 1
+    assert status["from_cache"] is False
 
 
 def test_missing_date_is_rejected_instead_of_using_now(tmp_path, monkeypatch) -> None:
     provider = _provider(tmp_path)
-    provider.max_retries = 0
     monkeypatch.setattr(provider, "_fetch_feed", lambda _url: [{"title": "No date", "link": ENTRY["link"]}])
     with pytest.raises(ProviderError, match="no valid entries"):
         provider.fetch_news()
-
-
-def test_expired_cache_is_not_served(tmp_path, monkeypatch) -> None:
-    from datetime import datetime, timedelta, timezone
-    import json
-
-    provider = _provider(tmp_path)
-    provider.max_retries = 0
-    provider._source_cache_path("test").parent.mkdir(parents=True, exist_ok=True)
-    provider._source_cache_path("test").write_text(
-        json.dumps(
-            {
-                "fetched_at": (datetime.now(timezone.utc) - timedelta(hours=25)).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                "items": [{"title": "Old", "source": "Test", "url": ENTRY["link"], "published_at": "2026-08-03T10:00:00Z"}],
-            }
-        ),
-        encoding="utf-8",
-    )
-    monkeypatch.setattr(provider, "_fetch_feed", lambda _url: (_ for _ in ()).throw(ProviderError("outage")))
-    with pytest.raises(ProviderError, match="all sources failed"):
-        provider.fetch_news()
-    assert provider.source_status["test"]["from_cache"] is False
 
 
 class _NewsProvider:

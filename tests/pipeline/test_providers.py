@@ -35,7 +35,6 @@ from pipeline.providers.base import (
     ProviderError,
     ProviderHealth,
     QuoteResult,
-    retry_with_backoff,
 )
 from pipeline.providers.stooq import StooqProvider
 from pipeline.providers.yahoo import YahooProvider
@@ -155,19 +154,6 @@ def test_all_fail_no_cache_raises(tmp_path) -> None:
     reg.register("quotes", _FailingYahoo())
     with pytest.raises(ProviderError):
         reg.call("quotes", "get_quote", "NVDA", args=("NVDA",))
-
-
-def test_retry_with_backoff_succeeds_after_fail() -> None:
-    calls = {"n": 0}
-
-    def flaky() -> str:
-        calls["n"] += 1
-        if calls["n"] < 2:
-            raise ProviderError("flaky")
-        return "ok"
-
-    assert retry_with_backoff(flaky, max_retries=2, backoff_base=0.01, jitter=False) == "ok"
-    assert calls["n"] == 2
 
 
 def test_quality_factor_reduces_with_degrade() -> None:
