@@ -1,4 +1,4 @@
-"""Provider degradation chain tests (architecture §1.4; acceptance #3: yfinance outage → Stooq → degraded).
+"""Provider degradation chain tests (architecture §1.4; acceptance #3: yfinance outage → FMP fallback → degraded).
 
 Also covers #62: the data-quality degrade factor has exactly one home, `pipeline/degrade.py`,
 sourced from `config/sources.yaml` under `degrade.data_quality_degrade_factor`. Every consumer
@@ -36,7 +36,7 @@ from pipeline.providers.base import (
     ProviderHealth,
     QuoteResult,
 )
-from pipeline.providers.stooq import StooqProvider
+from pipeline.providers.fmp import FmpQuotesProvider
 from pipeline.providers.yahoo import YahooProvider
 from pipeline.risk.confidence import quality_factor
 from pipeline.settings import Settings
@@ -65,7 +65,7 @@ class _FailingYahoo(YahooProvider):
         return ProviderHealth(provider=self.name, ok=False, error="mock down")
 
 
-class _OkStooq(StooqProvider):
+class _OkStooq(FmpQuotesProvider):
     name = "stooq_ok"
 
     def get_quote(self, symbol: str) -> QuoteResult:
@@ -82,7 +82,7 @@ class _OkStooq(StooqProvider):
         return ProviderHealth(provider=self.name, ok=True)
 
 
-class _OkSeries(StooqProvider):
+class _OkSeries(FmpQuotesProvider):
     """A single-provider success for the macro domain (get_series)."""
     name = "ok_series"
 
@@ -93,7 +93,7 @@ class _OkSeries(StooqProvider):
         return ProviderHealth(provider=self.name, ok=True)
 
 
-class _FailSeries(StooqProvider):
+class _FailSeries(FmpQuotesProvider):
     """A single-provider failure for the macro domain (get_series)."""
     name = "fail_series"
 

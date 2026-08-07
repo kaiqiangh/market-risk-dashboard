@@ -37,8 +37,11 @@ expectations:
 # carries the tightest budget.
 providers:
   quotes:
+    # #100: Stooq retired (JS proof-of-work challenge, verified unrecoverable) — the
+    # fallback is FMP /stable/quote (same key as the calendar; quote-only on the free
+    # tier, 1w/1m/history honest None via the #97 decoupling).
     - { name: yfinance, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 2000 }
-    - { name: stooq, priority: 2, kind: fallback, max_concurrency: 2, min_interval_ms: 1500 }
+    - { name: fmp_quotes, priority: 2, kind: fallback, max_concurrency: 1, min_interval_ms: 1000 }
   macro:
     - { name: fred, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 600 }
   crypto:

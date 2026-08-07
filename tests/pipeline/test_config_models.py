@@ -111,7 +111,8 @@ def test_build_default_providers_reads_config_order_and_enabled() -> None:
         by_domain.setdefault(p.domain, []).append((p.name, p.priority))
 
     # Order within a domain is config priority, smallest first.
-    assert by_domain["quotes"] == [("yfinance", 1), ("stooq", 2)]
+    # #100: Stooq retired (JS challenge) — the quotes fallback is FMP stable quote.
+    assert by_domain["quotes"] == [("yfinance", 1), ("fmp_quotes", 2)]
     # #94 (uses #83): yfinance_calendar retired → Nasdaq fallback; economic is a new
     # domain (FRED releases + FOMC) with economic events first-class alongside earnings.
     assert by_domain["calendar"] == [("fmp", 1), ("nasdaq", 2)]

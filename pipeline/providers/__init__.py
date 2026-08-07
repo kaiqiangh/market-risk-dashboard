@@ -13,12 +13,11 @@ from pipeline.providers.base import (
     QuoteResult,
 )
 from pipeline.providers.coingecko import CoinGeckoProvider
-from pipeline.providers.fmp import FmpProvider
+from pipeline.providers.fmp import FmpProvider, FmpQuotesProvider
 from pipeline.providers.fred import FredProvider
 from pipeline.providers.fred_calendar import FredCalendarProvider
 from pipeline.providers.nasdaq import NasdaqCalendarProvider
 from pipeline.providers.rss_news import RssNewsProvider
-from pipeline.providers.stooq import StooqProvider
 from pipeline.providers.yahoo import YahooAShareProvider, YahooProvider
 from pipeline.settings import Settings
 
@@ -29,10 +28,10 @@ from pipeline.settings import Settings
 _PROVIDER_CLASSES: dict[str, type[BaseProvider]] = {
     "yfinance": YahooProvider,
     "yfinance_a_share": YahooAShareProvider,
-    "stooq": StooqProvider,
     "fred": FredProvider,
     "coingecko": CoinGeckoProvider,
     "fmp": FmpProvider,
+    "fmp_quotes": FmpQuotesProvider,
     "nasdaq": NasdaqCalendarProvider,
     "fred_calendar": FredCalendarProvider,
     "akshare": AkshareProvider,
@@ -85,6 +84,7 @@ __all__ = [
     "BaseProvider",
     "CoinGeckoProvider",
     "FmpProvider",
+    "FmpQuotesProvider",
     "FredCalendarProvider",
     "FredProvider",
     "HistoryResult",
@@ -94,7 +94,6 @@ __all__ = [
     "ProviderRegistry",
     "QuoteResult",
     "RssNewsProvider",
-    "StooqProvider",
     "YahooAShareProvider",
     "YahooProvider",
     "build_default_providers",

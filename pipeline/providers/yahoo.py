@@ -1,7 +1,7 @@
 """Quotes primary source: Yahoo Finance (yfinance, architecture §1.3).
 
 Note: yfinance is free with no SLA (two 48h outages in 2025, review §3.1); it must go through
-the degradation chain (Stooq fallback + last-good cache). This module only wraps the Provider;
+the degradation chain (FMP quote fallback + last-good cache, #100). This module only wraps the Provider;
 it contains no business logic.
 """
 
