@@ -22,6 +22,28 @@ from pipeline.providers.base import (
 )
 from pipeline.utils import now_utc
 
+
+def _to_rows(hist) -> list[dict[str, Any]]:
+    """Normalize a yfinance DataFrame into the contract's OHLCV row shape (single copy, #103)."""
+    rows: list[dict[str, Any]] = []
+    for idx, row in hist.iterrows():
+        date = idx
+        if hasattr(idx, "strftime"):
+            date = idx.strftime("%Y-%m-%d")
+        rows.append(
+            {
+                "date": str(date),
+                "open": _clean(row.get("Open")),
+                "high": _clean(row.get("High")),
+                "low": _clean(row.get("Low")),
+                "close": _clean(row.get("Close")),
+                "volume": _clean(row.get("Volume")),
+            }
+        )
+    return rows
+
+
+
 _PERIOD_MAP = {"1mo": "1mo", "1y": "1y", "3mo": "3mo", "6mo": "6mo", "2y": "2y", "5y": "5y"}
 
 
@@ -45,21 +67,7 @@ class YahooProvider(BaseProvider):
             hist = yf.Ticker(symbol).history(period="1y", auto_adjust=False)
             if hist is None or len(hist) == 0:
                 raise ProviderError(f"{symbol}: yfinance history is empty")
-            rows: list[dict[str, Any]] = []
-            for idx, row in hist.iterrows():
-                date = idx
-                if hasattr(idx, "strftime"):
-                    date = idx.strftime("%Y-%m-%d")
-                rows.append(
-                    {
-                        "date": str(date),
-                        "open": _clean(row.get("Open")),
-                        "high": _clean(row.get("High")),
-                        "low": _clean(row.get("Low")),
-                        "close": _clean(row.get("Close")),
-                        "volume": _clean(row.get("Volume")),
-                    }
-                )
+            rows = _to_rows(hist)
             self._history_1y[symbol] = rows
             return rows
         except ProviderError:
@@ -128,22 +136,7 @@ class YahooProvider(BaseProvider):
             hist = yf.Ticker(symbol).history(period=_PERIOD_MAP[period], auto_adjust=False)
             if hist is None or len(hist) == 0:
                 raise ProviderError(f"{symbol}: yfinance history is empty")
-            rows: list[dict] = []
-            for idx, row in hist.iterrows():
-                date = idx
-                if hasattr(idx, "strftime"):
-                    date = idx.strftime("%Y-%m-%d")
-                rows.append(
-                    {
-                        "date": str(date),
-                        "open": _clean(row.get("Open")),
-                        "high": _clean(row.get("High")),
-                        "low": _clean(row.get("Low")),
-                        "close": _clean(row.get("Close")),
-                        "volume": _clean(row.get("Volume")),
-                    }
-                )
-            return HistoryResult(symbol=symbol, provider=self.name, rows=rows, period=period)
+            return HistoryResult(symbol=symbol, provider=self.name, rows=_to_rows(hist), period=period)
         except ProviderError:
             raise
         except Exception as exc:  # noqa: BLE001
@@ -155,20 +148,7 @@ class YahooProvider(BaseProvider):
             hist = yf.Ticker(symbol).history(start=start, end=end, auto_adjust=False)
             if hist is None or len(hist) == 0:
                 raise ProviderError(f"{symbol}: yfinance range history is empty ({start}~{end})")
-            rows: list[dict] = []
-            for idx, row in hist.iterrows():
-                date = idx.strftime("%Y-%m-%d") if hasattr(idx, "strftime") else str(idx)
-                rows.append(
-                    {
-                        "date": str(date),
-                        "open": _clean(row.get("Open")),
-                        "high": _clean(row.get("High")),
-                        "low": _clean(row.get("Low")),
-                        "close": _clean(row.get("Close")),
-                        "volume": _clean(row.get("Volume")),
-                    }
-                )
-            return HistoryResult(symbol=symbol, provider=self.name, rows=rows, period=f"{start}~{end}")
+            return HistoryResult(symbol=symbol, provider=self.name, rows=_to_rows(hist), period=f"{start}~{end}")
         except ProviderError:
             raise
         except Exception as exc:  # noqa: BLE001

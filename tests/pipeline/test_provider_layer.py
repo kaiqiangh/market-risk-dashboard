@@ -78,6 +78,36 @@ def test_from_exception_unclassified_defaults_to_permanent() -> None:
     assert err.transient is False
 
 
+def test_transport_errors_from_requests_and_curl_cffi_are_transient() -> None:
+    """yfinance talks to Yahoo through requests/curl_cffi — those transport errors must be
+    classified transient, or the primary quotes provider would never retry (spec finding)."""
+    import requests
+    from curl_cffi import requests as curl
+
+    assert ProviderError.from_exception(requests.exceptions.Timeout()).cls == TRANSIENT
+    assert ProviderError.from_exception(requests.exceptions.ConnectionError()).cls == TRANSIENT
+    # curl_cffi's CurlError is the base of its request errors (timeouts etc.).
+    assert ProviderError.from_exception(curl.errors.CurlError("boom")).cls == TRANSIENT
+
+
+def test_key_bearing_http_error_never_reaches_the_caller(tmp_path: Path) -> None:
+    """S-1: a key-bearing HTTPStatusError raised by a provider must be redacted before it
+    reaches the caller — the same shape as an exception repr embedding ``?apikey=…``."""
+    provider = _FakeProvider()
+    key = "0123456789abcdef0123456789abcdef"
+    request = httpx.Request("GET", f"https://api.fmp.example/calendar?apikey={key}")
+    provider.results = [
+        httpx.HTTPStatusError("403", request=request, response=httpx.Response(403, request=request))
+    ]
+    registry = _registry(tmp_path, provider)
+    registry.max_retries = 0
+
+    with pytest.raises(ProviderError) as excinfo:
+        registry.call("test", "get_quote", "q1", args=("SYM",))
+    assert key not in str(excinfo.value)
+    assert "apikey" not in str(excinfo.value)
+
+
 # -------------------------------------------------------------------------------------
 # One retry layer in ProviderRegistry.call (E-3)
 # -------------------------------------------------------------------------------------

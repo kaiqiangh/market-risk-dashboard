@@ -183,6 +183,9 @@ class NewsSource(BaseModel):
     weight: int = Field(default=1, ge=0)
     category: str | None = None
     enabled: bool = True
+    # S-3: a relay source (rsshub.app) is allowed to redirect anywhere — it is trusted as a
+    # forwarding relay, not as a terminal host.
+    trust: Literal["relay"] | None = None
 
 
 class NewsImportance(BaseModel):

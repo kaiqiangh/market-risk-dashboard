@@ -808,6 +808,21 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
 # main
 # ============================================================
 
+def _write_failure_report(command: str, results: dict[str, Any], error: str) -> None:
+    """Write an ok=False run report — shared by the explicit failure path and the
+    crash path (E-5), so a dead run always leaves a record with the reason."""
+    write_run_report(
+        settings.artifacts_dir,
+        command=command, ok=False,
+        durations=results.get("durations", {}),
+        provider_status=results.get("provider_status", {}),
+        degraded=results.get("degraded", []),
+        dataset_counts={},
+        error=error,
+        failed_datasets=[], skipped_datasets=[], degraded_datasets=[],
+    )
+
+
 def _finish_run(command: str, results: dict[str, Any], elapsed: float, health: dict[str, list[str]]) -> int:
     """Write the run report for a successful command and print the summary.
 
@@ -945,28 +960,12 @@ def main(argv: list[str] | None = None) -> int:
             return _finish_run(command, results, results.get("durations", {}).get("total", 0.0), health)
 
         print(f"[pipeline] failed: {error}", file=sys.stderr)
-        write_run_report(
-            settings.artifacts_dir,
-            command=command, ok=False,
-            durations=results.get("durations", {}),
-            provider_status=results.get("provider_status", {}),
-            degraded=results.get("degraded", []),
-            dataset_counts={}, error=error,
-            failed_datasets=health["failed"],
-            skipped_datasets=health["skipped"],
-            degraded_datasets=health["degraded"],
-        )
+        _write_failure_report(command, results, error)
         return 1
     except Exception as exc:  # E-5: a crashed run still writes a run-report with a traceback summary
         traceback.print_exc()
         try:
-            write_run_report(
-                settings.artifacts_dir,
-                command=command, ok=False,
-                durations={}, provider_status={}, degraded=[], dataset_counts={},
-                error=f"{type(exc).__name__}: {exc}",
-                failed_datasets=[], skipped_datasets=[], degraded_datasets=[],
-            )
+            _write_failure_report(command, results, f"{type(exc).__name__}: {exc}")
         except Exception:  # noqa: BLE001 - never mask the original crash with a report failure
             pass
         return 1

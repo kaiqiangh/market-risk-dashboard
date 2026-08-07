@@ -7,7 +7,7 @@ Any Provider failure → degradation chain → degraded, does not interrupt.
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
-from typing import Any
+from typing import Any, NamedTuple
 
 from pipeline.degrade import degraded_quality
 from pipeline.indicators.technical import technical_snapshot
@@ -26,7 +26,22 @@ from pipeline.universe import AssetUniverse
 from pipeline.utils import now_utc
 
 # Breadth/trend benchmark indices (MVP proxies)
+
+
+
+class _EquityFetch(NamedTuple):
+    """One equity's fetch result, merged by the caller in a single thread (#103/P-1)."""
+
+    asset: EquityAsset | None
+    domain: str
+    degraded: list[str]
+    outcomes: dict[str, dict[str, Any]]
+    status_error: str | None
+    rows: list[dict[str, Any]]
+
+
 INDEX_HISTORIES = {"SPY": "1y", "IWM": "1y", "SOXX": "1y"}
+
 
 
 class MarketCollector:
@@ -39,7 +54,6 @@ class MarketCollector:
         # raises ConfigError before any provider is constructed. Labels are nowhere here —
         # the frontend renders t(themes.<key>).
         self.themes = self.settings.load_themes_config()
-        self.operations = self.settings.load_sources_config().operations
         # theme membership, reversed: symbol → theme keys, to populate EquityAsset.theme
         # (the payload keeps the field; universe.yaml no longer carries theme tags, D-8).
         self._symbol_to_themes: dict[str, list[str]] = {}
@@ -94,12 +108,12 @@ class MarketCollector:
         except ProviderError as exc:
             degraded.append(f"{asset.symbol}: {exc}")
             status_error = str(exc)
-            return None, domain, degraded, outcomes, status_error, []
+            return _EquityFetch(None, domain, degraded, outcomes, status_error, [])
 
         quote = quote_out["result"]
         rows = hist_out["result"].rows
         tech = technical_snapshot(rows)
-        return (
+        return _EquityFetch(
             EquityAsset(
                 symbol=asset.symbol,
                 name=asset.name,

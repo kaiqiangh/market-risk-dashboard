@@ -37,7 +37,7 @@ from contextlib import contextmanager
 from datetime import UTC, datetime
 from pathlib import Path
 from threading import Semaphore
-from typing import Any, Callable, Generator, TypeVar
+from typing import Any, Generator
 
 import httpx
 from pydantic import BaseModel, Field
@@ -60,6 +60,32 @@ RATE_LIMITED = "rate_limited"
 PERMANENT = "permanent"
 _RETRYABLE = frozenset({TRANSIENT, RATE_LIMITED})
 
+#: Exception types treated as transient transport failures (worth a retry). Includes the
+#: transport families actually in use: httpx, requests (yfinance's stack) and curl_cffi
+#: (Yahoo via yfinance per #87). Built lazily because requests/curl_cffi are transitive
+#: dependencies — a provider that never uses them must still import cleanly.
+def _transient_types() -> tuple[type, ...]:
+    base: tuple[type, ...] = (httpx.TransportError, httpx.TimeoutException, ConnectionError, TimeoutError, OSError)
+    extras: list[type] = []
+    try:
+        import requests  # type: ignore[import-not-found]
+
+        extras.append(requests.exceptions.RequestException)
+    except ImportError:
+        pass
+    try:
+        from curl_cffi import requests as _curl  # type: ignore[import-not-found]
+        from curl_cffi.curl import CurlError as _CurlError  # type: ignore[import-not-found]
+
+        extras.append(_curl.errors.RequestsError)
+        extras.append(_CurlError)  # libcurl-level errors too
+    except ImportError:
+        pass
+    return base + tuple(extras)
+
+
+_TRANSIENT_TYPES: tuple[type, ...] = _transient_types()
+
 
 def redact(text: str, max_len: int = 200) -> str:
     """The single redaction function (S-1/#92): strip URL query strings, mask key shapes,
@@ -78,7 +104,7 @@ def redact(text: str, max_len: int = 200) -> str:
 
 
 def _retry_after_seconds(response: httpx.Response | None) -> float | None:
-    """Honour ``Retry-After`` (seconds or HTTP-date), capped at 30s (#103)."""
+    """Honour ``Retry-After`` (delay-seconds or RFC-7231 HTTP-date), capped at 30s (#103)."""
     if response is None:
         return None
     raw = response.headers.get("Retry-After")
@@ -87,10 +113,11 @@ def _retry_after_seconds(response: httpx.Response | None) -> float | None:
     try:
         seconds = float(raw)
     except ValueError:
+        from email.utils import parsedate_to_datetime
+
         try:
-            parsed = datetime.fromisoformat(raw.replace("GMT", "+00:00"))
-            seconds = (parsed - datetime.now(UTC)).total_seconds()
-        except ValueError:
+            seconds = (parsedate_to_datetime(raw) - datetime.now(UTC)).total_seconds()
+        except (TypeError, ValueError):
             return None
     if seconds <= 0 or seconds > 30:
         return None
@@ -117,6 +144,7 @@ class GuardedClient(httpx.Client):
         *,
         timeout: float = DEFAULT_TIMEOUT_SECONDS,
         headers: dict[str, str] | None = None,
+        relay_hosts: set[str] | None = None,
     ) -> None:
         super().__init__(
             timeout=timeout,
@@ -125,12 +153,21 @@ class GuardedClient(httpx.Client):
             event_hooks={"request": [self._check_request], "response": [self._check_response]},
         )
         self._allowed_hosts = set(allowed_hosts)
+        # S-3 trust:relay — a hop redirected *from* a relay host is vouched for by the relay
+        # and skips the allowlist check (rsshub.app's routes forward to arbitrary publishers).
+        self._relay_hosts = set(relay_hosts or ())
+        self._last_host: str | None = None
 
     def _check_request(self, request: httpx.Request) -> None:
         if request.url.scheme != "https":
             raise ProviderError(f"blocked: non-https outbound {request.url}")
+        # A redirect source that is a relay vouches for the target host (S-3).
+        if self._last_host in self._relay_hosts:
+            self._last_host = request.url.host
+            return
         if request.url.host not in self._allowed_hosts:
             raise ProviderError(f"blocked: host {request.url.host} not in outbound allowlist")
+        self._last_host = request.url.host
 
     def _check_response(self, response: httpx.Response) -> None:
         length = response.headers.get("Content-Length")
@@ -138,16 +175,29 @@ class GuardedClient(httpx.Client):
             raise ProviderError(f"blocked: response exceeds {MAX_RESPONSE_BYTES} bytes ({response.url})")
 
     def get(self, url: str, **kwargs: Any) -> httpx.Response:
-        """GET with a bounded manual redirect walk (≤ MAX_REDIRECT_HOPS hops)."""
+        """GET with a bounded manual redirect walk (≤ MAX_REDIRECT_HOPS hops) and a hard
+        2 MB streaming cap — chunked bodies are bounded by reading, not by Content-Length."""
         from urllib.parse import urljoin
 
         for _ in range(MAX_REDIRECT_HOPS + 1):
-            response = super().get(url, **kwargs)
-            location = response.headers.get("location") if response.is_redirect else None
-            if not location:
-                return response
-            url = urljoin(str(url), location)
+            with super().stream("GET", url, **kwargs) as response:
+                if response.status_code >= 300 and response.headers.get("location"):
+                    url = urljoin(str(url), response.headers["location"])
+                    continue
+                return self._read_bounded(response)
         raise ProviderError(f"blocked: more than {MAX_REDIRECT_HOPS} redirect hops")
+
+    def _read_bounded(self, response: httpx.Response) -> httpx.Response:
+        """Read the body with a 2 MB cap (S-3); raise ProviderError past the cap."""
+        chunks: list[bytes] = []
+        total = 0
+        for chunk in response.iter_bytes():
+            total += len(chunk)
+            if total > MAX_RESPONSE_BYTES:
+                raise ProviderError(f"blocked: response exceeds {MAX_RESPONSE_BYTES} bytes ({response.url})")
+            chunks.append(chunk)
+        response._content = b"".join(chunks)  # type: ignore[attr-defined]
+        return response
 
 
 def guarded_client(
@@ -155,9 +205,10 @@ def guarded_client(
     *,
     timeout: float = DEFAULT_TIMEOUT_SECONDS,
     headers: dict[str, str] | None = None,
+    relay_hosts: set[str] | None = None,
 ) -> "GuardedClient":
     """Factory for :class:`GuardedClient` (kept as a function so provider call sites stay terse)."""
-    return GuardedClient(allowed_hosts, timeout=timeout, headers=headers)
+    return GuardedClient(allowed_hosts, timeout=timeout, headers=headers, relay_hosts=relay_hosts)
 
 
 class ProviderError(Exception):
@@ -183,6 +234,10 @@ class ProviderError(Exception):
 
         ``detail`` (if given) replaces the exception's own string — providers use it to add
         symbol context; the redactor still strips any URL query / key shape from it.
+
+        Transient covers the transport families in use: httpx, requests (yfinance), and
+        curl_cffi (Yahoo via yfinance, #87) — a transport failure is by definition worth a
+        retry, whatever the underlying HTTP library.
         """
         if isinstance(exc, ProviderError):
             return exc
@@ -196,7 +251,7 @@ class ProviderError(Exception):
             if status in {408, 425} or (status is not None and 500 <= status <= 599):
                 return cls(f"{kind}: HTTP {status}", cls=TRANSIENT)
             return cls(f"{kind}: HTTP {status}", cls=PERMANENT)
-        if isinstance(exc, (httpx.TransportError, httpx.TimeoutException, ConnectionError, TimeoutError, OSError)):
+        if isinstance(exc, _TRANSIENT_TYPES):
             return cls(f"{kind}: {message}", cls=TRANSIENT)
         return cls(f"{kind}: {message}", cls=PERMANENT)
 
@@ -279,9 +334,6 @@ class BaseProvider(ABC):
         raise NotImplementedError  # pragma: no cover
 
 
-T = TypeVar("T")
-
-
 class HostRateLimiter:
     """Per-host token bucket (#103/P-1): bounded concurrency + a minimum interval between
     calls to the same host. A ``rate_limited`` verdict trips the host for the rest of the run.
@@ -313,10 +365,13 @@ class HostRateLimiter:
 
 
 class CircuitBreaker:
-    """Per-(provider, host) breaker: 3 **consecutive transient** failures open it; a
+    """Per-(provider, host-bucket) breaker: 3 **consecutive transient** failures open it; a
     permanent failure does not count; a success resets the streak (#103). A tripped breaker
     skips the provider for the rest of the run, letting fallbacks and the last-good cache
     answer — degraded, never missing.
+
+    ``threshold`` comes from ``operations.circuit_breaker_threshold`` in sources.yaml (ADR
+    0005: config is a fact), not a hardcoded literal.
     """
 
     def __init__(self, threshold: int = 3) -> None:
@@ -383,7 +438,9 @@ class ProviderRegistry:
             for entry in entries
         }
         self.limiter = HostRateLimiter()
-        self.breaker = CircuitBreaker(threshold=3)
+        # ADR 0005: the breaker threshold is config (operations.circuit_breaker_threshold),
+        # not a second literal that can drift from sources.yaml.
+        self.breaker = CircuitBreaker(threshold=cfg.operations.circuit_breaker_threshold)
 
     # ---- Registration ----
 
@@ -564,8 +621,12 @@ class ProviderRegistry:
 
         Max ``degrade.max_retries`` retries (so 3 attempts total, not 9). A permanent error
         is not retried; ``rate_limited`` honours ``Retry-After``; transient errors back off
-        exponentially with jitter. The host limiter is held across every attempt.
+        exponentially with jitter. The host limiter is held across every attempt. A host that
+        was tripped by an earlier rate-limited verdict short-circuits **before** the retry
+        loop — it is not retried with backoff.
         """
+        if self.limiter.is_tripped(host):
+            raise ProviderError(f"host {host} rate-limited for the rest of the run", cls=RATE_LIMITED)
         max_concurrency, min_interval_ms = self._host_budgets.get(provider.name, (2, 500))
         max_attempts = self.max_retries + 1
         attempt = 0
@@ -611,26 +672,3 @@ class ProviderRegistry:
         return out
 
 
-def retry_with_backoff(  # pragma: no cover - deprecated shim (#103/E-3)
-    fn: Callable[[], T],
-    *,
-    max_retries: int = DEFAULT_MAX_RETRIES,
-    backoff_base: float = DEFAULT_BACKOFF_BASE,
-    jitter: bool = True,
-) -> T:
-    """Deprecated: retry now lives in :meth:`ProviderRegistry.call` (#103/E-3). Kept so a
-    provider that has not been migrated yet does not silently lose retries — delete the call
-    sites, then this shim.
-    """
-    attempt = 0
-    while True:
-        try:
-            return fn()
-        except Exception:
-            attempt += 1
-            if attempt > max_retries:
-                raise
-            delay = backoff_base * (2 ** (attempt - 1))
-            if jitter:
-                delay *= 0.5 + random.random()
-            time.sleep(delay)

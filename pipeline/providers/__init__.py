@@ -11,7 +11,6 @@ from pipeline.providers.base import (
     ProviderHealth,
     ProviderRegistry,
     QuoteResult,
-    retry_with_backoff,
 )
 from pipeline.providers.coingecko import CoinGeckoProvider
 from pipeline.providers.fmp import FmpProvider
@@ -94,5 +93,4 @@ __all__ = [
     "YahooProvider",
     "build_default_providers",
     "build_registry",
-    "retry_with_backoff",
 ]

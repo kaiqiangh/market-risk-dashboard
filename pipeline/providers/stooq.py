@@ -5,6 +5,8 @@ Free, no key required; EOD data only. Direct httpx connection (browser UA to avo
 
 from __future__ import annotations
 
+from typing import Any
+
 import io
 import math
 import time
@@ -42,14 +44,22 @@ class StooqProvider(BaseProvider):
 
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
-        from pipeline.providers.base import guarded_client
+        # #103 (S-3 + #87/#100): Stooq is a browser-hostile endpoint, so the transport is
+        # curl_cffi impersonating Chrome; the S-3 outbound guard is enforced here (https,
+        # host allowlist, no redirects — the EOD CSV endpoint is direct).
+        from curl_cffi import requests as crequests
 
-        self._client = guarded_client(set(self.hosts), timeout=10.0, headers={"User-Agent": UA})
+        self._client = crequests.Session(impersonate="chrome", timeout=10.0, headers={"User-Agent": UA})
+
+    def _get(self, url: str, params: dict[str, str]) -> Any:
+        if not url.startswith("https://") or "stooq.com" not in url:
+            raise ProviderError(f"blocked: stooq outbound {url}")
+        return self._client.get(url, params=params, allow_redirects=False)
 
     def health(self) -> ProviderHealth:
         started = time.monotonic()
         try:
-            resp = self._client.get(STOOQ_URL, params={"s": "spy.us", "i": "d"})
+            resp = self._get(STOOQ_URL, {"s": "spy.us", "i": "d"})
             ok = resp.status_code == 200 and resp.text.strip().startswith("Date")
             return ProviderHealth(
                 provider=self.name, ok=ok,
@@ -64,7 +74,7 @@ class StooqProvider(BaseProvider):
             )
 
     def _fetch_csv(self, symbol: str) -> list[dict[str, float | str]]:
-        resp = self._client.get(STOOQ_URL, params={"s": _stooq_symbol(symbol), "i": "d"})
+        resp = self._get(STOOQ_URL, {"s": _stooq_symbol(symbol), "i": "d"})
         if resp.status_code != 200:
             raise ProviderError(f"{symbol}: stooq HTTP {resp.status_code}")
         text = resp.text.strip()

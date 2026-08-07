@@ -11,12 +11,8 @@ source_status is written by the Collector into metadata/sources.json.
 
 from __future__ import annotations
 
-import json
-import random
-import re
 import time
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
@@ -24,7 +20,6 @@ import feedparser
 import httpx
 
 from pipeline.config.models import NewsSource
-from pipeline.degrade import cache_max_age_hours
 from pipeline.providers.base import BaseProvider, ProviderError, ProviderHealth, guarded_client, redact
 from pipeline.utils import now_utc
 
@@ -44,27 +39,22 @@ class RssNewsProvider(BaseProvider):
         # #102: sources come from the VALIDATED news_sources config (single shape,
         # extra="forbid"); per-source `enabled` is preserved by the model.
         self.sources = [s for s in self.settings.load_news_sources_config().sources if s.enabled]
-        # S-3: outbound allowlist = the synthetic bucket + every configured source host + the rsshub relay.
-        allowed = set(self.hosts) | {"rsshub.app"} | {urlparse(s.url).hostname for s in self.sources if urlparse(s.url).hostname}
-        self._client = guarded_client(allowed, timeout=8.0, headers={"User-Agent": UA})
-        # #102: retries/backoff/jitter and the per-source cache dir come from the validated
-        # SourcesConfig.degrade (same home as ProviderRegistry — the two no longer disagree).
-        degrade = self.settings.load_sources_config().degrade
-        self.max_retries = degrade.max_retries
-        self.backoff_base = degrade.backoff_base_seconds
-        self.jitter = degrade.jitter
-        # #66: the cache cap is read from one place (pipeline.degrade.cache_max_age_hours).
-        self.cache_max_age_hours = cache_max_age_hours()
-        cache_path = Path(degrade.last_good_cache_dir)
-        self.cache_dir: Path = (
-            cache_path if cache_path.is_absolute() else self.settings.project_root / cache_path
+        # S-3: outbound allowlist = the synthetic bucket + every configured source host;
+        # sources marked `trust: relay` (rsshub.app) vouch for their redirect targets.
+        allowed = set(self.hosts) | {
+            urlparse(s.url).hostname for s in self.sources if urlparse(s.url).hostname
+        }
+        relay_hosts = {
+            urlparse(s.url).hostname for s in self.sources if s.trust == "relay" and urlparse(s.url).hostname
+        }
+        self._client = guarded_client(
+            allowed, timeout=8.0, headers={"User-Agent": UA}, relay_hosts=relay_hosts
         )
         # #102 (M-5): the news cap and the copyright-boundary summary cap are operations
         # knobs from sources.yaml:operations, not magic literals.
         operations = self.settings.load_sources_config().operations
         self.default_max_items = int(operations.news_max_items)
         self.summary_max_chars = int(operations.news_summary_max_chars)
-        self._last_attempts = 0
         # Source reachability: source_id → {"ok": bool, "error": str|None, "updated_at": str}
         self.source_status: dict[str, dict[str, Any]] = {}
 
