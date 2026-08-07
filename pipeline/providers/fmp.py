@@ -1,6 +1,10 @@
 """Earnings calendar primary source: Financial Modeling Prep free tier (architecture §1.3 frozen).
 
-250 req/day free quota is enough for ~40 tickers once daily; on failure degrades to the yfinance fallback.
+Since #83 the free tier lives on the ``/stable`` namespace — ``/api/v3/*`` returns 403
+"Legacy Endpoint" for every path, including ``earning_calendar``. The stable payload also
+renamed the fields (``eps`` → ``epsActual``) and **dropped ``time``**, so the BMO/AMC
+session signal is gone here; the Nasdaq fallback restores it. 250 req/day free quota is
+enough for one range call per day; on failure degrades to the Nasdaq fallback (#94).
 """
 
 from __future__ import annotations
@@ -17,7 +21,10 @@ from pipeline.providers.base import (
     ProviderHealth,
 )
 
-FMP_BASE = "https://financialmodelingprep.com/api/v3"
+# #83: the whole /api/v3 namespace is retired — FMP_BASE moved to /stable and the
+# earnings endpoint renamed (earning_calendar → earnings-calendar). Both verified live.
+FMP_BASE = "https://financialmodelingprep.com/stable"
+EARNINGS_ENDPOINT = f"{FMP_BASE}/earnings-calendar"
 
 
 class FmpProvider(BaseProvider):
@@ -52,31 +59,31 @@ class FmpProvider(BaseProvider):
             )
 
     def get_earnings_calendar(self, start: str, end: str) -> list[dict[str, Any]]:
+        """Earnings rows in the shared normalized shape (symbol/date/estimates/session).
+
+        ``session`` is always None here — the stable payload dropped ``time`` (#83); the
+        Nasdaq fallback supplies BMO/AMC. Retries live in ProviderRegistry.call (#103/E-3).
+        """
         if not self.api_key:
             raise ProviderError("FMP: missing DATA_FMP_API_KEY (local .env)")
 
-        def _fetch() -> dict[str, Any]:
-            resp = self._client.get(
-                f"{FMP_BASE}/earning_calendar",
-                params={"from": start, "to": end, "apikey": self.api_key},
+        resp = self._client.get(
+            EARNINGS_ENDPOINT,
+            params={"from": start, "to": end, "apikey": self.api_key},
+        )
+        if resp.status_code != 200:
+            raise ProviderError.from_exception(
+                httpx.HTTPStatusError(
+                    f"FMP calendar HTTP {resp.status_code}", request=resp.request, response=resp
+                ),
+                detail=f"FMP calendar HTTP {resp.status_code}",
             )
-            if resp.status_code != 200:
-                raise ProviderError.from_exception(
-                    httpx.HTTPStatusError(
-                        f"FMP calendar HTTP {resp.status_code}", request=resp.request, response=resp
-                    ),
-                    detail=f"FMP calendar HTTP {resp.status_code}",
-                )
-            data = resp.json()
-            if not isinstance(data, list):
-                raise ProviderError("FMP calendar unexpected payload")
-            return {"items": data}
-
-        # #103/E-3: retries live in ProviderRegistry.call, not here.
-        result = _fetch()
+        data = resp.json()
+        if not isinstance(data, list):
+            raise ProviderError("FMP calendar unexpected payload")
 
         items: list[dict[str, Any]] = []
-        for row in result["items"]:
+        for row in data:
             symbol = str(row.get("symbol", "")).upper()
             date = str(row.get("date", ""))
             if not symbol or not date:
@@ -86,9 +93,12 @@ class FmpProvider(BaseProvider):
                     "symbol": symbol,
                     "date": date,
                     "eps_estimate": _f(row.get("epsEstimated")),
-                    "eps_actual": _f(row.get("eps")),
+                    # stable renamed `eps` → `epsActual` (#83) — reading the old key would
+                    # silently produce eps_actual=None forever.
+                    "eps_actual": _f(row.get("epsActual")),
                     "revenue_estimate": _f(row.get("revenueEstimated")),
-                    "time": row.get("time") or "AMC",
+                    "revenue_actual": _f(row.get("revenueActual")),
+                    "session": None,
                 }
             )
         return items

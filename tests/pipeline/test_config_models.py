@@ -112,7 +112,10 @@ def test_build_default_providers_reads_config_order_and_enabled() -> None:
 
     # Order within a domain is config priority, smallest first.
     assert by_domain["quotes"] == [("yfinance", 1), ("stooq", 2)]
-    assert by_domain["calendar"] == [("fmp", 1), ("yfinance_calendar", 2)]
+    # #94 (uses #83): yfinance_calendar retired → Nasdaq fallback; economic is a new
+    # domain (FRED releases + FOMC) with economic events first-class alongside earnings.
+    assert by_domain["calendar"] == [("fmp", 1), ("nasdaq", 2)]
+    assert by_domain["economic"] == [("fred_calendar", 1)]
     # binance_public is enabled: false in config — never constructed.
     assert all(name != "binance_public" for name, _ in by_domain.get("crypto", []))
     assert by_domain["crypto"] == [("coingecko", 1)]

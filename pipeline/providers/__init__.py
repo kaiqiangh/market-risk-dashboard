@@ -15,9 +15,11 @@ from pipeline.providers.base import (
 from pipeline.providers.coingecko import CoinGeckoProvider
 from pipeline.providers.fmp import FmpProvider
 from pipeline.providers.fred import FredProvider
+from pipeline.providers.fred_calendar import FredCalendarProvider
+from pipeline.providers.nasdaq import NasdaqCalendarProvider
 from pipeline.providers.rss_news import RssNewsProvider
 from pipeline.providers.stooq import StooqProvider
-from pipeline.providers.yahoo import YahooCalendarProvider, YahooProvider
+from pipeline.providers.yahoo import YahooProvider
 from pipeline.settings import Settings
 
 #: config name → provider class. The name in config/sources.yaml:providers is the class
@@ -30,7 +32,8 @@ _PROVIDER_CLASSES: dict[str, type[BaseProvider]] = {
     "fred": FredProvider,
     "coingecko": CoinGeckoProvider,
     "fmp": FmpProvider,
-    "yfinance_calendar": YahooCalendarProvider,
+    "nasdaq": NasdaqCalendarProvider,
+    "fred_calendar": FredCalendarProvider,
     "akshare": AkshareProvider,
     "rss_news": RssNewsProvider,
 }
@@ -81,15 +84,16 @@ __all__ = [
     "BaseProvider",
     "CoinGeckoProvider",
     "FmpProvider",
+    "FredCalendarProvider",
     "FredProvider",
     "HistoryResult",
+    "NasdaqCalendarProvider",
     "ProviderError",
     "ProviderHealth",
     "ProviderRegistry",
     "QuoteResult",
     "RssNewsProvider",
     "StooqProvider",
-    "YahooCalendarProvider",
     "YahooProvider",
     "build_default_providers",
     "build_registry",

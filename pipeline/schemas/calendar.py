@@ -16,7 +16,10 @@ EventImportance = Literal["high", "medium", "low"]
 
 
 class CalendarEvent(ContractModel):
-    id: str = Field(min_length=1, description="stable dedupe key, e.g. econ-CPI-2026-08-13")
+    #: Stable dedupe key (#94): earnings-{SYMBOL}-{date} (shared by FMP + Nasdaq),
+    #: econ-fred-{release_id}-{date}, econ-fomc-{date}. The collector dedupes by id —
+    #: the same event from two sources can never double-publish.
+    id: str = Field(min_length=1, description="stable dedupe key, e.g. econ-fred-10-2026-08-12")
     type: EventType
     title: str = Field(min_length=1)
     country: str | None = None

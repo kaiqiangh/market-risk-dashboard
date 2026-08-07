@@ -154,54 +154,6 @@ class YahooProvider(BaseProvider):
         except Exception as exc:  # noqa: BLE001
             raise ProviderError(f"{symbol}: yfinance history_range failed: {exc}") from exc
 
-    # Earnings calendar fallback (when the FMP primary source fails)
-    def get_earnings_calendar(self, start: str, end: str) -> list[dict[str, str | None]]:
-        """yfinance earnings calendar fallback: fetch earnings dates per US equity, filtered to the window."""
-        items: list[dict[str, str | None]] = []
-        errors: list[str] = []
-        start_dt = _parse_date(start)
-        end_dt = _parse_date(end)
-        for symbol in _default_symbols(self.settings):
-            try:
-                cal = yf.Ticker(symbol).get_earnings_dates(limit=4)
-                if cal is None or len(cal) == 0:
-                    continue
-                for idx in cal.index:
-                    date = idx
-                    if hasattr(idx, "date"):
-                        date = idx.date()
-                    date_str = date.isoformat() if hasattr(date, "isoformat") else str(date)
-                    if start_dt and end_dt and start_dt <= str(date_str)[:10] <= end_dt:
-                        items.append({"symbol": symbol, "date": str(date_str)[:10], "eps_estimate": None, "eps_actual": None, "revenue_estimate": None, "time": "AMC"})
-            except Exception as exc:  # noqa: BLE001
-                errors.append(f"{symbol}: {exc}")
-                continue
-        if not items and errors:
-            raise ProviderError(f"yfinance calendar fallback failed: {'; '.join(errors[:3])}")
-        return items
-
-
-def _default_symbols(settings=None) -> list[str]:
-    """US equity symbols for the earnings-calendar fallback, from the universe (D-8/#102).
-
-    This used to be a hardcoded five-ticker list that had already drifted from
-    config/universe.yaml; the universe is now the single home for the pool.
-    """
-    from pipeline.universe import AssetUniverse
-
-    return AssetUniverse.load(settings).symbols("US")
-
-
-def _parse_date(value: str) -> str | None:
-    return value[:10] if value else None
-
-
-class YahooCalendarProvider(YahooProvider):
-    """Earnings calendar fallback Provider (registered to the calendar domain, architecture §1.3 fmp→yfinance)."""
-
-    name = "yfinance_calendar"
-    domain = "calendar"
-
 
 def _pct(latest: float, prev: float) -> float | None:
     if prev is None or math.isnan(prev) or prev == 0:
