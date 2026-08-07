@@ -3,7 +3,7 @@ change/status, memoised bounded FRED fetches, volatility group, history bundles 
 
 from __future__ import annotations
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -112,9 +112,11 @@ class TestCollector:
         assert by_id["PAYEMS"]["units"] == "chg"
         # Rates pass no transform.
         assert by_id["DGS10"]["units"] == "lin"
-        # #84 §4: every request bounded to the 5y window.
+        # #84 §4: every request bounded to the 5y window. The collector anchors on the UTC
+        # date (not the runner-local one) — the assertion must match or it flakes on TZ.
+        expected_start = (datetime.now(timezone.utc).date() - timedelta(days=5 * 365)).isoformat()
         for sid, kwargs in by_id.items():
-            assert kwargs["start"] == (date.today() - timedelta(days=5 * 365)).isoformat(), sid
+            assert kwargs["start"] == expected_start, sid
 
     def test_dff_is_fetched_once(self, tmp_path: Path, monkeypatch) -> None:
         """#84 §4: DFF used to be fetched twice per run (roster + FedWatch anchor)."""

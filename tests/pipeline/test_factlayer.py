@@ -314,3 +314,94 @@ def test_market_summary_carries_sector_performance_and_prompt_labels_it() -> Non
     prompt_zh = _render_facts(facts, "zh-CN")
     assert "板块表现（1日）" in prompt_zh
     assert "半导体龙头: +2.50%" in prompt_zh
+
+
+# -------------------------------------------------------------------------------------
+# #125: full-run-path fact-layer verdict reason (the never-tested risk/fact write path)
+# -------------------------------------------------------------------------------------
+
+
+def _full_run_results(**overrides: Any) -> dict[str, Any]:
+    """A `results` dict for `_run_risk_and_write` built entirely from factories.
+
+    Every dataset is a valid synthetic envelope; the degraded flag that matters (#125) is
+    `news_degraded`, which the caller flips. This mirrors what a real `--full` run feeds in
+    after collection (payloads + per-domain collector meta).
+    """
+    meta = {
+        "provider": {"provider": "yfinance", "used_fallback": False, "from_cache": False},
+        "degraded": False,
+        "data_quality": 1.0,
+    }
+    results = {
+        "macro": make_envelope("macro")["payload"],
+        "equities": make_envelope("equities")["payload"],
+        "sectors": make_envelope("sectors")["payload"],
+        "crypto": make_envelope("crypto")["payload"],
+        "commodities": make_envelope("commodities")["payload"],
+        "news": make_envelope("news")["payload"],
+        "calendar": make_envelope("calendar")["payload"],
+        "market_meta": dict(meta, provider=dict(meta["provider"], provider="yfinance")),
+        "macro_meta": dict(meta, provider=dict(meta["provider"], provider="fred")),
+        "news_meta": dict(meta, provider=dict(meta["provider"], provider="rss_news")),
+        "calendar_meta": dict(meta, provider=dict(meta["provider"], provider="fmp")),
+        "news_degraded": False,
+        "calendar_degraded": False,
+        "provider_status": {},
+        "histories": {},
+        "series_history": {},
+        "qualities": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+    }
+    results.update(overrides)
+    return results
+
+
+def _full_run_factlayer(data_dir: Path, monkeypatch: pytest.MonkeyPatch, **overrides: Any) -> dict[str, Any]:
+    """Drive the real `_run_risk_and_write` against a tmp data dir and return the published
+    `factlayer` freshness record. Closes the #99 blind spot: the full risk/fact write path
+    is what actually broke `--full` on 08-07 morning."""
+    import pipeline.run as run_module
+    from pipeline.storage.writer import StorageWriter
+
+    writer = StorageWriter(data_dir)
+    monkeypatch.setattr(
+        run_module, "settings",
+        Settings(_env_file=None, data_dir=data_dir, artifacts_dir=data_dir / "artifacts"),
+    )
+    ok, error = run_module._run_risk_and_write(_full_run_results(**overrides), writer, "test-full")
+    assert ok, f"full-path write failed: {error}"
+    freshness = json.loads((data_dir / "metadata" / "freshness.json").read_text(encoding="utf-8"))
+    return freshness["datasets"]["factlayer"]
+
+
+def test_full_path_factlayer_reason_names_degraded_news_input(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """#125: when news (an input) is degraded, the fact-layer reason is `input_dataset_unhealthy`
+    naming the culprit — not the input's own `provider_http_error`, which would falsely imply
+    the fact layer itself hit a provider error. This is exactly the 17:14Z production state:
+    news provider_http_error → factlayer must say input_dataset_unhealthy, not the same code.
+    """
+    record = _full_run_factlayer(
+        tmp_path / "data", monkeypatch,
+        news_degraded=True,
+        news_meta={
+            "provider": {"provider": "rss_news", "used_fallback": False, "from_cache": False},
+            "degraded": True,
+            "data_quality": 1.0,
+        },
+    )
+    assert record["status"] == "degraded"
+    assert record["reason"]["code"] == "input_dataset_unhealthy"
+    assert "news" in record["reason"]["detail"]
+
+
+def test_full_path_factlayer_healthy_reason_when_inputs_healthy(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """#125 control: with no degraded input, the fact-layer verdict never fabricates
+    `input_dataset_unhealthy` (the factories' generated_at predates the wall clock by days,
+    so the time ladder yields `stale`/`interval_exceeded` — deterministic and fine)."""
+    record = _full_run_factlayer(tmp_path / "data", monkeypatch)
+    assert record["status"] != "degraded"
+    assert record["reason"]["code"] != "input_dataset_unhealthy"

@@ -784,9 +784,20 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         # calendar) — the old single global flag made an RSS outage degrade the market too,
         # and a market/macro-only flag would silently under-report a news outage on rebuild.
         factlayer_input_degraded = risk_input_degraded or news_degraded or calendar_degraded
+        # #125: the aggregate's own reason must be `input_dataset_unhealthy` (closed
+        # vocabulary, envelope.py) naming its culprits — NOT the worst input's own code
+        # (e.g. news `provider_http_error`), which would falsely imply the fact layer hit
+        # a provider error. Mirrors the fact-layer rebuild path: culprits = the inputs at
+        # the aggregated worst status, so a merely stale dataset is not blamed for a
+        # degraded fact layer.
+        facts_status = aggregate_freshness(facts.data_freshness.values())
+        culprits = sorted(k for k, v in facts.data_freshness.items() if str(v) == facts_status and facts_status != "fresh")
         facts_verdict = finalize_freshness(
             "factlayer", str(risk_env.generated_at), factlayer_input_degraded,
             row_count=len(facts.data_freshness) or None,
+            error_code="input_dataset_unhealthy" if factlayer_input_degraded else None,
+            detail=f"aggregated from inputs; {facts_status}: {', '.join(culprits) or 'unknown'}"[:200]
+            if factlayer_input_degraded else "",
         )
         status, reason = _aggregate_outcome(facts_verdict, facts.data_freshness)
         outcomes.record("factlayer", status, reason, provider="fact_layer")
