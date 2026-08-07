@@ -29,12 +29,98 @@ export const macroFixture = {
         status: "fresh",
       },
     ],
-    credit: [],
-    inflation: [],
-    labor: [],
-    liquidity: [],
-    fx: [],
+    credit: [
+      {
+        key: "bamlh0a0hym2",
+        label: "ICE BofA US High Yield OAS",
+        value: 3.42,
+        previous: 3.5,
+        change_1m: -0.08,
+        unit: "pct",
+        source: "FRED",
+        updated_at: "2026-08-03T09:30:00Z",
+        status: "fresh",
+      },
+    ],
+    // #96: VIX lives in its own volatility group, not under rates.
+    volatility: [
+      {
+        key: "vixcls",
+        label: "CBOE Volatility Index (VIX)",
+        value: 16.8,
+        previous: 17.2,
+        change_1m: -2.4,
+        unit: "index",
+        source: "FRED",
+        updated_at: "2026-08-03T09:30:00Z",
+        status: "fresh",
+      },
+    ],
+    inflation: [
+      {
+        key: "cpiaucsl",
+        label: "CPI All Urban Consumers (YoY)",
+        value: 3.46,
+        previous: 3.5,
+        change_1m: -0.04,
+        unit: "pct",
+        source: "FRED",
+        updated_at: "2026-07-01T00:00:00Z",
+        status: "fresh",
+      },
+    ],
+    labor: [
+      {
+        key: "unrate",
+        label: "Unemployment Rate",
+        value: 4.2,
+        previous: 4.3,
+        change_1m: -0.1,
+        unit: "pct",
+        source: "FRED",
+        updated_at: "2026-07-01T00:00:00Z",
+        status: "fresh",
+      },
+    ],
+    liquidity: [
+      {
+        key: "walcl",
+        label: "Fed Total Assets",
+        value: 6600000,
+        previous: 6580000,
+        change_1m: 20000,
+        unit: "usd",
+        source: "FRED",
+        updated_at: "2026-07-30T00:00:00Z",
+        status: "fresh",
+      },
+    ],
+    fx: [
+      {
+        key: "dtwexbgs",
+        label: "Nominal Broad Dollar Index",
+        value: 118.6,
+        previous: 118.1,
+        change_1m: 0.5,
+        unit: "index",
+        source: "FRED",
+        updated_at: "2026-08-01T00:00:00Z",
+        status: "fresh",
+      },
+    ],
     fedwatch: null,
+  },
+};
+
+/** history/macro/fx.30d.json — sparse column-oriented bundle (#96/#84 §3). */
+export const macroHistoryFxFixture = {
+  DTWEXBGS: {
+    d: ["2026-07-03", "2026-07-06", "2026-07-07"],
+    v: [118.1, 118.3, 118.6],
+  },
+  DEXUSEU: {
+    d: ["2026-07-03", "2026-07-06", "2026-07-07"],
+    v: [1.0842, 1.0831, 1.0824],
   },
 };
 

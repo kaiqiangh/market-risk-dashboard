@@ -17,15 +17,21 @@ import { collectUnknownFields } from "@/lib/unknownFields";
  * All files are validated with Zod first; on failure throw SchemaError → page renders ErrorState (architecture §8.8).
  */
 
+/** Macro group names (must mirror pipeline/collectors/macro.py SERIES_GROUPS keys, #96). */
+export type MacroGroupName = "rates" | "credit" | "volatility" | "inflation" | "labor" | "liquidity" | "fx";
+
 export type DatasetOptions = {
   lang?: "zh-CN" | "en";
-  slice?: "30d" | "90d" | "daily";
+  /** History slice: classic per-key slices (risk/market) or the macro per-GROUP bundles
+   * (`{group}.30d`/`{group}.90d`, #96/#84 §3) — constrained to real groups. */
+  slice?: "30d" | "90d" | "daily" | `${MacroGroupName}.30d` | `${MacroGroupName}.90d`;
 };
 
 export type MetadataKey = "sources" | "freshness" | "schema-version" | "translations";
 
-/** History series key (architecture §1.7: history/risk/*, history/market/*) */
-export type HistoryKey = "market" | "risk";
+/** History series key (architecture §1.7: history/risk/*, history/market/*).
+ * "macro" is the per-GROUP 30d/90d bundle (history/macro/{group}.{slice}.json, #96/#84 §3). */
+export type HistoryKey = "market" | "risk" | "macro";
 
 export class SchemaError extends Error {
   readonly key: string;

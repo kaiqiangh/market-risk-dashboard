@@ -510,6 +510,7 @@ export const MacroDataset = z
   .object({
     rates: z.array(MacroIndicator).default([]),
     credit: z.array(MacroIndicator).default([]),
+    volatility: z.array(MacroIndicator).default([]),
     inflation: z.array(MacroIndicator).default([]),
     labor: z.array(MacroIndicator).default([]),
     liquidity: z.array(MacroIndicator).default([]),

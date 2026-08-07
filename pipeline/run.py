@@ -620,6 +620,13 @@ def _run_collection(command: str) -> dict[str, Any]:
         results["degraded"].extend(macro_meta["degraded"])
         results["provider_status"].update(macro_meta["provider_status"])
         results["series_history"] = macro_meta.get("series_history", {})
+        # #96 (shape per #84 §3): per-series append-only archive + per-group 30d/90d UI
+        # bundles + manifest. Only when there is history to persist.
+        if results["series_history"]:
+            from pipeline.collectors.macro import SERIES_GROUPS
+            from pipeline.storage.macro_history import write_macro_history
+
+            write_macro_history(writer, results["series_history"], SERIES_GROUPS)
         results["qualities"].append(macro_meta["data_quality"])
         results["durations"]["macro"] = time.monotonic() - t0
 
