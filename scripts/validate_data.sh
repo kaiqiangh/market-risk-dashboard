@@ -30,6 +30,12 @@ if [[ -z "$PY" ]]; then
   exit 1
 fi
 
+# Secret gate (S-1/#92): no configured API key (pattern or literal) may reach the
+# published tree or the run logs. Runs before the data checks so a leak fails loudly.
+if command -v node >/dev/null 2>&1; then
+  node scripts/scan-secrets.mjs --root "$ROOT" || exit 1
+fi
+
 # Full validation (Pydantic available)
 if "$PY" -c "import pydantic, yaml, pydantic_settings" >/dev/null 2>&1; then
   exec "$PY" -m pipeline.validation.ci_checks "$@"

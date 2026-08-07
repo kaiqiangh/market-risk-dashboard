@@ -25,7 +25,7 @@ import httpx
 
 from pipeline.config.models import NewsSource
 from pipeline.degrade import cache_max_age_hours
-from pipeline.providers.base import BaseProvider, ProviderError, ProviderHealth
+from pipeline.providers.base import BaseProvider, ProviderError, ProviderHealth, guarded_client, redact
 from pipeline.utils import now_utc
 
 UA = (
@@ -37,13 +37,16 @@ UA = (
 class RssNewsProvider(BaseProvider):
     name = "rss_news"
     domain = "news"
+    hosts = ("rss",)
 
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
         # #102: sources come from the VALIDATED news_sources config (single shape,
         # extra="forbid"); per-source `enabled` is preserved by the model.
         self.sources = [s for s in self.settings.load_news_sources_config().sources if s.enabled]
-        self._client = httpx.Client(timeout=8.0, headers={"User-Agent": UA}, follow_redirects=True)
+        # S-3: outbound allowlist = the synthetic bucket + every configured source host + the rsshub relay.
+        allowed = set(self.hosts) | {"rsshub.app"} | {urlparse(s.url).hostname for s in self.sources if urlparse(s.url).hostname}
+        self._client = guarded_client(allowed, timeout=8.0, headers={"User-Agent": UA})
         # #102: retries/backoff/jitter and the per-source cache dir come from the validated
         # SourcesConfig.degrade (same home as ProviderRegistry — the two no longer disagree).
         degrade = self.settings.load_sources_config().degrade
@@ -106,13 +109,14 @@ class RssNewsProvider(BaseProvider):
                 if not normalized:
                     raise ProviderError(f"RSS source returned no valid entries ({invalid_entries} invalid)")
                 fetched_at = now_utc()
-                self._save_source_cache(source_id, fetched_at, normalized)
+                # #103/D-6: no per-source cache here — the registry's last-good cache and the
+                # single retry layer cover the whole news domain. Per-source health is still
+                # reported for the status page.
                 self.source_status[source_id] = {
                     "ok": True,
                     "degraded": False,
                     "from_cache": False,
                     "error": None,
-                    "attempts": self._last_attempts,
                     "item_count": len(normalized),
                     "invalid_entries": invalid_entries,
                     "last_good_at": fetched_at,
@@ -120,82 +124,37 @@ class RssNewsProvider(BaseProvider):
                 }
                 items.extend(normalized)
             except Exception as exc:  # noqa: BLE001 - a single source failure does not interrupt (degradation)
-                cached = self._load_source_cache(source_id)
-                status = {
+                self.source_status[source_id] = {
                     "ok": False,
                     "degraded": True,
-                    "from_cache": bool(cached),
-                    "error": f"{type(exc).__name__}: {exc}",
-                    "attempts": self._last_attempts,
+                    "from_cache": False,
+                    "error": redact(f"{type(exc).__name__}: {exc}"),
                     "updated_at": now_utc(),
                 }
-                if cached:
-                    cached_items, cached_at, age_hours = cached
-                    items.extend(cached_items[:max_items])
-                    status.update(
-                        last_good_at=cached_at,
-                        cache_age_hours=round(age_hours, 2),
-                        item_count=len(cached_items),
-                    )
-                self.source_status[source_id] = status
-                errors.append(f"{source_id}: {type(exc).__name__}: {exc}")
+                errors.append(f"{source_id}: {redact(str(exc))}")
                 continue
         if not items and errors:
             raise ProviderError("RSS all sources failed: " + "; ".join(errors))
         return items
 
     def _fetch_feed(self, url: str) -> list[Any]:
-        for attempt in range(self.max_retries + 1):
-            self._last_attempts = attempt + 1
-            try:
-                resp = self._client.get(url)
-            except httpx.RequestError:
-                if attempt >= self.max_retries:
-                    raise
-                _sleep_before_retry(attempt, self.backoff_base, self.jitter)
-                continue
-            if resp.status_code != 200:
-                retryable = resp.status_code in {408, 425, 429} or 500 <= resp.status_code <= 599
-                if retryable and attempt < self.max_retries:
-                    _sleep_before_retry(attempt, self.backoff_base, self.jitter)
-                    continue
-                raise ProviderError(f"RSS HTTP {resp.status_code}")
-            if not resp.content.strip():
-                raise ProviderError("RSS empty response body")
-            feed = feedparser.parse(resp.content)
-            if feed.bozo and not feed.entries:
-                raise ProviderError(f"RSS parse failed: {feed.bozo_exception}")
-            return feed.entries
-        raise ProviderError("RSS request exhausted retries")
-
-    def _source_cache_path(self, source_id: str) -> Path:
-        safe_id = re.sub(r"[^A-Za-z0-9_.-]+", "_", source_id)
-        return self.cache_dir / f"rss__{safe_id}.json"
-
-    def _save_source_cache(self, source_id: str, fetched_at: str, items: list[dict[str, Any]]) -> None:
+        """Single-attempt fetch (#103/D-6): classification at the one boundary, retries in
+        ProviderRegistry.call — the per-source retry loop and per-source cache are gone."""
         try:
-            self.cache_dir.mkdir(parents=True, exist_ok=True)
-            self._source_cache_path(source_id).write_text(
-                json.dumps({"fetched_at": fetched_at, "items": items}, ensure_ascii=False), encoding="utf-8"
+            resp = self._client.get(url)
+        except httpx.RequestError as exc:
+            raise ProviderError.from_exception(exc, detail=f"RSS {url}") from exc
+        if resp.status_code != 200:
+            raise ProviderError.from_exception(
+                httpx.HTTPStatusError(f"RSS HTTP {resp.status_code}", request=resp.request, response=resp),
+                detail=f"RSS HTTP {resp.status_code}",
             )
-        except OSError:
-            pass
-
-    def _load_source_cache(self, source_id: str) -> tuple[list[dict[str, Any]], str, float] | None:
-        path = self._source_cache_path(source_id)
-        try:
-            cached = json.loads(path.read_text(encoding="utf-8"))
-            fetched_at = str(cached["fetched_at"])
-            cached_items = cached["items"]
-            if not isinstance(cached_items, list):
-                return None
-            fetched = datetime.fromisoformat(fetched_at.replace("Z", "+00:00"))
-            age_hours = max(0.0, (datetime.now(timezone.utc) - fetched).total_seconds() / 3600.0)
-            if age_hours > self.cache_max_age_hours:
-                return None
-            return cached_items, fetched_at, age_hours
-        except (KeyError, TypeError, ValueError, json.JSONDecodeError, OSError):
-            return None
+        if not resp.content.strip():
+            raise ProviderError("RSS empty response body")
+        feed = feedparser.parse(resp.content)
+        if feed.bozo and not feed.entries:
+            raise ProviderError(f"RSS parse failed: {feed.bozo_exception}")
+        return feed.entries
 
 
 def _clean_text(value: str) -> str:
@@ -238,13 +197,6 @@ def _normalize_entry(entry: Any, source: "NewsSource", source_id: str, max_chars
         "summary": _make_summary(entry, max_chars=max_chars),
         "category_hint": source.category,
     }
-
-
-def _sleep_before_retry(attempt: int, backoff_base: float, jitter: bool) -> None:
-    delay = backoff_base * (2**attempt)
-    if jitter:
-        delay *= 0.5 + random.random()
-    time.sleep(delay)
 
 
 def _make_summary(entry: Any, max_chars: int = 160) -> str:

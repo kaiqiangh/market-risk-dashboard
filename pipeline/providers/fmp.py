@@ -15,7 +15,6 @@ from pipeline.providers.base import (
     BaseProvider,
     ProviderError,
     ProviderHealth,
-    retry_with_backoff,
 )
 
 FMP_BASE = "https://financialmodelingprep.com/api/v3"
@@ -24,11 +23,14 @@ FMP_BASE = "https://financialmodelingprep.com/api/v3"
 class FmpProvider(BaseProvider):
     name = "fmp"
     domain = "calendar"
+    hosts = ("financialmodelingprep.com",)
 
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
         self.api_key = self.settings.fmp_api_key
-        self._client = httpx.Client(timeout=15.0)
+        from pipeline.providers.base import guarded_client
+
+        self._client = guarded_client(set(self.hosts), timeout=15.0)
 
     def health(self) -> ProviderHealth:
         if not self.api_key:
@@ -59,16 +61,19 @@ class FmpProvider(BaseProvider):
                 params={"from": start, "to": end, "apikey": self.api_key},
             )
             if resp.status_code != 200:
-                raise ProviderError(f"FMP calendar HTTP {resp.status_code}")
+                raise ProviderError.from_exception(
+                    httpx.HTTPStatusError(
+                        f"FMP calendar HTTP {resp.status_code}", request=resp.request, response=resp
+                    ),
+                    detail=f"FMP calendar HTTP {resp.status_code}",
+                )
             data = resp.json()
             if not isinstance(data, list):
                 raise ProviderError("FMP calendar unexpected payload")
             return {"items": data}
 
-        try:
-            result = retry_with_backoff(_fetch, max_retries=2, backoff_base=1.0, jitter=True)
-        except Exception as exc:  # noqa: BLE001
-            raise ProviderError(f"FMP calendar: {exc}") from exc
+        # #103/E-3: retries live in ProviderRegistry.call, not here.
+        result = _fetch()
 
         items: list[dict[str, Any]] = []
         for row in result["items"]:

@@ -38,10 +38,13 @@ def _stooq_symbol(symbol: str) -> str:
 class StooqProvider(BaseProvider):
     name = "stooq"
     domain = "quotes"
+    hosts = ("stooq.com",)
 
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
-        self._client = httpx.Client(timeout=10.0, headers={"User-Agent": UA}, follow_redirects=True)
+        from pipeline.providers.base import guarded_client
+
+        self._client = guarded_client(set(self.hosts), timeout=10.0, headers={"User-Agent": UA})
 
     def health(self) -> ProviderHealth:
         started = time.monotonic()

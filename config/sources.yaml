@@ -32,24 +32,26 @@ expectations:
 # Provider registry (smaller priority number = higher priority). LIVE config since #102:
 # build_default_providers() constructs exactly these providers, in this order, skipping
 # enabled: false (C-3). `kind` is descriptive (primary/fallback); the effective order is
-# `priority`.
+# `priority`. `max_concurrency`/`min_interval_ms` are the per-host token-bucket budget for
+# #103's host rate limiter — Yahoo is browser-hostile (TLS-fingerprint gating per #87), so it
+# carries the tightest budget.
 providers:
   quotes:
-    - { name: yfinance, priority: 1, kind: primary }
-    - { name: stooq, priority: 2, kind: fallback }
+    - { name: yfinance, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 1200 }
+    - { name: stooq, priority: 2, kind: fallback, max_concurrency: 2, min_interval_ms: 2000 }
   macro:
-    - { name: fred, priority: 1, kind: primary }
+    - { name: fred, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 600 }
   crypto:
-    - { name: coingecko, priority: 1, kind: primary }
+    - { name: coingecko, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 400 }
     # Not implemented yet — the disabled entry is inert (never constructed), not a typo gate.
     - { name: binance_public, priority: 2, kind: fallback, enabled: false }
   calendar:
-    - { name: fmp, priority: 1, kind: primary }
-    - { name: yfinance_calendar, priority: 2, kind: fallback }
+    - { name: fmp, priority: 1, kind: primary, max_concurrency: 1, min_interval_ms: 1000 }
+    - { name: yfinance_calendar, priority: 2, kind: fallback, max_concurrency: 2, min_interval_ms: 1200 }
   a_share:
-    - { name: akshare, priority: 1, kind: primary }
+    - { name: akshare, priority: 1, kind: primary, max_concurrency: 2, min_interval_ms: 800 }
   news:
-    - { name: rss_news, priority: 1, kind: primary }
+    - { name: rss_news, priority: 1, kind: primary, max_concurrency: 4, min_interval_ms: 400 }
 
 # Fallback chain (architecture §1.4)
 degrade:

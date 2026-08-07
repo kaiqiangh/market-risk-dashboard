@@ -17,7 +17,6 @@ from pipeline.providers.base import (
     ProviderError,
     ProviderHealth,
     QuoteResult,
-    retry_with_backoff,
 )
 from pipeline.utils import now_utc
 
@@ -31,6 +30,7 @@ def _to_ak_symbol(symbol: str) -> tuple[str, str]:
 class AkshareProvider(BaseProvider):
     name = "akshare"
     domain = "a_share"
+    hosts = ("push2his.eastmoney.com",)
 
     def health(self) -> ProviderHealth:
         started = time.monotonic()
@@ -67,11 +67,11 @@ class AkshareProvider(BaseProvider):
             return df
 
         try:
-            # akshare failures are mostly persistent network/anti-scraping issues (ProxyError);
-            # retrying is pointless → no retry, fast degrade
-            df = retry_with_backoff(_fetch, max_retries=0, backoff_base=0.0, jitter=False)
+            # #103/E-3: no nested retry (akshare failures are mostly persistent
+            # ProxyError) — retries/classification live in ProviderRegistry.call.
+            df = _fetch()
         except Exception as exc:  # noqa: BLE001
-            raise ProviderError(f"{symbol}: akshare history failed: {exc}") from exc
+            raise ProviderError.from_exception(exc, detail=f"{symbol}: akshare history failed") from exc
 
         rows: list[dict[str, Any]] = []
         for _, row in df.iterrows():

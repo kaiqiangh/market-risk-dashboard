@@ -836,7 +836,9 @@ def test_a_degraded_run_that_returned_nothing_is_reported_as_failed(
 
     monkeypatch.setattr(run_mod, "_run_collection", _empty_collection)
 
-    assert run_mod.main(["--market-only"]) == 0
+    # E-5: a run where every dataset ended missing exits non-zero — the scheduled task must
+    # be able to see the failure in the exit status, not only in the report.
+    assert run_mod.main(["--market-only"]) == 1
 
     report = json.loads(sorted((artifacts_dir / "logs").glob("run-report-*.json"))[0].read_text(encoding="utf-8"))
     assert set(report["failed_datasets"]) == {"equities", "crypto", "sectors"}

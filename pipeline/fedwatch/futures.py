@@ -6,11 +6,7 @@ On rate limiting, raise ProviderError → degradation chain (FedWatch absence do
 
 from __future__ import annotations
 
-import time
-
-import httpx
-
-from pipeline.providers.base import ProviderError, retry_with_backoff
+from pipeline.providers.base import ProviderError
 
 YAHOO_CHART = "https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
 UA = (
@@ -20,21 +16,31 @@ UA = (
 
 
 def fetch_contract_price(symbol: str, timeout: float = 12.0) -> float | None:
-    """Fetch the most recent settlement price of a single ZQ contract (100 − price = implied rate)."""
-    with httpx.Client(timeout=timeout, headers={"User-Agent": UA}) as client:
+    """Fetch the most recent settlement price of a single ZQ contract (100 − price = implied rate).
 
-        def _fetch() -> dict:
-            resp = client.get(YAHOO_CHART.format(symbol=symbol), params={"interval": "1d", "range": "5d"})
-            if resp.status_code == 429:
-                raise ProviderError(f"Yahoo chart {symbol}: 429 rate limited")
-            if resp.status_code != 200:
-                raise ProviderError(f"Yahoo chart {symbol}: HTTP {resp.status_code}")
-            return resp.json()
+    #87/#103: Yahoo's 429s are TLS-client-fingerprint gating, not rate limiting — so this
+    talks to the chart endpoint with curl_cffi impersonating Chrome, and #103/E-3 removed the
+    nested retry (FedWatch absence degrades the macro dataset; it never blocks the pipeline).
+    """
+    from curl_cffi import requests as crequests
 
-        try:
-            data = retry_with_backoff(_fetch, max_retries=1, backoff_base=1.0, jitter=True)
-        except Exception as exc:  # noqa: BLE001
-            raise ProviderError(f"Yahoo chart {symbol}: {exc}") from exc
+    try:
+        resp = crequests.get(
+            YAHOO_CHART.format(symbol=symbol),
+            params={"interval": "1d", "range": "5d"},
+            headers={"User-Agent": UA},
+            timeout=timeout,
+            impersonate="chrome",
+        )
+        if resp.status_code == 429:
+            raise ProviderError(f"Yahoo chart {symbol}: 429 rate limited", cls="rate_limited")
+        if resp.status_code != 200:
+            raise ProviderError(f"Yahoo chart {symbol}: HTTP {resp.status_code}")
+        data = resp.json()
+    except ProviderError:
+        raise
+    except Exception as exc:  # noqa: BLE001
+        raise ProviderError.from_exception(exc, detail=f"Yahoo chart {symbol}: {exc}") from exc
 
     try:
         result = data.get("chart", {}).get("result", [])[0]

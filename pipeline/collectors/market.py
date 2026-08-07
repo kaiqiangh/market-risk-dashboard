@@ -6,6 +6,7 @@ Any Provider failure → degradation chain → degraded, does not interrupt.
 
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 from pipeline.degrade import degraded_quality
@@ -49,10 +50,12 @@ class MarketCollector:
         self.degraded: list[str] = []
         self.provider_status: dict[str, Any] = {}
         self.histories: dict[str, list[dict[str, Any]]] = {}
-        self._domain_failures: dict[str, int] = {}
-        self._domain_down: set[str] = set()
         #: Domain → provider outcome of the most recent successful call (#65).
         self._provider_outcomes: dict[str, dict[str, Any]] = {}
+        # #103/P-1: collection runs in a bounded thread pool; the per-(provider, host)
+        # circuit breaker lives in the registry (threshold 3 consecutive transient
+        # failures → fast-degrade, fallback/cache still answer). The collector's own
+        # `_domain_failures`/`_domain_down` breaker is gone.
 
     def _record_outcome(self, domain: str, meta: dict[str, Any]) -> None:
         """Remember which provider answered a successful `registry.call` for `domain` (#65)."""
@@ -71,62 +74,78 @@ class MarketCollector:
 
     # ---- Quotes (US + A-shares) ----
 
-    def _fetch_equity(self, asset: Any) -> EquityAsset | None:
+    def _fetch_equity(
+        self, asset: Any
+    ) -> tuple[EquityAsset | None, str, list[str], dict[str, dict[str, Any]], str | None, list[dict[str, Any]]]:
+        """Fetch one equity inside the thread pool (#103/P-1).
+
+        Returns ``(asset, domain, degraded_msgs, provider_outcomes, status_error, rows)`` so
+        the caller merges shared collector state in a single thread — the workers never touch
+        ``self.degraded``/``self.provider_status``/``self.histories`` directly.
+        """
         domain = "quotes" if asset.market == "US" else "a_share"
-        if domain in self._domain_down:
-            # Domain confirmed down (e.g. akshare proxy blocked) → fast degrade, no per-symbol retry
-            self.degraded.append(f"{asset.symbol}: {domain} domain down, skipped")
-            return None
+        degraded: list[str] = []
+        outcomes: dict[str, dict[str, Any]] = {}
+        status_error: str | None = None
         try:
             quote_out = self.registry.call(domain, "get_quote", f"quote_{asset.symbol}", args=(asset.symbol,))
             hist_out = self.registry.call(domain, "get_history", f"hist_{asset.symbol}_1y", args=(asset.symbol, "1y"))
-            self._record_outcome(domain, quote_out["meta"])
-            self._record_outcome(domain, hist_out["meta"])
+            outcomes[domain] = quote_out["meta"]
         except ProviderError as exc:
-            self.degraded.append(f"{asset.symbol}: {exc}")
-            self.provider_status.setdefault(domain, {})["error"] = str(exc)
-            self._domain_failures[domain] = self._domain_failures.get(domain, 0) + 1
-            # #102 (M-5): the circuit-breaker threshold is config
-            # (operations.circuit_breaker_threshold), not a magic literal.
-            if self._domain_failures[domain] >= self.operations.circuit_breaker_threshold:
-                self._domain_down.add(domain)
-            return None
+            degraded.append(f"{asset.symbol}: {exc}")
+            status_error = str(exc)
+            return None, domain, degraded, outcomes, status_error, []
 
         quote = quote_out["result"]
         rows = hist_out["result"].rows
         tech = technical_snapshot(rows)
-        self.histories[asset.symbol] = rows
-        return EquityAsset(
-            symbol=asset.symbol,
-            name=asset.name,
-            name_zh=asset.name_zh,
-            market="US" if asset.market == "US" else "CN",
-            sector=asset.sector,
-            theme=list(self._symbol_to_themes.get(asset.symbol, [])),
-            price=quote.price,
-            currency="USD" if asset.market == "US" else "CNY",
-            change_1d=quote.change_1d,
-            change_1w=quote.change_1w,
-            change_1m=quote.change_1m,
-            change_ytd=None,
-            volume=quote.volume,
-            market_cap=None,
-            ma50_distance_pct=tech["ma50_distance_pct"],
-            ma200_distance_pct=tech["ma200_distance_pct"],
-            rsi14=tech["rsi14"],
-            percentile_1y=tech["percentile_1y"],
-            percentile_1y_obs=tech["percentile_1y_obs"],
-            source=quote.source,
-            updated_at=quote.updated_at or now_utc(),
-            is_proxy=quote.is_proxy,
+        return (
+            EquityAsset(
+                symbol=asset.symbol,
+                name=asset.name,
+                name_zh=asset.name_zh,
+                market="US" if asset.market == "US" else "CN",
+                sector=asset.sector,
+                theme=list(self._symbol_to_themes.get(asset.symbol, [])),
+                price=quote.price,
+                currency="USD" if asset.market == "US" else "CNY",
+                change_1d=quote.change_1d,
+                change_1w=quote.change_1w,
+                change_1m=quote.change_1m,
+                change_ytd=None,
+                volume=quote.volume,
+                market_cap=None,
+                ma50_distance_pct=tech["ma50_distance_pct"],
+                ma200_distance_pct=tech["ma200_distance_pct"],
+                rsi14=tech["rsi14"],
+                percentile_1y=tech["percentile_1y"],
+                percentile_1y_obs=tech["percentile_1y_obs"],
+                source=quote.source,
+                updated_at=quote.updated_at or now_utc(),
+                is_proxy=quote.is_proxy,
+            ),
+            domain,
+            degraded,
+            outcomes,
+            status_error,
+            rows,
         )
 
     def _collect_equities(self) -> EquitiesDataset:
         assets: list[EquityAsset] = []
-        for asset in [*self.universe.us_equities, *self.universe.a_share_memory]:
-            item = self._fetch_equity(asset)
+        targets = [*self.universe.us_equities, *self.universe.a_share_memory]
+        # #103/P-1: bounded thread pool; the registry's per-host limiter serializes calls to
+        # the same host, so parallelism is bought per host and paced by config.
+        with ThreadPoolExecutor(max_workers=min(8, max(1, len(targets)))) as pool:
+            results = list(pool.map(self._fetch_equity, targets))
+        for item, domain, degraded, outcomes, status_error, rows in results:
             if item is not None:
                 assets.append(item)
+                self.histories[item.symbol] = rows
+            self.degraded.extend(degraded)
+            self._provider_outcomes.update(outcomes)
+            if status_error:
+                self.provider_status.setdefault(domain, {})["error"] = status_error
         return EquitiesDataset(assets=assets)
 
     # ---- Index history (breadth/trend) ----
