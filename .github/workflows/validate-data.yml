@@ -20,6 +20,9 @@ on:
       - "scripts/gen_ts_contracts.py"
       - "scripts/gen_contracts.sh"
       - "src/schemas/generated/**"
+      # The i18n gate (check:i18n enforces en/zh parity) must fire when translation files
+      # change — otherwise an i18n-only PR skips the only gate that checks it.
+      - "src/i18n/**"
       - "scripts/validate_data.sh"
       - "scripts/validate-json.mjs"
       - "scripts/scan-secrets.mjs"
