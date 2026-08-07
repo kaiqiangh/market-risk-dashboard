@@ -50,11 +50,7 @@
     "provider": "Provider",
     "fallback": "Fallback",
     "cache": "Cache",
-    "error": "Error/Degraded",
-    "degraded": "Degraded",
-    "ok": "OK",
-    "yes": "Yes",
-    "no": "No",
-    "none": "No provider info"
+    "none": "No provider info",
+    "status": "Status / Reason"
   }
 }
