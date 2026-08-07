@@ -780,8 +780,12 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         # The fact layer is an aggregation, so its status is the worst of its inputs rather
         # than a wall-clock comparison against its own timestamp — the same rule the rebuild
         # path uses, so `--full` and `--fact-layer` cannot disagree about the same facts.
+        # Its own degraded flag must reflect EVERY input it consumes (market + macro + news +
+        # calendar) — the old single global flag made an RSS outage degrade the market too,
+        # and a market/macro-only flag would silently under-report a news outage on rebuild.
+        factlayer_input_degraded = risk_input_degraded or news_degraded or calendar_degraded
         facts_verdict = finalize_freshness(
-            "factlayer", str(risk_env.generated_at), risk_input_degraded,
+            "factlayer", str(risk_env.generated_at), factlayer_input_degraded,
             row_count=len(facts.data_freshness) or None,
         )
         status, reason = _aggregate_outcome(facts_verdict, facts.data_freshness)

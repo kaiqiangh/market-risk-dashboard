@@ -880,13 +880,13 @@ class TestPerDatasetDegradation:
             results["market_meta"]["degraded"] = []
             results["degraded"] = ["RSS sources degraded: clschina, wallstreetcn"]
             results["macro"] = MacroDataset(rates=[], credit=[], volatility=[], inflation=[], labor=[], liquidity=[], fx=[])
-            results["macro_meta"] = {"data_quality": 1.0, "degraded": False, "provider": {"provider": "fred", "used_fallback": False, "from_cache": False}}
+            results["macro_meta"] = {"data_quality": 1.0, "degraded": [], "provider": {"provider": "fred", "used_fallback": False, "from_cache": False}}
             # one row: degraded-with-data is "degraded", not "missing" (#89).
             results["news"] = NewsDataset(items=[NewsItem(id="n1", title="test", source="cnbc", url="https://example.com", published_at=now, importance=1.0, summary="s", sentiment="neutral")])
-            results["news_meta"] = {"data_quality": 0.8, "degraded": True, "provider_outcome": {"provider": "rss_news", "used_fallback": False, "from_cache": False}}
+            results["news_meta"] = {"data_quality": 0.8, "degraded": ["RSS sources degraded: clschina, wallstreetcn"], "provider_outcome": {"provider": "rss_news", "used_fallback": False, "from_cache": False}}
             results["news_degraded"] = True
             results["calendar"] = CalendarDataset(events=[])
-            results["calendar_meta"] = {"data_quality": 1.0, "degraded": False, "provider_outcome": {"provider": "fmp", "used_fallback": False, "from_cache": False}}
+            results["calendar_meta"] = {"data_quality": 1.0, "degraded": [], "provider_outcome": {"provider": "fmp", "used_fallback": False, "from_cache": False}}
             results["calendar_degraded"] = False
             return results
 
