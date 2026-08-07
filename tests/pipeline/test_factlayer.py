@@ -263,3 +263,54 @@ def test_rebuild_preserves_fetched_at(fact_layer_env: Path) -> None:
         "a rebuild must preserve the original fetched_at, got "
         f"{rebuilt['generated_at']!r} instead of {original_fetched_at!r}"
     )
+
+
+def test_market_summary_carries_sector_performance_and_prompt_labels_it() -> None:
+    """#98: the 20-theme taxonomy reaches the AI brief — the fact layer carries
+    sector/theme keys + numbers (C-1, no display labels in payloads) and build_prompt
+    resolves the EN labels from the same themes.json the frontend renders."""
+    from pipeline.analysis.build_prompt import _render_facts
+    from pipeline.factlayer.builder import FactLayerBuilder
+    from pipeline.schemas import CryptoEnvelope, EquitiesEnvelope, FactLayer, MacroEnvelope, NewsEnvelope, RiskEnvelope, CalendarEnvelope, SectorsEnvelope
+    from pipeline.schemas.sectors import SectorItem, SectorsDataset
+    from pipeline.settings import Settings
+    from tests.pipeline.factories import make_envelope
+
+    builder = FactLayerBuilder()
+    equities = make_envelope("equities")
+
+    sectors = SectorsEnvelope.model_validate({
+        **make_envelope("sectors"),
+        "payload": SectorsDataset(
+            sectors=[SectorItem(key="semis", change_1d=2.5)],
+            themes=[SectorItem(key="ai_infrastructure", change_1d=-1.2)],
+            memory=None,
+        ).model_dump(),
+    })
+    facts: FactLayer = builder.build(
+        risk=RiskEnvelope.model_validate(make_envelope("risk")),
+        macro=MacroEnvelope.model_validate(make_envelope("macro")),
+        equities=EquitiesEnvelope.model_validate(equities),
+        crypto=CryptoEnvelope.model_validate(make_envelope("crypto")),
+        news=NewsEnvelope.model_validate(make_envelope("news")),
+        calendar=CalendarEnvelope.model_validate(make_envelope("calendar")),
+        sectors=sectors,
+    )
+    perf = facts.market_summary["sector_performance"]
+    assert {"key": "semis", "change_1d": 2.5} in perf
+    assert {"key": "ai_infrastructure", "change_1d": -1.2} in perf
+
+    # The sector/theme moves are citable: they land in the evidence_index (#98 — the
+    # brief's rule is "may ONLY cite entries present in the evidence_index").
+    assert "ev_sector_semis" in facts.evidence_index
+    assert facts.evidence_index["ev_sector_ai_infrastructure"].value == -1.2
+
+    prompt_en = _render_facts(facts, "en")
+    assert "Sector / theme performance (1d)" in prompt_en
+    assert "Semiconductors: +2.50%" in prompt_en  # EN label resolved from en themes.json
+    assert "AI Infrastructure: -1.20%" in prompt_en
+
+    # The zh-CN brief resolves the zh labels — no EN leak into the zh prompt (#98 review).
+    prompt_zh = _render_facts(facts, "zh-CN")
+    assert "板块 / 主题表现（1日）" in prompt_zh
+    assert "半导体: +2.50%" in prompt_zh
