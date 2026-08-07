@@ -14,7 +14,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { StatusBadge } from "@/components/layout/StatusBadge";
 
-// #96 (uses #84): eight groups incl. the new `volatility` (VIX is an implied-volatility
+// #96 (uses #84): seven groups incl. the new `volatility` (VIX is an implied-volatility
 // index, not a rate) — mirrors risk_model.yaml's dimensions.
 const SECTIONS = ["rates", "credit", "volatility", "inflation", "labor", "liquidity", "fx"] as const;
 type MacroGroup = (typeof SECTIONS)[number];
@@ -30,10 +30,11 @@ export default function MacroPage() {
   const { t } = useTranslation("macro");
   const macroQ = useDataset<MacroEnvelope>("macro");
   const [historyGroup, setHistoryGroup] = useState<MacroGroup>("fx");
+  const [historySlice, setHistorySlice] = useState<"30d" | "90d">("30d");
 
   const historyQ = useQuery({
-    queryKey: ["history", "macro", historyGroup],
-    queryFn: () => datasetClient.fetch<MacroBundle>("macro", { slice: `${historyGroup}.30d` }, MacroBundleSchema),
+    queryKey: ["history", "macro", historyGroup, historySlice],
+    queryFn: () => datasetClient.fetch<MacroBundle>("macro", { slice: `${historyGroup}.${historySlice}` }, MacroBundleSchema),
     staleTime: 60_000,
     retry: 1,
   });
@@ -58,7 +59,10 @@ export default function MacroPage() {
           <section className="border-t border-hairline pt-4">
             <h2 className="mb-2 text-sm font-medium text-foreground">{t("chart.title")}</h2>
             <MacroChart
-                items={[...macroQ.data.payload.rates, ...macroQ.data.payload.credit, ...macroQ.data.payload.volatility]
+                // Cross-sectional market pricing stays rates + credit: VIX (~17) on the
+                // same linear axis would flatten the % bars (review, #96) — volatility
+                // renders in its own section and history instead.
+                items={[...macroQ.data.payload.rates, ...macroQ.data.payload.credit]
                   .filter((ind) => ind.value !== null)
                   .map((ind) => ({ label: ind.label, value: ind.value as number, unit: ind.unit }))}
               />
@@ -92,7 +96,7 @@ export default function MacroPage() {
           {/* Per-group 30d history (#96: history stored in the #84 shape, charted here) */}
           <section className="border-t border-hairline pt-4" data-testid="section-history">
             <h2 className="mb-2 text-sm font-medium text-foreground">{t("history.title")}</h2>
-            <div className="mb-2 flex flex-wrap gap-1.5">
+            <div className="mb-2 flex flex-wrap items-center gap-1.5">
               {SECTIONS.map((group) => (
                 <button
                   key={group}
@@ -107,6 +111,22 @@ export default function MacroPage() {
                   {t(`section.${group}`)}
                 </button>
               ))}
+              <span className="ml-auto flex gap-1.5">
+                {(["30d", "90d"] as const).map((slice) => (
+                  <button
+                    key={slice}
+                    type="button"
+                    onClick={() => setHistorySlice(slice)}
+                    className={`rounded-full border px-2.5 py-0.5 text-[11px] transition-colors ${
+                      historySlice === slice
+                        ? "border-fresh-ok/40 bg-fresh-ok/10 text-fresh-ok"
+                        : "border-hairline text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {slice}
+                  </button>
+                ))}
+              </span>
             </div>
             {historyQ.isLoading ? (
               <Skeleton className="h-64 w-full" />

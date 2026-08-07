@@ -181,6 +181,54 @@ function checkHistory() {
   }
 }
 
+/** Macro history (#96/#84 §3): per-group sparse bundles + manifest (two layers of #96). */
+const MACRO_GROUPS = ["rates", "credit", "volatility", "inflation", "labor", "liquidity", "fx"];
+
+function checkMacroHistory() {
+  const macroDir = "history/macro";
+  for (const group of MACRO_GROUPS) {
+    for (const slice of ["30d", "90d"]) {
+      const rel = `${macroDir}/${group}.${slice}.json`;
+      const bundle = loadJson(rel);
+      if (!bundle) {
+        warnings.push(`${rel} missing`);
+        continue;
+      }
+      filesChecked += 1;
+      if (typeof bundle !== "object" || Array.isArray(bundle)) {
+        errors.push(`${rel}: bundle should be a per-series object`);
+        continue;
+      }
+      for (const [series, cols] of Object.entries(bundle)) {
+        if (!cols || typeof cols !== "object" || !Array.isArray(cols.d) || !Array.isArray(cols.v)) {
+          errors.push(`${rel}: ${series} should be {d: string[], v: number[]}`);
+          continue;
+        }
+        if (cols.d.length !== cols.v.length) errors.push(`${rel}: ${series} d/v length mismatch`);
+        for (const d of cols.d) if (!DATE_RE.test(String(d))) errors.push(`${rel}: ${series} invalid date ${d}`);
+        for (const v of cols.v) {
+          if (typeof v !== "number" || !Number.isFinite(v)) errors.push(`${rel}: ${series} invalid value ${v}`);
+        }
+      }
+    }
+  }
+  // Manifest: every roster series has the freshness metadata surface.
+  const manifest = loadJson(`${macroDir}/index.json`);
+  if (manifest) {
+    filesChecked += 1;
+    if (!manifest.series || typeof manifest.series !== "object") {
+      errors.push(`${macroDir}/index.json: series map missing`);
+    } else {
+      for (const group of MACRO_GROUPS) {
+        const anyOfGroup = Object.values(manifest.series).some((m) => m && m.group === group);
+        if (!anyOfGroup) errors.push(`${macroDir}/index.json: no series in group ${group}`);
+      }
+    }
+  } else {
+    warnings.push(`${macroDir}/index.json missing`);
+  }
+}
+
 /**
  * metadata/freshness.json and metadata/sources.json (#89, #101).
  *
@@ -275,6 +323,7 @@ function checkMetadata() {
 checkLatest();
 checkNewsDuplicates();
 checkHistory();
+checkMacroHistory();
 checkMetadata();
 
 console.log(`[validate-json] checked ${filesChecked} files, ${errors.length} ERROR(s), ${warnings.length} WARNING(s)`);

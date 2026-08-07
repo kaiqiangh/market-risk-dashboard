@@ -19,11 +19,8 @@ from __future__ import annotations
 from datetime import date, timedelta
 from typing import Any
 
-from pipeline.providers.fred import SERIES_CATALOG
-
-#: Estimated days to the next release per frequency (calendar estimate, not the true
-#: release schedule — the full release-calendar model is #84 §5 future work).
-FREQ_NEXT_DAYS = {"daily": 2, "weekly": 8, "monthly": 32}
+from pipeline.collectors.macro import FREQ_SPEC
+from pipeline.providers.fred import DEFAULT_SERIES_META, SERIES_CATALOG
 
 SLICES = ("30d", "90d")
 
@@ -42,14 +39,21 @@ def build_bundle(rows_by_series: dict[str, list[dict[str, Any]]]) -> dict[str, d
 def build_manifest(rows_by_series: dict[str, list[dict[str, Any]]], groups: dict[str, list[str]]) -> dict[str, Any]:
     """Per-series metadata: group, frequency, unit, scale, last observation, next release."""
     manifest: dict[str, Any] = {"series": {}}
-    group_of = {s: g for g, ss in groups.items() for s in ss}
+    group_of = _group_of_series(groups)
     for series, rows in rows_by_series.items():
-        meta = SERIES_CATALOG.get(series, {"label": series, "unit": "level", "frequency": "daily", "scale": "level"})
+        if series not in group_of:
+            continue  # internal anchor (EFFR) — not a published series
+        meta = SERIES_CATALOG.get(series, {**DEFAULT_SERIES_META, "label": series})
         last_date = rows[-1]["date"] if rows else None
+        # next_expected_release is a frequency estimate (calendar estimate, not the true
+        # release schedule — the full release-calendar model is #84 §5 future work).
         next_expected = None
         if last_date:
             try:
-                next_expected = (date.fromisoformat(last_date) + timedelta(days=FREQ_NEXT_DAYS.get(meta.get("frequency", "daily"), 2))).isoformat()
+                next_expected = (
+                    date.fromisoformat(last_date)
+                    + timedelta(days=FREQ_SPEC.get(meta.get("frequency", "daily"), FREQ_SPEC["daily"])["next_days"])
+                ).isoformat()
             except ValueError:
                 next_expected = None
         manifest["series"][series] = {
@@ -68,7 +72,10 @@ def build_manifest(rows_by_series: dict[str, list[dict[str, Any]]], groups: dict
 
 def write_macro_history(writer: Any, series_history: dict[str, list[dict[str, Any]]], groups: dict[str, list[str]]) -> dict[str, int]:
     """Persist the two layers. ``series_history`` is keyed lowercase (collector convention);
-    series ids are uppercased for the catalog/group lookups. Returns per-layer file counts.
+    series ids are uppercased for the catalog/group lookups. Only ROSTER series are
+    archived — internal anchors (the EFFR FedWatch fallback) are not published series and
+    must not leak into a bundle (review: an unmapped id used to write None.30d.json).
+    Returns per-layer file counts.
     """
     rows_by_series: dict[str, list[dict[str, Any]]] = {
         sid.upper(): rows for sid, rows in series_history.items() if rows
@@ -76,22 +83,27 @@ def write_macro_history(writer: Any, series_history: dict[str, list[dict[str, An
     if not rows_by_series:
         return {"archive": 0, "bundles": 0}
 
+    group_of = _group_of_series(groups)
+
     # Layer 1: per-series append-only archive (existing write_slices convention).
     archive_count = 0
     for series, rows in rows_by_series.items():
+        if series not in group_of:
+            continue  # internal anchor (EFFR) — never a published archive
         writer.write_slices(f"macro/{series}", rows)
         archive_count += 1
 
-    # Layer 2: per-group 30d/90d bundles + manifest.
-    group_of = {s: g for g, ss in groups.items() for s in ss}
+    # Layer 2: per-group 30d/90d bundles + manifest (roster series only).
     by_group: dict[str, list[str]] = {g: [] for g in groups}
     for series in rows_by_series:
-        by_group.setdefault(group_of.get(series, "rates"), []).append(series)
+        group = group_of.get(series)
+        if group is not None:
+            by_group.setdefault(group, []).append(series)
 
     macro_dir = writer.history_dir / "macro"
     bundle_count = 0
     for group, series_list in by_group.items():
-        rows = {s: rows_by_series[s][-90:] for s in series_list if s in rows_by_series}
+        rows = {s: rows_by_series[s] for s in series_list if s in rows_by_series}
         for slice_name in SLICES:
             window = 30 if slice_name == "30d" else 90
             sliced = {s: r[-window:] for s, r in rows.items()}
@@ -99,3 +111,8 @@ def write_macro_history(writer: Any, series_history: dict[str, list[dict[str, An
             bundle_count += 1
     writer.write_json(macro_dir / "index.json", build_manifest(rows_by_series, groups))
     return {"archive": archive_count, "bundles": bundle_count}
+
+
+def _group_of_series(groups: dict[str, list[str]]) -> dict[str, str]:
+    """One series → group map, built once per call (was duplicated in two methods, #96 review)."""
+    return {s: g for g, ss in groups.items() for s in ss}

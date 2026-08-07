@@ -11,7 +11,7 @@ import pytest
 
 from pipeline.collectors.macro import (
     DEFAULT_SERIES,
-    FREQ_CHANGE_LOOKBACK,
+    FREQ_SPEC,
     SERIES_GROUPS,
     MacroCollector,
     _group_of,
@@ -185,3 +185,22 @@ class TestHistory:
         assert dgs10["next_expected_release"] > dgs10["last_observation"]
         assert manifest["series"]["WALCL"]["scale"] == "mil_usd"
         assert manifest["series"]["RRPONTSYD"]["scale"] == "bil_usd"
+
+    def test_internal_anchor_does_not_leak_into_history(self, tmp_path: Path) -> None:
+        """#96 review: when DFF fails and the EFFR anchor succeeds, series_history gains
+        `effr` — an internal anchor, not a published series. It must not write a
+        None-group bundle (was history/macro/None.30d.json) nor appear in the manifest."""
+        import json
+
+        from pipeline.storage.macro_history import write_macro_history
+
+        writer = StorageWriter(tmp_path)
+        rows_by_series = {sid.lower(): _rows(100) for sid in DEFAULT_SERIES}
+        rows_by_series["effr"] = _rows(30)  # FedWatch fallback anchor
+        counts = write_macro_history(writer, rows_by_series, SERIES_GROUPS)
+
+        assert counts["archive"] == 27  # EFFR excluded
+        assert not (tmp_path / "history" / "macro" / "None.30d.json").exists()
+        assert not (tmp_path / "history" / "macro" / "EFFR" / "daily.json").exists()
+        manifest = json.loads((tmp_path / "history" / "macro" / "index.json").read_text(encoding="utf-8"))
+        assert "EFFR" not in manifest["series"]

@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, describe, expect, it, beforeEach } from "vitest";
 import "@/i18n";
@@ -51,5 +51,14 @@ describe("MacroPage", () => {
     expect(await screen.findByTestId("macro-history-fallback")).toBeInTheDocument();
     expect(screen.getByText("DTWEXBGS")).toBeInTheDocument();
     expect(screen.getByText("DEXUSEU")).toBeInTheDocument();
+  });
+
+  it("switches the history window to 90d (consuming the 90d bundles, #84 §3)", async () => {
+    renderPage();
+    await screen.findByTestId("macro-history-fallback");
+    // The 30d/90d toggle is the consumer that keeps the 90d bundles live data.
+    fireEvent.click(screen.getByRole("button", { name: "90d" }));
+    expect(await screen.findByTestId("macro-history-fallback")).toBeInTheDocument();
+    expect(screen.getByText("DTWEXBGS")).toBeInTheDocument();
   });
 });

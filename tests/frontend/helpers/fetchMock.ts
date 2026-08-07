@@ -37,6 +37,7 @@ export const FIXTURE_MAP: Record<string, unknown> = {
   "/history/risk/30d.json": riskHistoryFixture,
   "/history/market/30d.json": marketHistoryFixture,
   "/history/macro/fx.30d.json": macroHistoryFxFixture,
+  "/history/macro/fx.90d.json": macroHistoryFxFixture,
   "/metadata/sources.json": sourcesFixture,
   "/metadata/freshness.json": freshnessFixture,
   "/metadata/schema-version.json": schemaVersionFixture,

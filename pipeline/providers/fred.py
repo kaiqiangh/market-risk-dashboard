@@ -19,6 +19,14 @@ from pipeline.providers.base import (
 
 FRED_BASE = "https://api.stlouisfed.org/fred/series/observations"
 
+#: Shared default for a series missing from :data:`SERIES_CATALOG` — one artifact, used
+#: by the collector AND the history manifest (two copies of the default had already
+#: drifted on `scale`, #96 review).
+DEFAULT_SERIES_META: dict[str, str] = {
+    "label": "", "unit": "level", "frequency": "daily", "scale": "level", "units": "lin",
+}
+
+
 # FRED series catalog (#96, uses #84): every entry is the 27-series roster (plus EFFR for
 # the FedWatch anchor) with the metadata the collector and the history manifest need —
 # `frequency` (frequency-aware change/status lookbacks), `units` (server-side transform,
@@ -50,10 +58,10 @@ SERIES_CATALOG: dict[str, dict[str, str]] = {
     "CCSA": {"label": "Continued Claims", "unit": "level", "frequency": "weekly", "scale": "k"},
     "CIVPART": {"label": "Labor Force Participation Rate", "unit": "pct", "frequency": "monthly", "scale": "pct"},
     # liquidity (#84 §1: WALCL/WRESBAL/WTREGEN are Mil-$, RRPONTSYD is Bil-$)
-    "WALCL": {"label": "Fed Total Assets", "unit": "usd", "frequency": "weekly", "scale": "mil_usd"},
+    "WALCL": {"label": "Fed Total Assets (Mil $)", "unit": "usd", "frequency": "weekly", "scale": "mil_usd"},
     "WRESBAL": {"label": "Bank Reserves", "unit": "usd", "frequency": "weekly", "scale": "mil_usd"},
     "WTREGEN": {"label": "Treasury General Account", "unit": "usd", "frequency": "weekly", "scale": "mil_usd"},
-    "RRPONTSYD": {"label": "Overnight Reverse Repo", "unit": "usd", "frequency": "daily", "scale": "bil_usd"},
+    "RRPONTSYD": {"label": "Overnight Reverse Repo (Bil $)", "unit": "usd", "frequency": "daily", "scale": "bil_usd"},
     "SOFR": {"label": "Secured Overnight Financing Rate", "unit": "pct", "frequency": "daily", "scale": "pct"},
     # fx (#84 §1: DTWEX* lag 3-7 calendar days routinely — see freshness note)
     "DTWEXBGS": {"label": "Nominal Broad Dollar Index", "unit": "index", "frequency": "daily", "scale": "index"},

@@ -3,7 +3,7 @@
 FRED series + FedWatch probabilities (Yahoo ZQ futures + EFFR anchor + local snapshot accumulation).
 Any Provider failure → degradation chain → degraded, does not interrupt the pipeline.
 
-#96 (uses #84): the 27-series roster across 8 groups (incl. a new `volatility` group for
+#96 (uses #84): the 27-series roster across 7 groups (incl. a new `volatility` group for
 VIXCLS), every request bounded to the 5y window and memoised, units transformed
 server-side (pc1/chg), frequency-aware change/status, per-series history archived for the
 risk model's percentile windows. Refresh cadence: FRED runs on `--full`/`--macro-only`
@@ -29,7 +29,7 @@ from pipeline.fedwatch import (
     save_history,
 )
 from pipeline.providers.base import ProviderError, ProviderRegistry
-from pipeline.providers.fred import SERIES_CATALOG
+from pipeline.providers.fred import DEFAULT_SERIES_META, SERIES_CATALOG
 from pipeline.schemas import FedWatchSnapshot, MacroDataset, MacroIndicator
 from pipeline.settings import Settings
 
@@ -51,11 +51,16 @@ SERIES_GROUPS: dict[str, list[str]] = {
 # grouping table, so a new series added to a group is fetched by construction.
 DEFAULT_SERIES: list[str] = [s for group in SERIES_GROUPS.values() for s in group]
 
-#: Frequency → change_1m lookback in ROWS (#84 §6a: 21 rows is ~1 month only for daily
-#: series; a monthly series would show 21 months labelled "1m") and staleness threshold
-#: in DAYS since the last observation (a row-count "fresh" is not a freshness measure).
-FREQ_CHANGE_LOOKBACK = {"daily": 21, "weekly": 4, "monthly": 1}
-FREQ_STALE_DAYS = {"daily": 7, "weekly": 21, "monthly": 75}
+#: Frequency spec — one table, three consumers (#84 §6a/§6b): change_1m lookback in ROWS
+#: (21 rows is ~1 month only for daily series; a monthly series would show 21 months
+#: labelled "1m"), staleness threshold in DAYS since the last observation (a row-count
+#: "fresh" is not a freshness measure), and the history manifest's next-release estimate.
+#: Three parallel maps would drift; one table cannot.
+FREQ_SPEC: dict[str, dict[str, int]] = {
+    "daily": {"lookback": 21, "stale_days": 7, "next_days": 2},
+    "weekly": {"lookback": 4, "stale_days": 21, "next_days": 8},
+    "monthly": {"lookback": 1, "stale_days": 75, "next_days": 32},
+}
 
 #: FRED fetch window (#84 §4): bound every request to 5y — the full-history download was
 #: 7.26 MB/run for 8 series (DGS10 alone 1563 KB back to 1962); the 27-series roster with
@@ -114,7 +119,7 @@ class MacroCollector:
             rows = self._fred_series(series_id)
             if not rows:
                 continue
-            catalog = SERIES_CATALOG.get(series_id, {"label": series_id, "unit": "level", "frequency": "daily"})
+            catalog = SERIES_CATALOG.get(series_id, {**DEFAULT_SERIES_META, "label": series_id})
             frequency = catalog.get("frequency", "daily")
             indicator = MacroIndicator(
                 key=series_id.lower(),
@@ -123,7 +128,7 @@ class MacroCollector:
                 previous=rows[-2]["value"] if len(rows) > 1 else None,
                 # #84 §6a: the change lookback derives from the series' frequency — 21
                 # rows is one month only for daily series.
-                change_1m=_change(rows, FREQ_CHANGE_LOOKBACK.get(frequency, 21)),
+                change_1m=_change(rows, FREQ_SPEC.get(frequency, FREQ_SPEC["daily"])["lookback"]),
                 unit=_unit(catalog.get("unit", "level")),
                 source="FRED",
                 updated_at=_utc_from_date(rows[-1]["date"]),
@@ -266,10 +271,11 @@ def _series_status(last_date: str, frequency: str) -> str:
     history manifest — is future work; this is the minimal honest version.)
     """
     try:
-        age_days = (date.today() - date.fromisoformat(last_date)).days
+        # §8.2: compare against UTC, not the host's local date.
+        age_days = (datetime.now(timezone.utc).date() - date.fromisoformat(last_date)).days
     except ValueError:
         return "stale"
-    threshold = FREQ_STALE_DAYS.get(frequency, 7)
+    threshold = FREQ_SPEC.get(frequency, FREQ_SPEC["daily"])["stale_days"]
     return "fresh" if age_days <= threshold else "stale"
 
 

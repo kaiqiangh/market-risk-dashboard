@@ -73,8 +73,11 @@ class FactLayerBuilder:
 
     def _macro_summary(self, macro: MacroEnvelope) -> dict[str, Any]:
         summary: dict[str, Any] = {}
-        # #96: volatility is a first-class group — the summary enumerates it like the rest.
-        for group in ("rates", "credit", "volatility", "inflation", "labor", "liquidity", "fx"):
+        # #96: volatility is a first-class group. The roster is imported — a literal copy
+        # here would recreate the two-lists drift this ticket killed (review, #96).
+        from pipeline.collectors.macro import SERIES_GROUPS
+
+        for group in SERIES_GROUPS:
             for ind in getattr(macro.payload, group):
                 summary[ind.key] = ind.value
                 if ind.previous is not None:
