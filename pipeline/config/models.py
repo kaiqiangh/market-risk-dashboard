@@ -119,6 +119,9 @@ class UniverseConfig(BaseModel):
     crypto: list[UniverseAsset] = Field(default_factory=list)
     metals: list[UniverseAsset] = Field(default_factory=list)
     oil: list[UniverseAsset] = Field(default_factory=list)
+    # #93: theme-series-only assets — fetched for basket percentile series, never rendered
+    # as equity cards (the collector's `all_equities()` stays us + a_share).
+    theme_series: list[UniverseAsset] = Field(default_factory=list)
 
 
 # -------------------------------------------------------------------------------------
@@ -153,6 +156,10 @@ class ThemeConstituent(BaseModel):
 
 
 class ThemeDef(BaseModel):
+    """One theme (#93/#86). ``proxy`` with ``kind: etf`` publishes the ETF's own series;
+    ``kind: basket`` (or no proxy) builds an equal-weight series from constituents.
+    ``weight`` 1.0 primary / 0.5 secondary."""
+
     model_config = ConfigDict(extra="forbid")
 
     proxy: ThemeProxy | None = None
@@ -160,10 +167,23 @@ class ThemeDef(BaseModel):
     constituents: list[ThemeConstituent] = Field(default_factory=list)
 
 
+class ValidationConfig(BaseModel):
+    """#93/#86 taxonomy guards — enforced at config load (hard fails)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    max_primaries_per_symbol: int = Field(default=1, ge=1)
+    max_themes_per_symbol: int = Field(default=3, ge=1)
+    max_pairwise_jaccard: float = Field(default=0.40, gt=0, le=1.0)
+
+
 class ThemesConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     schema_version: str = Field(min_length=1)
+    #: Global percentile defaults (window/lookback/min_obs); per-theme overrides win.
+    percentile: ThemePercentile | None = None
+    validation: ValidationConfig | None = None
     sectors: dict[str, ThemeDef] = Field(default_factory=dict)
     themes: dict[str, ThemeDef] = Field(default_factory=dict)
 

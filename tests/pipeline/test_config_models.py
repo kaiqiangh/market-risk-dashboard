@@ -196,7 +196,9 @@ def test_market_sector_rows_come_from_themes_config() -> None:
     themes = settings.load_themes_config()
     universe = AssetUniverse.load(settings)
     assert list(themes.sectors) == ["semis", "auto"]
-    assert list(themes.themes) == ["memory", "ai"]
+    # #93: the full 20-theme taxonomy, guards passing at load time.
+    assert len(themes.themes) == 20
+    assert "memory" in themes.themes and "ai_infrastructure" in themes.themes
     # The reverse lookup (EquityAsset.theme) is populated from themes.yaml, not universe tags.
     by_symbol = {a.symbol: a for a in universe.all_equities()}
     assert by_symbol["NVDA"].symbol == "NVDA"  # Asset has no theme attribute anymore (D-8)

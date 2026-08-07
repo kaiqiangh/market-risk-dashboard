@@ -627,7 +627,7 @@ export const RiskEnvelope = z
   .passthrough();
 export type RiskEnvelope = z.infer<typeof RiskEnvelope>;
 
-/** Sector or theme entry. No ``label``/``label_zh``: display labels live in ``src/i18n/locales/{en,zh-CN}/themes.json``, keyed by ``key`` (C-1/#102). The payload carries the key and the numbers; the frontend renders ``t(themes.<key>)`` and ``check:i18n`` catches a key with no Chinese label. */
+/** Sector or theme entry. No ``label``/``label_zh``: display labels live in ``src/i18n/locales/{en,zh-CN}/themes.json``, keyed by ``key`` (C-1/#102). The payload carries the key and the numbers; the frontend renders ``t(themes.<key>)`` and ``check:i18n`` catches a key with no Chinese label. ``constituents`` (themes only, #93) lists the theme's member symbols from ``config/themes.yaml`` — published so the Themes page can render them without a second data source. ``percentile_1y`` is the theme series' trailing-20-session return ranked in its trailing-252-session window (#86 §4); ``None`` with ``percentile_1y_obs`` below the configured minimum is "warming up", not "missing". */
 export const SectorItem = z
   .object({
     key: z.string().min(1),
@@ -636,6 +636,7 @@ export const SectorItem = z
     change_1m: z.number().finite().nullable().default(null),
     percentile_1y: z.number().finite().min(0).max(100).nullable().default(null),
     percentile_1y_obs: z.number().int().min(0).default(0),
+    constituents: z.array(z.string()).default([]),
     updated_at: utcDateTime.nullable().default(null),
   })
   .passthrough();
