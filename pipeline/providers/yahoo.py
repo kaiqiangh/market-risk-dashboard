@@ -53,6 +53,10 @@ class YahooProvider(BaseProvider):
     #: Host bucket keys for the #103 per-host rate limiter (tightest budget in config).
     hosts = ("query1.finance.yahoo.com", "query2.finance.yahoo.com")
 
+    #: Symbol → Yahoo form. Identity for the quotes domain; the a_share subclass installs
+    #: the CN mapper (#97/#85: 603986.SH → 603986.SS).
+    _symbol_mapper = staticmethod(lambda symbol: symbol)
+
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
         # #103 (P-1): one 1y fetch per symbol — get_quote derives from the tail and
@@ -61,10 +65,20 @@ class YahooProvider(BaseProvider):
 
     def _fetch_1y(self, symbol: str) -> list[dict[str, Any]]:
         """Memoized 1y history — the single fetch per symbol that feeds quote + history."""
-        if symbol in self._history_1y:
-            return self._history_1y[symbol]
+        mapped = self._symbol_mapper(symbol)  # cache keyed by the Yahoo form (#97)
+        if mapped in self._history_1y:
+            return self._history_1y[mapped]
         try:
-            hist = yf.Ticker(symbol).history(period="1y", auto_adjust=False)
+            hist = yf.Ticker(mapped).history(period="1y", auto_adjust=False)
+            if hist is None or len(hist) == 0:
+                raise ProviderError(f"{symbol}: yfinance history is empty")
+            rows = _to_rows(hist)
+            self._history_1y[mapped] = rows
+            return rows
+        except ProviderError:
+            raise
+        except Exception as exc:  # noqa: BLE001
+            raise ProviderError.from_exception(exc, detail=f"{symbol}: yfinance history failed") from exc
             if hist is None or len(hist) == 0:
                 raise ProviderError(f"{symbol}: yfinance history is empty")
             rows = _to_rows(hist)
@@ -133,7 +147,7 @@ class YahooProvider(BaseProvider):
             # #103 (P-1): reuse the fetch get_quote already made — one 1y fetch per symbol.
             return HistoryResult(symbol=symbol, provider=self.name, rows=self._fetch_1y(symbol), period="1y")
         try:
-            hist = yf.Ticker(symbol).history(period=_PERIOD_MAP[period], auto_adjust=False)
+            hist = yf.Ticker(self._symbol_mapper(symbol)).history(period=_PERIOD_MAP[period], auto_adjust=False)
             if hist is None or len(hist) == 0:
                 raise ProviderError(f"{symbol}: yfinance history is empty")
             return HistoryResult(symbol=symbol, provider=self.name, rows=_to_rows(hist), period=period)
@@ -145,7 +159,7 @@ class YahooProvider(BaseProvider):
     def get_history_range(self, symbol: str, start: str, end: str) -> HistoryResult:
         """Fetch history by date range (for calibration 2008/2018/2020 windows, architecture §1.8)."""
         try:
-            hist = yf.Ticker(symbol).history(start=start, end=end, auto_adjust=False)
+            hist = yf.Ticker(self._symbol_mapper(symbol)).history(start=start, end=end, auto_adjust=False)
             if hist is None or len(hist) == 0:
                 raise ProviderError(f"{symbol}: yfinance range history is empty ({start}~{end})")
             return HistoryResult(symbol=symbol, provider=self.name, rows=_to_rows(hist), period=f"{start}~{end}")
@@ -153,6 +167,34 @@ class YahooProvider(BaseProvider):
             raise
         except Exception as exc:  # noqa: BLE001
             raise ProviderError(f"{symbol}: yfinance history_range failed: {exc}") from exc
+
+
+def map_cn_symbol(symbol: str) -> str:
+    """Repo symbol → Yahoo symbol for CN equities (#97/#85).
+
+    603986.SH → 603986.SS (Shanghai main board 600/601/603/605 + STAR 688 all start with
+    6 → Yahoo's `.SS`); 301308.SZ → 301308.SZ (Yahoo uses `.SZ` identically). A mapper
+    spot-checked only on a Shenzhen name looks correct and silently breaks all five
+    Shanghai names — both halves are tested. Non-CN symbols pass through unchanged.
+    Note: Beijing (8xxxxx/.BJ) names would need a third branch — Yahoo's BSE coverage is
+    poor; the universe has none today.
+    """
+    if symbol.endswith(".SH"):
+        return symbol[:-3] + ".SS"
+    return symbol
+
+
+class YahooAShareProvider(YahooProvider):
+    """A-share provider (domain a_share) built on the existing Yahoo transport (#97).
+
+    #85 recommended chain: yfinance (US-hosted, 20/20 from this host) primary →
+    akshare-Tencent fallback → last-good cache. The CN symbol mapper is the only diff;
+    quotes/history/technical indicators are all inherited.
+    """
+
+    name = "yfinance_a_share"
+    domain = "a_share"
+    _symbol_mapper = staticmethod(map_cn_symbol)
 
 
 def _pct(latest: float, prev: float) -> float | None:

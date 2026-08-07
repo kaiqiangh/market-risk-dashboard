@@ -102,9 +102,14 @@ class MarketCollector:
         degraded: list[str] = []
         outcomes: dict[str, dict[str, Any]] = {}
         status_error: str | None = None
+
+        # #85 (fix): quote and history are DECOUPLED. They used to be one atomic try — a
+        # cached quote was thrown away the moment the history call failed (the A-share
+        # cache held a valid quote while `hist_*_1y` was absent, so every symbol was
+        # dropped even though the price was recovered). A symbol with a quote but no
+        # history publishes with honest None technicals; only a quote failure drops it.
         try:
             quote_out = self.registry.call(domain, "get_quote", f"quote_{asset.symbol}", args=(asset.symbol,))
-            hist_out = self.registry.call(domain, "get_history", f"hist_{asset.symbol}_1y", args=(asset.symbol, "1y"))
             outcomes[domain] = quote_out["meta"]
         except ProviderError as exc:
             degraded.append(f"{asset.symbol}: {exc}")
@@ -112,7 +117,14 @@ class MarketCollector:
             return _EquityFetch(None, domain, degraded, outcomes, status_error, [])
 
         quote = quote_out["result"]
-        rows = hist_out["result"].rows
+        rows: list[dict[str, Any]] = []
+        try:
+            hist_out = self.registry.call(domain, "get_history", f"hist_{asset.symbol}_1y", args=(asset.symbol, "1y"))
+            rows = hist_out["result"].rows
+        except ProviderError as exc:
+            degraded.append(f"{asset.symbol}: history unavailable: {exc}")
+            if status_error is None:
+                status_error = str(exc)
         tech = technical_snapshot(rows)
         return _EquityFetch(
             EquityAsset(

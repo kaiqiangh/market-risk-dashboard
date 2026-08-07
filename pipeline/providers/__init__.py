@@ -19,7 +19,7 @@ from pipeline.providers.fred_calendar import FredCalendarProvider
 from pipeline.providers.nasdaq import NasdaqCalendarProvider
 from pipeline.providers.rss_news import RssNewsProvider
 from pipeline.providers.stooq import StooqProvider
-from pipeline.providers.yahoo import YahooProvider
+from pipeline.providers.yahoo import YahooAShareProvider, YahooProvider
 from pipeline.settings import Settings
 
 #: config name → provider class. The name in config/sources.yaml:providers is the class
@@ -28,6 +28,7 @@ from pipeline.settings import Settings
 #: a degradation chain it does not belong to).
 _PROVIDER_CLASSES: dict[str, type[BaseProvider]] = {
     "yfinance": YahooProvider,
+    "yfinance_a_share": YahooAShareProvider,
     "stooq": StooqProvider,
     "fred": FredProvider,
     "coingecko": CoinGeckoProvider,
@@ -94,6 +95,7 @@ __all__ = [
     "QuoteResult",
     "RssNewsProvider",
     "StooqProvider",
+    "YahooAShareProvider",
     "YahooProvider",
     "build_default_providers",
     "build_registry",
