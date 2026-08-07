@@ -27,12 +27,15 @@ class NewsCollector:
     def __init__(self, registry: ProviderRegistry, settings: Settings | None = None) -> None:
         self.registry = registry
         self.settings = settings or Settings()
-        rules = self.settings.load_news_sources().get("importance", {})
-        self.source_weight = float(rules.get("source_weight", 30))
-        self.keyword_weight = float(rules.get("keyword_weight", 30))
-        self.asset_hit_weight = float(rules.get("asset_hit_weight", 20))
-        self.recency_weight = float(rules.get("recency_weight", 20))
-        self.high_keywords = [k.lower() for k in rules.get("keywords", {}).get("high", [])]
+        # #102: importance rules come from the VALIDATED news_sources config (single shape,
+        # extra="forbid") rather than a raw dict the model cannot govern.
+        self._news_config = self.settings.load_news_sources_config()
+        importance = self._news_config.importance
+        self.source_weight = float(importance.source_weight)
+        self.keyword_weight = float(importance.keyword_weight)
+        self.asset_hit_weight = float(importance.asset_hit_weight)
+        self.recency_weight = float(importance.recency_weight)
+        self.high_keywords = [k.lower() for k in importance.keywords.get("high", [])]
         # #102 (D-8): asset-hit aliases derive from the universe (symbol/name/name_zh),
         # replacing the hardcoded table. Ops knobs (M-5) come from sources.yaml:operations.
         self._asset_aliases = AssetUniverse.load(self.settings).news_aliases()
@@ -48,8 +51,10 @@ class NewsCollector:
     def _score_importance(self, item: dict[str, Any], now: datetime) -> float:
         title = item["title"].lower()
         # Source weight (per news_sources.yaml source weight, default 1)
-        source_cfg = self.settings.load_news_sources().get("sources", [])
-        weight = next((float(s.get("weight", 1)) for s in source_cfg if s.get("id") == item.get("source_id")), 1.0)
+        weight = next(
+            (float(s.weight) for s in self._news_config.sources if s.id == item.get("source_id")),
+            1.0,
+        )
         source_score = self.source_weight * min(weight / 4.0, 1.0)
 
         keyword_hits = sum(1 for kw in self.high_keywords if kw in title)

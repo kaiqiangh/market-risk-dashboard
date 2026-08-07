@@ -97,7 +97,13 @@ class Settings(BaseSettings):
         universe = self.load_universe_config()
         known = {
             a.symbol
-            for pool in (universe.us_equities, universe.a_share_memory)
+            for pool in (
+                universe.us_equities,
+                universe.a_share_memory,
+                universe.crypto,
+                universe.metals,
+                universe.oil,
+            )
             for a in pool
         }
         for section in ("sectors", "themes"):

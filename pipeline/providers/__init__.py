@@ -19,6 +19,7 @@ from pipeline.providers.fred import FredProvider
 from pipeline.providers.rss_news import RssNewsProvider
 from pipeline.providers.stooq import StooqProvider
 from pipeline.providers.yahoo import YahooCalendarProvider, YahooProvider
+from pipeline.settings import Settings
 
 #: config name → provider class. The name in config/sources.yaml:providers is the class
 #: identity; the class's own ``domain`` attribute must match the config group it is listed

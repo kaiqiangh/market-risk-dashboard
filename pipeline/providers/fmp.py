@@ -23,7 +23,6 @@ FMP_BASE = "https://financialmodelingprep.com/api/v3"
 
 class FmpProvider(BaseProvider):
     name = "fmp"
-    priority = 1
     domain = "calendar"
 
     def __init__(self, settings=None) -> None:

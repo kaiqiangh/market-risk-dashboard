@@ -24,7 +24,6 @@ CG_BASE = "https://api.coingecko.com/api/v3"
 
 class CoinGeckoProvider(BaseProvider):
     name = "coingecko"
-    priority = 1
     domain = "crypto"
 
     def __init__(self, settings=None) -> None:

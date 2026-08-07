@@ -176,6 +176,7 @@ class NewsSource(BaseModel):
     lang: Literal["en", "zh"] = "en"
     weight: int = Field(default=1, ge=0)
     category: str | None = None
+    enabled: bool = True
 
 
 class NewsImportance(BaseModel):

@@ -26,7 +26,6 @@ _PERIOD_MAP = {"1mo": "1mo", "1y": "1y", "3mo": "3mo", "6mo": "6mo", "2y": "2y",
 
 class YahooProvider(BaseProvider):
     name = "yfinance"
-    priority = 1
     domain = "quotes"
 
     def health(self) -> ProviderHealth:
@@ -180,7 +179,6 @@ class YahooCalendarProvider(YahooProvider):
     """Earnings calendar fallback Provider (registered to the calendar domain, architecture §1.3 fmp→yfinance)."""
 
     name = "yfinance_calendar"
-    priority = 2
     domain = "calendar"
 
 

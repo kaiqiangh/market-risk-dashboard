@@ -30,7 +30,6 @@ def _to_ak_symbol(symbol: str) -> tuple[str, str]:
 
 class AkshareProvider(BaseProvider):
     name = "akshare"
-    priority = 1
     domain = "a_share"
 
     def health(self) -> ProviderHealth:

@@ -23,6 +23,7 @@ from urllib.parse import urlparse
 import feedparser
 import httpx
 
+from pipeline.config.models import NewsSource
 from pipeline.degrade import cache_max_age_hours
 from pipeline.providers.base import BaseProvider, ProviderError, ProviderHealth
 from pipeline.utils import now_utc
@@ -35,21 +36,26 @@ UA = (
 
 class RssNewsProvider(BaseProvider):
     name = "rss_news"
-    priority = 1
     domain = "news"
 
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
-        sources_cfg = self.settings.load_news_sources()
-        self.sources = [s for s in sources_cfg.get("sources", []) if s.get("enabled", True)]
+        # #102: sources come from the VALIDATED news_sources config (single shape,
+        # extra="forbid"); per-source `enabled` is preserved by the model.
+        self.sources = [s for s in self.settings.load_news_sources_config().sources if s.enabled]
         self._client = httpx.Client(timeout=8.0, headers={"User-Agent": UA}, follow_redirects=True)
-        degrade = self.settings.load_sources().get("degrade", {})
-        self.max_retries = int(degrade.get("max_retries", 2))
-        self.backoff_base = float(degrade.get("backoff_base_seconds", 1.0))
-        self.jitter = bool(degrade.get("jitter", True))
+        # #102: retries/backoff/jitter and the per-source cache dir come from the validated
+        # SourcesConfig.degrade (same home as ProviderRegistry — the two no longer disagree).
+        degrade = self.settings.load_sources_config().degrade
+        self.max_retries = degrade.max_retries
+        self.backoff_base = degrade.backoff_base_seconds
+        self.jitter = degrade.jitter
         # #66: the cache cap is read from one place (pipeline.degrade.cache_max_age_hours).
         self.cache_max_age_hours = cache_max_age_hours()
-        self.cache_dir = self.settings.artifacts_dir / "cache"
+        cache_path = Path(degrade.last_good_cache_dir)
+        self.cache_dir: Path = (
+            cache_path if cache_path.is_absolute() else self.settings.project_root / cache_path
+        )
         # #102 (M-5): the news cap and the copyright-boundary summary cap are operations
         # knobs from sources.yaml:operations, not magic literals.
         operations = self.settings.load_sources_config().operations
@@ -85,8 +91,8 @@ class RssNewsProvider(BaseProvider):
         errors: list[str] = []
         self.source_status = {}
         for source in self.sources:
-            url = source.get("url", "")
-            source_id = str(source.get("id", urlparse(url).netloc))
+            url = source.url
+            source_id = str(source.id or urlparse(url).netloc)
             try:
                 raw = self._fetch_feed(url)
                 normalized: list[dict[str, Any]] = []
@@ -215,7 +221,7 @@ def _entry_date(entry: Any) -> str | None:
     return None
 
 
-def _normalize_entry(entry: Any, source: dict[str, Any], source_id: str, max_chars: int = 160) -> dict[str, Any] | None:
+def _normalize_entry(entry: Any, source: "NewsSource", source_id: str, max_chars: int = 160) -> dict[str, Any] | None:
     title = _clean_text(entry.get("title", ""))
     link = str(entry.get("link", "")).strip()
     published = _entry_date(entry)
@@ -224,13 +230,13 @@ def _normalize_entry(entry: Any, source: dict[str, Any], source_id: str, max_cha
         return None
     return {
         "title": title,
-        "source": str(source.get("name", source_id)),
+        "source": str(source.name or source_id),
         "source_id": source_id,
         "url": link,
         "published_at": published,
-        "lang": source.get("lang", "en"),
+        "lang": source.lang,
         "summary": _make_summary(entry, max_chars=max_chars),
-        "category_hint": source.get("category"),
+        "category_hint": source.category,
     }
 
 
