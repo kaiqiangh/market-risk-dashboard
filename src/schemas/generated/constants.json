@@ -1,0 +1,191 @@
+{
+  "_generated_by": "scripts/gen_ts_contracts.py",
+  "schema_version": "1.1.0",
+  "metadata_schema_version": "1.1.0",
+  "freshness_status": [
+    "fresh",
+    "delayed",
+    "stale",
+    "empty",
+    "missing",
+    "degraded"
+  ],
+  "reason_codes": [
+    "ok",
+    "no_rows_returned",
+    "no_events_in_window",
+    "provider_http_error",
+    "provider_rate_limited",
+    "provider_auth_failed",
+    "provider_parse_error",
+    "served_from_fallback",
+    "served_from_cache",
+    "cache_expired",
+    "cache_invalid",
+    "all_providers_failed",
+    "not_collected_this_run",
+    "interval_exceeded",
+    "input_dataset_unhealthy"
+  ],
+  "canonical_dataset_keys": [
+    "equities",
+    "sectors",
+    "crypto",
+    "macro",
+    "calendar",
+    "news",
+    "risk",
+    "dashboard",
+    "factlayer",
+    "analysis",
+    "news_translations"
+  ],
+  "expected_interval_minutes": {
+    "equities": 480,
+    "sectors": 480,
+    "crypto": 480,
+    "macro": 240,
+    "calendar": 1440,
+    "news": 480,
+    "risk": 480,
+    "dashboard": 480,
+    "factlayer": 480,
+    "analysis": 720,
+    "news_translations": 720
+  },
+  "datasets": {
+    "equities": {
+      "filenames": [
+        "equities.json"
+      ],
+      "enveloped": true,
+      "domain": "market",
+      "required": true,
+      "row_counted": true,
+      "has_schema_version": true
+    },
+    "sectors": {
+      "filenames": [
+        "sectors.json"
+      ],
+      "enveloped": true,
+      "domain": "market",
+      "required": true,
+      "row_counted": true,
+      "has_schema_version": true
+    },
+    "crypto": {
+      "filenames": [
+        "crypto.json"
+      ],
+      "enveloped": true,
+      "domain": "crypto",
+      "required": true,
+      "row_counted": true,
+      "has_schema_version": true
+    },
+    "macro": {
+      "filenames": [
+        "macro.json"
+      ],
+      "enveloped": true,
+      "domain": "macro",
+      "required": true,
+      "row_counted": true,
+      "has_schema_version": true
+    },
+    "calendar": {
+      "filenames": [
+        "calendar.json"
+      ],
+      "enveloped": true,
+      "domain": "calendar",
+      "required": true,
+      "row_counted": true,
+      "has_schema_version": true
+    },
+    "news": {
+      "filenames": [
+        "news.json"
+      ],
+      "enveloped": true,
+      "domain": "news",
+      "required": true,
+      "row_counted": true,
+      "has_schema_version": true
+    },
+    "risk": {
+      "filenames": [
+        "risk.json"
+      ],
+      "enveloped": true,
+      "domain": null,
+      "required": true,
+      "row_counted": false,
+      "has_schema_version": true
+    },
+    "dashboard": {
+      "filenames": [
+        "dashboard.json"
+      ],
+      "enveloped": true,
+      "domain": null,
+      "required": true,
+      "row_counted": false,
+      "has_schema_version": true
+    },
+    "factlayer": {
+      "filenames": [
+        "facts.json"
+      ],
+      "enveloped": false,
+      "domain": null,
+      "required": true,
+      "row_counted": false,
+      "has_schema_version": true
+    },
+    "analysis": {
+      "filenames": [
+        "analysis.zh-CN.json",
+        "analysis.en.json"
+      ],
+      "enveloped": false,
+      "domain": null,
+      "required": false,
+      "row_counted": false,
+      "has_schema_version": true
+    },
+    "news_translations": {
+      "filenames": [
+        "news.zh-translations.json"
+      ],
+      "enveloped": false,
+      "domain": null,
+      "required": false,
+      "row_counted": false,
+      "has_schema_version": false
+    }
+  },
+  "domain_datasets": {
+    "calendar": [
+      "calendar"
+    ],
+    "crypto": [
+      "crypto"
+    ],
+    "macro": [
+      "macro"
+    ],
+    "market": [
+      "equities",
+      "sectors"
+    ],
+    "news": [
+      "news"
+    ]
+  },
+  "non_dataset_suffixes": [
+    ".gz",
+    ".br"
+  ]
+}

@@ -1,35 +1,44 @@
 /**
- * Zod contract tests (T02 acceptance + #73 cross-language backstop).
+ * Zod contract tests (T02 acceptance + #73 cross-language backstop, rewired by #101).
  *
  * Since #73 the static fixture bundle is gone: the only committed documents are the three
  * hand-written GOLDENS at tests/fixtures/ (risk.json, analysis.zh-CN.json, facts.json), which
  * both this file and the Python suite read. The remaining datasets are tested here with
  * hand-written inline documents, independent of both the Python factory and the goldens.
  *
- * The goldens are the hinge of release convention #3: the Python suite forces them to follow
- * Pydantic (extra="forbid"), and the Zod `.strict()` mirrors below force src/schemas/*.ts to
- * follow them. If a golden lies — an unknown key — BOTH sides must reject it.
+ * Since #101 the Zod side is GENERATED from the Pydantic models (src/schemas/generated/) and is
+ * `.passthrough()`, not `.strict()`. The asymmetry is deliberate: the pipeline forbids extra
+ * fields on the way out (extra="forbid"), the frontend tolerates them on the way in so that
+ * shipping a new pipeline field cannot blank a page mid-deploy. Tolerating silently is the
+ * failure mode that invites, so the backstop moved from "parse must fail" to "parse must
+ * succeed AND collectUnknownFields must name the stray key". Both halves are asserted below —
+ * a drift that neither rejects nor reports is the only outcome this file still calls a bug.
  */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import type { z } from "zod";
 import riskFixture from "../fixtures/risk.json";
 import factsFixture from "../fixtures/facts.json";
 import analysisZhFixture from "../fixtures/analysis.zh-CN.json";
 
-import { AnalysisDataset } from "@/schemas/analysis";
-import { CalendarEnvelope } from "@/schemas/calendar";
-import { CryptoEnvelope } from "@/schemas/crypto";
-import { DashboardEnvelope } from "@/schemas/dashboard";
-import { EquitiesEnvelope } from "@/schemas/equities";
-import { FactLayer } from "@/schemas/factlayer";
-import { MacroEnvelope } from "@/schemas/macro";
-import { NewsEnvelope } from "@/schemas/news";
-import { RiskEnvelope } from "@/schemas/risk";
-import { SectorsEnvelope } from "@/schemas/sectors";
+import {
+  AnalysisDataset,
+  CalendarEnvelope,
+  CryptoEnvelope,
+  DashboardEnvelope,
+  EquitiesEnvelope,
+  FactLayer,
+  MacroEnvelope,
+  NewsEnvelope,
+  RiskEnvelope,
+  SectorsEnvelope,
+} from "@/schemas";
+import { collectUnknownFields } from "@/lib/unknownFields";
 import { DatasetClient } from "@/lib/api";
 import {
   EXPECTED_INTERVALS_MIN,
   EXPECTED_INTERVALS_MS,
   badgeFor,
+  effectiveStatus,
   evaluateFreshness,
   staleTimeFor,
 } from "@/lib/freshness";
@@ -51,7 +60,7 @@ import {
 } from "./helpers/fixtureData";
 // -------------------------------------------------------------------------------------
 
-const ENVELOPE_CASES: Array<[string, unknown, { safeParse: (v: unknown) => { success: boolean } }]> = [
+const ENVELOPE_CASES: Array<[string, unknown, z.ZodTypeAny]> = [
   ["macro", macroFixture, MacroEnvelope],
   ["equities", equitiesFixture, EquitiesEnvelope],
   ["sectors", sectorsFixture, SectorsEnvelope],
@@ -62,7 +71,7 @@ const ENVELOPE_CASES: Array<[string, unknown, { safeParse: (v: unknown) => { suc
   ["dashboard", dashboardFixture, DashboardEnvelope],
 ];
 
-const GOLDEN_CASES: Array<[string, unknown, { safeParse: (v: unknown) => { success: boolean } }]> = [
+const GOLDEN_CASES: Array<[string, unknown, z.ZodTypeAny]> = [
   ["risk", riskFixture, RiskEnvelope],
   ["facts", factsFixture, FactLayer],
   ["analysis.zh-CN", analysisZhFixture, AnalysisDataset],
@@ -72,6 +81,12 @@ describe("Zod contract: documents pass", () => {
   it.each(ENVELOPE_CASES)("%s envelope parses", (_key, fixture, schema) => {
     const result = schema.safeParse(fixture);
     expect(result.success).toBe(true);
+  });
+
+  it.each(ENVELOPE_CASES)("%s envelope carries no undeclared fields", (_key, fixture, schema) => {
+    // Passthrough means a fixture can drift past safeParse. The honest fixtures must stay
+    // honest, or the generated contracts have fallen behind the pipeline.
+    expect(collectUnknownFields(schema, fixture)).toEqual([]);
   });
 
   it("facts.json parses as FactLayer", () => {
@@ -84,25 +99,36 @@ describe("Zod contract: documents pass", () => {
   });
 });
 
-describe("Zod contract: a golden that lies is rejected (cross-language backstop, #73)", () => {
-  it.each(GOLDEN_CASES)("%s golden rejects an unknown key (strict)", (_key, fixture, schema) => {
+describe("Zod contract: a golden that lies is reported (cross-language backstop, #73/#101)", () => {
+  it.each(GOLDEN_CASES)("%s golden accepts but reports an unknown key", (_key, fixture, schema) => {
     const bad = structuredClone(fixture) as Record<string, any>;
     bad.sneaky_extra = 1;
-    expect(schema.safeParse(bad).success).toBe(false);
+    // Accepted — a new field must never blank the page…
+    expect(schema.safeParse(bad).success).toBe(true);
+    // …but never silently. The Python suite (extra="forbid") is what rejects it at the source.
+    expect(collectUnknownFields(schema, bad)).toContain("sneaky_extra");
+  });
+
+  it("reports a stray field nested inside a payload row, collapsing the array index", () => {
+    const bad = structuredClone(riskFixture) as Record<string, any>;
+    bad.payload.top_drivers[0].sneaky = 1;
+    expect(RiskEnvelope.safeParse(bad).success).toBe(true);
+    expect(collectUnknownFields(RiskEnvelope, bad)).toContain("payload.top_drivers[].sneaky");
   });
 });
 
-describe("Zod contract: provenance is required and strict (#65)", () => {
+describe("Zod contract: provenance is required (#65)", () => {
   it("rejects an envelope without provenance", () => {
     const bad = structuredClone(macroFixture) as Record<string, any>;
     delete bad.provenance;
     expect(MacroEnvelope.safeParse(bad).success).toBe(false);
   });
 
-  it("rejects an unknown provenance key", () => {
+  it("accepts but reports an unknown provenance key", () => {
     const bad = structuredClone(macroFixture) as Record<string, any>;
     (bad.provenance as Record<string, unknown>).cache_replay = true;
-    expect(MacroEnvelope.safeParse(bad).success).toBe(false);
+    expect(MacroEnvelope.safeParse(bad).success).toBe(true);
+    expect(collectUnknownFields(MacroEnvelope, bad)).toContain("provenance.cache_replay");
   });
 });
 
@@ -119,14 +145,23 @@ describe("Zod contract: hard constraints", () => {
     expect(MacroEnvelope.safeParse(bad).success).toBe(false);
   });
 
-  it("rejects extra fields (strict)", () => {
+  it("tolerates extra fields but names them (passthrough, #101)", () => {
     const bad = structuredClone(macroFixture) as Record<string, any>;
     bad.extra_key = "nope";
-    expect(MacroEnvelope.safeParse(bad).success).toBe(false);
+    expect(MacroEnvelope.safeParse(bad).success).toBe(true);
+    expect(collectUnknownFields(MacroEnvelope, bad)).toEqual(["extra_key"]);
 
     const bad2 = structuredClone(macroFixture) as Record<string, any>;
     bad2.payload.rates[0].sneaky = 1;
-    expect(MacroEnvelope.safeParse(bad2).success).toBe(false);
+    expect(MacroEnvelope.safeParse(bad2).success).toBe(true);
+    expect(collectUnknownFields(MacroEnvelope, bad2)).toEqual(["payload.rates[].sneaky"]);
+  });
+
+  it("keeps extra fields in the parsed output rather than stripping them", () => {
+    const extended = structuredClone(macroFixture) as Record<string, any>;
+    extended.payload.rates[0].change_5d = 0.25;
+    const parsed = MacroEnvelope.parse(extended) as Record<string, any>;
+    expect(parsed.payload.rates[0].change_5d).toBe(0.25);
   });
 
   it("rejects bad enum", () => {
@@ -195,7 +230,7 @@ describe("DatasetClient path rules (architecture §3.6)", () => {
   });
 });
 
-describe("freshness five-state semantics (architecture §8.5)", () => {
+describe("freshness six-state semantics (architecture §8.5, extended by #101)", () => {
   const intervalMs = 60 * 60 * 1000; // 1h
   const now = new Date("2026-08-03T12:00:00Z").getTime();
 
@@ -206,11 +241,35 @@ describe("freshness five-state semantics (architecture §8.5)", () => {
     expect(evaluateFreshness("2026-08-03T08:00:00Z", intervalMs, now)).toBe("stale"); // 4h
   });
 
-  it("maps status to UI badge", () => {
+  it("maps status to UI badge, including empty", () => {
     expect(badgeFor("fresh").tone).toBe("success");
     expect(badgeFor("stale").prominent).toBe(true);
     expect(badgeFor("missing").labelKey).toBe("status.missing");
     expect(badgeFor("degraded").labelKey).toBe("status.degraded");
+    // `empty` is "we asked, the source had nothing" — a fact, not an alarm.
+    expect(badgeFor("empty").labelKey).toBe("status.empty");
+    expect(badgeFor("empty").prominent).toBe(false);
+  });
+
+  it("effectiveStatus keys the interval on the dataset, not a hardcoded group (#101)", () => {
+    // calendar publishes daily (1440min, stale past 72h); equities every 8h (stale past 24h).
+    // One timestamp, 30h old, must read differently for the two — that is the whole bug #101
+    // fixes, because the old code judged every dataset against the "market" interval.
+    const thirtyHoursAgo = "2026-08-02T06:00:00Z";
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-08-03T12:00:00Z"));
+    try {
+      expect(effectiveStatus("fresh", thirtyHoursAgo, "calendar")).toBe("fresh");
+      expect(effectiveStatus("fresh", thirtyHoursAgo, "equities")).toBe("stale");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("effectiveStatus never downgrades a terminal status reported by the pipeline", () => {
+    for (const terminal of ["degraded", "missing", "empty"] as const) {
+      expect(effectiveStatus(terminal, "2026-08-03T11:59:00Z", "equities")).toBe(terminal);
+    }
   });
 });
 

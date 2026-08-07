@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import type { FreshnessStatus } from "@/schemas";
 
 /**
- * StatusBadge: freshness five-state badge (architecture §8.5, ADR-0002).
+ * StatusBadge: freshness six-state badge (architecture §8.5, ADR-0002).
  * Five states → icon + text + muted treatment; "fresh" uses no saturated color
  * (expected state), only stale/missing earn a warm tone. Color is never the only expression.
  * #66: a cache-replayed dataset renders a distinct badge (fromCache) instead of sharing

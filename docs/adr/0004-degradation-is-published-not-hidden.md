@@ -16,7 +16,7 @@ The trade-off is real: the site will visibly show more "degraded" states than it
 
 ## Consequences
 
-- The five-state freshness model (`fresh` / `delayed` / `stale` / `missing` / `degraded`) now has a real producer for `degraded`; `finalize_freshness` priority ordering (`missing` > `degraded` > time-based) is load-bearing rather than theoretical.
+- The six-state freshness model (`fresh` / `delayed` / `stale` / `empty` / `missing` / `degraded`) now has a real producer for `degraded`; `finalize_freshness` priority ordering (`missing` > `degraded` > `empty` > time-based) is load-bearing rather than theoretical.
 - `degraded_domains` gains its first reader. It was populated and never consumed.
 - UI must distinguish *live*, *degraded*, and *cached* rather than the current binary fresh/not-fresh — `fresh-*` tokens (ADR 0002) already carry enough vocabulary; only `degraded` needs a distinct affordance from `stale`.
 - Single-provider domains still degrade. `ProviderRegistry.call()` reaches the last-good cache branch whenever *all* providers fail, and that branch sets `degraded: True` and `from_cache: True` regardless of how many providers the domain had. So `crypto`, `macro`, `a_share` and `news` — each with one enabled provider — degrade through the cache exactly like `quotes` does. What they cannot do is `used_fallback` to a *second live provider*; only `quotes` and `calendar` have a real fallback chain. Tests must cover the cache-degrade path for single-provider domains specifically, because that is where the only degradation they can express lives. (`binance_public` remains `enabled: false`; re-enabling it is out of scope.)

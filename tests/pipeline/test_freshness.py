@@ -10,6 +10,7 @@ publishes a non-fresh risk dataset, and every envelope is assembled through the 
 from __future__ import annotations
 
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -54,6 +55,7 @@ def test_degraded_run_publishes_non_fresh_risk() -> None:
             risk_level="caution",
             regime="late_cycle",
             confidence=0.72,
+            breadth=None,
         ),
         dataset="risk",
         degraded=True,
@@ -75,6 +77,7 @@ def test_clean_run_publishes_fresh_risk() -> None:
             risk_level="caution",
             regime="late_cycle",
             confidence=0.72,
+            breadth=None,
         ),
         dataset="risk",
         degraded=False,
@@ -102,6 +105,7 @@ def test_risk_envelope_freshness_is_required() -> None:
         risk_level="caution",
         regime="late_cycle",
         confidence=0.72,
+        breadth=None,
     )
     with pytest.raises(ValidationError):
         RiskEnvelope(
@@ -127,6 +131,67 @@ def test_missing_priority_over_degraded() -> None:
     the last-good cache was rejected as too old/undated (no data at all). The existing
     priority `missing` > `degraded` > time resolves it without a rewrite.
     """
-    assert finalize_freshness("crypto", None, True) == "missing"
-    assert finalize_freshness("crypto", None, False) == "missing"
-    assert finalize_freshness("crypto", "2026-08-04T12:00:00Z", True) == "degraded"
+    assert finalize_freshness("crypto", None, True).status == "missing"
+    assert finalize_freshness("crypto", None, False).status == "missing"
+    assert finalize_freshness("crypto", "2026-08-04T12:00:00Z", True).status == "degraded"
+
+    # #89: the reason distinguishes the two ways of being missing, which the status alone
+    # cannot. "every provider failed" and "we never asked" both used to read `missing`.
+    assert finalize_freshness("crypto", None, True).reason.code == "all_providers_failed"
+    assert finalize_freshness("crypto", None, False).reason.code == "not_collected_this_run"
+
+
+def test_fresh_requires_a_non_empty_payload() -> None:
+    """#89 / E-2: the invariant that closed the "empty but fresh" hole.
+
+    `calendar.json` shipped `freshness_status: "fresh"` with `events: []` for weeks. A dataset
+    that returned no rows is `empty` — a real state with its own badge — never `fresh`.
+    """
+    now = datetime(2026, 8, 4, 12, 0, tzinfo=timezone.utc)
+    now_iso = "2026-08-04T11:00:00Z"
+    verdict = finalize_freshness("calendar", now_iso, False, row_count=0, now=now)
+    assert verdict.status == "empty"
+    assert verdict.reason.code == "no_events_in_window"
+
+    # Non-calendar datasets get the generic code; the distinction is worth keeping because a
+    # quiet calendar week is normal and an equities feed with zero rows is not.
+    assert (
+        finalize_freshness("equities", now_iso, False, row_count=0, now=now).reason.code
+        == "no_rows_returned"
+    )
+
+    # Empty *and* degraded is not a quiet week, it is a failure that happens to look like one.
+    assert finalize_freshness("calendar", now_iso, True, row_count=0, now=now).status == "missing"
+
+    # row_count=None means "cardinality is not a meaningful question here" (risk, dashboard).
+    assert finalize_freshness("risk", now_iso, False, row_count=None, now=now).status == "fresh"
+
+
+def test_degraded_reason_names_the_mechanism() -> None:
+    """A degraded dataset says *why* it degraded, not just that it did (#89, E-1).
+
+    Eight datasets used to publish the literal string "degraded" as their own explanation.
+    """
+    now_iso = "2026-08-04T12:00:00Z"
+    assert finalize_freshness("macro", now_iso, True, row_count=5, from_cache=True).reason.code == "served_from_cache"
+    assert (
+        finalize_freshness("macro", now_iso, True, row_count=5, used_fallback=True).reason.code
+        == "served_from_fallback"
+    )
+    assert finalize_freshness("macro", now_iso, True, row_count=5).reason.code == "provider_http_error"
+
+
+def test_unknown_reason_code_is_coerced_not_raised() -> None:
+    """A provider inventing an error label must not kill the run before metadata is written."""
+    verdict = finalize_freshness(
+        "macro", "2026-08-04T12:00:00Z", True, row_count=1, error_code="totally_made_up"
+    )
+    assert verdict.reason.code == "provider_http_error"
+
+
+def test_reason_detail_is_capped() -> None:
+    """The free-text half is capped at 200 chars — the redaction surface stays bounded (#92)."""
+    verdict = finalize_freshness(
+        "macro", "2026-08-04T12:00:00Z", True, row_count=1, detail="x" * 5000
+    )
+    assert len(verdict.reason.detail) == 200

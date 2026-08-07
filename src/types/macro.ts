@@ -4,4 +4,4 @@ export type {
   MacroDataset,
   MacroIndicator,
   MacroUnit,
-} from "@/schemas/macro";
+} from "@/schemas";

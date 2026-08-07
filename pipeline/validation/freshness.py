@@ -1,31 +1,42 @@
-"""Freshness five-state determination (architecture §8.5 single authoritative implementation).
+"""Freshness six-state determination (architecture §8.5 single authoritative implementation).
 
 The pipeline determines freshness uniformly in validation/freshness.py (not trusting Provider
 self-reporting, architecture §8.4); analysis/freshness.py reuses this module.
 
 Unified determination (P1-7): Collectors no longer fill freshness_status themselves; after writing,
 this module recomputes against the expected frequency from config/sources.yaml (fresh/delayed/stale/
-missing/degraded five states), then persists to metadata/freshness.json and each envelope.
+missing/degraded/empty six states), then persists to metadata/freshness.json and each envelope.
 """
 
 from __future__ import annotations
 
 from collections.abc import Iterable
 from datetime import datetime, timezone
-from typing import Literal
+from typing import NamedTuple
 
-FreshnessStatus = Literal["fresh", "delayed", "stale", "missing", "degraded"]
+from pipeline.schemas.envelope import (
+    STATUS_RANK,
+    FreshnessReason,
+    FreshnessStatus,
+    ReasonCode,
+)
 
-#: Precedence for aggregating a composite dataset's freshness. A higher rank is a
-#: *worse* (lower-confidence) status: a composite is only as fresh as its stalest
-#: input, so the worst status among its constituents wins.
-_AGGREGATE_RANK: dict[str, int] = {
-    "fresh": 0,
-    "delayed": 1,
-    "stale": 2,
-    "degraded": 3,
-    "missing": 4,
-}
+# Precedence for aggregating a composite dataset's freshness comes from
+# :data:`pipeline.schemas.envelope.STATUS_RANK` — the one copy of the severity map, shared
+# with ``storage/outcomes.py`` (they were byte-identical copies before #101). A composite is
+# only as fresh as its stalest input, so the worst status among its constituents wins.
+
+
+class FreshnessVerdict(NamedTuple):
+    """The single authoritative answer to "how fresh is this dataset, and why".
+
+    Produced only by :func:`finalize_freshness`. Both ``metadata/freshness.json`` and
+    ``metadata/sources.json`` are rendered from verdicts, which is what stops the two files
+    contradicting each other the way they did before #89.
+    """
+
+    status: FreshnessStatus
+    reason: FreshnessReason
 
 
 def evaluate_freshness(
@@ -65,19 +76,72 @@ def finalize_freshness(
     degraded: bool,
     missing: bool = False,
     now: datetime | None = None,
-) -> FreshnessStatus:
-    """Unified five-state determination (P1-7, architecture §8.5 table semantics).
+    *,
+    row_count: int | None = None,
+    error_code: str | None = None,
+    detail: str = "",
+    used_fallback: bool = False,
+    from_cache: bool = False,
+) -> FreshnessVerdict:
+    """Unified six-state determination — the only producer of status *and* reason (#89).
 
     Priority:
-    1. missing   —— never had data / file missing (explicit marker)
-    2. degraded  —— some Provider degraded/fallback (independent of time)
-    3. fresh/delayed/stale —— time-dimension determination by expected update frequency (config/sources.yaml)
+
+    1. ``missing``  — never had data / file missing (explicit marker, or no ``generated_at``)
+    2. ``empty``    — the upstream answered with zero rows. If the run *also* had to degrade
+       to reach that answer, it is ``missing`` instead: an empty result that required a
+       fallback is not a quiet week, it is a failure that happens to look like one.
+    3. ``degraded`` — a provider degraded or fell back, but rows came back (time-independent)
+    4. ``fresh`` / ``delayed`` / ``stale`` — the time ladder, against the expected interval
+       for ``dataset`` in ``config/sources.yaml``
+
+    ``row_count=None`` means "this dataset has no meaningful row cardinality" (``risk``,
+    ``dashboard``) and skips the emptiness check. Passing ``0`` asserts genuine emptiness.
+
+    This encodes the invariant that closed E-2: **``fresh`` requires a non-empty payload.**
+    Before this, ``calendar.json`` published ``freshness_status: "fresh"`` with ``events: []``.
     """
     if missing or not generated_at:
-        return "missing"
+        code = error_code or ("all_providers_failed" if degraded else "not_collected_this_run")
+        return FreshnessVerdict("missing", _reason(code, detail))
+
+    if row_count == 0:
+        if degraded:
+            code = error_code or "all_providers_failed"
+            return FreshnessVerdict("missing", _reason(code, detail))
+        code = error_code or ("no_events_in_window" if dataset == "calendar" else "no_rows_returned")
+        return FreshnessVerdict("empty", _reason(code, detail))
+
     if degraded:
-        return "degraded"
-    return evaluate_freshness(generated_at, expected_interval_minutes_for(dataset, 480), now)
+        if error_code:
+            code = error_code
+        elif from_cache:
+            code = "served_from_cache"
+        elif used_fallback:
+            code = "served_from_fallback"
+        else:
+            code = "provider_http_error"
+        return FreshnessVerdict("degraded", _reason(code, detail))
+
+    status = evaluate_freshness(generated_at, expected_interval_minutes_for(dataset, 480), now)
+    code = "ok" if status == "fresh" else "interval_exceeded"
+    return FreshnessVerdict(status, _reason(error_code or code, detail))
+
+
+#: Codes the caller may supply that are not in the closed vocabulary get coerced rather than
+#: raising: a run must never die because a provider invented an error label.
+_KNOWN_CODES: frozenset[str] = frozenset(ReasonCode.__args__)  # type: ignore[attr-defined]
+
+
+def _reason(code: str, detail: str) -> FreshnessReason:
+    """Build a reason, coercing an unknown code to ``provider_http_error``.
+
+    ``detail`` is truncated to the contract's 200-character cap here rather than letting
+    pydantic reject it — the cap exists to blunt accidental secret leakage (#92), and a leaky
+    string should be shortened, not turned into a crash that skips writing metadata entirely.
+    """
+    safe_code = code if code in _KNOWN_CODES else "provider_http_error"
+    return FreshnessReason(code=safe_code, detail=detail[:200])  # type: ignore[arg-type]
 
 
 def aggregate_freshness(statuses: Iterable[str]) -> FreshnessStatus:
@@ -96,7 +160,9 @@ def aggregate_freshness(statuses: Iterable[str]) -> FreshnessStatus:
     worst: str = "fresh"
     worst_rank = -1
     for status in statuses:
-        rank = _AGGREGATE_RANK.get(str(status), 0)
+        # An unknown status outranks everything (len+1) rather than being silently treated as
+        # healthy — the same fail-loudly stance as registry.require.
+        rank = STATUS_RANK.get(str(status), len(STATUS_RANK) + 1)
         if rank > worst_rank:
             worst_rank = rank
             worst = str(status)

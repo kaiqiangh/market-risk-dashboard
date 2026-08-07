@@ -12,7 +12,7 @@ import { freshTone, freshClasses } from "@/lib/riskColors";
 
 /**
  * StatusPage: system status page.
- * Data sources: metadata/sources.json (provider health) + metadata/freshness.json (five states)
+ * Data sources: metadata/sources.json (provider health) + metadata/freshness.json (six states)
  *        + metadata/schema-version.json (contract version).
  * Metadata is not an envelope; fetched with an explicit z.unknown() schema (DatasetClient third argument).
  */
@@ -24,7 +24,10 @@ interface SourcesMetadata {
 
 interface FreshnessMetadata {
   schema_version?: string;
-  datasets?: Record<string, { status?: string; reason?: string; updated_at?: string }>;
+  datasets?: Record<
+    string,
+    { status?: string; reason?: { code?: string; detail?: string }; updated_at?: string }
+  >;
 }
 
 export default function StatusPage() {
@@ -103,7 +106,7 @@ export default function StatusPage() {
         </Card>
       </div>
 
-      {/* Dataset five states (hairline section, not a card) */}
+      {/* Dataset six states (hairline section, not a card) */}
       <section className="border-t border-hairline pt-4">
         <h2 className="mb-2 text-sm font-medium text-foreground">{t("freshness.title")}</h2>
         {freshnessQ.isLoading ? (
@@ -127,8 +130,14 @@ export default function StatusPage() {
                       | "fresh"
                       | "delayed"
                       | "stale"
+                      | "empty"
                       | "missing"
                       | "degraded";
+                    // #89/#101: the published reason is a {code, detail} pair from a closed
+                    // vocabulary. The code is translated; detail is operator-facing English
+                    // (redaction-ready) and shown as a hover, never translated.
+                    const reasonCode = info?.reason?.code;
+                    const reasonDetail = info?.reason?.detail;
                     return (
                       <tr key={key} className="border-b border-border/50 last:border-0">
                         <td className="py-1.5 pr-2">{t(`datasets.${key}`, { defaultValue: key })}</td>
@@ -138,7 +147,14 @@ export default function StatusPage() {
                         <td className="py-1.5 pr-2 tabular-nums text-muted-foreground">
                           {info?.updated_at ? formatDateTime(info.updated_at, locale) : t("common:data.na")}
                         </td>
-                        <td className="py-1.5 text-muted-foreground">{info?.reason ?? t("common:data.na")}</td>
+                        <td
+                          className="py-1.5 text-muted-foreground"
+                          title={reasonDetail || undefined}
+                        >
+                          {reasonCode
+                            ? t(`freshness.reasonCodes.${reasonCode}`, { defaultValue: reasonCode })
+                            : t("common:data.na")}
+                        </td>
                       </tr>
                     );
                   })}

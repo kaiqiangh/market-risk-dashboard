@@ -1,4 +1,4 @@
-import type { FreshnessStatus } from "@/schemas/envelope";
+import type { FreshnessStatus } from "@/schemas";
 
 /** Global data envelope (architecture §3.1). */
 export interface BaseEnvelope {

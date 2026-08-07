@@ -8,4 +8,4 @@ export type {
   RiskLevel,
   RiskModelResult,
   RiskTrend,
-} from "@/schemas/risk";
+} from "@/schemas";

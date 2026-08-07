@@ -148,15 +148,24 @@ class StorageWriter:
 
     # ---- Metadata ----
 
-    def update_freshness(self, dataset: str, status: str, reason: str) -> None:
+    def read_freshness_raw(self) -> dict[str, Any]:
+        """The freshness metadata file as it stands, or an empty shell if absent.
+
+        Used by :class:`~pipeline.storage.outcomes.RunOutcomes` to carry forward datasets a
+        partial run did not attempt.
+        """
         path = self.metadata_dir / "freshness.json"
-        data = self._read_json(path, default={"schema_version": "1.0.0", "datasets": {}})
-        data.setdefault("datasets", {})[dataset] = {
-            "status": status,
-            "reason": reason,
-            "updated_at": now_utc(),
-        }
-        self.write_json(path, data)
+        return self._read_json(path, default={"schema_version": "1.1.0", "datasets": {}})
+
+    def write_freshness_metadata(self, payload: dict[str, Any]) -> None:
+        """Write the whole freshness file in one shot.
+
+        Replaces the previous per-dataset read-modify-write. Writing it once from a complete
+        record is what guarantees every registered dataset appears on every run — the
+        incremental version silently omitted anything a collector never got to, making
+        "never ran" indistinguishable from "ran fine".
+        """
+        self.write_json(self.metadata_dir / "freshness.json", payload)
 
     def record_translations(self, status: str, merged_items: int = 0, reason: str = "") -> None:
         """Chinese translation merge record (architecture §2 L320 metadata/translations.json, P1-6).
@@ -176,9 +185,16 @@ class StorageWriter:
         }
         self.write_json(path, data)
 
-    def write_sources_metadata(self, status: dict[str, Any]) -> None:
-        path = self.metadata_dir / "sources.json"
-        self.write_json(path, {"schema_version": "1.0.0", "updated_at": now_utc(), "domains": status})
+    def write_sources_metadata(self, payload: dict[str, Any]) -> None:
+        """Write the whole provider-health file in one shot.
+
+        Takes the complete document rather than just the domain map: the document is now a
+        projection of the run outcome record (see
+        :meth:`~pipeline.storage.outcomes.RunOutcomes.sources_projection`), and wrapping a
+        bare domain map here would let this method decide a ``schema_version`` the projection
+        already decided.
+        """
+        self.write_json(self.metadata_dir / "sources.json", payload)
 
     def write_schema_version(self, version: str = "1.0.0") -> None:
         path = self.metadata_dir / "schema-version.json"

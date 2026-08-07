@@ -13,6 +13,7 @@ used.
 
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 
@@ -24,8 +25,10 @@ _YAML_KEY = re.compile(r"^\s*([a-zA-Z0-9_-]+)\s*:", re.MULTILINE)
 #: merely quoted in a comment — the comment at the top of test-pipeline.yml contains the
 #: exact command text, so a substring match stays green even if the gate line is deleted.
 _F821_RUN_LINE = re.compile(r"^\s*run:\s*ruff check \.\s*--select F821", re.MULTILINE)
-#: The `ENVELOPE_FILES = new Set([...])` literal in validate-json.mjs.
-_ENVELOPE_FILES_SET = re.compile(r"ENVELOPE_FILES = new Set\(\[(.*?)\]\)", re.DOTALL)
+#: Hand-written tables that #101 replaced with the generated registry. Their reappearance
+#: in validate-json.mjs is the regression, so these patterns now assert absence.
+_ENVELOPE_FILES_SET = re.compile(r"ENVELOPE_FILES\s*=\s*new Set\(\[(.*?)\]\)", re.DOTALL)
+_FRESHNESS_SET = re.compile(r"FRESHNESS\s*=\s*new Set\(\s*\[", re.DOTALL)
 
 
 def _read_workflow(name: str) -> str:
@@ -74,11 +77,11 @@ def test_python_suite_runs_on_every_pull_request_and_push() -> None:
     )
 
 
-def _envelope_files_members(text: str) -> set[str]:
-    """Parse the string members of the `ENVELOPE_FILES = new Set([...])` literal."""
-    match = _ENVELOPE_FILES_SET.search(text)
-    assert match, "validate-json.mjs must declare an ENVELOPE_FILES = new Set([...]) literal"
-    return set(re.findall(r'"([^"]+)"', match.group(1)))
+def _generated_constants() -> dict:
+    """The contract constants the Node gate reads (src/schemas/generated/constants.json)."""
+    path = REPO_ROOT / "src" / "schemas" / "generated" / "constants.json"
+    assert path.exists(), f"missing generated contract constants: {path}"
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def test_f821_is_the_fatal_lint_gate() -> None:
@@ -99,20 +102,75 @@ def test_f821_is_the_fatal_lint_gate() -> None:
 
 
 def test_validate_json_mjs_is_aligned_with_the_schema_homes() -> None:
-    """QA note (#74): the Node gate must not skip dashboard.json and must say where its enum lives.
+    """#74/#101: the Node gate covers every enveloped dataset and keeps no private copy.
 
-    `validate-json.mjs` is deliberately zero-dependency, so it cannot import the Zod
-    enum; instead it declares the canonical homes and must stay in sync. `dashboard.json`
-    is an envelope (pipeline/schemas/dashboard.py, src/schemas/dashboard.ts) and is
-    validated by the Python gate — the Node gate skipping it was a divergence. The
-    membership check parses the set literal, so a dead `name !== "dashboard.json"` skip
-    guard elsewhere in the file must not satisfy it (QA mutation).
+    #74's finding was that `validate-json.mjs` skipped dashboard.json while the Python gate
+    validated it. The fix then was a hand-written `ENVELOPE_FILES = new Set([...])` literal
+    plus a hand-written FRESHNESS copy, and this test pinned their contents — which only
+    ever caught the drift after someone had already shipped it.
+
+    #101 removed the literals: the gate now reads src/schemas/generated/constants.json,
+    generated from pipeline/schemas/registry.py. Divergence is no longer a thing to detect,
+    so the test moves up a level and pins the mechanism instead — the gate must read the
+    generated registry, must not reintroduce a private table, and the registry must still
+    say dashboard is an envelope.
     """
     text = (REPO_ROOT / "scripts" / "validate-json.mjs").read_text(encoding="utf-8")
 
-    assert "dashboard.json" in _envelope_files_members(text), (
-        "dashboard.json must be a member of ENVELOPE_FILES, not merely mentioned in the file"
+    assert "generated" in text and "constants.json" in text, (
+        "validate-json.mjs must read src/schemas/generated/constants.json, "
+        "not maintain its own dataset table"
     )
-    assert "src/schemas/envelope.ts" in text, (
-        "the FRESHNESS copy must document its canonical home (Zod enum)"
+    assert not _ENVELOPE_FILES_SET.search(text), (
+        "validate-json.mjs must not reintroduce a hand-written ENVELOPE_FILES literal — "
+        "the enveloped/standalone split comes from the generated registry (#101)"
+    )
+    assert not _FRESHNESS_SET.search(text), (
+        "validate-json.mjs must not reintroduce a hand-written freshness vocabulary — "
+        "it comes from constants.json:freshness_status (#101)"
+    )
+
+    constants = _generated_constants()
+    dashboard = constants["datasets"].get("dashboard")
+    assert dashboard, "dashboard must be a registered dataset (#74: the Node gate skipped it)"
+    assert dashboard["enveloped"] is True, "dashboard.json is an envelope and must be gated as one"
+    assert "dashboard.json" in dashboard["filenames"]
+
+    # The gate resolves files through the registry, so every enveloped dataset is covered by
+    # construction. Assert the registry actually knows the full set rather than a subset.
+    enveloped = {k for k, spec in constants["datasets"].items() if spec["enveloped"]}
+    assert {"macro", "equities", "sectors", "crypto", "news", "calendar", "risk", "dashboard"} <= enveloped
+
+
+def test_validate_json_mjs_cross_checks_degraded_agreement() -> None:
+    """#89/#101: the two metadata files are projections of one record, so the Node gate must
+    assert they agree on `degraded` per domain — the contradiction the record was written to
+    make impossible (calendar `fresh` in one file, `degraded` in the other)."""
+    text = (REPO_ROOT / "scripts" / "validate-json.mjs").read_text(encoding="utf-8")
+
+    assert 'new Set(["degraded", "missing", "stale"])' in text, (
+        "validate-json.mjs must mirror outcomes.py's unhealthy set for the degraded-agreement check"
+    )
+    assert "disagrees with freshness.json" in text, (
+        "validate-json.mjs must error when a domain's degraded disagrees with freshness.json"
+    )
+
+
+def test_validate_data_runs_contract_drift_gate() -> None:
+    """#101 criterion 2: `check:contracts` must run in CI, and codegen changes must trigger it.
+
+    A generated-contract drift that only `npm run check:contracts` locally would catch is the
+    same class of silent gap #74 closed for the Python suite: the gate exists, but if no
+    workflow runs it, drift ships.
+    """
+    text = _read_workflow("validate-data.yml")
+
+    assert "npm run check:contracts" in text, (
+        "validate-data.yml must run the contract drift gate (`npm run check:contracts`)"
+    )
+    assert '"scripts/gen_ts_contracts.py"' in text, (
+        "validate-data.yml paths: must watch scripts/gen_ts_contracts.py so a codegen change triggers the gate"
+    )
+    assert '"src/schemas/generated/**"' in text, (
+        "validate-data.yml paths: must watch src/schemas/generated/** so a drift PR triggers the gate"
     )

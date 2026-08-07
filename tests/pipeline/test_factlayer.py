@@ -120,8 +120,18 @@ def test_fact_layer_rebuild_writes_facts_and_freshness(fact_layer_env: Path) -> 
     assert facts["risk"], "rebuilt facts must carry the risk payload"
 
     freshness = json.loads((fact_layer_env / "metadata" / "freshness.json").read_text(encoding="utf-8"))
-    assert freshness["datasets"]["facts"]["status"] == "fresh"
-    assert freshness["datasets"]["facts"]["reason"] == "rebuilt"
+    entry = freshness["datasets"]["factlayer"]
+    assert entry["status"] == "fresh"
+    # #89: the reason is a structured {code, detail}, not free text. The status is never its
+    # own explanation — that is how eight datasets came to publish reason "degraded".
+    assert entry["reason"]["code"] == "ok"
+    assert entry["reason"]["detail"] == "rebuilt from latest/*.json"
+
+    # Every registered dataset appears, always. An absent key used to be indistinguishable
+    # from a healthy one.
+    from pipeline.schemas import registry
+
+    assert set(freshness["datasets"]) == set(registry.CANONICAL_KEYS)
 
 
 def test_fact_layer_rebuild_without_sectors_still_succeeds(
