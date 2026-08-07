@@ -9,9 +9,11 @@ from pathlib import Path
 
 import pytest
 
+from pipeline.providers.base import ProviderError
 from pipeline.schemas.envelope import FreshnessReason
 from pipeline.settings import Settings
 from pipeline.storage import StorageWriter
+from pipeline.universe import AssetUniverse
 from pipeline.validation.validate_all import validate_all, validate_file
 
 
@@ -791,6 +793,10 @@ def _fake_market_collection(command: str) -> dict:
         "macro_meta": {},
         "market_meta": {
             "data_quality": 0.9,
+            # #119: the market collector's OWN degradation list. The global
+            # `results["degraded"]` also carries news/macro/calendar messages, which must
+            # NOT degrade market datasets — this is the per-dataset seam.
+            "degraded": ["crypto: coingecko rate limited"],
             "sources": {
                 "equities": ["yfinance", "akshare"],
                 "crypto": ["coingecko"],
@@ -852,6 +858,95 @@ def test_a_degraded_run_that_returned_nothing_is_reported_as_failed(
     freshness = json.loads((data_dir / "metadata" / "freshness.json").read_text(encoding="utf-8"))
     assert freshness["datasets"]["equities"]["status"] == "missing"
     assert freshness["datasets"]["equities"]["reason"]["code"] == "all_providers_failed"
+
+
+class TestPerDatasetDegradation:
+    """#119: degradation is per-dataset — a news outage must not degrade market datasets."""
+
+    def test_news_only_degradation_does_not_degrade_market_datasets(self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+        """A full run whose only degradation is an RSS source keeps equities/sectors/crypto/
+        commodities non-degraded; news (and the fact layer, which aggregates its inputs)
+        degrade. This is the exact cascade the old single global flag produced wrongly."""
+        import pipeline.run as run_mod
+        from pipeline.schemas import CalendarDataset, CommoditiesDataset, CryptoDataset, EquitiesDataset, MacroDataset, NewsDataset, SectorsDataset
+
+        now = "2026-08-04T12:00:00Z"
+
+        def _news_only_collection(command: str) -> dict:
+            from pipeline.schemas import NewsItem
+
+            results = _fake_market_collection(command)
+            # market collector is HEALTHY — its own degraded list is empty.
+            results["market_meta"]["degraded"] = []
+            results["degraded"] = ["RSS sources degraded: clschina, wallstreetcn"]
+            results["macro"] = MacroDataset(rates=[], credit=[], volatility=[], inflation=[], labor=[], liquidity=[], fx=[])
+            results["macro_meta"] = {"data_quality": 1.0, "degraded": [], "provider": {"provider": "fred", "used_fallback": False, "from_cache": False}}
+            # one row: degraded-with-data is "degraded", not "missing" (#89).
+            results["news"] = NewsDataset(items=[NewsItem(id="n1", title="test", source="cnbc", url="https://example.com", published_at=now, importance=1.0, summary="s", sentiment="neutral")])
+            results["news_meta"] = {"data_quality": 0.8, "degraded": ["RSS sources degraded: clschina, wallstreetcn"], "provider_outcome": {"provider": "rss_news", "used_fallback": False, "from_cache": False}}
+            results["news_degraded"] = True
+            results["calendar"] = CalendarDataset(events=[])
+            results["calendar_meta"] = {"data_quality": 1.0, "degraded": [], "provider_outcome": {"provider": "fmp", "used_fallback": False, "from_cache": False}}
+            results["calendar_degraded"] = False
+            return results
+
+        data_dir = tmp_path / "data"
+        monkeypatch.setattr(
+            run_mod,
+            "settings",
+            Settings(_env_file=None, data_dir=data_dir, artifacts_dir=tmp_path / "artifacts"),
+        )
+        monkeypatch.setattr(run_mod, "_run_collection", _news_only_collection)
+        assert run_mod.main(["--full"]) == 0
+
+        freshness = json.loads((data_dir / "metadata" / "freshness.json").read_text(encoding="utf-8"))
+        for key in ("equities", "sectors", "crypto", "commodities"):
+            assert freshness["datasets"][key]["status"] != "degraded", (
+                f"{key} must not degrade from a news-only outage (#119); got {freshness['datasets'][key]}"
+            )
+        assert freshness["datasets"]["news"]["status"] == "degraded"
+        assert freshness["datasets"]["factlayer"]["status"] == "degraded"  # aggregates its inputs honestly
+
+    def test_market_degradation_still_degrades_market_datasets(self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+        """A genuine market-collection failure (crypto rate limited) still degrades the
+        market envelopes — per-dataset must not become permissive."""
+        import pipeline.run as run_mod
+
+        data_dir = tmp_path / "data"
+        monkeypatch.setattr(
+            run_mod,
+            "settings",
+            Settings(_env_file=None, data_dir=data_dir, artifacts_dir=tmp_path / "artifacts"),
+        )
+        monkeypatch.setattr(run_mod, "_run_collection", _fake_market_collection)
+        assert run_mod.main(["--market-only"]) == 0
+
+        freshness = json.loads((data_dir / "metadata" / "freshness.json").read_text(encoding="utf-8"))
+        for key in ("equities", "sectors", "crypto", "commodities"):
+            assert freshness["datasets"][key]["status"] == "degraded", key
+            assert freshness["datasets"][key]["reason"]["code"] == "provider_http_error", key
+
+
+def test_theme_constituent_history_failure_does_not_degrade_market(tmp_path: Path) -> None:
+    """#119: a delisted/bad theme constituent (ABB/FI-style) is swallowed by
+    _fetch_series_rows (returns symbol, []) and never enters the market collector's
+    degraded list — the market envelope stays clean."""
+    from pipeline.collectors.market import MarketCollector
+
+    class _FailingHistoryRegistry:
+        degraded_domains: set[str] = set()
+
+        def call(self, domain, method, key, args=(), kwargs=None):
+            raise ProviderError("no data found, symbol may be delisted")
+
+    settings = Settings(_env_file=None, artifacts_dir=tmp_path)
+    universe = AssetUniverse.load(settings)
+    collector = MarketCollector(_FailingHistoryRegistry(), universe, settings)
+
+    symbol, rows = collector._fetch_series_rows("ABB")
+    assert symbol == "ABB"
+    assert rows == []
+    assert collector.degraded == []  # swallowed, not a degradation
 
 
 def test_dataset_health_surfaces_corrupt_freshness_metadata(tmp_path: Path) -> None:
