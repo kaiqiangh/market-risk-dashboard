@@ -14,12 +14,17 @@ sources:
   # Chinese sources (landed in R3; enabled defaults to true, an unreachable single source is marked degraded by the Provider rather than crashing)
   # Eastmoney official RSS (verified reachable 2026-08, 95 items/fetch) — authoritative official source
   - { id: eastmoney, name: 东方财富, url: "https://rss.eastmoney.com/rss_partener.xml", lang: zh, weight: 3 }
-  # CLS (no official RSS) → via the public RSSHub instance /cls/telegraph; public instances may 403/rate-limit
-  # → Provider degrades per source (degraded) without blocking other sources; production can self-host RSSHub and replace the url
-  - { id: clschina, name: 财联社, url: "https://rsshub.app/cls/telegraph", lang: zh, weight: 4, trust: relay }
+  # CLS (no official RSS) → via RSSHub /cls/telegraph; public instances may 403/rate-limit.
+  # 2026-08-07: rsshub.app has served HTTP 403 on every run since 08-04 (past the wayfinder-46
+  # replacement trigger) and was RETIRED. Primary + fallback below were live-probed (200 +
+  # valid feed) on 08-07; a source walks its chain — any failure advances to the next URL.
+  - { id: clschina, name: 财联社, url: "https://hub.slarker.me/cls/telegraph", lang: zh, weight: 4, trust: relay,
+      fallback_urls: ["https://rsshub.ktachibana.party/cls/telegraph"] }
   # Wallstreetcn: official rss.xml (https://wallstreetcn.com/rss.xml) returned S3
-  # NoSuchKey when verified 2026-08 (no publicly available official RSS) → use the RSSHub route /wallstreetcn/news; degrade when unreachable
-  - { id: wallstreetcn, name: 华尔街见闻, url: "https://rsshub.app/wallstreetcn/news", lang: zh, weight: 3, trust: relay }
+  # NoSuchKey when verified 2026-08 (no publicly available official RSS) → use RSSHub
+  # /wallstreetcn/news; same rsshub.app retirement + fallback-chain policy as clschina.
+  - { id: wallstreetcn, name: 华尔街见闻, url: "https://hub.slarker.me/wallstreetcn/news", lang: zh, weight: 3, trust: relay,
+      fallback_urls: ["https://rsshub.ktachibana.party/wallstreetcn/news"] }
 
 # Importance scoring rules (0-100): source weight + keywords + asset hits + recency
 importance:

@@ -41,11 +41,18 @@ class RssNewsProvider(BaseProvider):
         self.sources = [s for s in self.settings.load_news_sources_config().sources if s.enabled]
         # S-3: outbound allowlist = the synthetic bucket + every configured source host;
         # sources marked `trust: relay` (rsshub.app) vouch for their redirect targets.
-        allowed = set(self.hosts) | {
-            urlparse(s.url).hostname for s in self.sources if urlparse(s.url).hostname
+        # #124: the allowlist covers the FULL fallback chain, not just the primary URL —
+        # otherwise a legitimate fallback fetch would be blocked by our own guard.
+        chain_hosts = {
+            urlparse(u).hostname for s in self.sources for u in [s.url, *s.fallback_urls] if urlparse(u).hostname
         }
+        allowed = set(self.hosts) | chain_hosts
         relay_hosts = {
-            urlparse(s.url).hostname for s in self.sources if s.trust == "relay" and urlparse(s.url).hostname
+            urlparse(u).hostname
+            for s in self.sources
+            if s.trust == "relay"
+            for u in [s.url, *s.fallback_urls]
+            if urlparse(u).hostname
         }
         self._client = guarded_client(
             allowed, timeout=8.0, headers={"User-Agent": UA}, relay_hosts=relay_hosts
@@ -84,52 +91,72 @@ class RssNewsProvider(BaseProvider):
         errors: list[str] = []
         self.source_status = {}
         for source in self.sources:
-            url = source.url
-            source_id = str(source.id or urlparse(url).netloc)
-            try:
-                raw = self._fetch_feed(url)
-                normalized: list[dict[str, Any]] = []
-                invalid_entries = 0
-                for entry in raw[:max_items]:
-                    item = _normalize_entry(entry, source, source_id, max_chars=self.summary_max_chars)
-                    if item is None:
-                        invalid_entries += 1
-                        continue
-                    normalized.append(item)
-                if not normalized:
-                    raise ProviderError(f"RSS source returned no valid entries ({invalid_entries} invalid)")
-                fetched_at = now_utc()
-                # #103/D-6: no per-source cache here — the registry's last-good cache and the
-                # single retry layer cover the whole news domain. Per-source health is still
-                # reported for the status page.
-                self.source_status[source_id] = {
-                    "ok": True,
-                    "degraded": False,
-                    "from_cache": False,
-                    "error": None,
-                    "item_count": len(normalized),
-                    "invalid_entries": invalid_entries,
-                    "last_good_at": fetched_at,
-                    "updated_at": fetched_at,
-                }
-                items.extend(normalized)
-            except Exception as exc:  # noqa: BLE001 - a single source failure does not interrupt (degradation)
-                self.source_status[source_id] = {
-                    "ok": False,
-                    "degraded": True,
-                    "from_cache": False,
-                    "error": redact(f"{type(exc).__name__}: {exc}"),
-                    "updated_at": now_utc(),
-                }
-                errors.append(f"{source_id}: {redact(str(exc))}")
+            # #124: each source walks its ordered URL chain — primary first, then each
+            # fallback. Any failure advances to the next URL (one try per URL per run
+            # attempt; wayfinder-46: never retry a 403 in the same run). The registry's
+            # single retry layer still covers whole-batch transients.
+            urls = [source.url, *source.fallback_urls]
+            source_id = str(source.id or urlparse(source.url).netloc)
+            served = False
+            last_error: Exception | None = None
+            for url in urls:
+                try:
+                    raw, channel_link = self._fetch_feed(url)
+                    normalized: list[dict[str, Any]] = []
+                    invalid_entries = 0
+                    for entry in raw[:max_items]:
+                        item = _normalize_entry(
+                            entry, source, source_id,
+                            max_chars=self.summary_max_chars, fallback_link=channel_link,
+                        )
+                        if item is None:
+                            invalid_entries += 1
+                            continue
+                        normalized.append(item)
+                    if not normalized:
+                        raise ProviderError(f"RSS source returned no valid entries ({invalid_entries} invalid)")
+                    fetched_at = now_utc()
+                    # #103/D-6: no per-source cache here — the registry's last-good cache and the
+                    # single retry layer cover the whole news domain. Per-source health is still
+                    # reported for the status page. #124: `ok` means "at least one URL in the
+                    # chain served live" — fallback service is not degradation.
+                    self.source_status[source_id] = {
+                        "ok": True,
+                        "degraded": False,
+                        "from_cache": False,
+                        "error": None,
+                        "item_count": len(normalized),
+                        "invalid_entries": invalid_entries,
+                        "last_good_at": fetched_at,
+                        "updated_at": fetched_at,
+                    }
+                    items.extend(normalized)
+                    served = True
+                    break
+                except Exception as exc:  # noqa: BLE001 - a single source failure does not interrupt (degradation)
+                    last_error = exc
+                    continue
+            if served:
                 continue
+            self.source_status[source_id] = {
+                "ok": False,
+                "degraded": True,
+                "from_cache": False,
+                "error": redact(f"{type(last_error).__name__}: {last_error}") if last_error else "RSS source failed",
+                "updated_at": now_utc(),
+            }
+            errors.append(f"{source_id}: {redact(str(last_error)) if last_error else 'unknown'}")
         if not items and errors:
             raise ProviderError("RSS all sources failed: " + "; ".join(errors))
         return items
 
-    def _fetch_feed(self, url: str) -> list[Any]:
+    def _fetch_feed(self, url: str) -> tuple[list[Any], str | None]:
         """Single-attempt fetch (#103/D-6): classification at the one boundary, retries in
-        ProviderRegistry.call — the per-source retry loop and per-source cache are gone."""
+        ProviderRegistry.call — the per-source retry loop and per-source cache are gone.
+
+        Returns ``(entries, channel_link)`` — the channel link is the #127 fallback URL for
+        linkless flash feeds (财联社 telegraph), which publish no per-item URLs at all.
+        """
         try:
             resp = self._client.get(url)
         except httpx.RequestError as exc:
@@ -144,7 +171,8 @@ class RssNewsProvider(BaseProvider):
         feed = feedparser.parse(resp.content)
         if feed.bozo and not feed.entries:
             raise ProviderError(f"RSS parse failed: {feed.bozo_exception}")
-        return feed.entries
+        channel_link = str(getattr(feed.feed, "link", "") or "").strip() or None
+        return feed.entries, channel_link
 
 
 def _clean_text(value: str) -> str:
@@ -170,11 +198,22 @@ def _entry_date(entry: Any) -> str | None:
     return None
 
 
-def _normalize_entry(entry: Any, source: "NewsSource", source_id: str, max_chars: int = 160) -> dict[str, Any] | None:
+def _normalize_entry(
+    entry: Any, source: "NewsSource", source_id: str,
+    max_chars: int = 160, fallback_link: str | None = None,
+) -> dict[str, Any] | None:
     title = _clean_text(entry.get("title", ""))
     link = str(entry.get("link", "")).strip()
     published = _entry_date(entry)
     parsed_link = urlparse(link)
+    if parsed_link.scheme not in {"http", "https"} or not parsed_link.netloc:
+        # #127: linkless flash feeds (财联社 telegraph) publish no per-item URLs. Fall back
+        # to the feed's channel link as a valid 'view source' pointer; only an absolute
+        # http(s) channel link counts. Without either, the item is dropped.
+        candidate = str(fallback_link or "").strip()
+        parsed_candidate = urlparse(candidate)
+        if parsed_candidate.scheme in {"http", "https"} and parsed_candidate.netloc:
+            link, parsed_link = candidate, parsed_candidate
     if not title or not published or parsed_link.scheme not in {"http", "https"} or not parsed_link.netloc:
         return None
     return {
