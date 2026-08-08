@@ -29,6 +29,10 @@ _F821_RUN_LINE = re.compile(r"^\s*run:\s*ruff check \.\s*--select F821", re.MULT
 #: in validate-json.mjs is the regression, so these patterns now assert absence.
 _ENVELOPE_FILES_SET = re.compile(r"ENVELOPE_FILES\s*=\s*new Set\(\[(.*?)\]\)", re.DOTALL)
 _FRESHNESS_SET = re.compile(r"FRESHNESS\s*=\s*new Set\(\s*\[", re.DOTALL)
+_ACTION_REF = re.compile(
+    r"^\s*(?:-\s+)?uses:\s+([^\s#]+)@([^\s#]+)",
+    re.MULTILINE,
+)
 
 
 def _read_workflow(name: str) -> str:
@@ -241,10 +245,65 @@ def test_deploy_pages_runs_full_data_and_secret_gates() -> None:
     """Artifact upload must be downstream of Python validation and secret scanning."""
     workflow = _read_workflow("deploy-pages.yml")
 
-    assert "actions/setup-python@v5" in workflow
+    assert "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065" in workflow
     assert "python -m pipeline.validation.ci_checks --data-dir public/data" in workflow
     assert "scripts/scan-secrets.mjs --root ." in workflow
     assert "npm run check:contracts" in workflow
     assert "Validate JSON data (Node structural companion)" in workflow
     assert workflow.index("run: npm run build") < workflow.index("run: node scripts/scan-secrets.mjs --root .")
-    assert workflow.index("run: node scripts/scan-secrets.mjs --root .") < workflow.index("actions/upload-pages-artifact@v3")
+    assert workflow.index("run: node scripts/scan-secrets.mjs --root .") < workflow.index(
+        "actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa"
+    )
+
+
+def test_ci_actions_are_pinned_to_full_commit_shas() -> None:
+    """Every external action must resolve to an auditable immutable revision."""
+    refs = [
+        (path.name, action, ref)
+        for path in sorted(WORKFLOWS_DIR.glob("*.yml"))
+        for action, ref in _ACTION_REF.findall(path.read_text(encoding="utf-8"))
+    ]
+
+    assert refs, "workflow suite must contain action references"
+    unpinned = [f"{name}: {action}@{ref}" for name, action, ref in refs if not re.fullmatch(r"[0-9a-f]{40}", ref)]
+    assert not unpinned, "all external GitHub Actions must use full commit SHAs: " + ", ".join(unpinned)
+
+
+def test_ci_uses_checked_in_python_constraints() -> None:
+    """CI and release-path installs must share the checked-in Python resolution."""
+    constraints = REPO_ROOT / "constraints" / "py312.txt"
+    assert constraints.exists(), "the CI Python constraint file must be checked in"
+    constraint_text = constraints.read_text(encoding="utf-8")
+    assert "--python-version 3.12" in constraint_text
+    assert "--python-platform x86_64-unknown-linux-gnu" in constraint_text
+    for package in ("pydantic", "pydantic-settings", "pyyaml", "pytest", "ruff"):
+        assert re.search(rf"^{re.escape(package)}==", constraint_text, re.MULTILINE), (
+            f"constraints/py312.txt must pin {package}"
+        )
+
+    for workflow_name in ("test-pipeline.yml", "validate-data.yml", "deploy-pages.yml", "fallback-health.yml"):
+        workflow = _read_workflow(workflow_name)
+        assert "constraints/py312.txt" in workflow, (
+            f"{workflow_name} must install Python dependencies through constraints/py312.txt"
+        )
+
+
+def test_frontend_ci_and_production_audit_gate_are_wired() -> None:
+    """Frontend checks and the moderate production audit must run before release."""
+    test_pipeline = _read_workflow("test-pipeline.yml")
+    deploy_pages = _read_workflow("deploy-pages.yml")
+
+    for workflow in (test_pipeline, deploy_pages):
+        assert "npm ci" in workflow
+        assert "npm audit --omit=dev --audit-level=moderate" in workflow
+        for command in ("npm run lint", "npm run typecheck", "npm test", "npm run build"):
+            assert command in workflow, f"missing frontend gate: {command}"
+
+    assert "branches: [main]" in deploy_pages, "Pages publishing must be main-only"
+    assert "branches: [dev, main]" not in deploy_pages
+    assert re.search(r"^\s*pages: write$", deploy_pages, re.MULTILINE), (
+        "the deploy job must retain Pages write permission"
+    )
+    assert re.search(r"^\s*id-token: write$", deploy_pages, re.MULTILINE), (
+        "the deploy job must retain OIDC permission"
+    )
