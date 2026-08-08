@@ -426,6 +426,17 @@ export const DatasetFreshness = z
   .passthrough();
 export type DatasetFreshness = z.infer<typeof DatasetFreshness>;
 
+/** One resolved provider and the datasets it served for a domain. */
+export const ProviderResolution = z
+  .object({
+    provider: z.string().min(1),
+    datasets: z.array(z.string()).default([]),
+    used_fallback: z.boolean().default(false),
+    from_cache: z.boolean().default(false),
+  })
+  .passthrough();
+export type ProviderResolution = z.infer<typeof ProviderResolution>;
+
 /** One provider domain's entry in ``metadata/sources.json``. ``degraded`` is derived from the outcomes of the datasets this domain serves, never set independently — see :meth:`~pipeline.storage.outcomes.RunOutcomes.sources_projection`. Unlike every other contract in this package this model permits extra fields. Provider metadata is provider-specific and additive (``sources`` for the RSS fan-out, ``error`` for a failed call, cache diagnostics), and forbidding it would mean either dropping real operational detail on the floor or bumping the schema every time a provider learns to report something new. The *derived* fields below are the contract; the rest is passthrough. */
 export const DomainStatus = z
   .object({
@@ -434,6 +445,7 @@ export const DomainStatus = z
     reason: FreshnessReason,
     datasets: z.array(z.string()).default([]),
     provider: z.string().nullable().default(null),
+    providers: z.array(ProviderResolution).default([]),
   })
   .passthrough();
 export type DomainStatus = z.infer<typeof DomainStatus>;

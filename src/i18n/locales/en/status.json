@@ -35,6 +35,7 @@
     "macro": "Macro",
     "equities": "Equities",
     "sectors": "Sectors",
+    "commodities": "Commodities",
     "crypto": "Crypto",
     "news": "News",
     "calendar": "Calendar",
@@ -50,7 +51,19 @@
     "provider": "Provider",
     "fallback": "Fallback",
     "cache": "Cache",
+    "datasets": "Datasets",
+    "listSeparator": ", ",
+    "unavailable": "Unavailable",
+    "resolutions": "Provider resolutions",
     "none": "No provider info",
     "status": "Status / Reason"
+  },
+  "domains": {
+    "market": "Market",
+    "macro": "Macro",
+    "crypto": "Crypto",
+    "calendar": "Calendar",
+    "economic": "Economic calendar",
+    "news": "News"
   }
 }

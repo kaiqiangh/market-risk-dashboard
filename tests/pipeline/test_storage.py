@@ -63,6 +63,63 @@ def test_metadata_writes(tmp_path: Path) -> None:
     assert (tmp_path / "data/metadata/schema-version.json").exists()
 
 
+def test_sources_projection_publishes_canonical_market_provider_resolutions() -> None:
+    """Market status is derived from dataset provenance, including mixed providers."""
+    from pipeline.storage.outcomes import RunOutcomes
+
+    outcomes = RunOutcomes(scope={"equities", "sectors", "commodities"})
+    outcomes.record("equities", "fresh", FreshnessReason(code="ok", detail=""), provider="yfinance")
+    outcomes.record(
+        "sectors",
+        "fresh",
+        FreshnessReason(code="ok", detail=""),
+        provider="fmp",
+        used_fallback=True,
+    )
+    outcomes.record(
+        "commodities",
+        "fresh",
+        FreshnessReason(code="ok", detail=""),
+        provider="yfinance",
+        from_cache=True,
+    )
+
+    projected = outcomes.sources_projection({})
+    market = projected["domains"]["market"]
+
+    assert market["provider"] == "fmp, yfinance"
+    assert market["providers"] == [
+        {"provider": "fmp", "datasets": ["sectors"], "used_fallback": True, "from_cache": False},
+        {"provider": "yfinance", "datasets": ["equities"], "used_fallback": False, "from_cache": False},
+        {"provider": "yfinance", "datasets": ["commodities"], "used_fallback": False, "from_cache": True},
+    ]
+    assert "quotes" not in projected["domains"]
+    assert "a_share" not in projected["domains"]
+
+
+def test_sources_projection_marks_market_provider_unavailable_without_success() -> None:
+    """A failed market run must not publish a null or empty provider summary."""
+    from pipeline.storage.outcomes import RunOutcomes
+
+    market = RunOutcomes(scope={"equities", "sectors", "commodities"}).sources_projection({})["domains"]["market"]
+
+    assert market["provider"] == "unavailable"
+    assert market["providers"] == []
+
+
+def test_sources_projection_preserves_domain_specific_provider_status() -> None:
+    """An extra domain sharing a dataset keeps its own provider provenance."""
+    from pipeline.storage.outcomes import RunOutcomes
+
+    outcomes = RunOutcomes(scope={"calendar"})
+    outcomes.record("calendar", "fresh", FreshnessReason(code="ok", detail=""), provider="fmp")
+
+    economic = outcomes.sources_projection({"economic": {"provider": "fred_calendar"}})["domains"]["economic"]
+
+    assert economic["provider"] == "fred_calendar"
+    assert economic["providers"][0]["provider"] == "fred_calendar"
+
+
 def test_read_history_public_method(tmp_path: Path) -> None:
     """P2-9: writer.read_history public method replaces run.py's private _read_json."""
     writer = StorageWriter(tmp_path / "data")

@@ -783,7 +783,15 @@ export const sourcesFixture = {
       degraded: true,
       status: "degraded",
       reason: { code: "provider_http_error", detail: "yfinance: HTTP 429 rate limited" },
-      datasets: ["equities", "sectors"],
+      datasets: ["equities", "sectors", "commodities"],
+      providers: [
+        {
+          provider: "yfinance",
+          datasets: ["equities", "sectors", "commodities"],
+          used_fallback: false,
+          from_cache: false,
+        },
+      ],
     },
     macro: {
       provider: "fred",

@@ -196,7 +196,7 @@ export default function StatusPage() {
                   const provider = info.provider;
                   // #65: show the resolved provider and how it was served (fallback/cache)
                   // instead of bare Yes/No booleans.
-                  const served = provider ?? t("common:data.na");
+                  const served = provider ?? t("providers.unavailable");
                   const annotation = fromCache
                     ? ` · ${t("providers.cache")}`
                     : usedFallback
@@ -204,13 +204,36 @@ export default function StatusPage() {
                       : "";
                   const reasonCode = info.reason?.code;
                   const reasonDetail = info.reason?.detail;
+                  const resolutions = info.providers ?? [];
                   return (
                     <tr key={domain} className="border-b border-border/50 last:border-0">
-                      <td className="py-1.5 pr-2">{domain}</td>
+                      <td className="py-1.5 pr-2">{t(`domains.${domain}`, { defaultValue: domain })}</td>
                       <td className="py-1.5 pr-2">
                         <span className="font-mono">{served}</span>
                         {annotation ? (
                           <span className="ml-1 text-[10px] text-muted-foreground">{annotation}</span>
+                        ) : null}
+                        {resolutions.length > 0 ? (
+                          <ul className="mt-1 space-y-0.5 text-[10px] text-muted-foreground" data-testid={`provider-resolutions-${domain}`}>
+                            {resolutions.map((resolution) => {
+                              const resolutionFlags = [
+                                resolution.from_cache ? t("providers.cache") : "",
+                                resolution.used_fallback ? t("providers.fallback") : "",
+                              ].filter(Boolean);
+                              const datasetsLabel = resolution.datasets
+                                .map((key) => t(`datasets.${key}`, { defaultValue: key }))
+                                .join(t("providers.listSeparator"));
+                              return (
+                                <li key={`${resolution.provider}-${datasetsLabel}`}>
+                                  <span className="font-mono">{resolution.provider}</span>
+                                  <span> · {t("providers.datasets")}: {datasetsLabel}</span>
+                                  {resolutionFlags.length > 0 ? (
+                                    <span> · {resolutionFlags.join(t("providers.listSeparator"))}</span>
+                                  ) : null}
+                                </li>
+                              );
+                            })}
+                          </ul>
                         ) : null}
                       </td>
                       <td className="py-1.5">

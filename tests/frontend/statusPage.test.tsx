@@ -53,7 +53,8 @@ describe("StatusPage", () => {
   it("renders the providers table with the resolved provider, degradation and cause", async () => {
     renderPage();
     expect(await screen.findByText("fred_calendar")).toBeInTheDocument(); // economic domain (#94)
-    expect(screen.getByText("yfinance")).toBeInTheDocument();
+    expect(screen.getAllByText("yfinance").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByTestId("provider-resolutions-market")).toHaveTextContent("yfinance");
     expect(screen.getByText("rss_news")).toBeInTheDocument();
     // A degraded provider states its specific cause in the providers table too.
     expect(screen.getByText("akshare: RemoteDisconnected")).toBeInTheDocument();

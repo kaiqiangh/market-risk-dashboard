@@ -24,6 +24,7 @@ from pipeline.schemas.metadata import (
     DatasetFreshness,
     DomainStatus,
     FreshnessDocument,
+    ProviderResolution,
     SourcesDocument,
 )
 from pipeline.utils import now_utc
@@ -160,6 +161,9 @@ class RunOutcomes:
             outcomes = [o for o in (self._outcomes.get(k) for k in keys) if o is not None]
             entry: dict[str, Any] = dict(provider_status.get(domain) or {})
             entry["datasets"] = list(keys)
+            resolutions = _provider_resolutions(keys, outcomes, entry)
+            entry["providers"] = [resolution.model_dump(mode="json") for resolution in resolutions]
+            entry["provider"] = _provider_summary(resolutions, entry.get("provider"))
             if outcomes:
                 worst = max(outcomes, key=lambda o: _rank(o.status))
                 entry["degraded"] = any(o.degraded for o in outcomes)
@@ -171,16 +175,20 @@ class RunOutcomes:
                 entry["reason"] = FreshnessReason(code="not_collected_this_run", detail="")
             domains[domain] = DomainStatus.model_validate(entry)
 
-        # Domains reported by collectors that serve no registered dataset (news source detail,
-        # a_share before #97 registers it). Kept rather than dropped: losing provider detail
-        # because the registry has not caught up yet would hide real failures. They carry no
-        # dataset outcomes, so their status is unknown rather than asserted healthy.
+        # Domains reported by collectors that serve no registered dataset (for example RSS
+        # source detail) are retained, but internal market routing domains are not. The latter
+        # are implementation details of the canonical ``market`` domain and must not appear as
+        # competing top-level status rows (#136).
+        internal_domains = {"quotes", "a_share"}
         for domain, value in provider_status.items():
-            if domain in domains:
+            if domain in domains or domain in internal_domains:
                 continue
             unmapped = dict(value or {})
             unmapped.setdefault("degraded", False)
             unmapped["datasets"] = []
+            resolutions = _provider_resolutions((), [], unmapped)
+            unmapped["providers"] = [resolution.model_dump(mode="json") for resolution in resolutions]
+            unmapped["provider"] = _provider_summary(resolutions, unmapped.get("provider"))
             unmapped["status"] = "missing"
             unmapped["reason"] = FreshnessReason(
                 code="not_collected_this_run",
@@ -193,6 +201,83 @@ class RunOutcomes:
             updated_at=now_utc(),
             domains=domains,
         ).model_dump(mode="json")
+
+
+def _provider_resolutions(
+    keys: tuple[str, ...], outcomes: list[DatasetOutcome], entry: dict[str, Any]
+) -> list[ProviderResolution]:
+    """Group successful dataset outcomes into deterministic provider resolutions."""
+    explicit = _explicit_provider_resolutions(keys, entry)
+    if explicit:
+        return explicit
+
+    grouped: dict[tuple[str, bool, bool], list[str]] = {}
+    for key in keys:
+        outcome = next((item for item in outcomes if item.key == key), None)
+        if outcome is None or not outcome.provider or outcome.provider == "unavailable":
+            continue
+        group = (str(outcome.provider), outcome.used_fallback, outcome.from_cache)
+        grouped.setdefault(group, []).append(key)
+
+    if not grouped:
+        provider = entry.get("provider")
+        if provider and str(provider) != "unavailable":
+            grouped[(str(provider), bool(entry.get("used_fallback")), bool(entry.get("from_cache")))] = list(keys)
+
+    return [
+        ProviderResolution(
+            provider=provider,
+            datasets=list(dict.fromkeys(datasets)),
+            used_fallback=used_fallback,
+            from_cache=from_cache,
+        )
+        for (provider, used_fallback, from_cache), datasets in sorted(grouped.items())
+    ]
+
+
+def _explicit_provider_resolutions(
+    keys: tuple[str, ...], entry: dict[str, Any]
+) -> list[ProviderResolution]:
+    """Read provider metadata explicitly reported for this status domain."""
+    grouped: dict[tuple[str, bool, bool], list[str]] = {}
+    raw = entry.get("providers")
+    if isinstance(raw, list):
+        for item in raw:
+            if not isinstance(item, dict):
+                continue
+            try:
+                resolution = ProviderResolution.model_validate(item)
+            except Exception:  # noqa: BLE001 - malformed additive detail is ignored
+                continue
+            if resolution.provider != "unavailable":
+                grouped[(resolution.provider, resolution.used_fallback, resolution.from_cache)] = list(
+                    resolution.datasets
+                )
+
+    if not grouped:
+        provider = entry.get("provider")
+        if provider and str(provider) != "unavailable":
+            grouped[(str(provider), bool(entry.get("used_fallback")), bool(entry.get("from_cache")))] = list(keys)
+
+    return [
+        ProviderResolution(
+            provider=provider,
+            datasets=list(dict.fromkeys(datasets)),
+            used_fallback=used_fallback,
+            from_cache=from_cache,
+        )
+        for (provider, used_fallback, from_cache), datasets in sorted(grouped.items())
+    ]
+
+
+def _provider_summary(resolutions: list[ProviderResolution], fallback: Any = None) -> str:
+    """Return a stable human-readable provider summary, never null for a domain."""
+    names = sorted({resolution.provider for resolution in resolutions})
+    if names:
+        return ", ".join(names)
+    if fallback and str(fallback) != "unavailable":
+        return str(fallback)
+    return "unavailable"
 
 
 def _carry_forward(entry: Any) -> DatasetFreshness | None:

@@ -89,6 +89,13 @@ class MarketCollector:
             }
         return {"provider": "unavailable", "used_fallback": False, "from_cache": False}
 
+    def _provider_for_any(self, domains: tuple[str, ...]) -> dict[str, Any]:
+        """Resolve the first available internal route in deterministic order."""
+        for domain in domains:
+            if domain in self._provider_outcomes or self.registry.resolved_provider(domain) is not None:
+                return self._provider_for(domain)
+        return {"provider": "unavailable", "used_fallback": False, "from_cache": False}
+
     # ---- Quotes (US + A-shares) ----
 
     def _fetch_equity(
@@ -404,10 +411,13 @@ class MarketCollector:
             "sectors": sectors,
             "histories": self.histories,
             "degraded": self.degraded,
-            "provider_status": self.provider_status,
+            # ``quotes`` and ``a_share`` are internal routes within the canonical market
+            # domain. Keep their diagnostics available on ``self.provider_status`` for direct
+            # collector callers, but publish only the canonical status domain (#136).
+            "provider_status": {"market": {}},
             "data_quality": round(quality, 3),
             "providers": {
-                "equities": self._provider_for("quotes") or self._provider_for("a_share"),
+                "equities": self._provider_for_any(("quotes", "a_share")),
                 "crypto": self._provider_for("crypto"),
                 "commodities": self._provider_for("quotes"),
                 "sectors": self._provider_for("quotes"),
