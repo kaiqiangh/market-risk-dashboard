@@ -4,12 +4,19 @@
   "score": {
     "title": "全球风险分",
     "breakdown": "模型分解",
-    "confidence": "置信度",
-    "confidenceShort": "置信度",
+    "confidence": "数据可信度",
+    "confidenceShort": "数据可信度",
     "week": "1 周",
     "month": "1 月",
     "modelVersion": "模型版本",
-    "disclaimer": "该指标是基于历史数据和当前市场信号生成的市场压力估计，不构成确定性概率或投资建议"
+    "disclaimer": "该指标是基于历史数据和当前市场信号生成的市场压力估计。数据可信度不是统计置信度，也不是经过校准的概率或投资建议。"
+  },
+  "calibration": {
+    "title": "校准政策",
+    "provisional": "暂定校准",
+    "calibrated": "已完成样本外校准",
+    "version": "政策版本",
+    "explanation": "当前权重和风险区间暂予保留。在具备按时间点的数据版本和带状态标注的样本外证据前，暂不重新拟合。"
   },
   "evidence": {
     "title": "证据状态",
@@ -75,7 +82,7 @@
     "proxy": "代理"
   },
   "confidenceFactors": {
-    "title": "置信度因子",
+    "title": "数据可信度因子",
     "data_quality": "数据质量",
     "coverage": "覆盖度",
     "consistency": "一致性",

@@ -41,7 +41,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
         <CardHeader>
           <CardTitle>{t("score.breakdown")}</CardTitle>
         </CardHeader>
-        <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           <div className="rounded-md bg-muted/50 p-3">
             <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{t("score.title")}</p>
             <p className={`text-3xl font-bold tabular-nums ${totalClasses.text}`}>{formatNumber(result.total_score, locale)}</p>
@@ -54,6 +54,15 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
           <div className="rounded-md bg-muted/50 p-3">
             <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{t("score.modelVersion")}</p>
             <p className="text-lg font-semibold tabular-nums">{result.model_version}</p>
+          </div>
+          <div className="rounded-md bg-muted/50 p-3" data-testid="risk-calibration-policy">
+            <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{t("calibration.title")}</p>
+            <Badge variant={result.calibration_status === "calibrated" ? "low" : "caution"}>
+              {t(`calibration.${result.calibration_status ?? "provisional"}`)}
+            </Badge>
+            <p className="mt-2 text-xs text-muted-foreground">
+              {t("calibration.version")}: <span className="tabular-nums text-foreground">{result.calibration_policy_version ?? "1.0.0"}</span>
+            </p>
           </div>
           <div className="rounded-md bg-muted/50 p-3">
             <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{t("confidenceFactors.title")}</p>
@@ -81,6 +90,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
           <CardContent>
             <p className="text-[11px] leading-relaxed text-muted-foreground">{t("score.disclaimer")}</p>
             <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{t("evidence.explanation")}</p>
+            <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{t("calibration.explanation")}</p>
           </CardContent>
         ) : null}
       </Card>

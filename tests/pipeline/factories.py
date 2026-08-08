@@ -602,7 +602,9 @@ def make_risk_payload(**overrides: Any) -> dict[str, Any]:
             "evidence_coverage": 0.83,
             "score_lower_bound": 44.0,
             "score_upper_bound": 64.0,
-            "disclaimer": "This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice.",
+            "calibration_policy_version": "1.0.0",
+            "calibration_status": "provisional",
+            "disclaimer": "This indicator is a modeled estimate of market stress based on historical data and current market signals. Data trust is not statistical confidence, a calibrated probability, or investment advice.",
         },
         overrides,
     )

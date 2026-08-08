@@ -29,6 +29,7 @@ MarketRegime = Literal[
 ]
 RiskTrend = Literal["rising", "falling", "flat"]
 RiskEvidenceState = Literal["complete", "partial", "insufficient_evidence"]
+RiskCalibrationStatus = Literal["provisional", "calibrated"]
 
 
 class RiskIndicator(ContractModel):
@@ -126,7 +127,7 @@ class RiskModelResult(ContractModel):
     confidence: float = Field(ge=0.0, le=1.0)
     confidence_factors: dict[str, float] = Field(default_factory=dict)
     disclaimer: str = Field(
-        default="This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."
+        default="This indicator is a modeled estimate of market stress based on historical data and current market signals. Data trust is not statistical confidence, a calibrated probability, or investment advice."
     )
     evidence_state: RiskEvidenceState | None = None
     evidence_coverage: float | None = Field(
@@ -137,6 +138,8 @@ class RiskModelResult(ContractModel):
     )
     score_lower_bound: float | None = Field(default=None, ge=0.0, le=100.0)
     score_upper_bound: float | None = Field(default=None, ge=0.0, le=100.0)
+    calibration_policy_version: str = Field(default="1.0.0", min_length=1)
+    calibration_status: RiskCalibrationStatus = "provisional"
 
 
 class RiskEnvelope(BaseEnvelope):

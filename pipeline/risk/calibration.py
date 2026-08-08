@@ -412,16 +412,16 @@ def _spearman(rows: list[dict[str, Any]], horizon: int) -> float | None:
     return round(numerator / denominator, 4) if denominator else None
 
 
-def _event_metrics(rows: list[dict[str, Any]]) -> dict[str, Any]:
+def _event_metrics(rows: list[dict[str, Any]], horizon: int) -> dict[str, Any]:
     usable = [
         row for row in rows
-        if row["outcomes"].get(str(CALIBRATION_EVENT_HORIZON)) is not None
+        if row["outcomes"].get(str(horizon)) is not None
     ]
     if not usable:
         return {"evaluated": 0, "alerts": 0, "events": 0, "precision": None, "recall": None, "false_positive_rate": None}
     alerts = [row["total_score"] >= CALIBRATION_ALERT_SCORE for row in usable]
     events = [
-        row["outcomes"][str(CALIBRATION_EVENT_HORIZON)]["max_drawdown"] <= CALIBRATION_EVENT_DRAWDOWN
+        row["outcomes"][str(horizon)]["max_drawdown"] <= CALIBRATION_EVENT_DRAWDOWN
         for row in usable
     ]
     true_positive = sum(alert and event for alert, event in zip(alerts, events, strict=True))
@@ -498,7 +498,7 @@ def _metrics_for_rows(rows: list[dict[str, Any]], horizon: int) -> dict[str, Any
             "outcome_ratio": round(len(usable) / len(rows), 4) if rows else 0.0,
         },
         "ranking": {"spearman_score_vs_forward_loss": _spearman(rows, horizon)},
-        "event_discrimination": _event_metrics(rows),
+        "event_discrimination": _event_metrics(rows, horizon),
         "lead_time": _lead_time_metrics(rows) if horizon == CALIBRATION_EVENT_HORIZON else None,
         "stability": _stability_metrics(rows),
     }
@@ -540,6 +540,9 @@ def replay_production_path(panel: dict[str, Any], settings: Any | None = None) -
                     "risk_level": result.risk_level,
                     "evidence_state": result.evidence_state,
                     "evidence_coverage": result.evidence_coverage,
+                    "dimension_scores": {
+                        dimension.key: dimension.score for dimension in result.dimensions
+                    },
                     "scoring_path": path["scoring_path"],
                     "indicator_path_counts": path["indicator_path_counts"],
                     "max_history_date": date_value,
@@ -590,8 +593,9 @@ def replay_production_path(panel: dict[str, Any], settings: Any | None = None) -
     }
     return {
         "artifact": "risk_calibration_production_path",
-        "artifact_version": "1.0.0",
+        "artifact_version": "1.1.0",
         "model_version": model.model_version,
+        "calibration_policy": model_config.get("calibration_policy", {}),
         "input_fingerprint": _fingerprint(normalized, model_config),
         "point_in_time_policy": {
             "history_includes_rows_through_score_date": True,

@@ -4,12 +4,19 @@
   "score": {
     "title": "Global Risk Score",
     "breakdown": "Model Breakdown",
-    "confidence": "Confidence",
-    "confidenceShort": "Confidence",
+    "confidence": "Data trust",
+    "confidenceShort": "Data trust",
     "week": "1W",
     "month": "1M",
     "modelVersion": "Model version",
-    "disclaimer": "This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."
+    "disclaimer": "This indicator is a modeled estimate of market stress based on historical data and current market signals. Data trust is not statistical confidence, a calibrated probability, or investment advice."
+  },
+  "calibration": {
+    "title": "Calibration policy",
+    "provisional": "Provisional",
+    "calibrated": "Out-of-sample calibrated",
+    "version": "Policy version",
+    "explanation": "Current weights and risk bands are retained. Refitting is gated until point-in-time source vintages and regime-labelled out-of-sample evidence are available."
   },
   "evidence": {
     "title": "Evidence state",
@@ -75,7 +82,7 @@
     "proxy": "Proxy"
   },
   "confidenceFactors": {
-    "title": "Confidence factors",
+    "title": "Data-trust factors",
     "data_quality": "Data quality",
     "coverage": "Coverage",
     "consistency": "Consistency",

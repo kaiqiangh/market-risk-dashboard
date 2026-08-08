@@ -1213,6 +1213,8 @@ def _risk_evidence_summary(results: dict[str, Any]) -> dict[str, Any]:
         "score": payload.total_score,
         "score_lower_bound": payload.score_lower_bound,
         "score_upper_bound": payload.score_upper_bound,
+        "calibration_policy_version": payload.calibration_policy_version,
+        "calibration_status": payload.calibration_status,
         "dimensions": [
             {
                 "key": dimension.key,

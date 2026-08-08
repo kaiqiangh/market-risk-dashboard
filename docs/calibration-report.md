@@ -1,6 +1,6 @@
 # Market Risk Dashboard — Offline Calibration Report
 
-**Document version:** 1.0 (published with repo at T05)
+**Document version:** 1.1 (production-path replay and policy decision)
 **Produced by:** data pipeline `scripts/calibration.py` + `pipeline/risk/calibration.py`
 **Scope statement (red line):** The risk scores on this page are **model-based market stress estimates**, not exact crash probabilities, and do not constitute investment advice (architecture §1.8 / PRD §14.8).
 
@@ -63,27 +63,55 @@ Before the MVP release, run an offline backtest of the risk model across three h
 - Risk-level switches: 9
 - Score range: first 30.94 / peak 64.85 / last 53.75
 
-## 4. Interpretation
+## 4. Production-path replay (latest-source evidence)
+
+The production-path replay was added after the original fallback-only report. It calls the same `RiskModel.score` implementation used by Risk Lab, in date order, with an expanding point-in-time history through each score date. A deterministic synthetic panel runs in CI; the figures below are from a manual 2015-01-01 → 2025-12-31 replay with a 5-year warm-up, fetched on 2026-08-08.
+
+| Forward horizon | Outcome coverage | Spearman score vs forward loss | Precision at score ≥60 | Recall | False-positive rate |
+|---|---:|---:|---:|---:|---:|
+| 5 observations | 99.82% | 0.3503 | 2.12% | 68.18% | 25.35% |
+| 10 observations | 99.64% | 0.3955 | 4.65% | 56.90% | 25.06% |
+| 20 observations | 99.28% | 0.4051 | 12.83% | 59.09% | 23.85% |
+| 30 observations | 98.92% | 0.3828 | 20.59% | 52.71% | 22.90% |
+
+The level-switch rate was 9.7288 per 100 evaluated observations with a mean absolute score change of 1.6452. The replay used the mixed production-percentile/heuristic path for all 2,765 evaluated observations. Macro coverage was incomplete for the two credit-spread series (3,421 missing observations each), reverse repo (153), and the Fed balance sheet (2); all three market histories were complete.
+
+This is evidence of positive ranking signal, not evidence of a calibrated probability. The manual panel uses latest FRED/Yahoo observations and does not contain point-in-time source vintages; the result is therefore descriptive and subject to revision bias. The synthetic CI fixture proves determinism and look-ahead protection, but is not a performance claim.
+
+## 5. Policy decision
+
+| Component | Decision | Rationale |
+|---|---|---|
+| Dimension weights | Retain | Ranking is positive but moderate; revised-source history and partial proxy coverage do not justify refitting. |
+| Indicator weights | Retain | No stable out-of-sample attribution is available for a weight change; preserve the reviewed transparent mapping. |
+| Risk-level thresholds | Retain | Score ≥60 gives 59.09% recall and 23.85% false-positive rate at 20 observations; higher thresholds trade recall for precision without a pre-registered operating objective. |
+| Data-trust formula | Gate | Keep the existing product metric, but do not call it statistical confidence or probability. |
+| Cross-asset aggregation | Gate | Keep the current proxy-backed aggregation pending the deferred governed signals and coverage. |
+
+Policy version `1.0.0` is published in the Risk Lab contract and run report. No live score weights, thresholds, or confidence arithmetic were changed.
+
+## 6. Interpretation
 
 - **Warning effectiveness:** both 2008 and 2020 triggered a high score ≥60 before the risk peak (34 / 7 days early), showing the model can emit a stress signal before the main decline phase; the 2020 signal was faster (40 → 60 in 4 days), consistent with the steep slope of the COVID crash.
 - **2018 case:** the peak was only 57.55 and never triggered the 60 high-score threshold — consistent with 2018 being characterized as a "mild correction" rather than a systemic crisis; the model produced no severe false positives (False Positive control is reasonable).
 - **Volatility amplification:** post-peak forward volatility rises monotonically with window depth (especially 20d/30d in 2020), consistent with volatility clustering after historical crashes.
 - **Stability:** 7-9 level switches show the model frequently changes levels during sharp market transitions — a known limitation of heuristic models (see §5), not treated as a fault.
 
-## 5. Limitations
+## 7. Limitations
 
 - Market breadth history (2008-2012) is unavailable → this report does not include the breadth dimension (review P0-3); T05 recommends later rebuilding an approximate breadth series from SPX new high/new low counts / % above MA200 and re-running the backtest.
 - The MVP risk mapping is a heuristic rule set (pipeline/risk/scoring.py); this harness evaluates the **heuristic fallback** path, not the production percentile path — the score meaning is a "model-based market stress estimate", not a statistical model.
 - Free data sources have no SLA; backtest windows may be skipped if network data is unavailable; rerun locally with `python scripts/calibration.py` to reproduce.
 - Single-window sample size is small (3 windows); conclusions are descriptive rather than statistically significant.
 
-## 6. Reproduction
+## 8. Reproduction
 
 ```bash
 python scripts/calibration.py   # Rerun the three-window backtest and refresh this report
+.venv/bin/python scripts/calibrate_production.py --start 2015-01-01 --end 2025-12-31 --warmup-years 5 --regime mixed
 ```
 
-## 7. Release
+## 9. Release
 
 - This document is published with the repository (`docs/calibration-report.md` is un-ignored from gitignore; root-level `CALIBRATION.md` is the publishable copy).
 - Any credibility claim about the risk score must reference this report; no UI/copy may describe the risk score as an "exact crash probability".

@@ -23,6 +23,7 @@ from pipeline.risk.scoring import compute_indicator_score
 from pipeline.schemas import (
     BreadthSnapshot,
     DriverContribution,
+    RiskCalibrationStatus,
     RiskDimension,
     RiskEvidenceState,
     RiskIndicator,
@@ -47,7 +48,7 @@ CANONICAL_MACRO_GROUPS = {
     "vixcls": "volatility",
 }
 
-DEFAULT_DISCLAIMER = "This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."
+DEFAULT_DISCLAIMER = "This indicator is a modeled estimate of market stress based on historical data and current market signals. Data trust is not statistical confidence, a calibrated probability, or investment advice."
 
 # Indicator key → 5Y history series source (FRED series key; tuple means a composite series, e.g. term spread)
 INDICATOR_HISTORY_SERIES: dict[str, str | tuple[str, str]] = {
@@ -105,6 +106,14 @@ class RiskModel:
         )
         if not 0.0 <= self.insufficient_evidence_threshold <= 1.0:
             raise ValueError("risk evidence insufficient_coverage_threshold must be between 0 and 1")
+        calibration_cfg = raw.get("calibration_policy", {}) or {}
+        if not isinstance(calibration_cfg, dict):
+            raise ValueError("risk calibration_policy must be a mapping")
+        self.calibration_policy_version = str(calibration_cfg.get("version", "1.0.0"))
+        calibration_status = str(calibration_cfg.get("status", "provisional"))
+        if calibration_status not in {"provisional", "calibrated"}:
+            raise ValueError("risk calibration_policy.status must be provisional or calibrated")
+        self.calibration_status: RiskCalibrationStatus = calibration_status
         # 5Y window ≈ 252 trading days/year (daily-frequency series)
         self._max_history_samples = max(60, self.percentile_window_years * 252)
 
@@ -413,6 +422,8 @@ class RiskModel:
             evidence_coverage=round(coverage, 4),
             score_lower_bound=score_lower_bound,
             score_upper_bound=score_upper_bound,
+            calibration_policy_version=self.calibration_policy_version,
+            calibration_status=self.calibration_status,
         )
 
     def _level_for(self, total_score: float) -> RiskLevel:

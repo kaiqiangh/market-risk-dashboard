@@ -133,6 +133,8 @@ def test_risk_model_produces_valid_result() -> None:
     assert 0 <= result.confidence <= 1
     assert len(result.dimensions) == 6
     assert result.top_drivers  # has top drivers
+    assert result.calibration_policy_version == "1.0.0"
+    assert result.calibration_status == "provisional"
     assert "definitive probability" not in result.disclaimer or "modeled estimate" in result.disclaimer
 
 

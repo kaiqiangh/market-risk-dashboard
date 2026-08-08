@@ -117,11 +117,16 @@ def test_production_replay_is_deterministic_and_point_in_time() -> None:
 
     assert first == second
     assert first["input_fingerprint"].startswith("sha256:")
+    assert first["calibration_policy"]["decisions"]["confidence_formula"]["coverage"] == "retain"
     assert first["point_in_time_policy"]["future_observations_excluded_from_score"] is True
     assert set(first["regime_counts"]) == {"calm", "tightening", "crisis"}
     assert "production_mixed_percentile_heuristic" in first["path_counts"]
     assert first["metrics"]["horizons"]["20"]["coverage"]["outcome_available"] > 0
     assert first["metrics"]["horizons"]["20"]["event_discrimination"]
+    assert first["metrics"]["horizons"]["5"]["event_discrimination"] != first["metrics"]["horizons"]["30"]["event_discrimination"]
+    assert set(first["observations"][0]["dimension_scores"]) == {
+        "macro", "liquidity_credit", "equity_structure", "volatility", "cross_asset", "trend"
+    }
     assert all(row["max_history_date"] == row["date"] for row in first["observations"])
 
 

@@ -7,6 +7,11 @@ Complete set of Pydantic v2 models, isomorphic to the frontend Zod / JSON Schema
 - Contract models contain no collection/computation business logic (that is T03).
 """
 
+from .analysis import AnalysisDataset, AnalysisLineage, CaseStatement, SignalClaim
+from .calendar import CalendarDataset, CalendarEnvelope, CalendarEvent
+from .commodities import CommoditiesDataset, CommoditiesEnvelope, CommodityAsset
+from .crypto import CryptoAsset, CryptoDataset, CryptoEnvelope
+from .dashboard import DashboardAsset, DashboardEnvelope, DashboardPayload
 from .envelope import (
     BaseEnvelope,
     ContractModel,
@@ -14,11 +19,6 @@ from .envelope import (
     UTCDateTime,
     validate_utc_datetime,
 )
-from .analysis import AnalysisDataset, AnalysisLineage, CaseStatement, SignalClaim
-from .calendar import CalendarDataset, CalendarEnvelope, CalendarEvent
-from .commodities import CommoditiesDataset, CommoditiesEnvelope, CommodityAsset
-from .crypto import CryptoAsset, CryptoDataset, CryptoEnvelope
-from .dashboard import DashboardAsset, DashboardEnvelope, DashboardPayload
 from .equities import EquitiesDataset, EquitiesEnvelope, EquityAsset
 from .factlayer import EvidenceRef, FactLayer
 from .macro import FedWatchRateProb, FedWatchSnapshot, MacroDataset, MacroEnvelope, MacroIndicator
@@ -28,11 +28,12 @@ from .risk import (
     BreadthSnapshot,
     DriverContribution,
     MarketRegime,
+    RiskCalibrationStatus,
     RiskDimension,
     RiskDimensionKey,
     RiskDirection,
-    RiskEvidenceState,
     RiskEnvelope,
+    RiskEvidenceState,
     RiskIndicator,
     RiskLevel,
     RiskModelResult,
@@ -84,6 +85,7 @@ __all__ = [
     "RiskDimension",
     "RiskDimensionKey",
     "RiskDirection",
+    "RiskCalibrationStatus",
     "RiskEvidenceState",
     "RiskEnvelope",
     "RiskIndicator",

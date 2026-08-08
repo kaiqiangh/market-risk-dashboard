@@ -51,6 +51,9 @@ export type NewsSourceLang = z.infer<typeof NewsSourceLang>;
 export const ReasonCode = z.enum(["ok", "no_rows_returned", "no_events_in_window", "provider_http_error", "provider_rate_limited", "provider_auth_failed", "provider_parse_error", "served_from_fallback", "served_from_cache", "cache_expired", "cache_invalid", "all_providers_failed", "not_collected_this_run", "interval_exceeded", "input_dataset_unhealthy"]);
 export type ReasonCode = z.infer<typeof ReasonCode>;
 
+export const RiskCalibrationStatus = z.enum(["provisional", "calibrated"]);
+export type RiskCalibrationStatus = z.infer<typeof RiskCalibrationStatus>;
+
 export const RiskDimensionKey = z.enum(["macro", "liquidity_credit", "equity_structure", "volatility", "cross_asset", "trend"]);
 export type RiskDimensionKey = z.infer<typeof RiskDimensionKey>;
 
@@ -379,11 +382,13 @@ export const RiskModelResult = z
     regime_evidence: z.array(z.string()).default([]),
     confidence: z.number().finite().min(0).max(1),
     confidence_factors: z.record(z.number().finite()).default({}),
-    disclaimer: z.string().default("This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."),
+    disclaimer: z.string().default("This indicator is a modeled estimate of market stress based on historical data and current market signals. Data trust is not statistical confidence, a calibrated probability, or investment advice."),
     evidence_state: RiskEvidenceState.nullable().default(null),
     evidence_coverage: z.number().finite().min(0).max(1).nullable().default(null),
     score_lower_bound: z.number().finite().min(0).max(100).nullable().default(null),
     score_upper_bound: z.number().finite().min(0).max(100).nullable().default(null),
+    calibration_policy_version: z.string().min(1).default("1.0.0"),
+    calibration_status: RiskCalibrationStatus.default("provisional"),
   })
   .passthrough();
 export type RiskModelResult = z.infer<typeof RiskModelResult>;

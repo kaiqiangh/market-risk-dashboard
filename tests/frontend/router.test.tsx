@@ -119,6 +119,7 @@ describe("language switch (keeps current page)", () => {
     renderApp();
     expect(await screen.findByTestId("page-title")).toHaveTextContent("风险实验室");
     expect(await screen.findByTestId("risk-evidence-state")).toHaveTextContent("证据不完整");
+    expect(await screen.findByTestId("risk-calibration-policy")).toHaveTextContent("暂定校准");
     expect(document.body.textContent).not.toContain("This indicator is a modeled estimate");
     expect(document.body.textContent).not.toContain("10Y");
 

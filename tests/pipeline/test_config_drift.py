@@ -94,6 +94,39 @@ def test_no_indicator_registered_in_two_dimensions() -> None:
     assert hy_oas_sites == [("liquidity_credit", 10.0)], f"hy_oas must be scored once at 10.0, found {hy_oas_sites}"
 
 
+def test_calibration_policy_covers_live_model_controls() -> None:
+    """The retain/gate policy must name every live control family before release."""
+    raw = Settings(_env_file=None).load_risk_model()
+    policy = raw["calibration_policy"]
+    decisions = policy["decisions"]
+
+    assert policy["version"] == "1.0.0"
+    assert policy["status"] == "provisional"
+    assert set(decisions) == {
+        "dimension_weights",
+        "indicator_weights",
+        "risk_level_thresholds",
+        "confidence_formula",
+        "cross_asset_aggregation",
+    }
+    assert set(decisions["dimension_weights"]) == set(_DIMENSION_BUILDERS)
+    configured_indicators = {
+        str(item["key"])
+        for entries in raw["indicators"].values()
+        for item in entries
+    }
+    assert set(decisions["indicator_weights"]) == configured_indicators
+    assert set(decisions["risk_level_thresholds"]) == set(raw["thresholds"]["risk_level"])
+    assert set(decisions["confidence_formula"]) == {"data_quality", "coverage", "consistency"}
+    assert set(decisions["confidence_formula"]) == set(raw["confidence"]["weights"])
+    assert set(decisions["cross_asset_aggregation"]) == {"cross_asset_confirmation"}
+    assert all(
+        decision in {"retain", "change", "gate"}
+        for family in decisions.values()
+        for decision in family.values()
+    )
+
+
 def test_macro_registers_exactly_the_four_real_macro_indicators() -> None:
     """#67 group 4: `_macro_indicators` is rates + curve + dollar + nominal yield."""
     model = RiskModel()
