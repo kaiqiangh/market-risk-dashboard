@@ -22,6 +22,7 @@ def write_run_report(
     skipped_datasets: list[str] | None = None,
     degraded_datasets: list[str] | None = None,
     proxy_discounts: list[dict[str, Any]] | None = None,
+    risk_evidence: dict[str, Any] | None = None,
 ) -> Path:
     """Write artifacts/logs/run-report-{ts}.json.
 
@@ -57,6 +58,7 @@ def write_run_report(
         # #69: which trust discounts applied to which top-driver indicator, so a 0.64
         # (proxy × degraded provider) is never an unexplained number.
         "proxy_discounts": list(proxy_discounts or []),
+        "risk_evidence": dict(risk_evidence or {}),
     }
     path = logs_dir / f"run-report-{ts}.json"
     path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")

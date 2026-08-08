@@ -41,7 +41,6 @@ export default function RiskLabPage() {
                 trend1w={riskQ.data.payload.trend_1w}
                 trend1m={riskQ.data.payload.trend_1m}
                 confidence={riskQ.data.payload.confidence}
-                disclaimer={riskQ.data.payload.disclaimer}
               />
             </div>
             <div className="md:col-span-2">

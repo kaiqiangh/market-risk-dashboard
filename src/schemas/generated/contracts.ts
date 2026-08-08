@@ -57,6 +57,9 @@ export type RiskDimensionKey = z.infer<typeof RiskDimensionKey>;
 export const RiskDirection = z.enum(["higher_is_riskier", "lower_is_riskier", "neutral"]);
 export type RiskDirection = z.infer<typeof RiskDirection>;
 
+export const RiskEvidenceState = z.enum(["complete", "partial", "insufficient_evidence"]);
+export type RiskEvidenceState = z.infer<typeof RiskEvidenceState>;
+
 export const RiskLevel = z.enum(["risk_on", "low_risk", "caution", "high_risk", "severe_risk", "crisis"]);
 export type RiskLevel = z.infer<typeof RiskLevel>;
 
@@ -353,6 +356,8 @@ export const RiskDimension = z
     indicators: z.array(RiskIndicator).default([]),
     coverage: z.number().finite().min(0).max(1),
     trend: RiskTrend.default("flat"),
+    evidence_state: RiskEvidenceState.nullable().default(null),
+    missing_indicators: z.array(z.string()).default([]),
   })
   .passthrough();
 export type RiskDimension = z.infer<typeof RiskDimension>;
@@ -375,6 +380,10 @@ export const RiskModelResult = z
     confidence: z.number().finite().min(0).max(1),
     confidence_factors: z.record(z.number().finite()).default({}),
     disclaimer: z.string().default("This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."),
+    evidence_state: RiskEvidenceState.nullable().default(null),
+    evidence_coverage: z.number().finite().min(0).max(1).nullable().default(null),
+    score_lower_bound: z.number().finite().min(0).max(100).nullable().default(null),
+    score_upper_bound: z.number().finite().min(0).max(100).nullable().default(null),
   })
   .passthrough();
 export type RiskModelResult = z.infer<typeof RiskModelResult>;

@@ -1072,6 +1072,14 @@ def test_run_report_pins_proxy_discounts(tmp_path: Path) -> None:
                 "discount": 0.64,
             }
         ],
+        risk_evidence={
+            "state": "partial",
+            "effective_coverage": 0.76,
+            "score": 52.3,
+            "score_lower_bound": 44.0,
+            "score_upper_bound": 64.0,
+            "dimensions": [],
+        },
     )
     report = json.loads(path.read_text(encoding="utf-8"))
 
@@ -1085,3 +1093,5 @@ def test_run_report_pins_proxy_discounts(tmp_path: Path) -> None:
         }
     ]
     assert report["proxy_discounts"][0]["discount"] < 1.0
+    assert report["risk_evidence"]["state"] == "partial"
+    assert report["risk_evidence"]["score_lower_bound"] == 44.0

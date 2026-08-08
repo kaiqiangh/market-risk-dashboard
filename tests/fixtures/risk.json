@@ -330,6 +330,10 @@
       "coverage": 0.83,
       "consistency": 0.6
     },
+    "evidence_state": "partial",
+    "evidence_coverage": 0.76,
+    "score_lower_bound": 44.0,
+    "score_upper_bound": 64.0,
     "disclaimer": "The risk score on this page is a model-based estimate of market stress, not a precise probability of a market crash, and should not be considered investment advice.",
     "breadth": {
       "breadth_above_ma200": 0.55,

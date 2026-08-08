@@ -1168,6 +1168,7 @@ def _finish_run(command: str, results: dict[str, Any], elapsed: float, health: d
         skipped_datasets=health["skipped"],
         degraded_datasets=health["degraded"],
         proxy_discounts=_risk_proxy_discounts(results),
+        risk_evidence=_risk_evidence_summary(results),
     )
     _print_summary(command, results, elapsed)
     # E-5: an exit code of 0 on a run where a dataset ended missing is a silent green —
@@ -1198,6 +1199,31 @@ def _risk_proxy_discounts(results: dict[str, Any]) -> list[dict[str, Any]]:
                 }
             )
     return out
+
+
+def _risk_evidence_summary(results: dict[str, Any]) -> dict[str, Any]:
+    """Copy the published model evidence state into the operator run report."""
+    risk_env = results.get("risk")
+    payload = getattr(risk_env, "payload", None)
+    if payload is None:
+        return {}
+    return {
+        "state": payload.evidence_state,
+        "effective_coverage": payload.evidence_coverage,
+        "score": payload.total_score,
+        "score_lower_bound": payload.score_lower_bound,
+        "score_upper_bound": payload.score_upper_bound,
+        "dimensions": [
+            {
+                "key": dimension.key,
+                "state": dimension.evidence_state,
+                "coverage": dimension.coverage,
+                "effective_weight": dimension.effective_weight,
+                "missing_indicators": list(dimension.missing_indicators),
+            }
+            for dimension in payload.dimensions
+        ],
+    }
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -61,6 +61,12 @@ scoring:
   percentile_window_years: 5
   fallback_percentile: 50.0
 
+# Evidence state is separate from provider freshness: it describes how much of the model's
+# configured indicator weight has usable evidence. Below this threshold, the point estimate
+# is published with an insufficient-evidence state and an explicit score range.
+evidence:
+  insufficient_coverage_threshold: 0.5
+
 # Risk level thresholds (total risk score 0-100)
 thresholds:
   risk_level:

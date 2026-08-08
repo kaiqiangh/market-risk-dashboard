@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { RISK_DIMENSION_KEYS } from "@/lib/riskLabels";
+import { RISK_DIMENSION_KEYS, RISK_INDICATOR_KEYS } from "@/lib/riskLabels";
 import { riskTrendTone, toneClasses } from "@/lib/riskColors";
 import { formatNumber, formatPctPoints } from "@/lib/format";
 import type { DriverContribution, RiskDimensionKey } from "@/schemas";
@@ -62,7 +62,7 @@ export function TopDrivers({ drivers }: TopDriversProps) {
               </span>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-foreground">
-                  {driver.label}
+                  {t(RISK_INDICATOR_KEYS[driver.indicator_key] ?? "indicatorNames.unknown")}
                   {/* #69: disclose that the driver is an estimate — muted outline, NOT a warm tone */}
                   {driver.is_proxy ? (
                     <span className="ml-1.5 rounded-sm border border-border px-1 py-0 text-[9px] font-normal text-muted-foreground">

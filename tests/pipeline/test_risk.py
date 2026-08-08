@@ -136,6 +136,60 @@ def test_risk_model_produces_valid_result() -> None:
     assert "definitive probability" not in result.disclaimer or "modeled estimate" in result.disclaimer
 
 
+def test_risk_evidence_state_and_bounds_are_published() -> None:
+    result = RiskModel().score(_synthetic_context())
+
+    assert result.evidence_state == "partial"
+    assert result.evidence_coverage == pytest.approx(result.confidence_factors["coverage"])
+    assert result.score_lower_bound <= result.total_score <= result.score_upper_bound
+    macro = next(d for d in result.dimensions if d.key == "macro")
+    assert macro.evidence_state == "partial"
+    assert macro.missing_indicators == ["dollar_index"]
+
+
+def test_missing_evidence_is_insufficient_with_full_deterministic_bounds() -> None:
+    result = RiskModel().score({})
+
+    assert result.evidence_state == "insufficient_evidence"
+    assert result.evidence_coverage == 0.0
+    assert result.score_lower_bound == 0.0
+    assert result.score_upper_bound == 100.0
+    assert all(d.evidence_state == "insufficient_evidence" for d in result.dimensions)
+
+
+def test_complete_evidence_collapses_bounds_to_point_estimate(monkeypatch) -> None:
+    from tests.pipeline.factories import make_envelope, make_macro_indicator, make_macro_payload
+
+    # Treat the proxy inputs as fully trusted for this semantic test; their proxy disclosure
+    # remains present, but the evidence-state calculation must support a complete run.
+    monkeypatch.setattr(conf_mod, "proxy_discount_factor", lambda *args, **kwargs: 1.0)
+    payload = make_macro_payload(
+        rates=[
+            make_macro_indicator(key="dgs10", label="10Y", value=4.2, source="FRED"),
+            make_macro_indicator(key="dgs2", label="2Y", value=3.8, source="FRED"),
+            make_macro_indicator(key="dfii10", label="Real", value=1.9, source="FRED"),
+        ],
+        credit=[
+            make_macro_indicator(key="bamlh0a0hym2", label="HY", value=4.5, source="FRED"),
+            make_macro_indicator(key="bamlc0a0cm", label="IG", value=1.2, source="FRED"),
+        ],
+        volatility=[make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED")],
+        liquidity=[
+            make_macro_indicator(key="walcl", label="Assets", value=6600000, source="FRED"),
+            make_macro_indicator(key="rrpontsyd", label="RRP", value=100.0, source="FRED"),
+        ],
+        fx=[make_macro_indicator(key="dtwexbgs", label="Dollar", value=98.0, source="FRED")],
+    )
+    ctx = _synthetic_context()
+    ctx["macro"] = MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload
+
+    result = RiskModel().score(ctx)
+
+    assert result.evidence_state == "complete"
+    assert all(d.evidence_state == "complete" for d in result.dimensions)
+    assert result.score_lower_bound == result.score_upper_bound == result.total_score
+
+
 def test_risk_model_trend_1d() -> None:
     model = RiskModel()
     result = model.score(_synthetic_context())

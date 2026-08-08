@@ -19,10 +19,9 @@ export interface RiskScoreGaugeProps {
   trend1w: number | null;
   trend1m: number | null;
   confidence: number | null;
-  disclaimer?: string | null;
 }
 
-export function RiskScoreGauge({ score, level, trend1d, trend1w, trend1m, confidence, disclaimer }: RiskScoreGaugeProps) {
+export function RiskScoreGauge({ score, level, trend1d, trend1w, trend1m, confidence }: RiskScoreGaugeProps) {
   const { t, i18n } = useTranslation("risk");
   const locale = i18n.language;
   const tone = riskLevelTone(level);
@@ -69,17 +68,17 @@ export function RiskScoreGauge({ score, level, trend1d, trend1w, trend1m, confid
         <dl className="grid grid-cols-3 gap-2 text-center">
           {(
             [
-              ["1W", trend1w],
-              ["1M", trend1m],
-              ["conf", confidence],
+              ["score.week", trend1w],
+              ["score.month", trend1m],
+              ["score.confidenceShort", confidence],
             ] as const
           ).map(([label, value]) => (
             <div key={label} className="rounded-md bg-muted/60 px-2 py-1.5">
-              <dt className="text-[10px] uppercase tracking-wide text-muted-foreground">{label}</dt>
+              <dt className="text-[10px] uppercase tracking-wide text-muted-foreground">{t(label)}</dt>
               <dd className="text-sm font-semibold tabular-nums text-foreground">
                 {value === null || value === undefined
                   ? t("common:data.na")
-                  : label === "conf"
+                  : label === "score.confidenceShort"
                     ? formatRatio(value, locale)
                     : formatPctPoints(value, locale)}
               </dd>
@@ -87,7 +86,7 @@ export function RiskScoreGauge({ score, level, trend1d, trend1w, trend1m, confid
           ))}
         </dl>
 
-        {disclaimer ? <p className="text-[11px] leading-relaxed text-muted-foreground">{disclaimer}</p> : null}
+        <p className="text-[11px] leading-relaxed text-muted-foreground">{t("score.disclaimer")}</p>
       </CardContent>
     </Card>
   );

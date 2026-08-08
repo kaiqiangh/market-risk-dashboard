@@ -5,8 +5,21 @@
     "title": "Global Risk Score",
     "breakdown": "Model Breakdown",
     "confidence": "Confidence",
+    "confidenceShort": "Confidence",
+    "week": "1W",
+    "month": "1M",
     "modelVersion": "Model version",
     "disclaimer": "This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."
+  },
+  "evidence": {
+    "title": "Evidence state",
+    "complete": "Complete evidence",
+    "partial": "Partial evidence",
+    "insufficient": "Insufficient evidence",
+    "coverage": "Effective coverage",
+    "scoreRange": "Evidence score range",
+    "missingIndicators": "Missing indicators",
+    "explanation": "The score remains a point estimate; the range shows how missing indicators could change it."
   },
   "level": {
     "riskOn": "Risk On",
@@ -62,7 +75,33 @@
     "proxy": "Proxy"
   },
   "confidenceFactors": {
-    "title": "Confidence factors"
+    "title": "Confidence factors",
+    "data_quality": "Data quality",
+    "coverage": "Coverage",
+    "consistency": "Consistency",
+    "unknown": "Other"
+  },
+  "indicatorNames": {
+    "realRate": "10Y Real Rate",
+    "yieldCurve": "10Y-2Y Curve",
+    "dollarIndex": "Dollar Index",
+    "tenYearYield": "10Y Yield",
+    "fedBalanceSheet": "Fed Balance Sheet",
+    "reverseRepo": "Reverse Repo",
+    "hyOas": "High-Yield OAS",
+    "igOas": "Investment-Grade OAS",
+    "breadthAboveMa200": "Breadth Above 200-Day MA",
+    "newHighsRatio": "New Highs Ratio",
+    "newLowsRatio": "New Lows Ratio",
+    "smallCapRelative": "Small-Cap Relative Strength",
+    "semisRelative": "Semiconductor Relative Strength",
+    "vix": "VIX",
+    "realizedVol": "Realized Volatility",
+    "crossAssetConfirmation": "Cross-Asset Confirmation",
+    "priceVsMa200": "Price vs 200-Day MA",
+    "drawdown52w": "52-Week Drawdown",
+    "momentum3m": "3-Month Momentum",
+    "unknown": "Unlabelled indicator"
   },
   "drivers": {
     "title": "Top Risk Drivers",

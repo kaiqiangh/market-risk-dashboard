@@ -343,6 +343,8 @@ def make_risk_dimension(**overrides: Any) -> dict[str, Any]:
             "indicators": [make_risk_indicator()],
             "coverage": 1.0,
             "trend": "rising",
+            "evidence_state": "complete",
+            "missing_indicators": [],
         },
         overrides,
     )
@@ -596,6 +598,10 @@ def make_risk_payload(**overrides: Any) -> dict[str, Any]:
             # Superset of the risk golden's confidence_factors (#73 conformance): the golden
             # carries data_quality/coverage/consistency; freshness is the factory's own extra.
             "confidence_factors": {"coverage": 1.0, "freshness": 0.9, "data_quality": 0.9, "consistency": 0.6},
+            "evidence_state": "partial",
+            "evidence_coverage": 0.83,
+            "score_lower_bound": 44.0,
+            "score_upper_bound": 64.0,
             "disclaimer": "This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice.",
         },
         overrides,

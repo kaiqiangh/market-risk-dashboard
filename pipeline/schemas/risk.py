@@ -28,6 +28,7 @@ MarketRegime = Literal[
     "indeterminate",
 ]
 RiskTrend = Literal["rising", "falling", "flat"]
+RiskEvidenceState = Literal["complete", "partial", "insufficient_evidence"]
 
 
 class RiskIndicator(ContractModel):
@@ -60,6 +61,8 @@ class RiskDimension(ContractModel):
     indicators: list[RiskIndicator] = Field(default_factory=list)
     coverage: float = Field(ge=0.0, le=1.0, description="share of indicators with data (proxy-backed indicators discounted, #69)")
     trend: RiskTrend = "flat"
+    evidence_state: RiskEvidenceState | None = None
+    missing_indicators: list[str] = Field(default_factory=list)
 
 
 class BreadthSnapshot(ContractModel):
@@ -125,6 +128,15 @@ class RiskModelResult(ContractModel):
     disclaimer: str = Field(
         default="This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."
     )
+    evidence_state: RiskEvidenceState | None = None
+    evidence_coverage: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        description="effective weighted evidence coverage, including proxy discounts",
+    )
+    score_lower_bound: float | None = Field(default=None, ge=0.0, le=100.0)
+    score_upper_bound: float | None = Field(default=None, ge=0.0, le=100.0)
 
 
 class RiskEnvelope(BaseEnvelope):

@@ -118,12 +118,16 @@ describe("language switch (keeps current page)", () => {
     setHash("#/zh/risklab");
     renderApp();
     expect(await screen.findByTestId("page-title")).toHaveTextContent("风险实验室");
+    expect(await screen.findByTestId("risk-evidence-state")).toHaveTextContent("证据不完整");
+    expect(document.body.textContent).not.toContain("This indicator is a modeled estimate");
+    expect(document.body.textContent).not.toContain("10Y");
 
     fireEvent.click(screen.getByTestId("lang-switch"));
 
     await waitFor(() => expect(window.location.hash).toBe("#/en/risklab"));
     expect(window.localStorage.getItem(LOCALE_STORAGE_KEY)).toBe("en");
     await waitFor(() => expect(screen.getByTestId("page-title")).toHaveTextContent("Risk Lab"));
+    expect(await screen.findByTestId("risk-evidence-state")).toHaveTextContent("Partial evidence");
   });
 
   it("stays on overview when switching en→zh on the overview page", async () => {
