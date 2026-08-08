@@ -16,7 +16,6 @@ from __future__ import annotations
 from datetime import date, datetime, timedelta, timezone
 from typing import Any
 
-from pipeline.degrade import degraded_quality
 from pipeline.fedwatch import (
     FedWatchInput,
     compute_fedwatch,
@@ -28,6 +27,7 @@ from pipeline.fedwatch import (
     next_contract_codes,
     save_history,
 )
+from pipeline.metadata import oldest_source_timestamp, quality_for_outcomes
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.providers.fred import DEFAULT_SERIES_META, SERIES_CATALOG
 from pipeline.schemas import FedWatchSnapshot, MacroDataset, MacroIndicator
@@ -83,6 +83,7 @@ class MacroCollector:
         self._fred_cache: dict[str, list[dict[str, Any]]] = {}
         #: Domain → provider outcome of the most recent successful call (#65).
         self._provider_outcomes: dict[str, dict[str, Any]] = {}
+        self._degraded_sources: set[str] = set()
 
     # ---- FRED ----
 
@@ -99,8 +100,12 @@ class MacroCollector:
                 "macro", "get_series", f"fred_{series_id}",
                 args=(series_id,), kwargs={"start": start, "units": units},
             )
-            self.provider_status.setdefault("macro", out["meta"])
+            if "macro" not in self.provider_status or out["meta"].get("degraded"):
+                self.provider_status["macro"] = out["meta"]
             self._provider_outcomes["macro"] = out["meta"]
+            if out["meta"].get("degraded"):
+                self._degraded_sources.add("fred")
+                self.degraded.append(f"FRED {series_id}: provider served degraded data")
             rows = out["result"]
             # Normalize to lowercase keys: the risk model 5Y percentile looks up by the lowercase
             # series name of the indicator key
@@ -110,6 +115,7 @@ class MacroCollector:
         except ProviderError as exc:
             self.degraded.append(str(exc))
             self._fred_failures += 1
+            self._degraded_sources.add("fred")
             self.provider_status["macro"] = {"degraded": True, "error": str(exc)}
             return []
 
@@ -162,6 +168,7 @@ class MacroCollector:
                 break
         if effr is None:
             self._fedwatch_failed = True
+            self._degraded_sources.add("fedwatch")
             self.degraded.append("FedWatch: no EFFR anchor")
             return self._accumulate(insufficient_data_snapshot(None))
 
@@ -171,11 +178,13 @@ class MacroCollector:
                 prices[code] = fetch_contract_price(code)
             except ProviderError as exc:
                 self.degraded.append(f"FedWatch {code}: {exc}")
+                self._degraded_sources.add("fedwatch")
                 prices[code] = None
 
         codes = next_contract_codes()
         if not any(v is not None for v in prices.values()):
             self._fedwatch_failed = True
+            self._degraded_sources.add("fedwatch")
             self.degraded.append("FedWatch: ZQ futures unavailable")
             return self._accumulate(insufficient_data_snapshot(effr))
 
@@ -205,13 +214,30 @@ class MacroCollector:
 
         FRED partial failure counts as one source, FedWatch failure counts as one.
         """
-        # #65: the registry's degraded_domains is the reader — every domain that fell back or
-        # replayed from cache lowers published quality, compounding with the factor.
-        return degraded_quality(len(self.registry.degraded_domains), settings=self.settings)
+        return quality_for_outcomes(
+            [source in self._degraded_sources for source in ("fred", "fedwatch")],
+            settings=self.settings,
+        )
 
     def collect(self) -> tuple[MacroDataset, dict[str, Any]]:
         dataset = self._collect_macro()
         quality = self._quality()
+        indicator_times = [
+            indicator.updated_at
+            for group in SERIES_GROUPS
+            for indicator in getattr(dataset, group)
+        ]
+        source_updated_at = (
+            oldest_source_timestamp(indicator_times)
+            if (
+                len(indicator_times) == len(DEFAULT_SERIES)
+                and not self._degraded_sources
+                # FedWatch combines FRED with futures whose adapter result has no
+                # trustworthy upstream observation timestamp.
+                and dataset.fedwatch is None
+            )
+            else None
+        )
         # #64: return payload + provider outcome; the caller assembles the envelope and
         # finalizes freshness through the single assembly path.
         outcome = self._provider_outcomes.get("macro") or self.registry.resolved_provider("macro")
@@ -222,6 +248,7 @@ class MacroCollector:
             "provider_status": self.provider_status,
             "series_history": self.series_history,
             "data_quality": round(quality, 3),
+            "source_updated_at": source_updated_at,
             "provider": {
                 "provider": str(outcome.get("provider", "unavailable")),
                 "used_fallback": bool(outcome.get("used_fallback", False)),

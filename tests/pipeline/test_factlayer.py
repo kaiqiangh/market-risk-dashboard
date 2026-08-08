@@ -316,6 +316,37 @@ def test_market_summary_carries_sector_performance_and_prompt_labels_it() -> Non
     assert "半导体龙头: +2.50%" in prompt_zh
 
 
+def test_evidence_does_not_fabricate_missing_source_timestamps() -> None:
+    """Evidence may be undated when its dataset has no honest source observation time."""
+    from pipeline.factlayer.builder import FactLayerBuilder
+    from pipeline.schemas import (
+        CalendarEnvelope,
+        CryptoEnvelope,
+        EquitiesEnvelope,
+        MacroEnvelope,
+        NewsEnvelope,
+        RiskEnvelope,
+        SectorsEnvelope,
+    )
+    from tests.pipeline.factories import make_envelope
+
+    def without_source(name: str) -> dict[str, Any]:
+        return {**make_envelope(name), "source_updated_at": None}
+
+    facts = FactLayerBuilder().build(
+        risk=RiskEnvelope.model_validate(without_source("risk")),
+        macro=MacroEnvelope.model_validate(without_source("macro")),
+        equities=EquitiesEnvelope.model_validate(without_source("equities")),
+        crypto=CryptoEnvelope.model_validate(without_source("crypto")),
+        news=NewsEnvelope.model_validate(without_source("news")),
+        calendar=CalendarEnvelope.model_validate(without_source("calendar")),
+        sectors=SectorsEnvelope.model_validate(without_source("sectors")),
+    )
+
+    for key in ("ev_total_score", "ev_equity_nvda_price", "ev_crypto_btc_price", "ev_calendar_0", "ev_sector_information_technology"):
+        assert facts.evidence_index[key].updated_at is None, key
+
+
 # -------------------------------------------------------------------------------------
 # #125: full-run-path fact-layer verdict reason (the never-tested risk/fact write path)
 # -------------------------------------------------------------------------------------
@@ -405,6 +436,52 @@ def test_full_path_factlayer_healthy_reason_when_inputs_healthy(
     record = _full_run_factlayer(tmp_path / "data", monkeypatch)
     assert record["status"] != "degraded"
     assert record["reason"]["code"] != "input_dataset_unhealthy"
+
+
+def test_dashboard_inherits_degradation_from_commodity_risk_input(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A commodity failure degrades risk and therefore the dashboard that renders it."""
+    import pipeline.run as run_module
+    from pipeline.storage.writer import StorageWriter
+
+    data_dir = tmp_path / "data"
+    monkeypatch.setattr(
+        run_module,
+        "settings",
+        Settings(_env_file=None, data_dir=data_dir, artifacts_dir=tmp_path / "artifacts"),
+    )
+    results = _full_run_results(
+        market_meta={
+            "provider": {"provider": "yfinance", "used_fallback": False, "from_cache": False},
+            "data_quality": 1.0,
+            "degraded": ["commodity unavailable"],
+            "degraded_by_dataset": {
+                "equities": False,
+                "crypto": False,
+                "commodities": True,
+                "sectors": False,
+            },
+            "data_quality_by_dataset": {
+                "equities": 1.0,
+                "crypto": 1.0,
+                "commodities": 0.8,
+                "sectors": 1.0,
+            },
+            "source_updated_at_by_dataset": {
+                "equities": None,
+                "crypto": None,
+                "commodities": None,
+                "sectors": None,
+            },
+        }
+    )
+    ok, error = run_module._run_risk_and_write(results, StorageWriter(data_dir), "test-full")
+    assert ok, error
+
+    freshness = json.loads((data_dir / "metadata" / "freshness.json").read_text(encoding="utf-8"))
+    assert freshness["datasets"]["risk"]["status"] == "degraded"
+    assert freshness["datasets"]["dashboard"]["status"] == "degraded"
 
 
 def test_full_path_rejects_canonical_validation_failure(

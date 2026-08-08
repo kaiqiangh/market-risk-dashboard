@@ -133,12 +133,12 @@ class FactLayerBuilder:
             if value is None:
                 return
             index[key] = EvidenceRef(
-                dataset=dataset, path=path, metric=metric, value=value, updated_at=updated_at or now_utc()
+                dataset=dataset, path=path, metric=metric, value=value, updated_at=updated_at
             )
 
-        add("ev_total_score", "risk", "payload.total_score", "total_score", r.total_score, r.generated_at)
-        add("ev_confidence", "risk", "payload.confidence", "confidence", r.confidence, r.generated_at)
-        add("ev_regime", "risk", "payload.regime", "regime", r.regime, r.generated_at)
+        add("ev_total_score", "risk", "payload.total_score", "total_score", r.total_score, risk.source_updated_at)
+        add("ev_confidence", "risk", "payload.confidence", "confidence", r.confidence, risk.source_updated_at)
+        add("ev_regime", "risk", "payload.regime", "regime", r.regime, risk.source_updated_at)
 
         for i, dim in enumerate(r.dimensions):
             for j, ind in enumerate(dim.indicators):
@@ -150,7 +150,7 @@ class FactLayerBuilder:
                     f"payload.dimensions[{i}].indicators[{j}].value",
                     ind.key,
                     ind.value,
-                    ind.updated_at,
+                    risk.source_updated_at,
                 )
 
         for group in ("rates", "credit", "inflation", "labor", "liquidity", "fx"):
@@ -173,7 +173,7 @@ class FactLayerBuilder:
                 f"payload.assets[{i}].price",
                 "price",
                 asset.price,
-                asset.updated_at,
+                equities.source_updated_at,
             )
             add(
                 f"ev_equity_{asset.symbol.lower()}_1d",
@@ -181,26 +181,32 @@ class FactLayerBuilder:
                 f"payload.assets[{i}].change_1d",
                 "change_1d",
                 asset.change_1d,
-                asset.updated_at,
+                equities.source_updated_at,
             )
 
         for i, asset in enumerate(crypto.payload.assets):
-            add(f"ev_crypto_{asset.symbol.lower()}_price", "crypto", f"payload.assets[{i}].price", "price", asset.price, asset.updated_at)
+            add(
+                f"ev_crypto_{asset.symbol.lower()}_price",
+                "crypto",
+                f"payload.assets[{i}].price",
+                "price",
+                asset.price,
+                crypto.source_updated_at,
+            )
 
         for i, item in enumerate(news.payload.items[:5]):
             add(f"ev_news_{i}", "news", f"payload.items[{i}].importance", "importance", item.importance, item.published_at)
 
         for i, event in enumerate(calendar.payload.events[:5]):
-            # Event records do not carry their own observation timestamp. Use the calendar
-            # envelope's generation time rather than now_utc(), otherwise a fact-layer rebuild
-            # changes the evidence index and therefore its deterministic generation_id.
+            # Event records carry event time, not source observation time. The source-level
+            # timestamp is nullable, so an adapter fetch timestamp is never fabricated here.
             add(
                 f"ev_calendar_{i}",
                 "calendar",
                 f"payload.events[{i}].datetime",
                 "event_datetime",
                 event.datetime,
-                calendar.generated_at,
+                calendar.source_updated_at,
             )
 
         # #98: sector/theme 1d moves are citable evidence — the AI brief's rule is
@@ -217,6 +223,6 @@ class FactLayerBuilder:
                         f"payload.{group}[{i}].change_1d",
                         "change_1d",
                         row.change_1d,
-                        sectors.generated_at,
+                        sectors.source_updated_at,
                     )
         return index

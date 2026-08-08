@@ -13,7 +13,7 @@ import re
 from datetime import datetime, timezone
 from typing import Any
 
-from pipeline.degrade import degraded_quality
+from pipeline.metadata import quality_for_outcomes
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import NewsDataset, NewsItem, NewsTranslationsDataset
 from pipeline.settings import Settings
@@ -97,12 +97,8 @@ class NewsCollector:
     # ---- Summary ----
 
     def _quality(self) -> float:
-        """Data quality degrades by the configured factor per degraded domain (#65).
-
-        News degrades as a unit: the registry's `degraded_domains` is the reader — a news
-        fallback or cache replay lowers published quality.
-        """
-        return degraded_quality(len(self.registry.degraded_domains), settings=self.settings)
+        """Quality is scoped to this collector's source and provider outcome."""
+        return quality_for_outcomes([bool(self.degraded)], settings=self.settings)
 
     def collect(self) -> tuple[NewsDataset, dict[str, Any]]:
         outcome: dict[str, Any] = {"provider": "rss_news", "used_fallback": False, "from_cache": False}
@@ -114,6 +110,8 @@ class NewsCollector:
                 "used_fallback": bool(out["meta"].get("used_fallback", False)),
                 "from_cache": bool(out["meta"].get("from_cache", False)),
             }
+            if out["meta"].get("degraded") or outcome["used_fallback"] or outcome["from_cache"]:
+                self.degraded.append("RSS provider served degraded data")
             provider = outcome["provider"]
         except ProviderError as exc:
             self.degraded.append(str(exc))
@@ -175,6 +173,9 @@ class NewsCollector:
             "source_status": source_status,
             "provider_outcome": outcome,
             "data_quality": round(quality, 3),
+            # RSS exposes entry publication times but no trustworthy feed-level update time;
+            # fetch timestamps are adapter observations and must not become provenance.
+            "source_updated_at": None,
         }
 
     # ---- Chinese translation merge (architecture §1.5 step 4; ADR-0003) ----

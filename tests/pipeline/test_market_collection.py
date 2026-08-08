@@ -111,3 +111,31 @@ def test_normal_collect_publishes_the_planned_telemetry(tmp_path: Path, monkeypa
     assert telemetry["history_plan_count"] == telemetry["history_request_count"]
     assert telemetry["duplicate_request_keys"] == 0
     assert telemetry["request_keys"] == sorted(telemetry["request_keys"])
+
+
+def test_quality_and_degradation_are_scoped_per_market_dataset(tmp_path: Path, monkeypatch) -> None:
+    registry = _HistoryRegistry()
+    collector = _collector(registry, tmp_path)
+
+    monkeypatch.setattr(collector, "_collect_equities", lambda: EquitiesDataset(assets=[]))
+
+    def collect_crypto() -> CryptoDataset:
+        collector._dataset_degraded.add("crypto")
+        return CryptoDataset(assets=[])
+
+    monkeypatch.setattr(collector, "_collect_crypto", collect_crypto)
+    monkeypatch.setattr(collector, "_collect_commodities", lambda: CommoditiesDataset(assets=[]))
+    monkeypatch.setattr(collector, "_collect_sectors", lambda _equities: SectorsDataset(sectors=[], themes=[]))
+    registry.degraded_domains.add("news")
+
+    result = collector.collect()
+
+    assert result["degraded_by_dataset"] == {
+        "equities": False,
+        "crypto": True,
+        "commodities": False,
+        "sectors": False,
+    }
+    assert result["data_quality_by_dataset"]["equities"] == 1.0
+    assert result["data_quality_by_dataset"]["crypto"] == 0.8
+    assert result["data_quality_by_dataset"]["commodities"] == 1.0
