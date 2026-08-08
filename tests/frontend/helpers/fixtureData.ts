@@ -736,6 +736,20 @@ export const analysisEnFixture = {
       updated_at: "2026-08-03T10:00:00Z",
     },
   ],
+  lineage: {
+    fact_generation_id: "sha256:4507ebe867d1146d235294deb6685549e008d60735cccead8ce95c1a1da0a5f0",
+    fact_generated_at: "2026-08-03T10:00:00Z",
+    input_freshness: {
+      macro: "fresh",
+      equities: "fresh",
+      sectors: "fresh",
+      crypto: "fresh",
+      news: "fresh",
+      calendar: "fresh",
+      risk: "fresh",
+    },
+    pair_id: "fixture-analysis-pair-v2",
+  },
   data_freshness: "fresh",
 };
 

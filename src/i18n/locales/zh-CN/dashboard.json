@@ -1,6 +1,6 @@
 {
   "title": "总览",
-  "subtitle": "跨资产市场风险全景：风险分 / 市场状态 / 驱动因素 / AI 简报",
+  "subtitle": "跨资产市场风险全景：风险分 / 市场状态 / 驱动因素 / 智能简报",
   "heatmap": {
     "title": "跨资产热力图",
     "empty": "暂无跨资产数据",
@@ -33,9 +33,10 @@
     "none": "暂无新闻"
   },
   "aiBrief": {
-    "title": "AI 市场简报",
-    "degraded": "AI 简报暂不可用（数据缺失或生成失败）",
-    "degradedHint": "行情与风险数据仍可正常查看；AI 简报将在自动化产出后恢复。",
+    "title": "智能市场简报",
+    "label": "智能",
+    "degraded": "智能简报暂不可用（数据缺失或生成失败）",
+    "degradedHint": "行情与风险数据仍可正常查看；智能简报将在自动化产出后恢复。",
     "confidence": "置信度",
     "changedToday": "今日变化",
     "topDrivers": "主要风险驱动",
@@ -46,9 +47,71 @@
     "bearCase": "熊市情景",
     "watchNext": "关注要点",
     "generatedAt": "生成时间",
-    "noFreshBasis": "AI 简报缺乏新鲜数据基础",
+    "noFreshBasis": "智能简报缺乏新鲜数据基础",
     "noFreshBasisHint": "输入数据已降级或缺失；待输入恢复新鲜后简报将恢复。",
-    "regimeIndeterminate": "市场状态无法判断：当前输入未触发任何条件——模型没有读数，而非判断为平静或危险。"
+    "regimeIndeterminate": "市场状态无法判断：当前输入未触发任何条件——模型没有读数，而非判断为平静或危险。",
+    "state": {
+      "analysisMissing": {
+        "title": "智能简报暂不可用",
+        "detail": "当前语言的简报文件缺失，无法显示完整的双语简报。",
+        "recovery": "下一次智能简报成功发布后将恢复。"
+      },
+      "analysisMalformed": {
+        "title": "智能简报未通过校验",
+        "detail": "其中一种语言的文件格式错误，或不符合数据契约。",
+        "recovery": "下一次有效发布后将恢复。"
+      },
+      "pairIncomplete": {
+        "title": "双语简报不完整",
+        "detail": "只有两种语言文件同时存在，简报才能显示为当前内容。",
+        "recovery": "缺失的语言文件发布后将恢复。"
+      },
+      "pairMismatch": {
+        "title": "双语简报版本不一致",
+        "detail": "两种语言文件的分析结构并不对应。",
+        "recovery": "匹配的双语文件同时发布后将恢复。"
+      },
+      "factsMissing": {
+        "title": "智能简报缺少事实基础",
+        "detail": "当前事实层不可用，因此无法确认简报依据。",
+        "recovery": "事实层成功重建后将恢复。"
+      },
+      "factsUnidentified": {
+        "title": "智能简报缺少已确认的事实身份",
+        "detail": "事实层没有可验证的生成身份。",
+        "recovery": "带有指纹的事实层发布后将恢复。"
+      },
+      "lineageMissing": {
+        "title": "智能简报缺少可确认的依据链",
+        "detail": "语言文件没有说明所使用的事实生成版本。",
+        "recovery": "带有依据链的双语简报发布后将恢复。"
+      },
+      "lineageMismatch": {
+        "title": "智能简报依据不一致",
+        "detail": "简报与当前事实属于不同的生成版本。",
+        "recovery": "自动化系统为当前事实发布新的双语简报后将恢复。"
+      },
+      "inputUnhealthy": {
+        "title": "智能简报缺乏新鲜数据基础",
+        "detail": "事实输入存在延迟、过期、空值、降级或缺失。",
+        "recovery": "输入恢复新鲜后将恢复。"
+      },
+      "delayed": {
+        "title": "智能简报已延迟",
+        "detail": "已校验的双语简报超过了预期更新时间。",
+        "recovery": "下一次数据成功更新后将恢复正常。"
+      },
+      "stale": {
+        "title": "智能简报已过期",
+        "detail": "已校验的双语简报过于陈旧，不能作为当前分析展示。",
+        "recovery": "根据当前事实生成新的双语简报后将恢复。"
+      },
+      "empty": {
+        "title": "智能简报缺少可用输入",
+        "detail": "当前事实层没有可用于简报的有效观察值。",
+        "recovery": "非空事实层发布后将恢复。"
+      }
+    }
   },
   "kpi": {
     "trend1d": "1 日变化",

@@ -61,6 +61,24 @@ describe("route rendering (fixtures data)", () => {
     expect(await screen.findByTestId("ai-brief")).toBeInTheDocument();
   });
 
+  it("overview renders the validated brief on both locale routes", async () => {
+    installFixtureFetch();
+    renderApp();
+    expect(await screen.findByTestId("ai-brief")).toBeInTheDocument();
+    expect(screen.getByText("智能市场简报")).toBeInTheDocument();
+    expect(screen.getAllByText("主要风险驱动").length).toBeGreaterThan(0);
+    expect(screen.getByText("英文")).toBeInTheDocument();
+    expect(document.body.textContent).not.toContain("Top 风险驱动");
+    expect(document.body.textContent).not.toContain("This indicator is a modeled estimate");
+    expect(document.body.textContent).not.toContain("1M ");
+
+    fireEvent.click(screen.getByTestId("lang-switch"));
+
+    await waitFor(() => expect(window.location.hash).toBe("#/en/overview"));
+    expect(await screen.findByTestId("ai-brief")).toBeInTheDocument();
+    expect(screen.getByText("AI Market Brief")).toBeInTheDocument();
+  });
+
   it.each([
     ["macro", "宏观"],
     ["equities", "股票"],

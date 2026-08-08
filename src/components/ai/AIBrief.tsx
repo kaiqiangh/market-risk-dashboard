@@ -10,6 +10,7 @@ import { EvidenceLink } from "./EvidenceLink";
 import { riskLevelKey, regimeKey } from "@/lib/riskLabels";
 import { riskLevelTone, toneClasses, type RiskTone } from "@/lib/riskColors";
 import { formatDateTime, formatRatio } from "@/lib/format";
+import type { AnalysisPresentation } from "@/lib/analysisState";
 import type { AnalysisDataset, SignalClaim } from "@/schemas";
 
 /** market_state in the analysis file is a string; map loosely to a semantic color. */
@@ -22,7 +23,7 @@ function stateToneFromString(state: string): RiskTone {
 }
 
 /**
- * AIBrief: AI market brief (renders analysis.{lang}.json, architecture §1.5/§3.4; spec #23 ticket #29).
+ * AIBrief: lineage-validated AI market brief (architecture §1.5/§3.4; spec #23 ticket #29).
  * - Visual quarantine: 2px accent left border + "AI" chip — generated content is never
  *   confusable with deterministic data.
  * - Evidence-driven: every claim carries inline citation chips (EvidenceLink) wired to
@@ -31,12 +32,10 @@ function stateToneFromString(state: string): RiskTone {
  */
 
 export interface AIBriefProps {
-  /** Analysis data (current language). */
-  analysis?: AnalysisDataset;
+  /** Lineage-backed presentation state from both language files and the fact layer. */
+  presentation: AnalysisPresentation;
   /** Loading. */
   loading?: boolean;
-  /** Fetch failed (404 / network / validation failure). */
-  error?: boolean;
 }
 
 /** Quarantined card chrome: 2px accent left border marks generated content. */
@@ -86,7 +85,7 @@ function CaseBlock({
   );
 }
 
-export function AIBrief({ analysis, loading = false, error = false }: AIBriefProps) {
+export function AIBrief({ presentation, loading = false }: AIBriefProps) {
   const { t, i18n } = useTranslation("dashboard");
   const locale = i18n.language;
 
@@ -105,52 +104,34 @@ export function AIBrief({ analysis, loading = false, error = false }: AIBriefPro
     );
   }
 
-  if (error || !analysis) {
+  if (!presentation.validated || !presentation.analysis || presentation.notice) {
+    const notice = presentation.notice ?? "analysisMissing";
     return (
-      <Card className={QUARANTINE_CLASS} data-testid="ai-brief-degraded">
+      <Card className={QUARANTINE_CLASS} data-testid="ai-brief-state" data-state={notice}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ShieldAlert className="h-4 w-4 text-fresh-warn" aria-hidden />
             {t("aiBrief.title")}
-            <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">AI</span>
+            <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">
+              {t("aiBrief.label")}
+            </span>
+            <span className="ml-auto flex items-center gap-2 text-[11px] font-normal text-muted-foreground">
+              <StatusBadge status={presentation.status} />
+            </span>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-2 rounded-sm border border-fresh-warn/40 bg-fresh-warn/5 p-4">
-            <p className="text-sm font-medium text-foreground">{t("aiBrief.degraded")}</p>
-            <p className="text-xs text-muted-foreground">{t("aiBrief.degradedHint")}</p>
+            <p className="text-sm font-medium text-foreground">{t(`aiBrief.state.${notice}.title`)}</p>
+            <p className="text-xs text-muted-foreground">{t(`aiBrief.state.${notice}.detail`)}</p>
+            <p className="text-xs font-medium text-foreground">{t(`aiBrief.state.${notice}.recovery`)}</p>
           </div>
         </CardContent>
       </Card>
     );
   }
 
-  // #66: honest empty state — when the inputs the brief was built from were degraded or
-  // missing, the brief must say plainly it has no fresh basis rather than narrate numbers
-  // it knows are not trustworthy.
-  const hasFreshBasis = !["degraded", "missing"].includes(analysis.data_freshness);
-  if (!hasFreshBasis) {
-    return (
-      <Card className={QUARANTINE_CLASS} data-testid="ai-brief-no-basis">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ShieldAlert className="h-4 w-4 text-fresh-warn" aria-hidden />
-            {t("aiBrief.title")}
-            <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">AI</span>
-            <span className="ml-auto flex items-center gap-2 text-[11px] font-normal text-muted-foreground">
-              <StatusBadge status={analysis.data_freshness} />
-            </span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-2 rounded-sm border border-fresh-warn/40 bg-fresh-warn/5 p-4">
-            <p className="text-sm font-medium text-foreground">{t("aiBrief.noFreshBasis")}</p>
-            <p className="text-xs text-muted-foreground">{t("aiBrief.noFreshBasisHint")}</p>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+  const analysis = presentation.analysis;
 
   const stateTone = stateToneFromString(analysis.market_state);
 
@@ -160,7 +141,9 @@ export function AIBrief({ analysis, loading = false, error = false }: AIBriefPro
         <CardTitle className="flex flex-wrap items-center gap-2">
           <Sparkles className="h-4 w-4 text-primary" aria-hidden />
           {t("aiBrief.title")}
-          <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">AI</span>
+          <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">
+            {t("aiBrief.label")}
+          </span>
           <span className="ml-auto flex items-center gap-2 text-[11px] font-normal text-muted-foreground">
             <StatusBadge status={analysis.data_freshness} />
             <span className="font-mono tabular-nums">{formatDateTime(analysis.generated_at, locale)}</span>

@@ -206,6 +206,10 @@ describe("DatasetClient path rules (architecture §3.6)", () => {
     expect(client.pathFor("macro")).toBe("/market-risk-dashboard/data/latest/macro.json");
   });
 
+  it("fact layer uses its published facts filename", () => {
+    expect(client.pathFor("factlayer")).toBe("/market-risk-dashboard/data/latest/facts.json");
+  });
+
   it("analysis with lang", () => {
     expect(client.pathFor("analysis", { lang: "zh-CN" })).toBe(
       "/market-risk-dashboard/data/latest/analysis.zh-CN.json",

@@ -65,7 +65,7 @@
     "title": "置信度因子"
   },
   "drivers": {
-    "title": "Top 风险驱动",
+    "title": "主要风险驱动",
     "contribution": "贡献",
     "none": "暂无风险驱动"
   }

@@ -6,6 +6,7 @@ import {
   CryptoEnvelope,
   DashboardEnvelope,
   EquitiesEnvelope,
+  FactLayer,
   MacroEnvelope,
   NewsEnvelope,
   RiskEnvelope,
@@ -51,7 +52,8 @@ export type DatasetSchemaKey =
   | "news"
   | "calendar"
   | "risk"
-  | "dashboard";
+  | "dashboard"
+  | "factlayer";
 
 /**
  * Annotated as ZodTypeAny rather than inferred. The generated envelopes are deep enough that
@@ -69,6 +71,7 @@ export const DATASET_SCHEMAS: Record<DatasetSchemaKey, z.ZodTypeAny> = {
   calendar: CalendarEnvelope,
   risk: RiskEnvelope,
   dashboard: DashboardEnvelope,
+  factlayer: FactLayer,
 };
 
 /** analysis is a self-describing contract (AnalysisDataset) and does not use the envelope. */
