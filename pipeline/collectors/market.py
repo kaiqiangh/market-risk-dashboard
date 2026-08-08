@@ -43,7 +43,42 @@ class _EquityFetch(NamedTuple):
     rows: list[dict[str, Any]]
 
 
-INDEX_HISTORIES = {"SPY": "1y", "IWM": "1y", "SOXX": "1y"}
+class _HistoryTarget(NamedTuple):
+    """One deterministic history request and the consumers that require it."""
+
+    domain: str
+    symbol: str
+    period: str
+    consumers: tuple[str, ...]
+
+    @property
+    def request_key(self) -> str:
+        return f"hist_{self.symbol}_{self.period}"
+
+
+class _HistoryFetch(NamedTuple):
+    """Worker result for one history target; shared state is merged by the caller."""
+
+    target: _HistoryTarget
+    rows: list[dict[str, Any]]
+    meta: dict[str, Any]
+    status: str
+    error: str | None
+
+
+# Breadth/trend and governed cross-asset diagnostic history. These ETF proxies are fetched
+# through the same quotes registry once per generation; they are not added to the display
+# universe. XLY/XLP and HYG/IEF remain diagnostic-only until the calibration policy permits
+# them to affect production weights (#143).
+INDEX_HISTORIES = {
+    "SPY": "1y",
+    "IWM": "1y",
+    "SOXX": "1y",
+    "XLY": "1y",
+    "XLP": "1y",
+    "HYG": "1y",
+    "IEF": "1y",
+}
 
 
 
@@ -69,6 +104,15 @@ class MarketCollector:
         self.histories: dict[str, list[dict[str, Any]]] = {}
         #: Domain → provider outcome of the most recent successful call (#65).
         self._provider_outcomes: dict[str, dict[str, Any]] = {}
+        self._history_plan: tuple[_HistoryTarget, ...] = ()
+        self._history_plan_keys: set[tuple[str, str, str]] = set()
+        self._history_plan_ready = False
+        self._history_fetched_keys: set[tuple[str, str, str]] = set()
+        self._history_failures: dict[tuple[str, str, str], str] = {}
+        self._history_meta: dict[tuple[str, str, str], dict[str, Any]] = {}
+        self._history_telemetry: list[dict[str, Any]] = []
+        self._history_missing: list[dict[str, Any]] = []
+        self._history_degraded: list[dict[str, Any]] = []
         # #103/P-1: collection runs in a bounded thread pool; the per-(provider, host)
         # circuit breaker lives in the registry (threshold 3 consecutive transient
         # failures → fast-degrade, fallback/cache still answer). The collector's own
@@ -89,7 +133,157 @@ class MarketCollector:
             }
         return {"provider": "unavailable", "used_fallback": False, "from_cache": False}
 
+    def _provider_for_any(self, domains: tuple[str, ...]) -> dict[str, Any]:
+        """Resolve the first available internal route in deterministic order."""
+        for domain in domains:
+            if domain in self._provider_outcomes or self.registry.resolved_provider(domain) is not None:
+                return self._provider_for(domain)
+        return {"provider": "unavailable", "used_fallback": False, "from_cache": False}
+
     # ---- Quotes (US + A-shares) ----
+
+    def _theme_history_symbols(self) -> set[str]:
+        """Return the non-CN series symbols required by the configured themes."""
+        symbols: set[str] = set()
+        for theme in [*self.themes.sectors.values(), *self.themes.themes.values()]:
+            if theme.proxy is not None and theme.proxy.kind == "etf" and theme.proxy.symbol:
+                symbols.add(theme.proxy.symbol)
+            else:
+                symbols |= {c.symbol for c in theme.constituents if not c.symbol.endswith((".SH", ".SZ"))}
+        return symbols
+
+    def _build_history_plan(self) -> tuple[_HistoryTarget, ...]:
+        """Build the single source of truth for market history collection.
+
+        A target is deduplicated before any provider call. Consumer labels are metadata only;
+        they make the request budget auditable without changing current scoring behavior.
+        """
+        consumers: dict[tuple[str, str, str], set[str]] = {}
+
+        def add(domain: str, symbol: str, period: str, consumer: str) -> None:
+            key = (domain, symbol, period)
+            consumers.setdefault(key, set()).add(consumer)
+
+        for asset in self.universe.us_equities:
+            add("quotes", asset.symbol, "1y", "equity_card")
+        for asset in self.universe.a_share_memory:
+            add("a_share", asset.symbol, "1y", "equity_card")
+        for symbol, period in INDEX_HISTORIES.items():
+            add("quotes", symbol, period, "risk_breadth_trend")
+
+        for symbol in self._theme_history_symbols():
+            add("quotes", symbol, "1y", "themes")
+
+        return tuple(
+            _HistoryTarget(domain, symbol, period, tuple(sorted(consumers[(domain, symbol, period)])))
+            for domain, symbol, period in sorted(consumers)
+        )
+
+    @staticmethod
+    def _history_status(meta: dict[str, Any], rows: list[dict[str, Any]]) -> str:
+        if not rows:
+            return "empty"
+        if bool(meta.get("degraded") or meta.get("used_fallback") or meta.get("from_cache")):
+            return "degraded"
+        return "fresh"
+
+    def _fetch_history_target(self, target: _HistoryTarget) -> _HistoryFetch:
+        """Fetch one planned target without mutating collector state."""
+        try:
+            out = self.registry.call(
+                target.domain,
+                "get_history",
+                target.request_key,
+                args=(target.symbol, target.period),
+            )
+            rows = list(out["result"].rows or [])
+            meta = dict(out.get("meta") or {})
+            return _HistoryFetch(target, rows, meta, self._history_status(meta, rows), None)
+        except ProviderError as exc:
+            return _HistoryFetch(target, [], {}, "missing", str(exc))
+
+    def _merge_history_fetches(self, fetched: list[_HistoryFetch]) -> None:
+        """Merge ordered worker results and publish bounded request diagnostics."""
+        for item in fetched:
+            target = item.target
+            key = (target.domain, target.symbol, target.period)
+            self._history_fetched_keys.add(key)
+            self._history_meta[key] = item.meta
+            self.histories[target.symbol] = item.rows
+            if item.meta:
+                self._record_outcome(target.domain, item.meta)
+            if item.error:
+                self._history_failures[key] = item.error
+                self.degraded.append(f"{target.symbol}: history unavailable")
+                self.registry.degraded_domains.add(target.domain)
+                self.provider_status.setdefault(target.domain, {})["error"] = item.error
+            elif item.status == "empty":
+                self.degraded.append(f"{target.symbol}: history empty")
+                self.registry.degraded_domains.add(target.domain)
+            elif item.status == "degraded":
+                self.degraded.append(f"{target.symbol}: history served degraded")
+
+            telemetry = {
+                "request_key": target.request_key,
+                "domain": target.domain,
+                "symbol": target.symbol,
+                "period": target.period,
+                "consumers": list(target.consumers),
+                "requested": 1,
+                "row_count": len(item.rows),
+                "provider": str(item.meta.get("provider", "unavailable")),
+                "used_fallback": bool(item.meta.get("used_fallback", False)),
+                "from_cache": bool(item.meta.get("from_cache", False)),
+                "status": item.status,
+            }
+            self._history_telemetry.append(telemetry)
+            summary = {
+                "request_key": target.request_key,
+                "domain": target.domain,
+                "symbol": target.symbol,
+                "consumers": list(target.consumers),
+                "status": item.status,
+            }
+            if item.status in ("missing", "empty"):
+                self._history_missing.append(summary)
+            elif item.status == "degraded":
+                self._history_degraded.append(summary)
+
+    def _collect_history_plan(self) -> None:
+        """Collect all market histories once, in a bounded and deterministic request plan."""
+        self._history_plan = self._build_history_plan()
+        self._history_plan_keys = {(t.domain, t.symbol, t.period) for t in self._history_plan}
+        self._history_plan_ready = True
+        if not self._history_plan:
+            return
+        targets = tuple(
+            target
+            for target in self._history_plan
+            if (target.domain, target.symbol, target.period) not in self._history_fetched_keys
+        )
+        if not targets:
+            return
+        with ThreadPoolExecutor(max_workers=min(8, len(targets))) as pool:
+            fetched = list(pool.map(self._fetch_history_target, targets))
+        self._merge_history_fetches(fetched)
+
+    def _history_for_asset(self, asset: Any) -> tuple[list[dict[str, Any]], str | None, dict[str, Any]]:
+        """Read a planned history, or retain the legacy direct-helper fallback."""
+        domain = "quotes" if asset.market == "US" else "a_share"
+        key = (domain, asset.symbol, "1y")
+        if self._history_plan_ready and key in self._history_plan_keys:
+            return (
+                self.histories.get(asset.symbol, []),
+                self._history_failures.get(key),
+                self._history_meta.get(key, {}),
+            )
+        try:
+            out = self.registry.call(domain, "get_history", f"hist_{asset.symbol}_1y", args=(asset.symbol, "1y"))
+            rows = list(out["result"].rows or [])
+            self._record_outcome(domain, out["meta"])
+            return rows, None, dict(out.get("meta") or {})
+        except ProviderError as exc:
+            return [], str(exc), {}
 
     def _fetch_equity(
         self, asset: Any
@@ -119,13 +313,24 @@ class MarketCollector:
             return _EquityFetch(None, domain, degraded, outcomes, status_error, [])
 
         quote = quote_out["result"]
-        rows: list[dict[str, Any]] = []
-        try:
-            hist_out = self.registry.call(domain, "get_history", f"hist_{asset.symbol}_1y", args=(asset.symbol, "1y"))
-            rows = hist_out["result"].rows
-        except ProviderError as exc:
-            degraded.append(f"{asset.symbol}: history unavailable: {exc}")
-            status_error = str(exc)
+        rows, history_error, history_meta = self._history_for_asset(asset)
+        if history_meta:
+            outcomes[domain] = {
+                **quote_out["meta"],
+                "used_fallback": bool(quote_out["meta"].get("used_fallback") or history_meta.get("used_fallback")),
+                "from_cache": bool(quote_out["meta"].get("from_cache") or history_meta.get("from_cache")),
+                "degraded": bool(
+                    quote_out["meta"].get("degraded")
+                    or history_meta.get("degraded")
+                    or history_meta.get("used_fallback")
+                    or history_meta.get("from_cache")
+                ),
+            }
+        if history_error:
+            if not self._history_plan_ready:
+                degraded.append(f"{asset.symbol}: history unavailable: {history_error}")
+            status_error = history_error
+            outcomes[domain] = {**quote_out["meta"], "degraded": True}
             # ADR 0004: degradation costs quality. The registry marks the domain degraded
             # on fallback/cache reads — a history-only failure does not reach it (the call
             # raised), so the collector records it here or the None-technical assets ship
@@ -184,13 +389,20 @@ class MarketCollector:
     # ---- Index history (breadth/trend) ----
 
     def _collect_index_histories(self) -> None:
-        for symbol, period in INDEX_HISTORIES.items():
-            try:
-                out = self.registry.call("quotes", "get_history", f"hist_{symbol}_{period}", args=(symbol, period))
-                self._record_outcome("quotes", out["meta"])
-                self.histories[symbol] = out["result"].rows
-            except ProviderError as exc:
-                self.degraded.append(f"{symbol}: {exc}")
+        # Kept as a direct helper for callers/tests. A normal collection uses the complete
+        # plan from ``_collect_history_plan`` and therefore never enters this subset.
+        if self._history_plan_ready:
+            return
+        targets = tuple(
+            _HistoryTarget("quotes", symbol, period, ("risk_breadth_trend",))
+            for symbol, period in INDEX_HISTORIES.items()
+            if ("quotes", symbol, period) not in self._history_fetched_keys
+        )
+        if not targets:
+            return
+        with ThreadPoolExecutor(max_workers=min(8, len(targets))) as pool:
+            fetched = list(pool.map(self._fetch_history_target, targets))
+        self._merge_history_fetches(fetched)
 
     # ---- Crypto ----
 
@@ -315,13 +527,13 @@ class MarketCollector:
         are merged into ``self.histories`` in the caller's thread — workers never write
         shared state.
         """
-        needed: set[str] = set()
-        for theme in [*self.themes.sectors.values(), *self.themes.themes.values()]:
-            if theme.proxy is not None and theme.proxy.kind == "etf":
-                needed.add(theme.proxy.symbol)
-            else:
-                needed |= {c.symbol for c in theme.constituents if not c.symbol.endswith((".SH", ".SZ"))}
-        targets = sorted(s for s in needed if s not in self.histories)
+        needed = self._theme_history_symbols()
+        targets = sorted(
+            s
+            for s in needed
+            if s not in self.histories
+            and (not self._history_plan_ready or ("quotes", s, "1y") not in self._history_plan_keys)
+        )
         if not targets:
             return
         with ThreadPoolExecutor(max_workers=min(8, len(targets))) as pool:
@@ -387,9 +599,40 @@ class MarketCollector:
         """
         return degraded_quality(len(self.registry.degraded_domains), settings=self.settings)
 
+    def _reset_collection_state(self) -> None:
+        """Clear generation-local market state when a collector instance is reused."""
+        self.degraded.clear()
+        self.provider_status.clear()
+        self.histories.clear()
+        self._provider_outcomes.clear()
+        self._history_plan = ()
+        self._history_plan_keys.clear()
+        self._history_plan_ready = False
+        self._history_fetched_keys.clear()
+        self._history_failures.clear()
+        self._history_meta.clear()
+        self._history_telemetry.clear()
+        self._history_missing.clear()
+        self._history_degraded.clear()
+
+    def _collection_telemetry(self) -> dict[str, Any]:
+        """Return bounded, provider-safe diagnostics for the market history plan."""
+        request_keys = {item["request_key"] for item in self._history_telemetry}
+        return {
+            "history_plan_count": len(self._history_plan),
+            "history_request_count": len(self._history_telemetry),
+            "request_keys": sorted(request_keys),
+            "unique_request_keys": len(request_keys),
+            "duplicate_request_keys": len(self._history_telemetry) - len(request_keys),
+            "history_requests": self._history_telemetry,
+            "missing_inputs": self._history_missing,
+            "degraded_inputs": self._history_degraded,
+        }
+
     def collect(self) -> dict[str, Any]:
+        self._reset_collection_state()
+        self._collect_history_plan()
         equities = self._collect_equities()
-        self._collect_index_histories()
         crypto = self._collect_crypto()
         commodities = self._collect_commodities()
         sectors = self._collect_sectors(equities)
@@ -404,10 +647,17 @@ class MarketCollector:
             "sectors": sectors,
             "histories": self.histories,
             "degraded": self.degraded,
-            "provider_status": self.provider_status,
+            # ``quotes`` and ``a_share`` are internal routes within the canonical market
+            # domain. Keep their diagnostics available on ``self.provider_status`` for direct
+            # collector callers, but publish only the canonical status domain (#136).
+            "provider_status": {
+                "market": {
+                    "collection_telemetry": self._collection_telemetry(),
+                }
+            },
             "data_quality": round(quality, 3),
             "providers": {
-                "equities": self._provider_for("quotes") or self._provider_for("a_share"),
+                "equities": self._provider_for_any(("quotes", "a_share")),
                 "crypto": self._provider_for("crypto"),
                 "commodities": self._provider_for("quotes"),
                 "sectors": self._provider_for("quotes"),

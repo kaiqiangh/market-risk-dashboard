@@ -4,9 +4,29 @@
   "score": {
     "title": "Global Risk Score",
     "breakdown": "Model Breakdown",
-    "confidence": "Confidence",
+    "confidence": "Data trust",
+    "confidenceShort": "Data trust",
+    "week": "1W",
+    "month": "1M",
     "modelVersion": "Model version",
-    "disclaimer": "This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."
+    "disclaimer": "This indicator is a modeled estimate of market stress based on historical data and current market signals. Data trust is not statistical confidence, a calibrated probability, or investment advice."
+  },
+  "calibration": {
+    "title": "Calibration policy",
+    "provisional": "Provisional",
+    "calibrated": "Out-of-sample calibrated",
+    "version": "Policy version",
+    "explanation": "Current weights and risk bands are retained. Refitting is gated until point-in-time source vintages and regime-labelled out-of-sample evidence are available."
+  },
+  "evidence": {
+    "title": "Evidence state",
+    "complete": "Complete evidence",
+    "partial": "Partial evidence",
+    "insufficient": "Insufficient evidence",
+    "coverage": "Effective coverage",
+    "scoreRange": "Evidence score range",
+    "missingIndicators": "Missing indicators",
+    "explanation": "The score remains a point estimate; the range shows how missing indicators could change it."
   },
   "level": {
     "riskOn": "Risk On",
@@ -48,6 +68,54 @@
     "indicators": "Indicators",
     "disclaimer": "When a dimension is missing, its weight is re-normalized across remaining dimensions while coverage and confidence are reduced."
   },
+  "crossAssetSignals": {
+    "title": "Governed cross-asset diagnostics",
+    "description": "These inputs are collected and evaluated for evidence, but the two new proxy signals remain outside the production score while cross-asset calibration is gated.",
+    "label": "Signal",
+    "value": "Latest gap",
+    "state": "State",
+    "source": "Provider",
+    "history": "History",
+    "triggered": "Risk signal",
+    "notTriggered": "No trigger",
+    "unavailable": "Unavailable",
+    "diagnosticOnly": "Diagnostic only",
+    "proxy": "ETF proxy",
+    "unit": {
+      "percentage_points": "percentage points",
+      "index_points": "index points"
+    },
+    "transformations": {
+      "one_day_return_below_zero": "1-day return below zero",
+      "one_day_return_above_zero": "1-day return above zero",
+      "relative_return_below_zero": "relative return below zero",
+      "level_above_4": "level above 4",
+      "level_above_105": "level above 105",
+      "level_above_1_5": "level above 1.5",
+      "xly_minus_xlp_one_day_return": "cyclicals minus defensives 1-day return",
+      "hyg_minus_ief_one_day_return": "high-yield minus Treasury 1-day return"
+    },
+    "signalNames": {
+      "spy_down": "Broad market down",
+      "hy_oas_widening": "High-yield spread pressure",
+      "dollar_strength": "Dollar strength",
+      "real_rate_pressure": "Real-rate pressure",
+      "bitcoin_down": "Bitcoin down",
+      "small_cap_underperformance": "Small-cap underperformance",
+      "copper_down": "Copper down",
+      "gold_up": "Gold up",
+      "cyclicals_defensives_relative": "Cyclicals versus defensives",
+      "hy_treasury_relative": "High-yield versus Treasuries"
+    },
+    "sources": {
+      "yfinance": "Yahoo Finance",
+      "fmp_quotes": "Financial Modeling Prep",
+      "fred": "Federal Reserve Economic Data",
+      "coingecko": "CoinGecko",
+      "calibration_panel": "Calibration panel",
+      "unknown": "Configured provider"
+    }
+  },
   "indicator": {
     "label": "Indicator",
     "value": "Value",
@@ -62,7 +130,33 @@
     "proxy": "Proxy"
   },
   "confidenceFactors": {
-    "title": "Confidence factors"
+    "title": "Data-trust factors",
+    "data_quality": "Data quality",
+    "coverage": "Coverage",
+    "consistency": "Consistency",
+    "unknown": "Other"
+  },
+  "indicatorNames": {
+    "realRate": "10Y Real Rate",
+    "yieldCurve": "10Y-2Y Curve",
+    "dollarIndex": "Dollar Index",
+    "tenYearYield": "10Y Yield",
+    "fedBalanceSheet": "Fed Balance Sheet",
+    "reverseRepo": "Reverse Repo",
+    "hyOas": "High-Yield OAS",
+    "igOas": "Investment-Grade OAS",
+    "breadthAboveMa200": "Breadth Above 200-Day MA",
+    "newHighsRatio": "New Highs Ratio",
+    "newLowsRatio": "New Lows Ratio",
+    "smallCapRelative": "Small-Cap Relative Strength",
+    "semisRelative": "Semiconductor Relative Strength",
+    "vix": "VIX",
+    "realizedVol": "Realized Volatility",
+    "crossAssetConfirmation": "Cross-Asset Confirmation",
+    "priceVsMa200": "Price vs 200-Day MA",
+    "drawdown52w": "52-Week Drawdown",
+    "momentum3m": "3-Month Momentum",
+    "unknown": "Unlabelled indicator"
   },
   "drivers": {
     "title": "Top Risk Drivers",

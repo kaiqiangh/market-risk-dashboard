@@ -40,6 +40,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+from pipeline.lineage import fact_generation_id
 from pipeline.schemas import registry
 from pipeline.schemas.envelope import SCHEMA_VERSION
 
@@ -342,6 +343,8 @@ def make_risk_dimension(**overrides: Any) -> dict[str, Any]:
             "indicators": [make_risk_indicator()],
             "coverage": 1.0,
             "trend": "rising",
+            "evidence_state": "complete",
+            "missing_indicators": [],
         },
         overrides,
     )
@@ -542,6 +545,21 @@ def make_risk_payload(**overrides: Any) -> dict[str, Any]:
             "trend_1d": 0.8,
             "trend_1w": 2.1,
             "trend_1m": -1.4,
+            "cross_asset_signals": [
+                {
+                    "key": "cyclicals_defensives_relative",
+                    "value": -0.42,
+                    "triggered": True,
+                    "source": "market_quotes",
+                    "provider": "yfinance",
+                    "unit": "percentage_points",
+                    "transformation": "xly_minus_xlp_one_day_return",
+                    "history_observations": 252,
+                    "status": "fresh",
+                    "is_proxy": True,
+                    "production_scoring": False,
+                }
+            ],
             # Indicator keys mirror the model.py registrations (#67): macro carries the four
             # real macro indicators (real_rate / curve / dollar / dgs10); liquidity_credit
             # carries the full credit set including ig_oas.
@@ -595,7 +613,13 @@ def make_risk_payload(**overrides: Any) -> dict[str, Any]:
             # Superset of the risk golden's confidence_factors (#73 conformance): the golden
             # carries data_quality/coverage/consistency; freshness is the factory's own extra.
             "confidence_factors": {"coverage": 1.0, "freshness": 0.9, "data_quality": 0.9, "consistency": 0.6},
-            "disclaimer": "This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice.",
+            "evidence_state": "partial",
+            "evidence_coverage": 0.83,
+            "score_lower_bound": 44.0,
+            "score_upper_bound": 64.0,
+            "calibration_policy_version": "1.0.0",
+            "calibration_status": "provisional",
+            "disclaimer": "This indicator is a modeled estimate of market stress based on historical data and current market signals. Data trust is not statistical confidence, a calibrated probability, or investment advice.",
         },
         overrides,
     )
@@ -720,7 +744,7 @@ def make_facts(**overrides: Any) -> dict[str, Any]:
     covers. ``data_freshness`` therefore names every dataset, ``evidence_index`` carries the
     three golden evidence ids, and the summaries cover the golden's fields.
     """
-    return _build(
+    result = _build(
         {
             "generated_at": NOW_ISO,
             "schema_version": SCHEMA_VERSION,
@@ -780,6 +804,9 @@ def make_facts(**overrides: Any) -> dict[str, Any]:
         },
         overrides,
     )
+    if "generation_id" not in overrides:
+        result["generation_id"] = fact_generation_id(result)
+    return result
 
 
 #: Prose for the bilingual briefing. Only the language of the prose may differ between the two

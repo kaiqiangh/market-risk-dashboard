@@ -4,10 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Progress } from "@/components/ui/Progress";
 import { Badge } from "@/components/ui/Badge";
 import { StatusBadge } from "@/components/layout/StatusBadge";
-import { RISK_DIMENSION_KEYS, RISK_TREND_KEYS } from "@/lib/riskLabels";
+import { RISK_DIMENSION_KEYS, RISK_EVIDENCE_KEYS, RISK_INDICATOR_KEYS, RISK_TREND_KEYS } from "@/lib/riskLabels";
 import { riskLevelTone, toneClasses } from "@/lib/riskColors";
 import { formatNumber, formatPercentile, formatRatio } from "@/lib/format";
 import type { RiskDimension, RiskModelResult } from "@/schemas";
+import { displayProvider } from "@/lib/displayLanguage";
 
 /**
  * RiskDimensionBreakdown: 6-dimension risk model breakdown (RiskLab core).
@@ -28,6 +29,14 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
   const locale = i18n.language;
   const totalTone = riskLevelTone(result.risk_level);
   const totalClasses = toneClasses(totalTone);
+  const evidenceState = result.evidence_state ?? "insufficient_evidence";
+  const evidenceCoverage = result.evidence_coverage ?? result.confidence_factors.coverage ?? 0;
+  const scoreLowerBound = result.score_lower_bound ?? result.total_score;
+  const scoreUpperBound = result.score_upper_bound ?? result.total_score;
+  const evidenceVariant = evidenceState === "complete" ? "low" : evidenceState === "partial" ? "caution" : "na";
+  const signalProviderLabel = (provider: string) => {
+    return displayProvider(provider, locale);
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -36,7 +45,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
         <CardHeader>
           <CardTitle>{t("score.breakdown")}</CardTitle>
         </CardHeader>
-        <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           <div className="rounded-md bg-muted/50 p-3">
             <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{t("score.title")}</p>
             <p className={`text-3xl font-bold tabular-nums ${totalClasses.text}`}>{formatNumber(result.total_score, locale)}</p>
@@ -50,21 +59,42 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
             <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{t("score.modelVersion")}</p>
             <p className="text-lg font-semibold tabular-nums">{result.model_version}</p>
           </div>
+          <div className="rounded-md bg-muted/50 p-3" data-testid="risk-calibration-policy">
+            <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{t("calibration.title")}</p>
+            <Badge variant={result.calibration_status === "calibrated" ? "low" : "caution"}>
+              {t(`calibration.${result.calibration_status ?? "provisional"}`)}
+            </Badge>
+            <p className="mt-2 text-xs text-muted-foreground">
+              {t("calibration.version")}: <span className="tabular-nums text-foreground">{result.calibration_policy_version ?? "1.0.0"}</span>
+            </p>
+          </div>
           <div className="rounded-md bg-muted/50 p-3">
             <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{t("confidenceFactors.title")}</p>
             <ul className="mt-1 flex flex-col gap-0.5 text-xs text-muted-foreground">
               {Object.entries(result.confidence_factors).map(([k, v]) => (
                 <li key={k} className="flex justify-between gap-2">
-                  <span>{k}</span>
+                  <span>{t(`confidenceFactors.${k}`, { defaultValue: t("confidenceFactors.unknown") })}</span>
                   <span className="tabular-nums text-foreground">{formatRatio(v, locale)}</span>
                 </li>
               ))}
             </ul>
           </div>
+          <div className="rounded-md bg-muted/50 p-3" data-testid="risk-evidence-state">
+            <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{t("evidence.title")}</p>
+            <Badge variant={evidenceVariant}>{t(RISK_EVIDENCE_KEYS[evidenceState])}</Badge>
+            <p className="mt-2 text-xs text-muted-foreground">
+              {t("evidence.coverage")}: <span className="tabular-nums text-foreground">{formatRatio(evidenceCoverage, locale)}</span>
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {t("evidence.scoreRange")}: <span className="tabular-nums text-foreground">{formatNumber(scoreLowerBound, locale)}–{formatNumber(scoreUpperBound, locale)}</span>
+            </p>
+          </div>
         </CardContent>
         {result.disclaimer ? (
           <CardContent>
-            <p className="text-[11px] leading-relaxed text-muted-foreground">{result.disclaimer}</p>
+            <p className="text-[11px] leading-relaxed text-muted-foreground">{t("score.disclaimer")}</p>
+            <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{t("evidence.explanation")}</p>
+            <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{t("calibration.explanation")}</p>
           </CardContent>
         ) : null}
       </Card>
@@ -78,16 +108,22 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
           const classes = toneClasses(tone);
           const trendTone = dim.trend === "rising" ? "high" : dim.trend === "falling" ? "low" : "na";
           const trendClasses = toneClasses(trendTone);
+          const dimensionEvidenceState = dim.evidence_state ?? (dim.coverage > 0 ? "partial" : "insufficient_evidence");
           return (
             <Card key={dim.key} data-testid="risk-dimension">
               <CardHeader className="flex-row items-start justify-between gap-2">
                 <div className="flex flex-col gap-1">
                   <CardTitle>{t(RISK_DIMENSION_KEYS[dim.key])}</CardTitle>
-                  <p className="text-[11px] text-muted-foreground">{dim.label}</p>
+                  <p className="text-[11px] text-muted-foreground">{t(RISK_DIMENSION_KEYS[dim.key])}</p>
                 </div>
-                <div className={`flex items-center gap-1.5 text-sm font-medium ${trendClasses.text}`}>
-                  <DimensionTrendIcon trend={dim.trend} />
-                  <span>{t(RISK_TREND_KEYS[dim.trend])}</span>
+                <div className="flex flex-col items-end gap-1.5">
+                  <div className={`flex items-center gap-1.5 text-sm font-medium ${trendClasses.text}`}>
+                    <DimensionTrendIcon trend={dim.trend} />
+                    <span>{t(RISK_TREND_KEYS[dim.trend])}</span>
+                  </div>
+                  <Badge variant={dimensionEvidenceState === "complete" ? "low" : dimensionEvidenceState === "partial" ? "caution" : "na"}>
+                    {t(RISK_EVIDENCE_KEYS[dimensionEvidenceState])}
+                  </Badge>
                 </div>
               </CardHeader>
               <CardContent className="flex flex-col gap-3">
@@ -99,6 +135,11 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
                     <span>{t("dimension.coverage")}: {formatRatio(dim.coverage, locale)}</span>
                   </div>
                 </div>
+                {dim.missing_indicators?.length ? (
+                  <p className="text-xs text-muted-foreground">
+                    {t("evidence.missingIndicators")}: {dim.missing_indicators.length}
+                  </p>
+                ) : null}
                 <Progress value={dim.score} barClassName={classes.bg} />
 
                 {/* Indicator details (desktop table / collapsible mobile cards) */}
@@ -118,7 +159,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
                         <tr key={ind.key} className="border-b border-border/50 last:border-0" data-testid="risk-indicator">
                           <td className="py-1.5 pr-2">
                             <div className="flex items-center gap-1.5">
-                              <span className="text-foreground">{ind.label}</span>
+                              <span className="text-foreground">{t(RISK_INDICATOR_KEYS[ind.key] ?? "indicatorNames.unknown")}</span>
                               {ind.is_proxy ? (
                                 <Badge variant="outline" className="px-1 py-0 text-[9px]">
                                   {t("indicator.proxy")}
@@ -145,6 +186,59 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
                     </tbody>
                   </table>
                 </div>
+                {dim.key === "cross_asset" && result.cross_asset_signals?.length ? (
+                  <div className="rounded-md border border-border/60 p-3" data-testid="cross-asset-signals">
+                    <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
+                      <h3 className="text-sm font-medium text-foreground">{t("crossAssetSignals.title")}</h3>
+                      <Badge variant="outline">{t("crossAssetSignals.diagnosticOnly")}</Badge>
+                    </div>
+                    <p className="mb-3 text-xs leading-relaxed text-muted-foreground">{t("crossAssetSignals.description")}</p>
+                    <div className="overflow-x-auto">
+                      <table className="w-full min-w-[620px] text-left text-xs">
+                        <thead>
+                          <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
+                            <th className="py-1.5 pr-2 font-medium">{t("crossAssetSignals.label")}</th>
+                            <th className="py-1.5 pr-2 text-right font-medium">{t("crossAssetSignals.value")}</th>
+                            <th className="py-1.5 pr-2 font-medium">{t("crossAssetSignals.state")}</th>
+                            <th className="py-1.5 pr-2 font-medium">{t("crossAssetSignals.source")}</th>
+                            <th className="py-1.5 text-right font-medium">{t("crossAssetSignals.history")}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {result.cross_asset_signals.map((signal) => {
+                            const state = signal.triggered === null
+                              ? "unavailable"
+                              : signal.triggered ? "triggered" : "notTriggered";
+                            return (
+                              <tr key={signal.key} className="border-b border-border/50 last:border-0" data-testid="cross-asset-signal">
+                                <td className="py-1.5 pr-2">
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-foreground">{t(`crossAssetSignals.signalNames.${signal.key}`, { defaultValue: t("indicatorNames.unknown") })}</span>
+                                    {signal.is_proxy ? <Badge variant="outline" className="px-1 py-0 text-[9px]">{t("crossAssetSignals.proxy")}</Badge> : null}
+                                  </div>
+                                  <p className="mt-0.5 text-[10px] text-muted-foreground">
+                                    {t(`crossAssetSignals.transformations.${signal.transformation}`, { defaultValue: t("indicatorNames.unknown") })}
+                                  </p>
+                                </td>
+                                <td className="py-1.5 pr-2 text-right tabular-nums">
+                                  {signal.value === null ? t("crossAssetSignals.unavailable") : `${formatNumber(signal.value, locale)} ${t(`crossAssetSignals.unit.${signal.unit}`, { defaultValue: t("crossAssetSignals.unavailable") })}`}
+                                </td>
+                                <td className="py-1.5 pr-2">
+                                  <Badge variant={state === "triggered" ? "caution" : state === "notTriggered" ? "low" : "na"}>
+                                    {t(`crossAssetSignals.${state}`)}
+                                  </Badge>
+                                  <div className="mt-1"><StatusBadge status={signal.status} /></div>
+                                </td>
+                                <td className="py-1.5 pr-2 text-muted-foreground">{signalProviderLabel(signal.provider)}</td>
+                                <td className="py-1.5 text-right tabular-nums text-muted-foreground">{formatNumber(signal.history_observations, locale, 0)}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                ) : null}
               </CardContent>
             </Card>
           );

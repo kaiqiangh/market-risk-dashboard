@@ -1,25 +1,11 @@
-import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import echarts from "./echarts";
-import { chartTheme } from "./theme";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatChange } from "@/lib/format";
 
-/** jsdom / no-canvas environment → fall back to HTML (avoid zrender animation loop crashes). */
-function canvasSupported(): boolean {
-  if (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent)) return false;
-  try {
-    const canvas = document.createElement("canvas");
-    return !!(canvas.getContext && canvas.getContext("2d"));
-  } catch {
-    return false;
-  }
-}
-
 /**
- * AssetHeatmap: cross-asset heatmap (ECharts heatmap).
- * cells: asset change (%) matrix; color red = down / green = up (paired with value text, color is not the only expression).
- * Empty data → EmptyState; jsdom without canvas → HTML grid fallback.
+ * AssetHeatmap: category-first cross-asset change grid.
+ * Each cell keeps the signed change and a localized direction state visible, so the
+ * surface remains readable without hover, chart axes, or color perception.
  */
 export interface HeatmapCell {
   asset: string;
@@ -29,135 +15,94 @@ export interface HeatmapCell {
 
 export interface AssetHeatmapProps {
   cells: HeatmapCell[];
-  height?: number;
 }
 
-export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
+type HeatmapState = "up" | "down" | "flat" | "unavailable";
+
+function stateFor(change: number | null): HeatmapState {
+  if (change === null || !Number.isFinite(change)) return "unavailable";
+  if (change > 0) return "up";
+  if (change < 0) return "down";
+  return "flat";
+}
+
+const STATE_CLASSES: Record<HeatmapState, string> = {
+  up: "border-dir-up/40 bg-dir-up/10",
+  down: "border-dir-down/40 bg-dir-down/10",
+  flat: "border-border bg-muted/40",
+  unavailable: "border-border/70 bg-muted/20",
+};
+
+const STATE_TEXT_CLASSES: Record<HeatmapState, string> = {
+  up: "text-dir-up",
+  down: "text-dir-down",
+  flat: "text-muted-foreground",
+  unavailable: "text-muted-foreground",
+};
+
+export function AssetHeatmap({ cells }: AssetHeatmapProps) {
   const { t, i18n } = useTranslation("dashboard");
   const locale = i18n.language;
-  const ref = useRef<HTMLDivElement>(null);
-  const [mode, setMode] = useState<"echarts" | "fallback">("echarts");
-
-  const validCells = cells.filter((c) => c.change1d !== null && c.change1d !== undefined);
-  const categories = Array.from(new Set(cells.map((c) => c.category)));
-  // Grow the chart with the row count so each cell keeps enough height for its label.
-  const computedHeight = Math.min(560, Math.max(height, validCells.length * 26 + 64));
-
-  useEffect(() => {
-    if (!ref.current || validCells.length === 0) return;
-    if (!canvasSupported()) {
-      setMode("fallback");
-      return;
-    }
-    // One row per asset so cells never collapse onto the same (x, y) coordinate. The
-    // previous layout pinned y = 0, so every asset in a category stacked into one cell
-    // and their % labels overlapped in the centre.
-    const rows = validCells.map((c) => c.asset);
-    let chart: echarts.ECharts | undefined;
-    try {
-      chart = echarts.init(ref.current);
-      const th = chartTheme();
-      const data = validCells.map((c, i) => [categories.indexOf(c.category), i, c.change1d as number]);
-      chart.setOption({
-        grid: { left: 8, right: 24, top: 24, bottom: 8, containLabel: true },
-        tooltip: {
-          formatter: (params: unknown) => {
-            const p = params as { data: number[]; name?: string };
-            const catIdx = Math.round((p.data?.[0] ?? 0) as number);
-            const rowIdx = Math.round((p.data?.[1] ?? 0) as number);
-            const cat = categories[catIdx] ?? "";
-            const asset = rows[rowIdx] ?? "";
-            const val = p.data?.[2] as number;
-            return `${asset}<br/>${cat}<br/>${formatChange(val, locale)}`;
-          },
-        },
-        xAxis: {
-          type: "category",
-          data: categories,
-          axisLabel: { color: th.axis, fontSize: 10, interval: 0 },
-        },
-        yAxis: {
-          type: "category",
-          data: rows,
-          axisLabel: { color: th.axis, fontSize: 10 },
-        },
-        visualMap: {
-          min: -8,
-          max: 8,
-          calculable: true,
-          orient: "vertical",
-          right: 0,
-          top: "center",
-          textStyle: { color: th.axis, fontSize: 10 },
-          inRange: {
-            // Direction family (ADR-0002): muted down → neutral surface → muted up
-            color: [th.dirDown, th.neutral, th.dirUp],
-          },
-        },
-        series: [
-          {
-            name: t("heatmap.title"),
-            type: "heatmap",
-            data,
-            label: {
-              show: true,
-              color: th.onFill,
-              fontSize: 11,
-              formatter: (p: unknown) => {
-                const pp = p as { data: number[] };
-                const val = pp.data?.[2] as number;
-                return val === null || val === undefined ? "—" : `${val > 0 ? "+" : ""}${Number(val).toFixed(1)}%`;
-              },
-            },
-            itemStyle: { borderColor: th.grid, borderWidth: 1 },
-            // Glow budget: hover emphasis is a border highlight, not a shadow
-            emphasis: { itemStyle: { borderColor: th.accent, borderWidth: 2 } },
-          },
-        ],
-      });
-      const onResize = () => chart?.resize();
-      window.addEventListener("resize", onResize);
-      return () => {
-        window.removeEventListener("resize", onResize);
-        chart?.dispose();
-      };
-    } catch {
-      setMode("fallback");
-      return;
-    }
-  }, [validCells, categories, locale, t]);
+  const groups = Array.from(
+    cells.reduce((grouped, cell) => {
+      const category = cell.category.trim() || t("heatmap.unknownCategory");
+      const existing = grouped.get(category) ?? [];
+      existing.push(cell);
+      grouped.set(category, existing);
+      return grouped;
+    }, new Map<string, HeatmapCell[]>()),
+  );
 
   if (cells.length === 0) {
     return <EmptyState title={t("heatmap.empty")} data-testid="chart-empty" />;
   }
 
-  if (mode === "fallback") {
-    return (
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3" data-testid="heatmap-fallback">
-        {validCells.map((c) => {
-          const up = (c.change1d as number) >= 0;
-          return (
-            <div
-              key={`${c.category}-${c.asset}`}
-              className={`rounded-md border px-2 py-1.5 text-center ${
-                up ? "border-dir-up/40 bg-dir-up/10" : "border-dir-down/40 bg-dir-down/10"
-              }`}
-            >
-              <p className="text-[11px] text-muted-foreground">{c.asset}</p>
-              <p className={`text-sm font-semibold tabular-nums ${up ? "text-dir-up" : "text-dir-down"}`}>
-                {formatChange(c.change1d, locale)}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-
   return (
-    <>
-      <div ref={ref} style={{ height: computedHeight }} data-testid="asset-heatmap" className="w-full" />
-      <details className="mt-2 rounded-md border border-border px-3 py-2 text-xs">
+    <div className="flex flex-col gap-3" data-testid="asset-heatmap">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-muted-foreground" data-testid="heatmap-legend">
+        <span className="font-medium text-foreground">{t("heatmap.legend")}</span>
+        {(["up", "down", "flat", "unavailable"] as const).map((state) => (
+          <span key={state} className="inline-flex items-center gap-1.5">
+            <span className={`h-2.5 w-2.5 rounded-sm border ${STATE_CLASSES[state]}`} aria-hidden />
+            {t(`heatmap.state.${state}`)}
+          </span>
+        ))}
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {groups.map(([category, categoryCells], categoryIndex) => (
+          <section key={category} className="rounded-md border border-border/70 bg-surface-2/20 p-2.5" data-testid="heatmap-category">
+            <header className="mb-2 flex items-baseline justify-between gap-2 border-b border-border/60 pb-1.5">
+              <h3 className="text-xs font-semibold text-foreground">{category}</h3>
+              <span className="text-[10px] tabular-nums text-muted-foreground">
+                {t("heatmap.assetsCount", { count: categoryCells.length })}
+              </span>
+            </header>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3" data-testid={`heatmap-category-grid-${categoryIndex}`}>
+              {categoryCells.map((cell, cellIndex) => {
+                const state = stateFor(cell.change1d);
+                const asset = cell.asset.trim() || t("common:empty.translationUnavailable");
+                const change = state === "unavailable" ? t("heatmap.state.unavailable") : formatChange(cell.change1d, locale);
+                return (
+                  <div
+                    key={`${category}-${cell.asset}-${cellIndex}`}
+                    className={`flex min-h-20 flex-col justify-between rounded-md border p-2.5 ${STATE_CLASSES[state]}`}
+                    data-testid="heatmap-cell"
+                    data-state={state}
+                    aria-label={`${asset}: ${change}`}
+                  >
+                    <span className="break-words font-mono text-xs font-semibold text-foreground">{asset}</span>
+                    <span className={`mt-2 text-sm font-semibold tabular-nums ${STATE_TEXT_CLASSES[state]}`}>{change}</span>
+                    <span className="mt-0.5 text-[10px] text-muted-foreground">{t(`heatmap.state.${state}`)}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      <details className="rounded-md border border-border px-3 py-2 text-xs" data-testid="heatmap-details">
         <summary className="cursor-pointer font-medium text-muted-foreground">{t("heatmap.details")}</summary>
         <div className="mt-2 overflow-x-auto">
           <table className="w-full text-left">
@@ -169,17 +114,20 @@ export function AssetHeatmap({ cells, height = 320 }: AssetHeatmapProps) {
               </tr>
             </thead>
             <tbody>
-              {validCells.map((cell) => (
-                <tr key={`${cell.category}-${cell.asset}`} className="border-b border-border/50 last:border-0">
-                  <td className="break-words py-1.5 pr-2">{cell.asset}</td>
-                  <td className="break-words py-1.5 pr-2">{cell.category}</td>
-                  <td className="py-1.5 text-right tabular-nums">{formatChange(cell.change1d, locale)}</td>
-                </tr>
-              ))}
+              {cells.map((cell, index) => {
+                const state = stateFor(cell.change1d);
+                return (
+                  <tr key={`${cell.category}-${cell.asset}-${index}`} className="border-b border-border/50 last:border-0">
+                    <td className="break-words py-1.5 pr-2">{cell.asset.trim() || t("common:empty.translationUnavailable")}</td>
+                    <td className="break-words py-1.5 pr-2">{cell.category.trim() || t("heatmap.unknownCategory")}</td>
+                    <td className="py-1.5 text-right tabular-nums">{state === "unavailable" ? t("heatmap.state.unavailable") : formatChange(cell.change1d, locale)}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </details>
-    </>
+    </div>
   );
 }

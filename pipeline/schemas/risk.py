@@ -28,6 +28,8 @@ MarketRegime = Literal[
     "indeterminate",
 ]
 RiskTrend = Literal["rising", "falling", "flat"]
+RiskEvidenceState = Literal["complete", "partial", "insufficient_evidence"]
+RiskCalibrationStatus = Literal["provisional", "calibrated"]
 
 
 class RiskIndicator(ContractModel):
@@ -49,6 +51,27 @@ class RiskIndicator(ContractModel):
     is_proxy: bool = Field(description="proxy indicator (e.g. fund flow) marked Estimated/Proxy")
 
 
+class CrossAssetSignal(ContractModel):
+    """Transparent cross-asset signal input and its current diagnostic state.
+
+    Signal rows are deliberately separate from :class:`RiskIndicator`: the current
+    calibration policy gates the new cross-asset inputs from production weighting, while
+    Risk Lab still needs to show their provenance and missing-data behaviour.
+    """
+
+    key: str = Field(min_length=1)
+    value: float | None = None
+    triggered: bool | None = None
+    source: str = Field(min_length=1, description="canonical input source/domain")
+    provider: str = Field(min_length=1, description="provider that supplied the input")
+    unit: str = Field(min_length=1)
+    transformation: str = Field(min_length=1, description="stable transformation identifier")
+    history_observations: int = Field(default=0, ge=0)
+    status: FreshnessStatus = "fresh"
+    is_proxy: bool = Field(description="signal is based on a market proxy rather than a direct measurement")
+    production_scoring: bool = Field(default=False, description="signal currently contributes to production scoring")
+
+
 class RiskDimension(ContractModel):
     """Risk dimension (one of the 6)."""
 
@@ -60,6 +83,8 @@ class RiskDimension(ContractModel):
     indicators: list[RiskIndicator] = Field(default_factory=list)
     coverage: float = Field(ge=0.0, le=1.0, description="share of indicators with data (proxy-backed indicators discounted, #69)")
     trend: RiskTrend = "flat"
+    evidence_state: RiskEvidenceState | None = None
+    missing_indicators: list[str] = Field(default_factory=list)
 
 
 class BreadthSnapshot(ContractModel):
@@ -114,6 +139,7 @@ class RiskModelResult(ContractModel):
     trend_1w: float | None = None
     trend_1m: float | None = None
     dimensions: list[RiskDimension] = Field(default_factory=list)
+    cross_asset_signals: list[CrossAssetSignal] = Field(default_factory=list)
     top_drivers: list[DriverContribution] = Field(default_factory=list)
     # Required key, nullable value (#69/#101): "we had no breadth sample" must be written down
     # as `null`, not left out. A missing key is indistinguishable from a forgotten one.
@@ -123,8 +149,19 @@ class RiskModelResult(ContractModel):
     confidence: float = Field(ge=0.0, le=1.0)
     confidence_factors: dict[str, float] = Field(default_factory=dict)
     disclaimer: str = Field(
-        default="This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."
+        default="This indicator is a modeled estimate of market stress based on historical data and current market signals. Data trust is not statistical confidence, a calibrated probability, or investment advice."
     )
+    evidence_state: RiskEvidenceState | None = None
+    evidence_coverage: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        description="effective weighted evidence coverage, including proxy discounts",
+    )
+    score_lower_bound: float | None = Field(default=None, ge=0.0, le=100.0)
+    score_upper_bound: float | None = Field(default=None, ge=0.0, le=100.0)
+    calibration_policy_version: str = Field(default="1.0.0", min_length=1)
+    calibration_status: RiskCalibrationStatus = "provisional"
 
 
 class RiskEnvelope(BaseEnvelope):

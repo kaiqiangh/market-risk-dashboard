@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import echarts from "./echarts";
 import { chartTheme } from "./theme";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { formatNumber } from "@/lib/format";
+import { formatNumber, formatUnitSuffix } from "@/lib/format";
 
 /** jsdom / no-canvas environment → fall back to HTML (avoid zrender animation loop crashes). */
 function canvasSupported(): boolean {
@@ -57,7 +57,7 @@ export function MacroChart({ items, height = 260 }: MacroChartProps) {
             if (!Array.isArray(list) || list.length === 0) return "";
             const p = list[0];
             const item = items.find((i) => i.label === p.axisValue);
-            return `${p.axisValue}<br/>${formatNumber(p.data, locale)}${item?.unit ? ` ${item.unit}` : ""}`;
+            return `${p.axisValue}<br/>${formatNumber(p.data, locale)}${item?.unit ? ` ${formatUnitSuffix(item.unit, locale)}` : ""}`;
           },
         },
         xAxis: {
@@ -108,8 +108,8 @@ export function MacroChart({ items, height = 260 }: MacroChartProps) {
               />
             </div>
             <span className="w-16 shrink-0 text-right tabular-nums text-foreground">
-              {formatNumber(item.value, "en")}
-              {item.unit ? ` ${item.unit}` : ""}
+              {formatNumber(item.value, locale)}
+              {item.unit ? ` ${formatUnitSuffix(item.unit, locale)}` : ""}
             </span>
           </div>
         ))}
@@ -135,7 +135,7 @@ export function MacroChart({ items, height = 260 }: MacroChartProps) {
                 <tr key={item.label} className="border-b border-border/50 last:border-0">
                   <td className="break-words py-1.5 pr-2">{item.label}</td>
                   <td className="py-1.5 text-right tabular-nums">
-                    {formatNumber(item.value, locale)}{item.unit ? ` ${item.unit}` : ""}
+                    {formatNumber(item.value, locale)}{item.unit ? ` ${formatUnitSuffix(item.unit, locale)}` : ""}
                   </td>
                 </tr>
               ))}

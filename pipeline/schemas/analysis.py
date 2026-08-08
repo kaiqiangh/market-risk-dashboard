@@ -17,6 +17,15 @@ from .factlayer import EvidenceRef
 AnalysisLanguage = Literal["zh-CN", "en"]
 
 
+class AnalysisLineage(ContractModel):
+    """The fact-layer and bilingual-pair identity consumed by one AI brief."""
+
+    fact_generation_id: str = Field(min_length=71, pattern=r"^sha256:[0-9a-f]{64}$")
+    fact_generated_at: UTCDateTime
+    input_freshness: dict[str, FreshnessStatus] = Field(default_factory=dict)
+    pair_id: str = Field(min_length=1, max_length=128)
+
+
 class SignalClaim(ContractModel):
     """A claim with evidence."""
 
@@ -51,4 +60,7 @@ class AnalysisDataset(ContractModel):
     bear_case: CaseStatement
     confidence: float = Field(ge=0.0, le=1.0)
     evidence_refs: list[EvidenceRef] = Field(default_factory=list)
-    data_freshness: FreshnessStatus = "fresh"
+    # Legacy files remain parseable, but a missing lineage record must never be treated as fresh
+    # by the publication path.
+    lineage: AnalysisLineage | None = None
+    data_freshness: FreshnessStatus = "degraded"

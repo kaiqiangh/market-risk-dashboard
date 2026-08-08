@@ -16,11 +16,13 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any, Literal, TypeVar
+from urllib.parse import urlparse
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
 from pipeline.degrade import DEFAULT_CACHE_MAX_AGE_HOURS, DEFAULT_DEGRADE_FACTOR
+
 
 #: Everything config-related that #102 can raise. Loaders use it so a bad config fails the
 #: run at construction time rather than surfacing mid-collection as a confusing provider
@@ -202,9 +204,30 @@ class NewsSource(BaseModel):
     weight: int = Field(default=1, ge=0)
     category: str | None = None
     enabled: bool = True
+    # #124: ordered fallback URL chain — a dead primary advances to the first fallback that
+    # serves; one try per URL per run attempt. Every URL is https-only (S-3) and a chain
+    # holds no exact duplicates (config-is-a-fact, ADR-0005).
+    fallback_urls: list[str] = Field(default_factory=list)
     # S-3: a relay source (rsshub.app) is allowed to redirect anywhere — it is trusted as a
     # forwarding relay, not as a terminal host.
     trust: Literal["relay"] | None = None
+
+    @model_validator(mode="after")
+    def _chain_is_https_and_duplicate_free(self) -> "NewsSource":
+        seen: set[str] = set()
+        for url in self.chain_urls:
+            if urlparse(url).scheme != "https":
+                raise ValueError(f"news source URL must be https: {url!r}")
+            if url in seen:
+                raise ValueError(f"duplicate URL in news source chain: {url!r}")
+            seen.add(url)
+        return self
+
+    @property
+    def chain_urls(self) -> list[str]:
+        """Primary URL first, then each fallback — the ordered chain the provider walks
+        (#124). One shape for the validator, the S-3 allowlist, and the fetch loop."""
+        return [self.url, *self.fallback_urls]
 
 
 class NewsImportance(BaseModel):

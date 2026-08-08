@@ -4,6 +4,15 @@
   "heatmap": {
     "title": "Cross-Asset Heatmap",
     "empty": "No cross-asset data",
+    "legend": "Daily direction",
+    "assetsCount": "{{count}} assets",
+    "unknownCategory": "Other assets",
+    "state": {
+      "up": "Up",
+      "down": "Down",
+      "flat": "Flat",
+      "unavailable": "Unavailable"
+    },
     "axis": "Change",
     "asset": "Asset",
     "change": "Change",
@@ -34,6 +43,7 @@
   },
   "aiBrief": {
     "title": "AI Market Brief",
+    "label": "AI",
     "degraded": "AI brief unavailable (missing data or generation failure)",
     "degradedHint": "Market and risk data remain viewable; the brief will resume once automation produces it.",
     "confidence": "Confidence",
@@ -45,10 +55,73 @@
     "baseCase": "Base case",
     "bearCase": "Bear case",
     "watchNext": "Watch next",
+    "translationUnavailable": "Translation unavailable",
     "generatedAt": "Generated at",
     "noFreshBasis": "AI brief has no fresh basis",
     "noFreshBasisHint": "Input data is degraded or missing; the brief will resume when its inputs are fresh.",
-    "regimeIndeterminate": "The market regime is indeterminate: no condition fired on the current inputs — the model has no read rather than a calm or alarming one."
+    "regimeIndeterminate": "The market regime is indeterminate: no condition fired on the current inputs — the model has no read rather than a calm or alarming one.",
+    "state": {
+      "analysisMissing": {
+        "title": "AI brief unavailable",
+        "detail": "The current-language brief is missing, so a complete bilingual brief cannot be shown.",
+        "recovery": "It will return after the next successful AI publication."
+      },
+      "analysisMalformed": {
+        "title": "AI brief could not be validated",
+        "detail": "One language file is malformed or fails its data contract.",
+        "recovery": "The brief will return after the next valid publication."
+      },
+      "pairIncomplete": {
+        "title": "Bilingual brief is incomplete",
+        "detail": "Both language files are required before the brief can be shown as current.",
+        "recovery": "It will return when the missing language file is published."
+      },
+      "pairMismatch": {
+        "title": "Bilingual brief versions differ",
+        "detail": "The two language files do not describe the same analytical structure.",
+        "recovery": "It will return after a matching pair is published."
+      },
+      "factsMissing": {
+        "title": "AI brief has no fact basis",
+        "detail": "The current fact layer is unavailable, so the brief cannot be certified.",
+        "recovery": "It will return after the fact layer is rebuilt successfully."
+      },
+      "factsUnidentified": {
+        "title": "AI brief has no verified fact identity",
+        "detail": "The fact layer does not carry a verifiable generation identity.",
+        "recovery": "It will return after a fingerprinted fact layer is published."
+      },
+      "lineageMissing": {
+        "title": "AI brief has no verified lineage",
+        "detail": "The language files do not say which fact generation they used.",
+        "recovery": "It will return after a lineage-backed pair is published."
+      },
+      "lineageMismatch": {
+        "title": "AI brief basis does not match",
+        "detail": "The brief and current facts belong to different generations.",
+        "recovery": "It will return after automation publishes a pair for the current facts."
+      },
+      "inputUnhealthy": {
+        "title": "AI brief has no fresh basis",
+        "detail": "Its fact inputs are delayed, stale, empty, degraded, or missing.",
+        "recovery": "It will return when its inputs are fresh."
+      },
+      "delayed": {
+        "title": "AI brief is delayed",
+        "detail": "The validated pair is older than its expected update window.",
+        "recovery": "It will return to normal after the next successful data run."
+      },
+      "stale": {
+        "title": "AI brief is stale",
+        "detail": "The validated pair is too old to present as current analysis.",
+        "recovery": "It will return after a new pair is generated from current facts."
+      },
+      "empty": {
+        "title": "AI brief has no usable inputs",
+        "detail": "The current fact layer contains no usable observations for the brief.",
+        "recovery": "It will return after a non-empty fact layer is published."
+      }
+    }
   },
   "kpi": {
     "trend1d": "1D change",

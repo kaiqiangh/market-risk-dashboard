@@ -552,6 +552,34 @@ export const dashboardFixture = {
           trend: "flat",
         },
       ],
+      cross_asset_signals: [
+        {
+          key: "cyclicals_defensives_relative",
+          value: -0.42,
+          triggered: true,
+          source: "market_quotes",
+          provider: "yfinance",
+          unit: "percentage_points",
+          transformation: "xly_minus_xlp_one_day_return",
+          history_observations: 252,
+          status: "fresh",
+          is_proxy: true,
+          production_scoring: false,
+        },
+        {
+          key: "hy_treasury_relative",
+          value: null,
+          triggered: null,
+          source: "market_quotes",
+          provider: "yfinance",
+          unit: "percentage_points",
+          transformation: "hyg_minus_ief_one_day_return",
+          history_observations: 0,
+          status: "missing",
+          is_proxy: true,
+          production_scoring: false,
+        },
+      ],
       top_drivers: [
         {
           dimension_key: "macro",
@@ -736,6 +764,20 @@ export const analysisEnFixture = {
       updated_at: "2026-08-03T10:00:00Z",
     },
   ],
+  lineage: {
+    fact_generation_id: "sha256:4507ebe867d1146d235294deb6685549e008d60735cccead8ce95c1a1da0a5f0",
+    fact_generated_at: "2026-08-03T10:00:00Z",
+    input_freshness: {
+      macro: "fresh",
+      equities: "fresh",
+      sectors: "fresh",
+      crypto: "fresh",
+      news: "fresh",
+      calendar: "fresh",
+      risk: "fresh",
+    },
+    pair_id: "fixture-analysis-pair-v2",
+  },
   data_freshness: "fresh",
 };
 
@@ -769,7 +811,15 @@ export const sourcesFixture = {
       degraded: true,
       status: "degraded",
       reason: { code: "provider_http_error", detail: "yfinance: HTTP 429 rate limited" },
-      datasets: ["equities", "sectors"],
+      datasets: ["equities", "sectors", "commodities"],
+      providers: [
+        {
+          provider: "yfinance",
+          datasets: ["equities", "sectors", "commodities"],
+          used_fallback: false,
+          from_cache: false,
+        },
+      ],
     },
     macro: {
       provider: "fred",

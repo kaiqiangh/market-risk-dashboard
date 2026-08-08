@@ -61,6 +61,64 @@ scoring:
   percentile_window_years: 5
   fallback_percentile: 50.0
 
+# Evidence state is separate from provider freshness: it describes how much of the model's
+# configured indicator weight has usable evidence. Below this threshold, the point estimate
+# is published with an insufficient-evidence state and an explicit score range.
+evidence:
+  insufficient_coverage_threshold: 0.5
+
+# Calibration policy decision from the point-in-time production-path replay (#141/#142).
+# The live score remains provisional: no weights or thresholds are refit from latest-source
+# history because source vintages and regime-labelled out-of-sample evidence are unavailable.
+calibration_policy:
+  version: "1.0.0"
+  status: provisional
+  decisions:
+    dimension_weights:
+      macro: retain
+      liquidity_credit: retain
+      equity_structure: retain
+      volatility: retain
+      cross_asset: retain
+      trend: retain
+    indicator_weights:
+      real_rate_dfii10: retain
+      yield_curve_10y2y: retain
+      dollar_index: retain
+      dgs10: retain
+      hy_oas: retain
+      ig_oas: retain
+      fed_balance_sheet: retain
+      reverse_repo: retain
+      breadth_above_ma200: retain
+      new_highs_ratio: retain
+      new_lows_ratio: retain
+      small_cap_relative: retain
+      semis_relative: retain
+      vix: retain
+      realized_vol: retain
+      cross_asset_confirmation: gate
+      price_vs_ma200: retain
+      drawdown_52w: retain
+      momentum_3m: retain
+    risk_level_thresholds:
+      risk_on: retain
+      low_risk: retain
+      caution: retain
+      high_risk: retain
+      severe_risk: retain
+      crisis: retain
+    confidence_formula:
+      data_quality: retain
+      coverage: retain
+      consistency: retain
+    cross_asset_aggregation:
+      cross_asset_confirmation: gate
+  limitations:
+    - "Latest-source history is revised and is not point-in-time vintage data."
+    - "The confidence field is a data-trust score, not statistical confidence or a calibrated probability."
+    - "Cross-asset confirmation remains proxy-backed until its deferred signals have governed inputs."
+
 # Risk level thresholds (total risk score 0-100)
 thresholds:
   risk_level:
@@ -79,4 +137,4 @@ confidence:
   # degrade.data_quality_degrade_factor (that is the per-failed-input factor).
   proxy_discount_factor: 0.8
 
-disclaimer: "The risk score on this page is a model-based estimate of market stress, not a precise probability of a market crash, and should not be considered investment advice."
+disclaimer: "The risk score on this page is a model-based estimate of market stress. Data trust is not statistical confidence, a calibrated probability, or investment advice."

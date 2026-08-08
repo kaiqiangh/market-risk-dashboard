@@ -37,6 +37,9 @@ jobs:
       - name: Check translation files
         run: npm run check:i18n
 
+      - name: Check language isolation
+        run: npm run check:language
+
       - name: Validate JSON data
         run: npm run check:data
 

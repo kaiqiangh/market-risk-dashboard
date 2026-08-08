@@ -7,6 +7,11 @@ Complete set of Pydantic v2 models, isomorphic to the frontend Zod / JSON Schema
 - Contract models contain no collection/computation business logic (that is T03).
 """
 
+from .analysis import AnalysisDataset, AnalysisLineage, CaseStatement, SignalClaim
+from .calendar import CalendarDataset, CalendarEnvelope, CalendarEvent
+from .commodities import CommoditiesDataset, CommoditiesEnvelope, CommodityAsset
+from .crypto import CryptoAsset, CryptoDataset, CryptoEnvelope
+from .dashboard import DashboardAsset, DashboardEnvelope, DashboardPayload
 from .envelope import (
     BaseEnvelope,
     ContractModel,
@@ -14,23 +19,22 @@ from .envelope import (
     UTCDateTime,
     validate_utc_datetime,
 )
-from .analysis import AnalysisDataset, CaseStatement, SignalClaim
-from .calendar import CalendarDataset, CalendarEnvelope, CalendarEvent
-from .commodities import CommoditiesDataset, CommoditiesEnvelope, CommodityAsset
-from .crypto import CryptoAsset, CryptoDataset, CryptoEnvelope
-from .dashboard import DashboardAsset, DashboardEnvelope, DashboardPayload
 from .equities import EquitiesDataset, EquitiesEnvelope, EquityAsset
 from .factlayer import EvidenceRef, FactLayer
 from .macro import FedWatchRateProb, FedWatchSnapshot, MacroDataset, MacroEnvelope, MacroIndicator
+from .metadata import ProviderResolution
 from .news import NewsDataset, NewsEnvelope, NewsItem, NewsTranslation, NewsTranslationsDataset
 from .risk import (
     BreadthSnapshot,
+    CrossAssetSignal,
     DriverContribution,
     MarketRegime,
+    RiskCalibrationStatus,
     RiskDimension,
     RiskDimensionKey,
     RiskDirection,
     RiskEnvelope,
+    RiskEvidenceState,
     RiskIndicator,
     RiskLevel,
     RiskModelResult,
@@ -42,6 +46,7 @@ DriverContribution.model_rebuild(_types_namespace={"EvidenceRef": EvidenceRef})
 
 __all__ = [
     "AnalysisDataset",
+    "AnalysisLineage",
     "BaseEnvelope",
     "CalendarDataset",
     "CalendarEnvelope",
@@ -55,6 +60,7 @@ __all__ = [
     "CryptoDataset",
     "CryptoEnvelope",
     "BreadthSnapshot",
+    "CrossAssetSignal",
     "DashboardAsset",
     "DashboardEnvelope",
     "DashboardPayload",
@@ -72,6 +78,7 @@ __all__ = [
     "MacroIndicator",
     "MarketRegime",
     "MemoryProxy",
+    "ProviderResolution",
     "NewsDataset",
     "NewsEnvelope",
     "NewsItem",
@@ -80,6 +87,8 @@ __all__ = [
     "RiskDimension",
     "RiskDimensionKey",
     "RiskDirection",
+    "RiskCalibrationStatus",
+    "RiskEvidenceState",
     "RiskEnvelope",
     "RiskIndicator",
     "RiskLevel",

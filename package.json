@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "check:i18n": "node scripts/check-i18n.mjs",
+    "check:language": "node scripts/check-language-isolation.mjs",
     "check:data": "node scripts/validate-json.mjs",
     "gen:contracts": "bash scripts/gen_contracts.sh",
     "check:contracts": "bash scripts/gen_contracts.sh --check",

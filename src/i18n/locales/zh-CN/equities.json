@@ -1,11 +1,11 @@
 {
   "title": "股票",
-  "subtitle": "关键美股（NVDA / AVGO / MU / AMD / TSLA）+ 存储板块 + A 股存储",
+  "subtitle": "关键美股（NVDA / AVGO / MU / AMD / TSLA）+ 存储板块 + 中国股票存储",
   "section": {
-    "crossAsset": "Cross-Asset 卡片",
+    "crossAsset": "跨资产卡片",
     "us": "关键美股",
     "memory": "存储板块",
-    "aShare": "A 股存储个股",
+    "aShare": "中国股票存储个股",
     "empty": "暂无股票数据"
   },
   "metric": {
@@ -17,18 +17,18 @@
     "changeYtd": "年初至今",
     "volume": "成交量",
     "marketCap": "市值",
-    "ma50": "MA50",
-    "ma200": "MA200",
-    "rsi14": "RSI(14)",
+    "ma50": "50日均线",
+    "ma200": "200日均线",
+    "rsi14": "相对强弱指数（14）",
     "percentile1y": "1 年百分位"
   },
   "memory": {
-    "title": "存储周期（美光 + A 股存储）",
+    "title": "存储周期（美光 + 中国股票存储）",
     "change1w": "周涨跌",
     "change1m": "月涨跌",
-    "degraded": "A 股存储数据源当前降级，仅展示可用数据",
-    "empty": "暂无 A 股存储数据",
-    "note": "DRAM/NAND 现货价付费墙，MVP 用股价代理"
+    "degraded": "中国股票存储数据源当前降级，仅展示可用数据",
+    "empty": "暂无中国股票存储数据",
+    "note": "存储芯片现货价格受付费墙限制，当前版本使用股价代理"
   },
   "table": {
     "symbol": "代码",
@@ -39,7 +39,7 @@
     "change1m": "月涨跌"
   },
   "aShare": {
-    "degraded": "A 股存储数据源降级（预期 11 只，当前可用 0 只）",
-    "note": "AKShare 反爬容错：失败时保留最近一次有效数据"
+    "degraded": "中国股票存储数据源降级（预期 11 只，当前可用 0 只）",
+    "note": "数据源反爬容错：失败时保留最近一次有效数据"
   }
 }

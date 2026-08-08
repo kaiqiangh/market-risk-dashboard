@@ -47,5 +47,8 @@ jobs:
       - name: Run pipeline test suite
         run: python -m pytest tests/pipeline/
 
+      - name: Point-in-time production-path calibration replay
+        run: python scripts/calibrate_production.py --panel tests/fixtures/calibration_panel.json --out artifacts/calibration/production-path.json
+
       - name: F821 must fail the build (everything else advisory)
         run: ruff check . --select F821

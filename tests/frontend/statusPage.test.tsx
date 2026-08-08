@@ -36,27 +36,29 @@ describe("StatusPage", () => {
     expect(await screen.findByText("11")).toBeInTheDocument(); // 11 canonical datasets
   });
 
-  it("renders the six-state table with translated codes and VISIBLE details", async () => {
+  it("renders translated codes and localized safe reason details", async () => {
     renderPage();
     // Statuses render from validated statuses: degraded, empty and fresh all present.
     expect((await screen.findAllByTestId("status-badge-degraded")).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByTestId("status-badge-empty").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByTestId("status-badge-fresh").length).toBeGreaterThanOrEqual(1);
-    // #95: every degraded widget states a specific, actionable cause — the detail is
-    // rendered text on the row (a tooltip-only detail is an invisible reason). The same
-    // reasons appear in the freshness table AND the providers table.
-    expect(screen.getAllByText("clschina: RSS HTTP 403").length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText("no events in the 14-day window").length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText("yfinance: HTTP 429 rate limited").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("数据源网络错误").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("时间窗内无事件").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("数据源请求受限").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("所选时间窗内无事件").length).toBeGreaterThanOrEqual(1);
+    expect(screen.queryByText("clschina: RSS HTTP 403")).not.toBeInTheDocument();
   });
 
   it("renders the providers table with the resolved provider, degradation and cause", async () => {
     renderPage();
-    expect(await screen.findByText("fred_calendar")).toBeInTheDocument(); // economic domain (#94)
-    expect(screen.getByText("yfinance")).toBeInTheDocument();
-    expect(screen.getByText("rss_news")).toBeInTheDocument();
-    // A degraded provider states its specific cause in the providers table too.
-    expect(screen.getByText("akshare: RemoteDisconnected")).toBeInTheDocument();
+    expect(await screen.findByText("经济日历数据源")).toBeInTheDocument(); // economic domain (#94)
+    expect(screen.getAllByText("雅虎财经").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByTestId("provider-resolutions-market")).toHaveTextContent("雅虎财经");
+    expect(screen.getByText("新闻聚合源")).toBeInTheDocument();
+    expect(screen.getByText("中国股票数据源")).toBeInTheDocument();
+    expect(screen.getAllByText("数据源拒绝访问").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("数据源连接中断").length).toBeGreaterThanOrEqual(1);
+    expect(screen.queryByText("akshare: RemoteDisconnected")).not.toBeInTheDocument();
   });
 
   it("shows the empty state when freshness metadata has no datasets", async () => {

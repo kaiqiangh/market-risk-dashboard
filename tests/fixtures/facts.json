@@ -1,6 +1,7 @@
 {
   "generated_at": "2026-08-03T10:00:00Z",
   "schema_version": "1.1.0",
+  "generation_id": "sha256:4507ebe867d1146d235294deb6685549e008d60735cccead8ce95c1a1da0a5f0",
   "data_freshness": {
     "macro": "fresh",
     "equities": "fresh",

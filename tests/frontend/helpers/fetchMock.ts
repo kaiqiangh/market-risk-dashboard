@@ -5,9 +5,7 @@
 import { vi } from "vitest";
 import riskFixture from "../../fixtures/risk.json";
 import factsFixture from "../../fixtures/facts.json";
-import analysisZhFixture from "../../fixtures/analysis.zh-CN.json";
 import {
-  analysisEnFixture,
   calendarFixture,
   commoditiesFixture,
   cryptoFixture,
@@ -22,6 +20,7 @@ import {
   sectorsFixture,
   sourcesFixture,
 } from "./fixtureData";
+import { analysisEnFixture, analysisZhFixture } from "./analysisFixtures";
 
 /** URL suffix → fixture mapping. */
 export const FIXTURE_MAP: Record<string, unknown> = {

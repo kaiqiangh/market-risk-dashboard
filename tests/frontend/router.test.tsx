@@ -61,6 +61,24 @@ describe("route rendering (fixtures data)", () => {
     expect(await screen.findByTestId("ai-brief")).toBeInTheDocument();
   });
 
+  it("overview renders the validated brief on both locale routes", async () => {
+    installFixtureFetch();
+    renderApp();
+    expect(await screen.findByTestId("ai-brief")).toBeInTheDocument();
+    expect(screen.getByText("智能市场简报")).toBeInTheDocument();
+    expect(screen.getAllByText("主要风险驱动").length).toBeGreaterThan(0);
+    expect(screen.getByText("英文")).toBeInTheDocument();
+    expect(document.body.textContent).not.toContain("Top 风险驱动");
+    expect(document.body.textContent).not.toContain("This indicator is a modeled estimate");
+    expect(document.body.textContent).not.toContain("1M ");
+
+    fireEvent.click(screen.getByTestId("lang-switch"));
+
+    await waitFor(() => expect(window.location.hash).toBe("#/en/overview"));
+    expect(await screen.findByTestId("ai-brief")).toBeInTheDocument();
+    expect(screen.getByText("AI Market Brief")).toBeInTheDocument();
+  });
+
   it.each([
     ["macro", "宏观"],
     ["equities", "股票"],
@@ -100,12 +118,19 @@ describe("language switch (keeps current page)", () => {
     setHash("#/zh/risklab");
     renderApp();
     expect(await screen.findByTestId("page-title")).toHaveTextContent("风险实验室");
+    expect(await screen.findByTestId("risk-evidence-state")).toHaveTextContent("证据不完整");
+    expect(await screen.findByTestId("risk-calibration-policy")).toHaveTextContent("暂定校准");
+    expect(await screen.findByTestId("cross-asset-signals")).toHaveTextContent("周期股相对防御股");
+    expect(screen.getByTestId("cross-asset-signals").textContent).not.toContain("yfinance");
+    expect(document.body.textContent).not.toContain("This indicator is a modeled estimate");
+    expect(document.body.textContent).not.toContain("10Y");
 
     fireEvent.click(screen.getByTestId("lang-switch"));
 
     await waitFor(() => expect(window.location.hash).toBe("#/en/risklab"));
     expect(window.localStorage.getItem(LOCALE_STORAGE_KEY)).toBe("en");
     await waitFor(() => expect(screen.getByTestId("page-title")).toHaveTextContent("Risk Lab"));
+    expect(await screen.findByTestId("risk-evidence-state")).toHaveTextContent("Partial evidence");
   });
 
   it("stays on overview when switching en→zh on the overview page", async () => {

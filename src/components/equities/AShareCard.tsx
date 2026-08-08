@@ -3,6 +3,7 @@ import { dirTone, dirClasses } from "@/lib/riskColors";
 import { formatChange, formatMoney, formatNumber } from "@/lib/format";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import type { EquityAsset } from "@/schemas";
+import { displayLocalizedValue } from "@/lib/displayLanguage";
 
 /**
  * AShareCard: A-share memory stock card (mobile-first cards; long tables become cards per responsive design requirements).
@@ -14,7 +15,7 @@ export interface AShareCardProps {
 export function AShareCard({ asset }: AShareCardProps) {
   const { t, i18n } = useTranslation("equities");
   const locale = i18n.language;
-  const name = locale.startsWith("zh") && asset.name_zh ? asset.name_zh : asset.name;
+  const name = displayLocalizedValue(asset.name, asset.name_zh, locale);
   const tone = dirTone(asset.change_1d);
   const classes = dirClasses(tone);
 
@@ -47,7 +48,7 @@ export function AShareCard({ asset }: AShareCardProps) {
             </dd>
           </div>
           <div className="rounded bg-muted/50 px-1.5 py-1">
-            <dt className="text-[9px] uppercase text-muted-foreground">RSI</dt>
+            <dt className="text-[9px] text-muted-foreground">{t("metric.rsi14")}</dt>
             <dd className="font-medium tabular-nums">
               {asset.rsi14 === null ? t("common:data.na") : formatNumber(asset.rsi14, locale, 1)}
             </dd>

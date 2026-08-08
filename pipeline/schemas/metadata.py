@@ -19,7 +19,7 @@ from .envelope import ContractModel, FreshnessReason, FreshnessStatus, UTCDateTi
 
 #: Schema version of the metadata documents. Tracked separately from ``SCHEMA_VERSION``
 #: (the dataset contract version) because the two evolve independently.
-METADATA_SCHEMA_VERSION = "1.1.0"
+METADATA_SCHEMA_VERSION = "1.2.0"
 
 
 class DatasetFreshness(ContractModel):
@@ -41,6 +41,15 @@ class FreshnessDocument(ContractModel):
     schema_version: str = Field(min_length=1)
     updated_at: UTCDateTime
     datasets: dict[str, DatasetFreshness] = Field(default_factory=dict)
+
+
+class ProviderResolution(ContractModel):
+    """One resolved provider and the datasets it served for a domain."""
+
+    provider: str = Field(min_length=1)
+    datasets: list[str] = Field(default_factory=list)
+    used_fallback: bool = False
+    from_cache: bool = False
 
 
 class DomainStatus(ContractModel):
@@ -67,6 +76,9 @@ class DomainStatus(ContractModel):
         default_factory=list, description="canonical dataset keys this domain serves"
     )
     provider: str | None = Field(default=None, description="resolved provider, when known")
+    providers: list[ProviderResolution] = Field(
+        default_factory=list, description="resolved providers and the datasets each served"
+    )
 
 
 class SourcesDocument(ContractModel):

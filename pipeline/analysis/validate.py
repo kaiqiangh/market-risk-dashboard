@@ -5,6 +5,8 @@ Checks:
 2. evidence_refs: every reference must find an exactly matching entry in the fact layer evidence_index.
 3. Bilingual consistency: zh-CN and en must agree on market_state/market_regime/confidence,
    the evidence_refs set, and all numbers in every text; only the language of the prose may differ.
+4. Fact lineage (when required): the pair must identify the exact deterministic fact generation
+   and carry matching freshness inputs.
 
 Usage:
     python -m pipeline.analysis.validate --zh public/data/latest/analysis.zh-CN.json \
@@ -22,6 +24,7 @@ from pathlib import Path
 from typing import Iterable
 
 from pipeline.analysis.contract import input_path, output_path
+from pipeline.lineage import fact_generation_id, is_valid_fact_generation_id
 from pipeline.schemas import AnalysisDataset, EvidenceRef, FactLayer
 
 _NUM_RE = re.compile(r"-?\d+(?:\.\d+)?")
@@ -66,6 +69,50 @@ def validate_evidence_refs(analysis: AnalysisDataset, facts: FactLayer) -> list[
     return issues
 
 
+def validate_fact_identity(facts: FactLayer) -> list[str]:
+    """Validate that a published fact layer carries its deterministic identity."""
+    if not is_valid_fact_generation_id(facts.generation_id):
+        return ["facts generation_id missing or malformed"]
+    expected = fact_generation_id(facts)
+    if facts.generation_id != expected:
+        return ["facts generation_id does not match its content"]
+    return []
+
+
+def validate_analysis_lineage(analysis: AnalysisDataset, facts: FactLayer) -> list[str]:
+    """Validate one analysis file's reference to the fact layer it claims to have read."""
+    if analysis.lineage is None:
+        return ["analysis lineage missing"]
+
+    issues = validate_fact_identity(facts)
+    if facts.generation_id is not None and analysis.lineage.fact_generation_id != facts.generation_id:
+        issues.append("analysis fact_generation_id does not match facts generation_id")
+    if analysis.lineage.fact_generated_at != facts.generated_at:
+        issues.append("analysis fact_generated_at does not match facts generated_at")
+    if analysis.lineage.input_freshness != facts.data_freshness:
+        issues.append("analysis input_freshness does not match facts data_freshness")
+    return issues
+
+
+def compare_analysis_lineage(zh: AnalysisDataset, en: AnalysisDataset) -> list[str]:
+    """Validate the shared lineage fields of a bilingual pair."""
+    if zh.lineage is None and en.lineage is None:
+        return ["analysis lineage missing from both language files"]
+    if zh.lineage is None or en.lineage is None:
+        return ["analysis lineage missing from one language file"]
+
+    issues: list[str] = []
+    if zh.lineage.pair_id != en.lineage.pair_id:
+        issues.append("analysis pair_id mismatch")
+    if zh.lineage.fact_generation_id != en.lineage.fact_generation_id:
+        issues.append("analysis fact_generation_id mismatch")
+    if zh.lineage.fact_generated_at != en.lineage.fact_generated_at:
+        issues.append("analysis fact_generated_at mismatch")
+    if zh.lineage.input_freshness != en.lineage.input_freshness:
+        issues.append("analysis input_freshness mismatch")
+    return issues
+
+
 def _extract_numbers(text: str) -> list[float]:
     return [float(m) for m in _NUM_RE.findall(text)]
 
@@ -89,6 +136,8 @@ def compare_bilingual(zh: AnalysisDataset, en: AnalysisDataset) -> list[str]:
         issues.append(f"market_regime mismatch: zh={zh.market_regime!r} en={en.market_regime!r}")
     if abs(zh.confidence - en.confidence) > 1e-9:
         issues.append(f"confidence mismatch: zh={zh.confidence} en={en.confidence}")
+    if zh.data_freshness != en.data_freshness:
+        issues.append(f"data_freshness mismatch: zh={zh.data_freshness} en={en.data_freshness}")
 
     zh_ref_keys = sorted(_ref_key(r) for r in collect_evidence_refs(zh))
     en_ref_keys = sorted(_ref_key(r) for r in collect_evidence_refs(en))
@@ -137,8 +186,10 @@ def validate_analysis_pair(
     zh_path: Path | str,
     en_path: Path | str,
     facts_path: Path | str | None = None,
+    *,
+    require_lineage: bool = False,
 ) -> tuple[list[str], AnalysisDataset, AnalysisDataset]:
-    """Full validation: schema + evidence_refs + bilingual consistency. Returns (issues, zh, en)."""
+    """Full validation: schema, evidence, bilingual consistency, and optional fact lineage."""
     zh = load_analysis(zh_path)
     en = load_analysis(en_path)
 
@@ -147,12 +198,20 @@ def validate_analysis_pair(
 
     issues: list[str] = []
 
-    if facts_path is not None:
+    facts: FactLayer | None = None
+    if facts_path is not None and Path(facts_path).exists():
         facts = FactLayer.model_validate(json.loads(Path(facts_path).read_text(encoding="utf-8")))
         issues.extend(validate_evidence_refs(zh, facts))
         issues.extend(validate_evidence_refs(en, facts))
+    elif require_lineage:
+        issues.append("fact layer missing for lineage validation")
 
     issues.extend(compare_bilingual(zh, en))
+    if require_lineage:
+        if facts is not None:
+            issues.extend(validate_analysis_lineage(zh, facts))
+            issues.extend(validate_analysis_lineage(en, facts))
+        issues.extend(compare_analysis_lineage(zh, en))
     return issues, zh, en
 
 

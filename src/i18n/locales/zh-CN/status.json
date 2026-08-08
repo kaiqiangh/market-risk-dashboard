@@ -1,8 +1,8 @@
 {
   "title": "系统状态",
-  "subtitle": "数据新鲜度六态 + 数据源 Provider 健康",
+  "subtitle": "数据新鲜度六态 + 数据源健康",
   "meta": {
-    "schemaVersion": "Schema 版本",
+    "schemaVersion": "契约版本",
     "sourcesUpdated": "数据源更新",
     "datasetCount": "数据集数量"
   },
@@ -13,11 +13,12 @@
     "updatedAt": "更新时间",
     "reason": "原因",
     "none": "暂无新鲜度数据",
+    "unknown": "原因未说明",
     "reasonCodes": {
       "ok": "正常",
       "no_rows_returned": "数据源无返回行",
       "no_events_in_window": "时间窗内无事件",
-      "provider_http_error": "数据源 HTTP 错误",
+      "provider_http_error": "数据源网络错误",
       "provider_rate_limited": "数据源限流",
       "provider_auth_failed": "数据源鉴权失败",
       "provider_parse_error": "数据源响应解析失败",
@@ -35,22 +36,35 @@
     "macro": "宏观",
     "equities": "股票",
     "sectors": "板块",
+    "commodities": "大宗商品",
     "crypto": "加密",
     "news": "新闻",
     "calendar": "日历",
     "risk": "风险",
     "factlayer": "事实层",
-    "analysis": "AI 简报",
+    "analysis": "智能简报",
     "dashboard": "首页聚合",
     "news_translations": "新闻翻译"
   },
   "providers": {
     "title": "数据源健康",
     "domain": "域",
-    "provider": "Provider",
+    "provider": "数据源",
     "fallback": "备用",
     "cache": "缓存",
+    "datasets": "覆盖数据集",
+    "listSeparator": "、",
+    "unavailable": "不可用",
+    "resolutions": "数据源解析结果",
     "none": "暂无数据源信息",
     "status": "状态 / 原因"
+  },
+  "domains": {
+    "market": "市场",
+    "macro": "宏观",
+    "crypto": "加密资产",
+    "calendar": "事件日历",
+    "economic": "经济日历",
+    "news": "新闻"
   }
 }

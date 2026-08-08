@@ -10,7 +10,9 @@ import { EvidenceLink } from "./EvidenceLink";
 import { riskLevelKey, regimeKey } from "@/lib/riskLabels";
 import { riskLevelTone, toneClasses, type RiskTone } from "@/lib/riskColors";
 import { formatDateTime, formatRatio } from "@/lib/format";
+import type { AnalysisPresentation } from "@/lib/analysisState";
 import type { AnalysisDataset, SignalClaim } from "@/schemas";
+import { safeDisplayText } from "@/lib/displayLanguage";
 
 /** market_state in the analysis file is a string; map loosely to a semantic color. */
 function stateToneFromString(state: string): RiskTone {
@@ -22,7 +24,7 @@ function stateToneFromString(state: string): RiskTone {
 }
 
 /**
- * AIBrief: AI market brief (renders analysis.{lang}.json, architecture §1.5/§3.4; spec #23 ticket #29).
+ * AIBrief: lineage-validated AI market brief (architecture §1.5/§3.4; spec #23 ticket #29).
  * - Visual quarantine: 2px accent left border + "AI" chip — generated content is never
  *   confusable with deterministic data.
  * - Evidence-driven: every claim carries inline citation chips (EvidenceLink) wired to
@@ -31,18 +33,16 @@ function stateToneFromString(state: string): RiskTone {
  */
 
 export interface AIBriefProps {
-  /** Analysis data (current language). */
-  analysis?: AnalysisDataset;
+  /** Lineage-backed presentation state from both language files and the fact layer. */
+  presentation: AnalysisPresentation;
   /** Loading. */
   loading?: boolean;
-  /** Fetch failed (404 / network / validation failure). */
-  error?: boolean;
 }
 
 /** Quarantined card chrome: 2px accent left border marks generated content. */
 const QUARANTINE_CLASS = "border-l-2 border-l-primary";
 
-function SignalList({ title, icon, signals }: { title: string; icon: ReactNode; signals: SignalClaim[] }) {
+function SignalList({ title, icon, signals, locale, unavailable }: { title: string; icon: ReactNode; signals: SignalClaim[]; locale: string; unavailable: string }) {
   if (signals.length === 0) return null;
   return (
     <div className="flex flex-col gap-1.5">
@@ -53,7 +53,7 @@ function SignalList({ title, icon, signals }: { title: string; icon: ReactNode; 
       <ul className="flex flex-col gap-2">
         {signals.map((s, i) => (
           <li key={i} className="rounded-sm border border-hairline bg-surface-2/40 p-2">
-            <p className="text-xs leading-relaxed text-foreground">{s.claim}</p>
+            <p className="text-xs leading-relaxed text-foreground">{safeDisplayText(s.claim, locale, unavailable)}</p>
             <EvidenceLink refs={s.evidence_refs} />
           </li>
         ))}
@@ -66,19 +66,23 @@ function CaseBlock({
   title,
   caseData,
   tone,
+  locale,
+  unavailable,
 }: {
   title: string;
   caseData: { title: string; points: string[]; evidence_refs: AnalysisDataset["bull_case"]["evidence_refs"] };
   tone: "low" | "caution" | "high" | "severe" | "na";
+  locale: string;
+  unavailable: string;
 }) {
   const toneText = toneClasses(tone).text;
   return (
     <div className="rounded-sm border border-hairline bg-surface-2/40 p-3">
       <p className={`text-xs font-semibold ${toneText}`}>{title}</p>
-      <p className="mt-1 text-xs font-medium text-foreground">{caseData.title}</p>
+      <p className="mt-1 text-xs font-medium text-foreground">{safeDisplayText(caseData.title, locale, unavailable)}</p>
       <ul className="mt-1 flex list-inside list-disc flex-col gap-1 text-xs text-muted-foreground">
         {caseData.points.map((p, i) => (
-          <li key={i}>{p}</li>
+          <li key={i}>{safeDisplayText(p, locale, unavailable)}</li>
         ))}
       </ul>
       <EvidenceLink refs={caseData.evidence_refs} />
@@ -86,7 +90,7 @@ function CaseBlock({
   );
 }
 
-export function AIBrief({ analysis, loading = false, error = false }: AIBriefProps) {
+export function AIBrief({ presentation, loading = false }: AIBriefProps) {
   const { t, i18n } = useTranslation("dashboard");
   const locale = i18n.language;
 
@@ -105,52 +109,35 @@ export function AIBrief({ analysis, loading = false, error = false }: AIBriefPro
     );
   }
 
-  if (error || !analysis) {
+  if (!presentation.validated || !presentation.analysis || presentation.notice) {
+    const notice = presentation.notice ?? "analysisMissing";
     return (
-      <Card className={QUARANTINE_CLASS} data-testid="ai-brief-degraded">
+      <Card className={QUARANTINE_CLASS} data-testid="ai-brief-state" data-state={notice}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ShieldAlert className="h-4 w-4 text-fresh-warn" aria-hidden />
             {t("aiBrief.title")}
-            <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">AI</span>
+            <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">
+              {t("aiBrief.label")}
+            </span>
+            <span className="ml-auto flex items-center gap-2 text-[11px] font-normal text-muted-foreground">
+              <StatusBadge status={presentation.status} />
+            </span>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-2 rounded-sm border border-fresh-warn/40 bg-fresh-warn/5 p-4">
-            <p className="text-sm font-medium text-foreground">{t("aiBrief.degraded")}</p>
-            <p className="text-xs text-muted-foreground">{t("aiBrief.degradedHint")}</p>
+            <p className="text-sm font-medium text-foreground">{t(`aiBrief.state.${notice}.title`)}</p>
+            <p className="text-xs text-muted-foreground">{t(`aiBrief.state.${notice}.detail`)}</p>
+            <p className="text-xs font-medium text-foreground">{t(`aiBrief.state.${notice}.recovery`)}</p>
           </div>
         </CardContent>
       </Card>
     );
   }
 
-  // #66: honest empty state — when the inputs the brief was built from were degraded or
-  // missing, the brief must say plainly it has no fresh basis rather than narrate numbers
-  // it knows are not trustworthy.
-  const hasFreshBasis = !["degraded", "missing"].includes(analysis.data_freshness);
-  if (!hasFreshBasis) {
-    return (
-      <Card className={QUARANTINE_CLASS} data-testid="ai-brief-no-basis">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ShieldAlert className="h-4 w-4 text-fresh-warn" aria-hidden />
-            {t("aiBrief.title")}
-            <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">AI</span>
-            <span className="ml-auto flex items-center gap-2 text-[11px] font-normal text-muted-foreground">
-              <StatusBadge status={analysis.data_freshness} />
-            </span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-2 rounded-sm border border-fresh-warn/40 bg-fresh-warn/5 p-4">
-            <p className="text-sm font-medium text-foreground">{t("aiBrief.noFreshBasis")}</p>
-            <p className="text-xs text-muted-foreground">{t("aiBrief.noFreshBasisHint")}</p>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+  const analysis = presentation.analysis;
+  const unavailable = t("aiBrief.translationUnavailable");
 
   const stateTone = stateToneFromString(analysis.market_state);
 
@@ -160,7 +147,9 @@ export function AIBrief({ analysis, loading = false, error = false }: AIBriefPro
         <CardTitle className="flex flex-wrap items-center gap-2">
           <Sparkles className="h-4 w-4 text-primary" aria-hidden />
           {t("aiBrief.title")}
-          <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">AI</span>
+          <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">
+            {t("aiBrief.label")}
+          </span>
           <span className="ml-auto flex items-center gap-2 text-[11px] font-normal text-muted-foreground">
             <StatusBadge status={analysis.data_freshness} />
             <span className="font-mono tabular-nums">{formatDateTime(analysis.generated_at, locale)}</span>
@@ -186,27 +175,27 @@ export function AIBrief({ analysis, loading = false, error = false }: AIBriefPro
         ) : null}
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <p className="text-sm leading-relaxed text-foreground">{analysis.summary}</p>
+        <p className="text-sm leading-relaxed text-foreground">{safeDisplayText(analysis.summary, locale, unavailable)}</p>
 
         {analysis.what_changed_today.length > 0 ? (
           <div className="flex flex-col gap-1">
             <p className="text-xs font-medium text-muted-foreground">{t("aiBrief.changedToday")}</p>
             <ul className="flex list-inside list-disc flex-col gap-0.5 text-xs text-foreground">
               {analysis.what_changed_today.map((line, i) => (
-                <li key={i}>{line}</li>
+                <li key={i}>{safeDisplayText(line, locale, unavailable)}</li>
               ))}
             </ul>
           </div>
         ) : null}
 
-        <SignalList title={t("aiBrief.topDrivers")} icon={<TrendingUp className="h-3.5 w-3.5 text-risk-high" aria-hidden />} signals={analysis.top_risk_drivers} />
-        <SignalList title={t("aiBrief.supporting")} icon={<TrendingUp className="h-3.5 w-3.5 text-risk-low" aria-hidden />} signals={analysis.supporting_signals} />
-        <SignalList title={t("aiBrief.contradicting")} icon={<Scale className="h-3.5 w-3.5 text-risk-caution" aria-hidden />} signals={analysis.contradicting_signals} />
+        <SignalList title={t("aiBrief.topDrivers")} icon={<TrendingUp className="h-3.5 w-3.5 text-risk-high" aria-hidden />} signals={analysis.top_risk_drivers} locale={locale} unavailable={unavailable} />
+        <SignalList title={t("aiBrief.supporting")} icon={<TrendingUp className="h-3.5 w-3.5 text-risk-low" aria-hidden />} signals={analysis.supporting_signals} locale={locale} unavailable={unavailable} />
+        <SignalList title={t("aiBrief.contradicting")} icon={<Scale className="h-3.5 w-3.5 text-risk-caution" aria-hidden />} signals={analysis.contradicting_signals} locale={locale} unavailable={unavailable} />
 
         <div className="grid gap-3 md:grid-cols-3">
-          <CaseBlock title={t("aiBrief.bullCase")} caseData={analysis.bull_case} tone="low" />
-          <CaseBlock title={t("aiBrief.baseCase")} caseData={analysis.base_case} tone="caution" />
-          <CaseBlock title={t("aiBrief.bearCase")} caseData={analysis.bear_case} tone="high" />
+          <CaseBlock title={t("aiBrief.bullCase")} caseData={analysis.bull_case} tone="low" locale={locale} unavailable={unavailable} />
+          <CaseBlock title={t("aiBrief.baseCase")} caseData={analysis.base_case} tone="caution" locale={locale} unavailable={unavailable} />
+          <CaseBlock title={t("aiBrief.bearCase")} caseData={analysis.bear_case} tone="high" locale={locale} unavailable={unavailable} />
         </div>
 
         {analysis.watch_next.length > 0 ? (
@@ -214,7 +203,7 @@ export function AIBrief({ analysis, loading = false, error = false }: AIBriefPro
             <p className="text-xs font-medium text-muted-foreground">{t("aiBrief.watchNext")}</p>
             <ul className="flex list-inside list-disc flex-col gap-0.5 text-xs text-foreground">
               {analysis.watch_next.map((line, i) => (
-                <li key={i}>{line}</li>
+                <li key={i}>{safeDisplayText(line, locale, unavailable)}</li>
               ))}
             </ul>
           </div>

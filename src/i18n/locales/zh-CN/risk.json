@@ -4,9 +4,29 @@
   "score": {
     "title": "全球风险分",
     "breakdown": "模型分解",
-    "confidence": "置信度",
+    "confidence": "数据可信度",
+    "confidenceShort": "数据可信度",
+    "week": "1 周",
+    "month": "1 月",
     "modelVersion": "模型版本",
-    "disclaimer": "该指标是基于历史数据和当前市场信号生成的市场压力估计，不构成确定性概率或投资建议"
+    "disclaimer": "该指标是基于历史数据和当前市场信号生成的市场压力估计。数据可信度不是统计置信度，也不是经过校准的概率或投资建议。"
+  },
+  "calibration": {
+    "title": "校准政策",
+    "provisional": "暂定校准",
+    "calibrated": "已完成样本外校准",
+    "version": "政策版本",
+    "explanation": "当前权重和风险区间暂予保留。在具备按时间点的数据版本和带状态标注的样本外证据前，暂不重新拟合。"
+  },
+  "evidence": {
+    "title": "证据状态",
+    "complete": "证据完整",
+    "partial": "证据不完整",
+    "insufficient": "证据不足",
+    "coverage": "有效覆盖度",
+    "scoreRange": "证据分数区间",
+    "missingIndicators": "缺失指标",
+    "explanation": "分数仍为点估计；区间显示缺失指标可能带来的变化。"
   },
   "level": {
     "riskOn": "风险偏好",
@@ -48,11 +68,59 @@
     "indicators": "指标",
     "disclaimer": "维度缺失时权重按剩余维度比例重归一化，同时下调覆盖度与置信度。"
   },
+  "crossAssetSignals": {
+    "title": "受治理的跨资产诊断",
+    "description": "这些输入会被采集并评估证据，但在跨资产校准仍受门控期间，新增的两个代理信号不会进入生产分数。",
+    "label": "信号",
+    "value": "最新差值",
+    "state": "状态",
+    "source": "提供方",
+    "history": "历史样本",
+    "triggered": "风险信号",
+    "notTriggered": "未触发",
+    "unavailable": "不可用",
+    "diagnosticOnly": "仅供诊断",
+    "proxy": "交易所交易基金代理",
+    "unit": {
+      "percentage_points": "百分点",
+      "index_points": "指数点"
+    },
+    "transformations": {
+      "one_day_return_below_zero": "单日收益低于零",
+      "one_day_return_above_zero": "单日收益高于零",
+      "relative_return_below_zero": "相对收益低于零",
+      "level_above_4": "水平高于四",
+      "level_above_105": "水平高于一百零五",
+      "level_above_1_5": "水平高于一点五",
+      "xly_minus_xlp_one_day_return": "周期股减防御股单日收益",
+      "hyg_minus_ief_one_day_return": "高收益债减国债单日收益"
+    },
+    "signalNames": {
+      "spy_down": "大盘下跌",
+      "hy_oas_widening": "高收益债利差压力",
+      "dollar_strength": "美元走强",
+      "real_rate_pressure": "实际利率压力",
+      "bitcoin_down": "比特币下跌",
+      "small_cap_underperformance": "小盘股跑输",
+      "copper_down": "铜价下跌",
+      "gold_up": "金价上涨",
+      "cyclicals_defensives_relative": "周期股相对防御股",
+      "hy_treasury_relative": "高收益债相对国债"
+    },
+    "sources": {
+      "yfinance": "雅虎财经",
+      "fmp_quotes": "金融行情数据",
+      "fred": "美国联邦储备经济数据",
+      "coingecko": "币格科",
+      "calibration_panel": "校准样本",
+      "unknown": "已配置提供方"
+    }
+  },
   "indicator": {
     "label": "指标",
     "value": "数值",
     "percentile": "百分位",
-    "zScore": "Z 分",
+    "zScore": "标准分",
     "riskScore": "风险分",
     "direction": "方向",
     "weight": "权重",
@@ -62,10 +130,36 @@
     "proxy": "代理"
   },
   "confidenceFactors": {
-    "title": "置信度因子"
+    "title": "数据可信度因子",
+    "data_quality": "数据质量",
+    "coverage": "覆盖度",
+    "consistency": "一致性",
+    "unknown": "其他"
+  },
+  "indicatorNames": {
+    "realRate": "10 年实际利率",
+    "yieldCurve": "10 年期减 2 年期曲线",
+    "dollarIndex": "美元指数",
+    "tenYearYield": "10 年期收益率",
+    "fedBalanceSheet": "美联储资产负债表",
+    "reverseRepo": "隔夜逆回购",
+    "hyOas": "高收益债利差",
+    "igOas": "投资级债利差",
+    "breadthAboveMa200": "站上 200 日均线的广度",
+    "newHighsRatio": "新高比例",
+    "newLowsRatio": "新低比例",
+    "smallCapRelative": "小盘股相对强弱",
+    "semisRelative": "半导体相对强弱",
+    "vix": "波动率指数",
+    "realizedVol": "实现波动率",
+    "crossAssetConfirmation": "跨资产确认信号",
+    "priceVsMa200": "价格相对 200 日均线",
+    "drawdown52w": "52 周高点回撤",
+    "momentum3m": "3 个月动量",
+    "unknown": "未命名指标"
   },
   "drivers": {
-    "title": "Top 风险驱动",
+    "title": "主要风险驱动",
     "contribution": "贡献",
     "none": "暂无风险驱动"
   }

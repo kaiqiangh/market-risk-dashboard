@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 
 from pipeline.risk import confidence as conf_mod
@@ -14,7 +16,14 @@ from pipeline.risk.scoring import (
     percentile_risk_score,
     z_score,
 )
-from pipeline.schemas import MacroDataset, RiskModelResult
+from pipeline.schemas import (
+    CommoditiesEnvelope,
+    CryptoEnvelope,
+    EquitiesEnvelope,
+    MacroDataset,
+    MacroEnvelope,
+    RiskModelResult,
+)
 
 
 def test_heuristic_risk_score_bounds() -> None:
@@ -83,24 +92,24 @@ def test_regime_goldilocks() -> None:
 def _macro_with_rates(*, value: float | None = None) -> MacroDataset:
     """A MacroDataset built entirely from the factory (#73: no direct constructor calls).
 
-    Defaults to the four indicators the risk model reads; passing ``value`` swaps the VIX
-    indicator in (used by the level-threshold test).
+    Defaults to the four rate indicators plus VIX in the canonical volatility group; passing
+    ``value`` swaps the VIX indicator in (used by the level-threshold test).
     """
     from pipeline.schemas import MacroEnvelope
     from tests.pipeline.factories import make_envelope, make_macro_indicator, make_macro_payload
 
     if value is not None:
-        rates = [make_macro_indicator(key="vixcls", label="VIX", value=value, unit="index", source="FRED")]
-        payload = make_macro_payload(rates=rates, credit=[], inflation=[], labor=[], liquidity=[], fx=[])
+        volatility = [make_macro_indicator(key="vixcls", label="VIX", value=value, unit="index", source="FRED")]
+        payload = make_macro_payload(rates=[], credit=[], volatility=volatility, inflation=[], labor=[], liquidity=[], fx=[])
     else:
         payload = make_macro_payload(
             rates=[
                 make_macro_indicator(key="dgs10", label="10Y", value=4.2, source="FRED"),
                 make_macro_indicator(key="dgs2", label="2Y", value=3.8, source="FRED"),
                 make_macro_indicator(key="dfii10", label="Real", value=1.9, source="FRED"),
-                make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED"),
             ],
             credit=[make_macro_indicator(key="bamlh0a0hym2", label="HY", value=4.5, source="FRED")],
+            volatility=[make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED")],
             fx=[],
         )
     return MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload
@@ -126,7 +135,63 @@ def test_risk_model_produces_valid_result() -> None:
     assert 0 <= result.confidence <= 1
     assert len(result.dimensions) == 6
     assert result.top_drivers  # has top drivers
+    assert result.calibration_policy_version == "1.0.0"
+    assert result.calibration_status == "provisional"
     assert "definitive probability" not in result.disclaimer or "modeled estimate" in result.disclaimer
+
+
+def test_risk_evidence_state_and_bounds_are_published() -> None:
+    result = RiskModel().score(_synthetic_context())
+
+    assert result.evidence_state == "partial"
+    assert result.evidence_coverage == pytest.approx(result.confidence_factors["coverage"])
+    assert result.score_lower_bound <= result.total_score <= result.score_upper_bound
+    macro = next(d for d in result.dimensions if d.key == "macro")
+    assert macro.evidence_state == "partial"
+    assert macro.missing_indicators == ["dollar_index"]
+
+
+def test_missing_evidence_is_insufficient_with_full_deterministic_bounds() -> None:
+    result = RiskModel().score({})
+
+    assert result.evidence_state == "insufficient_evidence"
+    assert result.evidence_coverage == 0.0
+    assert result.score_lower_bound == 0.0
+    assert result.score_upper_bound == 100.0
+    assert all(d.evidence_state == "insufficient_evidence" for d in result.dimensions)
+
+
+def test_complete_evidence_collapses_bounds_to_point_estimate(monkeypatch) -> None:
+    from tests.pipeline.factories import make_envelope, make_macro_indicator, make_macro_payload
+
+    # Treat the proxy inputs as fully trusted for this semantic test; their proxy disclosure
+    # remains present, but the evidence-state calculation must support a complete run.
+    monkeypatch.setattr(conf_mod, "proxy_discount_factor", lambda *args, **kwargs: 1.0)
+    payload = make_macro_payload(
+        rates=[
+            make_macro_indicator(key="dgs10", label="10Y", value=4.2, source="FRED"),
+            make_macro_indicator(key="dgs2", label="2Y", value=3.8, source="FRED"),
+            make_macro_indicator(key="dfii10", label="Real", value=1.9, source="FRED"),
+        ],
+        credit=[
+            make_macro_indicator(key="bamlh0a0hym2", label="HY", value=4.5, source="FRED"),
+            make_macro_indicator(key="bamlc0a0cm", label="IG", value=1.2, source="FRED"),
+        ],
+        volatility=[make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED")],
+        liquidity=[
+            make_macro_indicator(key="walcl", label="Assets", value=6600000, source="FRED"),
+            make_macro_indicator(key="rrpontsyd", label="RRP", value=100.0, source="FRED"),
+        ],
+        fx=[make_macro_indicator(key="dtwexbgs", label="Dollar", value=98.0, source="FRED")],
+    )
+    ctx = _synthetic_context()
+    ctx["macro"] = MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload
+
+    result = RiskModel().score(ctx)
+
+    assert result.evidence_state == "complete"
+    assert all(d.evidence_state == "complete" for d in result.dimensions)
+    assert result.score_lower_bound == result.score_upper_bound == result.total_score
 
 
 def test_risk_model_trend_1d() -> None:
@@ -151,6 +216,159 @@ def test_risk_model_percentile_with_series_history() -> None:
     assert vix_ind.z_score is not None
     # 25 in the uniform 10~29 history has percentile ≈ 76 (share of samples ≤ 25)
     assert 65 <= vix_ind.percentile <= 85
+
+
+def test_vix_uses_canonical_volatility_group_for_risk_and_regime(monkeypatch) -> None:
+    captured: dict = {}
+
+    def capture_regime(ctx: dict) -> tuple[str, list[str]]:
+        captured.update(ctx)
+        return "indeterminate", []
+
+    monkeypatch.setattr(regime_mod, "infer_regime", capture_regime)
+    result = RiskModel().score(_synthetic_context())
+    vix = next(
+        ind for dim in result.dimensions if dim.key == "volatility"
+        for ind in dim.indicators if ind.key == "vix"
+    )
+
+    assert vix.value == 25.0
+    assert captured["vix"] == 25.0
+
+
+def test_vix_in_rates_is_not_used_as_a_compatibility_fallback() -> None:
+    from pipeline.schemas import MacroEnvelope
+    from tests.pipeline.factories import make_envelope, make_macro_indicator, make_macro_payload
+
+    payload = make_macro_payload(
+        rates=[make_macro_indicator(key="vixcls", label="VIX", value=45.0, unit="index", source="FRED")],
+        credit=[], volatility=[], inflation=[], labor=[], liquidity=[], fx=[]
+    )
+    ctx = {"macro": MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload}
+    result = RiskModel().score(ctx)
+    vix = next(
+        ind for dim in result.dimensions if dim.key == "volatility"
+        for ind in dim.indicators if ind.key == "vix"
+    )
+
+    assert vix.value is None
+    realized = next(
+        ind for dim in result.dimensions if dim.key == "volatility"
+        for ind in dim.indicators if ind.key == "realized_vol"
+    )
+    volatility = next(dim for dim in result.dimensions if dim.key == "volatility")
+    assert realized.value is None
+    assert volatility.coverage == 0.0
+    assert result.regime == "indeterminate"
+
+
+def test_build_risk_context_carries_canonical_vix_and_realized_volatility() -> None:
+    from pipeline.run import _build_risk_context
+    from tests.pipeline.factories import make_envelope
+
+    histories = {
+        "SPY": [
+            {"date": f"2026-01-{(i % 28) + 1:02d}", "close": 100.0 + i * 0.2 + (i % 5) * 0.1}
+            for i in range(260)
+        ]
+    }
+    context = _build_risk_context(
+        macro=MacroEnvelope.model_validate(make_envelope("macro", payload={
+            "rates": [
+                {"key": "dgs10", "label": "10Y", "value": 4.2, "source": "FRED"},
+                {"key": "dgs2", "label": "2Y", "value": 3.8, "source": "FRED"},
+                {"key": "dfii10", "label": "Real", "value": 1.9, "source": "FRED"},
+            ],
+            "credit": [],
+            "volatility": [{"key": "vixcls", "label": "VIX", "value": 25.0, "unit": "index", "source": "FRED"}],
+            "inflation": [], "labor": [], "liquidity": [], "fx": [],
+            "fedwatch": None,
+        })),
+        equities=EquitiesEnvelope.model_validate(make_envelope("equities")),
+        crypto=CryptoEnvelope.model_validate(make_envelope("crypto")),
+        commodities=CommoditiesEnvelope.model_validate(make_envelope("commodities")),
+        histories=histories,
+        qualities=[1.0],
+        prev_total_score=None,
+        prev_dim_scores=None,
+        risk_history=[],
+        series_history={},
+    )
+
+    assert context["cross_asset"]["vix"] == 25.0
+    assert context["trend"]["realized_vol"] is not None
+
+    result = RiskModel().score(context)
+    volatility = next(d for d in result.dimensions if d.key == "volatility")
+    assert next(i for i in volatility.indicators if i.key == "vix").value == 25.0
+    assert next(i for i in volatility.indicators if i.key == "realized_vol").value is not None
+
+
+def test_cross_asset_signals_are_null_aware_and_new_proxies_are_diagnostic_only() -> None:
+    from pipeline.run import _build_risk_context
+
+    histories = {
+        "SPY": [{"close": 100.0}, {"close": 99.0}],
+        "IWM": [{"close": 100.0}, {"close": 98.0}],
+        "XLY": [{"close": 100.0}, {"close": 99.0}],
+        "XLP": [{"close": 100.0}, {"close": 100.5}],
+        "HYG": [{"close": 100.0}, {"close": 99.5}],
+        "IEF": [{"close": 100.0}, {"close": 100.2}],
+    }
+    empty = SimpleNamespace(payload=SimpleNamespace(assets=[]))
+    context = _build_risk_context(
+        macro=SimpleNamespace(payload=_macro_with_rates()),
+        equities=empty,
+        crypto=empty,
+        commodities=empty,
+        histories=histories,
+        qualities=[1.0],
+        prev_total_score=None,
+        prev_dim_scores=None,
+        risk_history=[],
+        series_history={},
+        market_provenance={"provider": "yfinance", "used_fallback": True},
+    )
+
+    rows = {row["key"]: row for row in context["cross_asset"]["signals"]}
+    assert len(rows) == 10
+    assert rows["cyclicals_defensives_relative"]["triggered"] is True
+    assert rows["hy_treasury_relative"]["triggered"] is True
+    assert rows["cyclicals_defensives_relative"]["status"] == "degraded"
+    assert rows["cyclicals_defensives_relative"]["production_scoring"] is False
+    assert context["cross_asset"]["observed_signal_count"] == 5
+    # New diagnostic signals must not silently change the gated production aggregate.
+    assert context["cross_asset"]["production_scoring_signal_count"] == 8
+
+    result = RiskModel().score(context)
+    assert {signal.key for signal in result.cross_asset_signals} == set(rows)
+    new_signal = next(signal for signal in result.cross_asset_signals if signal.key == "hy_treasury_relative")
+    assert new_signal.is_proxy is True
+    assert new_signal.production_scoring is False
+
+
+def test_cross_asset_missing_inputs_do_not_count_as_benign() -> None:
+    from pipeline.run import _build_risk_context
+
+    empty = SimpleNamespace(payload=SimpleNamespace(assets=[]))
+    context = _build_risk_context(
+        macro=SimpleNamespace(payload=MacroDataset(rates=[], credit=[], volatility=[], inflation=[], labor=[], liquidity=[], fx=[], fedwatch=None)),
+        equities=empty,
+        crypto=empty,
+        commodities=empty,
+        histories={},
+        qualities=[1.0],
+        prev_total_score=None,
+        prev_dim_scores=None,
+        risk_history=[],
+        series_history={},
+    )
+
+    assert context["cross_asset"]["confirmation"] is None
+    result = RiskModel().score(context)
+    cross_asset = next(dimension for dimension in result.dimensions if dimension.key == "cross_asset")
+    assert next(indicator for indicator in cross_asset.indicators if indicator.key == "cross_asset_confirmation").value is None
+    assert cross_asset.coverage == 0.0
 
 
 def test_risk_model_dimension_trend_computed() -> None:
@@ -506,9 +724,9 @@ def test_dollar_index_removal_changes_no_regime() -> None:
             make_macro_indicator(key="dgs10", label="10Y", value=4.2, source="FRED"),
             make_macro_indicator(key="dgs2", label="2Y", value=3.8, source="FRED"),
             make_macro_indicator(key="dfii10", label="Real", value=1.9, source="FRED"),
-            make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED"),
         ],
         credit=[make_macro_indicator(key="bamlh0a0hym2", label="HY", value=4.5, source="FRED")],
+        volatility=[make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED")],
         fx=[make_macro_indicator(key="dtwexbgs", label="Dollar", value=98.0, source="FRED")],
     )
     with_dollar["macro"] = MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload

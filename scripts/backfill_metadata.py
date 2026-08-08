@@ -94,7 +94,7 @@ def main() -> int:
 
     # --- Enveloped datasets: verdict through the single producer. ---
     enveloped_statuses: list[str] = []
-    for key in ("equities", "sectors", "crypto", "macro", "calendar", "news", "risk", "dashboard"):
+    for key in (spec.key for spec in registry.DATASETS if spec.enveloped):
         env = _load(key)
         prov = env.get("provenance", {}) or {}
         status = env.get("freshness_status")
@@ -136,6 +136,12 @@ def main() -> int:
 
     # --- Provider status for sources.json, lifted from each domain's envelopes. ---
     provider_status: dict[str, dict] = {}
+    previous_sources: dict = {}
+    if SOURCES_PATH.exists():
+        try:
+            previous_sources = json.loads(SOURCES_PATH.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            previous_sources = {}
     for domain, keys in registry.DOMAIN_DATASETS.items():
         provs = []
         for k in keys:
@@ -145,11 +151,22 @@ def main() -> int:
                 continue
         if not provs:
             continue
-        provider_status[domain] = {
+        status = {
             "provider": next((p.get("provider") for p in provs if p.get("provider")), None),
             "used_fallback": any(bool(p.get("used_fallback")) for p in provs),
             "from_cache": any(bool(p.get("from_cache")) for p in provs),
         }
+        # An extra domain can share a dataset with the canonical domain while having its own
+        # provider call (calendar/earnings vs economic/FRED). The envelope has one primary
+        # provenance only, so retain the previous domain-specific status when backfilling.
+        previous = (previous_sources.get("domains", {}) or {}).get(domain, {})
+        if domain in registry.EXTRA_DOMAIN_DATASETS and previous.get("provider"):
+            status.update(
+                provider=previous["provider"],
+                used_fallback=bool(previous.get("used_fallback")),
+                from_cache=bool(previous.get("from_cache")),
+            )
+        provider_status[domain] = status
 
     freshness_doc = outcomes.freshness_projection(None)
     sources_doc = outcomes.sources_projection(provider_status)

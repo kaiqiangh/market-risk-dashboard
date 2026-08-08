@@ -75,7 +75,7 @@ def test_auth_failure_does_not_retry(tmp_path) -> None:
 def test_failed_source_is_reported_degraded_without_per_source_cache(tmp_path, monkeypatch) -> None:
     """#103/D-6: per-source last-good cache removed — a source outage is degraded, not replayed."""
     provider = _provider(tmp_path)
-    monkeypatch.setattr(provider, "_fetch_feed", lambda _url: [ENTRY])
+    monkeypatch.setattr(provider, "_fetch_feed", lambda _url: ([ENTRY], None))
     assert len(provider.fetch_news()) == 1
 
     def fail(_url):
@@ -91,7 +91,10 @@ def test_failed_source_is_reported_degraded_without_per_source_cache(tmp_path, m
 
 def test_missing_date_is_rejected_instead_of_using_now(tmp_path, monkeypatch) -> None:
     provider = _provider(tmp_path)
-    monkeypatch.setattr(provider, "_fetch_feed", lambda _url: [{"title": "No date", "link": ENTRY["link"]}])
+    monkeypatch.setattr(
+        provider, "_fetch_feed",
+        lambda _url: ([{"title": "No date", "link": ENTRY["link"]}], None),
+    )
     with pytest.raises(ProviderError, match="no valid entries"):
         provider.fetch_news()
 
@@ -159,3 +162,132 @@ def test_collector_propagates_partial_source_failure_to_news_freshness() -> None
     registry.degraded_domains.add("news")
     _, degraded_meta = NewsCollector(registry).collect()
     assert degraded_meta["data_quality"] == 0.8
+
+
+# -------------------------------------------------------------------------------------
+# #124/#126: per-source fallback URL chain — one try per URL, first success wins
+# -------------------------------------------------------------------------------------
+
+FEED_XML = (
+    '<?xml version="1.0" encoding="UTF-8"?>'
+    '<rss version="2.0"><channel><title>Test feed</title>'
+    "<item><title>Fallback headline</title><link>https://example.com/fb</link>"
+    "<pubDate>Mon, 03 Aug 2026 10:00:00 GMT</pubDate>"
+    "<description>Fallback summary text.</description></item>"
+    "</channel></rss>"
+)
+
+
+class ScriptedClient:
+    """Fake HTTP client: each URL is scripted to a (status, content) response."""
+
+    def __init__(self, responses: dict[str, tuple[int, bytes]]) -> None:
+        self.responses = responses
+        self.calls: list[str] = []
+
+    def get(self, url: str):
+        self.calls.append(url)
+        status, content = self.responses[url]
+        return type("Response", (), {"status_code": status, "content": content, "request": None})()
+
+
+def _chained_provider(tmp_path: Path) -> RssNewsProvider:
+    provider = _provider(tmp_path)
+    provider.sources = [
+        NewsSource(
+            id="test", name="Test", url="https://primary.example/feed", lang="en",
+            fallback_urls=["https://fallback.example/feed"],
+        )
+    ]
+    return provider
+
+
+def test_fallback_serves_when_primary_url_fails(tmp_path: Path) -> None:
+    """#124/#126: primary 403 → the source serves from its fallback and is reported ok."""
+    provider = _chained_provider(tmp_path)
+    provider._client = ScriptedClient({
+        "https://primary.example/feed": (403, b"<html>denied</html>"),
+        "https://fallback.example/feed": (200, FEED_XML.encode()),
+    })
+
+    items = provider.fetch_news()
+
+    assert len(items) == 1
+    assert items[0]["title"] == "Fallback headline"
+    assert provider._client.calls == ["https://primary.example/feed", "https://fallback.example/feed"]
+    status = provider.source_status["test"]
+    assert status["ok"] is True
+    assert status["degraded"] is False
+
+
+def test_first_success_short_circuits_fallback(tmp_path: Path) -> None:
+    """#124/#126: a healthy primary means the fallback is never contacted."""
+    provider = _chained_provider(tmp_path)
+    provider._client = ScriptedClient({
+        "https://primary.example/feed": (200, FEED_XML.encode()),
+        "https://fallback.example/feed": (200, FEED_XML.encode()),
+    })
+
+    items = provider.fetch_news()
+
+    assert len(items) == 1
+    assert provider._client.calls == ["https://primary.example/feed"]
+    assert provider.source_status["test"]["ok"] is True
+
+
+def test_entire_chain_failure_marks_source_degraded(tmp_path: Path) -> None:
+    """#124/#126: every URL failed → the source is degraded with the last error."""
+    provider = _chained_provider(tmp_path)
+    provider._client = ScriptedClient({
+        "https://primary.example/feed": (403, b"<html>denied</html>"),
+        "https://fallback.example/feed": (403, b"<html>denied</html>"),
+    })
+
+    with pytest.raises(ProviderError, match="all sources failed"):
+        provider.fetch_news()
+
+    assert provider._client.calls == ["https://primary.example/feed", "https://fallback.example/feed"]
+    status = provider.source_status["test"]
+    assert status["ok"] is False
+    assert status["degraded"] is True
+    assert "403" in status["error"]
+
+
+CHANNEL_FEED_XML = (
+    '<?xml version="1.0" encoding="UTF-8"?>'
+    '<rss version="2.0"><channel><title>Test feed</title><link>https://www.cls.cn/telegraph</link>'
+    "<item><title>Linkless flash</title>"
+    "<pubDate>Mon, 03 Aug 2026 10:00:00 GMT</pubDate>"
+    "<description>Flash summary text.</description></item>"
+    "</channel></rss>"
+)
+
+
+def test_linkless_entries_fall_back_to_channel_link(tmp_path: Path) -> None:
+    """#127: 财联社 telegraph entries carry no link; a linkless item falls back to the
+    feed's channel link (a valid 'view source' URL) instead of being dropped."""
+    provider = _provider(tmp_path)
+    provider.sources = [NewsSource(id="test", name="Test", url="https://hub.example/cls", lang="zh")]
+    provider._client = ScriptedClient({
+        "https://hub.example/cls": (200, CHANNEL_FEED_XML.encode()),
+    })
+
+    items = provider.fetch_news()
+
+    assert len(items) == 1
+    assert items[0]["title"] == "Linkless flash"
+    assert items[0]["url"] == "https://www.cls.cn/telegraph"
+    assert provider.source_status["test"]["ok"] is True
+
+
+def test_linkless_item_without_channel_link_is_rejected(tmp_path: Path) -> None:
+    """#127: no entry link AND no channel link → the item is dropped (no fake URL)."""
+    provider = _provider(tmp_path)
+    provider.sources = [NewsSource(id="test", name="Test", url="https://hub.example/cls", lang="zh")]
+    provider._client = ScriptedClient({
+        "https://hub.example/cls": (200, FEED_XML.replace("<link>https://example.com/fb</link>", "").encode()),
+    })
+
+    with pytest.raises(ProviderError, match="no valid entries"):
+        provider.fetch_news()
+    assert provider.source_status["test"]["ok"] is False

@@ -92,6 +92,9 @@ export class DatasetClient {
       const lang = opts.lang ?? "en";
       return `${this.baseUrl}/data/latest/analysis.${lang}.json`;
     }
+    if (key === "factlayer") {
+      return `${this.baseUrl}/data/latest/facts.json`;
+    }
     if (key === "sources" || key === "freshness" || key === "schema-version" || key === "translations") {
       return `${this.baseUrl}/data/metadata/${key}.json`;
     }

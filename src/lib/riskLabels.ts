@@ -1,4 +1,4 @@
-import type { MarketRegime, RiskDimensionKey, RiskLevel, RiskTrend } from "@/schemas";
+import type { MarketRegime, RiskDimensionKey, RiskEvidenceState, RiskLevel, RiskTrend } from "@/schemas";
 
 /**
  * Risk enum → i18n key mapping (architecture §8.7: terminology follows the glossary; no hardcoded UI copy).
@@ -42,6 +42,34 @@ export const RISK_TREND_KEYS: Record<RiskTrend, string> = {
   rising: "common:direction.rising",
   falling: "common:direction.falling",
   flat: "common:direction.flat",
+};
+
+export const RISK_EVIDENCE_KEYS: Record<RiskEvidenceState, string> = {
+  complete: "evidence.complete",
+  partial: "evidence.partial",
+  insufficient_evidence: "evidence.insufficient",
+};
+
+export const RISK_INDICATOR_KEYS: Record<string, string> = {
+  real_rate_dfii10: "indicatorNames.realRate",
+  yield_curve_10y2y: "indicatorNames.yieldCurve",
+  dollar_index: "indicatorNames.dollarIndex",
+  dgs10: "indicatorNames.tenYearYield",
+  fed_balance_sheet: "indicatorNames.fedBalanceSheet",
+  reverse_repo: "indicatorNames.reverseRepo",
+  hy_oas: "indicatorNames.hyOas",
+  ig_oas: "indicatorNames.igOas",
+  breadth_above_ma200: "indicatorNames.breadthAboveMa200",
+  new_highs_ratio: "indicatorNames.newHighsRatio",
+  new_lows_ratio: "indicatorNames.newLowsRatio",
+  small_cap_relative: "indicatorNames.smallCapRelative",
+  semis_relative: "indicatorNames.semisRelative",
+  vix: "indicatorNames.vix",
+  realized_vol: "indicatorNames.realizedVol",
+  cross_asset_confirmation: "indicatorNames.crossAssetConfirmation",
+  price_vs_ma200: "indicatorNames.priceVsMa200",
+  drawdown_52w: "indicatorNames.drawdown52w",
+  momentum_3m: "indicatorNames.momentum3m",
 };
 
 /** market_state in the analysis file matches the risk level enum; map loosely to guard against unknown values. */

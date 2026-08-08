@@ -18,5 +18,13 @@
     "relatedAssets": "Assets",
     "source": "Source"
   },
-  "none": "No calendar events"
+  "none": "No calendar events",
+  "display": {
+    "earningsSuffix": "Earnings",
+    "events": {
+      "consumerPriceIndex": "Consumer Price Index",
+      "producerPriceIndex": "Producer Price Index",
+      "advanceRetailSales": "Advance Retail Sales"
+    }
+  }
 }

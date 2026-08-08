@@ -18,13 +18,16 @@ from pathlib import Path
 import pytest
 
 from pipeline.analysis.freshness import evaluate_analysis_freshness, evaluate_freshness
+from pipeline.lineage import fact_generation_id
 from pipeline.analysis.validate import (
+    compare_analysis_lineage,
     compare_bilingual,
     load_analysis,
+    validate_analysis_lineage,
     validate_analysis_pair,
     validate_evidence_refs,
 )
-from pipeline.schemas import FactLayer
+from pipeline.schemas import AnalysisDataset, FactLayer
 from tests.pipeline.factories import DEFAULT_NOW, make_analysis, make_facts
 
 
@@ -47,6 +50,10 @@ def analysis_pair(tmp_path: Path) -> tuple[Path, Path, Path]:
 def _zh_and_en(analysis_pair: tuple[Path, Path, Path]):
     zh_path, en_path, _facts_path = analysis_pair
     return load_analysis(zh_path), load_analysis(en_path)
+
+
+def _analysis(data: dict) -> AnalysisDataset:
+    return AnalysisDataset.model_validate(data)
 
 
 def test_valid_pair_passes(analysis_pair: tuple[Path, Path, Path]) -> None:
@@ -106,6 +113,71 @@ def test_all_evidence_refs_valid(analysis_pair: tuple[Path, Path, Path]) -> None
     zh = load_analysis(zh_path)
     facts = FactLayer.model_validate(json.loads(facts_path.read_text(encoding="utf-8")))
     assert validate_evidence_refs(zh, facts) == []
+
+
+def test_fact_generation_id_is_stable_when_publication_time_changes() -> None:
+    first = make_facts(generated_at="2026-08-03T10:00:00Z")
+    second = make_facts(generated_at="2026-08-03T11:00:00Z")
+
+    assert fact_generation_id(first) == fact_generation_id(second)
+    assert first["generation_id"] == fact_generation_id(first)
+
+
+def test_fact_generation_id_changes_when_observed_content_changes() -> None:
+    first = make_facts()
+    second = make_facts(market_summary={"spx_change_1d": 9.9})
+
+    assert fact_generation_id(first) != fact_generation_id(second)
+
+
+def test_analysis_lineage_matches_fact_layer() -> None:
+    facts = FactLayer.model_validate(make_facts())
+    lineage = {
+        "fact_generation_id": facts.generation_id,
+        "fact_generated_at": facts.generated_at,
+        "input_freshness": facts.data_freshness,
+        "pair_id": "pair-test-1",
+    }
+    analysis = _analysis(make_analysis(lineage=lineage))
+
+    assert validate_analysis_lineage(analysis, facts) == []
+
+
+def test_analysis_lineage_rejects_missing_or_stale_identity() -> None:
+    facts = FactLayer.model_validate(make_facts())
+    analysis = _analysis(make_analysis())
+
+    assert validate_analysis_lineage(analysis, facts) == ["analysis lineage missing"]
+
+    lineage = {
+        "fact_generation_id": "sha256:" + "0" * 64,
+        "fact_generated_at": facts.generated_at,
+        "input_freshness": facts.data_freshness,
+        "pair_id": "pair-test-1",
+    }
+    analysis = _analysis(make_analysis(lineage=lineage))
+    assert any("fact_generation_id" in issue for issue in validate_analysis_lineage(analysis, facts))
+
+
+def test_analysis_pair_lineage_must_match() -> None:
+    facts = FactLayer.model_validate(make_facts())
+    lineage = {
+        "fact_generation_id": facts.generation_id,
+        "fact_generated_at": facts.generated_at,
+        "input_freshness": facts.data_freshness,
+        "pair_id": "pair-test-1",
+    }
+    zh = _analysis(make_analysis(language="zh-CN", lineage=lineage))
+    en = _analysis(make_analysis(language="en", lineage={**lineage, "pair_id": "pair-test-2"}))
+
+    assert compare_analysis_lineage(zh, en) == ["analysis pair_id mismatch"]
+
+
+def test_bilingual_freshness_must_match() -> None:
+    zh = _analysis(make_analysis(language="zh-CN", data_freshness="fresh"))
+    en = _analysis(make_analysis(language="en", data_freshness="degraded"))
+
+    assert any("data_freshness mismatch" in issue for issue in compare_bilingual(zh, en))
 
 
 # ---------- freshness five states ----------

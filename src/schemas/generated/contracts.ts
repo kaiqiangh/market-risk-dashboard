@@ -51,11 +51,17 @@ export type NewsSourceLang = z.infer<typeof NewsSourceLang>;
 export const ReasonCode = z.enum(["ok", "no_rows_returned", "no_events_in_window", "provider_http_error", "provider_rate_limited", "provider_auth_failed", "provider_parse_error", "served_from_fallback", "served_from_cache", "cache_expired", "cache_invalid", "all_providers_failed", "not_collected_this_run", "interval_exceeded", "input_dataset_unhealthy"]);
 export type ReasonCode = z.infer<typeof ReasonCode>;
 
+export const RiskCalibrationStatus = z.enum(["provisional", "calibrated"]);
+export type RiskCalibrationStatus = z.infer<typeof RiskCalibrationStatus>;
+
 export const RiskDimensionKey = z.enum(["macro", "liquidity_credit", "equity_structure", "volatility", "cross_asset", "trend"]);
 export type RiskDimensionKey = z.infer<typeof RiskDimensionKey>;
 
 export const RiskDirection = z.enum(["higher_is_riskier", "lower_is_riskier", "neutral"]);
 export type RiskDirection = z.infer<typeof RiskDirection>;
+
+export const RiskEvidenceState = z.enum(["complete", "partial", "insufficient_evidence"]);
+export type RiskEvidenceState = z.infer<typeof RiskEvidenceState>;
 
 export const RiskLevel = z.enum(["risk_on", "low_risk", "caution", "high_risk", "severe_risk", "crisis"]);
 export type RiskLevel = z.infer<typeof RiskLevel>;
@@ -65,6 +71,17 @@ export type RiskTrend = z.infer<typeof RiskTrend>;
 
 
 // ---- Models ----
+
+/** The fact-layer and bilingual-pair identity consumed by one AI brief. */
+export const AnalysisLineage = z
+  .object({
+    fact_generation_id: z.string().min(71).regex(new RegExp("^sha256:[0-9a-f]{64}$")),
+    fact_generated_at: utcDateTime,
+    input_freshness: z.record(FreshnessStatus).default({}),
+    pair_id: z.string().min(1).max(128),
+  })
+  .passthrough();
+export type AnalysisLineage = z.infer<typeof AnalysisLineage>;
 
 /** A single piece of evidence that can be cited by the AI. */
 export const EvidenceRef = z
@@ -116,7 +133,8 @@ export const AnalysisDataset = z
     bear_case: CaseStatement,
     confidence: z.number().finite().min(0).max(1),
     evidence_refs: z.array(EvidenceRef).default([]),
-    data_freshness: FreshnessStatus.default("fresh"),
+    lineage: AnalysisLineage.nullable().default(null),
+    data_freshness: FreshnessStatus.default("degraded"),
   })
   .passthrough();
 export type AnalysisDataset = z.infer<typeof AnalysisDataset>;
@@ -244,6 +262,24 @@ export const CommoditiesEnvelope = z
   .passthrough();
 export type CommoditiesEnvelope = z.infer<typeof CommoditiesEnvelope>;
 
+/** Transparent cross-asset signal input and its current diagnostic state. Signal rows are deliberately separate from :class:`RiskIndicator`: the current calibration policy gates the new cross-asset inputs from production weighting, while Risk Lab still needs to show their provenance and missing-data behaviour. */
+export const CrossAssetSignal = z
+  .object({
+    key: z.string().min(1),
+    value: z.number().finite().nullable().default(null),
+    triggered: z.boolean().nullable().default(null),
+    source: z.string().min(1),
+    provider: z.string().min(1),
+    unit: z.string().min(1),
+    transformation: z.string().min(1),
+    history_observations: z.number().int().min(0).default(0),
+    status: FreshnessStatus.default("fresh"),
+    is_proxy: z.boolean(),
+    production_scoring: z.boolean().default(false),
+  })
+  .passthrough();
+export type CrossAssetSignal = z.infer<typeof CrossAssetSignal>;
+
 export const CryptoAsset = z
   .object({
     symbol: z.string().min(1),
@@ -341,6 +377,8 @@ export const RiskDimension = z
     indicators: z.array(RiskIndicator).default([]),
     coverage: z.number().finite().min(0).max(1),
     trend: RiskTrend.default("flat"),
+    evidence_state: RiskEvidenceState.nullable().default(null),
+    missing_indicators: z.array(z.string()).default([]),
   })
   .passthrough();
 export type RiskDimension = z.infer<typeof RiskDimension>;
@@ -356,13 +394,20 @@ export const RiskModelResult = z
     trend_1w: z.number().finite().nullable().default(null),
     trend_1m: z.number().finite().nullable().default(null),
     dimensions: z.array(RiskDimension).default([]),
+    cross_asset_signals: z.array(CrossAssetSignal).default([]),
     top_drivers: z.array(DriverContribution).default([]),
     breadth: BreadthSnapshot.nullable(),
     regime: MarketRegime,
     regime_evidence: z.array(z.string()).default([]),
     confidence: z.number().finite().min(0).max(1),
     confidence_factors: z.record(z.number().finite()).default({}),
-    disclaimer: z.string().default("This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."),
+    disclaimer: z.string().default("This indicator is a modeled estimate of market stress based on historical data and current market signals. Data trust is not statistical confidence, a calibrated probability, or investment advice."),
+    evidence_state: RiskEvidenceState.nullable().default(null),
+    evidence_coverage: z.number().finite().min(0).max(1).nullable().default(null),
+    score_lower_bound: z.number().finite().min(0).max(100).nullable().default(null),
+    score_upper_bound: z.number().finite().min(0).max(100).nullable().default(null),
+    calibration_policy_version: z.string().min(1).default("1.0.0"),
+    calibration_status: RiskCalibrationStatus.default("provisional"),
   })
   .passthrough();
 export type RiskModelResult = z.infer<typeof RiskModelResult>;
@@ -414,6 +459,17 @@ export const DatasetFreshness = z
   .passthrough();
 export type DatasetFreshness = z.infer<typeof DatasetFreshness>;
 
+/** One resolved provider and the datasets it served for a domain. */
+export const ProviderResolution = z
+  .object({
+    provider: z.string().min(1),
+    datasets: z.array(z.string()).default([]),
+    used_fallback: z.boolean().default(false),
+    from_cache: z.boolean().default(false),
+  })
+  .passthrough();
+export type ProviderResolution = z.infer<typeof ProviderResolution>;
+
 /** One provider domain's entry in ``metadata/sources.json``. ``degraded`` is derived from the outcomes of the datasets this domain serves, never set independently — see :meth:`~pipeline.storage.outcomes.RunOutcomes.sources_projection`. Unlike every other contract in this package this model permits extra fields. Provider metadata is provider-specific and additive (``sources`` for the RSS fan-out, ``error`` for a failed call, cache diagnostics), and forbidding it would mean either dropping real operational detail on the floor or bumping the schema every time a provider learns to report something new. The *derived* fields below are the contract; the rest is passthrough. */
 export const DomainStatus = z
   .object({
@@ -422,6 +478,7 @@ export const DomainStatus = z
     reason: FreshnessReason,
     datasets: z.array(z.string()).default([]),
     provider: z.string().nullable().default(null),
+    providers: z.array(ProviderResolution).default([]),
   })
   .passthrough();
 export type DomainStatus = z.infer<typeof DomainStatus>;
@@ -482,6 +539,7 @@ export const FactLayer = z
   .object({
     generated_at: utcDateTime,
     schema_version: z.string().min(1),
+    generation_id: z.string().min(71).regex(new RegExp("^sha256:[0-9a-f]{64}$")).nullable().default(null),
     data_freshness: z.record(FreshnessStatus).default({}),
     risk: RiskModelResult,
     macro_summary: z.record(z.unknown()).default({}),

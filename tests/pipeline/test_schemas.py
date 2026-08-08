@@ -116,6 +116,26 @@ def test_golden_documents_valid(name: str, model: type) -> None:
     model.model_validate(load_fixture(name))
 
 
+def test_legacy_risk_payload_reads_without_evidence_fields() -> None:
+    """Old risk snapshots remain readable while new runs publish evidence metadata."""
+    legacy = load_fixture("risk.json")
+    legacy["payload"].pop("evidence_state", None)
+    legacy["payload"].pop("evidence_coverage", None)
+    legacy["payload"].pop("score_lower_bound", None)
+    legacy["payload"].pop("score_upper_bound", None)
+    for dimension in legacy["payload"]["dimensions"]:
+        dimension.pop("evidence_state", None)
+        dimension.pop("missing_indicators", None)
+
+    parsed = RiskEnvelope.model_validate(legacy)
+
+    assert parsed.payload.evidence_state is None
+    assert parsed.payload.evidence_coverage is None
+    assert parsed.payload.score_lower_bound is None
+    assert parsed.payload.score_upper_bound is None
+    assert all(d.evidence_state is None for d in parsed.payload.dimensions)
+
+
 # ---------- Negative: hard constraints ----------
 
 def _valid_macro() -> dict:

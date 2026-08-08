@@ -16,6 +16,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from pydantic import ValidationError
 
 from pipeline.config.models import ConfigError, SourcesConfig, ThemesConfig, load_config
 from pipeline.providers import build_default_providers
@@ -199,6 +200,77 @@ def test_operations_knobs_are_typed_and_defaulted(tmp_path: Path) -> None:
     assert ops.news_max_items == 50
     assert ops.news_summary_max_chars == 160
     assert ops.recency_half_life_hours == 48.0
+
+
+def test_news_source_accepts_fallback_urls_and_defaults_to_empty(tmp_path: Path) -> None:
+    """#124: a source may declare an ordered fallback chain; absent means no fallback."""
+    from pipeline.config.models import NewsSource
+
+    src = NewsSource(
+        id="clschina", name="财联社", url="https://hub.slarker.me/cls/telegraph", lang="zh",
+        fallback_urls=["https://rsshub.ktachibana.party/cls/telegraph"],
+    )
+    assert src.fallback_urls == ["https://rsshub.ktachibana.party/cls/telegraph"]
+
+    plain = NewsSource(id="cnbc", name="CNBC", url="https://example.com/feed", lang="en")
+    assert plain.fallback_urls == []
+
+    # Round-trips through the real loader path (load_config → NewsSourcesConfig).
+    real = Path(__file__).resolve().parents[2] / "config"
+    news = yaml.safe_load((real / "news_sources.yaml").read_text(encoding="utf-8"))
+    news["sources"][0]["fallback_urls"] = ["https://example.com/fallback"]
+    _write(tmp_path, "news_sources.yaml", news)
+    settings = _settings_with_config_dir(tmp_path)
+    loaded = settings.load_news_sources_config()
+    assert loaded.sources[0].fallback_urls == ["https://example.com/fallback"]
+
+
+def test_news_source_rejects_non_https_url_in_chain(tmp_path: Path) -> None:
+    """#124: the whole chain is https-only (S-3); a http:// entry fails at load."""
+    from pipeline.config.models import ConfigError, NewsSource
+
+    with pytest.raises(ValidationError, match="https"):
+        NewsSource(
+            id="x", name="X", url="https://ok.example/feed",
+            fallback_urls=["http://insecure.example/feed"],
+        )
+
+    # The same rule applies to the primary url itself.
+    with pytest.raises(ValidationError, match="https"):
+        NewsSource(id="x", name="X", url="http://insecure.example/feed")
+
+    # And it fails through the config loader, not just the model constructor.
+    real = Path(__file__).resolve().parents[2] / "config"
+    news = yaml.safe_load((real / "news_sources.yaml").read_text(encoding="utf-8"))
+    news["sources"][0]["fallback_urls"] = ["http://insecure.example/feed"]
+    _write(tmp_path, "news_sources.yaml", news)
+    settings = _settings_with_config_dir(tmp_path)
+    with pytest.raises(ConfigError, match="https"):
+        settings.load_news_sources_config()
+
+
+def test_news_source_rejects_duplicate_url_in_chain(tmp_path: Path) -> None:
+    """#124: an exact duplicate URL within a chain is a config mistake, not a fallback."""
+    from pipeline.config.models import ConfigError, NewsSource
+
+    with pytest.raises(ValidationError, match="duplicate"):
+        NewsSource(
+            id="x", name="X", url="https://example.com/feed",
+            fallback_urls=["https://example.com/feed"],
+        )
+    with pytest.raises(ValidationError, match="duplicate"):
+        NewsSource(
+            id="x", name="X", url="https://example.com/feed",
+            fallback_urls=["https://a.example/feed", "https://a.example/feed"],
+        )
+
+    real = Path(__file__).resolve().parents[2] / "config"
+    news = yaml.safe_load((real / "news_sources.yaml").read_text(encoding="utf-8"))
+    news["sources"][0]["fallback_urls"] = [news["sources"][0]["url"]]
+    _write(tmp_path, "news_sources.yaml", news)
+    settings = _settings_with_config_dir(tmp_path)
+    with pytest.raises(ConfigError, match="duplicate"):
+        settings.load_news_sources_config()
 
 
 def test_market_sector_rows_come_from_themes_config() -> None:

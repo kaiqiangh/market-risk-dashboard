@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from pipeline.lineage import fact_generation_id
 from pipeline.schemas import (
     CalendarEnvelope,
     CryptoEnvelope,
@@ -57,17 +58,19 @@ class FactLayerBuilder:
 
         evidence_index = self._build_evidence(risk, macro, equities, crypto, news, calendar, sectors)
 
-        return FactLayer(
-            generated_at=generated_at or now_utc(),
-            schema_version=SCHEMA_VERSION,
-            data_freshness=data_freshness,
-            risk=risk.payload,
-            macro_summary=self._macro_summary(macro),
-            market_summary=self._market_summary(equities, crypto, sectors),
-            news_top=[n.model_dump() for n in news.payload.items[:15]],
-            calendar_next7d=[e.model_dump() for e in calendar.payload.events[:20]],
-            evidence_index=evidence_index,
-        )
+        fact_payload = {
+            "generated_at": generated_at or now_utc(),
+            "schema_version": SCHEMA_VERSION,
+            "data_freshness": data_freshness,
+            "risk": risk.payload,
+            "macro_summary": self._macro_summary(macro),
+            "market_summary": self._market_summary(equities, crypto, sectors),
+            "news_top": [n.model_dump() for n in news.payload.items[:15]],
+            "calendar_next7d": [e.model_dump() for e in calendar.payload.events[:20]],
+            "evidence_index": evidence_index,
+        }
+        fact_payload["generation_id"] = fact_generation_id(fact_payload)
+        return FactLayer.model_validate(fact_payload)
 
     # ---- Summaries ----
 
@@ -188,7 +191,17 @@ class FactLayerBuilder:
             add(f"ev_news_{i}", "news", f"payload.items[{i}].importance", "importance", item.importance, item.published_at)
 
         for i, event in enumerate(calendar.payload.events[:5]):
-            add(f"ev_calendar_{i}", "calendar", f"payload.events[{i}].datetime", "event_datetime", event.datetime)
+            # Event records do not carry their own observation timestamp. Use the calendar
+            # envelope's generation time rather than now_utc(), otherwise a fact-layer rebuild
+            # changes the evidence index and therefore its deterministic generation_id.
+            add(
+                f"ev_calendar_{i}",
+                "calendar",
+                f"payload.events[{i}].datetime",
+                "event_datetime",
+                event.datetime,
+                calendar.generated_at,
+            )
 
         # #98: sector/theme 1d moves are citable evidence — the AI brief's rule is
         # "may ONLY cite entries present in the evidence_index", so the Sector / theme

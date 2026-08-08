@@ -30,6 +30,9 @@ class FactLayer(ContractModel):
 
     generated_at: UTCDateTime
     schema_version: str = Field(min_length=1)
+    # Optional for backward-compatible parsing; publication validation must reject a missing
+    # identity as a fresh AI input. New fact-layer builds always populate this field.
+    generation_id: str | None = Field(default=None, min_length=71, pattern=r"^sha256:[0-9a-f]{64}$")
     data_freshness: dict[str, FreshnessStatus] = Field(default_factory=dict)
     risk: RiskModelResult
     macro_summary: dict[str, Any] = Field(default_factory=dict)

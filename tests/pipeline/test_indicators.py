@@ -75,7 +75,14 @@ def test_trend_snapshot() -> None:
     snap = trend.trend_snapshot({"SPY": spy}, "SPY")
     assert snap["price_vs_ma200"] is not None
     assert snap["drawdown_52w"] is not None
+    assert snap["realized_vol"] == technical.realized_vol([row["close"] for row in spy], 20)
+    assert snap["realized_vol"] is not None
     assert snap["last_close"] == 120.0
+
+
+def test_trend_snapshot_leaves_realized_vol_missing_without_window() -> None:
+    snap = trend.trend_snapshot({"SPY": _rows([100.0] * 20)}, "SPY")
+    assert snap["realized_vol"] is None
 
 
 # ---------- #69: breadth discloses its sample ----------

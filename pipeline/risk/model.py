@@ -22,8 +22,11 @@ from pipeline.risk import regime as regime_mod
 from pipeline.risk.scoring import compute_indicator_score
 from pipeline.schemas import (
     BreadthSnapshot,
+    CrossAssetSignal,
     DriverContribution,
+    RiskCalibrationStatus,
     RiskDimension,
+    RiskEvidenceState,
     RiskIndicator,
     RiskLevel,
     RiskModelResult,
@@ -40,7 +43,13 @@ DIMENSION_LABELS = {
     "trend": "Trend",
 }
 
-DEFAULT_DISCLAIMER = "This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."
+# Series keys with a canonical macro group must not be accepted from a legacy or incorrect
+# group. This prevents a fixture or stale payload from hiding a collection-to-risk wiring bug.
+CANONICAL_MACRO_GROUPS = {
+    "vixcls": "volatility",
+}
+
+DEFAULT_DISCLAIMER = "This indicator is a modeled estimate of market stress based on historical data and current market signals. Data trust is not statistical confidence, a calibrated probability, or investment advice."
 
 # Indicator key → 5Y history series source (FRED series key; tuple means a composite series, e.g. term spread)
 INDICATOR_HISTORY_SERIES: dict[str, str | tuple[str, str]] = {
@@ -92,6 +101,20 @@ class RiskModel:
         scoring_cfg = raw.get("scoring", {})
         self.percentile_window_years = int(scoring_cfg.get("percentile_window_years", 5))
         self.fallback_percentile = float(scoring_cfg.get("fallback_percentile", 50.0))
+        evidence_cfg = raw.get("evidence", {})
+        self.insufficient_evidence_threshold = float(
+            evidence_cfg.get("insufficient_coverage_threshold", 0.5)
+        )
+        if not 0.0 <= self.insufficient_evidence_threshold <= 1.0:
+            raise ValueError("risk evidence insufficient_coverage_threshold must be between 0 and 1")
+        calibration_cfg = raw.get("calibration_policy", {}) or {}
+        if not isinstance(calibration_cfg, dict):
+            raise ValueError("risk calibration_policy must be a mapping")
+        self.calibration_policy_version = str(calibration_cfg.get("version", "1.0.0"))
+        calibration_status = str(calibration_cfg.get("status", "provisional"))
+        if calibration_status not in {"provisional", "calibrated"}:
+            raise ValueError("risk calibration_policy.status must be provisional or calibrated")
+        self.calibration_status: RiskCalibrationStatus = calibration_status
         # 5Y window ≈ 252 trading days/year (daily-frequency series)
         self._max_history_samples = max(60, self.percentile_window_years * 252)
 
@@ -220,9 +243,13 @@ class RiskModel:
         prev_dim_scores: dict[str, float] = ctx.get("_prev_dim_scores") or {}
         proxy_discount = conf_mod.proxy_discount_factor()
         dimensions: list[RiskDimension] = []
+        dimension_bounds: dict[str, tuple[float, float]] = {}
+        available_indicator_count = 0
         for dim_key, builder in builders.items():
             indicators = builder(ctx)
             available = [i for i in indicators if i.value is not None]
+            missing_indicators = [i.key for i in indicators if i.value is None]
+            available_indicator_count += len(available)
             # #69: a proxy-backed indicator counts for less than a measured one in coverage —
             # its own knob (confidence.proxy_discount_factor), NOT the degrade factor.
             effective_available = sum(
@@ -233,6 +260,26 @@ class RiskModel:
                 dim_score = round(sum(i.risk_score * i.weight for i in available) / sum(i.weight for i in available), 2)
             else:
                 dim_score = 0.0
+            indicator_weight_total = sum(i.weight for i in indicators) or 1.0
+            observed_weighted_score = sum(i.risk_score * i.weight for i in available)
+            missing_weight = sum(i.weight for i in indicators if i.value is None)
+            dim_lower_bound = round(
+                max(0.0, min(100.0, observed_weighted_score / indicator_weight_total)), 2
+            )
+            dim_upper_bound = round(
+                max(
+                    0.0,
+                    min(100.0, (observed_weighted_score + 100.0 * missing_weight) / indicator_weight_total),
+                ),
+                2,
+            )
+            dimension_bounds[dim_key] = (dim_lower_bound, dim_upper_bound)
+            if not available:
+                evidence_state: RiskEvidenceState = "insufficient_evidence"
+            elif coverage < 1.0 or missing_indicators:
+                evidence_state = "partial"
+            else:
+                evidence_state = "complete"
             cfg_weight = float(self.dim_cfg.get(dim_key, {}).get("weight", 0))
             dimensions.append(
                 RiskDimension(
@@ -244,6 +291,8 @@ class RiskModel:
                     indicators=indicators,
                     coverage=coverage,
                     trend=_dim_trend(dim_score, prev_dim_scores.get(dim_key)),
+                    evidence_state=evidence_state,
+                    missing_indicators=missing_indicators,
                 )
             )
 
@@ -327,6 +376,22 @@ class RiskModel:
         consistency = conf_mod.consistency_from_dimension_scores([d.score for d in dimensions])
         confidence = conf_mod.compute_confidence(data_quality, coverage, consistency, self.conf_weights)
 
+        configured_weight_total = sum(d.weight for d in dimensions) or 1.0
+        score_lower_bound = round(
+            max(0.0, min(100.0, sum(d.weight * dimension_bounds[d.key][0] for d in dimensions) / configured_weight_total)),
+            2,
+        )
+        score_upper_bound = round(
+            max(0.0, min(100.0, sum(d.weight * dimension_bounds[d.key][1] for d in dimensions) / configured_weight_total)),
+            2,
+        )
+        if available_indicator_count == 0 or coverage < self.insufficient_evidence_threshold:
+            evidence_state: RiskEvidenceState = "insufficient_evidence"
+        elif all(d.evidence_state == "complete" for d in dimensions) and coverage >= 1.0:
+            evidence_state = "complete"
+        else:
+            evidence_state = "partial"
+
         # #69: publish the breadth sample disclosure (qualifying/considered counts) so a
         # thinning sample is visible in the data.
         breadth_data = ctx.get("breadth")
@@ -343,6 +408,10 @@ class RiskModel:
             trend_1w=trend_1w,
             trend_1m=trend_1m,
             dimensions=dimensions,
+            cross_asset_signals=[
+                CrossAssetSignal.model_validate(signal)
+                for signal in ctx.get("cross_asset", {}).get("signals", [])
+            ],
             top_drivers=top_drivers,
             breadth=breadth_snapshot_value,
             regime=regime,
@@ -354,6 +423,12 @@ class RiskModel:
                 "consistency": consistency,
             },
             disclaimer=DEFAULT_DISCLAIMER,
+            evidence_state=evidence_state,
+            evidence_coverage=round(coverage, 4),
+            score_lower_bound=score_lower_bound,
+            score_upper_bound=score_upper_bound,
+            calibration_policy_version=self.calibration_policy_version,
+            calibration_status=self.calibration_status,
         )
 
     def _level_for(self, total_score: float) -> RiskLevel:
@@ -418,7 +493,12 @@ def _parse_thresholds(raw: dict[str, Any]) -> list[tuple[RiskLevel, Any]]:
 
 def _series_value(ctx: dict[str, Any], key: str) -> float | None:
     macro = ctx.get("macro")
-    for group in ("rates", "credit", "inflation", "labor", "liquidity", "fx"):
+    groups = (
+        (CANONICAL_MACRO_GROUPS[key],)
+        if key in CANONICAL_MACRO_GROUPS
+        else ("rates", "credit", "volatility", "inflation", "labor", "liquidity", "fx")
+    )
+    for group in groups:
         for m in getattr(macro, group, []):
             if m.key == key:
                 return m.value

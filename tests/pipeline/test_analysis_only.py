@@ -19,8 +19,10 @@ import pytest
 
 import pipeline.analysis.contract as contract_mod
 import pipeline.run as run_mod
+from pipeline.lineage import fact_generation_id
 from pipeline.settings import Settings
-from tests.pipeline.factories import make_envelope
+from pipeline.utils import now_utc
+from tests.pipeline.factories import make_envelope, make_facts
 
 
 def _write_json(path: Path, obj: object) -> None:
@@ -37,8 +39,23 @@ def _build_analysis_pair(latest: Path) -> None:
     zh = json.loads((_FIXTURES / "analysis.zh-CN.json").read_text(encoding="utf-8"))
     en = copy.deepcopy(zh)
     en["language"] = "en"
+    current = now_utc()
+    facts = make_facts(generated_at=current)
+    lineage = {
+        "fact_generation_id": fact_generation_id(facts),
+        "fact_generated_at": facts["generated_at"],
+        "input_freshness": facts["data_freshness"],
+        "pair_id": "pair-analysis-only-test",
+    }
+    zh["lineage"] = lineage
+    en["lineage"] = lineage
+    zh["generated_at"] = current
+    en["generated_at"] = current
+    zh["data_freshness"] = "fresh"
+    en["data_freshness"] = "fresh"
     _write_json(latest / "analysis.zh-CN.json", zh)
     _write_json(latest / "analysis.en.json", en)
+    _write_json(latest / "facts.json", facts)
 
 
 @pytest.fixture()
@@ -100,3 +117,155 @@ def test_analysis_only_merges_translations_at_the_call_site(analysis_only_env: d
     translations = json.loads((analysis_only_env["data_dir"] / "metadata" / "translations.json").read_text(encoding="utf-8"))
     assert translations["last_merge"]["status"] == "merged"
     assert translations["last_merge"]["merged_items"] == 2
+
+
+def test_analysis_only_records_fresh_for_current_lineage(analysis_only_env: dict[str, Path]) -> None:
+    assert run_mod._run_analysis_only() == 0
+
+    freshness = json.loads(
+        (analysis_only_env["data_dir"] / "metadata" / "freshness.json").read_text(encoding="utf-8")
+    )
+    assert freshness["datasets"]["analysis"]["status"] == "fresh"
+    assert freshness["datasets"]["analysis"]["reason"]["code"] == "ok"
+
+
+def test_malformed_replacement_restores_last_readable_pair(analysis_only_env: dict[str, Path]) -> None:
+    assert run_mod._run_analysis_only() == 0
+    latest = analysis_only_env["latest"]
+    original = json.loads((latest / "analysis.en.json").read_text(encoding="utf-8"))
+    (latest / "analysis.en.json").write_text("{not valid json", encoding="utf-8")
+
+    assert run_mod._run_analysis_only() == 0
+
+    restored = json.loads((latest / "analysis.en.json").read_text(encoding="utf-8"))
+    assert restored["summary"] == original["summary"]
+    freshness = json.loads(
+        (analysis_only_env["data_dir"] / "metadata" / "freshness.json").read_text(encoding="utf-8")
+    )
+    assert freshness["datasets"]["analysis"]["status"] == "degraded"
+    assert freshness["datasets"]["analysis"]["reason"]["code"] == "provider_parse_error"
+
+
+def test_lineage_mismatch_is_degraded_without_losing_readable_pair(
+    analysis_only_env: dict[str, Path],
+) -> None:
+    latest = analysis_only_env["latest"]
+    assert run_mod._run_analysis_only() == 0
+    en_path = latest / "analysis.en.json"
+    original = json.loads(en_path.read_text(encoding="utf-8"))
+    en = json.loads(en_path.read_text(encoding="utf-8"))
+    en["lineage"]["fact_generation_id"] = "sha256:" + "0" * 64
+    en_path.write_text(json.dumps(en, ensure_ascii=False), encoding="utf-8")
+
+    assert run_mod._run_analysis_only() == 0
+
+    freshness = json.loads(
+        (analysis_only_env["data_dir"] / "metadata" / "freshness.json").read_text(encoding="utf-8")
+    )
+    assert freshness["datasets"]["analysis"]["status"] == "degraded"
+    assert freshness["datasets"]["analysis"]["reason"]["code"] == "input_dataset_unhealthy"
+    restored = json.loads(en_path.read_text(encoding="utf-8"))
+    assert restored["summary"] == original["summary"]
+    assert restored["lineage"]["fact_generation_id"] == original["lineage"]["fact_generation_id"]
+
+    reports = sorted(
+        (analysis_only_env["data_dir"] / "artifacts" / "logs").glob("run-report-*.json")
+    )
+    assert reports
+    report = json.loads(reports[-1].read_text(encoding="utf-8"))
+    assert "analysis" in report["degraded_datasets"]
+    assert "input_dataset_unhealthy" in report["degraded"][0]
+    assert "0" * 64 not in report["degraded"][0]
+
+
+def test_missing_pair_restores_last_readable_pair(analysis_only_env: dict[str, Path]) -> None:
+    assert run_mod._run_analysis_only() == 0
+    latest = analysis_only_env["latest"]
+    original = json.loads((latest / "analysis.zh-CN.json").read_text(encoding="utf-8"))
+    (latest / "analysis.zh-CN.json").unlink()
+
+    assert run_mod._run_analysis_only() == 0
+
+    restored = json.loads((latest / "analysis.zh-CN.json").read_text(encoding="utf-8"))
+    assert restored["summary"] == original["summary"]
+    freshness = json.loads(
+        (analysis_only_env["data_dir"] / "metadata" / "freshness.json").read_text(encoding="utf-8")
+    )
+    assert freshness["datasets"]["analysis"]["reason"]["code"] == "all_providers_failed"
+
+
+def test_degraded_fact_inputs_keep_pair_readable_but_not_fresh(
+    analysis_only_env: dict[str, Path],
+) -> None:
+    latest = analysis_only_env["latest"]
+    assert run_mod._run_analysis_only() == 0
+
+    existing_freshness = json.loads((latest / "facts.json").read_text(encoding="utf-8"))["data_freshness"]
+    degraded_freshness = {key: "degraded" for key in existing_freshness}
+    facts = make_facts(generated_at=now_utc(), data_freshness=degraded_freshness)
+    _write_json(latest / "facts.json", facts)
+    lineage = {
+        "fact_generation_id": fact_generation_id(facts),
+        "fact_generated_at": facts["generated_at"],
+        "input_freshness": facts["data_freshness"],
+        "pair_id": "pair-analysis-only-degraded-input-test",
+    }
+    for language in ("zh-CN", "en"):
+        path = latest / f"analysis.{language}.json"
+        analysis = json.loads(path.read_text(encoding="utf-8"))
+        analysis["lineage"] = lineage
+        _write_json(path, analysis)
+
+    assert run_mod._run_analysis_only() == 0
+
+    freshness = json.loads(
+        (analysis_only_env["data_dir"] / "metadata" / "freshness.json").read_text(encoding="utf-8")
+    )
+    assert freshness["datasets"]["analysis"]["status"] == "degraded"
+    assert freshness["datasets"]["analysis"]["reason"]["code"] == "input_dataset_unhealthy"
+    assert (latest / "analysis.zh-CN.json").exists()
+    assert (latest / "analysis.en.json").exists()
+
+
+def test_stale_pair_is_readable_but_not_fresh(analysis_only_env: dict[str, Path]) -> None:
+    assert run_mod._run_analysis_only() == 0
+    latest = analysis_only_env["latest"]
+    for language in ("zh-CN", "en"):
+        path = latest / f"analysis.{language}.json"
+        analysis = json.loads(path.read_text(encoding="utf-8"))
+        analysis["generated_at"] = "2024-01-01T00:00:00Z"
+        _write_json(path, analysis)
+
+    assert run_mod._run_analysis_only() == 0
+
+    freshness = json.loads(
+        (analysis_only_env["data_dir"] / "metadata" / "freshness.json").read_text(encoding="utf-8")
+    )
+    assert freshness["datasets"]["analysis"]["status"] == "stale"
+    assert freshness["datasets"]["analysis"]["reason"]["code"] == "interval_exceeded"
+    assert (latest / "analysis.zh-CN.json").exists()
+    assert (latest / "analysis.en.json").exists()
+
+
+def test_valid_pair_recovers_after_failed_replacement(analysis_only_env: dict[str, Path]) -> None:
+    assert run_mod._run_analysis_only() == 0
+    latest = analysis_only_env["latest"]
+    (latest / "analysis.en.json").write_text("{broken", encoding="utf-8")
+    assert run_mod._run_analysis_only() == 0
+
+    for language in ("zh-CN", "en"):
+        path = latest / f"analysis.{language}.json"
+        analysis = json.loads(path.read_text(encoding="utf-8"))
+        analysis["summary"] = "Recovered brief."
+        analysis["lineage"]["pair_id"] = "pair-analysis-only-recovered-test"
+        _write_json(path, analysis)
+
+    assert run_mod._run_analysis_only() == 0
+
+    for language in ("zh-CN", "en"):
+        analysis = json.loads((latest / f"analysis.{language}.json").read_text(encoding="utf-8"))
+        assert analysis["summary"] == "Recovered brief."
+    freshness = json.loads(
+        (analysis_only_env["data_dir"] / "metadata" / "freshness.json").read_text(encoding="utf-8")
+    )
+    assert freshness["datasets"]["analysis"]["status"] == "fresh"

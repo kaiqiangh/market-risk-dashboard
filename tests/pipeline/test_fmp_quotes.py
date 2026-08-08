@@ -121,7 +121,8 @@ def test_key_gated_fallback_without_key_is_skipped_not_failed() -> None:
     exists to prevent. Its real liveness is exercised by the daily pipeline run."""
 
     class _KeyedFake(_FakeProvider):
-        api_key = ""
+        # Real key-gated providers use None when the environment is unset.
+        api_key = None
 
     providers = [
         _FakeProvider("yfinance", "quotes", 1),

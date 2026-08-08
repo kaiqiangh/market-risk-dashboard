@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { ArrowUpRight, CalendarClock, Layers, Minus, TrendingDown, TrendingUp } from "lucide-react";
 import { useDataset } from "@/hooks/useDataset";
+import { useAnalysisPair } from "@/hooks/useAnalysisPair";
 import { RiskTrendSlice } from "@/schemas/history";
 import type {
-  AnalysisDataset,
   CalendarEnvelope,
   CryptoEnvelope,
   EquitiesEnvelope,
@@ -24,7 +24,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { StatusBadge } from "@/components/layout/StatusBadge";
 import { dirTone, dirClasses, regimeTone, riskLevelTone, riskTrendTone, toneClasses } from "@/lib/riskColors";
-import { RISK_DIMENSION_KEYS, RISK_LEVEL_KEYS, regimeKey } from "@/lib/riskLabels";
+import { RISK_DIMENSION_KEYS, RISK_INDICATOR_KEYS, RISK_LEVEL_KEYS, regimeKey } from "@/lib/riskLabels";
 import { formatChange, formatDateTime, formatNumber, formatPctPoints, formatRatio } from "@/lib/format";
 import type { RiskDimensionKey } from "@/schemas";
 import type { HeatmapCell } from "@/charts/AssetHeatmap";
@@ -48,9 +48,7 @@ export default function OverviewPage() {
   const sectorsQ = useDataset<SectorsEnvelope>("sectors");
   const calendarQ = useDataset<CalendarEnvelope>("calendar");
   const newsQ = useDataset<NewsEnvelope>("news");
-  const analysisQ = useDataset<AnalysisDataset>("analysis", {
-    lang: locale === "en" ? "en" : "zh-CN",
-  });
+  const analysisQ = useAnalysisPair();
 
   // Build cross-asset heatmap cells
   const heatmapCells: HeatmapCell[] = [];
@@ -68,7 +66,11 @@ export default function OverviewPage() {
     }
   }
   for (const s of sectorBaskets) {
-    heatmapCells.push({ asset: t(`themes:${s.key}`, { defaultValue: s.key }), category: t("heatmap.catSectors"), change1d: s.change_1d });
+    heatmapCells.push({
+      asset: t(`themes:${s.key}`, { defaultValue: t("common:empty.translationUnavailable") }),
+      category: t("heatmap.catSectors"),
+      change1d: s.change_1d,
+    });
   }
 
   // Upcoming catalysts (top 5 by ascending time)
@@ -174,7 +176,7 @@ export default function OverviewPage() {
               footer={
                 hyOas?.change_1m === null || hyOas?.change_1m === undefined
                   ? undefined
-                  : `1M ${formatPctPoints(hyOas.change_1m, locale)}`
+                  : `${t("kpi.oneMonth")} ${formatPctPoints(hyOas.change_1m, locale)}`
               }
             >
               {hyOas ? (
@@ -244,7 +246,9 @@ export default function OverviewPage() {
                     data-testid="risk-driver"
                   >
                     <div className="min-w-0">
-                      <p className="truncate text-xs font-medium text-foreground">{driver.label}</p>
+                      <p className="truncate text-xs font-medium text-foreground">
+                        {t(`risk:${RISK_INDICATOR_KEYS[driver.indicator_key] ?? "indicatorNames.unknown"}`)}
+                      </p>
                       <p className="truncate text-[11px] text-muted-foreground">
                         {t(RISK_DIMENSION_KEYS[driver.dimension_key as RiskDimensionKey])}
                       </p>
@@ -303,7 +307,7 @@ export default function OverviewPage() {
               {sectorBaskets.map((s) => {
                 const dTone = dirTone(s.change_1d);
                 // #102 (C-1): labels come from the themes namespace, keyed by the canonical key.
-                const label = t(`themes:${s.key}`, { defaultValue: s.key });
+                const label = t(`themes:${s.key}`, { defaultValue: t("common:empty.translationUnavailable") });
                 return (
                   <div
                     key={s.key}
@@ -345,7 +349,7 @@ export default function OverviewPage() {
 
       {/* AI Market Brief (visually quarantined block) */}
       <section className="border-t border-hairline pt-4">
-        <AIBrief analysis={analysisQ.data} loading={analysisQ.isLoading} error={analysisQ.isError} />
+        <AIBrief presentation={analysisQ.presentation} loading={analysisQ.isLoading} />
       </section>
 
       {/* Mono status footer + compliance disclaimer */}
@@ -360,9 +364,7 @@ export default function OverviewPage() {
             </span>
             <span className="ml-auto">{risk?.model_version}</span>
           </div>
-          {risk?.disclaimer ? (
-            <p className="text-[11px] leading-relaxed text-muted-foreground">{risk.disclaimer}</p>
-          ) : null}
+          <p className="text-[11px] leading-relaxed text-muted-foreground">{t("common:footer.disclaimer")}</p>
         </footer>
       ) : null}
     </div>

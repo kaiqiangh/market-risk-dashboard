@@ -64,7 +64,11 @@ export default function MacroPage() {
                 // renders in its own section and history instead.
                 items={[...macroQ.data.payload.rates, ...macroQ.data.payload.credit]
                   .filter((ind) => ind.value !== null)
-                  .map((ind) => ({ label: ind.label, value: ind.value as number, unit: ind.unit }))}
+                  .map((ind) => ({
+                    label: t(`indicatorNames.${ind.key}`, { defaultValue: t("indicatorNames.unknown") }),
+                    value: ind.value as number,
+                    unit: ind.unit,
+                  }))}
               />
           </section>
 

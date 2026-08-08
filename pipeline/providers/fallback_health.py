@@ -83,8 +83,9 @@ def check_fallbacks(providers: list[BaseProvider]) -> FallbackCheckResult:
         # never failed (a permanently red scheduled job becomes ignored noise, which is
         # the exact failure mode #100 exists to prevent). Key-gated providers are still
         # exercised by the daily pipeline run.
+        has_api_key = hasattr(provider, "api_key")
         api_key = getattr(provider, "api_key", None)
-        if api_key is not None and not api_key:
+        if has_api_key and not api_key:
             result.probes.append(
                 FallbackProbe(
                     domain=provider.domain,
