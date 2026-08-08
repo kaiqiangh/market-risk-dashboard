@@ -458,12 +458,221 @@ def _aggregate_outcome(
     )
 
 
-def _record_ai_outcomes(writer: StorageWriter, outcomes: RunOutcomes) -> None:
+def _analysis_pair_paths(writer: StorageWriter) -> list[Path]:
+    """Return the two published AI pair paths from the registry."""
+    spec = dataset_registry.require("analysis")
+    return [writer.latest_dir / name for name in spec.filenames]
+
+
+def _analysis_backup_paths(writer: StorageWriter) -> list[Path]:
+    """Return the durable last-readable pair paths outside ``latest/``."""
+    backup_dir = writer.history_dir / "analysis"
+    return [
+        backup_dir / f"last-good.{path.name.removeprefix('analysis.')}"
+        for path in _analysis_pair_paths(writer)
+    ]
+
+
+def _read_analysis_pair(paths: list[Path]) -> tuple[dict[str, dict[str, Any]] | None, str | None]:
+    """Read both pair members without treating a partial pair as a valid document."""
+    import json as _json
+
+    absent = [path.name for path in paths if not path.exists()]
+    if absent:
+        return None, f"missing analysis pair member(s): {', '.join(absent)}"
+
+    documents: dict[str, dict[str, Any]] = {}
+    for path in paths:
+        try:
+            value = _json.loads(path.read_text(encoding="utf-8"))
+        except (_json.JSONDecodeError, OSError):
+            return None, f"unreadable analysis pair member: {path.name}"
+        if not isinstance(value, dict):
+            return None, f"analysis pair member is not an object: {path.name}"
+        documents[path.name] = value
+    return documents, None
+
+
+def _remove_analysis_pair(writer: StorageWriter) -> None:
+    """Remove an invalid or partial candidate pair, never a durable backup."""
+    for path in _analysis_pair_paths(writer):
+        path.unlink(missing_ok=True)
+
+
+def _snapshot_readable_analysis_pair(
+    writer: StorageWriter, documents: dict[str, dict[str, Any]]
+) -> None:
+    """Persist a schema-valid bilingual pair for recovery from a later bad replacement."""
+    for path in _analysis_backup_paths(writer):
+        source_name = f"analysis.{path.name.removeprefix('last-good.')}"
+        writer.write_json(path, documents[source_name])
+
+
+def _restore_last_readable_analysis_pair(writer: StorageWriter) -> bool:
+    """Restore the last schema-valid bilingual pair, if one exists."""
+    documents, failure = _read_analysis_pair(_analysis_backup_paths(writer))
+    if failure or documents is None:
+        return False
+
+    try:
+        from pipeline.analysis.validate import compare_bilingual
+        from pipeline.schemas import AnalysisDataset
+
+        zh = AnalysisDataset.model_validate(documents["last-good.zh-CN.json"])
+        en = AnalysisDataset.model_validate(documents["last-good.en.json"])
+        if zh.language != "zh-CN" or en.language != "en" or compare_bilingual(zh, en):
+            return False
+    except Exception:  # noqa: BLE001 — an unusable backup must not replace the candidate
+        return False
+
+    latest_paths = _analysis_pair_paths(writer)
+    for latest_path in latest_paths:
+        backup_name = f"last-good.{latest_path.name.removeprefix('analysis.')}"
+        writer.write_json(latest_path, documents[backup_name])
+    return True
+
+
+def _analysis_failure_reason(issues: list[str]) -> FreshnessReason:
+    """Turn validation diagnostics into a closed, redacted freshness reason."""
+    lineage = any(
+        "lineage" in issue or "generation_id" in issue or "fact layer" in issue
+        for issue in issues
+    )
+    if lineage:
+        return FreshnessReason(
+            code="input_dataset_unhealthy",
+            detail="analysis lineage does not match the current fact layer; output not promoted",
+        )
+    return FreshnessReason(
+        code="provider_parse_error",
+        detail=f"analysis pair validation failed ({len(issues)} contract issue(s)); output not promoted",
+    )
+
+
+def _record_analysis_outcome(writer: StorageWriter, outcomes: RunOutcomes) -> bool:
+    """Validate, snapshot, and record the AI pair against the current fact layer.
+
+    The return value means the pair is structurally valid and lineage-bound. A degraded or stale
+    but valid pair can still be merged into the news dataset; its freshness outcome remains
+    visible to the caller and the frontend.
+    """
+    import json as _json
+
+    from pipeline.analysis.validate import validate_analysis_pair
+    from pipeline.schemas import FactLayer
+
+    paths = _analysis_pair_paths(writer)
+    documents, read_failure = _read_analysis_pair(paths)
+    if read_failure or documents is None:
+        restored = _restore_last_readable_analysis_pair(writer)
+        if not restored:
+            _remove_analysis_pair(writer)
+        outcomes.record(
+            "analysis",
+            "degraded",
+            FreshnessReason(
+                code="all_providers_failed" if "missing" in (read_failure or "") else "provider_parse_error",
+                detail=(read_failure or "analysis pair unavailable")[:200],
+            ),
+            provider="ai_automation",
+        )
+        return False
+
+    try:
+        structural_issues, _, _ = validate_analysis_pair(paths[0], paths[1])
+    except Exception:  # noqa: BLE001 — schema failure is an expected degraded AI outcome
+        structural_issues = ["analysis pair schema validation failed"]
+    if structural_issues:
+        if not _restore_last_readable_analysis_pair(writer):
+            _remove_analysis_pair(writer)
+        outcomes.record(
+            "analysis",
+            "degraded",
+            _analysis_failure_reason(structural_issues),
+            provider="ai_automation",
+        )
+        return False
+
+    backup_documents, backup_failure = _read_analysis_pair(_analysis_backup_paths(writer))
+    has_readable_backup = backup_documents is not None and backup_failure is None
+
+    facts_path = writer.latest_dir / "facts.json"
+    if not facts_path.exists():
+        if has_readable_backup:
+            _restore_last_readable_analysis_pair(writer)
+        else:
+            _snapshot_readable_analysis_pair(writer, documents)
+        outcomes.record(
+            "analysis",
+            "degraded",
+            FreshnessReason(
+                code="input_dataset_unhealthy",
+                detail="facts.json missing; analysis has no current basis",
+            ),
+            provider="ai_automation",
+        )
+        return False
+
+    try:
+        facts = FactLayer.model_validate(_json.loads(facts_path.read_text(encoding="utf-8")))
+        issues, zh, en = validate_analysis_pair(paths[0], paths[1], facts_path, require_lineage=True)
+    except Exception:  # noqa: BLE001 — malformed facts or AI output is a degraded outcome
+        if has_readable_backup:
+            _restore_last_readable_analysis_pair(writer)
+        else:
+            _snapshot_readable_analysis_pair(writer, documents)
+        outcomes.record(
+            "analysis",
+            "degraded",
+            FreshnessReason(
+                code="input_dataset_unhealthy",
+                detail="facts.json could not validate for analysis lineage",
+            ),
+            provider="ai_automation",
+        )
+        return False
+
+    if issues:
+        if has_readable_backup:
+            _restore_last_readable_analysis_pair(writer)
+        else:
+            _snapshot_readable_analysis_pair(writer, documents)
+        outcomes.record(
+            "analysis",
+            "degraded",
+            _analysis_failure_reason(issues),
+            provider="ai_automation",
+        )
+        return False
+
+    # Only a pair proven against the current fact layer may replace the durable recovery pair.
+    _snapshot_readable_analysis_pair(writer, documents)
+    facts_status = aggregate_freshness(facts.data_freshness.values())
+    oldest = min(str(zh.generated_at), str(en.generated_at))
+    verdict = finalize_freshness("analysis", oldest, False)
+    status = aggregate_freshness(
+        [verdict.status, facts_status, str(zh.data_freshness), str(en.data_freshness)]
+    )
+    if status != verdict.status:
+        culprits = sorted(
+            k for k, value in facts.data_freshness.items() if str(value) == facts_status
+        )
+        reason = FreshnessReason(
+            code="input_dataset_unhealthy",
+            detail=f"analysis inputs are {facts_status}: {', '.join(culprits) or 'fact layer'}"[:200],
+        )
+    else:
+        reason = verdict.reason
+    outcomes.record("analysis", status, reason, provider="ai_automation")
+    return True
+
+
+def _record_ai_outcomes(writer: StorageWriter, outcomes: RunOutcomes) -> bool:
     """Record the datasets the AI automations produce, from what is on disk (P0-4, §1.5).
 
     These are not collected by the pipeline, so their outcome is read back from the published
-    files rather than observed during a fetch: absent → ``degraded`` (no quota, or retries
-    exhausted), present → the ordinary time ladder against their expected interval.
+    files rather than observed during a fetch. Analysis is additionally bound to the current
+    fact generation and restored from its last readable pair when a replacement is invalid.
 
     Recording rather than writing matters. Both files previously reached ``freshness.json``
     through their own read-modify-write, which is why ``news_translations`` never appeared in
@@ -472,7 +681,12 @@ def _record_ai_outcomes(writer: StorageWriter, outcomes: RunOutcomes) -> None:
     """
     import json as _json
 
+    analysis_valid = True
+
     for key in AI_PRODUCED_DATASETS:
+        if key == "analysis":
+            analysis_valid = _record_analysis_outcome(writer, outcomes)
+            continue
         spec = dataset_registry.require(key)
         paths = [writer.latest_dir / name for name in spec.filenames]
         absent = [p.name for p in paths if not p.exists()]
@@ -513,6 +727,40 @@ def _record_ai_outcomes(writer: StorageWriter, outcomes: RunOutcomes) -> None:
         oldest = min(timestamps) if timestamps and all(timestamps) else ""
         verdict = finalize_freshness(key, oldest or None, False)
         outcomes.record(key, verdict.status, verdict.reason, provider="ai_automation")
+
+    return analysis_valid
+
+
+def _write_analysis_only_report(writer: StorageWriter, outcomes: RunOutcomes) -> None:
+    """Write an operator-facing report for the no-collection analysis command.
+
+    The metadata document remains the source of truth. The report repeats only closed reason
+    codes and their bounded details, never fact contents or generation identifiers, so a
+    degraded AI run is diagnosable without leaking the analysis input.
+    """
+    degraded_datasets: list[str] = []
+    degraded_notes: list[str] = []
+    for key in AI_PRODUCED_DATASETS:
+        outcome = outcomes.get(key)
+        if outcome is None or outcome.status not in {"degraded", "stale", "missing"}:
+            continue
+        degraded_datasets.append(key)
+        degraded_notes.append(
+            f"{key}: {outcome.reason.code} — {outcome.reason.detail}"[:240]
+        )
+
+    write_run_report(
+        settings.artifacts_dir,
+        command="analysis-only",
+        ok=True,
+        durations={},
+        provider_status={},
+        degraded=degraded_notes,
+        dataset_counts={"latest": len(list(writer.latest_dir.glob("*.json")))},
+        failed_datasets=[],
+        skipped_datasets=[],
+        degraded_datasets=degraded_datasets,
+    )
 
 
 def _publish_metadata(
@@ -873,6 +1121,30 @@ def _write_failure_report(command: str, results: dict[str, Any], error: str) -> 
     )
 
 
+def _ai_report_reasons(writer: StorageWriter, health: dict[str, list[str]]) -> list[str]:
+    """Add bounded AI freshness reasons to collection run reports.
+
+    Collection reports already carry provider notes. AI outputs are out-of-band, so their
+    lineage result exists only in freshness metadata; repeat that closed-code explanation
+    when the command observed an unhealthy AI dataset.
+    """
+    raw = writer.read_freshness_raw()
+    unhealthy = set(health["failed"]) | set(health["degraded"])
+    notes: list[str] = []
+    for key in AI_PRODUCED_DATASETS:
+        if key not in unhealthy:
+            continue
+        entry = raw.get("datasets", {}).get(key, {})
+        reason = entry.get("reason", {}) if isinstance(entry, dict) else {}
+        if not isinstance(reason, dict):
+            continue
+        code = reason.get("code")
+        detail = reason.get("detail", "")
+        if code:
+            notes.append(f"{key}: {code} — {str(detail)[:200]}"[:240])
+    return notes
+
+
 def _finish_run(command: str, results: dict[str, Any], elapsed: float, health: dict[str, list[str]]) -> int:
     """Write the run report for a successful command and print the summary.
 
@@ -880,13 +1152,15 @@ def _finish_run(command: str, results: dict[str, Any], elapsed: float, health: d
     degraded or partial run distinguishable from a clean one (#63 AC). A partial command
     that skipped datasets is never clean — that is the point of the skipped list.
     """
+    report_degraded = list(results.get("degraded", []))
+    report_degraded.extend(_ai_report_reasons(StorageWriter(settings.data_dir), health))
     write_run_report(
         settings.artifacts_dir,
         command=command,
         ok=True,
         durations=results.get("durations", {}),
         provider_status=results.get("provider_status", {}),
-        degraded=results.get("degraded", []),
+        degraded=report_degraded,
         dataset_counts={"latest": len(list((settings.data_dir / "latest").glob("*.json")))},
         failed_datasets=health["failed"],
         skipped_datasets=health["skipped"],
@@ -1132,38 +1406,16 @@ def _merge_news_translations(
 
 def _run_analysis_only() -> int:
     """AI analysis file validation + Chinese translation merge (architecture §1.5 steps 3/4)."""
-    import json as _json
-
-    from pipeline.analysis.validate import validate_analysis_pair
-    from pipeline.analysis.contract import analysis_path, input_path
-    from pipeline.schemas import NewsTranslationsDataset
-
-    zh_path = analysis_path("zh-CN")
-    en_path = analysis_path("en")
-    facts_path = input_path("facts")
-
-    if not zh_path.exists() or not en_path.exists():
-        print("[pipeline] analysis-only: analysis file missing (validate after AI automation output), skipped", file=sys.stderr)
-        writer = StorageWriter(settings.data_dir)
-        outcomes = RunOutcomes(scope=_run_scope("analysis-only"))
-        _record_ai_outcomes(writer, outcomes)
+    writer = StorageWriter(settings.data_dir)
+    outcomes = RunOutcomes(scope=_run_scope("analysis-only"))
+    analysis_valid = _record_ai_outcomes(writer, outcomes)
+    if not analysis_valid:
         _publish_metadata(writer, outcomes)
+        _write_analysis_only_report(writer, outcomes)
+        print("[pipeline] analysis-only: AI pair was not promoted; freshness recorded as degraded", file=sys.stderr)
         return 0
 
-    try:
-        issues, _, _ = validate_analysis_pair(zh_path, en_path, facts_path if facts_path.exists() else None)
-    except Exception as exc:  # noqa: BLE001
-        print(f"[pipeline] analysis-only: validation failed: {exc}", file=sys.stderr)
-        return 1
-
-    if issues:
-        print("[pipeline] analysis-only: bilingual consistency failed:")
-        for issue in issues:
-            print(f"  - {issue}")
-        return 1
-
     # Merge Chinese translation into news.json (P1-6: record merge status)
-    writer = StorageWriter(settings.data_dir)
     news_data = writer.read_latest("news")
     if news_data:
         from pipeline.schemas import NewsEnvelope
@@ -1183,6 +1435,7 @@ def _run_analysis_only() -> int:
     outcomes = RunOutcomes(scope=_run_scope("analysis-only"))
     _record_ai_outcomes(writer, outcomes)
     _publish_metadata(writer, outcomes)
+    _write_analysis_only_report(writer, outcomes)
     print("[pipeline] analysis-only: validation passed ✓")
     return 0
 

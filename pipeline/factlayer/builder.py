@@ -191,7 +191,17 @@ class FactLayerBuilder:
             add(f"ev_news_{i}", "news", f"payload.items[{i}].importance", "importance", item.importance, item.published_at)
 
         for i, event in enumerate(calendar.payload.events[:5]):
-            add(f"ev_calendar_{i}", "calendar", f"payload.events[{i}].datetime", "event_datetime", event.datetime)
+            # Event records do not carry their own observation timestamp. Use the calendar
+            # envelope's generation time rather than now_utc(), otherwise a fact-layer rebuild
+            # changes the evidence index and therefore its deterministic generation_id.
+            add(
+                f"ev_calendar_{i}",
+                "calendar",
+                f"payload.events[{i}].datetime",
+                "event_datetime",
+                event.datetime,
+                calendar.generated_at,
+            )
 
         # #98: sector/theme 1d moves are citable evidence — the AI brief's rule is
         # "may ONLY cite entries present in the evidence_index", so the Sector / theme

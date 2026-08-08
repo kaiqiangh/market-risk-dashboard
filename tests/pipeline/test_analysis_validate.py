@@ -173,6 +173,13 @@ def test_analysis_pair_lineage_must_match() -> None:
     assert compare_analysis_lineage(zh, en) == ["analysis pair_id mismatch"]
 
 
+def test_bilingual_freshness_must_match() -> None:
+    zh = _analysis(make_analysis(language="zh-CN", data_freshness="fresh"))
+    en = _analysis(make_analysis(language="en", data_freshness="degraded"))
+
+    assert any("data_freshness mismatch" in issue for issue in compare_bilingual(zh, en))
+
+
 # ---------- freshness five states ----------
 
 def test_freshness_five_states() -> None:

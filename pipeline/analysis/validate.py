@@ -5,6 +5,8 @@ Checks:
 2. evidence_refs: every reference must find an exactly matching entry in the fact layer evidence_index.
 3. Bilingual consistency: zh-CN and en must agree on market_state/market_regime/confidence,
    the evidence_refs set, and all numbers in every text; only the language of the prose may differ.
+4. Fact lineage (when required): the pair must identify the exact deterministic fact generation
+   and carry matching freshness inputs.
 
 Usage:
     python -m pipeline.analysis.validate --zh public/data/latest/analysis.zh-CN.json \
@@ -134,6 +136,8 @@ def compare_bilingual(zh: AnalysisDataset, en: AnalysisDataset) -> list[str]:
         issues.append(f"market_regime mismatch: zh={zh.market_regime!r} en={en.market_regime!r}")
     if abs(zh.confidence - en.confidence) > 1e-9:
         issues.append(f"confidence mismatch: zh={zh.confidence} en={en.confidence}")
+    if zh.data_freshness != en.data_freshness:
+        issues.append(f"data_freshness mismatch: zh={zh.data_freshness} en={en.data_freshness}")
 
     zh_ref_keys = sorted(_ref_key(r) for r in collect_evidence_refs(zh))
     en_ref_keys = sorted(_ref_key(r) for r in collect_evidence_refs(en))
@@ -182,8 +186,10 @@ def validate_analysis_pair(
     zh_path: Path | str,
     en_path: Path | str,
     facts_path: Path | str | None = None,
+    *,
+    require_lineage: bool = False,
 ) -> tuple[list[str], AnalysisDataset, AnalysisDataset]:
-    """Full validation: schema + evidence_refs + bilingual consistency. Returns (issues, zh, en)."""
+    """Full validation: schema, evidence, bilingual consistency, and optional fact lineage."""
     zh = load_analysis(zh_path)
     en = load_analysis(en_path)
 
@@ -192,12 +198,20 @@ def validate_analysis_pair(
 
     issues: list[str] = []
 
-    if facts_path is not None:
+    facts: FactLayer | None = None
+    if facts_path is not None and Path(facts_path).exists():
         facts = FactLayer.model_validate(json.loads(Path(facts_path).read_text(encoding="utf-8")))
         issues.extend(validate_evidence_refs(zh, facts))
         issues.extend(validate_evidence_refs(en, facts))
+    elif require_lineage:
+        issues.append("fact layer missing for lineage validation")
 
     issues.extend(compare_bilingual(zh, en))
+    if require_lineage:
+        if facts is not None:
+            issues.extend(validate_analysis_lineage(zh, facts))
+            issues.extend(validate_analysis_lineage(en, facts))
+        issues.extend(compare_analysis_lineage(zh, en))
     return issues, zh, en
 
 
