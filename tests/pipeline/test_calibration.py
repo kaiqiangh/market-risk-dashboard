@@ -130,6 +130,30 @@ def test_production_replay_is_deterministic_and_point_in_time() -> None:
     assert all(row["max_history_date"] == row["date"] for row in first["observations"])
 
 
+def test_cross_asset_replay_publishes_diagnostics_without_weight_changes() -> None:
+    panel = _production_panel()
+    spy = panel["market"]["SPY"]
+    # Add deterministic proxy histories to the fixture without changing its forward SPY
+    # outcomes. The replay must evaluate the signals at each point in time and retain the
+    # policy gate rather than silently adding their weight to the score.
+    panel["market"]["XLY"] = [value * (1.0 + (index % 5) * 0.001) for index, value in enumerate(spy)]
+    panel["market"]["XLP"] = [value * (1.0 + 0.002) for value in spy]
+    panel["market"]["HYG"] = [value * (1.0 - (index % 4) * 0.001) for index, value in enumerate(spy)]
+    panel["market"]["IEF"] = [value * (1.0 + 0.001) for value in spy]
+
+    artifact = replay_production_path(panel)
+
+    assert artifact["artifact_version"] == "1.2.0"
+    assert artifact["cross_asset_policy"]["production_scoring"] == "diagnostic_only"
+    assert artifact["metrics"]["cross_asset_signals"]["cyclicals_defensives_relative"]["20"]["evaluated"] > 0
+    assert artifact["metrics"]["cross_asset_signals"]["hy_treasury_relative"]["20"]["evaluated"] > 0
+    assert all(
+        signal["production_scoring"] is False
+        for signal in artifact["observations"][0]["cross_asset_signals"]
+        if signal["key"] in {"cyclicals_defensives_relative", "hy_treasury_relative"}
+    )
+
+
 def test_production_replay_does_not_use_future_values() -> None:
     panel = _production_panel()
     baseline = replay_production_path(panel)

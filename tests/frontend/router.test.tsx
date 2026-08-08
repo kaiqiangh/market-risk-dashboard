@@ -120,6 +120,8 @@ describe("language switch (keeps current page)", () => {
     expect(await screen.findByTestId("page-title")).toHaveTextContent("风险实验室");
     expect(await screen.findByTestId("risk-evidence-state")).toHaveTextContent("证据不完整");
     expect(await screen.findByTestId("risk-calibration-policy")).toHaveTextContent("暂定校准");
+    expect(await screen.findByTestId("cross-asset-signals")).toHaveTextContent("周期股相对防御股");
+    expect(screen.getByTestId("cross-asset-signals").textContent).not.toContain("yfinance");
     expect(document.body.textContent).not.toContain("This indicator is a modeled estimate");
     expect(document.body.textContent).not.toContain("10Y");
 

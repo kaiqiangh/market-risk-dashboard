@@ -1,6 +1,6 @@
 # Market Risk Dashboard — Offline Calibration Report
 
-**Document version:** 1.1 (production-path replay and policy decision)
+**Document version:** 1.2 (production-path replay, governed cross-asset diagnostics and policy decision)
 **Produced by:** data pipeline `scripts/calibration.py` + `pipeline/risk/calibration.py`
 **Scope statement (red line):** The risk scores on this page are **model-based market stress estimates**, not exact crash probabilities, and do not constitute investment advice (architecture §1.8 / PRD §14.8).
 
@@ -65,18 +65,36 @@ Before the MVP release, run an offline backtest of the risk model across three h
 
 ## 4. Production-path replay (latest-source evidence)
 
-The production-path replay was added after the original fallback-only report. It calls the same `RiskModel.score` implementation used by Risk Lab, in date order, with an expanding point-in-time history through each score date. A deterministic synthetic panel runs in CI; the figures below are from a manual 2015-01-01 → 2025-12-31 replay with a 5-year warm-up, fetched on 2026-08-08.
+The production-path replay was added after the original fallback-only report. It calls the same `RiskModel.score` implementation used by Risk Lab, in date order, with an expanding point-in-time history through each score date. A deterministic synthetic panel runs in CI; the figures below are from a manual 2015-01-01 → 2025-12-31 replay with a 5-year warm-up, fetched on 2026-08-08. The replay now includes the four governed ETF proxy histories used by the deferred cross-asset diagnostics.
 
 | Forward horizon | Outcome coverage | Spearman score vs forward loss | Precision at score ≥60 | Recall | False-positive rate |
 |---|---:|---:|---:|---:|---:|
-| 5 observations | 99.82% | 0.3503 | 2.12% | 68.18% | 25.35% |
-| 10 observations | 99.64% | 0.3955 | 4.65% | 56.90% | 25.06% |
-| 20 observations | 99.28% | 0.4051 | 12.83% | 59.09% | 23.85% |
-| 30 observations | 98.92% | 0.3828 | 20.59% | 52.71% | 22.90% |
+| 5 observations | 99.82% | 0.3545 | 2.16% | 72.73% | 26.52% |
+| 10 observations | 99.64% | 0.4002 | 4.45% | 56.90% | 26.29% |
+| 20 observations | 99.28% | 0.4097 | 12.13% | 58.44% | 25.16% |
+| 30 observations | 98.92% | 0.3847 | 19.54% | 52.35% | 24.29% |
 
-The level-switch rate was 9.7288 per 100 evaluated observations with a mean absolute score change of 1.6452. The replay used the mixed production-percentile/heuristic path for all 2,765 evaluated observations. Macro coverage was incomplete for the two credit-spread series (3,421 missing observations each), reverse repo (153), and the Fed balance sheet (2); all three market histories were complete.
+The level-switch rate was 9.0778 per 100 evaluated observations with a mean absolute score change of 1.5749. The replay used the mixed production-percentile/heuristic path for all 2,765 evaluated observations. Macro coverage was incomplete for the two credit-spread series (3,421 missing observations each), reverse repo (153), and the Fed balance sheet (2); SPY, IWM, SOXX, XLY, XLP, HYG and IEF histories were complete. The null-aware confirmation denominator also means missing inputs no longer count as benign observations.
 
 This is evidence of positive ranking signal, not evidence of a calibrated probability. The manual panel uses latest FRED/Yahoo observations and does not contain point-in-time source vintages; the result is therefore descriptive and subject to revision bias. The synthetic CI fixture proves determinism and look-ahead protection, but is not a performance claim.
+
+### 4.1 Governed cross-asset diagnostics
+
+The collection path fetches XLY, XLP, HYG and IEF once through the existing quotes registry and computes percentage-point gaps from each pair's latest one-day return. These are ETF relative-return proxies, not direct economic spreads:
+
+| Signal | Inputs and transformation | Risk direction | Production status |
+|---|---|---|---|
+| Cyclicals versus defensives | XLY 1-day return minus XLP 1-day return | Negative is riskier | Diagnostic only |
+| High-yield versus Treasuries | HYG 1-day return minus IEF 1-day return | Negative is riskier | Diagnostic only |
+
+At the 20-observation target horizon, the new signals produced the following point-in-time evidence:
+
+| Signal | Evaluated | Precision | Recall | False-positive rate | Precision delta vs current confirmation | Recall delta vs current confirmation |
+|---|---:|---:|---:|---:|---:|---:|
+| Cyclicals versus defensives | 2,745 | 5.68% | 48.05% | 47.39% | -1.32 pp | -48.05 pp |
+| High-yield versus Treasuries | 2,745 | 5.94% | 50.65% | 47.66% | -1.07 pp | -45.45 pp |
+
+The signals provide broad event coverage but weak precision and lower recall than the current confirmation comparison point. They therefore do not demonstrate a production improvement. Risk Lab publishes their value, trigger, provider, freshness state, unit and transformation for review, but the calibration policy keeps both outside production weighting until a governed refit has stronger point-in-time evidence.
 
 ## 5. Policy decision
 
@@ -84,9 +102,9 @@ This is evidence of positive ranking signal, not evidence of a calibrated probab
 |---|---|---|
 | Dimension weights | Retain | Ranking is positive but moderate; revised-source history and partial proxy coverage do not justify refitting. |
 | Indicator weights | Retain | No stable out-of-sample attribution is available for a weight change; preserve the reviewed transparent mapping. |
-| Risk-level thresholds | Retain | Score ≥60 gives 59.09% recall and 23.85% false-positive rate at 20 observations; higher thresholds trade recall for precision without a pre-registered operating objective. |
+| Risk-level thresholds | Retain | Score ≥60 gives 58.44% recall and 25.16% false-positive rate at 20 observations; higher thresholds trade recall for precision without a pre-registered operating objective. |
 | Data-trust formula | Gate | Keep the existing product metric, but do not call it statistical confidence or probability. |
-| Cross-asset aggregation | Gate | Keep the current proxy-backed aggregation pending the deferred governed signals and coverage. |
+| Cross-asset aggregation | Gate | Keep the current null-aware proxy-backed aggregation; the new ETF signals remain diagnostic-only because their 20-observation precision is below 6% and recall is below the current comparison point. |
 
 Policy version `1.0.0` is published in the Risk Lab contract and run report. No live score weights, thresholds, or confidence arithmetic were changed.
 
@@ -103,6 +121,7 @@ Policy version `1.0.0` is published in the Risk Lab contract and run report. No 
 - The MVP risk mapping is a heuristic rule set (pipeline/risk/scoring.py); this harness evaluates the **heuristic fallback** path, not the production percentile path — the score meaning is a "model-based market stress estimate", not a statistical model.
 - Free data sources have no SLA; backtest windows may be skipped if network data is unavailable; rerun locally with `python scripts/calibration.py` to reproduce.
 - Single-window sample size is small (3 windows); conclusions are descriptive rather than statistically significant.
+- The new cross-asset inputs are ETF relative-return proxies, not direct credit spreads or sector-flow measures; latest-source history has no point-in-time vintages and signal event rates are sensitive to the selected event definition.
 
 ## 8. Reproduction
 

@@ -33,6 +33,7 @@ CALIBRATION_WINDOWS = {
 # These are calibration-only evaluation constants. They do not alter the live model's
 # weights, thresholds, or confidence policy.
 PRODUCTION_CALIBRATION_HORIZONS = (5, 10, 20, 30)
+CALIBRATION_MARKET_SYMBOLS = ("SPY", "IWM", "SOXX", "XLY", "XLP", "HYG", "IEF")
 CALIBRATION_ALERT_SCORE = 60.0
 CALIBRATION_EVENT_HORIZON = 20
 CALIBRATION_EVENT_DRAWDOWN = -0.10
@@ -308,6 +309,9 @@ def _point_in_time_context(
     macro = SimpleNamespace(payload=_macro_payload(panel, index))
     empty_dataset = SimpleNamespace(payload=SimpleNamespace(assets=[]))
     histories = _point_in_time_market_history(panel, index)
+    source_metadata = panel.get("source_metadata", {})
+    market_source = source_metadata.get("sources", {}).get("market", "calibration_panel")
+    provenance = {"provider": str(market_source)}
     return _build_risk_context(
         macro=macro,
         equities=empty_dataset,
@@ -319,6 +323,10 @@ def _point_in_time_context(
         prev_dim_scores=previous_dimensions,
         risk_history=[],
         series_history=_point_in_time_series_history(panel, index),
+        market_provenance=provenance,
+        macro_provenance={"provider": str(source_metadata.get("sources", {}).get("macro", "calibration_panel"))},
+        crypto_provenance=provenance,
+        commodities_provenance=provenance,
     )
 
 
@@ -445,6 +453,86 @@ def _event_metrics(rows: list[dict[str, Any]], horizon: int) -> dict[str, Any]:
     }
 
 
+def _signal_event_metrics(rows: list[dict[str, Any]], signal_key: str, horizon: int) -> dict[str, Any]:
+    """Evaluate a binary cross-asset signal against the same drawdown event policy."""
+    usable: list[tuple[bool, dict[str, Any], dict[str, Any]]] = []
+    for row in rows:
+        outcome = row["outcomes"].get(str(horizon))
+        signal = next((item for item in row.get("cross_asset_signals", []) if item.get("key") == signal_key), None)
+        if outcome is not None and signal is not None and signal.get("triggered") is not None:
+            usable.append((bool(signal["triggered"]), outcome, row))
+    if not usable:
+        return {
+            "evaluated": 0,
+            "signal_observed": 0,
+            "events": 0,
+            "precision": None,
+            "recall": None,
+            "false_positive_rate": None,
+            "comparison_to_current_confirmation": None,
+        }
+    alerts = [item[0] for item in usable]
+    events = [item[1]["max_drawdown"] <= CALIBRATION_EVENT_DRAWDOWN for item in usable]
+    true_positive = sum(alert and event for alert, event in zip(alerts, events, strict=True))
+    false_positive = sum(alert and not event for alert, event in zip(alerts, events, strict=True))
+    false_negative = sum(not alert and event for alert, event in zip(alerts, events, strict=True))
+    true_negative = sum(not alert and not event for alert, event in zip(alerts, events, strict=True))
+    precision = true_positive / (true_positive + false_positive) if true_positive + false_positive else None
+    recall = true_positive / (true_positive + false_negative) if true_positive + false_negative else None
+    false_positive_rate = false_positive / (false_positive + true_negative) if false_positive + true_negative else None
+    return {
+        "evaluated": len(usable),
+        "signal_observed": sum(alerts),
+        "events": sum(events),
+        "true_positive": true_positive,
+        "false_positive": false_positive,
+        "false_negative": false_negative,
+        "true_negative": true_negative,
+        "precision": round(precision, 4) if precision is not None else None,
+        "recall": round(recall, 4) if recall is not None else None,
+        "false_positive_rate": round(false_positive_rate, 4) if false_positive_rate is not None else None,
+        # The current confirmation threshold is a transparent comparison point, not a
+        # refit: the new signal remains diagnostic-only until this evidence is reviewed.
+        "comparison_to_current_confirmation": _signal_comparison(usable),
+    }
+
+
+def _signal_comparison(
+    signal_rows: list[tuple[bool, dict[str, Any], dict[str, Any]]],
+) -> dict[str, float | None] | None:
+    baseline: list[tuple[bool, dict[str, Any]]] = []
+    for _, outcome, row in signal_rows:
+        confirmation = row.get("cross_asset_confirmation")
+        if outcome is not None and isinstance(confirmation, (int, float)):
+            baseline.append((float(confirmation) >= 0.5, outcome))
+    if not baseline:
+        return None
+
+    def stats(values: list[tuple[bool, dict[str, Any]]]) -> tuple[float | None, float | None, float | None]:
+        alerts = [item[0] for item in values]
+        events = [item[1]["max_drawdown"] <= CALIBRATION_EVENT_DRAWDOWN for item in values]
+        tp = sum(a and e for a, e in zip(alerts, events, strict=True))
+        fp = sum(a and not e for a, e in zip(alerts, events, strict=True))
+        fn = sum(not a and e for a, e in zip(alerts, events, strict=True))
+        tn = sum(not a and not e for a, e in zip(alerts, events, strict=True))
+        return (
+            tp / (tp + fp) if tp + fp else None,
+            tp / (tp + fn) if tp + fn else None,
+            fp / (fp + tn) if fp + tn else None,
+        )
+
+    signal_stats = stats([(alert, outcome) for alert, outcome, _ in signal_rows])
+    baseline_stats = stats(baseline)
+    return {
+        "precision_delta": round(signal_stats[0] - baseline_stats[0], 4)
+        if signal_stats[0] is not None and baseline_stats[0] is not None else None,
+        "recall_delta": round(signal_stats[1] - baseline_stats[1], 4)
+        if signal_stats[1] is not None and baseline_stats[1] is not None else None,
+        "false_positive_rate_delta": round(signal_stats[2] - baseline_stats[2], 4)
+        if signal_stats[2] is not None and baseline_stats[2] is not None else None,
+    }
+
+
 def _lead_time_metrics(rows: list[dict[str, Any]]) -> dict[str, Any]:
     event_horizon = str(CALIBRATION_EVENT_HORIZON)
     event_flags = [
@@ -543,6 +631,17 @@ def replay_production_path(panel: dict[str, Any], settings: Any | None = None) -
                     "dimension_scores": {
                         dimension.key: dimension.score for dimension in result.dimensions
                     },
+                    "cross_asset_confirmation": next(
+                        (
+                            indicator.value
+                            for dimension in result.dimensions
+                            if dimension.key == "cross_asset"
+                            for indicator in dimension.indicators
+                            if indicator.key == "cross_asset_confirmation"
+                        ),
+                        None,
+                    ),
+                    "cross_asset_signals": [signal.model_dump(mode="json") for signal in result.cross_asset_signals],
                     "scoring_path": path["scoring_path"],
                     "indicator_path_counts": path["indicator_path_counts"],
                     "max_history_date": date_value,
@@ -590,10 +689,17 @@ def replay_production_path(panel: dict[str, Any], settings: Any | None = None) -
             }
             for regime, rows in grouped["by_regime"].items()
         },
+        "cross_asset_signals": {
+            signal_key: {
+                str(horizon): _signal_event_metrics(observations, signal_key, horizon)
+                for horizon in PRODUCTION_CALIBRATION_HORIZONS
+            }
+            for signal_key in ("cyclicals_defensives_relative", "hy_treasury_relative")
+        },
     }
     return {
         "artifact": "risk_calibration_production_path",
-        "artifact_version": "1.1.0",
+        "artifact_version": "1.2.0",
         "model_version": model.model_version,
         "calibration_policy": model_config.get("calibration_policy", {}),
         "input_fingerprint": _fingerprint(normalized, model_config),
@@ -607,6 +713,12 @@ def replay_production_path(panel: dict[str, Any], settings: Any | None = None) -
             "alert_score": CALIBRATION_ALERT_SCORE,
             "event_horizon": CALIBRATION_EVENT_HORIZON,
             "event_drawdown": CALIBRATION_EVENT_DRAWDOWN,
+        },
+        "cross_asset_policy": {
+            "new_signals": ["cyclicals_defensives_relative", "hy_treasury_relative"],
+            "production_scoring": "diagnostic_only",
+            "decision": "cross_asset_confirmation remains gated by calibration policy",
+            "comparison_baseline": "current_confirmation_at_or_above_0.5",
         },
         "source_metadata": normalized["source_metadata"],
         "missing_observations": normalized["missing_observations"],

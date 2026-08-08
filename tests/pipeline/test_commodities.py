@@ -12,7 +12,7 @@ from types import SimpleNamespace
 import pytest
 
 from pipeline.collectors.market import MarketCollector
-from pipeline.providers.base import ProviderError, QuoteResult
+from pipeline.providers.base import HistoryResult, ProviderError, QuoteResult
 from pipeline.schemas.commodities import CommoditiesEnvelope
 from pipeline.schemas.envelope import assemble_dataset
 from pipeline.settings import Settings
@@ -45,6 +45,51 @@ def _collector(registry, tmp_path: Path) -> MarketCollector:
 
 
 class TestCommoditiesCollector:
+    def test_governed_cross_asset_histories_are_fetched_once(self, tmp_path: Path) -> None:
+        from pipeline.collectors.market import INDEX_HISTORIES
+
+        class _HistoryRegistry(_FakeRegistry):
+            def __init__(self) -> None:
+                super().__init__()
+                self.calls: list[tuple[str, str]] = []
+
+            def call(self, domain: str, method: str, key: str, args=(), kwargs=None):
+                if method == "get_history":
+                    symbol, period = args
+                    self.calls.append((symbol, period))
+                    return {
+                        "result": HistoryResult(
+                            symbol=symbol,
+                            provider="yfinance",
+                            rows=[{"date": "2026-08-05", "close": 100.0}, {"date": "2026-08-06", "close": 101.0}],
+                            period=period,
+                        ),
+                        "meta": {"provider": "yfinance", "used_fallback": False, "from_cache": False},
+                    }
+                return super().call(domain, method, key, args, kwargs)
+
+        registry = _HistoryRegistry()
+        collector = _collector(registry, tmp_path)
+        collector._collect_index_histories()
+
+        assert set(registry.calls) == set(INDEX_HISTORIES.items())
+        assert len(registry.calls) == len(INDEX_HISTORIES)
+        assert {"XLY", "XLP", "HYG", "IEF"} <= collector.histories.keys()
+
+    def test_index_history_failure_marks_quotes_degraded(self, tmp_path: Path) -> None:
+        class _FailingHistoryRegistry(_FakeRegistry):
+            def call(self, domain: str, method: str, key: str, args=(), kwargs=None):
+                if method == "get_history":
+                    raise ProviderError(f"{args[0]}: history unavailable")
+                return super().call(domain, method, key, args, kwargs)
+
+        registry = _FailingHistoryRegistry()
+        collector = _collector(registry, tmp_path)
+        collector._collect_index_histories()
+
+        assert "quotes" in registry.degraded_domains
+        assert collector.provider_status["quotes"]["error"]
+
     def test_collects_universe_metals_and_oil(self, tmp_path: Path) -> None:
         """All universe.yaml metals+oil symbols publish assets (gold/silver/copper/oil)."""
         registry = _FakeRegistry()

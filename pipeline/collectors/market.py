@@ -43,7 +43,19 @@ class _EquityFetch(NamedTuple):
     rows: list[dict[str, Any]]
 
 
-INDEX_HISTORIES = {"SPY": "1y", "IWM": "1y", "SOXX": "1y"}
+# Breadth/trend and governed cross-asset diagnostic history. These ETF proxies are fetched
+# through the same quotes registry once per generation; they are not added to the display
+# universe. XLY/XLP and HYG/IEF remain diagnostic-only until the calibration policy permits
+# them to affect production weights (#143).
+INDEX_HISTORIES = {
+    "SPY": "1y",
+    "IWM": "1y",
+    "SOXX": "1y",
+    "XLY": "1y",
+    "XLP": "1y",
+    "HYG": "1y",
+    "IEF": "1y",
+}
 
 
 
@@ -198,6 +210,11 @@ class MarketCollector:
                 self.histories[symbol] = out["result"].rows
             except ProviderError as exc:
                 self.degraded.append(f"{symbol}: {exc}")
+                # Index and governed signal histories feed risk even though they are not
+                # published as standalone datasets. A failed input must still lower the
+                # market quality and propagate degraded freshness to risk (#143).
+                self.registry.degraded_domains.add("quotes")
+                self.provider_status.setdefault("quotes", {})["error"] = str(exc)
 
     # ---- Crypto ----
 

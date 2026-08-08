@@ -545,6 +545,21 @@ def make_risk_payload(**overrides: Any) -> dict[str, Any]:
             "trend_1d": 0.8,
             "trend_1w": 2.1,
             "trend_1m": -1.4,
+            "cross_asset_signals": [
+                {
+                    "key": "cyclicals_defensives_relative",
+                    "value": -0.42,
+                    "triggered": True,
+                    "source": "market_quotes",
+                    "provider": "yfinance",
+                    "unit": "percentage_points",
+                    "transformation": "xly_minus_xlp_one_day_return",
+                    "history_observations": 252,
+                    "status": "fresh",
+                    "is_proxy": True,
+                    "production_scoring": False,
+                }
+            ],
             # Indicator keys mirror the model.py registrations (#67): macro carries the four
             # real macro indicators (real_rate / curve / dollar / dgs10); liquidity_credit
             # carries the full credit set including ig_oas.

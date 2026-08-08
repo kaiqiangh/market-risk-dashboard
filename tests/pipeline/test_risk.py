@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 
 from pipeline.risk import confidence as conf_mod
@@ -300,6 +302,73 @@ def test_build_risk_context_carries_canonical_vix_and_realized_volatility() -> N
     volatility = next(d for d in result.dimensions if d.key == "volatility")
     assert next(i for i in volatility.indicators if i.key == "vix").value == 25.0
     assert next(i for i in volatility.indicators if i.key == "realized_vol").value is not None
+
+
+def test_cross_asset_signals_are_null_aware_and_new_proxies_are_diagnostic_only() -> None:
+    from pipeline.run import _build_risk_context
+
+    histories = {
+        "SPY": [{"close": 100.0}, {"close": 99.0}],
+        "IWM": [{"close": 100.0}, {"close": 98.0}],
+        "XLY": [{"close": 100.0}, {"close": 99.0}],
+        "XLP": [{"close": 100.0}, {"close": 100.5}],
+        "HYG": [{"close": 100.0}, {"close": 99.5}],
+        "IEF": [{"close": 100.0}, {"close": 100.2}],
+    }
+    empty = SimpleNamespace(payload=SimpleNamespace(assets=[]))
+    context = _build_risk_context(
+        macro=SimpleNamespace(payload=_macro_with_rates()),
+        equities=empty,
+        crypto=empty,
+        commodities=empty,
+        histories=histories,
+        qualities=[1.0],
+        prev_total_score=None,
+        prev_dim_scores=None,
+        risk_history=[],
+        series_history={},
+        market_provenance={"provider": "yfinance", "used_fallback": True},
+    )
+
+    rows = {row["key"]: row for row in context["cross_asset"]["signals"]}
+    assert len(rows) == 10
+    assert rows["cyclicals_defensives_relative"]["triggered"] is True
+    assert rows["hy_treasury_relative"]["triggered"] is True
+    assert rows["cyclicals_defensives_relative"]["status"] == "degraded"
+    assert rows["cyclicals_defensives_relative"]["production_scoring"] is False
+    assert context["cross_asset"]["observed_signal_count"] == 5
+    # New diagnostic signals must not silently change the gated production aggregate.
+    assert context["cross_asset"]["production_scoring_signal_count"] == 8
+
+    result = RiskModel().score(context)
+    assert {signal.key for signal in result.cross_asset_signals} == set(rows)
+    new_signal = next(signal for signal in result.cross_asset_signals if signal.key == "hy_treasury_relative")
+    assert new_signal.is_proxy is True
+    assert new_signal.production_scoring is False
+
+
+def test_cross_asset_missing_inputs_do_not_count_as_benign() -> None:
+    from pipeline.run import _build_risk_context
+
+    empty = SimpleNamespace(payload=SimpleNamespace(assets=[]))
+    context = _build_risk_context(
+        macro=SimpleNamespace(payload=MacroDataset(rates=[], credit=[], volatility=[], inflation=[], labor=[], liquidity=[], fx=[], fedwatch=None)),
+        equities=empty,
+        crypto=empty,
+        commodities=empty,
+        histories={},
+        qualities=[1.0],
+        prev_total_score=None,
+        prev_dim_scores=None,
+        risk_history=[],
+        series_history={},
+    )
+
+    assert context["cross_asset"]["confirmation"] is None
+    result = RiskModel().score(context)
+    cross_asset = next(dimension for dimension in result.dimensions if dimension.key == "cross_asset")
+    assert next(indicator for indicator in cross_asset.indicators if indicator.key == "cross_asset_confirmation").value is None
+    assert cross_asset.coverage == 0.0
 
 
 def test_risk_model_dimension_trend_computed() -> None:

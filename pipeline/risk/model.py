@@ -22,6 +22,7 @@ from pipeline.risk import regime as regime_mod
 from pipeline.risk.scoring import compute_indicator_score
 from pipeline.schemas import (
     BreadthSnapshot,
+    CrossAssetSignal,
     DriverContribution,
     RiskCalibrationStatus,
     RiskDimension,
@@ -407,6 +408,10 @@ class RiskModel:
             trend_1w=trend_1w,
             trend_1m=trend_1m,
             dimensions=dimensions,
+            cross_asset_signals=[
+                CrossAssetSignal.model_validate(signal)
+                for signal in ctx.get("cross_asset", {}).get("signals", [])
+            ],
             top_drivers=top_drivers,
             breadth=breadth_snapshot_value,
             regime=regime,

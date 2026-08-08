@@ -26,6 +26,7 @@ from .metadata import ProviderResolution
 from .news import NewsDataset, NewsEnvelope, NewsItem, NewsTranslation, NewsTranslationsDataset
 from .risk import (
     BreadthSnapshot,
+    CrossAssetSignal,
     DriverContribution,
     MarketRegime,
     RiskCalibrationStatus,
@@ -59,6 +60,7 @@ __all__ = [
     "CryptoDataset",
     "CryptoEnvelope",
     "BreadthSnapshot",
+    "CrossAssetSignal",
     "DashboardAsset",
     "DashboardEnvelope",
     "DashboardPayload",

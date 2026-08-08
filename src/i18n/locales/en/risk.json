@@ -68,6 +68,54 @@
     "indicators": "Indicators",
     "disclaimer": "When a dimension is missing, its weight is re-normalized across remaining dimensions while coverage and confidence are reduced."
   },
+  "crossAssetSignals": {
+    "title": "Governed cross-asset diagnostics",
+    "description": "These inputs are collected and evaluated for evidence, but the two new proxy signals remain outside the production score while cross-asset calibration is gated.",
+    "label": "Signal",
+    "value": "Latest gap",
+    "state": "State",
+    "source": "Provider",
+    "history": "History",
+    "triggered": "Risk signal",
+    "notTriggered": "No trigger",
+    "unavailable": "Unavailable",
+    "diagnosticOnly": "Diagnostic only",
+    "proxy": "ETF proxy",
+    "unit": {
+      "percentage_points": "percentage points",
+      "index_points": "index points"
+    },
+    "transformations": {
+      "one_day_return_below_zero": "1-day return below zero",
+      "one_day_return_above_zero": "1-day return above zero",
+      "relative_return_below_zero": "relative return below zero",
+      "level_above_4": "level above 4",
+      "level_above_105": "level above 105",
+      "level_above_1_5": "level above 1.5",
+      "xly_minus_xlp_one_day_return": "cyclicals minus defensives 1-day return",
+      "hyg_minus_ief_one_day_return": "high-yield minus Treasury 1-day return"
+    },
+    "signalNames": {
+      "spy_down": "Broad market down",
+      "hy_oas_widening": "High-yield spread pressure",
+      "dollar_strength": "Dollar strength",
+      "real_rate_pressure": "Real-rate pressure",
+      "bitcoin_down": "Bitcoin down",
+      "small_cap_underperformance": "Small-cap underperformance",
+      "copper_down": "Copper down",
+      "gold_up": "Gold up",
+      "cyclicals_defensives_relative": "Cyclicals versus defensives",
+      "hy_treasury_relative": "High-yield versus Treasuries"
+    },
+    "sources": {
+      "yfinance": "Yahoo Finance",
+      "fmp_quotes": "Financial Modeling Prep",
+      "fred": "Federal Reserve Economic Data",
+      "coingecko": "CoinGecko",
+      "calibration_panel": "Calibration panel",
+      "unknown": "Configured provider"
+    }
+  },
   "indicator": {
     "label": "Indicator",
     "value": "Value",

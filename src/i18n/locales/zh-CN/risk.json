@@ -68,6 +68,54 @@
     "indicators": "指标",
     "disclaimer": "维度缺失时权重按剩余维度比例重归一化，同时下调覆盖度与置信度。"
   },
+  "crossAssetSignals": {
+    "title": "受治理的跨资产诊断",
+    "description": "这些输入会被采集并评估证据，但在跨资产校准仍受门控期间，新增的两个代理信号不会进入生产分数。",
+    "label": "信号",
+    "value": "最新差值",
+    "state": "状态",
+    "source": "提供方",
+    "history": "历史样本",
+    "triggered": "风险信号",
+    "notTriggered": "未触发",
+    "unavailable": "不可用",
+    "diagnosticOnly": "仅供诊断",
+    "proxy": "交易所交易基金代理",
+    "unit": {
+      "percentage_points": "百分点",
+      "index_points": "指数点"
+    },
+    "transformations": {
+      "one_day_return_below_zero": "单日收益低于零",
+      "one_day_return_above_zero": "单日收益高于零",
+      "relative_return_below_zero": "相对收益低于零",
+      "level_above_4": "水平高于四",
+      "level_above_105": "水平高于一百零五",
+      "level_above_1_5": "水平高于一点五",
+      "xly_minus_xlp_one_day_return": "周期股减防御股单日收益",
+      "hyg_minus_ief_one_day_return": "高收益债减国债单日收益"
+    },
+    "signalNames": {
+      "spy_down": "大盘下跌",
+      "hy_oas_widening": "高收益债利差压力",
+      "dollar_strength": "美元走强",
+      "real_rate_pressure": "实际利率压力",
+      "bitcoin_down": "比特币下跌",
+      "small_cap_underperformance": "小盘股跑输",
+      "copper_down": "铜价下跌",
+      "gold_up": "金价上涨",
+      "cyclicals_defensives_relative": "周期股相对防御股",
+      "hy_treasury_relative": "高收益债相对国债"
+    },
+    "sources": {
+      "yfinance": "雅虎财经",
+      "fmp_quotes": "金融建模预备",
+      "fred": "美国联邦储备经济数据",
+      "coingecko": "币格科",
+      "calibration_panel": "校准样本",
+      "unknown": "已配置提供方"
+    }
+  },
   "indicator": {
     "label": "指标",
     "value": "数值",

@@ -262,6 +262,24 @@ export const CommoditiesEnvelope = z
   .passthrough();
 export type CommoditiesEnvelope = z.infer<typeof CommoditiesEnvelope>;
 
+/** Transparent cross-asset signal input and its current diagnostic state. Signal rows are deliberately separate from :class:`RiskIndicator`: the current calibration policy gates the new cross-asset inputs from production weighting, while Risk Lab still needs to show their provenance and missing-data behaviour. */
+export const CrossAssetSignal = z
+  .object({
+    key: z.string().min(1),
+    value: z.number().finite().nullable().default(null),
+    triggered: z.boolean().nullable().default(null),
+    source: z.string().min(1),
+    provider: z.string().min(1),
+    unit: z.string().min(1),
+    transformation: z.string().min(1),
+    history_observations: z.number().int().min(0).default(0),
+    status: FreshnessStatus.default("fresh"),
+    is_proxy: z.boolean(),
+    production_scoring: z.boolean().default(false),
+  })
+  .passthrough();
+export type CrossAssetSignal = z.infer<typeof CrossAssetSignal>;
+
 export const CryptoAsset = z
   .object({
     symbol: z.string().min(1),
@@ -376,6 +394,7 @@ export const RiskModelResult = z
     trend_1w: z.number().finite().nullable().default(null),
     trend_1m: z.number().finite().nullable().default(null),
     dimensions: z.array(RiskDimension).default([]),
+    cross_asset_signals: z.array(CrossAssetSignal).default([]),
     top_drivers: z.array(DriverContribution).default([]),
     breadth: BreadthSnapshot.nullable(),
     regime: MarketRegime,

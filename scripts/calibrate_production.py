@@ -23,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from pipeline.risk.calibration import (
     CALIBRATION_MACRO_GROUPS,
+    CALIBRATION_MARKET_SYMBOLS,
     normalize_calibration_panel,
     replay_production_path,
 )
@@ -72,7 +73,7 @@ def fetch_panel(start: str, end: str, warmup_years: int, regime: str) -> dict[st
     }
     market_maps = {
         symbol: _fetch_yahoo(symbol, fetch_start.isoformat(), end)
-        for symbol in ("SPY", "IWM", "SOXX")
+        for symbol in CALIBRATION_MARKET_SYMBOLS
     }
     if not market_maps["SPY"]:
         raise RuntimeError("SPY history was unavailable; no production-path calibration panel was built")

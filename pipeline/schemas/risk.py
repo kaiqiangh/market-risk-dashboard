@@ -51,6 +51,27 @@ class RiskIndicator(ContractModel):
     is_proxy: bool = Field(description="proxy indicator (e.g. fund flow) marked Estimated/Proxy")
 
 
+class CrossAssetSignal(ContractModel):
+    """Transparent cross-asset signal input and its current diagnostic state.
+
+    Signal rows are deliberately separate from :class:`RiskIndicator`: the current
+    calibration policy gates the new cross-asset inputs from production weighting, while
+    Risk Lab still needs to show their provenance and missing-data behaviour.
+    """
+
+    key: str = Field(min_length=1)
+    value: float | None = None
+    triggered: bool | None = None
+    source: str = Field(min_length=1, description="canonical input source/domain")
+    provider: str = Field(min_length=1, description="provider that supplied the input")
+    unit: str = Field(min_length=1)
+    transformation: str = Field(min_length=1, description="stable transformation identifier")
+    history_observations: int = Field(default=0, ge=0)
+    status: FreshnessStatus = "fresh"
+    is_proxy: bool = Field(description="signal is based on a market proxy rather than a direct measurement")
+    production_scoring: bool = Field(default=False, description="signal currently contributes to production scoring")
+
+
 class RiskDimension(ContractModel):
     """Risk dimension (one of the 6)."""
 
@@ -118,6 +139,7 @@ class RiskModelResult(ContractModel):
     trend_1w: float | None = None
     trend_1m: float | None = None
     dimensions: list[RiskDimension] = Field(default_factory=list)
+    cross_asset_signals: list[CrossAssetSignal] = Field(default_factory=list)
     top_drivers: list[DriverContribution] = Field(default_factory=list)
     # Required key, nullable value (#69/#101): "we had no breadth sample" must be written down
     # as `null`, not left out. A missing key is indistinguishable from a forgotten one.

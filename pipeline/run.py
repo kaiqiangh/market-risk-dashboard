@@ -114,6 +114,10 @@ def _build_risk_context(
     prev_dim_scores: dict[str, float] | None,
     risk_history: list[dict[str, Any]],
     series_history: dict[str, list[dict[str, Any]]],
+    market_provenance: dict[str, Any] | None = None,
+    macro_provenance: dict[str, Any] | None = None,
+    crypto_provenance: dict[str, Any] | None = None,
+    commodities_provenance: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Assemble the collected results into the context required by RiskModel.score."""
     from pipeline.indicators.breadth import breadth_snapshot
@@ -122,10 +126,10 @@ def _build_risk_context(
     breadth = breadth_snapshot(histories)
     trend = trend_snapshot(histories)
 
-    # Cross-asset confirmation signals (#118; PRD §14.7 designs 9, of which 8 are
-    # implemented here — the cyclicals-vs-defensives and HY-vs-treasury spreads need extra
-    # series and are deliberately deferred). Signals 7-8 are commodity-driven: copper
-    # falling = growth stress, gold rising = classic risk-off confirmation.
+    # Cross-asset confirmation signals (#118). The first eight are the existing MVP
+    # confirmation inputs. The two ETF relative-return signals are collected and published
+    # as diagnostics (#143), but remain outside the production aggregate while the
+    # calibration policy gates cross-asset refitting. Missing inputs are null, never benign.
     vix = _macro_value(macro, "volatility", "vixcls")
     hy = _macro_value(macro, "credit", "bamlh0a0hym2")
     dxy = _macro_value(macro, "fx", "dtwexbgs")
@@ -136,17 +140,51 @@ def _build_risk_context(
     copper_change = _commodity_change(commodities, "HG=F")
     gold_change = _commodity_change(commodities, "GC=F")
 
-    signals = [
-        spy_change is not None and spy_change < 0,
-        hy is not None and hy > 4.0,
-        dxy is not None and dxy > 105,
-        real_rate is not None and real_rate > 1.5,
-        btc_change is not None and btc_change < 0,
-        iwm_relative is not None and iwm_relative < 0,
-        copper_change is not None and copper_change < 0,
-        gold_change is not None and gold_change > 0,
+    cyclicals_defensives = _relative_change(histories.get("XLY"), histories.get("XLP"))
+    hy_treasury = _relative_change(histories.get("HYG"), histories.get("IEF"))
+
+    signal_rows = [
+        _cross_asset_signal("spy_down", spy_change, spy_change < 0 if spy_change is not None else None,
+                            source="market_quotes", provider=market_provenance, unit="percentage_points",
+                            transformation="one_day_return_below_zero", history=histories.get("SPY")),
+        _cross_asset_signal("hy_oas_widening", hy, hy > 4.0 if hy is not None else None,
+                            source="fred_macro", provider=macro_provenance, unit="index_points",
+                            transformation="level_above_4", history=None),
+        _cross_asset_signal("dollar_strength", dxy, dxy > 105 if dxy is not None else None,
+                            source="fred_macro", provider=macro_provenance, unit="index_points",
+                            transformation="level_above_105", history=None),
+        _cross_asset_signal("real_rate_pressure", real_rate, real_rate > 1.5 if real_rate is not None else None,
+                            source="fred_macro", provider=macro_provenance, unit="percentage_points",
+                            transformation="level_above_1_5", history=None),
+        _cross_asset_signal("bitcoin_down", btc_change, btc_change < 0 if btc_change is not None else None,
+                            source="crypto_market", provider=crypto_provenance, unit="percentage_points",
+                            transformation="one_day_return_below_zero", history=None),
+        _cross_asset_signal("small_cap_underperformance", iwm_relative, iwm_relative < 0 if iwm_relative is not None else None,
+                            source="market_quotes", provider=market_provenance, unit="percentage_points",
+                            transformation="relative_return_below_zero", history=histories.get("IWM"), is_proxy=True),
+        _cross_asset_signal("copper_down", copper_change, copper_change < 0 if copper_change is not None else None,
+                            source="market_quotes", provider=commodities_provenance, unit="percentage_points",
+                            transformation="one_day_return_below_zero", history=None),
+        _cross_asset_signal("gold_up", gold_change, gold_change > 0 if gold_change is not None else None,
+                            source="market_quotes", provider=commodities_provenance, unit="percentage_points",
+                            transformation="one_day_return_above_zero", history=None),
+        _cross_asset_signal("cyclicals_defensives_relative", cyclicals_defensives,
+                            cyclicals_defensives < 0 if cyclicals_defensives is not None else None,
+                            source="market_quotes", provider=market_provenance, unit="percentage_points",
+                            transformation="xly_minus_xlp_one_day_return", history=histories.get("XLY"), is_proxy=True),
+        _cross_asset_signal("hy_treasury_relative", hy_treasury,
+                            hy_treasury < 0 if hy_treasury is not None else None,
+                            source="market_quotes", provider=market_provenance, unit="percentage_points",
+                            transformation="hyg_minus_ief_one_day_return", history=histories.get("HYG"), is_proxy=True),
     ]
-    confirmation = round(sum(1 for s in signals if s) / len(signals), 4) if signals else None
+    # The production aggregate intentionally excludes the two new signals while the
+    # calibration policy is ``cross_asset_confirmation: gate``. Existing signals still use
+    # null-aware aggregation so a failed provider cannot lower the hit rate artificially.
+    production_signals = [row for row in signal_rows if row["key"] not in {
+        "cyclicals_defensives_relative", "hy_treasury_relative",
+    }]
+    observed = [row["triggered"] for row in production_signals if row["triggered"] is not None]
+    confirmation = round(sum(1 for value in observed if value) / len(observed), 4) if observed else None
 
     data_quality = sum(qualities) / len(qualities) if qualities else 1.0
     return {
@@ -159,7 +197,14 @@ def _build_risk_context(
         "trend": trend,
         # VIX is not one of the cross-asset hit-rate signals, but retain its canonical
         # volatility-group value in the shared context for downstream diagnostics/consumers.
-        "cross_asset": {"confirmation": confirmation, "vix": vix},
+        "cross_asset": {
+            "confirmation": confirmation,
+            "vix": vix,
+            "signals": signal_rows,
+            "configured_signal_count": len(signal_rows),
+            "observed_signal_count": sum(row["triggered"] is not None for row in signal_rows),
+            "production_scoring_signal_count": len(production_signals),
+        },
         "data_quality": round(data_quality, 4),
         "series_history": series_history,
         "_prev_total_score": prev_total_score,
@@ -190,6 +235,51 @@ def _latest_change(rows: list[dict[str, Any]]) -> float | None:
     if not all(isinstance(v, (int, float)) for v in (prev, last)) or prev == 0:
         return None
     return round((last - prev) / prev * 100.0, 4)
+
+
+def _relative_change(left_rows: list[dict[str, Any]] | None, right_rows: list[dict[str, Any]] | None) -> float | None:
+    """Return the 1d percentage-point return gap, preserving missing inputs as null."""
+    left = _latest_change(left_rows or [])
+    right = _latest_change(right_rows or [])
+    if left is None or right is None:
+        return None
+    return round(left - right, 4)
+
+
+def _signal_status(value: float | None, provenance: dict[str, Any] | None) -> str:
+    if value is None:
+        return "missing"
+    if provenance and (provenance.get("degraded") or provenance.get("used_fallback") or provenance.get("from_cache")):
+        return "degraded"
+    return "fresh"
+
+
+def _cross_asset_signal(
+    key: str,
+    value: float | None,
+    triggered: bool | None,
+    *,
+    source: str,
+    provider: dict[str, Any] | None,
+    unit: str,
+    transformation: str,
+    history: list[dict[str, Any]] | None,
+    is_proxy: bool = False,
+) -> dict[str, Any]:
+    """Build a serializable cross-asset signal row with input provenance."""
+    return {
+        "key": key,
+        "value": value,
+        "triggered": triggered,
+        "source": source,
+        "provider": str((provider or {}).get("provider", "unavailable")),
+        "unit": unit,
+        "transformation": transformation,
+        "history_observations": len(history or []) if history is not None else (1 if value is not None else 0),
+        "status": _signal_status(value, provider),
+        "is_proxy": is_proxy,
+        "production_scoring": key not in {"cyclicals_defensives_relative", "hy_treasury_relative"},
+    }
 
 
 def _read_prev_risk(writer: StorageWriter) -> tuple[float | None, dict[str, float] | None, list[dict[str, Any]]]:
@@ -995,6 +1085,10 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             prev_dim_scores=prev_dims,
             risk_history=risk_history,
             series_history=results.get("series_history", {}),
+            market_provenance=market_meta.get("providers", {}).get("equities"),
+            macro_provenance=macro_outcome,
+            crypto_provenance=market_meta.get("providers", {}).get("crypto"),
+            commodities_provenance=market_meta.get("providers", {}).get("commodities"),
         )
         risk_result = risk_model.score(ctx)
         risk_env = _assemble("risk", risk_result, risk_input_degraded,
