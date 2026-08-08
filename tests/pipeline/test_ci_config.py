@@ -77,6 +77,14 @@ def test_python_suite_runs_on_every_pull_request_and_push() -> None:
     )
 
 
+def test_test_pipeline_runs_full_data_validation_and_node_companion() -> None:
+    """Every CI run must enforce the full validator; Node is only the companion check."""
+    text = _read_workflow("test-pipeline.yml")
+
+    assert "scripts/validate_data.sh --scheduled --data-dir public/data" in text
+    assert "node scripts/validate-json.mjs --data-dir public/data" in text
+
+
 def _generated_constants() -> dict:
     """The contract constants the Node gate reads (src/schemas/generated/constants.json)."""
     path = REPO_ROOT / "src" / "schemas" / "generated" / "constants.json"
@@ -200,3 +208,43 @@ def test_secret_gate_is_wired_into_local_and_ci_validation() -> None:
     assert "scan-secrets.mjs" in script, (
         "validate_data.sh must run the secret scan before the data checks"
     )
+
+
+def test_local_validation_fails_closed_and_marks_reduced_diagnostics() -> None:
+    """The local/scheduled validator must not silently downgrade its confidence."""
+    script = (REPO_ROOT / "scripts" / "validate_data.sh").read_text(encoding="utf-8")
+
+    assert "pipeline.validation.ci_checks" in script
+    assert "--diagnostic-reduced" in script
+    assert "mode=reduced-diagnostic" in script
+    assert "VALIDATE_DATA_PRODUCTION" in script
+    assert "mandatory secret scan cannot run" in script
+    assert "falling back to Node" not in script
+    assert "npm run check:contracts" in script
+
+
+def test_scheduled_runner_fails_closed_after_repository_errors() -> None:
+    """Pull, commit, push, and remote verification must all be observable failures."""
+    script = (REPO_ROOT / "scripts" / "run_scheduled.sh").read_text(encoding="utf-8")
+
+    assert "collection did not start" in script
+    assert "continuing with local state" not in script
+    assert "nothing was pushed" in script
+    assert "local verified commit $COMMIT_SHA" in script
+    assert "git rev-parse HEAD" in script
+    assert "git ls-remote origin refs/heads/dev" in script
+    assert "|| true" not in script
+    assert "git pull --rebase origin dev; then" in script
+
+
+def test_deploy_pages_runs_full_data_and_secret_gates() -> None:
+    """Artifact upload must be downstream of Python validation and secret scanning."""
+    workflow = _read_workflow("deploy-pages.yml")
+
+    assert "actions/setup-python@v5" in workflow
+    assert "python -m pipeline.validation.ci_checks --data-dir public/data" in workflow
+    assert "scripts/scan-secrets.mjs --root ." in workflow
+    assert "npm run check:contracts" in workflow
+    assert "Validate JSON data (Node structural companion)" in workflow
+    assert workflow.index("run: npm run build") < workflow.index("run: node scripts/scan-secrets.mjs --root .")
+    assert workflow.index("run: node scripts/scan-secrets.mjs --root .") < workflow.index("actions/upload-pages-artifact@v3")

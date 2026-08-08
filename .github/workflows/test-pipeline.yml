@@ -47,6 +47,12 @@ jobs:
       - name: Run pipeline test suite
         run: python -m pytest tests/pipeline/
 
+      - name: Validate committed data (full authority, contract, and secret gates)
+        run: scripts/validate_data.sh --scheduled --data-dir public/data
+
+      - name: Validate committed data (Node structural companion)
+        run: node scripts/validate-json.mjs --data-dir public/data
+
       - name: Point-in-time production-path calibration replay
         run: python scripts/calibrate_production.py --panel tests/fixtures/calibration_panel.json --out artifacts/calibration/production-path.json
 

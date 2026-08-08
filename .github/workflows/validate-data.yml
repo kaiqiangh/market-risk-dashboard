@@ -58,7 +58,7 @@ jobs:
       - name: Validate committed data (comprehensive)
         run: python -m pipeline.validation.ci_checks --data-dir public/data
 
-      - name: Validate committed data (Node structural, fallback)
+      - name: Validate committed data (Node structural companion)
         run: node scripts/validate-json.mjs --data-dir public/data
 
       - name: "Contract drift gate (#101): regenerate and diff"

@@ -24,6 +24,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pipeline validation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pydantic pydantic-settings pyyaml
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -33,6 +43,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate committed data (full Python authority)
+        run: python -m pipeline.validation.ci_checks --data-dir public/data
+
+      - name: Check generated contracts
+        run: npm run check:contracts
+
       # PRD §20.1 build chain: check translation files → validate JSON Schema → ESLint → TS check → test → build → deploy
       - name: Check translation files
         run: npm run check:i18n
@@ -40,7 +56,7 @@ jobs:
       - name: Check language isolation
         run: npm run check:language
 
-      - name: Validate JSON data
+      - name: Validate JSON data (Node structural companion)
         run: npm run check:data
 
       - name: Lint
@@ -54,6 +70,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Secret scan (mandatory before artifact upload)
+        run: node scripts/scan-secrets.mjs --root .
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
