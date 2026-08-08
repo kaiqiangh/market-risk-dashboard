@@ -1,18 +1,221 @@
 {
   "items": [
     {
-      "id": "7bc19d897d1600d7702c18d9f8bf94e4fa5276fa",
-      "title": "NVIDIA nears resistance at $226 with RSI overbought: Hourly",
-      "summary": null,
-      "title_zh": "英伟达逼近 226 美元阻力位，RSI 进入超买：小时线",
-      "summary_zh": null
+      "id": "f3a4d178f8dd232333865ca727f40514bfdeffe1",
+      "title": "Are the odds of a September Fed hike falling again? Economists expect core CPI at a five-year low",
+      "summary": "Friday's July payrolls report came in unexpectedly weak, cooling market expectations for a Fed rate hike in September; the coming inflation data may be decisive for the policy path.",
+      "title_zh": "美联储9月加息概率再降？经济学家料核心CPI创五年新低",
+      "summary_zh": "本周五公布的7月非农就业报告意外疲弱，市场对美联储9月加息的预期降温，近期通胀数据可能成为决定政策走向的关键"
+    },
+    {
+      "id": "db1fb67b7db1c0477fe2de7bf38c726cb56c78bf",
+      "title": "July payrolls gave the Fed no clear answer — the 'new Fed whisperer': whether September brings a hike still depends on inflation",
+      "summary": "The July US payrolls report unexpectedly recorded a net decline in employment, yet the unemployment rate fell to its lowest in more than a year. The apparently contradictory report makes the policy outlook ahead of the September Fed meeting even harder to read.",
+      "title_zh": "7月非农没给美联储清晰答案！“新美联储通讯社”：9月是否加息还得看通胀",
+      "summary_zh": "美国7月非农就业报告意外录得就业净减少，但失业率降至一年多来低位，一份看似矛盾的就业报告，让美联储9月会议前的政策前景变得更加扑朔迷离"
+    },
+    {
+      "id": "c81389b0cc1936af85f02a094d56076f87d5169e",
+      "title": "Fed: US inflation expectations for July fell to 3.63% from 3.67%, and consumers turned more optimistic about jobs",
+      "summary": "Federal Reserve: US inflation expectations for July fell to 3.63%, from a previous reading of 3.67%.",
+      "title_zh": "美联储：美国7月通胀预期降低至3.63%，前值3.67%。消费者对就业变得更加乐观",
+      "summary_zh": "美联储：美国7月通胀预期降低至3.63%，前值3.67%"
+    },
+    {
+      "id": "062ae8049e21033c8389495354f114b0c582fc92",
+      "title": "Nvidia sets its sights on the power supplier behind OpenAI's Stargate, taking a direct stake of US$3 billion",
+      "summary": "Nvidia is extending its reach into the very bottom layer of AI infrastructure — power supply.",
+      "title_zh": "英伟达盯上OpenAI“星际之门”背后的电力商，30亿美元直接入股",
+      "summary_zh": "英伟达正将触角深入AI基础设施的最底层—— 电力供应"
+    },
+    {
+      "id": "98a2318bd3fef6ce949c6994e7a81f2628e94f69",
+      "title": "Oil prices stoke inflation while weak jobs undercut the hike case — gold wins on both sides",
+      "summary": "This week gold benefited in a rare way from two opposing macro forces at once: oil prices swung sharply on the Iran situation, continually stirring inflation expectations and creating hedging demand for gold, while a shockingly weak employment report battered expectations for a Fed rate hike, pushing the dollar and Treasury yields lower and opening room for gold to rise.",
+      "title_zh": "油价刺激通胀、就业削弱加息--黄金“双面得利”",
+      "summary_zh": "本周，黄金以一种罕见的方式同时受益于两股相互对立的宏观力量：油价围绕伊朗局势剧烈波动，持续搅动通胀预期，为黄金提供保值需求；而一份令市场震惊的疲弱就业数据，则重创美联储加息预期，进一步压低美元和国债收益率，为金价打开上行空间"
+    },
+    {
+      "id": "10c9c8d99ef1658f08bcbf4300beb682439a27e7",
+      "title": "Two reasons why Nvidia’s stock saw its biggest weekly surge in more than a year",
+      "summary": "The chip maker recorded its largest-ever weekly increase in market capitalization.",
+      "title_zh": "英伟达股价创下一年多来最大单周涨幅的两个原因",
+      "summary_zh": "这家芯片制造商录得有史以来最大的单周市值增幅。"
+    },
+    {
+      "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
+      "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
+      "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
+      "title_zh": "美联储理事会就现代化互助制银行机构监管规则的提案公开征求意见",
+      "summary_zh": "美联储理事会就现代化互助制银行机构监管规则的提案公开征求意见。"
+    },
+    {
+      "id": "51bdb202dd58e4b5d03a7f03beae1d271730a57a",
+      "title": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, Inc., BNP Paribas Securities Corp., and Community Bankshares, Inc.",
+      "summary": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, I",
+      "title_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行、法国巴黎银行美国公司、法国巴黎银行证券公司及 Community Bankshares, Inc. 的执法行动",
+      "summary_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行及其美国实体等机构的执法行动。"
+    },
+    {
+      "id": "9a35deb4defa1d34e1f6857cbf23ebb48585dda8",
+      "title": "US Treasury Secretary Bessent: the Strait of Hormuz will 'become irrelevant'",
+      "summary": "CLS, August 8 — In an interview with NBC on August 6, US Treasury Secretary Bessent said the Strait of Hormuz will never return to what it was. He stressed this is not the Iran-favourable situation Tehran has portrayed, but rather that the strait will lose its current status as a chokepoint for energy transport.",
+      "title_zh": "美国财长贝森特：霍尔木兹海峡将“变得无关紧要”",
+      "summary_zh": "【美国财长贝森特：霍尔木兹海峡将“变得无关紧要”】财联社8月8日电，美国财长贝森特8月6日在接受美国全国广播公司采访时表示，霍尔木兹海峡永远不会恢复到原来的样子，但他强调，这不是伊朗方面所描绘的那种对伊朗有利的局面，而是指霍尔木兹海峡将失去当前能源运输“咽喉要道”的地位"
+    },
+    {
+      "id": "b97724fd83724922fcb23eb7dd1e1abee974edd5",
+      "title": "Russian Defence Ministry: two dry cargo ships carrying weapons to Ukrainian ports were struck",
+      "summary": "CLS, August 8 — Russia's Defence Ministry said that in waters south and east of Ukraine's port of Odesa, two dry cargo ships delivering weapons and military supplies to Ukrainian ports were hit by drones.",
+      "title_zh": "俄国防部：两艘向乌克兰港口运送武器的干货船被击中",
+      "summary_zh": "【俄国防部：两艘向乌克兰港口运送武器的干货船被击中】财联社8月8日电，俄罗斯国防部通报称，俄军在乌克兰敖德萨港南部和东部的海域，两艘正向乌克兰港口运送武器和军事物资的干货船遭无人机击中"
+    },
+    {
+      "id": "d2e86a79c1f422567713f0b6403d2f200535180c",
+      "title": "Outer bands of Typhoon Baihaitun bring wind and rain; torrential downpours expected in parts of Shanghai and Zhejiang",
+      "summary": "CLS, August 8 — As of 13:00 today the centre of Typhoon Baihaitun was over waters about 465 km east-southeast of Wenzhou, Zhejiang, with maximum sustained winds near the centre of force 14, or 45 metres per second.",
+      "title_zh": "台风“白海豚”外围环流风雨已至 上海浙江局地将有特大暴雨",
+      "summary_zh": "【台风“白海豚”外围环流风雨已至 上海浙江局地将有特大暴雨】财联社8月8日电，今天13时，台风“白海豚”中心位于距离浙江省温州市东偏南方向约465公里的洋面上，中心附近最大风力14级，45米/秒"
+    },
+    {
+      "id": "71c141172c47317c89c6d00a66c375860c2fa982",
+      "title": "All Shanghai ferry services suspended because of Typhoon Baihaitun",
+      "summary": "CLS, August 8 — Shanghai Ferry said that because of Baihaitun, this year's 13th typhoon, all ferry routes had been suspended as of 13:58.",
+      "title_zh": "受台风“白海豚”影响 上海轮渡全线停航",
+      "summary_zh": "【受台风“白海豚”影响 上海轮渡全线停航】财联社8月8日电，从上海轮渡获悉，因受今年第13号台风“白海豚”影响，截至13时58分，上海轮渡已全线停航"
+    },
+    {
+      "id": "4d7b36d4d4171e732f1818950d086f6210bc527e",
+      "title": "Russia: strikes launched on a defence plant and a fuel depot in Kyiv",
+      "summary": "CLS, August 8 — Russia's Defence Ministry said Russian forces carried out a cluster strike overnight on a defence-industry facility and a fuel storage depot in Kyiv.",
+      "title_zh": "俄罗斯：对基辅的军工企业和燃油库发动打击",
+      "summary_zh": "【俄罗斯：对基辅的军工企业和燃油库发动打击】财联社8月8日电，俄罗斯国防部通报称，俄武装力量夜间对基辅的一处军工企业和燃油仓库发动了集群打击"
+    },
+    {
+      "id": "3fd2ae1a10abdeb0b75df0a3c2d4f1007bea832f",
+      "title": "Sungrow: the FCC policy mainly restricts new product certification and does not affect sales of already-certified products",
+      "summary": "CLS, August 8 — Sungrow said on an investor interaction platform that its preliminary assessment is that the FCC policy mainly restricts certification of new products and does not affect sales of products already certified; the solar inverters and energy storage systems it currently sells in the US are unaffected.",
+      "title_zh": "阳光电源：FCC政策主要限制新产品认证 不影响已获认证产品的销售",
+      "summary_zh": "【阳光电源：FCC政策主要限制新产品认证 不影响已获认证产品的销售】财联社8月8日电，阳光电源在互动平台称，公司目前初步判断，FCC政策主要限制新产品认证，不影响已获认证产品的销售，公司目前在美销售的光伏逆变器、储能系统不受影响"
+    },
+    {
+      "id": "634a59c626c364ffdb06c53a92f5d5c41fbd4ea5",
+      "title": "Japan's defence budget request for fiscal 2027 hits a record high",
+      "summary": "CLS, August 8 — According to Kyodo News, several people familiar with the matter said on the 7th that for Japan's fiscal 2027 budget process the Defence Ministry plans to request about 8.9 trillion yen from the Finance Ministry, a record high (1 yen is roughly 0.043 yuan).",
+      "title_zh": "日本2027财年防卫预算申请额创新高",
+      "summary_zh": "【日本2027财年防卫预算申请额创新高】财联社8月8日电，据日本共同社报道，多名相关人士7日透露，就日本政府2027财年预算编制工作，日本防卫省拟向财务省申请约8.9万亿日元（1日元约合0.043元人民币），创历史新高"
+    },
+    {
+      "id": "c5a061f4aafa1260213b2ef230dc0805cce6ea25",
+      "title": "Sources: senior US military leadership is looking for a way out of the conflict with Iran",
+      "summary": "CLS, August 8 — US sources cited on August 7 said Dan Caine, chairman of the Joint Chiefs of Staff, is seeking a way out of the war with Iran.",
+      "title_zh": "消息人士：美军高层寻找摆脱伊朗战事的途径",
+      "summary_zh": "【消息人士：美军高层寻找摆脱伊朗战事的途径】财联社8月8日电，美国方面8月7日援引消息人士的话称，美军参谋长联席会议主席丹·凯恩在寻找摆脱伊朗战事的途径"
+    },
+    {
+      "id": "d6690342b95c249529167f65e5555b8d2eacbf4e",
+      "title": "Rainfall timetable for Typhoon Baihaitun released; the remnant circulation may affect northern China",
+      "summary": "CLS, August 8 — The latest forecast has Typhoon Baihaitun making landfall along the coast between Zhoushan in Zhejiang and Fuding in Fujian between the night of the 9th and the morning of the 10th. Wind and rain across east China will be concentrated from the 8th to the 12th, with the rainfall timetable showing the specific window for each area.",
+      "title_zh": "台风“白海豚” 降雨进程表出炉 残余环流或将影响北方",
+      "summary_zh": "【台风“白海豚” 降雨进程表出炉 残余环流或将影响北方】财联社8月8日电，从最新预报来看，台风“白海豚”将于9日晚上至10日早晨在浙江舟山到福建福鼎一带沿海登陆，受其影响，华东地区风雨将主要集中在8日至12日，降雨进程图看华东各地具体影响时段"
+    },
+    {
+      "id": "567a8f6114ebb592aa8370d73ac2f0d6e5733e9b",
+      "title": "116,000 new companies were established in humanoid robotics in the first half of this year",
+      "summary": "CLS, August 8 — Data from the State Administration for Market Regulation show that companies in new industries and new tracks kept building momentum in the first half of 2026, with 116,000 new firms established in humanoid robotics, up 9.5% year on year. Services-related business entities were a highlight, manufacturing firms accelerated their transformation, and the industry showed numerous bright spots.",
+      "title_zh": "今年上半年人形机器人领域新设企业11.6万户",
+      "summary_zh": "【今年上半年人形机器人领域新设企业11.6万户】财联社8月8日电，市场监管总局公布数据显示，2026年上半年新产业新赛道相关企业持续增动能，人形机器人领域新设企业11.6万户，同比增长9.5%，服务业相关经营主体亮点突出，制造业企业转型加快，产业发展亮点纷呈"
+    },
+    {
+      "id": "5a014b7e98e6283e3f6ea63eea8f750123f5df76",
+      "title": "Ukraine says Kyiv and other areas came under attack, with several killed and wounded",
+      "summary": "CLS, August 8 — Kyiv's city military administration reported on the 8th that the city was attacked by Russian forces in the early hours; as of 05:45 local time the attack had injured four people and started fires in two districts of Kyiv, with rescue operations under way.",
+      "title_zh": "乌称基辅等地遭袭 已有多人死伤",
+      "summary_zh": "【乌称基辅等地遭袭 已有多人死伤】财联社8月8日电，乌克兰基辅市军政管理局8日通报称，当天凌晨基辅市遭俄军袭击，截至当地时间5时45分，袭击已造成4人受伤，基辅市两个地区发生火灾，相关部门正在开展救援工作"
+    },
+    {
+      "id": "760d68882e3421c367ab192fdcef6f73bba41f6a",
+      "title": "China approves its first drug for the prevention of acute mountain sickness",
+      "summary": "CLS, August 8 — Following strict review and approval by the National Medical Products Administration, acetazolamide sustained-release capsules have been approved for market. With Professor Gesang Luobu, deputy head of the People's Hospital of Tibet Autonomous Region and director of the Tibet Institute of High Altitude Medicine, as principal investigator, it becomes the first drug approved in China with an indication for preventing acute mountain sickness.",
+      "title_zh": "我国首个预防急性高原病药物获批上市",
+      "summary_zh": "【我国首个预防急性高原病药物获批上市】财联社8月8日电，近日，经国家药品监督管理局严格审评审批，由西藏自治区人民医院副院长、西藏高原医学研究所所长格桑罗布教授担任主要研究者的乙酰唑胺缓释胶囊正式获批上市，成为国内首个获批具有预防急性高原病适应症的药品"
+    },
+    {
+      "id": "14f3143f1277ef804b540c875df2a4fcce07b80b",
+      "title": "National flood control headquarters activates a level-four flood and typhoon emergency response for Jiangsu and Anhui",
+      "summary": "On August 8 the office of the National Flood Control and Drought Relief Headquarters and the Ministry of Emergency Management convened a joint consultation with the China Meteorological Administration, the Ministry of Water Resources, the Ministry of Natural Resources, the Ministry of Industry and Information Technology, the Ministry of Housing and Urban-Rural Development, the Ministry of Transport and other departments, together with Zhejiang, Fujian, Hebei and other provinces that may be affected, to assess the development of Typhoon Baihaitun and further arrange prevention and response work.",
+      "title_zh": "国家防总对江苏安徽启动防汛防台风四级应急响应",
+      "summary_zh": "【国家防总对江苏安徽启动防汛防台风四级应急响应】8月8日，国家防总办公室、应急管理部组织中国气象局、水利部、自然资源部、工业和信息化部、住房城乡建设部、交通运输部等部门以及浙江、福建、河北和其他可能受影响的省份联合会商，研判台风“白海豚”发展趋势，进一步研究部署台风防范应对工作"
+    },
+    {
+      "id": "7d9551d24e7b7848ad98cd3c0547bea26b9e497b",
+      "title": "Some Moutai direct stores raise the price of 53-degree, 500ml Feitian Moutai to 1753 yuan a bottle",
+      "summary": "CLS, August 8 — CLS reporters learned that some Moutai direct-sale stores have recently raised the price of 53-degree, 500ml Feitian Moutai to 1753 yuan per bottle, above the 1639 yuan price on the i-Moutai platform.",
+      "title_zh": "茅台部分直营店53度、500ml飞天茅台售价提至1753元/瓶",
+      "summary_zh": "【茅台部分直营店53度、500ml飞天茅台售价提至1753元/瓶】财联社8月8日电，财联社记者获悉，近期有茅台直营店已将53度、500ml飞天茅台售价提升至1753元/瓶，高于i茅台1639元/瓶的售价"
+    },
+    {
+      "id": "b440fd1096816b5b29013e813d96b1590c193560",
+      "title": "Ministry of Water Resources: 13 rivers nationwide remain above warning levels",
+      "summary": "CLS, August 8 — The Ministry of Water Resources held a consultation this morning to assess the national flood situation; over the next three days numbered floods may occur on the Qiantang, Yong, Jiao and Shuiyang rivers.",
+      "title_zh": "水利部：全国13条河流仍维持超警",
+      "summary_zh": "【水利部：全国13条河流仍维持超警】财联社8月8日电，今天上午，水利部举行会商，分析研判全国的防汛形势，未来三天钱塘江、甬江、椒江、水阳江可能发生编号洪水"
+    },
+    {
+      "id": "aaf054fe2d112cd3b7c83ca737dc9a26a92034ba",
+      "title": "Ministry of Natural Resources raises Zhejiang's geological disaster response to level III and activates level IV for Anhui",
+      "summary": "CLS, August 8 — According to the Ministry of Natural Resources, based on meteorological forecasts and assessment by its geological disaster technical guidance centre, the risk of geological disasters will be high over the next three days in parts of eastern Zhejiang and western Anhui because of Typhoon Baihaitun.",
+      "title_zh": "自然资源部将浙江地质灾害防御响应提升至Ⅲ级 对安徽启动Ⅳ级响应",
+      "summary_zh": "【自然资源部将浙江地质灾害防御响应提升至Ⅲ级 对安徽启动Ⅳ级响应】财联社8月8日电，据自然资源部消息，据气象部门预测和自然资源部地质灾害技术指导中心研判，受台风“白海豚”影响，未来三天，浙江东部、安徽西部等地局部地区发生地质灾害的风险高"
+    },
+    {
+      "id": "4d614b15ab88b2a0088d96c626c7b27de0ea2a63",
+      "title": "CLS, August 8 — The China Earthquake Networks Center formally determined that a magnitude 5.2 earthquake struck the US state of Alaska (62.35 degrees north, 152.25 degrees west) at 12:50 on August 8, at a focal depth of 10 km.",
+      "summary": "CLS, August 8 — The China Earthquake Networks Center formally determined that a magnitude 5.2 earthquake struck the US state of Alaska (62.35 degrees north, 152.25 degrees west) at 12:50 on August 8, at a focal depth of 10 km",
+      "title_zh": "财联社8月8日电，中国地震台网正式测定：08月08日12时50分在美国阿拉斯加州（北纬62.35度，西经152.25度）发生5.2级地震，震源深度10千米。",
+      "summary_zh": "财联社8月8日电，中国地震台网正式测定：08月08日12时50分在美国阿拉斯加州（北纬62.35度，西经152.25度）发生5.2级地震，震源深度10千米"
+    },
+    {
+      "id": "0bf3f92d72e36f2718a78e598ec2f8d56cd286cb",
+      "title": "US official: a Strait of Hormuz agreement is expected to be reached 'soon'",
+      "summary": "CLS, August 8 — Reuters reported on the 7th, citing a US official, that talks between Iran and Oman over the Strait of Hormuz are 'making progress' and that an agreement is 'expected soon'.",
+      "title_zh": "美官员：预计霍尔木兹海峡协议将“很快达成”",
+      "summary_zh": "【美官员：预计霍尔木兹海峡协议将“很快达成”】财联社8月8日电，路透社7日援引一名美国官员的话报道称，伊朗与阿曼围绕霍尔木兹海峡的谈判“有进展”，“预计很快达成协议”"
+    },
+    {
+      "id": "933711962bf6f533ec3af4bbc7374cd1ebe36bdf",
+      "title": "40 coastal shipping routes in Fujian suspended because of Typhoon Baihaitun",
+      "summary": "CLS, August 8 — The Fujian Maritime Safety Administration said that to guard against Typhoon Baihaitun, 40 passenger and ferry routes along the Fujian coast had been suspended and 76 passenger ferries taken out of service as of 12:00 on the 8th.",
+      "title_zh": "受台风“白海豚”影响 福建沿海40条航线停航",
+      "summary_zh": "【受台风“白海豚”影响 福建沿海40条航线停航】财联社8月8日电，从福建海事局了解到，为了防御台风“白海豚”，截至8日12时，福建沿海共有40条客渡运航线停运，76艘客渡船停航"
+    },
+    {
+      "id": "3d9cf0983b69a4df6c1db71dcc750ab59191c522",
+      "title": "Bessent says the Strait of Hormuz will gradually lose its strategic importance",
+      "summary": "CLS, August 8 — US Treasury Secretary Scott Bessent said in a recent interview with a local television station in Arizona that as the geopolitical situation shifts, more and more energy shipments will bypass the Strait of Hormuz in future.",
+      "title_zh": "贝森特称霍尔木兹海峡将逐步失去战略重要性",
+      "summary_zh": "【贝森特称霍尔木兹海峡将逐步失去战略重要性】财联社8月8日电，美国财政部长斯科特·贝森特日前在接受美国亚利桑那州地方电视台采访时说，随着地缘政治局势变化，今后越来越多能源运输将绕过霍尔木兹海峡"
     },
     {
       "id": "744645a4b2113490bbdfd3aa1159e69bdb29ea28",
       "title": "GAO finds Elon Musk's DOGE inflated claims of $110 billion in savings for federal government",
       "summary": "The nonpartisan watchdog found Elon Musk's DOGE didn't cut as much federal spending as it claimed and that it fell far short of its promised $2 trillion.",
-      "title_zh": "美国政府问责局发现马斯克领导的政府效率部虚报为联邦政府节省 1100 亿美元",
+      "title_zh": "美国政府问责局发现，马斯克领导的政府效率部虚报为联邦政府节省 1100 亿美元",
       "summary_zh": "这家无党派监督机构发现，马斯克领导的政府效率部实际削减的联邦开支远低于其宣称的规模，与其承诺的 2 万亿美元相去甚远。"
+    },
+    {
+      "id": "91ee4b9337b9a117d6d8b6406b4678bd7ed5b1e7",
+      "title": "BlackRock is finding solid tax-free yields in this corner of the bond market",
+      "summary": "The municipal bond market has attractive opportunities, and it pays to be particular.",
+      "title_zh": "贝莱德正在债券市场的这个角落寻得稳健的免税收益",
+      "summary_zh": "市政债券市场存在有吸引力的机会，而在挑选上多下功夫是值得的。"
+    },
+    {
+      "id": "3fe696befcda1c330497c8a5155993ec75640a72",
+      "title": "Trump moves again: formally restarting the process to remove Fed Governor Cook, dealing another blow to Fed independence",
+      "summary": "The Trump administration has formally launched a fresh round of proceedings to remove Federal Reserve Governor Lisa Cook, signalling that the legal dispute over the Fed's independence is set to escalate once more.",
+      "title_zh": "特朗普再出手！正式重启罢免美联储理事库克程序，美联储独立性再遭冲击",
+      "summary_zh": "特朗普政府正式启动新一轮罢免美联储理事Lisa Cook的程序，这一举动预示着围绕美联储独立性的法律争议将再度升级"
     },
     {
       "id": "e987c4027299a504f07e92273114fe834fe008be",
@@ -29,18 +232,25 @@
       "summary_zh": "冲突正在整个地区扩散，海湾能源基础设施与关键航运咽喉要道再度面临威胁。"
     },
     {
-      "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
-      "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-      "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-      "title_zh": "美联储理事会就现代化互助制银行机构监管规则的提案公开征求意见",
-      "summary_zh": "美联储理事会就现代化互助制银行机构监管规则的提案公开征求意见。"
+      "id": "c56c83e539d2690f8345448cceb71565fa6fdf8f",
+      "title": "U.S. Senate passes short-term funding bill to avert federal shutdown before election",
+      "summary": null,
+      "title_zh": "美国参议院通过短期支出法案，以避免选举前联邦政府停摆",
+      "summary_zh": null
     },
     {
-      "id": "51bdb202dd58e4b5d03a7f03beae1d271730a57a",
-      "title": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, Inc., BNP Paribas Securities Corp., and Community Bankshares, Inc.",
-      "summary": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, I",
-      "title_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行及其美国实体与 Community Bankshares, Inc. 的执法行动",
-      "summary_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行、法国巴黎银行美国公司等实体的执法行动。"
+      "id": "04487cd3f838f9bd94e2c618bd2cf8df70575b7c",
+      "title": "Peoples Bancorp director Abernethy sells $40,211 in common stock",
+      "summary": null,
+      "title_zh": "Peoples Bancorp 董事 Abernethy 出售 40,211 美元普通股",
+      "summary_zh": null
+    },
+    {
+      "id": "3490c4d66ed6e7558c3bc5be90b07cc8461d2bf4",
+      "title": "Bitcoin stalls at $65,156 resistance as ADX warns of bull trap: Live levels",
+      "summary": null,
+      "title_zh": "比特币在 65,156 美元阻力位止步，ADX 指标警示多头陷阱：实时点位",
+      "summary_zh": null
     },
     {
       "id": "f43728c2c4ea077a86f3eb0fa491700375f5cc85",
@@ -50,165 +260,81 @@
       "summary_zh": "由于供应紧张叠加需求旺盛，存储芯片价格大幅上涨，投资者正密切关注供需失衡格局的任何变化。"
     },
     {
-      "id": "36d87c92dae02eec13209b96c68138ad25e15d5e",
-      "title": "Here’s when Elon Musk’s Starlink internet is worth the steep monthly price — and $350 startup cost",
-      "summary": "Starlink versus fiber, cable and 5G: The smart spender’s guide to 2026 internet options.",
-      "title_zh": "马斯克的星链网络何时值得高昂月费与 350 美元初装成本",
-      "summary_zh": "星链对比光纤、有线与 5G：2026 年精明消费者的网络选择指南。"
+      "id": "f150028c8098b3f3fb341134214e4ad99036ab90",
+      "title": "The US Senate secured enough votes to pass a stopgap spending bill to avert a government shutdown before the election.",
+      "summary": "The US Senate secured enough votes to pass a stopgap spending bill to avert a government shutdown before the election.",
+      "title_zh": "美国参议院获得足够票数通过临时支出法案，以避免选举前政府停摆。",
+      "summary_zh": "美国参议院获得足够票数通过临时支出法案，以避免选举前政府停摆"
     },
     {
-      "id": "3279ae7baadc9071acb54d842a17e385df7594cf",
-      "title": "Analysis: Trump treats Fed Chairman Kevin Warsh as an ally. That creates economic risks",
-      "summary": "Trump's reported phone calls to the Fed chairman will complicate his efforts to prove he will act independently on inflation and interest rates.",
-      "title_zh": "分析：特朗普将美联储主席凯文·沃什视为盟友，这会制造经济风险",
-      "summary_zh": "有报道称特朗普曾致电美联储主席，这将使其在通胀与利率问题上证明自己独立行事的努力更加复杂。"
+      "id": "ea0a4374ddaf2822b705383e9093b6c987d8a182",
+      "title": "Wall Street veteran: times have changed — a single blow-up like the 'AI stock god' is unlikely to drag the market down again",
+      "summary": "Well-known economist Ed Yardeni said times have changed, and that a single-point blow-up such as Situational Awareness, the so-called 'AI stock god', is unlikely to escalate into a systemic crisis on the scale of 2008.",
+      "title_zh": "华尔街老将：时代变了，“AI股神”这种单点爆仓，很难再拖垮市场",
+      "summary_zh": "知名经济学家Ed Yardeni表示，时代已经变了，像“AI股神”Situational Awareness这样的单点爆仓，很难再演变成2008年那样的系统性危机"
     },
     {
-      "id": "628fc39ca30479dee378107ba036f3a121165b77",
-      "title": "S&P 500 rises as it wraps up banner week with traders seeing bright side of dismal jobs report: Live updates",
-      "summary": "Wall Street is coming off a losing session as the July jobs report looms.",
-      "title_zh": "标普500上涨收官强势一周，交易员从疲弱就业报告中看到利好：实时更新",
-      "summary_zh": "华尔街刚刚经历一个下跌交易日，市场正等待 7 月就业报告。"
+      "id": "644a50efa6a6a9f207b55de55d93b77e04d1a93e",
+      "title": "Base metals ride the wind: geopolitics and rates are only the surface, supply shortage anchors a triple driver",
+      "summary": "The base metals market in the first half of 2026 can be summed up in a single sentence: geopolitical conflict dictated the direction of price swings, while rigid supply set the floor under any decline.",
+      "title_zh": "有色乘风起：地缘和利率仅是表象，供给短缺锚定三重驱动力",
+      "summary_zh": "2026年上半年的有色金属市场，用一句话概括就是——地缘冲突主导了价格波动的方向，供给刚性决定了价格下跌的底线"
     },
     {
-      "id": "06bb39b8141ea10605a9e4f8290eef3098755d1f",
-      "title": "U.S. economy unexpectedly lost 23,000 jobs in July",
-      "summary": "Nonfarm payrolls were projected to increase by 83,000 in July while the unemployment rate would hold steady at 4.2%, according to the Dow Jones consensus.",
-      "title_zh": "美国 7 月经济意外减少 2.3 万个就业岗位",
-      "summary_zh": "根据道琼斯市场一致预期，7 月非农就业人数原本预计增加 8.3 万人，失业率维持在 4.2% 不变。"
+      "id": "cf673b92b9fa38008536f61d640b68cd69376f93",
+      "title": "AI has become Big Tech's 'Botox': burning cash just to look young",
+      "summary": "Finance professor Aswath Damodaran, known as the 'dean of valuation', said that faced with middle-aged growth bottlenecks, tech giants are injecting money into startups such as OpenAI and then recouping it as compute spending, manufacturing a Botox-like false youth and artificial growth.",
+      "title_zh": "AI成了科技巨头的“肉毒素”：烧钱只为假装年轻",
+      "summary_zh": "金融学教授，被称为“估值院长”的Aswath Damodaran表示，科技巨头因面临中年增长瓶颈，通过向 OpenAI 等初创公司注入资金、再收回算力支出的方式，制造出“注射肉毒素”般的假性年轻与人工增长"
     },
     {
-      "id": "b5f436d958474850a57006e91da497ee8a303b44",
-      "title": "The stakes for next week's inflation data just got higher. Here's what's ahead",
-      "summary": "Friday's jobs report for July complicated the monetary policy outlook.",
-      "title_zh": "下周通胀数据的分量陡然加重，前瞻要点一览",
-      "summary_zh": "周五公布的 7 月就业报告让货币政策前景变得更加复杂。"
+      "id": "fe7991e14dd840cac05e172c9557904ec5b618bb",
+      "title": "Greenwoods Asset Management sharply cut popular tech holdings in the second quarter",
+      "summary": "On August 7 local time, Greenwoods Asset Management, a well-known private fund managing more than 100 billion yuan, disclosed its latest US equity holdings (13F) as of the end of the second quarter of 2026.",
+      "title_zh": "景林资产二季度大幅减持热门科技股",
+      "summary_zh": "当地时间8月7日，知名千亿级私募景林资产披露2026年二季度末最新美股持仓（13F）"
     },
     {
-      "id": "ab724a81fd69f4b6ae18c7c8865d6f34d3ebd315",
-      "title": "Shares of this digital medical platform jumped more than 100% overnight. Here’s why",
-      "summary": "The company is seeing huge profitability potential and a larger addressable market as a result of AI search.",
-      "title_zh": "这家数字医疗平台股价隔夜暴涨逾 100%，原因何在",
-      "summary_zh": "受益于 AI 搜索，该公司正迎来巨大的盈利潜力与更大的潜在市场空间。"
+      "id": "0a7f110d58dc0c6cf43b049f61ee708d2d0f69a1",
+      "title": "Inside the startup drone maker powering Ukraine's deep-strike campaign",
+      "summary": "Fire Point CEO Iryna Terekh says Ukraine has \"learned the hard way\" that military leverage is integral to to bringing diplomacy within reach.",
+      "title_zh": "探访为乌克兰纵深打击行动提供动力的初创无人机制造商",
+      "summary_zh": "Fire Point 首席执行官伊琳娜·捷列赫表示，乌克兰已“付出惨痛代价才认识到”，军事筹码是让外交谈判变得可及的关键一环。"
     },
     {
-      "id": "6eaed981050c5ed795a50bb96eadc9a8b9fb2d7f",
-      "title": "The unwind of Situational Awareness isn't the only reason the AI trade is back",
-      "summary": "The hedge fund's forced selling was a clearing event, but earnings are sustaining the AI trade",
-      "title_zh": "Situational Awareness 基金的平仓并非 AI 行情回归的唯一原因",
-      "summary_zh": "这家对冲基金的被迫抛售是一次出清事件，但真正支撑 AI 行情的是业绩。"
+      "id": "ccc0e3345c3f3b7b9f39f3118994070a8b39a946",
+      "title": "The gross-margin story of AI application companies faces its first 'health check': Canva slows down by choice, Figma swallows inference costs",
+      "summary": "Two leading companies in the design software space are using real financial data to reveal the most hidden cost of the AI transition.",
+      "title_zh": "AI应用公司毛利故事遭遇首次\"体检\"：Canva主动降速、Figma自吞推理成本",
+      "summary_zh": "设计软件赛道的两家头部公司正在用真实财务数据，揭示AI转型最隐秘的代价"
     },
     {
-      "id": "c7ecfaf3f5f31b9d2a642e2e1a9d9f8cfe496d94",
-      "title": "Prediction markets take center stage in latest round of quarterly earnings reports",
-      "summary": "Recent quarterly reports from DraftKings, Flutter Entertainment and others offer a view into prediction markets businesses and their performance.",
-      "title_zh": "预测市场成为本轮季度财报的焦点",
-      "summary_zh": "DraftKings、Flutter Entertainment 等公司近期的季度报告，为观察预测市场业务及其表现提供了窗口。"
+      "id": "0f35527baeaa1c0369f955066cb8b233a41cbc3c",
+      "title": "Trump is trying to fire Lisa Cook again. He still wants to stack the Fed with his allies.",
+      "summary": "Two months after he was blocked by the Supreme Court, President Donald Trump has resumed his effort to oust Federal Reserve governor Lisa Cook as part of an eff",
+      "title_zh": "特朗普再次试图解雇丽莎·库克，他仍想让盟友填满美联储",
+      "summary_zh": "在被最高法院叫停两个月后，特朗普总统重新启动了罢免美联储理事丽莎·库克的行动。"
     },
     {
-      "id": "fcb8593a357d07cbf8fa2727ddd85e35a5eba78b",
-      "title": "Gold bugs spend $180 million betting all's clear for metal as bond yields stall",
-      "summary": "Despite a 25% decline in gold from its high in January, proponents of the precious metal are storming into bullish call positions.",
-      "title_zh": "债券收益率停滞，黄金多头砸下 1.8 亿美元押注金价无忧",
-      "summary_zh": "尽管金价较 1 月高点已下跌 25%，贵金属的拥趸仍在大举买入看涨期权。"
+      "id": "a894567e1e5ea420977173a743df3bb55b04e57e",
+      "title": "A new agentic AI trend: Amazon's AWS is running into a 'CPU shortage'",
+      "summary": "The explosive adoption of AI agents is triggering an unexpected compute crunch — not in GPUs, but in CPUs.",
+      "title_zh": "Agentic AI新趋势：亚马逊AWS出现“CPU短缺”",
+      "summary_zh": "AI Agent的爆发式普及正在引发 一场意想不到的算力危机——不是GPU，而是CPU"
     },
     {
-      "id": "52e49780a1babe13f32ef97f08b7a657d4ed70b5",
-      "title": "Burger King overtakes Wendy's as the nation's second-largest burger chain",
-      "summary": "Burger King is once again the second-largest burger chain in the U.S",
-      "title_zh": "汉堡王超越温蒂汉堡，重回美国第二大汉堡连锁品牌",
-      "summary_zh": "汉堡王再次成为美国第二大汉堡连锁品牌。"
+      "id": "3aafe525debb3ef3a817ae8fc4ee33e0fa13328a",
+      "title": "More balance-sheet runoff, fewer hikes: how Warsh is reshaping market rate-hike expectations",
+      "summary": "Since taking office as Fed chair, Warsh has held to a say-less, do-more philosophy in the Fed's external communication framework, reducing policy intervention in markets.",
+      "title_zh": "更多缩表、更少加息：沃什如何重塑市场加息预期？",
+      "summary_zh": "自沃什就任美联储主席以来，其对美联储对外沟通框架秉持少说多做理念，减少对市场的政策干预"
     },
     {
-      "id": "6ed7b14549cda56dadd88d592bea2de4e7cce7d7",
-      "title": "Trump says he will appeal to Supreme Court after lower court blocks White House ballroom",
-      "summary": "The appeals court placed its ruling on hold for 14 days to allow the Trump administration to appeal to the U.S",
-      "title_zh": "下级法院叫停白宫宴会厅项目，特朗普称将上诉至最高法院",
-      "summary_zh": "上诉法院将裁决暂缓执行 14 天，以便特朗普政府向美国最高法院提起上诉。"
-    },
-    {
-      "id": "e26dc4e12d3582e7ef13dfeaf5ed62d6928b5861",
-      "title": "Here are three key takeaways from the disappointing July jobs report",
-      "summary": "Nonfarm payrolls in the U.S",
-      "title_zh": "令人失望的 7 月就业报告透露出三个关键信号",
-      "summary_zh": "美国非农就业人数……"
-    },
-    {
-      "id": "f966dd76c275cd66e006b2d68142d8c7262270a7",
-      "title": "Trump teased an Iran deal that didn't come, but markets soared. Here’s why it keeps happening",
-      "summary": "As oil reserves and munitions stockpiles reportedly dwindle, analysts wonder how much longer markets will pounce when the Trump admin",
-      "title_zh": "特朗普放风的伊朗协议并未落地，市场却大涨，这种情形为何反复出现",
-      "summary_zh": "有报道称石油储备与弹药库存正在减少，分析师开始怀疑，市场还能对特朗普政府的表态追高多久。"
-    },
-    {
-      "id": "542b25debf3a6d2411ab52605ccba41b8dcb5b48",
-      "title": "Falling long-term unemployment isn't good news, economists say — what it means for jobseekers",
-      "summary": "Unemployment appears to have fallen due to an exodus of workers from the labor force, which would be bad for household finances and the economy.",
-      "title_zh": "经济学家称长期失业人数下降并非好消息，对求职者意味着什么",
-      "summary_zh": "失业率下降似乎源于劳动者退出劳动力市场，这对家庭财务状况与整体经济都是不利的。"
-    },
-    {
-      "id": "a540c7a07185c381d0cd309443a5c4b365e825c9",
-      "title": "Rockstar Energy founder builds Celsius stake, wants to take over as CEO",
-      "summary": "Rockstar Energy founder Russ Savage told CNBC he now controls 12 million shares of Celsius Holdings, amounting to roughly 4.7% of the energy drink company.",
-      "title_zh": "Rockstar Energy 创始人增持 Celsius 股份，意图出任首席执行官",
-      "summary_zh": "Rockstar Energy 创始人拉斯·萨维奇向 CNBC 表示，他目前控制 Celsius Holdings 1200 万股股票，约占这家能量饮料公司 4.7% 的股份。"
-    },
-    {
-      "id": "41896856fa983e000e66ee5d77076954501604e0",
-      "title": "Why the U.S. is struggling to control food safety",
-      "summary": "Tens of thousands of people across 47 states are reporting illness linked to the cyclospora outbreak that started in mid-May",
-      "title_zh": "美国为何在食品安全管控上力不从心",
-      "summary_zh": "全美 47 个州已有数万人报告患病，与 5 月中旬开始的环孢子虫疫情有关。"
-    },
-    {
-      "id": "1072653d4a2f49804b32c67a57ff2f519a8903d2",
-      "title": "Cassidy supports Todd Blanche, rescuing Trump's embattled attorney general pick",
-      "summary": "Attorney General nominee Todd Blanche needs at least 50 votes on the Senate floor to be confirmed after clearing the Senate Judiciary Committee.",
-      "title_zh": "卡西迪表态支持托德·布兰奇，为特朗普陷入困境的司法部长人选解围",
-      "summary_zh": "司法部长提名人托德·布兰奇在通过参议院司法委员会审议后，还需在参议院全体会议上获得至少 50 票才能获得确认。"
-    },
-    {
-      "id": "58d5a18ace95ba0eb0687c4c99ed1e11d9edf1a9",
-      "title": "Crypto’s infrastructure era arrives, with AI agents poised to reshape demand",
-      "summary": "Crypto companies are trying to build a second growth engine by turning agents into the next wave of users.",
-      "title_zh": "加密行业进入基础设施时代，AI 智能体有望重塑需求格局",
-      "summary_zh": "加密公司正试图把智能体变成下一波用户，以此打造第二增长引擎。"
-    },
-    {
-      "id": "7bbd0b512dc44903f15e11512018c4d90008472d",
-      "title": "Berkshire earnings may prove stock is cheap. And that Abel and Buffett think so too",
-      "summary": "Berkshire may have repurchased roughly $8.5 billion of its own stock from April 15 through July 14, according to UBS.",
-      "title_zh": "伯克希尔财报或印证股价便宜，阿贝尔与巴菲特似乎也这么认为",
-      "summary_zh": "据瑞银测算，伯克希尔在 4 月 15 日至 7 月 14 日期间可能回购了约 85 亿美元自家股票。"
-    },
-    {
-      "id": "290f52a01825d6130d30516b88cf611baf1e0ba4",
-      "title": "Chesky says Airbnb will spend ‘a lot more’ on AI as earnings beat and stock surges 15%",
-      "summary": "Airbnb CEO Brian Chesky wasn’t sure AI would help the company, but a year later, he says it’s the reason growth is back.",
-      "title_zh": "财报超预期、股价大涨 15%，切斯基称爱彼迎将在 AI 上投入“多得多”",
-      "summary_zh": "爱彼迎首席执行官布莱恩·切斯基此前并不确定 AI 能否帮到公司，一年后他表示，AI 正是增长重回正轨的原因。"
-    },
-    {
-      "id": "debc6063c229f1683c0373aab70e292aa4a62a8b",
-      "title": "Top Democrat proposes killing tax breaks for overseas oil production",
-      "summary": "Gas prices in the U.S",
-      "title_zh": "民主党高层提议取消海外石油生产的税收优惠",
-      "summary_zh": "美国的汽油价格……"
-    },
-    {
-      "id": "ac13a0f668a69d1fc9e5d110ba71a184027e9045",
-      "title": "Companies scoff at airlines' cheapest business class tickets. 'The real value is flexibility'",
-      "summary": "Some companies plan to shun the cheapest business- and premium- economy fares from their executives.",
-      "title_zh": "企业不买账航司最低价商务舱，“真正的价值在于灵活性”",
-      "summary_zh": "一些公司计划不再让高管购买最便宜的商务舱与超级经济舱机票。"
-    },
-    {
-      "id": "a53c622de48d89c276033f38fb17083c76fe241d",
-      "title": "Whatnot valued at $20 billion as live shopping continues to boom",
-      "summary": "Whatnot, the live commerce platform, has increased its valuation to $20 billion as the popularity of live shopping continues to grow.",
-      "title_zh": "直播购物持续火爆，Whatnot 估值达到 200 亿美元",
-      "summary_zh": "随着直播购物人气持续攀升，直播电商平台 Whatnot 的估值已提升至 200 亿美元。"
+      "id": "00a84d2791b925e37ba4aeac0acf9ee1beb7cf1f",
+      "title": "The yen has only steadied for now — what happens after the midterm elections?",
+      "summary": "Joint US-Japan intervention in the currency market briefly stabilised the yen, but the real motive behind the rescue may go beyond stabilising the exchange rate itself.",
+      "title_zh": "日元只是暂时稳住，中期选举后怎么办？",
+      "summary_zh": "美日联手干预外汇市场，日元短暂企稳——但这场救市行动的真实动机，或许并不只是稳定汇率本身"
     },
     {
       "id": "492e11b1fbddc2b4f792e131efab3875e40f68f3",
@@ -223,133 +349,7 @@
       "summary": "Federal Reserve Board announces approval of the application by FS Bancorp, Inc.",
       "title_zh": "美联储理事会宣布批准 FS Bancorp, Inc. 的申请",
       "summary_zh": "美联储理事会宣布批准 FS Bancorp, Inc. 的申请。"
-    },
-    {
-      "id": "a29277f3b5826c01e78f88ce3213a65aab627188",
-      "title": "Federal Reserve Board announces approval of the application by Banco Santander, S.A. and Santander Holdings USA, Inc.",
-      "summary": "Federal Reserve Board announces approval of the application by Banco Santander, S.A",
-      "title_zh": "美联储理事会宣布批准桑坦德银行及桑坦德美国控股公司的申请",
-      "summary_zh": "美联储理事会宣布批准西班牙桑坦德银行的申请。"
-    },
-    {
-      "id": "12b1a89f5980ba0253fa5d35fbb4d24ca457ce54",
-      "title": "Federal Reserve Board requests comment on a proposal to modernize its rule governing the extension of credit to bank \"insiders\"—bank executives, board members and major shareholders who could potentially influence a bank's lending decisions",
-      "summary": "Federal Reserve Board requests comment on a proposal to modernize its rule governing the extension of credit to bank &quot;insiders&quot;—bank executives, board",
-      "title_zh": "美联储理事会就现代化银行“内部人”授信规则的提案公开征求意见——内部人指可能影响银行放贷决策的高管、董事会成员与主要股东",
-      "summary_zh": "美联储理事会就现代化银行“内部人”授信监管规则的提案公开征求意见，内部人包括银行高管、董事会成员等。"
-    },
-    {
-      "id": "1935945161d7d46d837e2245329ad1f8ee93c902",
-      "title": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank",
-      "summary": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank",
-      "title_zh": "美联储理事会对 Regions Bank 前员工与 First Interstate Bank 前员工采取执法行动",
-      "summary_zh": "美联储理事会对 Regions Bank 前员工与 First Interstate Bank 前员工采取执法行动。"
-    },
-    {
-      "id": "d877d3916bea617dbdf1e67428e25470afc2c6a6",
-      "title": "Federal Reserve Board issues enforcement action with Iuka Bancshares, Inc. and The Iuka State Bank",
-      "summary": "Federal Reserve Board issues enforcement action with Iuka Bancshares, Inc",
-      "title_zh": "美联储理事会对 Iuka Bancshares, Inc. 与 The Iuka State Bank 采取执法行动",
-      "summary_zh": "美联储理事会对 Iuka Bancshares, Inc. 采取执法行动。"
-    },
-    {
-      "id": "84553b0b5ba2a255e4602f6c3a9318c2557a1160",
-      "title": "Federal Reserve issues FOMC statement",
-      "summary": "Federal Reserve issues FOMC statement",
-      "title_zh": "美联储发布联邦公开市场委员会声明",
-      "summary_zh": "美联储发布联邦公开市场委员会声明。"
-    },
-    {
-      "id": "bd761959afffcb14b72576ca78ddc0fce548d7cb",
-      "title": "Federal Reserve Board issues enforcement action with former chief lending officer of Heritage State Bank",
-      "summary": "Federal Reserve Board issues enforcement action with former chief lending officer of Heritage State Bank",
-      "title_zh": "美联储理事会对 Heritage State Bank 前首席信贷官采取执法行动",
-      "summary_zh": "美联储理事会对 Heritage State Bank 前首席信贷官采取执法行动。"
-    },
-    {
-      "id": "129c769c5fd2c675a0395c0a41c34d0bbe14b499",
-      "title": "Federal Reserve announces the leadership and objectives of its task forces to advance the conduct of monetary policy",
-      "summary": "Federal Reserve announces the leadership and objectives of its task forces to advance the conduct of monetary policy",
-      "title_zh": "美联储公布其货币政策操作改进工作组的领导层与目标",
-      "summary_zh": "美联储公布其推进货币政策操作的工作组领导层与目标。"
-    },
-    {
-      "id": "a478b6d30be0ff02ce8fbff3e4c6ced827bacaaa",
-      "title": "Federal Reserve Board issues enforcement action with TS Banking Group, Inc. and TS Contrarian Bancshares, Inc.",
-      "summary": "Federal Reserve Board issues enforcement action with TS Banking Group, Inc",
-      "title_zh": "美联储理事会对 TS Banking Group, Inc. 与 TS Contrarian Bancshares, Inc. 采取执法行动",
-      "summary_zh": "美联储理事会对 TS Banking Group, Inc. 采取执法行动。"
-    },
-    {
-      "id": "89fbbc9f5277b4e2f4116fa5d097883e511686e3",
-      "title": "Minutes of the Federal Open Market Committee, June 16-17, 2026",
-      "summary": "Minutes of the Federal Open Market Committee, June 16-17, 2026",
-      "title_zh": "联邦公开市场委员会会议纪要（6 月 16 日至 17 日）",
-      "summary_zh": "联邦公开市场委员会会议纪要（6 月 16 日至 17 日）。"
-    },
-    {
-      "id": "79586fed69426969b0d14826911fe85b352a542a",
-      "title": "Federal Reserve Board requests comment on a proposal to amend its requirements for banks to maintain anti-money laundering programs",
-      "summary": "Federal Reserve Board requests comment on a proposal to amend its requirements for banks to maintain anti-money laundering programs",
-      "title_zh": "美联储理事会就修订银行反洗钱合规项目要求的提案公开征求意见",
-      "summary_zh": "美联储理事会就修订银行反洗钱合规项目要求的提案公开征求意见。"
-    },
-    {
-      "id": "97fdc4145f5aaffb5f95cbf1540b013a3ce60d45",
-      "title": "Federal Reserve issues initial findings from its 2025 triennial payments study",
-      "summary": "Federal Reserve issues initial findings from its 2025 triennial payments study",
-      "title_zh": "美联储发布 2025 年三年期支付研究的初步结果",
-      "summary_zh": "美联储发布 2025 年三年期支付研究的初步结果。"
-    },
-    {
-      "id": "8847ef554928b58c506879a4b20b22b857295b91",
-      "title": "Federal Reserve Board issues enforcement action with employee of Bank of Eufaula and S N B Bancshares, Inc.",
-      "summary": "Federal Reserve Board issues enforcement action with employee of Bank of Eufaula and S N B Bancshares, Inc.",
-      "title_zh": "美联储理事会对 Bank of Eufaula 员工与 S N B Bancshares, Inc. 采取执法行动",
-      "summary_zh": "美联储理事会对 Bank of Eufaula 员工与 S N B Bancshares, Inc. 采取执法行动。"
-    },
-    {
-      "id": "b41293d4ce475ee8a409ea9e4fc04024801b0fd9",
-      "title": "Federal Reserve Board announces termination of enforcement action with Jiko Group, Inc.",
-      "summary": "Federal Reserve Board announces termination of enforcement action with Jiko Group, Inc.",
-      "title_zh": "美联储理事会宣布终止对 Jiko Group, Inc. 的执法行动",
-      "summary_zh": "美联储理事会宣布终止对 Jiko Group, Inc. 的执法行动。"
-    },
-    {
-      "id": "9164bc212cd9b71f791aa3b8105c7e02891197cd",
-      "title": "Beijing cuts the social-insurance and income-tax payment period for non-local homebuyers to one year",
-      "summary": "On the evening of the 7th the Beijing Municipal Commission of Housing and Urban-Rural Development, the Beijing Municipal Commission of Planning and Natural Resources and the Beijing Housing Provident Fund Management Center jointly issued a notice on further optimising the city's real estate policy, cutting the required social-insurance or individual-income-tax payment period for non-Beijing-registered families buying commercial housing inside the Fifth Ring Road from two years to one year.",
-      "title_zh": "北京：非京籍家庭购房社保个税缴纳年限下调为一年",
-      "summary_zh": "北京市住房和城乡建设委员会、北京市规划和自然资源委员会、北京住房公积金管理中心7日晚联合印发《关于进一步优化调整本市 房地产 政策的通知》，明确非京籍家庭购买五环内商品住房的社保或个税缴纳年限由“2年”，调减为“1年”"
-    },
-    {
-      "id": "195e8a2d52c5fcdf68a7096116af82a159314338",
-      "title": "Eastmoney evening financial digest for August 7 (with the Xinwen Lianbo roundup)",
-      "summary": "In focus: Trump to convene executives from some of the world's largest mining companies. U.S. President Trump will gather executives from several major global mining companies at the State Department on August 7 local time, seeking action to \"secure critical mineral supplies for the United States and its allies\".",
-      "title_zh": "8月7日东方财富财经晚报（附新闻联播）",
-      "summary_zh": "热点聚焦 特朗普将召集全球部分大型矿业公司高管开会 ： 美国总统特朗普将于当地时间8月7日在美国国务院 召集全球部分大型矿业公司高管开会 ，以期采取行动，“保障美国及盟友的关键矿产供应”"
-    },
-    {
-      "id": "c170ab8e0b1f5e3db552e3981f194f57355547c4",
-      "title": "Roundup of positive corporate announcements on the evening of August 7 (with list)",
-      "summary": "A number of Shanghai- and Shenzhen-listed companies released significant announcements on the evening of August 7. Positive items include BIWIN Storage: its controlling subsidiary plans a capital increase to bring in investors. BIWIN Storage (688525) announced on August 7 that its controlling subsidiary Guangdong Xincheng Hanqi plans to introduce external investors via a capital increase, with total financing in this round capped at 600 million yuan and the external investors expected to hold no more than 23.0769% of the enlarged equity.",
-      "title_zh": "8月7日晚间上市公司利好消息一览(附名单)",
-      "summary_zh": "沪深两市多家上市公司8月7日晚间发布重要公告，以下为利好的消息汇总： 佰维存储 ：控股子公司拟增资扩股引入投资者 佰维存储 (688525)8月7日公告，控股子公司广东芯成汉奇拟通过增资扩股的方式引入外部投资者，本轮次总融资额不超过6亿元，外部投资者预计合计取得广东芯成汉奇增资后的股权比例不超过23.0769%"
-    },
-    {
-      "id": "992c88426e9c68288354bc9e7502a7bfd2e40fd4",
-      "title": "Private equity is circling budget airlines after Apollo's EasyJet deal — and this carrier could be next",
-      "summary": "Private equity investors could target more undervalued airlines following Apollo's swoop for EasyJet.",
-      "title_zh": "阿波罗收购易捷航空后，私募股权盯上廉价航空——下一个目标可能是这家承运人",
-      "summary_zh": "继阿波罗出手收购易捷航空后，私募股权投资者可能会瞄准更多被低估的航空公司。"
-    },
-    {
-      "id": "9a3908b82797193c1ceccd6d1461fea09b92da47",
-      "title": "U.S. July nonfarm payrolls unexpectedly fell by 23,000, missing market expectations",
-      "summary": "On Friday evening Beijing time the U.S. Bureau of Labor Statistics released a labour market report far weaker than the market had expected.",
-      "title_zh": "美国7月非农就业人数意外减少2.3万人 不及市场预期",
-      "summary_zh": "北京时间周五晚间，美国劳工统计局披露了一份令市场大呼意外的疲软就业市场报告"
     }
   ],
-  "updated_at": "2026-08-07T20:37:33Z"
+  "updated_at": "2026-08-08T08:43:16Z"
 }
