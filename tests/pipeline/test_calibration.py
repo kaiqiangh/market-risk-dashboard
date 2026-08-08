@@ -7,9 +7,19 @@ and its honesty about which scoring path it measures are both load-bearing.
 
 from __future__ import annotations
 
+import copy
+import json
 from pathlib import Path
 
-from pipeline.risk.calibration import composite_score, evaluate_segment
+import pytest
+
+from pipeline.risk.calibration import (
+    _forward_outcome,
+    composite_score,
+    evaluate_segment,
+    normalize_calibration_panel,
+    replay_production_path,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -94,3 +104,55 @@ def test_report_legend_matches_numbers() -> None:
     assert "negative = warned before peak" not in text.lower()
     # The scope must say the harness evaluates the heuristic FALLBACK path, not production.
     assert "heuristic fallback" in text.lower() or "fallback" in text.lower()
+
+
+def _production_panel() -> dict:
+    return json.loads((REPO_ROOT / "tests" / "fixtures" / "calibration_panel.json").read_text(encoding="utf-8"))
+
+
+def test_production_replay_is_deterministic_and_point_in_time() -> None:
+    panel = _production_panel()
+    first = replay_production_path(panel)
+    second = replay_production_path(panel)
+
+    assert first == second
+    assert first["input_fingerprint"].startswith("sha256:")
+    assert first["point_in_time_policy"]["future_observations_excluded_from_score"] is True
+    assert set(first["regime_counts"]) == {"calm", "tightening", "crisis"}
+    assert "production_mixed_percentile_heuristic" in first["path_counts"]
+    assert first["metrics"]["horizons"]["20"]["coverage"]["outcome_available"] > 0
+    assert first["metrics"]["horizons"]["20"]["event_discrimination"]
+    assert all(row["max_history_date"] == row["date"] for row in first["observations"])
+
+
+def test_production_replay_does_not_use_future_values() -> None:
+    panel = _production_panel()
+    baseline = replay_production_path(panel)
+    changed = copy.deepcopy(panel)
+    # The first evaluated row is index 60; changing rows after it must not alter its score.
+    changed["macro"]["vixcls"][119] += 1000
+    changed["market"]["SPY"][119] = 1.0
+    replayed = replay_production_path(changed)
+
+    assert replayed["observations"][0]["total_score"] == baseline["observations"][0]["total_score"]
+    assert replayed["observations"][0]["indicator_path_counts"] == baseline["observations"][0]["indicator_path_counts"]
+    assert replayed["input_fingerprint"] != baseline["input_fingerprint"]
+
+
+def test_production_panel_validation_rejects_shape_and_order_errors() -> None:
+    panel = _production_panel()
+    panel["dates"][1] = panel["dates"][0]
+    with pytest.raises(ValueError, match="unique"):
+        normalize_calibration_panel(panel)
+
+    panel = _production_panel()
+    panel["market"]["SPY"].pop()
+    with pytest.raises(ValueError, match="match dates"):
+        normalize_calibration_panel(panel)
+
+
+def test_forward_outcome_uses_running_peak_for_drawdown() -> None:
+    outcome = _forward_outcome([100.0, 130.0, 110.0], 0, 2)
+
+    assert outcome is not None
+    assert outcome["max_drawdown"] == pytest.approx(-0.153846)
