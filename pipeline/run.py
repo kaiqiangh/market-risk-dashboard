@@ -59,12 +59,12 @@ from pipeline.storage import StorageWriter
 from pipeline.storage.outcomes import RunOutcomes
 from pipeline.universe import AssetUniverse
 from pipeline.utils import now_utc
+from pipeline.validation.ci_checks import run_all as run_data_validation
 from pipeline.validation.freshness import (
     FreshnessVerdict,
     aggregate_freshness,
     finalize_freshness,
 )
-from pipeline.validation.validate_all import validate_all
 
 COMMANDS = (
     "full",
@@ -1189,9 +1189,10 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         return False, f"write to disk failed: {exc}"
 
     # ---- Validate ----
-    report = validate_all(writer.latest_dir, strict=False)
-    if not report.ok:
-        return False, "validation failed: " + "; ".join(report.issues)
+    report = run_data_validation(writer.latest_dir.parent)
+    blocking_issues = [*report.errors, *report.blocking_warnings]
+    if blocking_issues:
+        return False, "validation failed: " + "; ".join(blocking_issues)
 
     results["risk"] = risk_env
     results["dashboard"] = dashboard_env

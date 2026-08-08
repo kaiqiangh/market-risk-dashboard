@@ -244,6 +244,18 @@ def test_validate_all_generated_documents_pass(tmp_path: Path) -> None:
     assert report.files_checked == expected
 
 
+def test_validate_all_preserves_custom_latest_directory(tmp_path: Path) -> None:
+    latest = _write_generated_latest(tmp_path)
+    custom_latest = tmp_path / "snapshot"
+    latest.rename(custom_latest)
+
+    report = validate_all(custom_latest, strict=False)
+
+    assert not any("latest directory missing" in issue for issue in report.issues)
+    assert any("history/" in warning for warning in report.warnings)
+    assert report.files_checked > 0
+
+
 def test_validate_all_strict_missing_fails(tmp_path: Path) -> None:
     report = validate_all(tmp_path, strict=True)
     assert not report.ok

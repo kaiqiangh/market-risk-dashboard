@@ -405,3 +405,30 @@ def test_full_path_factlayer_healthy_reason_when_inputs_healthy(
     record = _full_run_factlayer(tmp_path / "data", monkeypatch)
     assert record["status"] != "degraded"
     assert record["reason"]["code"] != "input_dataset_unhealthy"
+
+
+def test_full_path_rejects_canonical_validation_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The production-like write path must honor the composed Python validator result."""
+    import pipeline.run as run_module
+    from pipeline.storage.writer import StorageWriter
+    from pipeline.validation.ci_checks import CheckReport
+
+    data_dir = tmp_path / "data"
+    writer = StorageWriter(data_dir)
+    monkeypatch.setattr(
+        run_module,
+        "settings",
+        Settings(_env_file=None, data_dir=data_dir, artifacts_dir=data_dir / "artifacts"),
+    )
+    monkeypatch.setattr(
+        run_module,
+        "run_data_validation",
+        lambda _data_dir: CheckReport(errors=["forced canonical validation failure"]),
+    )
+
+    ok, error = run_module._run_risk_and_write(_full_run_results(), writer, "test-full")
+
+    assert not ok
+    assert error == "validation failed: forced canonical validation failure"
