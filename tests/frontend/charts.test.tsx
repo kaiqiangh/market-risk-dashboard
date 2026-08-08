@@ -39,17 +39,24 @@ describe("AssetHeatmap empty state", () => {
     expect(screen.getByTestId("chart-empty")).toBeInTheDocument();
   });
 
-  it("non-empty cells → renders chart or HTML fallback", () => {
+  it("groups non-empty cells by category and keeps missingness explicit", () => {
     render(
       <AssetHeatmap
         cells={[
           { asset: "NVDA", category: "equity", change1d: -2.1 },
           { asset: "BTC", category: "crypto", change1d: -0.8 },
+          { asset: "SPY", category: "equity", change1d: null },
+          { asset: "USD", category: "macro", change1d: 0 },
         ]}
       />,
     );
-    const chart = document.querySelector('[data-testid="asset-heatmap"], [data-testid="heatmap-fallback"]');
-    expect(chart).not.toBeNull();
+    expect(screen.getByTestId("asset-heatmap")).toBeInTheDocument();
+    expect(screen.getAllByTestId("heatmap-category")).toHaveLength(3);
+    expect(screen.getAllByTestId("heatmap-cell")).toHaveLength(4);
+    const cells = screen.getAllByTestId("heatmap-cell");
+    expect(cells[0].getAttribute("data-state")).toBe("down");
+    expect(cells.find((cell) => cell.getAttribute("data-state") === "unavailable")).toBeInTheDocument();
+    expect(cells.find((cell) => cell.getAttribute("data-state") === "flat")).toBeInTheDocument();
   });
 });
 

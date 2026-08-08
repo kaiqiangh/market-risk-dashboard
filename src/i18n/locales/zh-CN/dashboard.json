@@ -4,6 +4,15 @@
   "heatmap": {
     "title": "跨资产热力图",
     "empty": "暂无跨资产数据",
+    "legend": "日内方向",
+    "assetsCount": "{{count}} 项资产",
+    "unknownCategory": "其他资产",
+    "state": {
+      "up": "上涨",
+      "down": "下跌",
+      "flat": "持平",
+      "unavailable": "不可用"
+    },
     "axis": "涨跌",
     "asset": "资产",
     "change": "涨跌",

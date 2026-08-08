@@ -60,7 +60,7 @@ describe("display-language policy", () => {
 
     expect(await screen.findByTestId("theme-card-memory")).toBeInTheDocument();
     expect(screen.getAllByTestId("risk-dimension").length).toBeGreaterThan(0);
-    expect(screen.getByTestId("heatmap-fallback")).toBeInTheDocument();
+    expect(screen.getByTestId("asset-heatmap")).toBeInTheDocument();
     const renderedText = Array.from(document.body.querySelectorAll("*"))
       .filter((element) => element.children.length === 0)
       .map((element) => element.textContent ?? "")

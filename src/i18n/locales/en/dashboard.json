@@ -4,6 +4,15 @@
   "heatmap": {
     "title": "Cross-Asset Heatmap",
     "empty": "No cross-asset data",
+    "legend": "Daily direction",
+    "assetsCount": "{{count}} assets",
+    "unknownCategory": "Other assets",
+    "state": {
+      "up": "Up",
+      "down": "Down",
+      "flat": "Flat",
+      "unavailable": "Unavailable"
+    },
     "axis": "Change",
     "asset": "Asset",
     "change": "Change",
