@@ -66,6 +66,17 @@ export type RiskTrend = z.infer<typeof RiskTrend>;
 
 // ---- Models ----
 
+/** The fact-layer and bilingual-pair identity consumed by one AI brief. */
+export const AnalysisLineage = z
+  .object({
+    fact_generation_id: z.string().min(71).regex(new RegExp("^sha256:[0-9a-f]{64}$")),
+    fact_generated_at: utcDateTime,
+    input_freshness: z.record(FreshnessStatus).default({}),
+    pair_id: z.string().min(1).max(128),
+  })
+  .passthrough();
+export type AnalysisLineage = z.infer<typeof AnalysisLineage>;
+
 /** A single piece of evidence that can be cited by the AI. */
 export const EvidenceRef = z
   .object({
@@ -116,7 +127,8 @@ export const AnalysisDataset = z
     bear_case: CaseStatement,
     confidence: z.number().finite().min(0).max(1),
     evidence_refs: z.array(EvidenceRef).default([]),
-    data_freshness: FreshnessStatus.default("fresh"),
+    lineage: AnalysisLineage.nullable().default(null),
+    data_freshness: FreshnessStatus.default("degraded"),
   })
   .passthrough();
 export type AnalysisDataset = z.infer<typeof AnalysisDataset>;
@@ -482,6 +494,7 @@ export const FactLayer = z
   .object({
     generated_at: utcDateTime,
     schema_version: z.string().min(1),
+    generation_id: z.string().min(71).regex(new RegExp("^sha256:[0-9a-f]{64}$")).nullable().default(null),
     data_freshness: z.record(FreshnessStatus).default({}),
     risk: RiskModelResult,
     macro_summary: z.record(z.unknown()).default({}),

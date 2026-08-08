@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from pipeline.lineage import fact_generation_id
 from pipeline.schemas import (
     CalendarEnvelope,
     CryptoEnvelope,
@@ -57,17 +58,19 @@ class FactLayerBuilder:
 
         evidence_index = self._build_evidence(risk, macro, equities, crypto, news, calendar, sectors)
 
-        return FactLayer(
-            generated_at=generated_at or now_utc(),
-            schema_version=SCHEMA_VERSION,
-            data_freshness=data_freshness,
-            risk=risk.payload,
-            macro_summary=self._macro_summary(macro),
-            market_summary=self._market_summary(equities, crypto, sectors),
-            news_top=[n.model_dump() for n in news.payload.items[:15]],
-            calendar_next7d=[e.model_dump() for e in calendar.payload.events[:20]],
-            evidence_index=evidence_index,
-        )
+        fact_payload = {
+            "generated_at": generated_at or now_utc(),
+            "schema_version": SCHEMA_VERSION,
+            "data_freshness": data_freshness,
+            "risk": risk.payload,
+            "macro_summary": self._macro_summary(macro),
+            "market_summary": self._market_summary(equities, crypto, sectors),
+            "news_top": [n.model_dump() for n in news.payload.items[:15]],
+            "calendar_next7d": [e.model_dump() for e in calendar.payload.events[:20]],
+            "evidence_index": evidence_index,
+        }
+        fact_payload["generation_id"] = fact_generation_id(fact_payload)
+        return FactLayer.model_validate(fact_payload)
 
     # ---- Summaries ----
 

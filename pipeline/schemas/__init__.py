@@ -14,7 +14,7 @@ from .envelope import (
     UTCDateTime,
     validate_utc_datetime,
 )
-from .analysis import AnalysisDataset, CaseStatement, SignalClaim
+from .analysis import AnalysisDataset, AnalysisLineage, CaseStatement, SignalClaim
 from .calendar import CalendarDataset, CalendarEnvelope, CalendarEvent
 from .commodities import CommoditiesDataset, CommoditiesEnvelope, CommodityAsset
 from .crypto import CryptoAsset, CryptoDataset, CryptoEnvelope
@@ -42,6 +42,7 @@ DriverContribution.model_rebuild(_types_namespace={"EvidenceRef": EvidenceRef})
 
 __all__ = [
     "AnalysisDataset",
+    "AnalysisLineage",
     "BaseEnvelope",
     "CalendarDataset",
     "CalendarEnvelope",

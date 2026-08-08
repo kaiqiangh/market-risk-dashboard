@@ -212,6 +212,8 @@ class Emitter:
                 out += f".min({int(node['minLength'])})"
             if "maxLength" in node:
                 out += f".max({int(node['maxLength'])})"
+            if "pattern" in node:
+                out += f".regex(new RegExp({json.dumps(node['pattern'])}))"
             return out
 
         if jtype == "number":

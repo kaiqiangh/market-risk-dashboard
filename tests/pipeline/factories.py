@@ -40,6 +40,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+from pipeline.lineage import fact_generation_id
 from pipeline.schemas import registry
 from pipeline.schemas.envelope import SCHEMA_VERSION
 
@@ -720,7 +721,7 @@ def make_facts(**overrides: Any) -> dict[str, Any]:
     covers. ``data_freshness`` therefore names every dataset, ``evidence_index`` carries the
     three golden evidence ids, and the summaries cover the golden's fields.
     """
-    return _build(
+    result = _build(
         {
             "generated_at": NOW_ISO,
             "schema_version": SCHEMA_VERSION,
@@ -780,6 +781,9 @@ def make_facts(**overrides: Any) -> dict[str, Any]:
         },
         overrides,
     )
+    if "generation_id" not in overrides:
+        result["generation_id"] = fact_generation_id(result)
+    return result
 
 
 #: Prose for the bilingual briefing. Only the language of the prose may differ between the two

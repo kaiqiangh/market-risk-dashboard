@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Iterable
 
 from pipeline.analysis.contract import input_path, output_path
+from pipeline.lineage import fact_generation_id, is_valid_fact_generation_id
 from pipeline.schemas import AnalysisDataset, EvidenceRef, FactLayer
 
 _NUM_RE = re.compile(r"-?\d+(?:\.\d+)?")
@@ -63,6 +64,50 @@ def validate_evidence_refs(analysis: AnalysisDataset, facts: FactLayer) -> list[
             issues.append(
                 f"evidence_ref not found in evidence_index: {ref.dataset}/{ref.path}/{ref.metric}={ref.value!r}"
             )
+    return issues
+
+
+def validate_fact_identity(facts: FactLayer) -> list[str]:
+    """Validate that a published fact layer carries its deterministic identity."""
+    if not is_valid_fact_generation_id(facts.generation_id):
+        return ["facts generation_id missing or malformed"]
+    expected = fact_generation_id(facts)
+    if facts.generation_id != expected:
+        return ["facts generation_id does not match its content"]
+    return []
+
+
+def validate_analysis_lineage(analysis: AnalysisDataset, facts: FactLayer) -> list[str]:
+    """Validate one analysis file's reference to the fact layer it claims to have read."""
+    if analysis.lineage is None:
+        return ["analysis lineage missing"]
+
+    issues = validate_fact_identity(facts)
+    if facts.generation_id is not None and analysis.lineage.fact_generation_id != facts.generation_id:
+        issues.append("analysis fact_generation_id does not match facts generation_id")
+    if analysis.lineage.fact_generated_at != facts.generated_at:
+        issues.append("analysis fact_generated_at does not match facts generated_at")
+    if analysis.lineage.input_freshness != facts.data_freshness:
+        issues.append("analysis input_freshness does not match facts data_freshness")
+    return issues
+
+
+def compare_analysis_lineage(zh: AnalysisDataset, en: AnalysisDataset) -> list[str]:
+    """Validate the shared lineage fields of a bilingual pair."""
+    if zh.lineage is None and en.lineage is None:
+        return ["analysis lineage missing from both language files"]
+    if zh.lineage is None or en.lineage is None:
+        return ["analysis lineage missing from one language file"]
+
+    issues: list[str] = []
+    if zh.lineage.pair_id != en.lineage.pair_id:
+        issues.append("analysis pair_id mismatch")
+    if zh.lineage.fact_generation_id != en.lineage.fact_generation_id:
+        issues.append("analysis fact_generation_id mismatch")
+    if zh.lineage.fact_generated_at != en.lineage.fact_generated_at:
+        issues.append("analysis fact_generated_at mismatch")
+    if zh.lineage.input_freshness != en.lineage.input_freshness:
+        issues.append("analysis input_freshness mismatch")
     return issues
 
 
