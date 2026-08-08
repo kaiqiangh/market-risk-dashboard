@@ -5,6 +5,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { dirTone, dirClasses } from "@/lib/riskColors";
 import { formatChange, formatMoney } from "@/lib/format";
 import type { EquityAsset, MemoryProxy } from "@/schemas";
+import { displayLocalizedValue } from "@/lib/displayLanguage";
 
 /**
  * MemorySectorTable: memory sector (Micron + A-share memory, architecture §8.10 pool).
@@ -28,7 +29,7 @@ export function MemorySectorTable({ assets, memory }: MemorySectorTableProps) {
         {memory ? (
           <div className="rounded-md border border-border bg-muted/40 p-3">
             <p className="text-xs font-medium text-foreground">
-              {locale.startsWith("zh") && memory.label_zh ? memory.label_zh : memory.label}
+              {displayLocalizedValue(memory.label, memory.label_zh, locale)}
             </p>
             <div className="mt-1 flex flex-wrap gap-3 text-xs text-muted-foreground">
               <span>
@@ -44,7 +45,7 @@ export function MemorySectorTable({ assets, memory }: MemorySectorTableProps) {
                 </span>
               </span>
             </div>
-            {memory.note ? <p className="mt-1 text-[10px] text-muted-foreground">{memory.note}</p> : null}
+            <p className="mt-1 text-[10px] text-muted-foreground">{t("memory.note")}</p>
           </div>
         ) : null}
 
@@ -70,7 +71,7 @@ export function MemorySectorTable({ assets, memory }: MemorySectorTableProps) {
               </thead>
               <tbody>
                 {assets.map((a) => {
-                  const name = locale.startsWith("zh") && a.name_zh ? a.name_zh : a.name;
+                  const name = displayLocalizedValue(a.name, a.name_zh, locale);
                   return (
                     <tr key={a.symbol} className="border-b border-border/50 last:border-0">
                       <td className="py-1.5 pr-2 font-mono text-foreground">{a.symbol}</td>

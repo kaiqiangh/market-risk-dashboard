@@ -12,6 +12,7 @@ import { riskLevelTone, toneClasses, type RiskTone } from "@/lib/riskColors";
 import { formatDateTime, formatRatio } from "@/lib/format";
 import type { AnalysisPresentation } from "@/lib/analysisState";
 import type { AnalysisDataset, SignalClaim } from "@/schemas";
+import { safeDisplayText } from "@/lib/displayLanguage";
 
 /** market_state in the analysis file is a string; map loosely to a semantic color. */
 function stateToneFromString(state: string): RiskTone {
@@ -41,7 +42,7 @@ export interface AIBriefProps {
 /** Quarantined card chrome: 2px accent left border marks generated content. */
 const QUARANTINE_CLASS = "border-l-2 border-l-primary";
 
-function SignalList({ title, icon, signals }: { title: string; icon: ReactNode; signals: SignalClaim[] }) {
+function SignalList({ title, icon, signals, locale, unavailable }: { title: string; icon: ReactNode; signals: SignalClaim[]; locale: string; unavailable: string }) {
   if (signals.length === 0) return null;
   return (
     <div className="flex flex-col gap-1.5">
@@ -52,7 +53,7 @@ function SignalList({ title, icon, signals }: { title: string; icon: ReactNode; 
       <ul className="flex flex-col gap-2">
         {signals.map((s, i) => (
           <li key={i} className="rounded-sm border border-hairline bg-surface-2/40 p-2">
-            <p className="text-xs leading-relaxed text-foreground">{s.claim}</p>
+            <p className="text-xs leading-relaxed text-foreground">{safeDisplayText(s.claim, locale, unavailable)}</p>
             <EvidenceLink refs={s.evidence_refs} />
           </li>
         ))}
@@ -65,19 +66,23 @@ function CaseBlock({
   title,
   caseData,
   tone,
+  locale,
+  unavailable,
 }: {
   title: string;
   caseData: { title: string; points: string[]; evidence_refs: AnalysisDataset["bull_case"]["evidence_refs"] };
   tone: "low" | "caution" | "high" | "severe" | "na";
+  locale: string;
+  unavailable: string;
 }) {
   const toneText = toneClasses(tone).text;
   return (
     <div className="rounded-sm border border-hairline bg-surface-2/40 p-3">
       <p className={`text-xs font-semibold ${toneText}`}>{title}</p>
-      <p className="mt-1 text-xs font-medium text-foreground">{caseData.title}</p>
+      <p className="mt-1 text-xs font-medium text-foreground">{safeDisplayText(caseData.title, locale, unavailable)}</p>
       <ul className="mt-1 flex list-inside list-disc flex-col gap-1 text-xs text-muted-foreground">
         {caseData.points.map((p, i) => (
-          <li key={i}>{p}</li>
+          <li key={i}>{safeDisplayText(p, locale, unavailable)}</li>
         ))}
       </ul>
       <EvidenceLink refs={caseData.evidence_refs} />
@@ -132,6 +137,7 @@ export function AIBrief({ presentation, loading = false }: AIBriefProps) {
   }
 
   const analysis = presentation.analysis;
+  const unavailable = t("aiBrief.translationUnavailable");
 
   const stateTone = stateToneFromString(analysis.market_state);
 
@@ -169,27 +175,27 @@ export function AIBrief({ presentation, loading = false }: AIBriefProps) {
         ) : null}
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <p className="text-sm leading-relaxed text-foreground">{analysis.summary}</p>
+        <p className="text-sm leading-relaxed text-foreground">{safeDisplayText(analysis.summary, locale, unavailable)}</p>
 
         {analysis.what_changed_today.length > 0 ? (
           <div className="flex flex-col gap-1">
             <p className="text-xs font-medium text-muted-foreground">{t("aiBrief.changedToday")}</p>
             <ul className="flex list-inside list-disc flex-col gap-0.5 text-xs text-foreground">
               {analysis.what_changed_today.map((line, i) => (
-                <li key={i}>{line}</li>
+                <li key={i}>{safeDisplayText(line, locale, unavailable)}</li>
               ))}
             </ul>
           </div>
         ) : null}
 
-        <SignalList title={t("aiBrief.topDrivers")} icon={<TrendingUp className="h-3.5 w-3.5 text-risk-high" aria-hidden />} signals={analysis.top_risk_drivers} />
-        <SignalList title={t("aiBrief.supporting")} icon={<TrendingUp className="h-3.5 w-3.5 text-risk-low" aria-hidden />} signals={analysis.supporting_signals} />
-        <SignalList title={t("aiBrief.contradicting")} icon={<Scale className="h-3.5 w-3.5 text-risk-caution" aria-hidden />} signals={analysis.contradicting_signals} />
+        <SignalList title={t("aiBrief.topDrivers")} icon={<TrendingUp className="h-3.5 w-3.5 text-risk-high" aria-hidden />} signals={analysis.top_risk_drivers} locale={locale} unavailable={unavailable} />
+        <SignalList title={t("aiBrief.supporting")} icon={<TrendingUp className="h-3.5 w-3.5 text-risk-low" aria-hidden />} signals={analysis.supporting_signals} locale={locale} unavailable={unavailable} />
+        <SignalList title={t("aiBrief.contradicting")} icon={<Scale className="h-3.5 w-3.5 text-risk-caution" aria-hidden />} signals={analysis.contradicting_signals} locale={locale} unavailable={unavailable} />
 
         <div className="grid gap-3 md:grid-cols-3">
-          <CaseBlock title={t("aiBrief.bullCase")} caseData={analysis.bull_case} tone="low" />
-          <CaseBlock title={t("aiBrief.baseCase")} caseData={analysis.base_case} tone="caution" />
-          <CaseBlock title={t("aiBrief.bearCase")} caseData={analysis.bear_case} tone="high" />
+          <CaseBlock title={t("aiBrief.bullCase")} caseData={analysis.bull_case} tone="low" locale={locale} unavailable={unavailable} />
+          <CaseBlock title={t("aiBrief.baseCase")} caseData={analysis.base_case} tone="caution" locale={locale} unavailable={unavailable} />
+          <CaseBlock title={t("aiBrief.bearCase")} caseData={analysis.bear_case} tone="high" locale={locale} unavailable={unavailable} />
         </div>
 
         {analysis.watch_next.length > 0 ? (
@@ -197,7 +203,7 @@ export function AIBrief({ presentation, loading = false }: AIBriefProps) {
             <p className="text-xs font-medium text-muted-foreground">{t("aiBrief.watchNext")}</p>
             <ul className="flex list-inside list-disc flex-col gap-0.5 text-xs text-foreground">
               {analysis.watch_next.map((line, i) => (
-                <li key={i}>{line}</li>
+                <li key={i}>{safeDisplayText(line, locale, unavailable)}</li>
               ))}
             </ul>
           </div>

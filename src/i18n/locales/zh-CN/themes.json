@@ -1,12 +1,12 @@
 {
   "title": "板块",
-  "subtitle": "半导体 / 存储（含 A 股 11 只）/ 商品 / 加密 / 板块",
+  "subtitle": "半导体 / 存储（含中国股票 11 只）/ 商品 / 加密 / 板块",
   "semis": "半导体龙头",
   "auto": "汽车",
   "memory": "存储",
   "section": {
     "semis": "半导体",
-    "memory": "存储（美光 + A 股存储）",
+    "memory": "存储（美光 + 中国股票存储）",
     "commodities": "商品",
     "crypto": "加密",
     "themes": "板块",
@@ -18,14 +18,14 @@
   },
   "crypto": {
     "marketCap": "总市值",
-    "dominance": "BTC 占比",
-    "volume24h": "24h 成交额",
+    "dominance": "比特币占比",
+    "volume24h": "24小时成交额",
     "riskOn": "风险偏好",
     "riskOff": "风险规避",
     "neutral": "中性"
   },
-  "ai_infrastructure": "AI 基础设施",
-  "ai_software": "AI 软件",
+  "ai_infrastructure": "人工智能基础设施",
+  "ai_software": "人工智能软件",
   "cloud_computing": "云计算",
   "cybersecurity": "网络安全",
   "enterprise_software": "企业软件",
@@ -43,6 +43,10 @@
   "gaming": "游戏",
   "digital_advertising": "数字广告",
   "fintech": "金融科技",
+  "period": {
+    "oneWeek": "周涨跌",
+    "oneMonth": "月涨跌"
+  },
   "percentile": {
     "veryLow": "极低",
     "low": "偏低",

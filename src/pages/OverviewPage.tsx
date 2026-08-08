@@ -24,7 +24,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { StatusBadge } from "@/components/layout/StatusBadge";
 import { dirTone, dirClasses, regimeTone, riskLevelTone, riskTrendTone, toneClasses } from "@/lib/riskColors";
-import { RISK_DIMENSION_KEYS, RISK_LEVEL_KEYS, regimeKey } from "@/lib/riskLabels";
+import { RISK_DIMENSION_KEYS, RISK_INDICATOR_KEYS, RISK_LEVEL_KEYS, regimeKey } from "@/lib/riskLabels";
 import { formatChange, formatDateTime, formatNumber, formatPctPoints, formatRatio } from "@/lib/format";
 import type { RiskDimensionKey } from "@/schemas";
 import type { HeatmapCell } from "@/charts/AssetHeatmap";
@@ -66,7 +66,11 @@ export default function OverviewPage() {
     }
   }
   for (const s of sectorBaskets) {
-    heatmapCells.push({ asset: t(`themes:${s.key}`, { defaultValue: s.key }), category: t("heatmap.catSectors"), change1d: s.change_1d });
+    heatmapCells.push({
+      asset: t(`themes:${s.key}`, { defaultValue: t("common:empty.translationUnavailable") }),
+      category: t("heatmap.catSectors"),
+      change1d: s.change_1d,
+    });
   }
 
   // Upcoming catalysts (top 5 by ascending time)
@@ -242,7 +246,9 @@ export default function OverviewPage() {
                     data-testid="risk-driver"
                   >
                     <div className="min-w-0">
-                      <p className="truncate text-xs font-medium text-foreground">{driver.label}</p>
+                      <p className="truncate text-xs font-medium text-foreground">
+                        {t(`risk:${RISK_INDICATOR_KEYS[driver.indicator_key] ?? "indicatorNames.unknown"}`)}
+                      </p>
                       <p className="truncate text-[11px] text-muted-foreground">
                         {t(RISK_DIMENSION_KEYS[driver.dimension_key as RiskDimensionKey])}
                       </p>
@@ -301,7 +307,7 @@ export default function OverviewPage() {
               {sectorBaskets.map((s) => {
                 const dTone = dirTone(s.change_1d);
                 // #102 (C-1): labels come from the themes namespace, keyed by the canonical key.
-                const label = t(`themes:${s.key}`, { defaultValue: s.key });
+                const label = t(`themes:${s.key}`, { defaultValue: t("common:empty.translationUnavailable") });
                 return (
                   <div
                     key={s.key}

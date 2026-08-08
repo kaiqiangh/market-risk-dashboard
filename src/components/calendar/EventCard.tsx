@@ -2,7 +2,8 @@ import { useTranslation } from "react-i18next";
 import { Briefcase, Landmark } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { formatDateTime } from "@/lib/format";
+import { formatDateTime, formatUnitSuffix } from "@/lib/format";
+import { displayEventTitle } from "@/lib/displayLanguage";
 import type { CalendarEvent } from "@/schemas";
 
 /**
@@ -26,6 +27,7 @@ const IMPORTANCE_VARIANT = {
 export function EventCard({ event }: EventCardProps) {
   const { t, i18n } = useTranslation("calendar");
   const locale = i18n.language;
+  const valueWithUnit = (value: number | null) => value === null ? t("common:data.na") : `${value}${formatUnitSuffix(event.unit ?? "", locale)}`;
 
   return (
     <Card data-testid="event-card">
@@ -40,19 +42,19 @@ export function EventCard({ event }: EventCardProps) {
           </div>
           <span className="text-[10px] text-muted-foreground">{formatDateTime(event.datetime, locale)}</span>
         </div>
-        <p className="text-sm font-medium text-foreground">{event.title}</p>
+        <p className="text-sm font-medium text-foreground">{displayEventTitle(event.title, locale)}</p>
         <dl className="grid grid-cols-3 gap-1.5 text-xs">
           <div className="rounded bg-muted/50 px-1.5 py-1 text-center">
             <dt className="text-[9px] uppercase text-muted-foreground">{t("field.actual")}</dt>
-            <dd className="tabular-nums">{event.actual === null ? t("common:data.na") : `${event.actual}${event.unit ?? ""}`}</dd>
+            <dd className="tabular-nums">{valueWithUnit(event.actual)}</dd>
           </div>
           <div className="rounded bg-muted/50 px-1.5 py-1 text-center">
             <dt className="text-[9px] uppercase text-muted-foreground">{t("field.forecast")}</dt>
-            <dd className="tabular-nums">{event.forecast === null ? t("common:data.na") : `${event.forecast}${event.unit ?? ""}`}</dd>
+            <dd className="tabular-nums">{valueWithUnit(event.forecast)}</dd>
           </div>
           <div className="rounded bg-muted/50 px-1.5 py-1 text-center">
             <dt className="text-[9px] uppercase text-muted-foreground">{t("field.previous")}</dt>
-            <dd className="tabular-nums">{event.previous === null ? t("common:data.na") : `${event.previous}${event.unit ?? ""}`}</dd>
+            <dd className="tabular-nums">{valueWithUnit(event.previous)}</dd>
           </div>
         </dl>
         {event.related_assets.length > 0 ? (

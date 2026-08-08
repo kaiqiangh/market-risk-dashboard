@@ -1,8 +1,8 @@
 /**
  * NewsCard bilingual selection tests (issue #37).
  * Canonical bilingual (ADR-0003): title/summary are English, title_zh/summary_zh Chinese.
- * Selection: zh-CN locale prefers the _zh field, en prefers the English field; each falls
- * back to the other language when the preferred one is missing — never a blank card.
+ * Selection: zh-CN locale prefers the _zh field, en prefers the English field; missing
+ * or foreign-language prose fails closed to a localized placeholder.
  */
 import { describe, expect, it, afterEach } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
@@ -57,14 +57,14 @@ describe("NewsCard bilingual selection (canonical bilingual, ADR-0003)", () => {
     expect(screen.queryByText("Fed raises rates by 25bp")).not.toBeInTheDocument();
   });
 
-  it("zh-CN locale falls back to English when translation is missing (untranslated item)", async () => {
+  it("zh-CN locale uses a localized placeholder when translation is missing", async () => {
     await setLocale("zh-CN");
     render(<NewsCard item={makeItem({ title_zh: null, summary_zh: null })} />);
-    expect(screen.getByText("Fed raises rates by 25bp")).toBeInTheDocument();
-    expect(screen.getByText("The Fed raised its target range by 25 basis points.")).toBeInTheDocument();
+    expect(screen.getByText("暂无本语言翻译")).toBeInTheDocument();
+    expect(screen.queryByText("Fed raises rates by 25bp")).not.toBeInTheDocument();
   });
 
-  it("en locale falls back to Chinese when only Chinese exists (untranslated zh-source item)", async () => {
+  it("en locale uses a localized placeholder when only Chinese exists", async () => {
     await setLocale("en");
     render(
       <NewsCard
@@ -79,9 +79,8 @@ describe("NewsCard bilingual selection (canonical bilingual, ADR-0003)", () => {
         })}
       />
     );
-    // No English exists yet; the card shows the only available language instead of blanking.
-    expect(screen.getByText("全球市场收跌")).toBeInTheDocument();
-    expect(screen.getByText("美股三大指数收跌")).toBeInTheDocument();
+    expect(screen.getAllByText("Translation unavailable").length).toBeGreaterThanOrEqual(1);
+    expect(screen.queryByText("全球市场收跌")).not.toBeInTheDocument();
   });
 
   it("does not render a summary block when no summary exists in any language", async () => {

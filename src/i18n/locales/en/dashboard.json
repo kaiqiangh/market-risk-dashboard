@@ -46,6 +46,7 @@
     "baseCase": "Base case",
     "bearCase": "Bear case",
     "watchNext": "Watch next",
+    "translationUnavailable": "Translation unavailable",
     "generatedAt": "Generated at",
     "noFreshBasis": "AI brief has no fresh basis",
     "noFreshBasisHint": "Input data is degraded or missing; the brief will resume when its inputs are fresh.",

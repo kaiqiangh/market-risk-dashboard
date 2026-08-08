@@ -1,6 +1,6 @@
 {
   "title": "宏观",
-  "subtitle": "利率 / 信用 / 通胀 / 就业 / 流动性 / 外汇 + FedWatch 利率预期",
+  "subtitle": "利率 / 信用 / 通胀 / 就业 / 流动性 / 外汇 + 利率预期",
   "chart": {
     "title": "宏观指标概览",
     "empty": "暂无宏观指标",
@@ -23,7 +23,7 @@
     "unit": "单位"
   },
   "fedwatch": {
-    "title": "FedWatch 利率预期",
+    "title": "利率预期",
     "meeting": "下次会议",
     "effectiveRate": "有效联邦基金利率",
     "impliedRate": "隐含利率",
@@ -36,6 +36,36 @@
     "ready": "已就绪",
     "probability": "概率",
     "change1d": "较昨日"
+  },
+  "indicatorNames": {
+    "dgs10": "十年期国债收益率",
+    "dgs2": "两年期国债收益率",
+    "dfii10": "十年期实际收益率",
+    "dff": "有效联邦基金利率",
+    "bamlh0a0hym2": "美国高收益债利差",
+    "bamlc0a0cm": "美国企业债利差",
+    "vixcls": "波动率指数",
+    "cpiaucsl": "居民消费价格指数（同比）",
+    "cpilfesl": "核心居民消费价格指数（同比）",
+    "pcepilfe": "核心个人消费支出价格指数（同比）",
+    "t5yifr": "五年期五年远期通胀预期",
+    "t10yie": "十年期盈亏平衡通胀率",
+    "payems": "非农就业人数（月度变化）",
+    "unrate": "失业率",
+    "icsa": "首次申请失业救济人数",
+    "ccsa": "持续领取失业救济人数",
+    "civpart": "劳动参与率",
+    "walcl": "美联储总资产（百万美元）",
+    "wresbal": "银行准备金",
+    "wtregen": "财政部一般账户",
+    "rrpontsyd": "隔夜逆回购（十亿美元）",
+    "sofr": "有担保隔夜融资利率",
+    "dtwexbgs": "名义广义美元指数",
+    "dtwexafegs": "发达经济体美元指数",
+    "dexuseu": "每欧元美元汇率",
+    "dexjpus": "每美元日元汇率",
+    "dexchus": "每美元人民币汇率",
+    "unknown": "未命名指标"
   },
   "history": {
     "title": "历史走势（30 日）",

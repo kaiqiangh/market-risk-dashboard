@@ -11,6 +11,7 @@ import { formatChange, formatCompactNumber, formatRatio } from "@/lib/format";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/Card";
 import { dirTone, dirClasses } from "@/lib/riskColors";
+import { displayCryptoName, displayLocalizedValue } from "@/lib/displayLanguage";
 
 /**
  * ThemesPage: themes page (semis / memory (incl. 11 A-shares) / commodities / crypto).
@@ -46,14 +47,14 @@ function ThemeCard({ theme }: { theme: { key: string; change_1d: number | null; 
       <CardContent className="flex flex-col gap-2 p-3">
         <div className="flex items-baseline justify-between gap-2">
           <span className="truncate text-xs font-medium text-foreground">
-            {t(`${theme.key}`, { defaultValue: theme.key })}
+            {t(`${theme.key}`, { defaultValue: t("common:empty.translationUnavailable") })}
           </span>
           <span className={`shrink-0 text-xs font-semibold tabular-nums ${dirClasses(dTone).text}`}>
             {theme.change_1d === null ? t("common:data.na") : `${theme.change_1d > 0 ? "+" : ""}${theme.change_1d}%`}
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] text-muted-foreground">
-          <span>1M {theme.change_1m === null ? t("common:data.na") : `${theme.change_1m > 0 ? "+" : ""}${theme.change_1m}%`}</span>
+          <span>{t("period.oneMonth")}: {theme.change_1m === null ? t("common:data.na") : `${theme.change_1m > 0 ? "+" : ""}${theme.change_1m}%`}</span>
           {band ? (
             <span className={band.cls}>{t(band.label)}</span>
           ) : theme.percentile_1y_obs > 0 ? (
@@ -114,9 +115,9 @@ export default function ThemesPage() {
             {sectors.map((s) => (
               <AssetCard
                 key={s.key}
-                symbol={t(`${s.key}`, { defaultValue: s.key })}
+                symbol={t(`${s.key}`, { defaultValue: t("common:empty.translationUnavailable") })}
                 change1d={s.change_1d}
-                sub={`1W ${s.change_1w === null ? t("common:data.na") : `${s.change_1w > 0 ? "+" : ""}${s.change_1w}%`}`}
+                sub={`${t("period.oneWeek")}: ${s.change_1w === null ? t("common:data.na") : `${s.change_1w > 0 ? "+" : ""}${s.change_1w}%`}`}
               />
             ))}
           </div>
@@ -143,10 +144,10 @@ export default function ThemesPage() {
               <AssetCard
                 key={c.symbol}
                 symbol={c.symbol}
-                name={locale === "en" ? c.name : (c.name_zh ?? c.name)}
+                name={displayLocalizedValue(c.name, c.name_zh, locale)}
                 value={c.price}
                 change1d={c.change_1d}
-                sub={`1W ${c.change_1w === null ? t("common:data.na") : formatChange(c.change_1w, locale)} · 1M ${c.change_1m === null ? t("common:data.na") : formatChange(c.change_1m, locale)}`}
+                sub={`${t("period.oneWeek")}: ${c.change_1w === null ? t("common:data.na") : formatChange(c.change_1w, locale)} · ${t("period.oneMonth")}: ${c.change_1m === null ? t("common:data.na") : formatChange(c.change_1m, locale)}`}
               />
             ))}
           </div>
@@ -193,7 +194,7 @@ export default function ThemesPage() {
                 <AssetCard
                   key={c.symbol}
                   symbol={c.symbol}
-                  name={c.name}
+                  name={displayCryptoName(c.symbol, c.name, locale)}
                   value={c.price}
                   change1d={c.change_1d}
                   sub={t("crypto.volume24h")}

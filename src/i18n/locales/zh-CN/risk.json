@@ -109,7 +109,7 @@
     },
     "sources": {
       "yfinance": "雅虎财经",
-      "fmp_quotes": "金融建模预备",
+      "fmp_quotes": "金融行情数据",
       "fred": "美国联邦储备经济数据",
       "coingecko": "币格科",
       "calibration_panel": "校准样本",
@@ -120,7 +120,7 @@
     "label": "指标",
     "value": "数值",
     "percentile": "百分位",
-    "zScore": "Z 分",
+    "zScore": "标准分",
     "riskScore": "风险分",
     "direction": "方向",
     "weight": "权重",

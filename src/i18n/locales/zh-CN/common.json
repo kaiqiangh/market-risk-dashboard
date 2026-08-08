@@ -41,7 +41,49 @@
   },
   "empty": {
     "title": "暂无数据",
-    "message": "该数据源尚未产出数据"
+    "message": "该数据源尚未产出数据",
+    "translationUnavailable": "暂无本语言翻译"
+  },
+  "display": {
+    "fallback": {
+      "asset": "未命名资产",
+      "event": "经济事件",
+      "provider": "未知数据源",
+      "source": "新闻来源",
+      "translation": "暂无本语言翻译"
+    },
+    "providerNames": {
+      "akshare": "中国股票数据源",
+      "calibrationPanel": "校准样本",
+      "coingecko": "加密资产行情源",
+      "computed": "计算指标",
+      "fmp": "金融市场数据源",
+      "fmpQuotes": "金融行情数据源",
+      "fred": "美国经济数据源",
+      "fredCalendar": "经济日历数据源",
+      "riskModel": "风险模型",
+      "rssNews": "新闻聚合源",
+      "yfinance": "雅虎财经",
+      "yfinanceAShare": "雅虎财经（中国股票）"
+    },
+    "newsSourceNames": {
+      "cnbc": "商业新闻源",
+      "market": "市场新闻源",
+      "federalReserve": "美联储新闻源"
+    },
+    "reasonDetails": {
+      "rateLimited": "数据源请求受限",
+      "accessDenied": "数据源拒绝访问",
+      "noEvents": "所选时间窗内无事件",
+      "connectionInterrupted": "数据源连接中断",
+      "generic": "数据源详情不可用",
+      "unknown": "原因不可用"
+    },
+    "cryptoNames": {
+      "bitcoin": "比特币",
+      "ethereum": "以太坊",
+      "solana": "索拉纳"
+    }
   },
   "data": {
     "na": "—",

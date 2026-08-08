@@ -37,9 +37,9 @@ describe("MacroPage", () => {
     }
     // The volatility section carries the VIX indicator (moved out of rates, #84 §5) —
     // it also appears in the cross-sectional chart, so match both.
-    expect(screen.getAllByText("CBOE Volatility Index (VIX)").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("波动率指数").length).toBeGreaterThanOrEqual(1);
     // Rates still render the 10Y (card + chart).
-    expect(screen.getAllByText("10-Year Treasury Yield").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("十年期国债收益率").length).toBeGreaterThanOrEqual(1);
   });
 
   it("charts the selected group's 30d history from the sparse bundle", async () => {

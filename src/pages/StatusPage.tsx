@@ -9,21 +9,20 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { formatDateTime } from "@/lib/format";
 import { FreshnessDocument, SourcesDocument, utcDateTime, type DomainStatus } from "@/schemas";
+import { displayProvider, displayReasonDetail } from "@/lib/displayLanguage";
 
 /**
  * StatusPage: system status page — the page whose job is truthfulness, so it validates
  * its inputs like every other page (#95): the metadata documents are parsed through the
  * SAME generated contracts the pipeline publishes (SourcesDocument / FreshnessDocument),
  * not `z.unknown()` casts. A published reason is a {code, detail} pair from the closed
- * vocabulary: the code is translated, `detail` is operator-facing English shown verbatim
- * on a secondary monospace line (and is the one field the pipeline redacts at the error
- * boundary, #92).
+ * vocabulary: the code is translated. Operator detail is reduced to a localized safe
+ * category before rendering because the raw text is not guaranteed to match the locale.
  */
 
 /** Provider-domain entry. The DomainStatus contract declares the derived fields and
- * permits the rest as passthrough (used_fallback/from_cache are provider-added). The
- * provider error text deliberately has NO second channel here: reason.detail is the one
- * redacted field that may carry provider text (#92/#89), so the table renders only that. */
+ * permits the rest as passthrough (used_fallback/from_cache are provider-added). Provider
+ * error details are reduced to a localized safe category before they reach the UI. */
 type DomainEntry = DomainStatus & {
   used_fallback?: boolean;
   from_cache?: boolean;
@@ -133,15 +132,10 @@ export default function StatusPage() {
               <tbody>
                 {Object.entries(datasets).map(([key, info]) => {
                   const status = info.status;
-                  // #89/#101: the published reason is a {code, detail} pair from a closed
-                  // vocabulary. The code is translated; detail is operator-facing English
-                  // (redacted at the boundary, #92) and shown VERBATIM on a secondary
-                  // monospace line — a tooltip-only detail is an invisible reason.
                   const reasonCode = info.reason?.code;
-                  const reasonDetail = info.reason?.detail;
                   return (
                     <tr key={key} className="border-b border-border/50 last:border-0">
-                      <td className="py-1.5 pr-2">{t(`datasets.${key}`, { defaultValue: key })}</td>
+                      <td className="py-1.5 pr-2">{t(`datasets.${key}`, { defaultValue: t("common:empty.translationUnavailable") })}</td>
                       <td className="py-1.5 pr-2">
                         <StatusBadge status={status} />
                       </td>
@@ -151,13 +145,11 @@ export default function StatusPage() {
                       <td className="py-1.5 text-muted-foreground">
                         <div>
                           {reasonCode
-                            ? t(`freshness.reasonCodes.${reasonCode}`, { defaultValue: reasonCode })
+                            ? t(`freshness.reasonCodes.${reasonCode}`, { defaultValue: t("freshness.unknown") })
                             : t("common:data.na")}
                         </div>
-                        {reasonDetail ? (
-                          <div className="max-w-[340px] truncate font-mono text-[10px] text-muted-foreground/80" title={reasonDetail}>
-                            {reasonDetail}
-                          </div>
+                        {info.reason?.detail ? (
+                          <div className="mt-0.5 text-[10px]">{displayReasonDetail(info.reason.detail, locale)}</div>
                         ) : null}
                       </td>
                     </tr>
@@ -196,18 +188,17 @@ export default function StatusPage() {
                   const provider = info.provider;
                   // #65: show the resolved provider and how it was served (fallback/cache)
                   // instead of bare Yes/No booleans.
-                  const served = provider ?? t("providers.unavailable");
+                  const served = displayProvider(provider, locale);
                   const annotation = fromCache
                     ? ` · ${t("providers.cache")}`
                     : usedFallback
                       ? ` · ${t("providers.fallback")}`
                       : "";
                   const reasonCode = info.reason?.code;
-                  const reasonDetail = info.reason?.detail;
                   const resolutions = info.providers ?? [];
                   return (
                     <tr key={domain} className="border-b border-border/50 last:border-0">
-                      <td className="py-1.5 pr-2">{t(`domains.${domain}`, { defaultValue: domain })}</td>
+                      <td className="py-1.5 pr-2">{t(`domains.${domain}`, { defaultValue: t("common:empty.translationUnavailable") })}</td>
                       <td className="py-1.5 pr-2">
                         <span className="font-mono">{served}</span>
                         {annotation ? (
@@ -221,11 +212,11 @@ export default function StatusPage() {
                                 resolution.used_fallback ? t("providers.fallback") : "",
                               ].filter(Boolean);
                               const datasetsLabel = resolution.datasets
-                                .map((key) => t(`datasets.${key}`, { defaultValue: key }))
+                                .map((key) => t(`datasets.${key}`, { defaultValue: t("common:empty.translationUnavailable") }))
                                 .join(t("providers.listSeparator"));
                               return (
                                 <li key={`${resolution.provider}-${datasetsLabel}`}>
-                                  <span className="font-mono">{resolution.provider}</span>
+                                  <span>{displayProvider(resolution.provider, locale)}</span>
                                   <span> · {t("providers.datasets")}: {datasetsLabel}</span>
                                   {resolutionFlags.length > 0 ? (
                                     <span> · {resolutionFlags.join(t("providers.listSeparator"))}</span>
@@ -237,23 +228,15 @@ export default function StatusPage() {
                         ) : null}
                       </td>
                       <td className="py-1.5">
-                        {/* #95: a degraded provider states a specific cause, not the bare
-                            word "Degraded" — same reason rendering as the freshness table,
-                            from the ONE redacted detail channel (#92). */}
                         <StatusBadge status={info.status} />
                         <div className="mt-0.5 text-muted-foreground">
                           {reasonCode
-                            ? t(`freshness.reasonCodes.${reasonCode}`, { defaultValue: reasonCode })
+                            ? t(`freshness.reasonCodes.${reasonCode}`, { defaultValue: t("freshness.unknown") })
                             : t("common:data.na")}
-                          {reasonDetail ? (
-                            <div
-                              className="max-w-[340px] truncate font-mono text-[10px] text-muted-foreground/80"
-                              title={reasonDetail}
-                            >
-                              {reasonDetail}
-                            </div>
-                          ) : null}
                         </div>
+                        {info.reason?.detail ? (
+                          <div className="mt-0.5 text-[10px] text-muted-foreground">{displayReasonDetail(info.reason.detail, locale)}</div>
+                        ) : null}
                       </td>
                     </tr>
                   );

@@ -8,6 +8,7 @@ import { RISK_DIMENSION_KEYS, RISK_EVIDENCE_KEYS, RISK_INDICATOR_KEYS, RISK_TREN
 import { riskLevelTone, toneClasses } from "@/lib/riskColors";
 import { formatNumber, formatPercentile, formatRatio } from "@/lib/format";
 import type { RiskDimension, RiskModelResult } from "@/schemas";
+import { displayProvider } from "@/lib/displayLanguage";
 
 /**
  * RiskDimensionBreakdown: 6-dimension risk model breakdown (RiskLab core).
@@ -34,8 +35,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
   const scoreUpperBound = result.score_upper_bound ?? result.total_score;
   const evidenceVariant = evidenceState === "complete" ? "low" : evidenceState === "partial" ? "caution" : "na";
   const signalProviderLabel = (provider: string) => {
-    const known = ["yfinance", "fmp_quotes", "fred", "coingecko", "calibration_panel"] as const;
-    return t(`crossAssetSignals.sources.${known.includes(provider as (typeof known)[number]) ? provider : "unknown"}`);
+    return displayProvider(provider, locale);
   };
 
   return (
@@ -213,15 +213,15 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
                               <tr key={signal.key} className="border-b border-border/50 last:border-0" data-testid="cross-asset-signal">
                                 <td className="py-1.5 pr-2">
                                   <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-foreground">{t(`crossAssetSignals.signalNames.${signal.key}`, { defaultValue: signal.key })}</span>
+                                    <span className="text-foreground">{t(`crossAssetSignals.signalNames.${signal.key}`, { defaultValue: t("indicatorNames.unknown") })}</span>
                                     {signal.is_proxy ? <Badge variant="outline" className="px-1 py-0 text-[9px]">{t("crossAssetSignals.proxy")}</Badge> : null}
                                   </div>
                                   <p className="mt-0.5 text-[10px] text-muted-foreground">
-                                    {t(`crossAssetSignals.transformations.${signal.transformation}`, { defaultValue: signal.transformation })}
+                                    {t(`crossAssetSignals.transformations.${signal.transformation}`, { defaultValue: t("indicatorNames.unknown") })}
                                   </p>
                                 </td>
                                 <td className="py-1.5 pr-2 text-right tabular-nums">
-                                  {signal.value === null ? t("crossAssetSignals.unavailable") : `${formatNumber(signal.value, locale)} ${t(`crossAssetSignals.unit.${signal.unit}`, { defaultValue: signal.unit })}`}
+                                  {signal.value === null ? t("crossAssetSignals.unavailable") : `${formatNumber(signal.value, locale)} ${t(`crossAssetSignals.unit.${signal.unit}`, { defaultValue: t("crossAssetSignals.unavailable") })}`}
                                 </td>
                                 <td className="py-1.5 pr-2">
                                   <Badge variant={state === "triggered" ? "caution" : state === "notTriggered" ? "low" : "na"}>

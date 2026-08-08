@@ -18,7 +18,7 @@ export function MacroIndicatorCard({ indicator }: MacroIndicatorCardProps) {
   return (
     <Card className="h-full" data-testid="macro-card">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xs">{indicator.label}</CardTitle>
+        <CardTitle className="text-xs">{t(`indicatorNames.${indicator.key}`, { defaultValue: t("indicatorNames.unknown") })}</CardTitle>
         <StatusBadge status={indicator.status} />
       </CardHeader>
       <CardContent className="flex flex-col gap-1">

@@ -10,6 +10,7 @@ import { ErrorState } from "@/components/ui/ErrorState";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { StatusBadge } from "@/components/layout/StatusBadge";
+import { displayLocalizedValue } from "@/lib/displayLanguage";
 
 /**
  * EquitiesPage: equities page (Equity Monitor).
@@ -52,7 +53,7 @@ export default function EquitiesPage() {
                 <AssetCard
                   key={a.symbol}
                   symbol={a.symbol}
-                  name={locale.startsWith("zh") && a.name_zh ? a.name_zh : a.name}
+                  name={displayLocalizedValue(a.name, a.name_zh, locale)}
                   value={a.price}
                   change1d={a.change_1d}
                   sub={a.currency}

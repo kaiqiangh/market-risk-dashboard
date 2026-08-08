@@ -13,6 +13,7 @@
     "updatedAt": "Updated",
     "reason": "Reason",
     "none": "No freshness data",
+    "unknown": "Reason not specified",
     "reasonCodes": {
       "ok": "OK",
       "no_rows_returned": "Upstream answered with no rows",

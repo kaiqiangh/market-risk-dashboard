@@ -18,5 +18,13 @@
     "relatedAssets": "相关资产",
     "source": "来源"
   },
-  "none": "暂无日历事件"
+  "none": "暂无日历事件",
+  "display": {
+    "earningsSuffix": "财报",
+    "events": {
+      "consumerPriceIndex": "消费者价格指数",
+      "producerPriceIndex": "生产者价格指数",
+      "advanceRetailSales": "零售销售初值"
+    }
+  }
 }

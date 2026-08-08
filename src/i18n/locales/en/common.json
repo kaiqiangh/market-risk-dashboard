@@ -41,7 +41,49 @@
   },
   "empty": {
     "title": "No data yet",
-    "message": "This data source has not produced data yet"
+    "message": "This data source has not produced data yet",
+    "translationUnavailable": "Translation unavailable"
+  },
+  "display": {
+    "fallback": {
+      "asset": "Unnamed asset",
+      "event": "Calendar event",
+      "provider": "Unknown provider",
+      "source": "News source",
+      "translation": "Translation unavailable"
+    },
+    "providerNames": {
+      "akshare": "A-share data provider",
+      "calibrationPanel": "Calibration panel",
+      "coingecko": "Crypto market data",
+      "computed": "Computed indicator",
+      "fmp": "Financial market data",
+      "fmpQuotes": "Financial market quotes",
+      "fred": "US economic data",
+      "fredCalendar": "Economic calendar data",
+      "riskModel": "Risk model",
+      "rssNews": "News aggregation",
+      "yfinance": "Yahoo Finance",
+      "yfinanceAShare": "Yahoo Finance (A-share)"
+    },
+    "newsSourceNames": {
+      "cnbc": "Business news",
+      "market": "Market news",
+      "federalReserve": "Federal Reserve news"
+    },
+    "reasonDetails": {
+      "rateLimited": "Provider rate limit",
+      "accessDenied": "Provider access denied",
+      "noEvents": "No events in the requested window",
+      "connectionInterrupted": "Provider connection interrupted",
+      "generic": "Provider detail unavailable",
+      "unknown": "Reason unavailable"
+    },
+    "cryptoNames": {
+      "bitcoin": "Bitcoin",
+      "ethereum": "Ethereum",
+      "solana": "Solana"
+    }
   },
   "data": {
     "na": "—",
