@@ -14,7 +14,14 @@ from pipeline.risk.scoring import (
     percentile_risk_score,
     z_score,
 )
-from pipeline.schemas import MacroDataset, RiskModelResult
+from pipeline.schemas import (
+    CommoditiesEnvelope,
+    CryptoEnvelope,
+    EquitiesEnvelope,
+    MacroDataset,
+    MacroEnvelope,
+    RiskModelResult,
+)
 
 
 def test_heuristic_risk_score_bounds() -> None:
@@ -83,24 +90,24 @@ def test_regime_goldilocks() -> None:
 def _macro_with_rates(*, value: float | None = None) -> MacroDataset:
     """A MacroDataset built entirely from the factory (#73: no direct constructor calls).
 
-    Defaults to the four indicators the risk model reads; passing ``value`` swaps the VIX
-    indicator in (used by the level-threshold test).
+    Defaults to the four rate indicators plus VIX in the canonical volatility group; passing
+    ``value`` swaps the VIX indicator in (used by the level-threshold test).
     """
     from pipeline.schemas import MacroEnvelope
     from tests.pipeline.factories import make_envelope, make_macro_indicator, make_macro_payload
 
     if value is not None:
-        rates = [make_macro_indicator(key="vixcls", label="VIX", value=value, unit="index", source="FRED")]
-        payload = make_macro_payload(rates=rates, credit=[], inflation=[], labor=[], liquidity=[], fx=[])
+        volatility = [make_macro_indicator(key="vixcls", label="VIX", value=value, unit="index", source="FRED")]
+        payload = make_macro_payload(rates=[], credit=[], volatility=volatility, inflation=[], labor=[], liquidity=[], fx=[])
     else:
         payload = make_macro_payload(
             rates=[
                 make_macro_indicator(key="dgs10", label="10Y", value=4.2, source="FRED"),
                 make_macro_indicator(key="dgs2", label="2Y", value=3.8, source="FRED"),
                 make_macro_indicator(key="dfii10", label="Real", value=1.9, source="FRED"),
-                make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED"),
             ],
             credit=[make_macro_indicator(key="bamlh0a0hym2", label="HY", value=4.5, source="FRED")],
+            volatility=[make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED")],
             fx=[],
         )
     return MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload
@@ -151,6 +158,92 @@ def test_risk_model_percentile_with_series_history() -> None:
     assert vix_ind.z_score is not None
     # 25 in the uniform 10~29 history has percentile ≈ 76 (share of samples ≤ 25)
     assert 65 <= vix_ind.percentile <= 85
+
+
+def test_vix_uses_canonical_volatility_group_for_risk_and_regime(monkeypatch) -> None:
+    captured: dict = {}
+
+    def capture_regime(ctx: dict) -> tuple[str, list[str]]:
+        captured.update(ctx)
+        return "indeterminate", []
+
+    monkeypatch.setattr(regime_mod, "infer_regime", capture_regime)
+    result = RiskModel().score(_synthetic_context())
+    vix = next(
+        ind for dim in result.dimensions if dim.key == "volatility"
+        for ind in dim.indicators if ind.key == "vix"
+    )
+
+    assert vix.value == 25.0
+    assert captured["vix"] == 25.0
+
+
+def test_vix_in_rates_is_not_used_as_a_compatibility_fallback() -> None:
+    from pipeline.schemas import MacroEnvelope
+    from tests.pipeline.factories import make_envelope, make_macro_indicator, make_macro_payload
+
+    payload = make_macro_payload(
+        rates=[make_macro_indicator(key="vixcls", label="VIX", value=45.0, unit="index", source="FRED")],
+        credit=[], volatility=[], inflation=[], labor=[], liquidity=[], fx=[]
+    )
+    ctx = {"macro": MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload}
+    result = RiskModel().score(ctx)
+    vix = next(
+        ind for dim in result.dimensions if dim.key == "volatility"
+        for ind in dim.indicators if ind.key == "vix"
+    )
+
+    assert vix.value is None
+    realized = next(
+        ind for dim in result.dimensions if dim.key == "volatility"
+        for ind in dim.indicators if ind.key == "realized_vol"
+    )
+    volatility = next(dim for dim in result.dimensions if dim.key == "volatility")
+    assert realized.value is None
+    assert volatility.coverage == 0.0
+    assert result.regime == "indeterminate"
+
+
+def test_build_risk_context_carries_canonical_vix_and_realized_volatility() -> None:
+    from pipeline.run import _build_risk_context
+    from tests.pipeline.factories import make_envelope
+
+    histories = {
+        "SPY": [
+            {"date": f"2026-01-{(i % 28) + 1:02d}", "close": 100.0 + i * 0.2 + (i % 5) * 0.1}
+            for i in range(260)
+        ]
+    }
+    context = _build_risk_context(
+        macro=MacroEnvelope.model_validate(make_envelope("macro", payload={
+            "rates": [
+                {"key": "dgs10", "label": "10Y", "value": 4.2, "source": "FRED"},
+                {"key": "dgs2", "label": "2Y", "value": 3.8, "source": "FRED"},
+                {"key": "dfii10", "label": "Real", "value": 1.9, "source": "FRED"},
+            ],
+            "credit": [],
+            "volatility": [{"key": "vixcls", "label": "VIX", "value": 25.0, "unit": "index", "source": "FRED"}],
+            "inflation": [], "labor": [], "liquidity": [], "fx": [],
+            "fedwatch": None,
+        })),
+        equities=EquitiesEnvelope.model_validate(make_envelope("equities")),
+        crypto=CryptoEnvelope.model_validate(make_envelope("crypto")),
+        commodities=CommoditiesEnvelope.model_validate(make_envelope("commodities")),
+        histories=histories,
+        qualities=[1.0],
+        prev_total_score=None,
+        prev_dim_scores=None,
+        risk_history=[],
+        series_history={},
+    )
+
+    assert context["cross_asset"]["vix"] == 25.0
+    assert context["trend"]["realized_vol"] is not None
+
+    result = RiskModel().score(context)
+    volatility = next(d for d in result.dimensions if d.key == "volatility")
+    assert next(i for i in volatility.indicators if i.key == "vix").value == 25.0
+    assert next(i for i in volatility.indicators if i.key == "realized_vol").value is not None
 
 
 def test_risk_model_dimension_trend_computed() -> None:
@@ -506,9 +599,9 @@ def test_dollar_index_removal_changes_no_regime() -> None:
             make_macro_indicator(key="dgs10", label="10Y", value=4.2, source="FRED"),
             make_macro_indicator(key="dgs2", label="2Y", value=3.8, source="FRED"),
             make_macro_indicator(key="dfii10", label="Real", value=1.9, source="FRED"),
-            make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED"),
         ],
         credit=[make_macro_indicator(key="bamlh0a0hym2", label="HY", value=4.5, source="FRED")],
+        volatility=[make_macro_indicator(key="vixcls", label="VIX", value=25.0, unit="index", source="FRED")],
         fx=[make_macro_indicator(key="dtwexbgs", label="Dollar", value=98.0, source="FRED")],
     )
     with_dollar["macro"] = MacroEnvelope.model_validate(make_envelope("macro", payload=payload)).payload

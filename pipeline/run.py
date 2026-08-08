@@ -126,7 +126,7 @@ def _build_risk_context(
     # implemented here — the cyclicals-vs-defensives and HY-vs-treasury spreads need extra
     # series and are deliberately deferred). Signals 7-8 are commodity-driven: copper
     # falling = growth stress, gold rising = classic risk-off confirmation.
-    vix = _macro_value(macro, "rates", "vixcls")
+    vix = _macro_value(macro, "volatility", "vixcls")
     hy = _macro_value(macro, "credit", "bamlh0a0hym2")
     dxy = _macro_value(macro, "fx", "dtwexbgs")
     real_rate = _macro_value(macro, "rates", "dfii10")
@@ -157,7 +157,9 @@ def _build_risk_context(
         "histories": histories,
         "breadth": breadth,
         "trend": trend,
-        "cross_asset": {"confirmation": confirmation},
+        # VIX is not one of the cross-asset hit-rate signals, but retain its canonical
+        # volatility-group value in the shared context for downstream diagnostics/consumers.
+        "cross_asset": {"confirmation": confirmation, "vix": vix},
         "data_quality": round(data_quality, 4),
         "series_history": series_history,
         "_prev_total_score": prev_total_score,

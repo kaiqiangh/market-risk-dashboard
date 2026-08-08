@@ -40,6 +40,12 @@ DIMENSION_LABELS = {
     "trend": "Trend",
 }
 
+# Series keys with a canonical macro group must not be accepted from a legacy or incorrect
+# group. This prevents a fixture or stale payload from hiding a collection-to-risk wiring bug.
+CANONICAL_MACRO_GROUPS = {
+    "vixcls": "volatility",
+}
+
 DEFAULT_DISCLAIMER = "This indicator is a modeled estimate of market stress based on historical data and current market signals. It is not a definitive probability or investment advice."
 
 # Indicator key → 5Y history series source (FRED series key; tuple means a composite series, e.g. term spread)
@@ -418,7 +424,12 @@ def _parse_thresholds(raw: dict[str, Any]) -> list[tuple[RiskLevel, Any]]:
 
 def _series_value(ctx: dict[str, Any], key: str) -> float | None:
     macro = ctx.get("macro")
-    for group in ("rates", "credit", "inflation", "labor", "liquidity", "fx"):
+    groups = (
+        (CANONICAL_MACRO_GROUPS[key],)
+        if key in CANONICAL_MACRO_GROUPS
+        else ("rates", "credit", "volatility", "inflation", "labor", "liquidity", "fx")
+    )
+    for group in groups:
         for m in getattr(macro, group, []):
             if m.key == key:
                 return m.value
