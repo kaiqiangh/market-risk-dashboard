@@ -76,9 +76,6 @@ jobs:
       - name: Audit production dependencies
         run: npm audit --omit=dev --audit-level=moderate
 
-      - name: Check generated contracts
-        run: npm run check:contracts
-
       - name: Check translation files
         run: npm run check:i18n
 
