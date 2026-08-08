@@ -1,1 +1,517 @@
-{"schema_version":"1.1.0","generated_at":"2026-08-08T08:39:39Z","language":"en","market_state":"caution","market_regime":"goldilocks","summary":"Composite risk reads 46.31 and stays in caution, the regime is still classified goldilocks, and trend_1d and trend_1w both print 0.0 — the score has not moved. The defining input is a self-contradictory labour report: payems came in at -23.0 against a prior 20.0, yet unrate fell to 4.1 from 4.2 while civpart slipped to 61.4 from 61.5 and ccsa rose to 1801000 from 1777000, so the friendlier headline rests on a shrinking workforce rather than stronger hiring. Risk assets read the soft print as draining the pressure for a further hike — FedWatch still shows hold, with an implied rate of 3.685 against an effective 3.63 — and the most recent completed session was broadly risk-on: AI Software +6.0538%, Quantum Computing +5.7226% and Consumer Electronics +5.3946% led, while NVDA added 2.2695% to close a 11.5616% week. Two caveats bite. Cross-asset confirmation sits at just 0.5 yet is the single largest risk contributor at 8.8235, so the advance lacks corroboration outside equities. And the volatility dimension is blind — coverage 0.00, effective weight 0.0 — so its 15.0 weight is redistributed and the model neither rewards nor penalises a VIX that eased to 15.15 from 15.81. Into the new week the inflation data are the pivot, while the revived attempt to remove Fed Governor Lisa Cook layers an institutional risk on top.","top_risk_drivers":[{"claim":"Cross-asset confirmation is the largest single contributor to the composite at 8.8235, while the underlying reading is only 0.5 — equity strength is not being corroborated by bonds, credit and FX. The input is a proxy carrying a 0.8 discount, so read the level as directional rather than precise.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.5,"updated_at":"2026-08-08T08:21:10Z"}]},{"claim":"The 10Y real rate at 2.43 sits in the 99.04 percentile of its history and contributes 5.8259 — the most expensive single piece of the macro backdrop, and the reason the macro dimension scores 65.38, the highest of the six.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.43,"updated_at":"2026-08-08T08:21:10Z"}]},{"claim":"The nominal 10Y yield at 4.69 is in the 98.0 percentile and adds 5.6465. Together with dgs2 at 4.25 the curve holds a positive 0.44, so the pressure shows up as an absolute level of funding cost rather than as an inversion signal.","evidence_refs":[{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.69,"updated_at":"2026-08-06T00:00:00Z"},{"dataset":"macro","path":"payload.rates[1].value","metric":"dgs2","value":4.25,"updated_at":"2026-08-06T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[0].indicators[1].value","metric":"yield_curve_10y2y","value":0.4400000000000004,"updated_at":"2026-08-08T08:21:10Z"}]},{"claim":"Reverse repo has fallen to 1.45, the 7.38 percentile, contributing 4.0113. The overnight liquidity buffer that absorbed shocks through the tightening cycle is close to exhausted, which raises the market's sensitivity to any funding stress.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[1].indicators[1].value","metric":"reverse_repo","value":1.45,"updated_at":"2026-08-08T08:21:10Z"}]},{"claim":"Leadership is thin: only 0.1067 of the sample is at new highs, contributing 2.837, even though 0.6867 of names hold above their MA200. Broad participation with few genuine breakouts is a structure that inverts quickly once the leaders stall.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.1067,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"risk","path":"payload.dimensions[2].indicators[0].value","metric":"breadth_above_ma200","value":0.6867,"updated_at":"2026-08-08T08:21:10Z"}]}],"supporting_signals":[{"claim":"The labour internals corroborate caution rather than the headline. payems at -23.0 is an outright contraction against a prior 20.0, ccsa has risen to 1801000 from 1777000, and civpart has slipped to 61.4 from 61.5 — the drop in unrate to 4.1 from 4.2 is therefore flattered by people leaving the workforce.","evidence_refs":[{"dataset":"macro","path":"payload.labor[0].value","metric":"payems","value":-23.0,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.labor[3].value","metric":"ccsa","value":1801000.0,"updated_at":"2026-07-25T00:00:00Z"},{"dataset":"macro","path":"payload.labor[4].value","metric":"civpart","value":61.4,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.labor[1].value","metric":"unrate","value":4.1,"updated_at":"2026-07-01T00:00:00Z"}]},{"claim":"Memory is the one theme that broke ranks, at -2.202 against a tape where almost everything else rose, and MU closed -0.4424. Fresh capacity announcements in the memory supply chain are the visible driver, which makes this an industry supply story rather than a demand warning.","evidence_refs":[{"dataset":"sectors","path":"payload.themes[7].change_1d","metric":"change_1d","value":-2.202,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"equities","path":"payload.assets[2].change_1d","metric":"change_1d","value":-0.4424,"updated_at":"2026-08-08T08:17:46Z"}]},{"claim":"The confidence factors show the weak link is consistency at 0.6029, well below data_quality at 1.0 and coverage at 0.78. The composite confidence of 0.8326 is therefore carried by clean data rather than by signals that agree with one another.","evidence_refs":[{"dataset":"risk","path":"payload.confidence","metric":"confidence","value":0.8326,"updated_at":"2026-08-08T08:21:10Z"}]},{"claim":"The volatility dimension contributes nothing at all: coverage 0.00 and effective weight 0.0 mean its nominal 15.0 weight is redistributed across the other five dimensions. Any composite move right now is as much a weighting artefact as a risk signal.","evidence_refs":[]}],"contradicting_signals":[{"claim":"Credit is not confirming any stress. HY OAS at 2.71 sits in the 10.29 percentile and IG OAS at 0.78 in the 17.43 percentile, both near the calm end of their ranges, and HY has tightened from 2.75.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[1].indicators[2].value","metric":"hy_oas","value":2.71,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"risk","path":"payload.dimensions[1].indicators[3].value","metric":"ig_oas","value":0.78,"updated_at":"2026-08-08T08:21:10Z"}]},{"claim":"Trend inputs are outright constructive: drawdown_52w is 0.0, meaning the index is at its high, price_vs_ma200 is 9.9989 and momentum_3m is 5.6973. Nothing in the price structure is breaking.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[5].indicators[1].value","metric":"drawdown_52w","value":0.0,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"risk","path":"payload.dimensions[5].indicators[0].value","metric":"price_vs_ma200","value":9.9989,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"risk","path":"payload.dimensions[5].indicators[2].value","metric":"momentum_3m","value":5.6973,"updated_at":"2026-08-08T08:21:10Z"}]},{"claim":"Inflation expectations are drifting lower, not higher: t5yifr eased to 2.28 and t10yie to 2.25, while realised cpilfesl is 2.56579 and pcepilfe 3.28653, both below their prior readings. That is the opposite of what a hiking scare needs.","evidence_refs":[{"dataset":"macro","path":"payload.inflation[3].value","metric":"t5yifr","value":2.28,"updated_at":"2026-08-07T00:00:00Z"},{"dataset":"macro","path":"payload.inflation[4].value","metric":"t10yie","value":2.25,"updated_at":"2026-08-07T00:00:00Z"},{"dataset":"macro","path":"payload.inflation[1].value","metric":"cpilfesl","value":2.56579,"updated_at":"2026-06-01T00:00:00Z"},{"dataset":"macro","path":"payload.inflation[2].value","metric":"pcepilfe","value":3.28653,"updated_at":"2026-06-01T00:00:00Z"}]},{"claim":"Damage is not spreading through the tape. new_lows_ratio is only 0.0133, small_cap_relative is 1.1404 and semis_relative is 4.6427, so the appetite that lifted AI Infrastructure 2.4449% and Semiconductor Equipment 3.5532% is not being offset by breakdowns elsewhere.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[2].indicators[2].value","metric":"new_lows_ratio","value":0.0133,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"risk","path":"payload.dimensions[2].indicators[3].value","metric":"small_cap_relative","value":1.1404,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"risk","path":"payload.dimensions[2].indicators[4].value","metric":"semis_relative","value":4.6427,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"sectors","path":"payload.themes[0].change_1d","metric":"change_1d","value":2.4449,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"sectors","path":"payload.themes[6].change_1d","metric":"change_1d","value":3.5532,"updated_at":"2026-08-08T08:21:10Z"}]}],"what_changed_today":["All seven datasets report fresh this run — macro, equities, crypto, news, calendar, sectors and risk — the first fully clean input set in recent runs, and model confidence lifted to 0.8326.","The composite itself did not move: trend_1d and trend_1w are both 0.0, with the score at 46.31.","The labour report inverted the policy debate — payems printed -23.0 versus a prior 20.0, and the market now leans away from a further hike even though the implied rate of 3.685 still sits above the effective 3.63.","VIX eased to 15.15 from 15.81 while the volatility dimension stayed uncounted at 0.0 effective weight.","Memory split from the rest of tech at -2.202 while the mainland memory and packaging chain printed strong gains, with GigaDevice up 8.3247% and Longsys up 5.5333%.","The removal proceeding against a sitting Fed governor was restarted, putting central-bank independence back into the risk set."],"watch_next":["The consumer price report is the first high-importance macro release of the coming week and the direct test of the claim that core inflation is heading to a multi-year low.","Producer prices and retail sales follow inside the same week and together complete the inflation plus demand picture the Fed says it needs.","Whether cross-asset confirmation lifts off 0.5 — until bonds, credit and FX agree with equities, the largest contributor at 8.8235 stays a drag.","Whether VIX data returns to the volatility dimension. While coverage stays at 0.00 the composite carries an unmeasured 15.0 weight and every score move is partly mechanical.","Memory pricing after the -2.202 session — whether new fab capacity plans keep compressing the theme, or the supply story is already discounted.","The legal path of the Fed governor removal attempt, the clearest channel from politics into the rates curve."],"bull_case":{"title":"Bull case: disinflation is confirmed and the hike premium unwinds","points":["A soft core inflation print validates breakevens already at 2.28 and 2.25 and pulls the implied rate of 3.685 back toward the effective 3.63, relieving a macro dimension currently at 65.38.","With drawdown_52w at 0.0 and momentum_3m at 5.6973, lower rates let leadership broaden out from the 0.1067 new-highs ratio instead of concentrating further."],"evidence_refs":[{"dataset":"macro","path":"payload.inflation[3].value","metric":"t5yifr","value":2.28,"updated_at":"2026-08-07T00:00:00Z"},{"dataset":"macro","path":"payload.inflation[4].value","metric":"t10yie","value":2.25,"updated_at":"2026-08-07T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[5].indicators[2].value","metric":"momentum_3m","value":5.6973,"updated_at":"2026-08-08T08:21:10Z"}]},"base_case":{"title":"Base case: caution persists and the composite stays range-bound","points":["The score holds near 46.31 with the goldilocks label intact while HY OAS stays near 2.71 and breadth holds above 0.6867 — calm credit caps the downside, weak cross-asset confirmation at 0.5 caps the upside.","Rates stay high but stable, with dgs10 around 4.69 and the real rate around 2.43, so the macro dimension remains the top scorer without turning into an acute shock."],"evidence_refs":[{"dataset":"risk","path":"payload.total_score","metric":"total_score","value":46.31,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"risk","path":"payload.regime","metric":"regime","value":"goldilocks","updated_at":"2026-08-08T08:21:10Z"}]},"bear_case":{"title":"Bear case: rates re-accelerate and thin leadership snaps","points":["A hot inflation print pushes dgs10 above 4.69 and the real rate above 2.43, re-rating a macro dimension already scoring 65.38 and dragging the composite off its 46.31 anchor.","With only 0.1067 of the sample at new highs, a stall in the leaders drags breadth down from 0.6867 and lifts new_lows_ratio from 0.0133, turning a narrow advance into a broad drawdown.","An adverse turn in the Fed governor dispute adds a credibility premium to the curve at a moment when cross-asset confirmation is already only 0.5."],"evidence_refs":[{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.69,"updated_at":"2026-08-06T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.43,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.1067,"updated_at":"2026-08-08T08:21:10Z"}]},"confidence":0.78,"evidence_refs":[{"dataset":"risk","path":"payload.total_score","metric":"total_score","value":46.31,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"risk","path":"payload.confidence","metric":"confidence","value":0.8326,"updated_at":"2026-08-08T08:21:10Z"},{"dataset":"risk","path":"payload.regime","metric":"regime","value":"goldilocks","updated_at":"2026-08-08T08:21:10Z"},{"dataset":"macro","path":"payload.labor[0].value","metric":"payems","value":-23.0,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.labor[1].value","metric":"unrate","value":4.1,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"equities","path":"payload.assets[0].change_1d","metric":"change_1d","value":2.2695,"updated_at":"2026-08-08T08:17:44Z"}],"data_freshness":"fresh"}
+{
+  "schema_version": "1.1.0",
+  "generated_at": "2026-08-08T11:40:00Z",
+  "language": "en",
+  "market_state": "caution",
+  "market_regime": "goldilocks",
+  "summary": "Into the new week the composite risk score stands at 43.13 and the model still reads caution inside a goldilocks regime, with the 1-day trend flat and the 1-week trend at 1.24. Risk is lopsided rather than elevated: macro is the only stretched dimension at 65.38, carried by a 2.43 real rate and a 4.69 nominal 10Y yield, while volatility at 25.15 and liquidity and credit at 33.62 stay benign, with VIX easing to 15.15 and high-yield spreads to 2.71. The last close was broadly risk-on — 20 of the 22 tracked sectors and themes advanced and AI Software gained 6.0538 percent — yet the memory theme fell -2.202 percent even as A-share memory names such as GigaDevice rose 8.3247 percent and Longsys 5.5333 percent, a geographic split that deserves attention. The labour print underneath is the uncomfortable part: payrolls came in at -23.0 against 20.0 previously, but the jobless rate still fell to 4.1 because participation slipped to 61.4 and continuing claims rose to 1801000. Model confidence is high at 0.9211 now that the volatility dimension is fully covered again, so the open question is interpretation, not data quality — and note that the geopolitical headlines behind this read come from relayed Chinese aggregators.",
+  "top_risk_drivers": [
+    {
+      "claim": "Macro is the only stretched dimension at 65.38: the 10Y real rate sits at 2.43, in the 99.04 percentile, and the nominal 10Y yield at 4.69 is in the 98.0 percentile. The composite is rate-driven, not stress-driven.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[0].indicators[0].value",
+          "metric": "real_rate_dfii10",
+          "value": 2.43,
+          "updated_at": "2026-08-08T11:25:49Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.rates[0].value",
+          "metric": "dgs10",
+          "value": 4.69,
+          "updated_at": "2026-08-06T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "Cross-asset confirmation is the single largest contributor at 7.5, yet its reading is a neutral 0.5 carried by a proxy. That contribution is a weighting artefact of the 50.0 dimension score rather than observed cross-market stress.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[4].indicators[0].value",
+          "metric": "cross_asset_confirmation",
+          "value": 0.5,
+          "updated_at": "2026-08-08T11:25:49Z"
+        }
+      ]
+    },
+    {
+      "claim": "Labour quality is eroding beneath an improving headline: payrolls at -23.0 versus 20.0 prior, participation down to 61.4, and continuing claims up to 1801000, while the jobless rate fell to 4.1. The rate fell for the wrong reason.",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.labor[0].value",
+          "metric": "payems",
+          "value": -23.0,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.labor[1].value",
+          "metric": "unrate",
+          "value": 4.1,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.labor[4].value",
+          "metric": "civpart",
+          "value": 61.4,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.labor[3].value",
+          "metric": "ccsa",
+          "value": 1801000.0,
+          "updated_at": "2026-07-25T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "The liquidity buffer is thin: overnight reverse repo has drained to 1.45, in the 7.38 percentile, contributing 3.4096 to the score even though the Fed balance sheet ticked up to 6748567.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[1].indicators[1].value",
+          "metric": "reverse_repo",
+          "value": 1.45,
+          "updated_at": "2026-08-08T11:25:49Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[1].indicators[0].value",
+          "metric": "fed_balance_sheet",
+          "value": 6748567.0,
+          "updated_at": "2026-08-08T11:25:49Z"
+        }
+      ]
+    },
+    {
+      "claim": "Leadership is narrow relative to the tape: only 0.1067 of names are making new highs while breadth above the 200-day is 0.6867, and semiconductor relative strength is stretched at 4.6427.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[1].value",
+          "metric": "new_highs_ratio",
+          "value": 0.1067,
+          "updated_at": "2026-08-08T11:25:49Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[0].value",
+          "metric": "breadth_above_ma200",
+          "value": 0.6867,
+          "updated_at": "2026-08-08T11:25:49Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[4].value",
+          "metric": "semis_relative",
+          "value": 4.6427,
+          "updated_at": "2026-08-08T11:25:49Z"
+        }
+      ]
+    }
+  ],
+  "supporting_signals": [
+    {
+      "claim": "Volatility is the calmest dimension at 25.15: VIX 15.15 and realized volatility 14.375 leave no implied or delivered stress.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[0].value",
+          "metric": "vix",
+          "value": 15.15,
+          "updated_at": "2026-08-08T11:25:49Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[1].value",
+          "metric": "realized_vol",
+          "value": 14.375,
+          "updated_at": "2026-08-08T11:25:49Z"
+        }
+      ]
+    },
+    {
+      "claim": "Credit is not flinching: high-yield OAS at 2.71 sits in the 10.29 percentile and investment-grade OAS at 0.78 in the 17.43 percentile.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[1].indicators[2].value",
+          "metric": "hy_oas",
+          "value": 2.71,
+          "updated_at": "2026-08-08T11:25:49Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[1].indicators[3].value",
+          "metric": "ig_oas",
+          "value": 0.78,
+          "updated_at": "2026-08-08T11:25:49Z"
+        }
+      ]
+    },
+    {
+      "claim": "The trend leg is intact: price is 9.9989 above the 200-day, the 52-week drawdown is 0.0, and 3-month momentum is 5.6973.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[5].indicators[0].value",
+          "metric": "price_vs_ma200",
+          "value": 9.9989,
+          "updated_at": "2026-08-08T11:25:49Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[5].indicators[1].value",
+          "metric": "drawdown_52w",
+          "value": 0.0,
+          "updated_at": "2026-08-08T11:25:49Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[5].indicators[2].value",
+          "metric": "momentum_3m",
+          "value": 5.6973,
+          "updated_at": "2026-08-08T11:25:49Z"
+        }
+      ]
+    },
+    {
+      "claim": "Theme participation at the last close was broad: AI Software 6.0538, Quantum Computing 5.7226, Consumer Electronics 5.3946 and Cloud Computing 3.7054.",
+      "evidence_refs": [
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[1].change_1d",
+          "metric": "change_1d",
+          "value": 6.0538,
+          "updated_at": "2026-08-08T11:25:49Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[14].change_1d",
+          "metric": "change_1d",
+          "value": 5.7226,
+          "updated_at": "2026-08-08T11:25:49Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[8].change_1d",
+          "metric": "change_1d",
+          "value": 5.3946,
+          "updated_at": "2026-08-08T11:25:49Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[2].change_1d",
+          "metric": "change_1d",
+          "value": 3.7054,
+          "updated_at": "2026-08-08T11:25:49Z"
+        }
+      ]
+    },
+    {
+      "claim": "Downside participation is negligible: the new-lows ratio is 0.0133.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[2].value",
+          "metric": "new_lows_ratio",
+          "value": 0.0133,
+          "updated_at": "2026-08-08T11:25:49Z"
+        }
+      ]
+    }
+  ],
+  "contradicting_signals": [
+    {
+      "claim": "The AI supply chain is not moving as one bloc: the memory theme fell -2.202 percent and Micron -0.4424 percent, while A-share memory names rose sharply, GigaDevice 8.3247 percent and Longsys 5.5333 percent. Index-level calm is hiding real dispersion.",
+      "evidence_refs": [
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[7].change_1d",
+          "metric": "change_1d",
+          "value": -2.202,
+          "updated_at": "2026-08-08T11:25:49Z"
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[2].change_1d",
+          "metric": "change_1d",
+          "value": -0.4424,
+          "updated_at": "2026-08-08T11:22:24Z"
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[6].change_1d",
+          "metric": "change_1d",
+          "value": 8.3247,
+          "updated_at": "2026-08-08T11:22:28Z"
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[7].change_1d",
+          "metric": "change_1d",
+          "value": 5.5333,
+          "updated_at": "2026-08-08T11:22:30Z"
+        }
+      ]
+    },
+    {
+      "claim": "The rate complex in the fact layer is dated ahead of the payroll release: 10Y 4.69 and 2Y 4.25 predate the labour print, so the macro dimension at 65.38 may not yet carry the repricing.",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.rates[0].value",
+          "metric": "dgs10",
+          "value": 4.69,
+          "updated_at": "2026-08-06T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.rates[1].value",
+          "metric": "dgs2",
+          "value": 4.25,
+          "updated_at": "2026-08-06T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "Small caps argue against a defensive rotation: small-cap relative strength is 1.1404, which is not what a market de-risking into the caution label normally looks like.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[3].value",
+          "metric": "small_cap_relative",
+          "value": 1.1404,
+          "updated_at": "2026-08-08T11:25:49Z"
+        }
+      ]
+    },
+    {
+      "claim": "The highest-beta complex is inert rather than risk-seeking: BTC 64958.0, ETH 1919.4 and SOL 75.29 offer no confirmation in either direction.",
+      "evidence_refs": [
+        {
+          "dataset": "crypto",
+          "path": "payload.assets[0].price",
+          "metric": "price",
+          "value": 64958.0,
+          "updated_at": "2026-08-08T11:23:01Z"
+        },
+        {
+          "dataset": "crypto",
+          "path": "payload.assets[1].price",
+          "metric": "price",
+          "value": 1919.4,
+          "updated_at": "2026-08-08T11:23:01Z"
+        },
+        {
+          "dataset": "crypto",
+          "path": "payload.assets[2].price",
+          "metric": "price",
+          "value": 75.29,
+          "updated_at": "2026-08-08T11:23:01Z"
+        }
+      ]
+    }
+  ],
+  "what_changed_today": [
+    "Risk appetite improved at the margin: VIX eased from 15.81 to 15.15 and high-yield OAS tightened from 2.75 to 2.71.",
+    "Yields backed up across the curve: 10Y from 4.63 to 4.69 and 2Y from 4.18 to 4.25, flattening the 10Y over 2Y spread to 0.44; the real rate rose from 2.41 to 2.43.",
+    "The labour picture turned: payrolls from 20.0 to -23.0, unemployment from 4.2 to 4.1, participation from 61.5 to 61.4, and continuing claims from 1777000 to 1801000.",
+    "The volatility dimension is fully covered again at coverage 1.0 and effective weight 15.0, lifting model confidence to 0.9211 and evidence coverage to 0.93.",
+    "Memory was the weakest theme at -2.202 percent; every theme except FinTech at -0.4307 percent advanced."
+  ],
+  "watch_next": [
+    "The CPI release later this week is the decisive print: relayed Chinese reporting frames it as the swing factor for the September Fed decision, against core CPI at 2.56579 and headline at 3.46353.",
+    "Whether the memory divergence resolves: the memory theme at -2.202 percent against A-share strength of 8.3247 percent and 5.5333 percent cannot persist indefinitely.",
+    "The Hormuz closure has reportedly cut Iraqi crude exports by 75 percent, per relayed Chinese aggregators. No commodity dimension exists in the model, so an energy-led risk-off would reach the score only with a lag through volatility and credit.",
+    "Cross-asset confirmation remains a proxy at 0.5 while carrying a 7.5 contribution; resolution in either direction is the largest single mechanical swing available to the score.",
+    "Whether the participation-driven fall in the jobless rate reverses; continuing claims at 1801000 is the cleaner read on labour slack than the 4.1 headline."
+  ],
+  "bull_case": {
+    "title": "Disinflation without a hard landing",
+    "points": [
+      "Core CPI at 2.56579 and core PCE at 3.28653 are both below their prior readings of 2.82294 and 3.42158, and the five-year forward breakeven eased to 2.28 — the path that takes a September hike off the table.",
+      "Credit refuses to price trouble: high-yield OAS 2.71 in the 10.29 percentile and investment-grade OAS 0.78 in the 17.43 percentile.",
+      "The tape is broad and undamaged: 20 of 22 themes higher, breadth above the 200-day at 0.6867, new lows at 0.0133, and a 52-week drawdown of 0.0."
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "macro",
+        "path": "payload.inflation[1].value",
+        "metric": "cpilfesl",
+        "value": 2.56579,
+        "updated_at": "2026-06-01T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.inflation[2].value",
+        "metric": "pcepilfe",
+        "value": 3.28653,
+        "updated_at": "2026-06-01T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.inflation[3].value",
+        "metric": "t5yifr",
+        "value": 2.28,
+        "updated_at": "2026-08-07T00:00:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[1].indicators[2].value",
+        "metric": "hy_oas",
+        "value": 2.71,
+        "updated_at": "2026-08-08T11:25:49Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[0].value",
+        "metric": "breadth_above_ma200",
+        "value": 0.6867,
+        "updated_at": "2026-08-08T11:25:49Z"
+      }
+    ]
+  },
+  "base_case": {
+    "title": "Caution inside goldilocks — macro-led, not stress-led",
+    "points": [
+      "The score holds near 43.13 with caution and goldilocks intact; a 1-week trend of 1.24 is drift, not a regime break.",
+      "Macro at 65.38 stays the only stretched dimension, so the composite is rate-led, while volatility at 25.15 and liquidity and credit at 33.62 keep the floor in place.",
+      "AI-linked themes keep leading with wide dispersion — AI Software 6.0538 percent against memory -2.202 percent — so index calm coexists with real single-name risk."
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "risk",
+        "path": "payload.total_score",
+        "metric": "total_score",
+        "value": 43.13,
+        "updated_at": "2026-08-08T11:25:49Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.regime",
+        "metric": "regime",
+        "value": "goldilocks",
+        "updated_at": "2026-08-08T11:25:49Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[3].indicators[0].value",
+        "metric": "vix",
+        "value": 15.15,
+        "updated_at": "2026-08-08T11:25:49Z"
+      },
+      {
+        "dataset": "sectors",
+        "path": "payload.themes[1].change_1d",
+        "metric": "change_1d",
+        "value": 6.0538,
+        "updated_at": "2026-08-08T11:25:49Z"
+      },
+      {
+        "dataset": "sectors",
+        "path": "payload.themes[7].change_1d",
+        "metric": "change_1d",
+        "value": -2.202,
+        "updated_at": "2026-08-08T11:25:49Z"
+      }
+    ]
+  },
+  "bear_case": {
+    "title": "Rates repricing plus an energy shock the model cannot see",
+    "points": [
+      "The fact layer's rate complex predates the payroll print, so 10Y 4.69 and 2Y 4.25 may understate a hawkish inflation reaction; a real rate above 2.43 with macro already at 65.38 would push the composite out of the caution band.",
+      "Relayed reporting puts the Iraqi export loss at 75 percent on the Hormuz closure. With no commodity dimension in the model, an oil-led risk-off would show up late, through volatility currently at 25.15.",
+      "Labour quality is eroding under the headline: payrolls -23.0, participation 61.4, continuing claims 1801000. A consumer slowdown would undercut the earnings leg supporting a 9.9989 premium to the 200-day."
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "macro",
+        "path": "payload.rates[0].value",
+        "metric": "dgs10",
+        "value": 4.69,
+        "updated_at": "2026-08-06T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.rates[1].value",
+        "metric": "dgs2",
+        "value": 4.25,
+        "updated_at": "2026-08-06T00:00:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[0].indicators[0].value",
+        "metric": "real_rate_dfii10",
+        "value": 2.43,
+        "updated_at": "2026-08-08T11:25:49Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.labor[0].value",
+        "metric": "payems",
+        "value": -23.0,
+        "updated_at": "2026-07-01T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.labor[3].value",
+        "metric": "ccsa",
+        "value": 1801000.0,
+        "updated_at": "2026-07-25T00:00:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[5].indicators[0].value",
+        "metric": "price_vs_ma200",
+        "value": 9.9989,
+        "updated_at": "2026-08-08T11:25:49Z"
+      }
+    ]
+  },
+  "confidence": 0.8,
+  "evidence_refs": [
+    {
+      "dataset": "risk",
+      "path": "payload.total_score",
+      "metric": "total_score",
+      "value": 43.13,
+      "updated_at": "2026-08-08T11:25:49Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.confidence",
+      "metric": "confidence",
+      "value": 0.9211,
+      "updated_at": "2026-08-08T11:25:49Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.regime",
+      "metric": "regime",
+      "value": "goldilocks",
+      "updated_at": "2026-08-08T11:25:49Z"
+    }
+  ],
+  "lineage": {
+    "fact_generation_id": "sha256:38c93528b15ccd963ed5e8fef3b7fc060433cb1c48a00be4cecd1518226b2e44",
+    "fact_generated_at": "2026-08-08T11:25:49Z",
+    "input_freshness": {
+      "macro": "fresh",
+      "equities": "fresh",
+      "crypto": "fresh",
+      "news": "fresh",
+      "calendar": "fresh",
+      "sectors": "fresh",
+      "risk": "fresh"
+    },
+    "pair_id": "premarket-2026-08-08T11:40Z"
+  },
+  "data_freshness": "fresh"
+}
