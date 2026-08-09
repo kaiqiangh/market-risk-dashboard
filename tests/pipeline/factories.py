@@ -636,7 +636,22 @@ def make_dashboard_payload(**overrides: Any) -> dict[str, Any]:
                 {"asset": "BTC", "category": "crypto", "change_1d": -0.8},
                 {"asset": "NVDA", "category": "equity", "change_1d": 1.12},
             ],
-            "catalysts": [{"id": "econ-CPI-2026-08-13", "title": "US CPI (YoY)"}],
+            "catalysts": [
+                {
+                    "id": "econ-CPI-2026-08-13",
+                    "type": "economic",
+                    "title": "US CPI (YoY)",
+                    "country": "US",
+                    "datetime": "2026-08-13T12:30:00Z",
+                    "importance": "high",
+                    "actual": None,
+                    "forecast": None,
+                    "previous": None,
+                    "unit": None,
+                    "related_assets": [],
+                    "source": "fred",
+                }
+            ],
             "sector_performance": [{"key": "information_technology", "change_1d": 0.6}],
         },
         overrides,

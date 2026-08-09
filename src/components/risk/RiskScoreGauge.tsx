@@ -74,7 +74,7 @@ export function RiskScoreGauge({ score, level, trend1d, trend1w, trend1m, confid
             ] as const
           ).map(([label, value]) => (
             <div key={label} className="rounded-md bg-muted/60 px-2 py-1.5">
-              <dt className="text-[10px] uppercase tracking-wide text-muted-foreground">{t(label)}</dt>
+              <dt className="text-xs uppercase tracking-wide text-muted-foreground">{t(label)}</dt>
               <dd className="text-sm font-semibold tabular-nums text-foreground">
                 {value === null || value === undefined
                   ? t("common:data.na")
@@ -86,7 +86,7 @@ export function RiskScoreGauge({ score, level, trend1d, trend1w, trend1m, confid
           ))}
         </dl>
 
-        <p className="text-[11px] leading-relaxed text-muted-foreground">{t("score.disclaimer")}</p>
+        <p className="text-xs leading-relaxed text-muted-foreground">{t("score.disclaimer")}</p>
       </CardContent>
     </Card>
   );

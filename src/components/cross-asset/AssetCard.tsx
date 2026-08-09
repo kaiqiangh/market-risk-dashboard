@@ -33,12 +33,12 @@ export function AssetCard({ symbol, name, value, change1d, sub, className }: Ass
           <span className="text-sm font-medium tabular-nums text-muted-foreground">{formatNumber(value, locale)}</span>
         ) : null}
       </div>
-      {name ? <p className="truncate text-[11px] text-muted-foreground">{name}</p> : null}
+      {name ? <p className="truncate text-xs text-muted-foreground">{name}</p> : null}
       <div className="mt-1 flex items-center justify-between gap-2">
         <span className={cn("text-sm font-semibold tabular-nums", classes.text)}>
           {change1d === null || change1d === undefined ? "—" : formatChange(change1d, locale)}
         </span>
-        {sub ? <span className="truncate text-[10px] text-muted-foreground">{sub}</span> : null}
+        {sub ? <span className="truncate text-xs text-muted-foreground">{sub}</span> : null}
       </div>
     </div>
   );

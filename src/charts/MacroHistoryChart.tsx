@@ -107,7 +107,7 @@ export function MacroHistoryChart({ bundle, height = 260 }: MacroHistoryChartPro
       <div className="overflow-x-auto" data-testid="macro-history-fallback">
         <table className="w-full text-left text-xs">
           <thead>
-            <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
+            <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
               <th className="py-1.5 pr-2 font-medium">{t("history.series")}</th>
               <th className="py-1.5 pr-2 font-medium">{t("history.latest")}</th>
               <th className="py-1.5 font-medium">{t("history.date")}</th>

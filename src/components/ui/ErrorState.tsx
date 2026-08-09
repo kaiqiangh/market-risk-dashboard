@@ -29,7 +29,7 @@ export function ErrorState({ title, message, detail, onRetry, className }: Error
       <p className="text-sm font-medium text-foreground">{title ?? t("error.title")}</p>
       <p className="max-w-md text-xs text-muted-foreground">{message ?? t("error.message")}</p>
       {detail && detail.length > 0 ? (
-        <ul className="max-w-lg text-left text-[11px] text-muted-foreground">
+        <ul className="max-w-lg text-left text-xs text-muted-foreground">
           {detail.slice(0, 5).map((line, i) => (
             <li key={i} className="truncate font-mono">
               {line}

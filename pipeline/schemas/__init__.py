@@ -11,7 +11,7 @@ from .analysis import AnalysisDataset, AnalysisLineage, CaseStatement, SignalCla
 from .calendar import CalendarDataset, CalendarEnvelope, CalendarEvent
 from .commodities import CommoditiesDataset, CommoditiesEnvelope, CommodityAsset
 from .crypto import CryptoAsset, CryptoDataset, CryptoEnvelope
-from .dashboard import DashboardAsset, DashboardEnvelope, DashboardPayload
+from .dashboard import DashboardAsset, DashboardEnvelope, DashboardPayload, DashboardSector
 from .envelope import (
     BaseEnvelope,
     ContractModel,
@@ -64,6 +64,7 @@ __all__ = [
     "DashboardAsset",
     "DashboardEnvelope",
     "DashboardPayload",
+    "DashboardSector",
     "DriverContribution",
     "EquitiesDataset",
     "EquitiesEnvelope",

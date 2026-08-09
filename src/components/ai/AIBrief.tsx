@@ -53,7 +53,7 @@ function SignalList({ title, icon, signals, locale, unavailable }: { title: stri
       <ul className="flex flex-col gap-2">
         {signals.map((s, i) => (
           <li key={i} className="rounded-sm border border-hairline bg-surface-2/40 p-2">
-            <p className="text-xs leading-relaxed text-foreground">{safeDisplayText(s.claim, locale, unavailable)}</p>
+            <p className="text-base leading-relaxed text-foreground">{safeDisplayText(s.claim, locale, unavailable)}</p>
             <EvidenceLink refs={s.evidence_refs} />
           </li>
         ))}
@@ -79,8 +79,8 @@ function CaseBlock({
   return (
     <div className="rounded-sm border border-hairline bg-surface-2/40 p-3">
       <p className={`text-xs font-semibold ${toneText}`}>{title}</p>
-      <p className="mt-1 text-xs font-medium text-foreground">{safeDisplayText(caseData.title, locale, unavailable)}</p>
-      <ul className="mt-1 flex list-inside list-disc flex-col gap-1 text-xs text-muted-foreground">
+      <p className="mt-1 text-base font-medium text-foreground">{safeDisplayText(caseData.title, locale, unavailable)}</p>
+      <ul className="mt-1 flex list-inside list-disc flex-col gap-1 text-sm text-muted-foreground">
         {caseData.points.map((p, i) => (
           <li key={i}>{safeDisplayText(p, locale, unavailable)}</li>
         ))}
@@ -117,10 +117,10 @@ export function AIBrief({ presentation, loading = false }: AIBriefProps) {
           <CardTitle className="flex items-center gap-2">
             <ShieldAlert className="h-4 w-4 text-fresh-warn" aria-hidden />
             {t("aiBrief.title")}
-            <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">
+            <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-xs text-primary">
               {t("aiBrief.label")}
             </span>
-            <span className="ml-auto flex items-center gap-2 text-[11px] font-normal text-muted-foreground">
+            <span className="ml-auto flex items-center gap-2 text-xs font-normal text-muted-foreground">
               <StatusBadge status={presentation.status} />
             </span>
           </CardTitle>
@@ -147,10 +147,10 @@ export function AIBrief({ presentation, loading = false }: AIBriefProps) {
         <CardTitle className="flex flex-wrap items-center gap-2">
           <Sparkles className="h-4 w-4 text-primary" aria-hidden />
           {t("aiBrief.title")}
-          <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-[10px] text-primary">
+          <span className="rounded-sm border border-primary/40 px-1 py-0 font-mono text-xs text-primary">
             {t("aiBrief.label")}
           </span>
-          <span className="ml-auto flex items-center gap-2 text-[11px] font-normal text-muted-foreground">
+          <span className="ml-auto flex items-center gap-2 text-xs font-normal text-muted-foreground">
             <StatusBadge status={analysis.data_freshness} />
             <span className="font-mono tabular-nums">{formatDateTime(analysis.generated_at, locale)}</span>
           </span>
@@ -162,25 +162,25 @@ export function AIBrief({ presentation, loading = false }: AIBriefProps) {
           <Badge variant="outline" className="w-fit">
             {t(`risk:${regimeKey(analysis.market_regime)}`)}
           </Badge>
-          <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+          <span className="flex items-center gap-1 text-xs text-muted-foreground">
             {t("aiBrief.confidence")}: <span className="font-semibold tabular-nums text-foreground">{formatRatio(analysis.confidence, locale)}</span>
           </span>
         </div>
         {/* #71 / ruling G: on `indeterminate` the regime section is KEPT and states WHY —
             a missing section would be indistinguishable from a rendering bug. */}
         {analysis.market_regime === "indeterminate" ? (
-          <p className="mt-2 rounded-sm border border-border bg-surface-2/40 px-2 py-1.5 text-[11px] text-muted-foreground">
+          <p className="mt-2 rounded-sm border border-border bg-surface-2/40 px-2 py-1.5 text-xs text-muted-foreground">
             {t("aiBrief.regimeIndeterminate")}
           </p>
         ) : null}
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <p className="text-sm leading-relaxed text-foreground">{safeDisplayText(analysis.summary, locale, unavailable)}</p>
+        <p className="text-base leading-relaxed text-foreground">{safeDisplayText(analysis.summary, locale, unavailable)}</p>
 
         {analysis.what_changed_today.length > 0 ? (
           <div className="flex flex-col gap-1">
             <p className="text-xs font-medium text-muted-foreground">{t("aiBrief.changedToday")}</p>
-            <ul className="flex list-inside list-disc flex-col gap-0.5 text-xs text-foreground">
+            <ul className="flex list-inside list-disc flex-col gap-0.5 text-sm text-foreground">
               {analysis.what_changed_today.map((line, i) => (
                 <li key={i}>{safeDisplayText(line, locale, unavailable)}</li>
               ))}
@@ -201,7 +201,7 @@ export function AIBrief({ presentation, loading = false }: AIBriefProps) {
         {analysis.watch_next.length > 0 ? (
           <div className="flex flex-col gap-1">
             <p className="text-xs font-medium text-muted-foreground">{t("aiBrief.watchNext")}</p>
-            <ul className="flex list-inside list-disc flex-col gap-0.5 text-xs text-foreground">
+            <ul className="flex list-inside list-disc flex-col gap-0.5 text-sm text-foreground">
               {analysis.watch_next.map((line, i) => (
                 <li key={i}>{safeDisplayText(line, locale, unavailable)}</li>
               ))}

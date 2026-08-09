@@ -9,6 +9,7 @@ import {
   calendarFixture,
   commoditiesFixture,
   cryptoFixture,
+  dashboardFixture,
   equitiesFixture,
   freshnessFixture,
   macroFixture,
@@ -32,6 +33,7 @@ export const FIXTURE_MAP: Record<string, unknown> = {
   "/latest/news.json": newsFixture,
   "/latest/calendar.json": calendarFixture,
   "/latest/risk.json": riskFixture,
+  "/latest/dashboard.json": dashboardFixture,
   "/latest/facts.json": factsFixture,
   "/latest/analysis.zh-CN.json": analysisZhFixture,
   "/latest/analysis.en.json": analysisEnFixture,
@@ -55,11 +57,18 @@ export function fixtureForUrl(url: string): { ok: boolean; body: unknown } {
 }
 
 /** Install fixture fetch (default 200 + fixture JSON; unmatched → 404). */
-export function installFixtureFetch(): void {
+export interface FixtureFetchMetrics {
+  requests: string[];
+  responseBytes: number;
+}
+
+export function installFixtureFetch(): FixtureFetchMetrics {
+  const metrics: FixtureFetchMetrics = { requests: [], responseBytes: 0 };
   vi.stubGlobal(
     "fetch",
     vi.fn(async (input: RequestInfo | URL) => {
       const url = String(input);
+      metrics.requests.push(url);
       const { ok, body } = fixtureForUrl(url);
       if (!ok) {
         return new Response(JSON.stringify({ error: "not found" }), {
@@ -67,12 +76,14 @@ export function installFixtureFetch(): void {
           headers: { "Content-Type": "application/json" },
         });
       }
+      metrics.responseBytes += JSON.stringify(body).length;
       return new Response(JSON.stringify(body), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       });
     }),
   );
+  return metrics;
 }
 
 /** Install an always-failing fetch (JSON read failure scenario). */

@@ -33,32 +33,32 @@ export function EventCard({ event }: EventCardProps) {
     <Card data-testid="event-card">
       <CardContent className="flex flex-col gap-1.5 p-3">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <EventIcon type={event.type} />
             <span>{t(`type.${event.type}`)}</span>
-            <Badge variant={IMPORTANCE_VARIANT[event.importance]} className="px-1.5 py-0 text-[9px]">
+            <Badge variant={IMPORTANCE_VARIANT[event.importance]} className="px-1.5 py-0 text-xs">
               {t(`importance.${event.importance}`)}
             </Badge>
           </div>
-          <span className="text-[10px] text-muted-foreground">{formatDateTime(event.datetime, locale)}</span>
+          <span className="text-xs text-muted-foreground">{formatDateTime(event.datetime, locale)}</span>
         </div>
-        <p className="text-sm font-medium text-foreground">{displayEventTitle(event.title, locale)}</p>
+        <p className="text-base font-medium text-foreground">{displayEventTitle(event.title, locale)}</p>
         <dl className="grid grid-cols-3 gap-1.5 text-xs">
           <div className="rounded bg-muted/50 px-1.5 py-1 text-center">
-            <dt className="text-[9px] uppercase text-muted-foreground">{t("field.actual")}</dt>
+            <dt className="text-xs uppercase text-muted-foreground">{t("field.actual")}</dt>
             <dd className="tabular-nums">{valueWithUnit(event.actual)}</dd>
           </div>
           <div className="rounded bg-muted/50 px-1.5 py-1 text-center">
-            <dt className="text-[9px] uppercase text-muted-foreground">{t("field.forecast")}</dt>
+            <dt className="text-xs uppercase text-muted-foreground">{t("field.forecast")}</dt>
             <dd className="tabular-nums">{valueWithUnit(event.forecast)}</dd>
           </div>
           <div className="rounded bg-muted/50 px-1.5 py-1 text-center">
-            <dt className="text-[9px] uppercase text-muted-foreground">{t("field.previous")}</dt>
+            <dt className="text-xs uppercase text-muted-foreground">{t("field.previous")}</dt>
             <dd className="tabular-nums">{valueWithUnit(event.previous)}</dd>
           </div>
         </dl>
         {event.related_assets.length > 0 ? (
-          <div className="flex flex-wrap gap-1 text-[10px] text-muted-foreground">
+          <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
             {event.related_assets.map((a) => (
               <span key={a} className="rounded bg-muted px-1.5 py-0.5 font-mono">
                 {a}

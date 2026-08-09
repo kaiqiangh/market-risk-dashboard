@@ -45,7 +45,7 @@ export function MemorySectorTable({ assets, memory }: MemorySectorTableProps) {
                 </span>
               </span>
             </div>
-            <p className="mt-1 text-[10px] text-muted-foreground">{t("memory.note")}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{t("memory.note")}</p>
           </div>
         ) : null}
 
@@ -60,7 +60,7 @@ export function MemorySectorTable({ assets, memory }: MemorySectorTableProps) {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[480px] text-left text-xs">
               <thead>
-                <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
+                <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
                   <th className="py-1.5 pr-2 font-medium">{t("table.symbol")}</th>
                   <th className="py-1.5 pr-2 font-medium">{t("table.name")}</th>
                   <th className="py-1.5 pr-2 text-right font-medium">{t("table.price")}</th>
