@@ -307,3 +307,40 @@ def test_frontend_ci_and_production_audit_gate_are_wired() -> None:
     assert re.search(r"^\s*id-token: write$", deploy_pages, re.MULTILINE), (
         "the deploy job must retain OIDC permission"
     )
+
+
+def test_pages_release_boundary_is_main_only_and_fully_gated() -> None:
+    """Dev and PR validation must never acquire the production Pages environment."""
+    deploy_pages = _read_workflow("deploy-pages.yml")
+    test_pipeline = _read_workflow("test-pipeline.yml")
+    deploy_job = deploy_pages.split("\n  deploy:\n", maxsplit=1)[1]
+    build_job = deploy_pages.split("\n  deploy:\n", maxsplit=1)[0]
+
+    assert "pull_request" in test_pipeline
+    assert "branches: [dev, main]" in test_pipeline
+    assert "github-pages" not in test_pipeline
+    assert "workflow_dispatch:" in deploy_pages
+    assert "if: github.ref == 'refs/heads/main'" in deploy_job
+    assert "needs: build" in deploy_job
+    assert "github-pages" in deploy_job
+    assert "pages: write" not in build_job
+    assert "id-token: write" not in build_job
+
+    for command in (
+        "python -m pipeline.validation.ci_checks --data-dir public/data",
+        "npm run check:contracts",
+        "npm audit --omit=dev --audit-level=moderate",
+        "npm run build",
+        "node scripts/scan-secrets.mjs --root .",
+    ):
+        assert command in build_job, f"release build is missing required gate: {command}"
+
+    for gate in (
+        "run: npm run build",
+        "run: node scripts/scan-secrets.mjs --root .",
+        "actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa",
+    ):
+        assert gate in build_job
+    assert build_job.index("run: npm run build") < build_job.index(
+        "run: node scripts/scan-secrets.mjs --root ."
+    ) < build_job.index("actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa")
