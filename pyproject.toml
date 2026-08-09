@@ -20,6 +20,9 @@ dependencies = [
   "orjson>=3.10.0",
   "brotli>=1.1.0",
   "PyYAML>=6.0.1",
+  # Trading-day gate (ADR-0006): XNYS + XSHG calendars for the automation layer.
+  # Imported only by pipeline/schedule/trading_day.py, never by the pipeline itself.
+  "exchange_calendars>=4.5.0",
 ]
 
 [project.optional-dependencies]

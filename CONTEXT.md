@@ -71,3 +71,17 @@ _Avoid_: source-language title
 **Translation merge**:
 The pipeline step that applies `news.zh-translations.json` onto `news.json`. It copies `title_zh`/`summary_zh` (and the English side for zh-source items) **without overwriting** the canonical `summary`/`title` (ADR-0003).
 _Avoid_: summary overwrite, in-place language flip
+
+## Scheduling
+
+**Weekend news-only policy**:
+The schedule rule that weekends trigger exactly one automation — the overnight news refresh. The data pipeline refreshes and the AI briefs never trigger on Sat/Sun: their RRULE excludes weekends entirely, so a weekend run is skipped by the scheduler itself, never started (ADR-0006).
+_Avoid_: weekend mode, weekend schedule, holiday mode
+
+**Trading-day gate**:
+The step-0 check market-sensitive automations run before any work: query the relevant exchange calendar and skip (with a logged one-line note, no data writes) when the exchange is closed for a holiday. The morning pair (11:30 pipeline + 12:30 pre-market brief) gates on the SSE (XSHG); the evening pair (20:30 pipeline + 21:30 post-market brief) gates on the NYSE (XNYS). Fails open: a broken check is logged and treated as a trading day, so a check bug can never block a run (ADR-0006).
+_Avoid_: holiday check, market-hours check, exchange-open check
+
+**Gap-fill translation pass**:
+The weekend-only translation duty of the overnight news refresh: for news items whose canonical bilingual pair is incomplete, generate the missing side and merge (ADR-0003). Weekday translation is owned by the AI briefs' full-pair pass, which doubles as the catch-up pass for any item a gated day left untranslated (ADR-0006).
+_Avoid_: partial translation, weekend translation task, delta translation
