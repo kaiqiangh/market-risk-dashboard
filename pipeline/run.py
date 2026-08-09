@@ -23,14 +23,15 @@ from __future__ import annotations
 
 import argparse
 import sys
-import traceback
 import time
+import traceback
 from pathlib import Path
 from typing import Any
 
 from pipeline import __version__
 from pipeline.collectors import CalendarCollector, MacroCollector, MarketCollector, NewsCollector
 from pipeline.factlayer import FactLayerBuilder
+from pipeline.metadata import oldest_source_timestamp
 from pipeline.providers import ProviderRegistry, build_registry
 from pipeline.report import write_run_report
 from pipeline.risk.model import RiskModel
@@ -59,12 +60,12 @@ from pipeline.storage import StorageWriter
 from pipeline.storage.outcomes import RunOutcomes
 from pipeline.universe import AssetUniverse
 from pipeline.utils import now_utc
+from pipeline.validation.ci_checks import run_all as run_data_validation
 from pipeline.validation.freshness import (
     FreshnessVerdict,
     aggregate_freshness,
     finalize_freshness,
 )
-from pipeline.validation.validate_all import validate_all
 
 COMMANDS = (
     "full",
@@ -966,7 +967,7 @@ def _run_collection(command: str) -> dict[str, Any]:
         results["market_meta"] = market
         results["degraded"].extend(market["degraded"])
         results["provider_status"].update(market["provider_status"])
-        results["qualities"].append(market["data_quality"])
+        results["qualities"].append(market.get("risk_data_quality", market["data_quality"]))
         results["durations"]["market"] = time.monotonic() - t0
 
     if need_macro:
@@ -997,7 +998,6 @@ def _run_collection(command: str) -> dict[str, Any]:
         results["calendar_degraded"] = bool(cal_meta["degraded"])
         results["degraded"].extend(cal_meta["degraded"])
         results["provider_status"].update(cal_meta["provider_status"])
-        results["qualities"].append(cal_meta["data_quality"])
         results["durations"]["calendar"] = time.monotonic() - t0
 
     if need_news:
@@ -1016,7 +1016,6 @@ def _run_collection(command: str) -> dict[str, Any]:
             "provider": news_meta.get("provider", "rss_news"),
             "sources": news_meta.get("source_status", {}),
         }
-        results["qualities"].append(news_meta["data_quality"])
         results["durations"]["news"] = time.monotonic() - t0
 
     results["durations"]["collection"] = time.monotonic() - started
@@ -1036,39 +1035,54 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
     # collector's degradation; derived datasets (risk, dashboard) aggregate from the inputs
     # they actually consume.
     market_degraded = bool(market_meta.get("degraded"))
+    market_degraded_by_dataset = market_meta.get("degraded_by_dataset", {})
     macro_degraded = bool(macro_meta.get("degraded"))
     news_degraded = bool(results.get("news_degraded", False))
     calendar_degraded = bool(results.get("calendar_degraded", False))
+    risk_history_degraded = bool(market_meta.get("risk_history_degraded", False))
     # risk consumes macro + market only (breadth/trend/cross-asset); news/calendar do not
     # feed it, so their degradation must not drag the risk score down.
-    risk_input_degraded = market_degraded or macro_degraded
+    risk_market_degraded = any(
+        bool(market_degraded_by_dataset.get(name, market_degraded))
+        for name in ("equities", "crypto", "commodities")
+    )
+    risk_input_degraded = risk_market_degraded or macro_degraded or risk_history_degraded
     try:
         # #64/#65: assemble every envelope through the single path (freshness = finalize_freshness;
         # source + provenance = the resolved provider from the collector's outcome).
         macro_outcome = macro_meta.get("provider", {"provider": "unavailable", "used_fallback": False, "from_cache": False})
+        market_quality = market_meta.get("data_quality_by_dataset", {})
+        market_source = market_meta.get("source_updated_at_by_dataset", {})
         macro = _assemble("macro", results["macro"], macro_degraded,
                           provider=str(macro_outcome.get("provider", "unavailable")),
                           used_fallback=bool(macro_outcome.get("used_fallback", False)),
                           from_cache=bool(macro_outcome.get("from_cache", False)),
-                          data_quality=macro_meta.get("data_quality", 1.0))
-        equities = _assemble("equities", results["equities"], market_degraded,
+                          data_quality=macro_meta.get("data_quality", 1.0),
+                          source_updated_at=macro_meta.get("source_updated_at"))
+        equities = _assemble("equities", results["equities"], bool(market_degraded_by_dataset.get("equities", market_degraded)),
                              **_provider_kwargs(market_meta, "equities"),
-                             data_quality=market_meta.get("data_quality", 1.0))
-        sectors = _assemble("sectors", results["sectors"], market_degraded,
+                             data_quality=market_quality.get("equities", market_meta.get("data_quality", 1.0)),
+                             source_updated_at=market_source.get("equities"))
+        sectors = _assemble("sectors", results["sectors"], bool(market_degraded_by_dataset.get("sectors", market_degraded)),
                             **_provider_kwargs(market_meta, "sectors"),
-                            data_quality=market_meta.get("data_quality", 1.0))
-        crypto = _assemble("crypto", results["crypto"], market_degraded,
+                            data_quality=market_quality.get("sectors", market_meta.get("data_quality", 1.0)),
+                            source_updated_at=market_source.get("sectors"))
+        crypto = _assemble("crypto", results["crypto"], bool(market_degraded_by_dataset.get("crypto", market_degraded)),
                            **_provider_kwargs(market_meta, "crypto"),
-                           data_quality=market_meta.get("data_quality", 1.0))
-        commodities = _assemble("commodities", results["commodities"], market_degraded,
+                           data_quality=market_quality.get("crypto", market_meta.get("data_quality", 1.0)),
+                           source_updated_at=market_source.get("crypto"))
+        commodities = _assemble("commodities", results["commodities"], bool(market_degraded_by_dataset.get("commodities", market_degraded)),
                                 **_provider_kwargs(market_meta, "commodities"),
-                                data_quality=market_meta.get("data_quality", 1.0))
+                                data_quality=market_quality.get("commodities", market_meta.get("data_quality", 1.0)),
+                                source_updated_at=market_source.get("commodities"))
         news = _assemble("news", results["news"], news_degraded,
                          **_provider_kwargs(news_meta, None, default="rss_news"),
-                         data_quality=news_meta.get("data_quality", 1.0))
+                         data_quality=news_meta.get("data_quality", 1.0),
+                         source_updated_at=news_meta.get("source_updated_at"))
         calendar = _assemble("calendar", results["calendar"], calendar_degraded,
                              **_provider_kwargs(calendar_meta, None, default="fmp"),
-                             data_quality=calendar_meta.get("data_quality", 1.0))
+                             data_quality=calendar_meta.get("data_quality", 1.0),
+                             source_updated_at=calendar_meta.get("source_updated_at"))
 
         risk_model = RiskModel(settings)
         prev_score, prev_dims, risk_history = _read_prev_risk(writer)
@@ -1091,9 +1105,18 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             commodities_provenance=market_meta.get("providers", {}).get("commodities"),
         )
         risk_result = risk_model.score(ctx)
+        risk_source_updated_at = oldest_source_timestamp(
+            [
+                macro.envelope.source_updated_at,
+                equities.envelope.source_updated_at,
+                crypto.envelope.source_updated_at,
+                commodities.envelope.source_updated_at,
+            ]
+        )
         risk_env = _assemble("risk", risk_result, risk_input_degraded,
                              provider="risk_model",
-                             data_quality=ctx["data_quality"])
+                             data_quality=ctx["data_quality"],
+                             source_updated_at=risk_source_updated_at)
 
         builder = FactLayerBuilder()
         facts = builder.build(
@@ -1127,7 +1150,12 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         # Its own degraded flag must reflect EVERY input it consumes (market + macro + news +
         # calendar) — the old single global flag made an RSS outage degrade the market too,
         # and a market/macro-only flag would silently under-report a news outage on rebuild.
-        factlayer_input_degraded = risk_input_degraded or news_degraded or calendar_degraded
+        factlayer_input_degraded = (
+            risk_input_degraded
+            or bool(market_degraded_by_dataset.get("sectors", market_degraded))
+            or news_degraded
+            or calendar_degraded
+        )
         # #125: the aggregate's own reason must be `input_dataset_unhealthy` (closed
         # vocabulary, envelope.py) naming its culprits — NOT the worst input's own code
         # (e.g. news `provider_http_error`), which would falsely imply the fact layer hit
@@ -1148,7 +1176,11 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
 
         # dashboard (P1-5) — renders risk + calendar + market content, not news: its degraded
         # flag follows risk's inputs plus the calendar, NOT the global aggregate (#119).
-        dashboard_degraded = risk_input_degraded or calendar_degraded
+        dashboard_market_degraded = any(
+            bool(market_degraded_by_dataset.get(name, market_degraded))
+            for name in ("equities", "crypto", "sectors")
+        )
+        dashboard_degraded = risk_input_degraded or dashboard_market_degraded or calendar_degraded
         dashboard_payload = _build_dashboard(
             risk_env=risk_env,
             equities=equities,
@@ -1160,6 +1192,15 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             writer, "dashboard", dashboard_payload, dashboard_degraded, outcomes,
             provider="risk_model",
             data_quality=round(ctx["data_quality"], 3),
+            source_updated_at=oldest_source_timestamp(
+                [
+                    risk_env.source_updated_at,
+                    equities.source_updated_at,
+                    crypto.source_updated_at,
+                    sectors.source_updated_at if sectors is not None else None,
+                    calendar.source_updated_at,
+                ]
+            ),
         )
 
         # AI analysis freshness (P0-4)
@@ -1189,9 +1230,10 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         return False, f"write to disk failed: {exc}"
 
     # ---- Validate ----
-    report = validate_all(writer.latest_dir, strict=False)
-    if not report.ok:
-        return False, "validation failed: " + "; ".join(report.issues)
+    report = run_data_validation(writer.latest_dir.parent)
+    blocking_issues = [*report.errors, *report.blocking_warnings]
+    if blocking_issues:
+        return False, "validation failed: " + "; ".join(blocking_issues)
 
     results["risk"] = risk_env
     results["dashboard"] = dashboard_env
@@ -1359,19 +1401,37 @@ def main(argv: list[str] | None = None) -> int:
             market_meta = results.get("market_meta", {})
             # #119: market datasets degrade only on the market collector's own failures, not
             # on the global aggregate (which news/macro/calendar would have extended).
-            market_degraded = bool(market_meta.get("degraded"))
-            _finalize_and_write(writer, "equities", results["equities"], market_degraded, outcomes,
+            market_degraded_by_dataset = market_meta.get("degraded_by_dataset", {})
+            market_quality = market_meta.get("data_quality_by_dataset", {})
+            market_source = market_meta.get("source_updated_at_by_dataset", {})
+            _finalize_and_write(
+                writer, "equities", results["equities"],
+                bool(market_degraded_by_dataset.get("equities", market_meta.get("degraded"))), outcomes,
                                 **_provider_kwargs(market_meta, "equities"),
-                                data_quality=market_meta.get("data_quality", 1.0))
-            _finalize_and_write(writer, "crypto", results["crypto"], market_degraded, outcomes,
+                data_quality=market_quality.get("equities", market_meta.get("data_quality", 1.0)),
+                source_updated_at=market_source.get("equities"),
+            )
+            _finalize_and_write(
+                writer, "crypto", results["crypto"],
+                bool(market_degraded_by_dataset.get("crypto", market_meta.get("degraded"))), outcomes,
                                 **_provider_kwargs(market_meta, "crypto"),
-                                data_quality=market_meta.get("data_quality", 1.0))
-            _finalize_and_write(writer, "sectors", results["sectors"], market_degraded, outcomes,
+                data_quality=market_quality.get("crypto", market_meta.get("data_quality", 1.0)),
+                source_updated_at=market_source.get("crypto"),
+            )
+            _finalize_and_write(
+                writer, "sectors", results["sectors"],
+                bool(market_degraded_by_dataset.get("sectors", market_meta.get("degraded"))), outcomes,
                                 **_provider_kwargs(market_meta, "sectors"),
-                                data_quality=market_meta.get("data_quality", 1.0))
-            _finalize_and_write(writer, "commodities", results["commodities"], market_degraded, outcomes,
+                data_quality=market_quality.get("sectors", market_meta.get("data_quality", 1.0)),
+                source_updated_at=market_source.get("sectors"),
+            )
+            _finalize_and_write(
+                writer, "commodities", results["commodities"],
+                bool(market_degraded_by_dataset.get("commodities", market_meta.get("degraded"))), outcomes,
                                 **_provider_kwargs(market_meta, "commodities"),
-                                data_quality=market_meta.get("data_quality", 1.0))
+                data_quality=market_quality.get("commodities", market_meta.get("data_quality", 1.0)),
+                source_updated_at=market_source.get("commodities"),
+            )
             _publish_metadata(writer, outcomes, results["provider_status"])
             health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
             return _finish_run(command, results, time.monotonic() - started, health)
@@ -1382,7 +1442,8 @@ def main(argv: list[str] | None = None) -> int:
             macro_meta = results.get("macro_meta", {})
             _finalize_and_write(writer, "macro", results["macro"], bool(macro_meta.get("degraded")), outcomes,
                                 **_provider_kwargs(macro_meta, None, default="fred"),
-                                data_quality=macro_meta.get("data_quality", 1.0))
+                                data_quality=macro_meta.get("data_quality", 1.0),
+                                source_updated_at=macro_meta.get("source_updated_at"))
             _record_ai_outcomes(writer, outcomes)
             _publish_metadata(writer, outcomes, results["provider_status"])
             health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
@@ -1394,7 +1455,8 @@ def main(argv: list[str] | None = None) -> int:
             news_meta = results.get("news_meta", {})
             _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)), outcomes,
                                 **_provider_kwargs(news_meta, None, default="rss_news"),
-                                data_quality=news_meta.get("data_quality", 1.0))
+                                data_quality=news_meta.get("data_quality", 1.0),
+                                source_updated_at=news_meta.get("source_updated_at"))
             _publish_metadata(writer, outcomes, results["provider_status"])
             health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
             return _finish_run(command, results, time.monotonic() - started, health)

@@ -59,7 +59,7 @@ export function AssetHeatmap({ cells }: AssetHeatmapProps) {
 
   return (
     <div className="flex flex-col gap-3" data-testid="asset-heatmap">
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-muted-foreground" data-testid="heatmap-legend">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground" data-testid="heatmap-legend">
         <span className="font-medium text-foreground">{t("heatmap.legend")}</span>
         {(["up", "down", "flat", "unavailable"] as const).map((state) => (
           <span key={state} className="inline-flex items-center gap-1.5">
@@ -74,7 +74,7 @@ export function AssetHeatmap({ cells }: AssetHeatmapProps) {
           <section key={category} className="rounded-md border border-border/70 bg-surface-2/20 p-2.5" data-testid="heatmap-category">
             <header className="mb-2 flex items-baseline justify-between gap-2 border-b border-border/60 pb-1.5">
               <h3 className="text-xs font-semibold text-foreground">{category}</h3>
-              <span className="text-[10px] tabular-nums text-muted-foreground">
+              <span className="text-xs tabular-nums text-muted-foreground">
                 {t("heatmap.assetsCount", { count: categoryCells.length })}
               </span>
             </header>
@@ -93,7 +93,7 @@ export function AssetHeatmap({ cells }: AssetHeatmapProps) {
                   >
                     <span className="break-words font-mono text-xs font-semibold text-foreground">{asset}</span>
                     <span className={`mt-2 text-sm font-semibold tabular-nums ${STATE_TEXT_CLASSES[state]}`}>{change}</span>
-                    <span className="mt-0.5 text-[10px] text-muted-foreground">{t(`heatmap.state.${state}`)}</span>
+                    <span className="mt-0.5 text-xs text-muted-foreground">{t(`heatmap.state.${state}`)}</span>
                   </div>
                 );
               })}
@@ -107,7 +107,7 @@ export function AssetHeatmap({ cells }: AssetHeatmapProps) {
         <div className="mt-2 overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
+              <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
                 <th className="py-1.5 pr-2 font-medium">{t("heatmap.asset")}</th>
                 <th className="py-1.5 pr-2 font-medium">{t("heatmap.axis")}</th>
                 <th className="py-1.5 text-right font-medium">{t("heatmap.change")}</th>

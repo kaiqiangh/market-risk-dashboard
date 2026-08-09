@@ -2,9 +2,9 @@
 
 Before this module the same knowledge lived in five places that had already drifted apart:
 
-- ``validation/validate_all.py:DATASET_MODELS`` and ``validation/ci_checks.py:ENVELOPE_MODELS``
-  (byte-identical copies under different names), plus two copies of ``STANDALONE_MODELS`` and
-  a third, differently-keyed ``run.py:_ENVELOPE_MODELS``
+- the validation package and pipeline orchestration each carried their own dataset model views;
+  the canonical validator now owns the composed validation surface and compatibility callers
+  delegate to it
 - the expected-interval key, where ``risk.json`` mapped to ``"analysis"`` (720 min) in CI but
   read ``expectations.risk`` (480 min) in the envelope, so one file could be ``fresh`` in its
   envelope and ``delayed`` in CI

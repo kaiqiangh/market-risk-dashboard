@@ -35,7 +35,7 @@ export function EvidenceLink({ refs }: EvidenceLinkProps) {
 
   return (
     <div className="mt-1 flex flex-wrap items-center gap-1.5" data-testid="evidence-link">
-      <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+      <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
         <Link2 className="h-3 w-3" aria-hidden />
         {t("evidence.label")}
       </span>
@@ -46,7 +46,7 @@ export function EvidenceLink({ refs }: EvidenceLinkProps) {
           <Badge
             key={key}
             variant="outline"
-            className="cursor-pointer rounded-sm border-hairline bg-surface-2 px-1.5 py-0 font-mono text-[10px] text-muted-foreground transition-colors duration-150 hover:border-primary/40 hover:text-foreground"
+            className="cursor-pointer rounded-sm border-hairline bg-surface-2 px-1.5 py-0 font-mono text-xs text-muted-foreground transition-colors duration-150 hover:border-primary/40 hover:text-foreground"
             onClick={() => highlight(ref)}
             title={`${ref.dataset} ${ref.path}`}
           >

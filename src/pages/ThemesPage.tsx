@@ -53,7 +53,7 @@ function ThemeCard({ theme }: { theme: { key: string; change_1d: number | null; 
             {theme.change_1d === null ? t("common:data.na") : `${theme.change_1d > 0 ? "+" : ""}${theme.change_1d}%`}
           </span>
         </div>
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-muted-foreground">
           <span>{t("period.oneMonth")}: {theme.change_1m === null ? t("common:data.na") : `${theme.change_1m > 0 ? "+" : ""}${theme.change_1m}%`}</span>
           {band ? (
             <span className={band.cls}>{t(band.label)}</span>
@@ -64,12 +64,12 @@ function ThemeCard({ theme }: { theme: { key: string; change_1d: number | null; 
         {theme.constituents.length > 0 ? (
           <div className="flex flex-wrap gap-1">
             {theme.constituents.slice(0, 8).map((sym) => (
-              <span key={sym} className="rounded border border-hairline px-1 py-0.5 font-mono text-[9px] text-muted-foreground">
+              <span key={sym} className="rounded border border-hairline px-1 py-0.5 font-mono text-xs text-muted-foreground">
                 {sym}
               </span>
             ))}
             {theme.constituents.length > 8 ? (
-              <span className="px-0.5 text-[9px] text-muted-foreground">+{theme.constituents.length - 8}</span>
+              <span className="px-0.5 text-xs text-muted-foreground">+{theme.constituents.length - 8}</span>
             ) : null}
           </div>
         ) : null}
@@ -184,7 +184,7 @@ export default function ThemesPage() {
                 </span>
               ) : null}
               {cryptoQ.data?.payload.sentiment ? (
-                <Badge variant="outline" className="px-1.5 py-0 text-[10px]">
+                <Badge variant="outline" className="px-1.5 py-0 text-xs">
                   {t(`crypto.${cryptoQ.data.payload.sentiment}`)}
                 </Badge>
               ) : null}

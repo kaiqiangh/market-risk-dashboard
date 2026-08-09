@@ -87,6 +87,27 @@ def test_clean_run_publishes_fresh_risk() -> None:
     assert env.freshness_status == "fresh"
 
 
+def test_omitted_source_timestamp_stays_unknown() -> None:
+    """Pipeline observation time must not be fabricated as source provenance."""
+    env = assemble_envelope(
+        RiskEnvelope,
+        RiskModelResult(
+            model_version=SCHEMA_VERSION,
+            generated_at="2026-08-04T12:00:00Z",
+            total_score=52.3,
+            risk_level="caution",
+            regime="late_cycle",
+            confidence=0.72,
+            breadth=None,
+        ),
+        dataset="risk",
+        degraded=False,
+        provider="risk_model",
+        data_quality=1.0,
+    )
+    assert env.source_updated_at is None
+
+
 def test_risk_envelope_inherits_base_envelope() -> None:
     """RiskEnvelope is a BaseEnvelope subclass (#64): it shares the base shape."""
     from pipeline.schemas import BaseEnvelope

@@ -32,7 +32,7 @@ export function MacroIndicatorCard({ indicator }: MacroIndicatorCardProps) {
             : `${t("indicator.change1m")} ${indicator.change_1m > 0 ? "+" : ""}${formatNumber(indicator.change_1m, locale)}${formatUnitSuffix(indicator.unit, locale)}`}
         </p>
         {indicator.updated_at ? (
-          <p className="text-[10px] text-muted-foreground">{formatDateTime(indicator.updated_at, locale)}</p>
+          <p className="text-xs text-muted-foreground">{formatDateTime(indicator.updated_at, locale)}</p>
         ) : null}
       </CardContent>
     </Card>

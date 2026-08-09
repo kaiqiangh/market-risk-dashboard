@@ -215,23 +215,24 @@ def _effective_failures(collector: str, failed: int) -> int:
 
 
 def _quality_at(settings: Settings, collector: str, failed: int) -> float:
-    """Build `collector` against `settings`, degrade `failed` domains, read its quality.
-
-    #65: the collectors' published quality is driven by `ProviderRegistry.degraded_domains`
-    (its first reader), so a degraded run is reproduced by degrading that many domains on the
-    registry rather than by poking private failure counters. The factor math is unchanged —
-    `failed` degraded domains still cost `factor ** failed`.
-    """
+    """Build `collector` against `settings`, degrade its own local outcomes, read quality."""
     registry = ProviderRegistry(settings)
-    registry.degraded_domains.update({f"{collector}-{i}" for i in range(failed)})
     if collector == "macro":
-        return MacroCollector(registry, settings)._quality()
+        instance = MacroCollector(registry, settings)
+        instance._degraded_sources.update(("fred", "fedwatch")[:failed])
+        return instance._quality()
     if collector == "market":
-        return MarketCollector(registry, AssetUniverse(settings.load_universe()), settings)._quality()
+        instance = MarketCollector(registry, AssetUniverse(settings.load_universe()), settings)
+        instance._dataset_degraded.update(("equities", "crypto", "commodities", "sectors")[:failed])
+        return instance._quality()
     if collector == "news":
-        return NewsCollector(registry, settings)._quality()
+        instance = NewsCollector(registry, settings)
+        instance.degraded.extend(f"failure-{i}" for i in range(failed))
+        return instance._quality()
     if collector == "calendar":
-        return CalendarCollector(registry, settings)._quality()
+        instance = CalendarCollector(registry, settings)
+        outcomes = {name: {"degraded": True} for name in ("earnings", "economic")[:failed]}
+        return instance._quality(outcomes)
     raise AssertionError(f"unknown collector: {collector}")
 
 
@@ -552,10 +553,11 @@ def test_single_provider_domain_degrades_via_cache(tmp_path) -> None:
     assert out["meta"]["provider"] == "ok_series"
     assert reg2.resolved_provider("macro")["provider"] == "ok_series"
 
-    # The degraded domain lowers published quality (degraded_domains is the #65 reader).
+    # The local collector outcome lowers quality; the registry marker is diagnostic only.
     from pipeline.collectors.macro import MacroCollector
 
     collector = MacroCollector(reg2, Settings(_env_file=None))
+    collector._degraded_sources.add("fred")
     assert collector._quality() == degraded_quality(1, settings=Settings(_env_file=None))
 
 

@@ -12,7 +12,7 @@ import "@/i18n";
 import App from "@/App";
 import { LOCALE_STORAGE_KEY } from "@/i18n";
 import { THEME_STORAGE_KEY } from "@/hooks/useTheme";
-import { installFixtureFetch, installFailingFetch } from "./helpers/fetchMock";
+import { FIXTURE_MAP, fixtureForUrl, installCustomFetch, installFixtureFetch, installFailingFetch } from "./helpers/fetchMock";
 
 // CI runs all 12 test files in parallel; lazy-loaded routes + TanStack Query
 // can exceed the default 1s findBy timeout under CPU contention.
@@ -22,11 +22,12 @@ function renderApp() {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, staleTime: Infinity } },
   });
-  return render(
+  const renderResult = render(
     <QueryClientProvider client={queryClient}>
       <App />
     </QueryClientProvider>,
   );
+  return { ...renderResult, queryClient };
 }
 
 function setHash(hash: string): void {
@@ -46,19 +47,138 @@ afterEach(() => {
 
 describe("route rendering (fixtures data)", () => {
   it("overview renders risk conclusion + AI brief", async () => {
-    installFixtureFetch();
+    const metrics = installFixtureFetch();
     renderApp();
     await screen.findByTestId("page-title");
     await waitFor(() => expect(screen.getByTestId("page-title")).toHaveTextContent("总览"));
     expect(await screen.findByTestId("risk-score")).toHaveTextContent("52.3");
     expect(screen.getByTestId("risk-level")).toHaveTextContent("谨慎");
     expect(screen.getByTestId("market-regime")).toHaveTextContent("周期末段");
+    expect(screen.getByText("跨资产确认信号")).toBeInTheDocument();
+    expect(screen.getAllByText("宏观").length).toBeGreaterThan(0);
     // #121: 板块表现 lists all sector baskets (sectors + themes merged), not just the 2 headline sectors.
     const sectorPerformance = await screen.findByTestId("sector-performance");
     expect(within(sectorPerformance).getByText("半导体龙头")).toBeInTheDocument(); // sectors.semis
     expect(within(sectorPerformance).getByText("存储")).toBeInTheDocument(); // themes.memory
     expect(within(sectorPerformance).getByText("网络安全")).toBeInTheDocument(); // themes.cybersecurity
     expect(await screen.findByTestId("ai-brief")).toBeInTheDocument();
+
+    const dataRequests = metrics.requests.filter((url) => url.includes("/data/"));
+    expect(dataRequests).toHaveLength(7);
+    expect(dataRequests.filter((url) => url.endsWith("/latest/dashboard.json"))).toHaveLength(1);
+    for (const removedDataset of ["crypto", "equities", "sectors", "calendar", "risk.json"]) {
+      expect(dataRequests.some((url) => url.endsWith(`/latest/${removedDataset}.json`))).toBe(false);
+    }
+    const previousFanout = [
+      "/latest/risk.json",
+      "/latest/macro.json",
+      "/latest/crypto.json",
+      "/latest/equities.json",
+      "/latest/sectors.json",
+      "/latest/calendar.json",
+      "/latest/news.json",
+      "/history/risk/30d.json",
+      "/latest/analysis.zh-CN.json",
+      "/latest/analysis.en.json",
+      "/latest/facts.json",
+    ].reduce((bytes, suffix) => bytes + JSON.stringify(FIXTURE_MAP[suffix]).length, 0);
+    expect(metrics.responseBytes).toBeLessThan(previousFanout);
+  });
+
+  it("keeps dashboard and targeted datasets in distinct stable query identities", async () => {
+    installFixtureFetch();
+    const { queryClient } = renderApp();
+    await screen.findByTestId("ai-brief");
+
+    const queryKeys = queryClient.getQueryCache().getAll().map((query) => query.queryKey);
+    expect(queryKeys).toContainEqual(["dashboard", "none", "latest", "default"]);
+    expect(queryKeys).toContainEqual(["risk", "none", "30d", "custom"]);
+    expect(new Set(queryKeys.map((key) => JSON.stringify(key))).size).toBe(queryKeys.length);
+  });
+
+  it("renders the homepage in the specified read-model section order", async () => {
+    installFixtureFetch();
+    const { container } = renderApp();
+    await screen.findByTestId("ai-brief");
+
+    const sectionIds = [
+      "risk-conclusion",
+      "risk-trend-section",
+      "cross-asset-section",
+      "drivers-catalysts-section",
+      "sectors-news-section",
+      "ai-brief-section",
+    ];
+    const positions = sectionIds.map((id) => {
+      const element = container.querySelector(`[data-testid="${id}"]`);
+      expect(element).not.toBeNull();
+      return [...container.querySelectorAll("*")].indexOf(element as Element);
+    });
+    expect(positions).toEqual([...positions].sort((a, b) => a - b));
+  });
+
+  it("shows dashboard schema failure and recovers through retry", async () => {
+    let dashboardAttempts = 0;
+    installCustomFetch((url) => {
+      if (url.endsWith("/latest/dashboard.json")) {
+        dashboardAttempts += 1;
+        if (dashboardAttempts < 3) return { ok: true, body: { invalid: true } };
+      }
+      return fixtureForUrl(url);
+    });
+    renderApp();
+
+    const conclusion = await screen.findByTestId("risk-conclusion");
+    expect(await within(conclusion).findByRole("alert")).toBeInTheDocument();
+    fireEvent.click(await within(conclusion).findByRole("button", { name: "重试" }));
+    expect(await screen.findByTestId("risk-score")).toHaveTextContent("52.3");
+    expect(dashboardAttempts).toBe(3);
+  });
+
+  it("keeps degraded dashboard freshness visible while rendering valid partial data", async () => {
+    installCustomFetch((url) => {
+      const fixture = fixtureForUrl(url);
+      if (url.endsWith("/latest/dashboard.json") && fixture.ok) {
+        return {
+          ok: true,
+          body: {
+            ...(fixture.body as Record<string, unknown>),
+            freshness_status: "degraded",
+          },
+        };
+      }
+      return fixture;
+    });
+    renderApp();
+    expect(await screen.findByTestId("risk-score")).toHaveTextContent("52.3");
+    expect(screen.getByTestId("status-badge-degraded")).toBeInTheDocument();
+  });
+
+  it("keeps homepage ordinary text at the readable minimum", async () => {
+    installFixtureFetch();
+    renderApp();
+    await screen.findByTestId("ai-brief");
+    const undersized = [...document.querySelectorAll<HTMLElement>("[class]")].filter((element) =>
+      /\btext-\[(?:9|10|11)px\]/.test(element.className),
+    );
+    expect(undersized).toHaveLength(0);
+  });
+
+  it("keeps homepage landmarks, status meaning, and controls accessible", async () => {
+    installFixtureFetch();
+    renderApp();
+    await screen.findByTestId("ai-brief");
+
+    expect(screen.getAllByRole("banner").length).toBeGreaterThan(0);
+    expect(screen.getByRole("main")).toBeInTheDocument();
+    expect(screen.getAllByRole("contentinfo").length).toBeGreaterThan(0);
+    expect(screen.getByRole("navigation", { name: "主导航" })).toBeInTheDocument();
+    expect(screen.getByRole("radiogroup", { name: "主题" })).toBeInTheDocument();
+    expect(screen.getAllByTestId("status-badge-fresh").every((badge) => badge.textContent?.includes("正常"))).toBe(true);
+
+    const languageSwitch = screen.getByRole("button", { name: "切换语言" });
+    languageSwitch.focus();
+    expect(document.activeElement).toBe(languageSwitch);
   });
 
   it("overview renders the validated brief on both locale routes", async () => {

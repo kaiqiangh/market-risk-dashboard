@@ -20,7 +20,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
-from pipeline.degrade import degraded_quality
+from pipeline.metadata import quality_for_outcomes
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import CalendarDataset, CalendarEnvelope, CalendarEvent
 from pipeline.settings import Settings
@@ -36,13 +36,16 @@ class CalendarCollector:
 
     # ---- Summary ----
 
-    def _quality(self) -> float:
-        """Data quality degrades by the configured factor per degraded domain (#65).
-
-        The calendar has two logical sources; the registry's `degraded_domains` is the
-        reader — a fallback or cache replay lowers published quality.
-        """
-        return degraded_quality(len(self.registry.degraded_domains), settings=self.settings)
+    def _quality(self, outcomes: dict[str, dict[str, Any]] | None = None) -> float:
+        """Quality is scoped to the calendar's earnings and economic outcomes."""
+        local = outcomes or {}
+        return quality_for_outcomes(
+            [
+                bool(meta.get("degraded") or meta.get("used_fallback") or meta.get("from_cache"))
+                for meta in local.values()
+            ],
+            settings=self.settings,
+        )
 
     def collect(self) -> tuple[CalendarEnvelope, dict[str, Any]]:
         today = datetime.now(timezone.utc).date()
@@ -63,10 +66,13 @@ class CalendarCollector:
         try:
             out = self.registry.call("calendar", "get_earnings_calendar", earnings_key, args=(start, end))
             self.provider_status["calendar"] = out["meta"]
+            if out["meta"].get("degraded"):
+                self.degraded.append("calendar/earnings: provider served degraded data")
             outcomes["earnings"] = {
                 "provider": str(out["meta"].get("provider", "unavailable")),
                 "used_fallback": bool(out["meta"].get("used_fallback", False)),
                 "from_cache": bool(out["meta"].get("from_cache", False)),
+                "degraded": bool(out["meta"].get("degraded", False)),
             }
             provider_name = str(out["meta"].get("provider", "unavailable"))
             for row in out["result"]:
@@ -90,16 +96,21 @@ class CalendarCollector:
                 )
         except ProviderError as exc:
             self.degraded.append(f"calendar/earnings: {exc}")
-            self.provider_status["calendar"] = {"degraded": True, "error": str(exc)}
+            failure = {"degraded": True, "error": str(exc), "provider": "unavailable"}
+            self.provider_status["calendar"] = failure
+            outcomes["earnings"] = failure
 
         # ---- Economic (economic domain: FRED releases + FOMC) ----
         try:
             eco = self.registry.call("economic", "get_economic_calendar", economic_key, args=(start, end))
             self.provider_status["economic"] = eco["meta"]
+            if eco["meta"].get("degraded"):
+                self.degraded.append("calendar/economic: provider served degraded data")
             outcomes["economic"] = {
                 "provider": str(eco["meta"].get("provider", "unavailable")),
                 "used_fallback": bool(eco["meta"].get("used_fallback", False)),
                 "from_cache": bool(eco["meta"].get("from_cache", False)),
+                "degraded": bool(eco["meta"].get("degraded", False)),
             }
             for row in eco["result"]:
                 try:
@@ -124,7 +135,9 @@ class CalendarCollector:
                     malformed += 1
         except ProviderError as exc:
             self.degraded.append(f"calendar/economic: {exc}")
-            self.provider_status["economic"] = {"degraded": True, "error": str(exc)}
+            failure = {"degraded": True, "error": str(exc), "provider": "unavailable"}
+            self.provider_status["economic"] = failure
+            outcomes["economic"] = failure
 
         # ---- Dedupe by stable id: first (higher-priority) source wins (#94) ----
         seen: dict[str, CalendarEvent] = {}
@@ -135,15 +148,28 @@ class CalendarCollector:
         events = list(seen.values())
         events.sort(key=lambda e: e.datetime)
 
+        if malformed:
+            self.degraded.append(f"calendar/economic: {malformed} malformed row(s)")
+            outcomes.setdefault("economic", {"provider": "unavailable"})["degraded"] = True
+
         # ---- Provenance: the answering source of record. Both domains feed calendar.json,
         # so the outcome names whichever answered (earnings primary; economic if earnings
         # failed) — never a hardcoded "fmp" that could lie about a FRED-only payload.
         if outcomes:
-            provider_outcome = outcomes.get("earnings") or outcomes["economic"]
+            providers = {
+                str(item.get("provider", "unavailable"))
+                for item in outcomes.values()
+                if str(item.get("provider", "unavailable")) != "unavailable"
+            }
+            provider_outcome = {
+                "provider": next(iter(providers)) if len(providers) == 1 else "mixed" if providers else "unavailable",
+                "used_fallback": any(bool(item.get("used_fallback")) for item in outcomes.values()),
+                "from_cache": any(bool(item.get("from_cache")) for item in outcomes.values()),
+            }
         else:
             provider_outcome = {"provider": "unavailable", "used_fallback": False, "from_cache": False}
 
-        quality = self._quality()
+        quality = self._quality(outcomes)
         # #64: return payload + provider outcome; the caller assembles the envelope and
         # finalizes freshness through the single assembly path.
         payload = CalendarDataset(events=events, updated_at=now_utc())
@@ -151,7 +177,9 @@ class CalendarCollector:
             "degraded": self.degraded,
             "provider_status": self.provider_status,
             "provider_outcome": provider_outcome,
+            "provider_outcomes": outcomes,
             "data_quality": round(quality, 3),
+            "source_updated_at": None,
             "deduped": dropped,
             "malformed": malformed,
         }

@@ -130,14 +130,20 @@ class _Registry:
         }
 
 
+class _CachedRegistry(_Registry):
+    def call(self, *_args, **_kwargs):
+        result = super().call(*_args, **_kwargs)
+        result["meta"]["from_cache"] = True
+        return result
+
+
 def test_collector_propagates_partial_source_failure_to_news_freshness() -> None:
     """A partial source failure reaches the caller's freshness determination.
 
     #64/#65: the collector no longer assigns freshness_status — it reports the provider
     outcome (meta["degraded"]), and the single assembly path turns that into a degraded
-    envelope. Published quality is driven by `degraded_domains` (its first reader): a
-    partial source failure inside the primary provider is not a fallback/cache replay, so
-    quality stays high unless a domain actually degraded.
+    envelope. Published quality is driven by the collector's local source outcome, even
+    when the registry has no global degraded marker.
     """
     from pipeline.schemas import NewsEnvelope
     from pipeline.schemas.envelope import assemble_envelope
@@ -145,7 +151,7 @@ def test_collector_propagates_partial_source_failure_to_news_freshness() -> None
     registry = _Registry()
     news, meta = NewsCollector(registry).collect()
     assert meta["degraded"]
-    assert meta["data_quality"] == 1.0  # no degraded domain -> no quality reduction
+    assert meta["data_quality"] == 0.8
     assert meta["source_status"]["bad"]["ok"] is False
 
     outcome = meta["provider_outcome"]
@@ -158,10 +164,13 @@ def test_collector_propagates_partial_source_failure_to_news_freshness() -> None
     )
     assert env.freshness_status == "degraded"
 
-    # A degraded domain lowers published quality (#65: degraded_domains is the reader).
+    # An unrelated registry marker does not change the local news quality.
     registry.degraded_domains.add("news")
     _, degraded_meta = NewsCollector(registry).collect()
     assert degraded_meta["data_quality"] == 0.8
+
+    _, cached_meta = NewsCollector(_CachedRegistry()).collect()
+    assert cached_meta["data_quality"] == 0.8
 
 
 # -------------------------------------------------------------------------------------

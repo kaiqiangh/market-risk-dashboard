@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * Publish secret gate (S-1/#92): fail the run before publish if a configured API key
- * (pattern or literal value) appears anywhere under the published tree or the run logs.
+ * (pattern or literal value) appears anywhere under the published inputs, built output,
+ * or the run logs.
  *
  * Why both patterns AND literals: a pattern catches the shape (`apikey=…`), the literal
  * values catch a key that landed verbatim in a file without its parameter name — which is
@@ -23,7 +24,7 @@ const ROOT = process.argv.includes("--root")
 
 //: Everything that ships to the public site plus the run logs (the two places an
 //: exception repr embedding a URL query could land).
-const TARGET_DIRS = ["public/data", "artifacts/logs"];
+const TARGET_DIRS = ["public/data", "artifacts/logs", "dist"];
 
 //: Key-shaped tokens: named key parameters, bare 32-hex (FMP/FRED key format), and a
 //: generic long-token shape (32-64 alphanumerics).
@@ -34,6 +35,14 @@ const TARGET_DIRS = ["public/data", "artifacts/logs"];
 //: caught by the literal env-value check below — the strong gate for this repo's key style.
 const PATTERNS = [
   /(api[_-]?key|apikey|token|secret|password)\s*[:=]\s*[^&\s"'\u4e00-\u9fff]+/i,
+];
+
+// Bundled application code contains ordinary property names such as `password: true`
+// and library identifiers such as `Token=function`. Keep the broad data/log pattern,
+// but require a plausible secret value when scanning minified build output.
+const DIST_PATTERNS = [
+  /(?:api[_-]?key|apikey|access[_-]?token|auth[_-]?token)\s*[:=]\s*["']?[A-Za-z0-9._~+/=-]{16,}/i,
+  /(?:secret|password)\s*[:=]\s*["'][^"']{8,}["']/i,
 ];
 
 function envLiterals() {
@@ -72,9 +81,10 @@ for (const rel of TARGET_DIRS) {
     filesScanned += 1;
     const text = readFileSync(file, "utf-8");
     const lines = text.split(/\r?\n/);
+    const patterns = rel === "dist" ? DIST_PATTERNS : PATTERNS;
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
-      for (const pattern of PATTERNS) {
+      for (const pattern of patterns) {
         const m = pattern.exec(line);
         if (m) {
           hits.push(`${rel}/${file.replace(dir + "/", "")}:${i + 1}: pattern ${pattern}: ${m[0].slice(0, 60)}`);

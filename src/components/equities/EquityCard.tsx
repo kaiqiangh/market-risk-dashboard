@@ -28,12 +28,12 @@ export function EquityCard({ asset }: EquityCardProps) {
           <CardTitle className="flex items-center gap-2">
             <span className="font-mono">{asset.symbol}</span>
             {asset.is_proxy ? (
-              <Badge variant="outline" className="px-1 py-0 text-[9px]">
+              <Badge variant="outline" className="px-1 py-0 text-xs">
                 {t("metric.proxy")}
               </Badge>
             ) : null}
           </CardTitle>
-          <p className="text-[11px] text-muted-foreground">{displayName}</p>
+          <p className="text-xs text-muted-foreground">{displayName}</p>
         </div>
         <div className="text-right">
           <p className="text-lg font-bold tabular-nums">{formatMoney(asset.price, asset.currency, locale)}</p>
@@ -52,32 +52,32 @@ export function EquityCard({ asset }: EquityCardProps) {
             ] as const
           ).map(([label, value]) => (
             <div key={label} className="rounded bg-muted/50 px-1.5 py-1 text-center">
-              <dt className="text-[9px] uppercase text-muted-foreground">{label}</dt>
+              <dt className="text-xs uppercase text-muted-foreground">{label}</dt>
               <dd className={`font-medium tabular-nums ${dirClasses(dirTone(value)).text}`}>
                 {value === null ? t("common:data.na") : formatChange(value, locale)}
               </dd>
             </div>
           ))}
           <div className="rounded bg-muted/50 px-1.5 py-1 text-center">
-            <dt className="text-[9px] text-muted-foreground">{t("metric.rsi14")}</dt>
+            <dt className="text-xs text-muted-foreground">{t("metric.rsi14")}</dt>
             <dd className="font-medium tabular-nums">
               {asset.rsi14 === null ? t("common:data.na") : formatNumber(asset.rsi14, locale, 1)}
             </dd>
           </div>
           <div className="rounded bg-muted/50 px-1.5 py-1 text-center">
-            <dt className="text-[9px] text-muted-foreground">{t("metric.ma50")}</dt>
+            <dt className="text-xs text-muted-foreground">{t("metric.ma50")}</dt>
             <dd className={`font-medium tabular-nums ${dirClasses(dirTone(asset.ma50_distance_pct)).text}`}>
               {asset.ma50_distance_pct === null ? t("common:data.na") : formatChange(asset.ma50_distance_pct, locale)}
             </dd>
           </div>
           <div className="rounded bg-muted/50 px-1.5 py-1 text-center">
-            <dt className="text-[9px] text-muted-foreground">{t("metric.ma200")}</dt>
+            <dt className="text-xs text-muted-foreground">{t("metric.ma200")}</dt>
             <dd className={`font-medium tabular-nums ${dirClasses(dirTone(asset.ma200_distance_pct)).text}`}>
               {asset.ma200_distance_pct === null ? t("common:data.na") : formatChange(asset.ma200_distance_pct, locale)}
             </dd>
           </div>
           <div className="col-span-3 rounded bg-muted/50 px-1.5 py-1 text-center">
-            <dt className="text-[9px] uppercase text-muted-foreground">{t("metric.percentile1y")}</dt>
+            <dt className="text-xs uppercase text-muted-foreground">{t("metric.percentile1y")}</dt>
             <dd className="font-medium tabular-nums">
               {asset.percentile_1y === null ? t("common:data.na") : formatPercentile(asset.percentile_1y, locale)}
             </dd>

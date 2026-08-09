@@ -7,10 +7,9 @@ Isomorphic to the frontend src/schemas/dashboard.ts (Zod):
 
 from __future__ import annotations
 
-from typing import Any
-
 from pydantic import Field
 
+from .calendar import CalendarEvent
 from .envelope import BaseEnvelope, ContractModel
 from .risk import DriverContribution, MarketRegime, RiskModelResult
 
@@ -23,6 +22,13 @@ class DashboardAsset(ContractModel):
     change_1d: float | None = None
 
 
+class DashboardSector(ContractModel):
+    """Localized sector/theme performance entry used by the homepage read model."""
+
+    key: str = Field(min_length=1)
+    change_1d: float | None = None
+
+
 class DashboardPayload(ContractModel):
     """dashboard.json payload (consistent with the frontend Zod strict structure)."""
 
@@ -30,8 +36,8 @@ class DashboardPayload(ContractModel):
     regime: MarketRegime
     top_drivers: list[DriverContribution] = Field(default_factory=list)
     cross_asset: list[DashboardAsset] = Field(default_factory=list)
-    catalysts: list[dict[str, Any]] = Field(default_factory=list)
-    sector_performance: list[dict[str, Any]] = Field(default_factory=list)
+    catalysts: list[CalendarEvent] = Field(default_factory=list)
+    sector_performance: list[DashboardSector] = Field(default_factory=list)
 
 
 class DashboardEnvelope(BaseEnvelope):

@@ -65,12 +65,12 @@ export function TopDrivers({ drivers }: TopDriversProps) {
                   {t(RISK_INDICATOR_KEYS[driver.indicator_key] ?? "indicatorNames.unknown")}
                   {/* #69: disclose that the driver is an estimate — muted outline, NOT a warm tone */}
                   {driver.is_proxy ? (
-                    <span className="ml-1.5 rounded-sm border border-border px-1 py-0 text-[9px] font-normal text-muted-foreground">
+                    <span className="ml-1.5 rounded-sm border border-border px-1 py-0 text-xs font-normal text-muted-foreground">
                       {t("indicator.proxy")}
                     </span>
                   ) : null}
                 </p>
-                <p className="truncate text-[11px] text-muted-foreground">
+                <p className="truncate text-xs text-muted-foreground">
                   {t(RISK_DIMENSION_KEYS[driver.dimension_key as RiskDimensionKey])}
                 </p>
               </div>
@@ -79,7 +79,7 @@ export function TopDrivers({ drivers }: TopDriversProps) {
                   {formatNumber(driver.contribution, locale)}
                 </p>
                 {driver.change_1d !== null && driver.change_1d !== undefined ? (
-                  <p className="text-[11px] tabular-nums text-muted-foreground">
+                  <p className="text-xs tabular-nums text-muted-foreground">
                     {formatPctPoints(driver.change_1d, locale)}
                   </p>
                 ) : null}

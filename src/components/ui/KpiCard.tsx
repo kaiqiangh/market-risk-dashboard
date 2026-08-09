@@ -15,9 +15,9 @@ export interface KpiCardProps extends React.HTMLAttributes<HTMLDivElement> {
 export function KpiCard({ label, children, footer, className, ...props }: KpiCardProps) {
   return (
     <Card className={cn("p-3", className)} {...props}>
-      <p className="text-[11px] text-muted-foreground">{label}</p>
+      <p className="text-xs text-muted-foreground">{label}</p>
       <div className="mt-1 flex items-baseline gap-2">{children}</div>
-      {footer ? <div className="mt-1 text-[11px] text-muted-foreground">{footer}</div> : null}
+      {footer ? <div className="mt-1 text-xs text-muted-foreground">{footer}</div> : null}
     </Card>
   );
 }

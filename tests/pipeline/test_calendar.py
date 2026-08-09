@@ -76,7 +76,8 @@ def test_collects_earnings_and_economic_with_utc_instants(tmp_path: Path) -> Non
     # sorted by instant.
     assert [e.datetime for e in payload.events] == sorted(e.datetime for e in payload.events)
     assert meta["degraded"] == []
-    assert meta["provider_outcome"]["provider"] == "fmp"
+    assert meta["provider_outcome"]["provider"] == "mixed"
+    assert set(meta["provider_outcomes"]) == {"earnings", "economic"}
 
 
 def test_dedupe_by_id_keeps_first_source(tmp_path: Path) -> None:
@@ -109,6 +110,8 @@ def test_earnings_failure_is_degraded_but_economic_survives(tmp_path: Path) -> N
     assert any("FMP calendar HTTP 403" in d for d in meta["degraded"])
     # Provenance names the source that actually answered (never a hardcoded "fmp").
     assert meta["provider_outcome"]["provider"] == "fred_calendar"
+    assert meta["provider_outcomes"]["earnings"]["degraded"] is True
+    assert meta["provider_outcomes"]["economic"]["provider"] == "fred_calendar"
 
 
 def test_both_fail_publishes_unavailable_outcome(tmp_path: Path) -> None:

@@ -122,7 +122,7 @@ export default function StatusPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[520px] text-left text-xs">
               <thead>
-                <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
+                <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
                   <th className="py-1.5 pr-2 font-medium">{t("freshness.dataset")}</th>
                   <th className="py-1.5 pr-2 font-medium">{t("freshness.status")}</th>
                   <th className="py-1.5 pr-2 font-medium">{t("freshness.updatedAt")}</th>
@@ -149,7 +149,7 @@ export default function StatusPage() {
                             : t("common:data.na")}
                         </div>
                         {info.reason?.detail ? (
-                          <div className="mt-0.5 text-[10px]">{displayReasonDetail(info.reason.detail, locale)}</div>
+                          <div className="mt-0.5 text-xs">{displayReasonDetail(info.reason.detail, locale)}</div>
                         ) : null}
                       </td>
                     </tr>
@@ -174,7 +174,7 @@ export default function StatusPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[520px] text-left text-xs">
               <thead>
-                <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
+                <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
                   <th className="py-1.5 pr-2 font-medium">{t("providers.domain")}</th>
                   <th className="py-1.5 pr-2 font-medium">{t("providers.provider")}</th>
                   <th className="py-1.5 font-medium">{t("providers.status")}</th>
@@ -202,10 +202,10 @@ export default function StatusPage() {
                       <td className="py-1.5 pr-2">
                         <span className="font-mono">{served}</span>
                         {annotation ? (
-                          <span className="ml-1 text-[10px] text-muted-foreground">{annotation}</span>
+                          <span className="ml-1 text-xs text-muted-foreground">{annotation}</span>
                         ) : null}
                         {resolutions.length > 0 ? (
-                          <ul className="mt-1 space-y-0.5 text-[10px] text-muted-foreground" data-testid={`provider-resolutions-${domain}`}>
+                          <ul className="mt-1 space-y-0.5 text-xs text-muted-foreground" data-testid={`provider-resolutions-${domain}`}>
                             {resolutions.map((resolution) => {
                               const resolutionFlags = [
                                 resolution.from_cache ? t("providers.cache") : "",
@@ -235,7 +235,7 @@ export default function StatusPage() {
                             : t("common:data.na")}
                         </div>
                         {info.reason?.detail ? (
-                          <div className="mt-0.5 text-[10px] text-muted-foreground">{displayReasonDetail(info.reason.detail, locale)}</div>
+                          <div className="mt-0.5 text-xs text-muted-foreground">{displayReasonDetail(info.reason.detail, locale)}</div>
                         ) : null}
                       </td>
                     </tr>

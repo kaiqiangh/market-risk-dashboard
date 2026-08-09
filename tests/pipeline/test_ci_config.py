@@ -29,6 +29,10 @@ _F821_RUN_LINE = re.compile(r"^\s*run:\s*ruff check \.\s*--select F821", re.MULT
 #: in validate-json.mjs is the regression, so these patterns now assert absence.
 _ENVELOPE_FILES_SET = re.compile(r"ENVELOPE_FILES\s*=\s*new Set\(\[(.*?)\]\)", re.DOTALL)
 _FRESHNESS_SET = re.compile(r"FRESHNESS\s*=\s*new Set\(\s*\[", re.DOTALL)
+_ACTION_REF = re.compile(
+    r"^\s*(?:-\s+)?uses:\s+([^\s#]+)@([^\s#]+)",
+    re.MULTILINE,
+)
 
 
 def _read_workflow(name: str) -> str:
@@ -75,6 +79,14 @@ def test_python_suite_runs_on_every_pull_request_and_push() -> None:
     assert not _has_yaml_key(text, "paths"), (
         "the Python job must NOT be path-filtered — a PR touching only tests/ must still run it"
     )
+
+
+def test_test_pipeline_runs_full_data_validation_and_node_companion() -> None:
+    """Every CI run must enforce the full validator; Node is only the companion check."""
+    text = _read_workflow("test-pipeline.yml")
+
+    assert "scripts/validate_data.sh --scheduled --data-dir public/data" in text
+    assert "node scripts/validate-json.mjs --data-dir public/data" in text
 
 
 def _generated_constants() -> dict:
@@ -200,3 +212,135 @@ def test_secret_gate_is_wired_into_local_and_ci_validation() -> None:
     assert "scan-secrets.mjs" in script, (
         "validate_data.sh must run the secret scan before the data checks"
     )
+
+
+def test_local_validation_fails_closed_and_marks_reduced_diagnostics() -> None:
+    """The local/scheduled validator must not silently downgrade its confidence."""
+    script = (REPO_ROOT / "scripts" / "validate_data.sh").read_text(encoding="utf-8")
+
+    assert "pipeline.validation.ci_checks" in script
+    assert "--diagnostic-reduced" in script
+    assert "mode=reduced-diagnostic" in script
+    assert "VALIDATE_DATA_PRODUCTION" in script
+    assert "mandatory secret scan cannot run" in script
+    assert "falling back to Node" not in script
+    assert "npm run check:contracts" in script
+
+
+def test_scheduled_runner_fails_closed_after_repository_errors() -> None:
+    """Pull, commit, push, and remote verification must all be observable failures."""
+    script = (REPO_ROOT / "scripts" / "run_scheduled.sh").read_text(encoding="utf-8")
+
+    assert "collection did not start" in script
+    assert "continuing with local state" not in script
+    assert "nothing was pushed" in script
+    assert "local verified commit $COMMIT_SHA" in script
+    assert "git rev-parse HEAD" in script
+    assert "git ls-remote origin refs/heads/dev" in script
+    assert "|| true" not in script
+    assert "git pull --rebase origin dev; then" in script
+
+
+def test_deploy_pages_runs_full_data_and_secret_gates() -> None:
+    """Artifact upload must be downstream of Python validation and secret scanning."""
+    workflow = _read_workflow("deploy-pages.yml")
+
+    assert "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065" in workflow
+    assert "python -m pipeline.validation.ci_checks --data-dir public/data" in workflow
+    assert "scripts/scan-secrets.mjs --root ." in workflow
+    assert "npm run check:contracts" in workflow
+    assert "Validate JSON data (Node structural companion)" in workflow
+    assert workflow.index("run: npm run build") < workflow.index("run: node scripts/scan-secrets.mjs --root .")
+    assert workflow.index("run: node scripts/scan-secrets.mjs --root .") < workflow.index(
+        "actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa"
+    )
+
+
+def test_ci_actions_are_pinned_to_full_commit_shas() -> None:
+    """Every external action must resolve to an auditable immutable revision."""
+    refs = [
+        (path.name, action, ref)
+        for path in sorted(WORKFLOWS_DIR.glob("*.yml"))
+        for action, ref in _ACTION_REF.findall(path.read_text(encoding="utf-8"))
+    ]
+
+    assert refs, "workflow suite must contain action references"
+    unpinned = [f"{name}: {action}@{ref}" for name, action, ref in refs if not re.fullmatch(r"[0-9a-f]{40}", ref)]
+    assert not unpinned, "all external GitHub Actions must use full commit SHAs: " + ", ".join(unpinned)
+
+
+def test_ci_uses_checked_in_python_constraints() -> None:
+    """CI and release-path installs must share the checked-in Python resolution."""
+    constraints = REPO_ROOT / "constraints" / "py312.txt"
+    assert constraints.exists(), "the CI Python constraint file must be checked in"
+    constraint_text = constraints.read_text(encoding="utf-8")
+    assert "--python-version 3.12" in constraint_text
+    assert "--python-platform x86_64-unknown-linux-gnu" in constraint_text
+    for package in ("pydantic", "pydantic-settings", "pyyaml", "pytest", "ruff"):
+        assert re.search(rf"^{re.escape(package)}==", constraint_text, re.MULTILINE), (
+            f"constraints/py312.txt must pin {package}"
+        )
+
+    for workflow_name in ("test-pipeline.yml", "validate-data.yml", "deploy-pages.yml", "fallback-health.yml"):
+        workflow = _read_workflow(workflow_name)
+        assert "constraints/py312.txt" in workflow, (
+            f"{workflow_name} must install Python dependencies through constraints/py312.txt"
+        )
+
+
+def test_frontend_ci_and_production_audit_gate_are_wired() -> None:
+    """Frontend checks and the moderate production audit must run before release."""
+    test_pipeline = _read_workflow("test-pipeline.yml")
+    deploy_pages = _read_workflow("deploy-pages.yml")
+
+    for workflow in (test_pipeline, deploy_pages):
+        assert "npm ci" in workflow
+        assert "npm audit --omit=dev --audit-level=moderate" in workflow
+        for command in ("npm run lint", "npm run typecheck", "npm test", "npm run build"):
+            assert command in workflow, f"missing frontend gate: {command}"
+
+    assert "branches: [main]" in deploy_pages, "Pages publishing must be main-only"
+    assert "branches: [dev, main]" not in deploy_pages
+    assert re.search(r"^\s*pages: write$", deploy_pages, re.MULTILINE), (
+        "the deploy job must retain Pages write permission"
+    )
+    assert re.search(r"^\s*id-token: write$", deploy_pages, re.MULTILINE), (
+        "the deploy job must retain OIDC permission"
+    )
+
+
+def test_pages_release_boundary_is_main_only_and_fully_gated() -> None:
+    """Dev and PR validation must never acquire the production Pages environment."""
+    deploy_pages = _read_workflow("deploy-pages.yml")
+    test_pipeline = _read_workflow("test-pipeline.yml")
+    deploy_job = deploy_pages.split("\n  deploy:\n", maxsplit=1)[1]
+    build_job = deploy_pages.split("\n  deploy:\n", maxsplit=1)[0]
+
+    assert "pull_request" in test_pipeline
+    assert "branches: [dev, main]" in test_pipeline
+    assert "github-pages" not in test_pipeline
+    assert "workflow_dispatch:" in deploy_pages
+    assert "if: github.ref == 'refs/heads/main'" in deploy_job
+    assert "needs: build" in deploy_job
+    assert "github-pages" in deploy_job
+    assert "pages: write" not in build_job
+    assert "id-token: write" not in build_job
+
+    for command in (
+        "python -m pipeline.validation.ci_checks --data-dir public/data",
+        "npm run check:contracts",
+        "npm audit --omit=dev --audit-level=moderate",
+        "npm run build",
+        "node scripts/scan-secrets.mjs --root .",
+    ):
+        assert command in build_job, f"release build is missing required gate: {command}"
+
+    for gate in (
+        "run: npm run build",
+        "run: node scripts/scan-secrets.mjs --root .",
+        "actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa",
+    ):
+        assert gate in build_job
+    assert build_job.index("run: npm run build") < build_job.index(
+        "run: node scripts/scan-secrets.mjs --root ."
+    ) < build_job.index("actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa")

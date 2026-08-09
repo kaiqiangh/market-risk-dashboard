@@ -9,9 +9,9 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any, NamedTuple
 
-from pipeline.degrade import degraded_quality
 from pipeline.indicators.technical import technical_snapshot
 from pipeline.indicators.themes import changes_from_closes, percentile_of_trailing_return
+from pipeline.metadata import latest_row_timestamp, oldest_source_timestamp, quality_for_outcomes
 from pipeline.providers.base import ProviderError, ProviderRegistry
 from pipeline.schemas import (
     CommoditiesDataset,
@@ -113,6 +113,8 @@ class MarketCollector:
         self._history_telemetry: list[dict[str, Any]] = []
         self._history_missing: list[dict[str, Any]] = []
         self._history_degraded: list[dict[str, Any]] = []
+        self._dataset_degraded: set[str] = set()
+        self._risk_history_degraded = False
         # #103/P-1: collection runs in a bounded thread pool; the per-(provider, host)
         # circuit breaker lives in the registry (threshold 3 consecutive transient
         # failures → fast-degrade, fallback/cache still answer). The collector's own
@@ -222,6 +224,14 @@ class MarketCollector:
                 self.registry.degraded_domains.add(target.domain)
             elif item.status == "degraded":
                 self.degraded.append(f"{target.symbol}: history served degraded")
+
+            if item.status != "fresh":
+                if "equity_card" in target.consumers:
+                    self._dataset_degraded.add("equities")
+                if "themes" in target.consumers:
+                    self._dataset_degraded.add("sectors")
+                if "risk_breadth_trend" in target.consumers:
+                    self._risk_history_degraded = True
 
             telemetry = {
                 "request_key": target.request_key,
@@ -382,6 +392,10 @@ class MarketCollector:
                 self.histories[item.symbol] = rows
             self.degraded.extend(degraded)
             self._provider_outcomes.update(outcomes)
+            if degraded or status_error or any(bool(meta.get("degraded")) for meta in outcomes.values()):
+                self._dataset_degraded.add("equities")
+                if not degraded and not status_error:
+                    self.degraded.append(f"{domain}: provider served degraded data")
             if status_error:
                 self.provider_status.setdefault(domain, {})["error"] = status_error
         return EquitiesDataset(assets=assets)
@@ -412,8 +426,12 @@ class MarketCollector:
             data = out["result"]
             self.provider_status["crypto"] = out["meta"]
             self._record_outcome("crypto", out["meta"])
+            if out["meta"].get("degraded"):
+                self._dataset_degraded.add("crypto")
+                self.degraded.append("crypto: provider served degraded data")
         except ProviderError as exc:
             self.degraded.append(f"crypto: {exc}")
+            self._dataset_degraded.add("crypto")
             self.provider_status["crypto"] = {"degraded": True, "error": str(exc)}
             return CryptoDataset(assets=[], btc_dominance=None, stablecoin_mcap=None, market_cap_total=None, sentiment=None)
 
@@ -446,9 +464,13 @@ class MarketCollector:
                 out = self.registry.call("quotes", "get_quote", f"quote_{asset.symbol}", args=(asset.symbol,))
             except ProviderError as exc:
                 self.degraded.append(f"{asset.symbol}: {exc}")
+                self._dataset_degraded.add("commodities")
                 self.provider_status.setdefault("quotes", {})["error"] = str(exc)
                 continue
             self._record_outcome("quotes", out["meta"])
+            if out["meta"].get("degraded"):
+                self._dataset_degraded.add("commodities")
+                self.degraded.append(f"{asset.symbol}: provider served degraded data")
             quote = out["result"]
             assets.append(
                 CommodityAsset(
@@ -503,6 +525,11 @@ class MarketCollector:
         self._prefetch_theme_series()
         sectors = [_row(key, theme) for key, theme in self.themes.sectors.items()]
         themes = self._collect_themes(_row)
+        if any(
+            "themes" in item["consumers"] and item["status"] != "fresh"
+            for item in self._history_telemetry
+        ):
+            self._dataset_degraded.add("sectors")
 
         # Memory cycle proxy (review P0-1): kept as its own object because the frontend
         # renders it as a single prose card; its numbers now come from the memory THEME
@@ -592,12 +619,11 @@ class MarketCollector:
     # ---- Summary ----
 
     def _quality(self) -> float:
-        """Data quality degrades by the configured factor per degraded domain (#65).
-
-        `ProviderRegistry.degraded_domains` is the reader: every domain that fell back or
-        replayed from cache lowers published quality, compounding with the factor.
-        """
-        return degraded_quality(len(self.registry.degraded_domains), settings=self.settings)
+        """Quality is scoped to the market collector's own outcomes."""
+        return quality_for_outcomes(
+            [name in self._dataset_degraded for name in ("equities", "crypto", "commodities", "sectors")],
+            settings=self.settings,
+        )
 
     def _reset_collection_state(self) -> None:
         """Clear generation-local market state when a collector instance is reused."""
@@ -614,6 +640,8 @@ class MarketCollector:
         self._history_telemetry.clear()
         self._history_missing.clear()
         self._history_degraded.clear()
+        self._dataset_degraded.clear()
+        self._risk_history_degraded = False
 
     def _collection_telemetry(self) -> dict[str, Any]:
         """Return bounded, provider-safe diagnostics for the market history plan."""
@@ -636,7 +664,41 @@ class MarketCollector:
         crypto = self._collect_crypto()
         commodities = self._collect_commodities()
         sectors = self._collect_sectors(equities)
-        quality = self._quality()
+        quality_by_dataset = {
+            name: quality_for_outcomes([name in self._dataset_degraded], settings=self.settings)
+            for name in ("equities", "crypto", "commodities", "sectors")
+        }
+        quality = round(sum(quality_by_dataset.values()) / len(quality_by_dataset), 3)
+        risk_input_quality = quality_for_outcomes([self._risk_history_degraded], settings=self.settings)
+        risk_data_quality = round(
+            (
+                sum(quality_by_dataset[name] for name in ("equities", "crypto", "commodities"))
+                + risk_input_quality
+            )
+            / 4,
+            3,
+        )
+        source_by_dataset = {
+            # Quote adapters currently expose local fetch time only, while the equity card
+            # combines that quote with historical observations. One unknown contributor
+            # makes the dataset-level provenance unknown.
+            "equities": None,
+            # CoinGecko currently does not expose a trustworthy dataset-level timestamp in its
+            # normalized provider result; do not substitute the local fetch time.
+            "crypto": None,
+            # Quote adapters expose local fetch time only; no upstream observation timestamp is
+            # published as provenance until a provider supplies one explicitly.
+            "commodities": None,
+            "sectors": (
+                None
+                if "sectors" in self._dataset_degraded
+                else oldest_source_timestamp(
+                    latest_row_timestamp(self.histories.get(target.symbol, []))
+                    for target in self._history_plan
+                    if "themes" in target.consumers
+                )
+            ),
+        }
 
         # #64/#65: collectors return payloads + provider outcome; the caller (run.py) assembles
         # the envelope through the single assembly path and finalizes freshness + provenance.
@@ -656,6 +718,13 @@ class MarketCollector:
                 }
             },
             "data_quality": round(quality, 3),
+            "data_quality_by_dataset": quality_by_dataset,
+            "degraded_by_dataset": {
+                name: name in self._dataset_degraded for name in quality_by_dataset
+            },
+            "source_updated_at_by_dataset": source_by_dataset,
+            "risk_data_quality": risk_data_quality,
+            "risk_history_degraded": self._risk_history_degraded,
             "providers": {
                 "equities": self._provider_for_any(("quotes", "a_share")),
                 "crypto": self._provider_for("crypto"),

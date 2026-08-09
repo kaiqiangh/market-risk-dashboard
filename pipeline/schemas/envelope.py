@@ -249,7 +249,6 @@ def assemble_dataset(
     from pipeline.validation.freshness import finalize_freshness
 
     generated_at = generated_at or now_utc()
-    source_updated_at = source_updated_at or generated_at
     verdict = finalize_freshness(
         dataset,
         generated_at,

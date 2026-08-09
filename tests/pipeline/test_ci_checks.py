@@ -12,6 +12,7 @@ freshness warnings / history slices / metadata and feeds / the published-data gu
 
 from __future__ import annotations
 
+import json
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -65,6 +66,31 @@ def test_synthetic_valid_dataset_passes(synthetic_data_dir: Path, now: datetime)
     assert report.ok, f"synthetic data validation failed: {report.errors}"
     assert report.warnings == [], f"synthetic data should be warning-free: {report.warnings}"
     assert report.files_checked >= 15
+
+
+def test_legacy_validate_all_facade_uses_canonical_semantic_checks(
+    synthetic_latest_dir: Path,
+) -> None:
+    """The compatibility API must retain the composed validator's non-schema checks."""
+    path = synthetic_latest_dir / "news.json"
+    news = json.loads(path.read_text(encoding="utf-8"))
+    news["payload"]["items"].append(dict(news["payload"]["items"][0]))
+    path.write_text(json.dumps(news), encoding="utf-8")
+
+    from pipeline.validation import validate_all
+
+    report = validate_all(synthetic_latest_dir, strict=False)
+
+    assert any("duplicate news id" in issue for issue in report.issues), report.issues
+
+
+def test_unregistered_latest_file_is_rejected(synthetic_data_dir: Path) -> None:
+    """The canonical entry point must retain the old unknown-file guard."""
+    (synthetic_data_dir / "latest" / "unexpected.json").write_text("{}", encoding="utf-8")
+
+    report = run_all(synthetic_data_dir)
+
+    assert any("unregistered file under latest" in issue for issue in report.errors), report.errors
 
 
 def test_factory_covers_every_validated_dataset() -> None:
@@ -177,6 +203,15 @@ def test_missing_single_dataset_detected(filename: str, make_data_dir: Any, now:
     root = make_data_dir(latest={filename: REMOVE})
     report = run_all(root, now=now)
     assert f"{filename}: file missing (required dataset)" in report.errors, report.errors
+
+
+def test_non_strict_mode_still_fails_closed_for_required_dataset(make_data_dir: Any, now: datetime) -> None:
+    """The compatibility flag cannot turn a missing production dataset into a pass."""
+    root = make_data_dir(latest={"news.json": REMOVE})
+
+    report = run_all(root, now=now)
+
+    assert "news.json: file missing (required dataset)" in report.errors, report.errors
 
 
 def test_facts_missing_is_error(make_data_dir: Any, now: datetime) -> None:
@@ -584,6 +619,7 @@ def test_stale_is_warning_not_error(
     report = run_all(synthetic_data_dir, now=now)
     assert not any("is stale" in e for e in report.errors), report.errors
     assert any("is stale" in w for w in report.warnings), report.warnings
+    assert any("is stale" in w for w in report.blocking_warnings), report.blocking_warnings
     assert report.ok
 
 
@@ -597,6 +633,7 @@ def test_delayed_is_warning_not_error(
     report = run_all(synthetic_data_dir, now=now)
     assert not any("is delayed" in e for e in report.errors), report.errors
     assert any("is delayed" in w for w in report.warnings), report.warnings
+    assert report.blocking_warnings == []
     assert report.ok
 
 

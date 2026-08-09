@@ -43,7 +43,7 @@ python -m pipeline.run --backfill        # backfill 30-90 days of history
 
 It is recommended to use the project venv: `.venv/bin/python -m pipeline.run --full`.
 
-## 3. Standard flow (git pull → run → commit → push)
+## 3. Standard flow (git pull → run → full validation → commit → push)
 
 Each task execution script (`scripts/run_scheduled.sh`, see example at the end) should include:
 
@@ -52,25 +52,48 @@ Each task execution script (`scripts/run_scheduled.sh`, see example at the end) 
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
+if ! .venv/bin/python -c "import pydantic, yaml, pydantic_settings" >/dev/null 2>&1; then
+  echo "Validation capability unavailable"
+  exit 10
+fi
 
-# 0) Environment prep
-git pull --rebase origin dev          # Pull latest (incl. AI brief, other contributors' commits)
+# 0) Environment prep — failure is fatal; never collect from unconfirmed local state
+git pull --rebase origin dev
 
 # 1) Run the pipeline
-.venv/bin/python -m pipeline.run --full || { echo "Pipeline failed, see artifacts/logs/"; exit 1; }
+.venv/bin/python -m pipeline.run --full || { echo "Pipeline failed, see artifacts/logs/"; exit 21; }
 
-# 2) Data validation (T05 gate)
-scripts/validate_data.sh || { echo "Data validation failed, not committing"; exit 1; }
+# 2) Full data validation, contract drift, and mandatory secret scan (T05 gate)
+if scripts/validate_data.sh --scheduled; then
+  :
+else
+  VALIDATION_STATUS=$?
+  if [[ "$VALIDATION_STATUS" -eq 10 ]]; then
+    echo "Validation capability unavailable, not committing"
+    exit 10
+  fi
+  echo "Full validation failed, not committing"
+  exit 22
+fi
 
 # 3) Substantive-change check + commit (avoid meaningless Actions triggers, architecture §8.14)
-if git diff --quiet public/ config/ metadata/; then
+if git diff --quiet public/ config/; then
   echo "No substantive changes, skipping commit"
   exit 0
 fi
 git add public/ config/
-git commit -m "data: scheduled update $(date -u +%Y-%m-%dT%H:%M:%SZ)" || exit 0
-git push origin dev
+git commit -m "data: scheduled update $(date -u +%Y-%m-%dT%H:%M:%SZ)" || { echo "Commit failed, not pushing"; exit 23; }
+COMMIT_SHA="$(git rev-parse HEAD)"
+git show --quiet "$COMMIT_SHA"
+git push origin dev || { echo "Push failed; retry verified local commit $COMMIT_SHA"; exit 24; }
+REMOTE_SHA="$(git ls-remote origin refs/heads/dev | awk '{print $1}')"
+[[ "$REMOTE_SHA" == "$COMMIT_SHA" ]] || { echo "Remote verification failed for $COMMIT_SHA"; exit 24; }
 ```
+
+The default validation path requires the project Python environment and full Pydantic
+validation. A missing dependency or Node runtime for the mandatory secret scan is an error.
+Developers may run `scripts/validate_data.sh --diagnostic-reduced` for an explicitly marked
+Node-only structural check, but that mode is not accepted by scheduled or production paths.
 
 ### Schema-change PRs: the expected-red window (#74)
 
@@ -86,8 +109,8 @@ A red run on a schema-change PR is the system working, not a mistake:
 - Do **not** "fix" the red by adding `continue-on-error`, a skip label, or an `if:` escape
   on the gate. A green gate during the window would be a lie, and this release is about
   honest data.
-- The window closes by itself: run the scheduled task (or `python -m pipeline.run --full`
-  followed by `scripts/validate_data.sh` and a commit) to regenerate `public/data`, and
+- The window closes by itself: run the scheduled task (or `scripts/run_scheduled.sh --full`)
+  to regenerate and validate `public/data`, and
   the same PR turns green.
 
 ## 4. Offline / failure degradation behavior
@@ -97,10 +120,15 @@ A red run on a schema-change PR is the system working, not a mistake:
 | A Provider fails | Go down the fallback chain (backup → last-good cache → `degraded`), **does not abort the whole pipeline** | No intervention needed; check `metadata/sources.json` |
 | All market sources fail | Keep the most recent valid data + mark `freshness=missing/stale` | Check network/proxy; manually retry with `--market-only` if needed |
 | Local machine offline | Pipeline exits with error, no new data | Automatically retried at next scheduled time; no manual action |
-| git push fails (network/conflict) | Data already written locally but not pushed | `git pull --rebase` then re-push; the frontend shows stale if data is outdated |
+| git pull/rebase fails | Collection does not start | Fix repository/network state, then retry the scheduled task |
+| Full validation or secret scan fails | No commit is created | Fix the reported data/capability issue, then rerun validation and the task |
+| git commit fails | No push is attempted | Inspect the local repository and retry after fixing the commit error |
+| git push or remote verification fails | Verified commit remains local but unpublished | Retry push for the reported commit hash after repository/network recovery |
 | AI brief missing | Analysis dataset `freshness=degraded`, frontend AI block degrades | Drill per `docs/operations/ai-analysis-automation.md` |
 
-**Principle (architecture §1.1/#8):** a pipeline exception **must not abort the whole pipeline**; multi-source degradation is the default path, not the exception path; any failure must not produce silent errors (write `artifacts/logs/run-report-*.json`).
+**Principle (architecture §1.1/#8):** provider exceptions use graceful multi-source degradation and
+must remain visible in run reports. Validation and repository-state failures are different: they
+stop publication and must never be converted into a successful scheduled run.
 
 ## 5. .env secret management
 
@@ -114,7 +142,7 @@ A red run on a schema-change PR is the system working, not a mistake:
 
 1. View the latest run report: `ls -t artifacts/logs/run-report-*.json | head -1`
 2. Check Provider health: `cat public/data/metadata/sources.json`
-3. Manual retry: `scripts/validate_data.sh && python -m pipeline.run --full`
+3. Manual retry: `scripts/run_scheduled.sh --full`
 4. Fix stale data: confirm local time/timezone is correct (scheduling follows ET, writes use UTC ISO 8601).
 5. Windows Task Scheduler: set the trigger to "weekdays 07:30/16:30/23:30", action `cmd /c scripts\run_scheduled.bat`.
 6. macOS: use a launchd plist or `crontab`, redirect logs to `artifacts/logs/cron.log`.

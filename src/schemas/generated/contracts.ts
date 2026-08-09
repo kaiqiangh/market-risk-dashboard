@@ -332,6 +332,15 @@ export const DashboardAsset = z
   .passthrough();
 export type DashboardAsset = z.infer<typeof DashboardAsset>;
 
+/** Localized sector/theme performance entry used by the homepage read model. */
+export const DashboardSector = z
+  .object({
+    key: z.string().min(1),
+    change_1d: z.number().finite().nullable().default(null),
+  })
+  .passthrough();
+export type DashboardSector = z.infer<typeof DashboardSector>;
+
 /** Top driver: contribution to the total score (weight × risk score). */
 export const DriverContribution = z
   .object({
@@ -419,8 +428,8 @@ export const DashboardPayload = z
     regime: MarketRegime,
     top_drivers: z.array(DriverContribution).default([]),
     cross_asset: z.array(DashboardAsset).default([]),
-    catalysts: z.array(z.record(z.unknown())).default([]),
-    sector_performance: z.array(z.record(z.unknown())).default([]),
+    catalysts: z.array(CalendarEvent).default([]),
+    sector_performance: z.array(DashboardSector).default([]),
   })
   .passthrough();
 export type DashboardPayload = z.infer<typeof DashboardPayload>;

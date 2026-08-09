@@ -37,22 +37,22 @@ export function NewsCard({ item }: NewsCardProps) {
           <div className="flex items-center gap-2">
             <ImportanceBadge importance={item.importance} />
             <SentimentIcon sentiment={item.sentiment} />
-            <span className="text-[11px] text-muted-foreground">{formatRelativeTime(item.published_at, locale)}</span>
+            <span className="text-xs text-muted-foreground">{formatRelativeTime(item.published_at, locale)}</span>
           </div>
           <a
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline"
+            className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
             aria-label={t("readMore")}
           >
             {t("readMore")}
             <ExternalLink className="h-3 w-3" aria-hidden />
           </a>
         </div>
-        <p className="break-words text-sm font-medium leading-snug text-foreground">{title}</p>
-        {summary ? <p className="break-words text-xs leading-relaxed text-muted-foreground">{summary}</p> : null}
-        <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground">
+        <p className="break-words text-base font-medium leading-snug text-foreground">{title}</p>
+        {summary ? <p className="break-words text-base leading-relaxed text-muted-foreground">{summary}</p> : null}
+        <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
           <span className="rounded bg-muted px-1.5 py-0.5">{displayNewsSource(item.source, locale)}</span>
           {item.assets.length > 0 ? (
             <span className="flex items-center gap-1">

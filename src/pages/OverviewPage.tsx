@@ -3,15 +3,7 @@ import { ArrowUpRight, CalendarClock, Layers, Minus, TrendingDown, TrendingUp } 
 import { useDataset } from "@/hooks/useDataset";
 import { useAnalysisPair } from "@/hooks/useAnalysisPair";
 import { RiskTrendSlice } from "@/schemas/history";
-import type {
-  CalendarEnvelope,
-  CryptoEnvelope,
-  EquitiesEnvelope,
-  MacroEnvelope,
-  NewsEnvelope,
-  RiskEnvelope,
-  SectorsEnvelope,
-} from "@/schemas";
+import type { DashboardEnvelope, MacroEnvelope, NewsEnvelope } from "@/schemas";
 import { AssetHeatmap } from "@/charts/AssetHeatmap";
 import { RiskTrendChart } from "@/charts/RiskTrendChart";
 import { NewsCard } from "@/components/news/NewsCard";
@@ -40,52 +32,33 @@ export default function OverviewPage() {
   const { t, i18n } = useTranslation("dashboard");
   const locale = i18n.language;
 
-  const riskQ = useDataset<RiskEnvelope>("risk");
+  const dashboardQ = useDataset<DashboardEnvelope>("dashboard");
   const trendQ = useDataset<RiskTrendSlice>("risk", { slice: "30d" }, RiskTrendSlice);
   const macroQ = useDataset<MacroEnvelope>("macro");
-  const cryptoQ = useDataset<CryptoEnvelope>("crypto");
-  const equitiesQ = useDataset<EquitiesEnvelope>("equities");
-  const sectorsQ = useDataset<SectorsEnvelope>("sectors");
-  const calendarQ = useDataset<CalendarEnvelope>("calendar");
   const newsQ = useDataset<NewsEnvelope>("news");
   const analysisQ = useAnalysisPair();
+  const dashboard = dashboardQ.data?.payload;
+  const risk = dashboard?.risk;
 
-  // Build cross-asset heatmap cells
-  const heatmapCells: HeatmapCell[] = [];
-  // All sector baskets (headline sectors + themed baskets) share one 板块/Sectors
-  // category since the rename — sectors and themes are the same concept now (#121).
-  const sectorBaskets = sectorsQ.data ? [...sectorsQ.data.payload.sectors, ...sectorsQ.data.payload.themes] : [];
-  if (equitiesQ.data) {
-    for (const a of equitiesQ.data.payload.assets) {
-      heatmapCells.push({ asset: a.symbol, category: t("heatmap.catEquities"), change1d: a.change_1d });
-    }
-  }
-  if (cryptoQ.data) {
-    for (const a of cryptoQ.data.payload.assets) {
-      heatmapCells.push({ asset: a.symbol, category: t("heatmap.catCrypto"), change1d: a.change_1d });
-    }
-  }
-  for (const s of sectorBaskets) {
-    heatmapCells.push({
-      asset: t(`themes:${s.key}`, { defaultValue: t("common:empty.translationUnavailable") }),
-      category: t("heatmap.catSectors"),
-      change1d: s.change_1d,
-    });
-  }
-
-  // Upcoming catalysts (top 5 by ascending time)
-  const nowIso = new Date().toISOString();
-  const catalysts =
-    calendarQ.data
-      ? calendarQ.data.payload.events
-          .filter((ev) => ev.datetime >= nowIso)
-          .sort((a, b) => a.datetime.localeCompare(b.datetime))
-          .slice(0, 5)
-      : [];
+  // The dashboard artifact is the homepage read model: its producer already selects
+  // the first-view assets, catalysts, drivers, and sector rows. Keep labels localized
+  // while avoiding browser-side reconstruction from the source datasets.
+  const categoryLabels: Record<string, string> = {
+    equity: t("heatmap.catEquities"),
+    crypto: t("heatmap.catCrypto"),
+    sector: t("heatmap.catSectors"),
+  };
+  const heatmapCells: HeatmapCell[] =
+    dashboard?.cross_asset.map((asset) => ({
+      asset: asset.asset,
+      category: categoryLabels[asset.category] ?? asset.category,
+      change1d: asset.change_1d,
+    })) ?? [];
+  const catalysts = dashboard?.catalysts ?? [];
+  const sectorBaskets = dashboard?.sector_performance ?? [];
 
   const topNews = newsQ.data ? [...newsQ.data.payload.items].sort((a, b) => b.importance - a.importance).slice(0, 4) : [];
 
-  const risk = riskQ.data?.payload;
   const riskTone = risk ? riskLevelTone(risk.risk_level) : "na";
   const trendTone = risk ? riskTrendTone(risk.trend_1d) : "na";
   const TrendIcon =
@@ -94,7 +67,7 @@ export default function OverviewPage() {
       : risk.trend_1d > 0
         ? TrendingUp
         : TrendingDown;
-  const topDrivers = risk ? [...risk.top_drivers].sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution)).slice(0, 5) : [];
+  const topDrivers = dashboard?.top_drivers ?? [];
 
   // HY OAS (spec #28 KPI set): high-yield credit spread from the macro dataset when available
   const hyOas =
@@ -107,25 +80,25 @@ export default function OverviewPage() {
           {t("title")}
         </h1>
         <p className="text-xs text-muted-foreground">{t("subtitle")}</p>
-        {riskQ.data ? (
+        {dashboardQ.data ? (
           <span className="ml-auto">
-            <StatusBadge status={riskQ.data.freshness_status} fromCache={riskQ.data.provenance?.from_cache} withDescription />
+            <StatusBadge status={dashboardQ.data.freshness_status} fromCache={dashboardQ.data.provenance?.from_cache} withDescription />
           </span>
         ) : null}
       </header>
 
       {/* KPI strip: the only cards on this page (card policy) */}
       <section className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4" data-testid="risk-conclusion">
-        {riskQ.isLoading ? (
+        {dashboardQ.isLoading ? (
           <>
             <Skeleton className="h-24 w-full" />
             <Skeleton className="h-24 w-full" />
             <Skeleton className="h-24 w-full" />
             <Skeleton className="h-24 w-full" />
           </>
-        ) : riskQ.isError ? (
-          <ErrorState onRetry={riskQ.refetch} className="md:col-span-2 xl:col-span-4" />
-        ) : risk && riskQ.data ? (
+        ) : dashboardQ.isError ? (
+          <ErrorState onRetry={dashboardQ.refetch} className="md:col-span-2 xl:col-span-4" />
+        ) : risk && dashboardQ.data ? (
           <>
             <KpiCard
               label={t("risk:score.title")}
@@ -197,7 +170,7 @@ export default function OverviewPage() {
       </section>
 
       {/* Open chart region: risk trend (no card chrome) */}
-      <section className="border-t border-hairline pt-4">
+      <section className="border-t border-hairline pt-4" data-testid="risk-trend-section">
         <div className="mb-2 flex items-baseline gap-2">
           <h2 className="text-sm font-medium text-foreground">{t("trend.title")}</h2>
         </div>
@@ -213,11 +186,15 @@ export default function OverviewPage() {
       </section>
 
       {/* Open chart region: cross-asset heatmap (no card chrome) */}
-      <section className="border-t border-hairline pt-4">
+      <section className="border-t border-hairline pt-4" data-testid="cross-asset-section">
         <div className="mb-2 flex items-baseline gap-2">
           <h2 className="text-sm font-medium text-foreground">{t("heatmap.title")}</h2>
         </div>
-        {heatmapCells.length > 0 ? (
+        {dashboardQ.isLoading ? (
+          <Skeleton className="h-64 w-full" />
+        ) : dashboardQ.isError ? (
+          <ErrorState onRetry={dashboardQ.refetch} />
+        ) : heatmapCells.length > 0 ? (
           <AssetHeatmap cells={heatmapCells} />
         ) : (
           <EmptyState title={t("heatmap.empty")} />
@@ -225,14 +202,16 @@ export default function OverviewPage() {
       </section>
 
       {/* Top drivers (hairline table) + upcoming catalysts */}
-      <section className="grid grid-cols-1 gap-6 border-t border-hairline pt-4 lg:grid-cols-2">
+      <section className="grid grid-cols-1 gap-6 border-t border-hairline pt-4 lg:grid-cols-2" data-testid="drivers-catalysts-section">
         <div>
           <h2 className="mb-2 text-sm font-medium text-foreground">{t("risk:drivers.title")}</h2>
-          {riskQ.isLoading ? (
+          {dashboardQ.isLoading ? (
             <Skeleton className="h-40 w-full" />
+          ) : dashboardQ.isError ? (
+            <ErrorState onRetry={dashboardQ.refetch} />
           ) : topDrivers.length > 0 ? (
             <div data-testid="top-drivers">
-              <div className="grid grid-cols-[1fr_auto_auto] gap-3 border-b border-hairline pb-1.5 text-[11px] text-muted-foreground">
+              <div className="grid grid-cols-[1fr_auto_auto] gap-3 border-b border-hairline pb-1.5 text-xs text-muted-foreground">
                 <span>{t("risk:drivers.title")}</span>
                 <span className="text-right">{t("risk:drivers.contribution")}</span>
                 <span className="w-16 text-right">{t("kpi.colDelta")}</span>
@@ -246,17 +225,17 @@ export default function OverviewPage() {
                     data-testid="risk-driver"
                   >
                     <div className="min-w-0">
-                      <p className="truncate text-xs font-medium text-foreground">
+                      <p className="truncate text-sm font-medium text-foreground">
                         {t(`risk:${RISK_INDICATOR_KEYS[driver.indicator_key] ?? "indicatorNames.unknown"}`)}
                       </p>
-                      <p className="truncate text-[11px] text-muted-foreground">
-                        {t(RISK_DIMENSION_KEYS[driver.dimension_key as RiskDimensionKey])}
+                      <p className="truncate text-xs text-muted-foreground">
+                        {t(`risk:${RISK_DIMENSION_KEYS[driver.dimension_key as RiskDimensionKey]}`)}
                       </p>
                     </div>
                     <span className={`text-right text-xs font-semibold tabular-nums ${toneClasses(contribTone).text}`}>
                       {formatNumber(driver.contribution, locale)}
                     </span>
-                    <span className="w-16 text-right text-[11px] tabular-nums text-muted-foreground">
+                    <span className="w-16 text-right text-xs tabular-nums text-muted-foreground">
                       {driver.change_1d === null || driver.change_1d === undefined
                         ? t("common:data.na")
                         : formatPctPoints(driver.change_1d, locale)}
@@ -275,10 +254,10 @@ export default function OverviewPage() {
             <CalendarClock className="h-4 w-4 text-muted-foreground" aria-hidden />
             {t("catalysts.title")}
           </h2>
-          {calendarQ.isLoading ? (
+          {dashboardQ.isLoading ? (
             <Skeleton className="h-40 w-full" />
-          ) : calendarQ.isError ? (
-            <ErrorState onRetry={calendarQ.refetch} />
+          ) : dashboardQ.isError ? (
+            <ErrorState onRetry={dashboardQ.refetch} />
           ) : catalysts.length > 0 ? (
             <div className="flex flex-col gap-2" data-testid="catalysts">
               {catalysts.map((ev) => (
@@ -292,16 +271,16 @@ export default function OverviewPage() {
       </section>
 
       {/* Sectors (hairline rows) + important news */}
-      <section className="grid grid-cols-1 gap-6 border-t border-hairline pt-4 lg:grid-cols-2">
+      <section className="grid grid-cols-1 gap-6 border-t border-hairline pt-4 lg:grid-cols-2" data-testid="sectors-news-section">
         <div>
           <h2 className="mb-2 flex items-center gap-2 text-sm font-medium text-foreground">
             <Layers className="h-4 w-4 text-muted-foreground" aria-hidden />
             {t("sectors.title")}
           </h2>
-          {sectorsQ.isLoading ? (
+          {dashboardQ.isLoading ? (
             <Skeleton className="h-40 w-full" />
-          ) : sectorsQ.isError ? (
-            <ErrorState onRetry={sectorsQ.refetch} />
+          ) : dashboardQ.isError ? (
+            <ErrorState onRetry={dashboardQ.refetch} />
           ) : sectorBaskets.length > 0 ? (
             <div data-testid="sector-performance">
               {sectorBaskets.map((s) => {
@@ -348,23 +327,23 @@ export default function OverviewPage() {
       </section>
 
       {/* AI Market Brief (visually quarantined block) */}
-      <section className="border-t border-hairline pt-4">
+      <section className="border-t border-hairline pt-4" data-testid="ai-brief-section">
         <AIBrief presentation={analysisQ.presentation} loading={analysisQ.isLoading} />
       </section>
 
       {/* Mono status footer + compliance disclaimer */}
-      {riskQ.data ? (
+      {dashboardQ.data ? (
         <footer className="flex flex-col gap-1 border-t border-hairline pt-2">
-          <div className="flex flex-wrap gap-4 font-mono text-[11px] text-muted-foreground">
+          <div className="flex flex-wrap gap-4 font-mono text-xs text-muted-foreground">
             <span>
-              {t("statusBar.generated")}: {formatDateTime(riskQ.data.generated_at, locale)}
+              {t("statusBar.generated")}: {formatDateTime(dashboardQ.data.generated_at, locale)}
             </span>
             <span>
-              {t("common:data.quality")}: <span className="tabular-nums">{formatRatio(riskQ.data.data_quality, locale)}</span>
+              {t("common:data.quality")}: <span className="tabular-nums">{formatRatio(dashboardQ.data.data_quality, locale)}</span>
             </span>
             <span className="ml-auto">{risk?.model_version}</span>
           </div>
-          <p className="text-[11px] leading-relaxed text-muted-foreground">{t("common:footer.disclaimer")}</p>
+          <p className="text-xs leading-relaxed text-muted-foreground">{t("common:footer.disclaimer")}</p>
         </footer>
       ) : null}
     </div>

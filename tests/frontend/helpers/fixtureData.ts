@@ -664,16 +664,24 @@ export const dashboardFixture = {
     ],
     catalysts: [
       {
+        id: "earnings-NVDA-2026-08-19",
         type: "earnings",
         title: "NVDA Earnings",
+        country: "US",
         datetime: "2026-08-19T12:00:00Z",
         importance: "high",
+        actual: null,
+        forecast: null,
+        previous: null,
+        unit: null,
         related_assets: ["NVDA"],
+        source: "fmp",
       },
     ],
     sector_performance: [
-      { key: "semis", label: "Semiconductors", label_zh: "半导体", change_1d: 0.8 },
-      { key: "memory", label: "Memory", label_zh: "存储", change_1d: -1.1 },
+      { key: "semis", change_1d: 0.8 },
+      { key: "memory", change_1d: -1.1 },
+      { key: "cybersecurity", change_1d: 0.4 },
     ],
   },
 };

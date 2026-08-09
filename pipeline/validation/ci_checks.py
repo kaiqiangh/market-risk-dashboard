@@ -1,4 +1,4 @@
-"""T05 static data validation (shared by CI + local scripts; architecture §5#1 / PRD §20.2).
+"""Canonical T05 static data validation (shared by pipeline, CI, and local scripts).
 
 Covered checks (equivalent to validate-data.yml / scripts/validate_data.sh):
 1. Schema validation: all JSON passes Pydantic isomorphic validation (no implicit fields/NaN/enum/time).
@@ -74,12 +74,15 @@ class CheckReport:
     errors: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     files_checked: int = 0
+    blocking_warnings: list[str] = field(default_factory=list)
 
     def error(self, msg: str) -> None:
         self.errors.append(msg)
 
-    def warn(self, msg: str) -> None:
+    def warn(self, msg: str, *, blocking: bool = False) -> None:
         self.warnings.append(msg)
+        if blocking:
+            self.blocking_warnings.append(msg)
 
     @property
     def ok(self) -> bool:
@@ -102,7 +105,10 @@ def check_latest(latest_dir: Path, report: CheckReport, now: datetime) -> None:
     for name, model_spec in known.items():
         path = latest_dir / name
         if not path.exists():
-            if name in OPTIONAL_ENVELOPE_MODELS:
+            spec = registry.BY_FILENAME[name]
+            # Requiredness is a registry invariant; only explicitly AI-owned optional files may
+            # be absent.
+            if not spec.required:
                 continue
             report.error(f"{name}: file missing (required dataset)")
             continue
@@ -113,7 +119,7 @@ def check_latest(latest_dir: Path, report: CheckReport, now: datetime) -> None:
     for name, model in STANDALONE_MODELS.items():
         path = latest_dir / name
         if not path.exists():
-            if name == "facts.json":
+            if registry.BY_FILENAME[name].required:
                 report.error(f"{name}: file missing (must be produced on every pipeline run)")
             continue
         report.files_checked += 1
@@ -124,6 +130,16 @@ def check_latest(latest_dir: Path, report: CheckReport, now: datetime) -> None:
         lang = path.name[len("analysis.") : -len(".json")]
         if lang not in SUPPORTED_LANGUAGES:
             report.error(f"{path.name}: unknown language key {lang!r} (supported: {SUPPORTED_LANGUAGES})")
+
+    # Refuse files under latest/ that are neither registered datasets nor build-time compressed
+    # variants. Analysis language variants are handled above so their diagnostic remains specific.
+    for path in sorted(latest_dir.iterdir()):
+        if (
+            path.is_file()
+            and not registry.is_known_file(path.name)
+            and not (path.name.startswith("analysis.") and path.name.endswith(".json"))
+        ):
+            report.error(f"{path.name}: unregistered file under latest/ (not validated)")
 
     # Bilingual pair: if one exists, both must exist; both missing → AI degraded mode (WARNING)
     zh = latest_dir / "analysis.zh-CN.json"
@@ -188,7 +204,10 @@ def _check_one(path: Path, name: str, model_spec: tuple[Any, str] | Any, report:
         # Stale data (time dimension; WARNING does not block)
         status = evaluate_freshness(str(env.generated_at), _expected_minutes(dataset_key), now)
         if status == "stale":
-            report.warn(f"{name}: data is stale (freshness=stale, generated_at={env.generated_at})")
+            report.warn(
+                f"{name}: data is stale (freshness=stale, generated_at={env.generated_at})",
+                blocking=True,
+            )
         elif status == "delayed":
             report.warn(f"{name}: data is delayed (freshness=delayed, generated_at={env.generated_at})")
         # Risk score ranges (explicit re-check for risk.json; payload may be a Pydantic model)
@@ -209,6 +228,28 @@ def _check_one(path: Path, name: str, model_spec: tuple[Any, str] | Any, report:
         if name.startswith("analysis."):
             if getattr(obj, "language", None) not in SUPPORTED_LANGUAGES:
                 report.error(f"{name}: invalid language: {getattr(obj, 'language', None)!r}")
+
+
+def validate_file(path: Path, now: datetime | None = None) -> list[str]:
+    """Validate one registered data file through the canonical check implementation.
+
+    This small public seam keeps the historical ``validate_all.validate_file`` API available
+    for pipeline/storage callers without maintaining a second schema/freshness validator.
+    """
+    now = now or datetime.now(timezone.utc)
+    report = CheckReport()
+    name = path.name
+    if name in ENVELOPE_MODELS:
+        _check_one(path, name, ENVELOPE_MODELS[name], report, now)
+    elif name in OPTIONAL_ENVELOPE_MODELS:
+        _check_one(path, name, OPTIONAL_ENVELOPE_MODELS[name], report, now)
+    elif name in STANDALONE_MODELS:
+        _check_one(path, name, STANDALONE_MODELS[name], report, now)
+    else:
+        report.error(f"{name}: unknown dataset file (unregistered schema)")
+    # The historical one-file API treated stale data as a blocking issue but did not surface the
+    # newer delayed warning. Keep that return contract while the structured report preserves both.
+    return [*report.errors, *report.blocking_warnings]
 
 
 def _expected_minutes(dataset_key: str) -> int:
@@ -343,16 +384,26 @@ def check_metadata_and_feeds(data_dir: Path, report: CheckReport) -> None:
                 report.warn(f"{rel}: missing field {key!r}")
 
 
-def run_all(data_dir: Path, now: datetime | None = None) -> CheckReport:
-    """Full validation entry point. data_dir points to public/data."""
-    now = now or datetime.now(timezone.utc)
+def _run_all(data_dir: Path, latest: Path, now: datetime) -> CheckReport:
+    """Compose every Python validation category for one data tree."""
     report = CheckReport()
-    latest = data_dir / "latest"
     check_latest(latest, report, now)
     check_news_duplicates(latest, report)
     check_history(data_dir, report)
     check_metadata_and_feeds(data_dir, report)
     return report
+
+
+def run_all(data_dir: Path, now: datetime | None = None) -> CheckReport:
+    """Validate the complete ``public/data`` tree, including ``latest/``."""
+    now = now or datetime.now(timezone.utc)
+    return _run_all(data_dir, data_dir / "latest", now)
+
+
+def run_latest(latest_dir: Path, now: datetime | None = None) -> CheckReport:
+    """Validate a snapshot directory through the same composed authority as :func:`run_all`."""
+    now = now or datetime.now(timezone.utc)
+    return _run_all(latest_dir.parent, latest_dir, now)
 
 
 def main(argv: list[str] | None = None) -> int:

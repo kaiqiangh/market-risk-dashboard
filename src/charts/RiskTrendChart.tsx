@@ -118,7 +118,7 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
       <div className="overflow-x-auto rounded-md border border-border" data-testid="trend-fallback">
         <table className="w-full min-w-[420px] text-left text-xs">
           <thead>
-            <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
+            <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
               <th className="px-2 py-1.5 font-medium">{t("trend.date")}</th>
               <th className="px-2 py-1.5 text-right font-medium">{t("trend.score")}</th>
             </tr>
@@ -144,7 +144,7 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
         <div className="mt-2 overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-border text-[10px] uppercase tracking-wide text-muted-foreground">
+              <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
                 <th className="py-1.5 pr-2 font-medium">{t("trend.date")}</th>
                 <th className="py-1.5 text-right font-medium">{t("trend.score")}</th>
               </tr>
