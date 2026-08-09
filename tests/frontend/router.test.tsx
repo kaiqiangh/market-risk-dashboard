@@ -22,11 +22,12 @@ function renderApp() {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, staleTime: Infinity } },
   });
-  return render(
+  const renderResult = render(
     <QueryClientProvider client={queryClient}>
       <App />
     </QueryClientProvider>,
   );
+  return { ...renderResult, queryClient };
 }
 
 function setHash(hash: string): void {
@@ -82,6 +83,17 @@ describe("route rendering (fixtures data)", () => {
       "/latest/facts.json",
     ].reduce((bytes, suffix) => bytes + JSON.stringify(FIXTURE_MAP[suffix]).length, 0);
     expect(metrics.responseBytes).toBeLessThan(previousFanout);
+  });
+
+  it("keeps dashboard and targeted datasets in distinct stable query identities", async () => {
+    installFixtureFetch();
+    const { queryClient } = renderApp();
+    await screen.findByTestId("ai-brief");
+
+    const queryKeys = queryClient.getQueryCache().getAll().map((query) => query.queryKey);
+    expect(queryKeys).toContainEqual(["dashboard", "none", "latest", "default"]);
+    expect(queryKeys).toContainEqual(["risk", "none", "30d", "custom"]);
+    expect(new Set(queryKeys.map((key) => JSON.stringify(key))).size).toBe(queryKeys.length);
   });
 
   it("renders the homepage in the specified read-model section order", async () => {
@@ -150,6 +162,23 @@ describe("route rendering (fixtures data)", () => {
       /\btext-\[(?:9|10|11)px\]/.test(element.className),
     );
     expect(undersized).toHaveLength(0);
+  });
+
+  it("keeps homepage landmarks, status meaning, and controls accessible", async () => {
+    installFixtureFetch();
+    renderApp();
+    await screen.findByTestId("ai-brief");
+
+    expect(screen.getAllByRole("banner").length).toBeGreaterThan(0);
+    expect(screen.getByRole("main")).toBeInTheDocument();
+    expect(screen.getAllByRole("contentinfo").length).toBeGreaterThan(0);
+    expect(screen.getByRole("navigation", { name: "主导航" })).toBeInTheDocument();
+    expect(screen.getByRole("radiogroup", { name: "主题" })).toBeInTheDocument();
+    expect(screen.getAllByTestId("status-badge-fresh").every((badge) => badge.textContent?.includes("正常"))).toBe(true);
+
+    const languageSwitch = screen.getByRole("button", { name: "切换语言" });
+    languageSwitch.focus();
+    expect(document.activeElement).toBe(languageSwitch);
   });
 
   it("overview renders the validated brief on both locale routes", async () => {
