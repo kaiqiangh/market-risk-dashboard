@@ -60,6 +60,7 @@ __pycache__/
 *$py.class
 .venv/
 venv/
+*.egg-info/
 
 # Local pipeline artifacts
 artifacts/

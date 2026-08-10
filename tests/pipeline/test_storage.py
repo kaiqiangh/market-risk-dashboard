@@ -120,6 +120,65 @@ def test_sources_projection_preserves_domain_specific_provider_status() -> None:
     assert economic["providers"][0]["provider"] == "fred_calendar"
 
 
+def test_sources_projection_carries_forward_out_of_scope_degraded_domain() -> None:
+    """Regression #169: a partial run must preserve a previously-degraded out-of-scope domain.
+
+    A ``--news-only`` run leaves ``market`` (serving ``sectors``) out of scope. The prior full
+    run left ``sectors`` degraded, so ``freshness.json`` carries it forward as degraded. Before
+    the fix, ``sources_projection`` reset ``market.degraded`` to False (status ``missing``),
+    breaking the #101 cross-check. Now it carries the prior ``market`` entry forward instead.
+    """
+    from pipeline.storage.outcomes import RunOutcomes
+
+    previous_sources = {
+        "schema_version": "1.2.0",
+        "updated_at": "2026-08-09T10:30:59Z",
+        "domains": {
+            "market": {
+                "degraded": True,
+                "status": "degraded",
+                "reason": {"code": "all_providers_failed", "detail": "sectors degraded"},
+                "datasets": ["equities", "sectors", "commodities"],
+                "provider": "yfinance",
+                "providers": [],
+            },
+        },
+    }
+    previous_freshness = {
+        "schema_version": "1.2.0",
+        "updated_at": "2026-08-09T10:30:59Z",
+        "datasets": {
+            "equities": {"status": "fresh", "reason": {"code": "ok", "detail": ""}, "updated_at": "2026-08-09T10:30:59Z"},
+            "sectors": {"status": "degraded", "reason": {"code": "all_providers_failed", "detail": ""}, "updated_at": "2026-08-09T10:30:59Z"},
+            "commodities": {"status": "fresh", "reason": {"code": "ok", "detail": ""}, "updated_at": "2026-08-09T10:30:59Z"},
+        },
+    }
+
+    # This run only attempts the news domain, so `market` is out of scope.
+    outcomes = RunOutcomes(scope={"news"})
+    sources = outcomes.sources_projection({}, previous=previous_sources)
+    freshness = outcomes.freshness_projection(previous_freshness)
+
+    market = sources["domains"]["market"]
+    assert market["degraded"] is True
+    assert market["status"] == "degraded"
+
+    # The two projections must agree on `degraded` for the out-of-scope domain.
+    sectors_degraded = freshness["datasets"]["sectors"]["status"] in ("degraded", "missing", "stale")
+    assert market["degraded"] == sectors_degraded
+
+
+def test_sources_projection_out_of_scope_without_previous_is_missing() -> None:
+    """An out-of-scope domain with no prior entry is honestly reported as missing (#169)."""
+    from pipeline.storage.outcomes import RunOutcomes
+
+    outcomes = RunOutcomes(scope={"news"})
+    market = outcomes.sources_projection({}, previous=None)["domains"]["market"]
+
+    assert market["status"] == "missing"
+    assert market["degraded"] is False
+
+
 def test_read_history_public_method(tmp_path: Path) -> None:
     """P2-9: writer.read_history public method replaces run.py's private _read_json."""
     writer = StorageWriter(tmp_path / "data")

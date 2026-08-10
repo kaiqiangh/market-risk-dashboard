@@ -157,6 +157,15 @@ class StorageWriter:
         path = self.metadata_dir / "freshness.json"
         return self._read_json(path, default={"schema_version": "1.1.0", "datasets": {}})
 
+    def read_sources_raw(self) -> dict[str, Any]:
+        """The sources metadata file as it stands, or an empty shell if absent.
+
+        Used by :class:`~pipeline.storage.outcomes.RunOutcomes` to carry forward domains a
+        partial run did not attempt.
+        """
+        path = self.metadata_dir / "sources.json"
+        return self._read_json(path, default={"schema_version": "1.2.0", "domains": {}})
+
     def write_freshness_metadata(self, payload: dict[str, Any]) -> None:
         """Write the whole freshness file in one shot.
 

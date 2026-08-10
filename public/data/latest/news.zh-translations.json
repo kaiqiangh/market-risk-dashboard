@@ -1,345 +1,355 @@
 {
   "items": [
     {
-      "id": "730ccb33d07179fbd7093ab013c7e5475ec62285",
-      "title": "Nvidia’s valuation is lowest in 10 years despite mind-blowing AI demand, BofA say",
-      "title_zh": "美银：尽管 AI 需求惊人，英伟达估值仍处 10 年来最低水平"
+      "id": "2a8f9098e084b11b446645401f54a190011bf0b2",
+      "title": "CLS Aug 10: Nvidia shares fall 2.2% to $219.1 a share, total market capitalization $5.30 trillion",
+      "summary": "CLS Aug 10: Nvidia shares fall 2.2% to $219.1 a share, with a total market capitalization of $5.30 trillion",
+      "title_zh": "财联社8月10日电，英伟达股价下跌2.2%，报219.1美元/股，总市值报5.30万亿美元。",
+      "summary_zh": "财联社8月10日电，英伟达股价下跌2.2%，报219.1美元/股，总市值报5.30万亿美元"
     },
     {
-      "id": "f3a4d178f8dd232333865ca727f40514bfdeffe1",
-      "title": "Are the odds of a September Fed hike falling again? Economists expect core CPI at a five-year low",
-      "title_zh": "美联储9月加息概率再降？经济学家料核心CPI创五年新低",
-      "summary": "Friday's July payrolls report came in unexpectedly weak, cooling market expectations for a Fed rate hike in September; the coming inflation data may be decisive for the policy path.",
-      "summary_zh": "本周五公布的7月非农就业报告意外疲弱，市场对美联储9月加息的预期降温，近期通胀数据可能成为决定政策走向的关键"
+      "id": "467b27fe2eacd64134224dcf0d30f93f8b2e960a",
+      "title": "S&P 500 is little changed as traders await possible Hormuz deal, Intel shares fall: Live updates",
+      "summary": "The market's moves come amid growing doubts that the U.S",
+      "title_zh": "标普 500 指数几乎持平，交易员等待可能达成的霍尔木兹协议，英特尔股价下跌：实时更新",
+      "summary_zh": "市场的这些走势出现之际，外界对美国的疑虑正在加深"
     },
     {
-      "id": "7e775edaaa313e58a2641eeea203c6ae144f3b20",
-      "title": "Iran sets conditions for opening Strait of Hormuz after UAE says one of its ships was targeted by airstrike",
-      "title_zh": "阿联酋称其一艘船只遭空袭后，伊朗为开放霍尔木兹海峡设定条件",
-      "summary": "Iran's military stressed that the crucial waterway would only be reopened when the U.S",
-      "summary_zh": "伊朗军方强调，这一关键水道只有在美国满足相关条件后才会重新开放"
+      "id": "8aa631f247395ca8099fade8cbde94492878ece7",
+      "title": "Hassett: if he were at the Fed he would hold rates or cut, and rules out succeeding Cook",
+      "summary": "White House National Economic Council Director Hassett said in an interview on Monday that if he were at the Fed, he would choose to hold rates steady or cut",
+      "title_zh": "哈塞特：若身在美联储将维持利率不变或降息，排除接替库克可能",
+      "summary_zh": "白宫国家经济委员会（NEC）主任哈塞特周一接受采访时表示， 如果自己身在美联储，他会选择 维持利率不变 或 降息"
+    },
+    {
+      "id": "f6724d3b40bc333726ed3697fec5f1dcb0edadce",
+      "title": "Trump signals shift to economic pressure as Iran hardens stance over Strait of Hormuz",
+      "summary": "The escalating tally underscores how far the two sides remain from resolving a crisis that has choked the Strait of Hormuz for more than five months.",
+      "title_zh": "伊朗在霍尔木兹海峡问题上立场趋硬，特朗普示意转向经济施压",
+      "summary_zh": "不断攀升的数字凸显出，双方距离化解这场已令霍尔木兹海峡阻塞逾五个月的危机仍有多远。"
+    },
+    {
+      "id": "764aa80b342a5f3dcf1489811702af08da7fcf71",
+      "title": "China's CPI and PPI both fall, gold may enter a right-side trend, and Congo's mining ban intensifies the resource contest -- 0810 macro digest",
+      "summary": "July CPI fell year on year from 1% to 0.5%, core CPI from 1% to 0.9%, and PPI from 4.1% to 3.5%, all below expectations",
+      "title_zh": "中国CPI与PPI双回落，黄金或进入右侧行情，刚果禁矿加剧资源博弈---0810宏观脱水",
+      "summary_zh": "7月CPI同比从1%降至0.5%，核心CPI从1%降至0.9%，PPI同比从4.1%降至3.5%，均低于预期"
+    },
+    {
+      "id": "31a3fe218fd32e312edd4037195e18b364f8cf0b",
+      "title": "The Fed's policy paradox: tightening credit on the private sector while staying tolerant of expanding government deficits",
+      "summary": "Over the past five years the Fed has fallen short on both halves of its dual mandate -- inflation has persistently deviated from the 2% target, while the main engine of employment growth has been systematically suppressed under policy pressure",
+      "title_zh": "美联储的政策悖论：对私营部门收紧银根，却对政府赤字扩张保持宽容",
+      "summary_zh": "过去五年，美联储在双重使命上双双失守——通胀持续偏离2%目标，就业增长的主力引擎却在政策压力下遭到系统性压制"
+    },
+    {
+      "id": "fae3007dca500b917e26e864a210f944d854c025",
+      "title": "Longsys: first-half 2026 net profit of 10.577 billion yuan, up 71,528.66% year on year",
+      "summary": "Longsys announced first-half 2026 revenue of 24.088 billion yuan, up 136.26% year on year",
+      "title_zh": "江波龙：2026年上半年净利润105.77亿元，同比增长71,528.66%",
+      "summary_zh": "江波龙公告，2026年上半年营业收入240.88亿元，同比增长136.26%"
     },
     {
       "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
       "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-      "title_zh": "美联储理事会就现代化互助制银行机构监管规则的提案公开征求意见",
       "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
+      "title_zh": "美联储理事会就现代化互助制银行机构监管规则的提案公开征求意见",
       "summary_zh": "美联储理事会就现代化互助制银行机构监管规则的提案公开征求意见。"
     },
     {
       "id": "51bdb202dd58e4b5d03a7f03beae1d271730a57a",
       "title": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, Inc., BNP Paribas Securities Corp., and Community Bankshares, Inc.",
-      "title_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行、法国巴黎银行美国公司、法国巴黎银行证券公司及 Community Bankshares, Inc. 的执法行动",
       "summary": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, I",
-      "summary_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行及其美国实体等机构的执法行动。"
+      "title_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行、法国巴黎银行美国公司、法国巴黎银行证券公司及 Community Bankshares, Inc. 的执法行动",
+      "summary_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行、法国巴黎银行美国公司等机构的执法行动。"
     },
     {
-      "id": "f193371378932ec66e1409795e228424aa7d2d02",
-      "title": "Magnitude 5.6 earthquake strikes waters off Japan's Iwate Prefecture",
-      "title_zh": "日本岩手县近海地区发生5.6级地震",
-      "summary": "CLS, August 9 — Japan's Meteorological Agency reported that a magnitude 5.6 earthquake struck the waters off Iwate Prefecture at about 2:58 a.m. local time on the 9th, with a maximum intensity of 4 on the Japanese scale and a focal depth of 40 km.",
-      "summary_zh": "【日本岩手县近海地区发生5.6级地震】财联社8月9日电，据日本气象厅消息，当地时间9日2时58分左右，日本岩手县近海地区发生5.6级地震，最大震感为震度4，震源深度40千米"
+      "id": "4c300f02b16191a46fd44bcbf01c75e10948c1f4",
+      "title": "CLS Aug 11: Hungarian minister reports another outbreak of African swine fever in the country",
+      "summary": "CLS Aug 11: Hungarian minister reports another outbreak of African swine fever in the country",
+      "title_zh": "财联社8月11日电，匈牙利部长通报，该国再次出现非洲猪瘟疫情。",
+      "summary_zh": "财联社8月11日电，匈牙利部长通报，该国再次出现非洲猪瘟疫情"
     },
     {
-      "id": "f35d917f9191d0ec8286e6a11af16ebddf5a3005",
-      "title": "For retirees, staying in the stock market is critical. How much exposure is the make-or-break question",
-      "title_zh": "对退休人群而言，留在股市至关重要，而持仓比例才是成败关键",
-      "summary": "Investors should be conversative in retirement, but abandoning equities is a big mistake.",
-      "summary_zh": "退休阶段的投资者应保持保守，但完全放弃股票是一个重大错误。"
+      "id": "644312313172aee8ee238e2a51c704884541bdb0",
+      "title": "CLS Aug 11: Netflix shares extend their gain to 2% after the company's ad tier wins Media Rating Council accreditation for the first time",
+      "summary": "CLS Aug 11: Netflix shares extend their gain to 2% after the company's ad tier wins Media Rating Council accreditation for the first time",
+      "title_zh": "财联社8月11日电，奈飞股价涨幅拉升至2%，该公司的广告套餐首次获得MRC（美国媒体评级委员会）认证。",
+      "summary_zh": "财联社8月11日电，奈飞股价涨幅拉升至2%，该公司的广告套餐首次获得MRC（美国媒体评级委员会）认证"
     },
     {
-      "id": "94e676e0f9f99d8201d877d710fc79cf9e5739cd",
-      "title": "Bus and truck collide in Peru's Cusco region, killing 9 and injuring 6",
-      "title_zh": "秘鲁库斯科一客车与一卡车相撞 致9死6伤",
-      "summary": "CLS, August 9 — A serious road accident occurred in the Pallpata district of Espinar province, Cusco region, Peru, in the early hours of August 8 local time.",
-      "summary_zh": "【秘鲁库斯科一客车与一卡车相撞 致9死6伤】财联社8月9日电，当地时间8月8日凌晨，秘鲁库斯科大区埃斯皮纳尔省帕尔帕塔区发生一起严重交通事故"
+      "id": "6794594ba38673a1ac0256a06044bb88158f2cce",
+      "title": "CLS Aug 11: the strong earthquake in Colombia today has killed 47 people",
+      "summary": "CLS Aug 11: the strong earthquake in Colombia today has killed 47 people",
+      "title_zh": "财联社8月11日电，今日发生的哥伦比亚强震已致47人遇难。",
+      "summary_zh": "财联社8月11日电，今日发生的哥伦比亚强震已致47人遇难"
     },
     {
-      "id": "15b628bea0b3061093f59db355cd0741d77f752c",
-      "title": "Formula One is lagging other sport stocks. Why analysts think it's poised to race ahead",
-      "title_zh": "一级方程式赛车股落后于其他体育类股票，分析师为何认为它即将加速追赶",
-      "summary": "As the sports sector remains resilient among consumers, analysts are predicting big gains for this racing league.",
-      "summary_zh": "由于体育板块在消费者中依然保持韧性，分析师预计这一赛车联盟将迎来大幅上涨。"
+      "id": "67f3b4d77f18c1203a9de7c200757c2da79f78a6",
+      "title": "CLS Aug 11: a US appeals court declines to halt thousands of social media addiction lawsuits against Meta and other companies",
+      "summary": "CLS Aug 11: a US appeals court declines to halt thousands of social media addiction lawsuits against Meta and other companies",
+      "title_zh": "财联社8月11日电，美国上诉法院拒绝叫停针对Meta以及其他公司的数千起社交媒体成瘾诉讼。",
+      "summary_zh": "财联社8月11日电，美国上诉法院拒绝叫停针对Meta以及其他公司的数千起社交媒体成瘾诉讼"
     },
     {
-      "id": "3b2749c9ffc37600494fe364c35bf21d7347c6f0",
-      "title": "Magnitude 3.2 earthquake hits Kuqa in Xinjiang's Aksu prefecture at a depth of 16 km",
-      "title_zh": "新疆阿克苏地区库车市发生3.2级地震 震源深度16公里",
-      "summary": "CLS, August 9 — The China Earthquake Networks Center formally determined that a magnitude 3.2 earthquake struck Kuqa city in the Aksu prefecture of Xinjiang (41.18 degrees north, 83.72 degrees east) at 1:12 a.m. on August 9, at a focal depth of 16 km.",
-      "summary_zh": "【新疆阿克苏地区库车市发生3.2级地震 震源深度16公里】财联社8月9日电，中国地震台网正式测定：8月9日1时12分，在新疆阿克苏地区库车市（北纬41.18度，东经83.72度）发生3.2级地震，震源深度16公里"
+      "id": "5005b03e75ebddb323127d650dfa8cfbf7b0d567",
+      "title": "Iran's supreme leader appoints a commander-in-chief of the Revolutionary Guard",
+      "summary": "[Iran's supreme leader appoints a commander-in-chief of the Revolutionary Guard] CLS Aug 11: Iran's supreme leader Mojtaba Khamenei made six new personnel appointments to Iran's armed forces on August 10, including naming Air Force Major General Ali Abdollahi chief of the general staff of the armed forces and Brigadier General Ahmad Vahidi commander-in-chief of the Islamic Revolutionary Guard Corps",
+      "title_zh": "伊朗最高领袖任命革命卫队总司令",
+      "summary_zh": "【伊朗最高领袖任命革命卫队总司令】财联社8月11日电，伊朗最高领袖穆杰塔巴·哈梅内伊8月10日对伊朗武装力量进行6项新的人事任命，其中包括任命阿里·阿卜杜拉希空军少将为伊朗武装部队总参谋长，任命艾哈迈德·瓦希迪准将为伊朗伊斯兰革命卫队总司令"
     },
     {
-      "id": "00b4efe319625424a22996e49f6bc743f254dade",
-      "title": "Helicopter crashes in Rio de Janeiro, Brazil, killing at least 4",
-      "title_zh": "一直升机在巴西里约坠毁 造成至少4人死亡",
-      "summary": "CLS, August 9 — A helicopter crashed into woodland in the southern part of Rio de Janeiro, Brazil, on August 8 local time, killing at least four people.",
-      "summary_zh": "【一直升机在巴西里约坠毁 造成至少4人死亡】财联社8月9日电，当地时间8月8日，一架直升机在巴西里约热内卢市南部一片林地中坠毁，造成至少4人死亡"
+      "id": "580fa43f9590f843168c4167715e16c8b8e48ff0",
+      "title": "Strait of Hormuz risk pushes tanker charter costs higher, with Middle East route day rates approaching $500,000",
+      "summary": "[Strait of Hormuz risk pushes tanker charter costs higher, with Middle East route day rates approaching $500,000] CLS Aug 10: as the war with Iran continues to leave many shipowners unwilling to enter the Strait of Hormuz, the cost of chartering a very large crude carrier on the industry benchmark Middle East to Asia route has approached $500,000 a day",
+      "title_zh": "霍尔木兹海峡风险推高油轮租船成本 中东航线日费逼近50万美元",
+      "summary_zh": "【霍尔木兹海峡风险推高油轮租船成本 中东航线日费逼近50万美元】财联社8月10日电，随着伊朗战争持续令许多船东不愿驶入霍尔木兹海峡，在作为行业基准的中东至亚洲航线上，租用一艘超大型油轮运输原油的成本已逼近每天50万美元"
     },
     {
-      "id": "067a655a24cfc36647466fb1c11b106d9da39426",
-      "title": "Oman: talks on Strait of Hormuz navigation arrangements are advancing in a positive atmosphere",
-      "title_zh": "阿曼：霍尔木兹海峡通航安排谈判在积极氛围中推进",
-      "summary": "CLS, August 8 — Oman's foreign ministry said in a statement on the 8th local time that negotiations on navigation arrangements for the Strait of Hormuz are proceeding in a positive and constructive atmosphere and have made progress that accommodates the interests of all parties.",
-      "summary_zh": "【阿曼：霍尔木兹海峡通航安排谈判在积极氛围中推进】财联社8月8日电，当地时间8日，阿曼外交部发表声明称，目前有关霍尔木兹海峡通航安排的谈判正在积极、建设性的氛围中推进，并已取得兼顾各方利益的进展"
+      "id": "e8d73c00b930846ef0b25dddc0b576b71fc851e1",
+      "title": "Iran's supreme leader makes new appointments to the armed forces",
+      "summary": "[Iran's supreme leader makes new appointments to the armed forces] CLS Aug 10: Iran's supreme leader Mojtaba Khamenei today (August 10) made six new appointments to Iran's army and the Islamic Revolutionary Guard Corps",
+      "title_zh": "伊朗最高领袖对武装部队进行新任命",
+      "summary_zh": "【伊朗最高领袖对武装部队进行新任命】财联社8月10日电，伊朗最高领袖穆杰塔巴·哈梅内伊今天（8月10日）对伊朗军队和伊斯兰革命卫队进行6项新任命"
     },
     {
-      "id": "4e4eae9f14842398b5e59f7d93f18266f8733a26",
-      "title": "Typhoon Baihaitun forces cuts or cancellations of nearly 60% of flights at Shanghai's two main airports",
-      "title_zh": "受台风“白海豚”影响 上海两大机场近六成航班调减取消",
-      "summary": "CLS, August 8 — Because of this year's 13th typhoon, Baihaitun, capacity at Shanghai's Pudong and Hongqiao airports will be reduced tomorrow (the 9th), with nearly 60% of arriving and departing flights cut or cancelled.",
-      "summary_zh": "【受台风“白海豚”影响 上海两大机场近六成航班调减取消】财联社8月8日电，受今年第13号台风“白海豚”影响，明天（9日）上海浦东机场和虹桥机场通行能力将出现下降，近六成进出港航班调减取消"
+      "id": "18d22f29e3026dca758372ecd9481eee4353f7b9",
+      "title": "International crude oil prices extend gains to 4%",
+      "summary": "[International crude oil prices extend gains to 4%] CLS Aug 10: WTI crude futures rose 4% to $81.274 a barrel, and Brent crude futures rose 4% to $86.832 a barrel",
+      "title_zh": "国际原油价格涨幅扩大至4%",
+      "summary_zh": "【国际原油价格涨幅扩大至4%】财联社8月10日电，WTI原油期货价格涨4%，报81.274美元/桶；布伦特原油期货价格涨4%，报86.832美元/桶"
     },
     {
-      "id": "95207718915a8be4e3fc1b7859a0196fffeab324",
-      "title": "U.S. Senate passes short-term funding bill to avert federal shutdown before election",
-      "title_zh": "美国参议院通过短期拨款法案，以避免选举前联邦政府停摆"
+      "id": "afe54d375cc4b382c6ee2fc55d2f1e508db14187",
+      "title": "The US investment grade bond issuance wave keeps building, with 19 companies coming to market in a single day and issuance so far this year reaching $1.4 trillion",
+      "summary": "[The US investment grade bond issuance wave keeps building, with 19 companies coming to market in a single day and issuance so far this year reaching $1.4 trillion] CLS Aug 10: the record fundraising boom in the US investment grade bond market is still running",
+      "title_zh": "美国投资级债券发行潮持续升温 单日19家公司涌入市场 年内发行规模已达1.4万亿美元",
+      "summary_zh": "【美国投资级债券发行潮持续升温 单日19家公司涌入市场 年内发行规模已达1.4万亿美元】财联社8月10日电，美国投资级债券市场的创纪录融资热潮仍在持续"
     },
     {
-      "id": "72188e7d134e02331645d55c20698b397295103c",
-      "title": "Iran: a deal with Oman is 'close' but that does not mean reopening the strait",
-      "title_zh": "伊朗：与阿曼“接近”达成协议但并不意味重开海峡",
-      "summary": "CLS, August 8 — Iranian Foreign Minister Araghchi said that day that Iran is 'close' to an agreement with Oman, but that this does not mean the Strait of Hormuz will be reopened.",
-      "summary_zh": "【伊朗：与阿曼“接近”达成协议但并不意味重开海峡】财联社8月8日电，伊朗外长阿拉格齐当天表示，伊朗与阿曼“接近”达成协议，但并不意味着重新开放霍尔木兹海峡"
+      "id": "1d1003815ea926b9c393ab73f64a7883906016c9",
+      "title": "Europe's major stock indexes close mixed",
+      "summary": "[Europe's major stock indexes close mixed] CLS Aug 10: the UK FTSE 100 fell 0.35%, France's CAC 40 rose 0.11%, Germany's DAX 30 rose 0.17%, and Italy's FTSE MIB fell 0.08%",
+      "title_zh": "欧洲三大股指收盘涨跌不一",
+      "summary_zh": "【欧洲三大股指收盘涨跌不一】财联社8月10日电，英国富时100指数跌0.35%，法国CAC40指数涨0.11%，德国DAX30指数涨0.17%，富时意大利MIB指数跌0.08%"
     },
     {
-      "id": "d2846030d3c4becb102e3199b125015c8a3510f6",
-      "title": "Romania's defence ministry says no aerial target was detected crossing its airspace into Bulgaria",
-      "title_zh": "罗马尼亚国防部称未发现空中目标经该国领空进入保加利亚",
-      "summary": "CLS, August 8 — Romania's defence ministry said in a statement on August 8 local time that, in relation to an explosion earlier that morning inside Bulgaria near the Romanian border, its radar surveillance systems detected no aircraft crossing Romanian airspace into Bulgaria.",
-      "summary_zh": "【罗马尼亚国防部称未发现空中目标经该国领空进入保加利亚】财联社8月8日电，当地时间8月8日，罗马尼亚国防部发表声明称，针对当天上午在保加利亚境内、靠近罗马尼亚边境地区发生的爆炸事件，罗马尼亚雷达监视系统未发现任何飞行器穿越罗马尼亚领空进入保加利亚"
+      "id": "8649b47d1fc63aa619fc72168fc2f4303b60d8f2",
+      "title": "The Bank of Japan publishes its summary of opinions, with several members calling for faster rate hikes",
+      "summary": "[The Bank of Japan publishes its summary of opinions, with several members calling for faster rate hikes] On the 10th local time, the Bank of Japan released the main opinions expressed at its monetary policy meeting held from July 30 to 31 this year",
+      "title_zh": "日本央行公布会议意见 多名委员呼吁加快加息",
+      "summary_zh": "【日本央行公布会议意见 多名委员呼吁加快加息】当地时间10日，日本央行公布了今年7月30日至31日的货币政策会议上出现的主要意见"
     },
     {
-      "id": "5cbab14f34deda4d882e460d8b37a064fd424511",
-      "title": "Vessel attacked and set ablaze in waters east of Oman",
-      "title_zh": "一船只在阿曼以东海域遭袭起火",
-      "summary": "CLS, August 8 — The UK Maritime Trade Operations (UKMTO) received a report on the 8th local time of an incident 18 nautical miles east of Seeb in the Gulf of Oman.",
-      "summary_zh": "【一船只在阿曼以东海域遭袭起火】财联社8月8日电，英国海上贸易行动办公室（UKMTO）当地时间8日收到报告称，阿曼海塞卜以东18海里处发生一起突发事件"
+      "id": "876593a52fe1965162e47c0880537751cecc23bf",
+      "title": "CLS Aug 10: SK Hynix shares fall 2% to $135.255 a share, total market capitalization $985.8 billion",
+      "summary": "CLS Aug 10: SK Hynix shares fall 2% to $135.255 a share, with a total market capitalization of $985.8 billion",
+      "title_zh": "财联社8月10日电，SK海力士股价下跌2%，报135.255美元/股，总市值报9858亿美元。",
+      "summary_zh": "财联社8月10日电，SK海力士股价下跌2%，报135.255美元/股，总市值报9858亿美元"
     },
     {
-      "id": "5093bbf99d0bc3c1a5d18353dbd4b978c435b803",
-      "title": "From the start of service tomorrow, Shanghai Metro imposes speed limits on all at-grade and elevated sections network-wide",
-      "title_zh": "明日运营开始起 上海地铁全网络地面高架区段限速运行",
-      "summary": "CLS, August 8 — Shentong Metro Group said that because of this year's 13th typhoon, Baihaitun, Shanghai Metro will adjust operations to ensure rail safety: from the start of service on August 9, Line 3 and the Pujiang Line will run under speed restrictions along their entire length, as will Lines 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 16 and 17.",
-      "summary_zh": "【明日运营开始起 上海地铁全网络地面高架区段限速运行】财联社8月8日电，申通地铁集团介绍，受今年第13号台风“白海豚”影响，为确保轨道交通运营安全，上海地铁实施运营调整：8月9日运营开始起，3号线、浦江线全线限速运行；1号线、2号线、4号线、5号线、6号线、7号线、8号线、9号线、10号线、11号线、16号线、17号线"
+      "id": "9c842b92a8f7375f386a12949c636963fe61ef1e",
+      "title": "CLS Aug 10: European natural gas prices rise 10.1% to 61.14 euros per megawatt hour",
+      "summary": "CLS Aug 10: European natural gas prices rise 10.1% to 61.14 euros per megawatt hour",
+      "title_zh": "财联社8月10日电，欧洲天然气价格涨10.1%，报61.14欧元/兆瓦时。",
+      "summary_zh": "财联社8月10日电，欧洲天然气价格涨10.1%，报61.14欧元/兆瓦时"
     },
     {
-      "id": "c3b96193513761d59a7478bcd0ccaed170fb6ffe",
-      "title": "Central China's largest 'dual-membrane' emergency water plant begins supply",
-      "title_zh": "华中最大“双膜”工艺应急水厂通水",
-      "summary": "CLS, August 8 — The Wuhan Liangzi Lake emergency water plant, the largest 'dual-membrane' facility in central China, jointly invested in and built by the Yangtze Ecology and Environment Co under China Three Gorges Corporation and the Wuhan Water Group, has been connected and started supplying water, marking a new supply arrangement for the Jiangnan area of Wuhan in which 'one river, one lake' dual sources back each other up and can be dispatched flexibly, safeguarding water for 6.6 million residents.",
-      "summary_zh": "【华中最大“双膜”工艺应急水厂通水】财联社8月8日电，由三峡集团所属长江环保集团、武汉市水务集团等共同投资建设的华中地区规模最大的“双膜”工艺应急水厂——武汉梁子湖应急水厂并网通水，标志着武汉市江南区域正式构建起“一江一湖”双水源互为备援、灵活调度的供水新格局，为片区660万市民用水安全提供坚实保障"
+      "id": "5e85b43dcb400d6383dad1b91542467b14bb65db",
+      "title": "The US Strategic Petroleum Reserve falls below the 300 million barrel mark for the first time since 1983",
+      "summary": "[The US Strategic Petroleum Reserve falls below the 300 million barrel mark for the first time since 1983] CLS Aug 10: US Strategic Petroleum Reserve crude inventories fell by about 6.1 million barrels last week to 298.7 million barrels, the lowest level since 1983",
+      "title_zh": "美国战略石油储备跌穿3亿桶关口 为1983年以来首次",
+      "summary_zh": "【美国战略石油储备跌穿3亿桶关口 为1983年以来首次】财联社8月10日电，美国上周战略石油储备（SPR）原油库存减少约610万桶，至2.987亿桶，为1983年以来的最低水平"
     },
     {
-      "id": "ea01768b227ea9fd6bb18702941c5aad793c466d",
-      "title": "Zhejiang raises its typhoon emergency response to Level I against Typhoon Baihaitun",
-      "title_zh": "防御台风“白海豚” 浙江将防台风应急响应提升至Ⅰ级",
-      "summary": "CLS, August 8 — To guard against the possibility that this year's 13th typhoon, Baihaitun, makes a direct hit on Zhejiang, the provincial flood control headquarters decided after assessment to raise the typhoon emergency response to Level I at 20:00 on August 8, requiring all localities and departments to track the typhoon closely, carry out preparations according to plan, and if necessary declare an emergency flood period and suspend outdoor group activities.",
-      "summary_zh": "【防御台风“白海豚” 浙江将防台风应急响应提升至Ⅰ级】财联社8月8日电，为防御应对今年第13号台风“白海豚”可能正面袭击浙江等情况，经研判会商，浙江省防指决定于8月8日20时将防台风应急响应提升至Ⅰ级，要求各地各部门密切关注台风发展动态，按预案方案全力做好各项防台风工作，必要时宣布进入紧急防汛期，采取停止户外集体活动、"
+      "id": "34c9676fef2d8c07362635470fa4ce6bbdee5f5f",
+      "title": "Iran's supreme leader is to appoint several senior military commanders",
+      "summary": "[Iran's supreme leader is to appoint several senior military commanders] CLS Aug 10: according to the office of Iran's supreme leader on the 10th, supreme leader Mojtaba will sign appointment orders for several senior commanders of Iran's armed forces",
+      "title_zh": "伊朗最高领袖将任命数名高级军事指挥官",
+      "summary_zh": "【伊朗最高领袖将任命数名高级军事指挥官】财联社8月10日电，据伊朗最高领袖办公室10日消息，伊朗最高领袖穆杰塔巴将签署对数名伊朗武装部队高级指挥官的任命令"
     },
     {
-      "id": "b543272543b3eb355e5c59c9ba792921ccc096d5",
-      "title": "Saturday August 8: 17 headline items on Xinwen Lianbo",
-      "title_zh": "8月8日周六《新闻联播》要闻17条",
-      "summary": "CLS, August 8 — Today's Xinwen Lianbo covered: 1) [New thought leading a new journey] improving the public service system for nationwide fitness so development gains reach everyone; 2) [Establishing and practising a correct view of performance] putting livelihoods first and translating study and education into results; 3) continued optimisation of China's business entity structure in the first half; 4) accelerating innovation breakthroughs in China's pharmaceutical industry in the first half; 5) national electricity consumption...",
-      "summary_zh": "【8月8日周六《新闻联播》要闻17条】财联社8月8日电，今天《新闻联播》主要内容有： 1、【新思想引领新征程】完善全民健身公共服务体系 让发展成果惠及全体人民； 2、【树立和践行正确政绩观】坚持民生优先 推动学习教育成果落到实处； 3、上半年我国经营主体结构持续优化； 4、上半年我国医药工业创新加速突破； 5、全国用电"
+      "id": "d62148b8c69d754db6864bd0d9bc9a2e0ca55e79",
+      "title": "CLS Aug 10: SpaceX shares fall 1% after earlier rising almost 3%, now at $131.4 a share, total market capitalization $1.72 trillion",
+      "summary": "CLS Aug 10: SpaceX shares fall 1% after earlier rising almost 3%, now at $131.4 a share, with a total market capitalization of $1.72 trillion",
+      "title_zh": "财联社8月10日电，SpaceX股价下跌1%，此前一度涨近3%，现报131.4美元/股，总市值报1.72万亿美元。",
+      "summary_zh": "财联社8月10日电，SpaceX股价下跌1%，此前一度涨近3%，现报131.4美元/股，总市值报1.72万亿美元"
     },
     {
-      "id": "3171430e4271402df564ea893db15e37152b0412",
-      "title": "Iranian official: evidence shows US forces used phosphorus munitions in bombing several parts of Iran",
-      "title_zh": "伊官员：有证据显示美军使用磷弹轰炸伊朗多地",
-      "summary": "CLS, August 8 — According to Iranian sources on August 8 local time, Iran's deputy health minister Shahin Ahundzadeh said that evidence now shows the US bombing of Lamerd in Iran's Fars province involved phosphorus-containing munitions.",
-      "summary_zh": "【伊官员：有证据显示美军使用磷弹轰炸伊朗多地】财联社8月8日电，据伊朗方面当地时间8月8日消息，伊朗卫生部副部长沙欣·阿洪德扎德当天表示，目前已有证据显示，美军对伊朗法尔斯省拉梅尔德市的轰炸涉及到含磷弹药"
+      "id": "686ddbefcfa43e36d3840c486e709af1a13812be",
+      "title": "The ChinaSat 4B satellite launch fails",
+      "summary": "[The ChinaSat 4B satellite launch fails] At 20:02 on August 10, China launched the ChinaSat 4B satellite from the Wenchang space launch site on a Long March 7A carrier rocket; the rocket flew abnormally and the launch mission failed",
+      "title_zh": "中星4B卫星发射失利",
+      "summary_zh": "【中星4B卫星发射失利】8月10日20时02分，我国在文昌航天发射场使用长征七号改运载火箭发射中星4B卫星，火箭飞行异常，发射任务失利"
     },
     {
-      "id": "16d1bc4121d3a20cd51bd60f84d25dcaa7d9967a",
-      "title": "Berkshire Hathaway: Q2 2026 net income attributable to shareholders of US$25.667 billion",
-      "title_zh": "伯克希尔哈撒韦：2026年Q2归属于股东净利润256.67亿美元",
-      "summary": "CLS, August 8 — Berkshire Hathaway reported Q2 operating earnings of US$12.983 billion, up 16% year on year, and Q2 net income attributable to shareholders of US$25.667 billion against US$12.370 billion a year earlier; its cash pile fell to US$365.51 billion in Q2 and it repurchased about US$4.5 billion of treasury stock.",
-      "summary_zh": "【伯克希尔哈撒韦：2026年Q2归属于股东净利润256.67亿美元】财联社8月8日电，伯克希尔哈撒韦二季度运营利润129.83亿美元，同比增长16%；二季度归属于股东的净利润256.67亿美元，上年同期123.70亿美元；二季度现金储备降至3655.1亿美元；二季度回购约45亿美元库存股"
+      "id": "083c083f5e8433b54b060feb558c0e3df997d284",
+      "title": "CLS Aug 10: ICE data show UK front-month natural gas prices rose 10%",
+      "summary": "CLS Aug 10: ICE data show UK front-month natural gas prices rose 10%",
+      "title_zh": "财联社8月10日电，ICE数据显示，英国近月天然气价格上涨10%。",
+      "summary_zh": "财联社8月10日电，ICE数据显示，英国近月天然气价格上涨10%"
     },
     {
-      "id": "1af8556481b2fba71e1e44749284f7f722ba145c",
-      "title": "Iran is close to an agreement with Oman on managing the strait",
-      "title_zh": "伊朗接近与阿曼达成管理海峡协议",
-      "summary": "CLS, August 8 — Iranian Foreign Minister Araghchi said today (August 8) that Iran is negotiating with Oman over the legal mechanism for the Strait of Hormuz, how it is to be managed, and the routing of vessels through it, and that the two sides are already very close to a deal.",
-      "summary_zh": "【伊朗接近与阿曼达成管理海峡协议】财联社8月8日电，伊朗外交部长阿拉格齐今天（8月8日）表示，伊朗目前正在与阿曼就霍尔木兹海峡的法律机制、管理方式以及确定海峡船舶通行路线进行谈判，双方已经非常接近达成协议"
+      "id": "8117b261b09432d286234c8ba40d3ddc5e6182ad",
+      "title": "CLS Aug 10: the night session closed for some futures contracts with most commodities higher; fuel oil and low sulphur fuel oil rose almost 3%, while coking coal, bitumen, polyethylene and rubber rose more than 1%. PTA fell more than 1%.",
+      "summary": "CLS Aug 10: the night session closed for some futures contracts with most commodities higher; fuel oil and low sulphur fuel oil rose almost 3%, while coking coal, bitumen, polyethylene and rubber rose more than 1%",
+      "title_zh": "财联社8月10日电，部分期货品种夜盘收盘，多数商品上涨，燃油、低硫燃料油上涨近3%，焦煤、沥青、聚乙烯、橡胶涨超1%。PTA跌超1%。",
+      "summary_zh": "财联社8月10日电，部分期货品种夜盘收盘，多数商品上涨，燃油、低硫燃料油上涨近3%，焦煤、沥青、聚乙烯、橡胶涨超1%"
     },
     {
-      "id": "3f8ee294f974d5b0e9fa6f3d1b13f9264dda3df4",
-      "title": "UAE says one of its vessels was attacked in the Strait of Hormuz",
-      "title_zh": "阿联酋称该国一船只在霍尔木兹海峡遭袭",
-      "summary": "CLS, August 8 — Abu Dhabi National Oil Company confirmed that one of its vessels was hit by a missile in the early hours of the day while transiting the Strait of Hormuz.",
-      "summary_zh": "【阿联酋称该国一船只在霍尔木兹海峡遭袭】财联社8月8日电，阿布扎比国家石油公司证实，该公司一艘船只当天凌晨在通过霍尔木兹海峡时遭导弹袭击"
+      "id": "34f25ce2010c08c64500f0a24373a72c67be5620",
+      "title": "Lenders scrutinize US data center financing as community opposition builds",
+      "summary": null,
+      "title_zh": "社区反对声浪升温，放贷机构开始严格审视美国数据中心融资",
+      "summary_zh": null
     },
     {
-      "id": "53be4694d000a0b10d222838fb1fdb0b99884ac8",
-      "title": "Chad's cholera outbreak keeps spreading: 239 confirmed cases and 13 deaths",
-      "title_zh": "乍得霍乱疫情持续扩散：累计确诊239例 死亡13例",
-      "summary": "CLS, August 8 — The latest data from Chad's health ministry on August 8 local time show 239 confirmed cholera cases reported since mid-June, including 13 deaths, a case fatality rate of 5.4%.",
-      "summary_zh": "【乍得霍乱疫情持续扩散：累计确诊239例 死亡13例】财联社8月8日电，当地时间8月8日，乍得卫生部最新数据显示，该国自6月中旬以来累计报告239例霍乱确诊病例，其中13人死亡，病死率达5.4%"
-    },
-    {
-      "id": "25779d170db9dc084802c08b360e40487ed96855",
-      "title": "Zelensky: the US will supply Ukraine with Patriot interceptor missiles every month",
-      "title_zh": "泽连斯基：美国将每月向乌克兰提供“爱国者”拦截导弹",
-      "summary": "CLS, August 8 — Ukraine said on the 8th that President Zelensky, currently visiting Serbia, announced the US has agreed to provide Ukraine with Patriot air-defence interceptor missiles on a monthly basis.",
-      "summary_zh": "【泽连斯基：美国将每月向乌克兰提供“爱国者”拦截导弹】财联社8月8日电，乌克兰方面8日消息称，正在塞尔维亚访问的乌克兰总统泽连斯基当天表示，美国已与乌克兰达成协议，将每月向乌克兰提供“爱国者”防空系统拦截导弹"
-    },
-    {
-      "id": "96cd1cfb50fe76b993a25b310011f7cf920a77e6",
-      "title": "China's 2026 box office passes 24 billion yuan",
-      "title_zh": "2026年度总票房破240亿",
-      "summary": "CLS, August 8 — Beacon Pro data show that as of August 8 the 2026 full-year box office (including pre-sales) has passed 24 billion yuan, with 'Pegasus 3', 'Kung Fu Women's Football', 'A Love Letter to Grandma', 'Biao Ren: Wind Rises in the Desert' and 'Eight Immortals!' currently the five biggest titles of the year.",
-      "summary_zh": "【2026年度总票房破240亿】财联社8月8日电，据灯塔专业版数据，截至8月8日，2026年度大盘票房（含预售）突破240亿，《飞驰人生3》《功夫女足》《给阿嬷的情书》《镖人：风起大漠》《八仙！》暂列年度票房前五名"
-    },
-    {
-      "id": "062ae8049e21033c8389495354f114b0c582fc92",
-      "title": "Nvidia sets its sights on the power supplier behind OpenAI's Stargate, taking a direct stake of US$3 billion",
-      "title_zh": "英伟达盯上OpenAI“星际之门”背后的电力商，30亿美元直接入股",
-      "summary": "Nvidia is extending its reach into the very bottom layer of AI infrastructure — power supply.",
-      "summary_zh": "英伟达正将触角深入AI基础设施的最底层—— 电力供应"
-    },
-    {
-      "id": "98a2318bd3fef6ce949c6994e7a81f2628e94f69",
-      "title": "Oil prices stoke inflation while weak jobs undercut the hike case — gold wins on both sides",
-      "title_zh": "油价刺激通胀、就业削弱加息--黄金“双面得利”",
-      "summary": "This week gold benefited in a rare way from two opposing macro forces at once: oil prices swung sharply on the Iran situation, continually stirring inflation expectations and creating hedging demand for gold, while a shockingly weak employment report battered expectations for a Fed rate hike, pushing the dollar and Treasury yields lower and opening room for gold to rise.",
-      "summary_zh": "本周，黄金以一种罕见的方式同时受益于两股相互对立的宏观力量：油价围绕伊朗局势剧烈波动，持续搅动通胀预期，为黄金提供保值需求；而一份令市场震惊的疲弱就业数据，则重创美联储加息预期，进一步压低美元和国债收益率，为金价打开上行空间"
-    },
-    {
-      "id": "3bf1014a6b78ba92fcb54d94815c6b2b1cfbaeab",
-      "title": "Bitcoin squeezed at $65,300 resistance: Hourly levels",
-      "title_zh": "比特币在 65,300 美元阻力位承压：小时级别关键点位"
-    },
-    {
-      "id": "d9e5f916c7686764423136c6859ab6c8e1ab14b8",
-      "title": "Iran sets tough terms for U.S. to reopen Strait of Hormuz despite progress in Oman",
-      "title_zh": "尽管在阿曼方向取得进展，伊朗仍就美国重开霍尔木兹海峡提出苛刻条件"
-    },
-    {
-      "id": "fb8c99ee8ebf0039cf3dde90f065988d25c32e89",
+      "id": "bca8976a13e42c5db861c135b3f2a8e56d8c8798",
       "title": "Here’s when Elon Musk’s Starlink internet is worth the steep monthly price — and $350 startup cost",
-      "title_zh": "马斯克的星链网络何时值回高昂月费与 350 美元的开通成本",
       "summary": "Starlink versus fiber, cable and 5G: The smart spender’s guide to 2026 internet options.",
-      "summary_zh": "星链对比光纤、有线宽带与 5G：2026 年上网方案的精明消费指南。"
+      "title_zh": "什么情况下埃隆·马斯克的星链网络值得其高昂月费和 350 美元初装成本",
+      "summary_zh": "星链对比光纤、有线和 5G：2026 年上网方案的精明消费指南。"
     },
     {
-      "id": "4fadef08d1cde97f16eb2c822808b30b9640ac5f",
-      "title": "Iran says deal on Strait of Hormuz is close but is not enough to open the waterway",
-      "title_zh": "伊朗称霍尔木兹海峡协议已接近达成，但不足以重开该水道"
+      "id": "2bb12262bd571e30f3fdf9fd6d24ac0ece50a43f",
+      "title": "Gold just had its best week in 7 months. Here’s why Mike Khouw is buying more",
+      "summary": "Gold logged its best weekly gain in seven months driven by several forces.",
+      "title_zh": "黄金刚刚创下七个月来最佳单周表现，以下是 Mike Khouw 继续加仓的理由",
+      "summary_zh": "在多重因素推动下，黄金录得七个月来最大单周涨幅。"
     },
     {
-      "id": "3fe696befcda1c330497c8a5155993ec75640a72",
-      "title": "Trump moves again: formally restarting the process to remove Fed Governor Cook, dealing another blow to Fed independence",
-      "title_zh": "特朗普再出手！正式重启罢免美联储理事库克程序，美联储独立性再遭冲击",
-      "summary": "The Trump administration has formally launched a fresh round of proceedings to remove Federal Reserve Governor Lisa Cook, signalling that the legal dispute over the Fed's independence is set to escalate once more.",
-      "summary_zh": "特朗普政府正式启动新一轮罢免美联储理事Lisa Cook的程序，这一举动预示着围绕美联储独立性的法律争议将再度升级"
+      "id": "08a3d49ec81aa91b65727b6e59be3d94ae59dab6",
+      "title": "Interest rates may stay higher for longer. What that means for consumers",
+      "summary": "Any move toward higher rates would increase borrowing costs for consumers at a time when affordability pressures are already mounting.",
+      "title_zh": "利率可能在更长时间内维持高位，这对消费者意味着什么",
+      "summary_zh": "在负担能力压力本已不断累积之际，任何进一步走高的利率都会推高消费者的借贷成本。"
     },
     {
-      "id": "e987c4027299a504f07e92273114fe834fe008be",
-      "title": "Trump revives effort to fire Fed's Lisa Cook",
-      "title_zh": "特朗普重启罢免美联储理事丽莎·库克的行动",
-      "summary": "Trump aide Dan Scavino told Cook there is \"sufficient reason to believe that you made false statements on one or more mortgage agreements.\"",
-      "summary_zh": "特朗普助手丹·斯卡维诺告知库克，“有充分理由相信您在一份或多份抵押贷款协议中作出了虚假陈述”。"
+      "id": "1cd43699c203cd9e13d743118167805d5839f6c9",
+      "title": "Oil in U.S. Strategic Petroleum Reserve falls below 300 million barrels, lowest since 1983",
+      "summary": null,
+      "title_zh": "美国战略石油储备原油量跌破 3 亿桶，为 1983 年以来最低",
+      "summary_zh": null
     },
     {
-      "id": "2fecce53dfa6b5291106f3d7e24f1b25f2906330",
-      "title": "Hunter Biden says Joe Biden’s cancer has spread further and is ‘very painful’",
-      "title_zh": "亨特·拜登称乔·拜登的癌症已进一步扩散且“非常痛苦”",
-      "summary": "\"The cancer has spread, is metastasized into his bones and further",
-      "summary_zh": "“癌症已经扩散，转移到他的骨骼，并且还在进一步蔓延"
+      "id": "dece543d829c2d2a020eee085b52a49702f332bf",
+      "title": "Wall Street is high on this recent IPO. Bank of America says the data center play can double",
+      "summary": "Csquare, which went public in July, is poised to gain ground in its data center business, according to several Wall Street analysts.",
+      "title_zh": "华尔街看好这只近期上市的新股，美国银行称这家数据中心公司股价有望翻倍",
+      "summary_zh": "多位华尔街分析师认为，七月上市的 Csquare 有望在其数据中心业务上取得进展。"
     },
     {
-      "id": "dd1b3fa67b3ad9dc041b8921eec8ada1489da8d5",
-      "title": "Elevator giant Otis wants to be a defensive play in a volatile market. It has to prove itself first",
-      "title_zh": "电梯巨头奥的斯想在动荡市场中充当防御性标的，但它首先得自证实力",
-      "summary": "Otis positions itself as a long-term growth stock, but shares are down due to setbacks in its elevator service business and investors chasing the AI trade.",
-      "summary_zh": "奥的斯将自身定位为长期成长股，但受电梯服务业务受挫、以及投资者转而追逐 AI 交易的影响，其股价出现下跌。"
+      "id": "eb88e0b11aa992853176e26b3a92da4782a95c72",
+      "title": "Standard Chartered sees this losing crypto coin turning around because of the tokenization wave",
+      "summary": "The bank initiated research coverage of the token on expectations that tokenized assets will rise to $4 trillion by the end 2028.",
+      "title_zh": "渣打银行认为，受代币化浪潮推动，这只表现落后的加密货币将迎来反转",
+      "summary_zh": "该行启动对这一代币的研究覆盖，预计到 2028 年底代币化资产规模将升至 4 万亿美元。"
     },
     {
-      "id": "3b46a753f2478fcb095541c506043f1a5ba39c57",
-      "title": "Inside the startup drone maker powering Ukraine's deep-strike campaign",
-      "title_zh": "揭秘为乌克兰纵深打击行动提供装备的无人机初创企业",
-      "summary": "Fire Point CEO Iryna Terekh says Ukraine has \"learned the hard way\" that military leverage is integral to to bringing diplomacy within reach.",
-      "summary_zh": "Fire Point 首席执行官伊琳娜·捷列赫表示，乌克兰“以惨痛代价认识到”，军事筹码是让外交重新变得可能的关键一环。"
+      "id": "4a48f8389a2482b38f761dfb0cccfd9ce1c4933a",
+      "title": "Colombia earthquake kills at least 22 as buildings collapse in several cities",
+      "summary": "The tremor was felt in Colombia's capital, Bogota, and as far away as Venezuela.",
+      "title_zh": "哥伦比亚地震已致至少 22 人死亡，多座城市有建筑倒塌",
+      "summary_zh": "哥伦比亚首都波哥大乃至远至委内瑞拉均有震感。"
     },
     {
-      "id": "baca5bc9ac9eda04fbbc7d03fac471f088f6bb2a",
-      "title": "Next big push in ETF industry? Why these risk assets are gaining traction as interest rate uncertainty persists",
-      "title_zh": "ETF 行业的下一个风口？为何在利率不确定性持续之际这些风险资产日益受到追捧",
-      "summary": "Collateralized loan obligations may become the next big push in the exchange-traded fund industry.",
-      "summary_zh": "在利率前景持续不明之际，担保贷款凭证（CLO）可能成为交易所交易基金行业的下一个主要发力方向。"
+      "id": "02ec12c6d0490c0c418eed83bacb77473923c165",
+      "title": "An update on two Best Stocks breakouts. One is now failing, but the other is partying on",
+      "summary": "Josh and Sean give an update on two stocks that broke out and made the Best Stocks list",
+      "title_zh": "两只 Best Stocks 突破个股的最新进展：一只已经走坏，另一只仍在狂欢",
+      "summary_zh": "Josh 与 Sean 更新了两只完成突破并入选 Best Stocks 榜单的个股情况"
     },
     {
-      "id": "2824e92b182536715515b660ce194461fce8c4fa",
-      "title": "Here’s how we played the massive rebound in AI stocks this week",
-      "title_zh": "本周 AI 股票大幅反弹，我们是这样操作的",
-      "summary": "AI stocks roared back to help lift two of the major averages to fresh records.",
-      "summary_zh": "AI 股票强势反弹，推动两大主要股指创下历史新高。"
+      "id": "9bc6acab580a45d58b0f1b3a39cb352c33774875",
+      "title": "Iran's supreme leader makes new appointments to the armed forces",
+      "summary": "Iran's supreme leader Mojtaba Khamenei today (August 10) made six new appointments to Iran's army and the Islamic Revolutionary Guard Corps",
+      "title_zh": "伊朗最高领袖对武装部队进行新任命",
+      "summary_zh": "伊朗最高领袖穆杰塔巴·哈梅内伊今天（8月10日）对伊朗军队和伊斯兰革命卫队进行6项新任命"
     },
     {
-      "id": "28df6b8bc98db9518b099a4be09c6b9b8e3ec992",
-      "title": "Vance on the Iran 'talks': some progress has been made in the past few days",
-      "title_zh": "万斯介绍伊朗“谈判”：过去几天取得了一些进展",
-      "summary": "US Vice President Vance on the Iran negotiations: some progress has been made over the past few days.",
-      "summary_zh": "美国副总统万斯谈伊朗谈判：过去几天取得了一些进展"
+      "id": "8c54e5746a3c0572d57ff0aeff60c40eab1f1605",
+      "title": "SpaceX stock rebounds to near $135 IPO price",
+      "summary": "SpaceX reported better-than-expected revenue in its second-quarter earnings report last week.",
+      "title_zh": "SpaceX 股价反弹至接近 135 美元的发行价",
+      "summary_zh": "SpaceX 上周公布的第二季度财报显示营收好于预期。"
     },
     {
-      "id": "6ef781d394d682fc63acc7f0900a80a615c26b0b",
-      "title": "Democrats plan Trump investigations over impeachment if they win House, sources say",
-      "title_zh": "消息人士称，民主党若赢得众议院，计划对特朗普展开调查而非弹劾",
-      "summary": "Senior Democrats have discussed using hearings, subpoenas and document requests to obtain records from entities tied to Trump's orbit, the sources said.",
-      "summary_zh": "消息人士称，民主党高层已讨论利用听证会、传票和文件调取，从与特朗普关系密切的机构获取记录。"
+      "id": "0db997baf7bab4c7ce48809cf7d06e9c23d1496f",
+      "title": "We're buying more of an AI stock that's under pressure to start the week",
+      "summary": "The purchase will increase the stock's weighting in our portfolio to 3.3% from 3.1%.",
+      "title_zh": "本周开盘承压，我们正加仓一只人工智能个股",
+      "summary_zh": "此次买入将把该股在我们组合中的权重从 3.1% 提高至 3.3%。"
     },
     {
-      "id": "5c75df5b4d00b6633ede3f1625db4ad1536e9bc5",
-      "title": "'Moneymaxxing' isn't a trend, it's a 'cultural shift,' financial advisor says — here's how to get started",
-      "title_zh": "理财顾问称“极致攒钱”不是一时潮流，而是一场“文化转变”——入门方法看这里",
-      "summary": "In an affordability crunch, social media's viral \"maxxing\" trend could lead to long-term financial security.",
-      "summary_zh": "在支付能力承压的环境下，社交媒体上爆火的“极致化”潮流可能带来长期的财务保障。"
+      "id": "d3542da9697b242be28f986da855c300bbf34066",
+      "title": "The ChinaSat 4B satellite launch fails",
+      "summary": "At 20:02 on August 10, China launched the ChinaSat 4B satellite from the Wenchang space launch site on a Long March 7A carrier rocket; the rocket flew abnormally and the launch mission failed",
+      "title_zh": "中星4B卫星发射失利",
+      "summary_zh": "8月10日20时02分，我国在文昌航天发射场使用长征七号改运载火箭发射中星4B卫星，火箭飞行异常，发射任务失利"
     },
     {
-      "id": "492e11b1fbddc2b4f792e131efab3875e40f68f3",
-      "title": "Federal Reserve Board announces approval of the application by Coastal Bend Bancshares, Inc.",
-      "title_zh": "美联储理事会宣布批准 Coastal Bend Bancshares, Inc. 的申请",
-      "summary": "Federal Reserve Board announces approval of the application by Coastal Bend Bancshares, Inc.",
-      "summary_zh": "美联储理事会宣布批准 Coastal Bend Bancshares, Inc. 的申请。"
+      "id": "6692f7a579332615a061e53915e4739de9caf8f9",
+      "title": "Trump’s foreign licensing business booms to $59.5 million as Gulf developers pay",
+      "summary": "Nearly two-thirds of Trump’s foreign licensing fees came from two Gulf developers, in the UAE and Qatar, including one pursuing a $20 billion U.S",
+      "title_zh": "海湾开发商付费推动，特朗普的海外品牌授权业务收入激增至 5950 万美元",
+      "summary_zh": "特朗普的海外授权费中近三分之二来自阿联酋和卡塔尔的两家海湾开发商，其中一家正在推进一项 200 亿美元的美国"
     },
     {
-      "id": "c680c122cbba91812d956d822be1dbf67fe71a81",
-      "title": "Federal Reserve Board announces approval of the application by FS Bancorp, Inc.",
-      "title_zh": "美联储理事会宣布批准 FS Bancorp, Inc. 的申请",
-      "summary": "Federal Reserve Board announces approval of the application by FS Bancorp, Inc.",
-      "summary_zh": "美联储理事会宣布批准 FS Bancorp, Inc. 的申请。"
+      "id": "49710646f04cf3f1ac8aab1fa6c930465019717c",
+      "title": "HHS moves to tighten oversight of food ingredients as safety concerns mount",
+      "summary": "HHS moves to tighten oversight of food ingredients and define ultra-processed foods as food safety concerns raise questions about FDA visibility.",
+      "title_zh": "安全担忧升温，美国卫生与公众服务部着手收紧食品成分监管",
+      "summary_zh": "在食品安全担忧引发外界质疑 FDA 监管透明度之际，美国卫生与公众服务部着手收紧食品成分监管并界定超加工食品。"
     },
     {
-      "id": "a29277f3b5826c01e78f88ce3213a65aab627188",
-      "title": "Federal Reserve Board announces approval of the application by Banco Santander, S.A. and Santander Holdings USA, Inc.",
-      "title_zh": "美联储理事会宣布批准 Banco Santander, S.A. 与 Santander Holdings USA, Inc. 的申请",
-      "summary": "Federal Reserve Board announces approval of the application by Banco Santander, S.A",
-      "summary_zh": "美联储理事会宣布批准 Banco Santander, S.A.（桑坦德银行）的申请。"
+      "id": "f1631a2bc5f5fd9c369b242a5ee5fb27445510d0",
+      "title": "Taylor Farms recalls salsa, guacamole on salmonella outbreak, intensifying food-safety fears",
+      "summary": "Taylor Farms said on Sunday it was recalling prepared food items containing jalapenos from retailers, including Walmart, Kroger and Whole Foods in some states.",
+      "title_zh": "沙门氏菌疫情导致 Taylor Farms 召回莎莎酱和牛油果酱，加剧食品安全担忧",
+      "summary_zh": "Taylor Farms 周日表示，正从部分州的零售商处召回含墨西哥辣椒的预制食品，涉及沃尔玛、克罗格和全食超市。"
     },
     {
-      "id": "12b1a89f5980ba0253fa5d35fbb4d24ca457ce54",
-      "title": "Federal Reserve Board requests comment on a proposal to modernize its rule governing the extension of credit to bank \"insiders\"—bank executives, board members and major shareholders who could potentially influence a bank's lending decisions",
-      "title_zh": "美联储理事会就现代化其“银行内部人”授信规则的提案公开征求意见——内部人指可能影响银行放贷决策的银行高管、董事会成员及主要股东",
-      "summary": "Federal Reserve Board requests comment on a proposal to modernize its rule governing the extension of credit to bank &quot;insiders&quot;—bank executives, board",
-      "summary_zh": "美联储理事会就现代化其关于向银行“内部人”（银行高管、董事会成员等）发放信贷的规则的提案公开征求意见。"
+      "id": "f24fbb81daf2d6fe11cf07d57a04b690bc13dde1",
+      "title": "The yen's slide deepens, with half the gains from the historic US-Japan intervention now wiped out",
+      "summary": "The yen fell as much as 0.8% against the dollar to 159.06, the worst performer in the Group of Ten, having given back half the gains sparked by the historic joint intervention by the United States and Japan",
+      "title_zh": "日元颓势加深 美日历史性干预带来的半数涨幅已消失殆尽",
+      "summary_zh": "日元兑美元一度下跌0.8%，至159.06，在十国集团中表现垫底，美国和日本历史性联手干预激发的涨幅已半数回吐"
     },
     {
-      "id": "1935945161d7d46d837e2245329ad1f8ee93c902",
-      "title": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank",
-      "title_zh": "美联储理事会对 Regions Bank 前雇员与 First Interstate Bank 前雇员采取执法行动",
-      "summary": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank",
-      "summary_zh": "美联储理事会对 Regions Bank 前雇员与 First Interstate Bank 前雇员采取执法行动。"
+      "id": "777e1a1b502d282abd693e07cb0fd6711f8d1c9e",
+      "title": "Zhipu's API user count approaches 7 million, with more than 50,000 domestic compute chips newly brought online",
+      "summary": "Registered users of Zhipu's MaaS open platform (that is, API users) approach 7 million, up about 2 million from the start of July, including 23,000 enterprise customers; ZCode, its developer product benchmarked against Codex, passed one million users within one month of launch",
+      "title_zh": "智谱API用户数近700万，新启用超5万块国产算力芯片",
+      "summary_zh": "智谱 MaaS 开放平台注册用户（即 API 用户）近 700 万，相比七月初增长约 200 万，其中包括 2.3 万家企业客户，对标 Codex 的开发者产品 ZCode 上线 1 个月用户突破百万"
     },
     {
-      "id": "d877d3916bea617dbdf1e67428e25470afc2c6a6",
-      "title": "Federal Reserve Board issues enforcement action with Iuka Bancshares, Inc. and The Iuka State Bank",
-      "title_zh": "美联储理事会对 Iuka Bancshares, Inc. 及 The Iuka State Bank 采取执法行动",
-      "summary": "Federal Reserve Board issues enforcement action with Iuka Bancshares, Inc",
-      "summary_zh": "美联储理事会对 Iuka Bancshares, Inc. 采取执法行动"
+      "id": "f17650833f9718d554bcd235705f3e89ffb9a0f4",
+      "title": "Intel plans $15 billion stock offering as AI demand accelerates",
+      "summary": "Technology giants have shelled out trillions to support insatiable AI demand and the infrastructure buildout.",
+      "title_zh": "人工智能需求加速，英特尔计划进行 150 亿美元的股票增发",
+      "summary_zh": "科技巨头已投入数万亿美元，以支撑贪得无厌的人工智能需求和基础设施建设。"
+    },
+    {
+      "id": "34465f885560f9cdde281ab0cb6db54297b6de68",
+      "title": "Report: Zhipu's API user count approaches 7 million, with more than 50,000 domestic compute chips newly brought online",
+      "summary": "Registered users of Zhipu's MaaS open platform (that is, API users) approach 7 million, up about 2 million from the start of July, including 23,000 enterprise customers; ZCode, its developer product benchmarked against Codex, passed one million users within one month of launch",
+      "title_zh": "报道：智谱API用户数近700万，新启用超5万块国产算力芯片",
+      "summary_zh": "智谱MaaS开放平台注册用户（即API用户）近700万，相比七月初增长约200万，其中包括2.3万家企业客户，对标Codex的开发者产品ZCode上线1个月用户突破百万"
+    },
+    {
+      "id": "9c78750d398449a3905b8e0e679ffb9630e8df16",
+      "title": "Archer shares surge after Boeing stake, electric aircraft subsidiary deal",
+      "summary": "Boeing is selling three of its subsidiaries to Archer Aviation in exchange for a stake in the eVTOL startup.",
+      "title_zh": "波音入股并达成电动飞机子公司交易后，Archer 股价大涨",
+      "summary_zh": "波音将把旗下三家子公司出售给 Archer Aviation，以换取这家电动垂直起降初创公司的股份。"
+    },
+    {
+      "id": "c39bf228d3b279d0772784bdd3a7b2edd08b1900",
+      "title": "House Dems call for AI companies to testify on recent hacks: ‘Clear risk to safety’",
+      "summary": "A group of House Democrats is calling on leaders of Anthropic, OpenAI and other AI companies to testify in Congress about recent hacking incidents.",
+      "title_zh": "众议院民主党人要求人工智能公司就近期黑客事件作证：「对安全构成明确风险」",
+      "summary_zh": "一批众议院民主党人正呼吁 Anthropic、OpenAI 等人工智能公司的负责人就近期黑客事件在国会作证。"
     }
   ],
-  "updated_at": "2026-08-08T20:37:36Z"
+  "updated_at": "2026-08-10T16:14:08Z"
 }

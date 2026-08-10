@@ -14,6 +14,7 @@ disagree, and a CI check asserts they still agree on ``degraded`` for every key.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Any
 
@@ -148,14 +149,24 @@ class RunOutcomes:
             datasets=datasets,
         ).model_dump(mode="json")
 
-    def sources_projection(self, provider_status: dict[str, Any]) -> dict[str, Any]:
+    def sources_projection(
+        self, provider_status: dict[str, Any], previous: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         """Render ``metadata/sources.json``: provider status joined to dataset outcomes.
 
         ``degraded`` is **derived** from the outcomes of the datasets a domain serves, never set
-        independently. That derivation is the whole point: it is structurally impossible for
-        this file to claim a domain is healthy while ``freshness.json`` calls its dataset
-        degraded, because both answers now come from the same place.
+        independently — both documents are projections of this one record, so they stay in
+        agreement for every domain this run actually attempted.
+
+        For domains this run did **not** attempt (out of ``scope``), the previous projection is
+        carried forward from ``previous`` — mirroring :meth:`freshness_projection`. Without that,
+        a partial run (e.g. ``--news-only``) would overwrite a previously-degraded domain with a
+        healthy-looking ``missing`` and break the cross-check in ``scripts/validate-json.mjs``.
+        The invariant "``sources.json`` never calls a domain healthy while ``freshness.json``
+        calls its dataset degraded" therefore holds on partial runs only because *both* files
+        carry forward out-of-scope state together (#169).
         """
+        prior_domains = dict((previous or {}).get("domains", {}))
         domains: dict[str, DomainStatus] = {}
         for domain, keys in registry.DOMAIN_DATASETS.items():
             outcomes = [o for o in (self._outcomes.get(k) for k in keys) if o is not None]
@@ -170,6 +181,15 @@ class RunOutcomes:
                 entry["status"] = worst.status
                 entry["reason"] = worst.reason
             else:
+                # No outcome recorded for any dataset this domain serves this run.
+                if not _domain_in_scope(keys, self.scope):
+                    # Out of scope: carry the prior entry forward rather than resetting a
+                    # previously-degraded domain to a healthy "missing" (mirrors the
+                    # freshness_projection carry-forward).
+                    carried = _carry_forward_domain(prior_domains.get(domain))
+                    if carried is not None:
+                        domains[domain] = carried
+                        continue
                 entry.setdefault("degraded", False)
                 entry["status"] = "missing"
                 entry["reason"] = FreshnessReason(code="not_collected_this_run", detail="")
@@ -292,6 +312,27 @@ def _carry_forward(entry: Any) -> DatasetFreshness | None:
         return None
     try:
         return DatasetFreshness.model_validate(entry)
+    except Exception:  # noqa: BLE001 - any validation failure means "unusable", not "fatal"
+        return None
+
+
+def _domain_in_scope(keys: Iterable[str], scope: set[str]) -> bool:
+    """Whether this run attempted any dataset a domain serves."""
+    return any(key in scope for key in keys)
+
+
+def _carry_forward_domain(entry: Any) -> DomainStatus | None:
+    """Validate a previous ``sources.json`` domain entry so it can be carried into this run.
+
+    Returns ``None`` when the entry is absent or predates a usable shape. A partial run must not
+    crash on a file written by an older pipeline, and must not launder an unparseable entry
+    forward either — falling back to ``missing`` is the honest answer for a domain we did not
+    collect and cannot read.
+    """
+    if not isinstance(entry, dict):
+        return None
+    try:
+        return DomainStatus.model_validate(entry)
     except Exception:  # noqa: BLE001 - any validation failure means "unusable", not "fatal"
         return None
 
