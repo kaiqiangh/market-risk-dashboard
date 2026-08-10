@@ -102,8 +102,6 @@ theme_series:
   name: 6861.T
 - symbol: AAPL
   name: AAPL
-- symbol: ABB
-  name: ABB
 - symbol: ABNB
   name: ABNB
 - symbol: ACMR
@@ -214,10 +212,10 @@ theme_series:
   name: FANUY
 - symbol: FFIV
   name: FFIV
-- symbol: FI
-  name: FI
 - symbol: FIS
   name: FIS
+- symbol: FISV
+  name: FISV
 - symbol: FTNT
   name: FTNT
 - symbol: GEN

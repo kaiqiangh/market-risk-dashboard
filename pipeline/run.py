@@ -1069,7 +1069,8 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         sectors = _assemble("sectors", results["sectors"], bool(market_degraded_by_dataset.get("sectors", market_degraded)),
                             **_provider_kwargs(market_meta, "sectors"),
                             data_quality=market_quality.get("sectors", market_meta.get("data_quality", 1.0)),
-                            source_updated_at=market_source.get("sectors"))
+                            source_updated_at=market_source.get("sectors"),
+                            detail=market_meta.get("degraded_detail_by_dataset", {}).get("sectors", ""))
         crypto = _assemble("crypto", results["crypto"], bool(market_degraded_by_dataset.get("crypto", market_degraded)),
                            **_provider_kwargs(market_meta, "crypto"),
                            data_quality=market_quality.get("crypto", market_meta.get("data_quality", 1.0)),
@@ -1191,6 +1192,23 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             sectors=sectors,
             calendar=calendar,
         )
+        # #174: the dashboard never contacts a provider, so its degraded reason must be
+        # `input_dataset_unhealthy` naming the culprits at the aggregated worst status — NOT
+        # the default `provider_http_error`, which would falsely imply the dashboard itself
+        # hit a provider. Mirrors the fact-layer pattern (#125): aggregate over the
+        # dashboard's own inputs (risk + the market content it renders + calendar).
+        dashboard_inputs = {
+            "risk": risk_env.freshness_status,
+            "equities": equities.freshness_status,
+            "crypto": crypto.freshness_status,
+            "sectors": sectors.freshness_status if sectors is not None else "missing",
+            "calendar": calendar.freshness_status,
+        }
+        dashboard_status = aggregate_freshness(dashboard_inputs.values())
+        dashboard_culprits = sorted(
+            k for k, v in dashboard_inputs.items()
+            if str(v) == dashboard_status and dashboard_status != "fresh"
+        )
         dashboard_env = _finalize_and_write(
             writer, "dashboard", dashboard_payload, dashboard_degraded, outcomes,
             provider="risk_model",
@@ -1203,6 +1221,11 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
                     sectors.source_updated_at if sectors is not None else None,
                     calendar.source_updated_at,
                 ]
+            ),
+            error_code="input_dataset_unhealthy" if dashboard_degraded else None,
+            detail=(
+                f"aggregated from inputs; {dashboard_status}: {', '.join(dashboard_culprits) or 'unknown'}"[:200]
+                if dashboard_degraded else ""
             ),
         )
 
@@ -1427,6 +1450,7 @@ def main(argv: list[str] | None = None) -> int:
                                 **_provider_kwargs(market_meta, "sectors"),
                 data_quality=market_quality.get("sectors", market_meta.get("data_quality", 1.0)),
                 source_updated_at=market_source.get("sectors"),
+                detail=market_meta.get("degraded_detail_by_dataset", {}).get("sectors", ""),
             )
             _finalize_and_write(
                 writer, "commodities", results["commodities"],

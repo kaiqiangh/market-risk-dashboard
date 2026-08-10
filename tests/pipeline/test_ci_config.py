@@ -256,6 +256,33 @@ def test_deploy_pages_runs_full_data_and_secret_gates() -> None:
     )
 
 
+def test_theme_health_gate_is_scheduled_read_only_and_runs_symbol_health() -> None:
+    """#175: a dead theme symbol must surface within a day — daily schedule + manual dispatch.
+
+    The workflow must be triggerable on a schedule and on demand, run with minimal
+    read-only permissions (Architecture §8.14 — no secrets, no issue creation), and
+    actually invoke the symbol_health CLI against the committed data tree.
+    """
+    text = _read_workflow("theme-health.yml")
+
+    assert _has_yaml_key(text, "schedule"), "theme-health.yml must run on a daily schedule"
+    assert re.search(r"^\s*-\s*cron:", text, re.MULTILINE), (
+        "the schedule must be a real cron entry (line-anchored, not a prose mention)"
+    )
+    assert _has_yaml_key(text, "workflow_dispatch"), (
+        "theme-health.yml must be manually dispatchable for on-demand checks"
+    )
+    assert re.search(r"^\s*contents:\s*read\s*$", text, re.MULTILINE), (
+        "the gate must be read-only: permissions.contents: read (Architecture §8.14)"
+    )
+    assert "python -m pipeline.validation.symbol_health --data-dir public/data" in text, (
+        "theme-health.yml must run the symbol_health CLI against the committed data"
+    )
+    assert "constraints/py312.txt" in text, (
+        "theme-health.yml must install pipeline dependencies through constraints/py312.txt"
+    )
+
+
 def test_ci_actions_are_pinned_to_full_commit_shas() -> None:
     """Every external action must resolve to an auditable immutable revision."""
     refs = [
@@ -299,8 +326,9 @@ def test_frontend_ci_and_production_audit_gate_are_wired() -> None:
         for command in ("npm run lint", "npm run typecheck", "npm test", "npm run build"):
             assert command in workflow, f"missing frontend gate: {command}"
 
-    assert "branches: [main]" in deploy_pages, "Pages publishing must be main-only"
-    assert "branches: [dev, main]" not in deploy_pages
+    assert "branches: [dev, main]" in deploy_pages, (
+        "Pages publishing must run on push to dev and main (per-branch concurrency keeps them from cancelling each other)"
+    )
     assert re.search(r"^\s*pages: write$", deploy_pages, re.MULTILINE), (
         "the deploy job must retain Pages write permission"
     )
@@ -309,8 +337,15 @@ def test_frontend_ci_and_production_audit_gate_are_wired() -> None:
     )
 
 
-def test_pages_release_boundary_is_main_only_and_fully_gated() -> None:
-    """Dev and PR validation must never acquire the production Pages environment."""
+def test_pages_release_boundary_is_dev_and_main_and_fully_gated() -> None:
+    """Dev and main may release Pages, but only after the full build gate; PRs never do.
+
+    #172: the release boundary widened from main-only to dev+main, and the concurrency
+    group became per-ref so a dev deploy can never cancel an in-flight main deploy (or
+    vice versa). The deploy job still requires the complete build: Python validation,
+    contract drift, audit, build and secret scan must all precede the artifact upload,
+    and the production Pages environment stays unreachable from PR validation.
+    """
     deploy_pages = _read_workflow("deploy-pages.yml")
     test_pipeline = _read_workflow("test-pipeline.yml")
     deploy_job = deploy_pages.split("\n  deploy:\n", maxsplit=1)[1]
@@ -320,7 +355,13 @@ def test_pages_release_boundary_is_main_only_and_fully_gated() -> None:
     assert "branches: [dev, main]" in test_pipeline
     assert "github-pages" not in test_pipeline
     assert "workflow_dispatch:" in deploy_pages
-    assert "if: github.ref == 'refs/heads/main'" in deploy_job
+    assert "if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'" in deploy_job, (
+        "the deploy job must guard BOTH release refs (dev and main)"
+    )
+    assert "group: pages-${{ github.ref }}" in deploy_pages, (
+        "the concurrency group must be per-ref so dev/main never cancel each other"
+    )
+    assert "cancel-in-progress: true" in deploy_pages
     assert "needs: build" in deploy_job
     assert "github-pages" in deploy_job
     assert "pages: write" not in build_job

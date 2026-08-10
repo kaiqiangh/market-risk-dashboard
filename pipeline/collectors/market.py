@@ -643,6 +643,21 @@ class MarketCollector:
         self._dataset_degraded.clear()
         self._risk_history_degraded = False
 
+    def _sectors_degraded_detail(self) -> str:
+        """A human-readable detail behind the sectors degraded flag (#174).
+
+        Names the theme history requests that were not fresh — the same telemetry that
+        marks ``sectors`` degraded in ``_merge_history_fetches`` — so the Status page
+        reason says *which* series failed instead of a bare ``provider_http_error``.
+        Returns an empty string when no theme series failed.
+        """
+        failed = sorted(
+            item["request_key"]
+            for item in self._history_telemetry
+            if "themes" in item["consumers"] and item["status"] != "fresh"
+        )
+        return "theme series unavailable: " + ", ".join(failed) if failed else ""
+
     def _collection_telemetry(self) -> dict[str, Any]:
         """Return bounded, provider-safe diagnostics for the market history plan."""
         request_keys = {item["request_key"] for item in self._history_telemetry}
@@ -721,6 +736,13 @@ class MarketCollector:
             "data_quality_by_dataset": quality_by_dataset,
             "degraded_by_dataset": {
                 name: name in self._dataset_degraded for name in quality_by_dataset
+            },
+            # #174: per-dataset human-readable detail behind the degraded flag. Sectors name
+            # the theme series whose 1y history was unavailable/empty/degraded — the failed
+            # request keys were already in collection_telemetry, this surfaces them on the
+            # Status page reason instead of burying them in sources.json.
+            "degraded_detail_by_dataset": {
+                "sectors": self._sectors_degraded_detail(),
             },
             "source_updated_at_by_dataset": source_by_dataset,
             "risk_data_quality": risk_data_quality,

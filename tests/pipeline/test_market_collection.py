@@ -139,3 +139,35 @@ def test_quality_and_degradation_are_scoped_per_market_dataset(tmp_path: Path, m
     assert result["data_quality_by_dataset"]["equities"] == 1.0
     assert result["data_quality_by_dataset"]["crypto"] == 0.8
     assert result["data_quality_by_dataset"]["commodities"] == 1.0
+
+
+def test_sectors_degraded_detail_names_failed_theme_series(tmp_path: Path, monkeypatch) -> None:
+    """#174: when a theme history fetch is not fresh, the collector exposes a sectors detail
+    naming the failed request keys (the delisted-symbol diagnosis the Status page needs)."""
+    registry = _HistoryRegistry(failing_symbols={"ROK"})
+    collector = _collector(registry, tmp_path)
+    monkeypatch.setattr(collector, "_collect_equities", lambda: EquitiesDataset(assets=[]))
+    monkeypatch.setattr(collector, "_collect_crypto", lambda: CryptoDataset(assets=[]))
+    monkeypatch.setattr(collector, "_collect_commodities", lambda: CommoditiesDataset(assets=[]))
+    monkeypatch.setattr(collector, "_collect_sectors", lambda _equities: SectorsDataset(sectors=[], themes=[]))
+
+    result = collector.collect()
+
+    assert result["degraded_by_dataset"]["sectors"] is True
+    assert result["degraded_detail_by_dataset"]["sectors"] == "theme series unavailable: hist_ROK_1y"
+
+
+def test_sectors_degraded_detail_empty_when_theme_series_fresh(tmp_path: Path, monkeypatch) -> None:
+    """#174 control: a healthy theme plan yields an empty sectors detail, so no fabricated
+    `theme series unavailable` reason reaches the Status page."""
+    registry = _HistoryRegistry()
+    collector = _collector(registry, tmp_path)
+    monkeypatch.setattr(collector, "_collect_equities", lambda: EquitiesDataset(assets=[]))
+    monkeypatch.setattr(collector, "_collect_crypto", lambda: CryptoDataset(assets=[]))
+    monkeypatch.setattr(collector, "_collect_commodities", lambda: CommoditiesDataset(assets=[]))
+    monkeypatch.setattr(collector, "_collect_sectors", lambda _equities: SectorsDataset(sectors=[], themes=[]))
+
+    result = collector.collect()
+
+    assert result["degraded_by_dataset"]["sectors"] is False
+    assert result["degraded_detail_by_dataset"]["sectors"] == ""

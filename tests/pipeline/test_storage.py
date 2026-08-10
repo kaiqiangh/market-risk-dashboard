@@ -1054,6 +1054,35 @@ class TestPerDatasetDegradation:
             assert freshness["datasets"][key]["status"] == "degraded", key
             assert freshness["datasets"][key]["reason"]["code"] == "provider_http_error", key
 
+    def test_market_only_sectors_reason_detail_names_failed_theme_series(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """#174: the `--market-only` path threads the collector's sectors detail, so a
+        market-only run reports the culprit theme series too — not only the full path."""
+        import pipeline.run as run_mod
+
+        def _collection_with_sectors_detail(command: str) -> dict:
+            results = _fake_market_collection(command)
+            results["market_meta"]["degraded_detail_by_dataset"] = {
+                "sectors": "theme series unavailable: hist_ROK_1y",
+            }
+            return results
+
+        data_dir = tmp_path / "data"
+        monkeypatch.setattr(
+            run_mod,
+            "settings",
+            Settings(_env_file=None, data_dir=data_dir, artifacts_dir=tmp_path / "artifacts"),
+        )
+        monkeypatch.setattr(run_mod, "_run_collection", _collection_with_sectors_detail)
+        assert run_mod.main(["--market-only"]) == 0
+
+        freshness = json.loads((data_dir / "metadata" / "freshness.json").read_text(encoding="utf-8"))
+        sectors = freshness["datasets"]["sectors"]
+        assert sectors["status"] == "degraded"
+        assert sectors["reason"]["code"] == "provider_http_error"
+        assert sectors["reason"]["detail"] == "theme series unavailable: hist_ROK_1y"
+
 
 def test_theme_constituent_history_failure_does_not_degrade_market(tmp_path: Path) -> None:
     """#119: a delisted/bad theme constituent (ABB/FI-style) is swallowed by
