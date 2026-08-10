@@ -1450,6 +1450,7 @@ def main(argv: list[str] | None = None) -> int:
                                 **_provider_kwargs(market_meta, "sectors"),
                 data_quality=market_quality.get("sectors", market_meta.get("data_quality", 1.0)),
                 source_updated_at=market_source.get("sectors"),
+                detail=market_meta.get("degraded_detail_by_dataset", {}).get("sectors", ""),
             )
             _finalize_and_write(
                 writer, "commodities", results["commodities"],
