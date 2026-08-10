@@ -1,0 +1,5 @@
+# Dual-branch GitHub Pages publishing (last-push-wins)
+
+`deploy-pages.yml` was main-only: the trigger watched `main` and the deploy job was guarded by `if: github.ref == 'refs/heads/main'`, with two CI tests pinning that boundary. Pushes to `dev` — the integration branch the scheduled data pipeline actually commits to — never deployed. We now trigger on `push: branches: [dev, main]`, let the deploy job run for both refs, and key concurrency per branch (`pages-${{ github.ref }}`) so same-branch pushes serialize while `dev` and `main` runs never cancel each other; GitHub serializes Pages deployments server-side, so the most recently deployed branch becomes the live site.
+
+We rejected a separate `github-pages-dev` preview environment (unique-URL isolation, but the operator chose the simpler shared-site model) and a build-only `dev` run (it did not satisfy the requirement that `dev` actually deploy). Consequence, accepted: a `dev` push updates the production URL until a later `main` push replaces it — both branches share one live site by design, and the Status page's data quality is the visible signal of which branch's data is live.
