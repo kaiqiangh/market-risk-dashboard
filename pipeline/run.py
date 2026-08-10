@@ -865,8 +865,9 @@ def _publish_metadata(
 
     Writing them together, from the same source, is the mechanism that makes the old
     contradiction unrepresentable: ``sources.json`` cannot call a domain healthy while
-    ``freshness.json`` calls its dataset degraded, because ``degraded`` in the first file is
-    *derived* from the outcomes in the second.
+    ``freshness.json`` calls its dataset degraded, because ``degraded`` in both files is
+    *derived* from the same outcomes — and, on partial runs, both carry forward out-of-scope
+    state together so a ``--news-only`` run cannot reset a previously-degraded domain.
 
     ``provider_status`` is omitted by commands that fetch nothing (``--fact-layer``,
     ``--analysis-only``); rewriting provider health from a run that contacted no provider
@@ -874,7 +875,9 @@ def _publish_metadata(
     """
     writer.write_freshness_metadata(outcomes.freshness_projection(writer.read_freshness_raw()))
     if provider_status is not None:
-        writer.write_sources_metadata(outcomes.sources_projection(provider_status))
+        writer.write_sources_metadata(
+            outcomes.sources_projection(provider_status, writer.read_sources_raw())
+        )
 
 
 # ============================================================
