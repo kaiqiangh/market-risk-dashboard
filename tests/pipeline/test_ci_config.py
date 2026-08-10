@@ -256,6 +256,33 @@ def test_deploy_pages_runs_full_data_and_secret_gates() -> None:
     )
 
 
+def test_theme_health_gate_is_scheduled_read_only_and_runs_symbol_health() -> None:
+    """#175: a dead theme symbol must surface within a day — daily schedule + manual dispatch.
+
+    The workflow must be triggerable on a schedule and on demand, run with minimal
+    read-only permissions (Architecture §8.14 — no secrets, no issue creation), and
+    actually invoke the symbol_health CLI against the committed data tree.
+    """
+    text = _read_workflow("theme-health.yml")
+
+    assert _has_yaml_key(text, "schedule"), "theme-health.yml must run on a daily schedule"
+    assert re.search(r"^\s*-\s*cron:", text, re.MULTILINE), (
+        "the schedule must be a real cron entry (line-anchored, not a prose mention)"
+    )
+    assert _has_yaml_key(text, "workflow_dispatch"), (
+        "theme-health.yml must be manually dispatchable for on-demand checks"
+    )
+    assert re.search(r"^\s*contents:\s*read\s*$", text, re.MULTILINE), (
+        "the gate must be read-only: permissions.contents: read (Architecture §8.14)"
+    )
+    assert "python -m pipeline.validation.symbol_health --data-dir public/data" in text, (
+        "theme-health.yml must run the symbol_health CLI against the committed data"
+    )
+    assert "constraints/py312.txt" in text, (
+        "theme-health.yml must install pipeline dependencies through constraints/py312.txt"
+    )
+
+
 def test_ci_actions_are_pinned_to_full_commit_shas() -> None:
     """Every external action must resolve to an auditable immutable revision."""
     refs = [

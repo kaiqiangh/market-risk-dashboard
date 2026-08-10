@@ -120,6 +120,15 @@ if ((${#DATA_ARGS[@]} > 0)); then
 else
   "$PY" -m pipeline.validation.ci_checks || VALIDATION_STATUS=$?
 fi
+
+# Theme symbol health gate (#175): a configured theme symbol missing/degraded in the
+# latest run telemetry must fail validation — the chronic Degraded cascade (#171) began
+# with two delisted theme symbols that no gate noticed for weeks.
+if ((${#DATA_ARGS[@]} > 0)); then
+  "$PY" -m pipeline.validation.symbol_health "${DATA_ARGS[@]}" || VALIDATION_STATUS=$?
+else
+  "$PY" -m pipeline.validation.symbol_health || VALIDATION_STATUS=$?
+fi
 if ((VALIDATION_STATUS == 0)); then
   exit 0
 fi

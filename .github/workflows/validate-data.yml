@@ -57,6 +57,9 @@ jobs:
       - name: Validate committed data (comprehensive)
         run: python -m pipeline.validation.ci_checks --data-dir public/data
 
+      - name: "Theme symbol health gate (#175): configured theme symbols must not be missing/degraded in latest telemetry"
+        run: python -m pipeline.validation.symbol_health --data-dir public/data
+
       - name: Validate committed data (Node structural companion)
         run: node scripts/validate-json.mjs --data-dir public/data
 
