@@ -387,9 +387,11 @@ def _full_run_results(**overrides: Any) -> dict[str, Any]:
     return results
 
 
-def _full_run_factlayer(data_dir: Path, monkeypatch: pytest.MonkeyPatch, **overrides: Any) -> dict[str, Any]:
+def _full_run_dataset(
+    data_dir: Path, monkeypatch: pytest.MonkeyPatch, record_key: str, **overrides: Any
+) -> dict[str, Any]:
     """Drive the real `_run_risk_and_write` against a tmp data dir and return the published
-    `factlayer` freshness record. Closes the #99 blind spot: the full risk/fact write path
+    freshness record for `record_key`. Closes the #99 blind spot: the full risk/fact write path
     is what actually broke `--full` on 08-07 morning."""
     import pipeline.run as run_module
     from pipeline.storage.writer import StorageWriter
@@ -402,7 +404,17 @@ def _full_run_factlayer(data_dir: Path, monkeypatch: pytest.MonkeyPatch, **overr
     ok, error = run_module._run_risk_and_write(_full_run_results(**overrides), writer, "test-full")
     assert ok, f"full-path write failed: {error}"
     freshness = json.loads((data_dir / "metadata" / "freshness.json").read_text(encoding="utf-8"))
-    return freshness["datasets"]["factlayer"]
+    return freshness["datasets"][record_key]
+
+
+def _full_run_factlayer(data_dir: Path, monkeypatch: pytest.MonkeyPatch, **overrides: Any) -> dict[str, Any]:
+    """The published `factlayer` freshness record from a real `_run_risk_and_write`."""
+    return _full_run_dataset(data_dir, monkeypatch, "factlayer", **overrides)
+
+
+def _full_run_dashboard(data_dir: Path, monkeypatch: pytest.MonkeyPatch, **overrides: Any) -> dict[str, Any]:
+    """The published `dashboard` freshness record from a real `_run_risk_and_write`."""
+    return _full_run_dataset(data_dir, monkeypatch, "dashboard", **overrides)
 
 
 def test_full_path_factlayer_reason_names_degraded_news_input(
@@ -436,6 +448,96 @@ def test_full_path_factlayer_healthy_reason_when_inputs_healthy(
     record = _full_run_factlayer(tmp_path / "data", monkeypatch)
     assert record["status"] != "degraded"
     assert record["reason"]["code"] != "input_dataset_unhealthy"
+
+
+def test_full_path_dashboard_reason_names_degraded_inputs(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """#174: the dashboard never contacts a provider, so a degraded dashboard must say
+    `input_dataset_unhealthy` naming its degraded inputs — not the default
+    `provider_http_error`, which would falsely imply the dashboard itself hit a provider.
+    Aggregation mirrors the fact-layer pattern: culprits = the inputs at the worst status."""
+    record = _full_run_dashboard(
+        tmp_path / "data", monkeypatch,
+        market_meta={
+            "provider": {"provider": "yfinance", "used_fallback": False, "from_cache": False},
+            "data_quality": 1.0,
+            "degraded": ["equity unavailable"],
+            "degraded_by_dataset": {
+                "equities": True,
+                "crypto": False,
+                "commodities": False,
+                "sectors": False,
+            },
+            "data_quality_by_dataset": {
+                "equities": 0.8,
+                "crypto": 1.0,
+                "commodities": 1.0,
+                "sectors": 1.0,
+            },
+            "source_updated_at_by_dataset": {
+                "equities": None,
+                "crypto": None,
+                "commodities": None,
+                "sectors": None,
+            },
+        },
+    )
+    assert record["status"] == "degraded"
+    assert record["reason"]["code"] == "input_dataset_unhealthy"
+    assert "equities" in record["reason"]["detail"], record["reason"]["detail"]
+    assert "risk" in record["reason"]["detail"], record["reason"]["detail"]
+
+
+def test_full_path_dashboard_healthy_reason_when_inputs_healthy(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """#174 control: with healthy inputs the dashboard verdict never fabricates
+    `input_dataset_unhealthy` (the dashboard's own generated_at is the run clock, so the
+    time ladder yields `fresh`/`ok` — deterministic and fine)."""
+    record = _full_run_dashboard(tmp_path / "data", monkeypatch)
+    assert record["status"] != "degraded"
+    assert record["reason"]["code"] != "input_dataset_unhealthy"
+
+
+def test_full_path_sectors_reason_detail_names_failed_theme_series(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """#174: the sectors Status-page reason keeps `provider_http_error` but now carries the
+    detail naming the failed theme series the collector exposed — the delisted-symbol
+    diagnosis is visible instead of only living in sources.json telemetry."""
+    record = _full_run_dataset(
+        tmp_path / "data", monkeypatch, "sectors",
+        market_meta={
+            "provider": {"provider": "yfinance", "used_fallback": False, "from_cache": False},
+            "data_quality": 1.0,
+            "degraded": ["ROK: history unavailable"],
+            "degraded_by_dataset": {
+                "equities": False,
+                "crypto": False,
+                "commodities": False,
+                "sectors": True,
+            },
+            "data_quality_by_dataset": {
+                "equities": 1.0,
+                "crypto": 1.0,
+                "commodities": 1.0,
+                "sectors": 0.8,
+            },
+            "source_updated_at_by_dataset": {
+                "equities": None,
+                "crypto": None,
+                "commodities": None,
+                "sectors": None,
+            },
+            "degraded_detail_by_dataset": {
+                "sectors": "theme series unavailable: hist_ROK_1y",
+            },
+        },
+    )
+    assert record["status"] == "degraded"
+    assert record["reason"]["code"] == "provider_http_error"
+    assert record["reason"]["detail"] == "theme series unavailable: hist_ROK_1y"
 
 
 def test_dashboard_inherits_degradation_from_commodity_risk_input(
