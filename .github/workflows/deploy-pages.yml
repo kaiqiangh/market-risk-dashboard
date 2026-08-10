@@ -4,15 +4,17 @@ name: Deploy Pages
 
 on:
   push:
-    branches: [main]
+    branches: [dev, main]
   workflow_dispatch:
 
 # Minimal CI permissions (Architecture §8.14)
 permissions:
   contents: read
 
+# Per-branch serialization: dev and main deploy independently and never cancel each
+# other; only pushes to the same branch cancel an in-flight Pages run.
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -83,7 +85,7 @@ jobs:
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     permissions:
       pages: write
