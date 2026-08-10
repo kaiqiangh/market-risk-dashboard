@@ -320,8 +320,6 @@ themes:
     constituents:
     - symbol: ISRG
       weight: 1.0
-    - symbol: ABB
-      weight: 1.0
     - symbol: FANUY
       weight: 1.0
     - symbol: ZBRA
@@ -456,8 +454,6 @@ themes:
       weight: 1.0
     - symbol: SIEGY
       weight: 1.0
-    - symbol: ABB
-      weight: 0.5
   gaming:
     constituents:
     - symbol: EA
@@ -521,7 +517,7 @@ themes:
       weight: 1.0
     - symbol: XYZ
       weight: 1.0
-    - symbol: FI
+    - symbol: FISV
       weight: 1.0
     - symbol: FIS
       weight: 1.0
