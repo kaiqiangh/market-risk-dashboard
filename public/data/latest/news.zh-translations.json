@@ -1,67 +1,88 @@
 {
   "items": [
     {
-      "id": "c2079588baa326c387736396de3d5311fb397ef4",
-      "title": "Nvidia teams up with Wall Street asset managers on $500 billion AI infrastructure push",
-      "summary": "The capital package highlights the growing role of private capital in financing the costs of the artificial intelligence boom.",
-      "title_zh": "英伟达联手华尔街资产管理机构，推进5000亿美元AI基础设施计划",
-      "summary_zh": "这一资本方案凸显出私人资本在为人工智能热潮的成本融资方面日益重要的作用。"
+      "id": "c6e087b676e206892aad1ee9af801542f595a92e",
+      "title": "July US CPI expected to cool; Fed hike bets may face a second shock",
+      "summary": "On the evening of August 12, the US Bureau of Labor Statistics (BLS) will release the July CPI data.",
+      "title_zh": "7月美国CPI预计降温：美联储加息预期或迎二次冲击",
+      "summary_zh": "8月12日晚间，美国劳工统计局（BLS）将公布7月份CPI数据"
     },
     {
-      "id": "0167125faeaa62c37fc40146a93ce21871acf26e",
-      "title": "Hammack: a 'certain number' of rate hikes may be needed, and it is time for the Fed to start acting",
-      "summary": "[Hammack: a 'certain number' of rate hikes may be needed, and it is time for the Fed to start acting] CLS, August 11 -- Federal Reserve official Hammack said a 'certain number' of rate hikes may be needed",
-      "title_zh": "哈马克：可能需要“一定次数”的加息 现在是美联储开始采取行动的时候",
-      "summary_zh": "【哈马克：可能需要“一定次数”的加息 现在是美联储开始采取行动的时候】财联社8月11日电，美联储官员哈马克表示，可能需要“一定次数”的加息"
+      "id": "21505bf8d6179afe5ae9abc70f76298d704727bf",
+      "title": "Fears of a memory-chip peak; Korean brokers slash Samsung and SK Hynix target prices by about 30%",
+      "summary": "Citing South Korea's JoongAng Ilbo Chinese edition on the 11th, Korea's Kiwoom Securities cut target prices for both Samsung Electronics and SK Hynix.",
+      "title_zh": "担忧存储芯片行业见顶 三星、SK海力士目标价遭韩国券商猛砍约30%",
+      "summary_zh": "【担忧存储芯片行业见顶 三星、SK海力士目标价遭韩国券商猛砍约30%】财联社8月11日电，据韩国《中央日报》中文网11日报道，韩国Kiwoom证券同步下调了三星电子与SK海力士的目标股价"
     },
     {
-      "id": "edb6afaf05d88b43ffa327450489d047c3a19810",
-      "title": "S&P 500 is little changed as traders await possible Hormuz deal, Intel shares fall: Live updates",
-      "summary": "The market's moves come amid growing doubts that the U.S",
-      "title_zh": "标普500几无变化，交易员静待可能达成的霍尔木兹协议，英特尔股价下跌：实时更新",
-      "summary_zh": "市场的这些波动，发生在外界对美国的怀疑不断加深之际"
+      "id": "fa1a70e1cf1fccd2803cc3721a0b52790e5fc9e6",
+      "title": "Here’s how much Roger Federer is losing as On Holding says it is being disciplined on price",
+      "summary": "Apparel maker On Holding saw its shares slump in premarket trade as the Zurich-headquartered, U.S.-listed company guided to weaker-than-expected sales for the y",
+      "title_zh": "安踏持股的 On Holding 因定价趋紧股价承压，费德勒身家缩水几何",
+      "summary_zh": "这家总部位于苏黎世、在美上市的运动服饰公司 On Holding 预警销售不及预期，盘前股价重挫。"
     },
     {
-      "id": "a1d6080cecb9d968b5d0a7503ea1a6bbe43a29dc",
-      "title": "Fed Chair Warsh has sold all of the assets he pledged to divest",
-      "summary": "Government filings show that Federal Reserve Chair Kevin Warsh has sold all of the financial assets he had previously pledged to divest",
-      "title_zh": "美联储主席沃什已出售承诺剥离的全部资产",
-      "summary_zh": "政府文件显示，美联储主席凯文·沃什已出售其此前承诺剥离的全部金融资产"
+      "id": "59bf9013e4cc654bbed9f11a21e54fe4aa233c3f",
+      "title": "'That's a good idea': U.S. and Iran trade reparation demands as Hormuz deal hopes fade",
+      "summary": "The dueling positions Washington and Tehran staked out showed how far apart the two sides remain even as both talked of winding down regional hostilities.",
+      "title_zh": "「好主意」：美伊就赔偿要价交锋，霍尔木兹协议希望消退",
+      "summary_zh": "华盛顿与德黑兰各自摆出的对立立场显示，双方分歧依旧巨大，尽管双方都谈及为地区敌对降温。"
     },
     {
-      "id": "f61a5e4397bf6a7db7631b7ed5582ea97c83f47a",
-      "title": "Strategy keeps selling! It sold $110 million of Bitcoin and trimmed $650 million of common stock last week",
-      "summary": "Michael Saylor's Strategy continued to sell Bitcoin and common stock last week to build up its cash reserves",
-      "title_zh": "Strategy继续卖币！上周出售比特币1.1亿美元，减持普通股6.5亿美元",
-      "summary_zh": "迈克尔·塞勒（Michael Saylor）旗下的Strategy上周继续出售比特币和普通股，以充实现金储备"
+      "id": "4cde8d0d886b26b9c4dd1b4954b749fe2442e4c2",
+      "title": "Bank of Korea deputy governor: inflation persists above target, more rate hikes expected",
+      "summary": "The Bank of Korea's latest guidance struck a hawkish tone, raising market expectations for another hike in August.",
+      "title_zh": "韩国央行副行长：通胀持续高于目标，预计将继续加息",
+      "summary_zh": "韩国央行高层最新表态释放偏鹰信号，市场对8月再度加息的预期进一步升温"
     },
     {
-      "id": "5f0c8aa05b8aac4ec92ce8bdfe3d0a210294e4aa",
-      "title": "Wednesday’s crucial CPI report will show tamer inflation, according to prediction markets",
-      "summary": "Monday's odds on prediction market platform Kalshi show tamer inflation and little chance of exceeding economists' consensus for July.",
-      "title_zh": "预测市场认为，周三的关键CPI报告将显示通胀进一步降温",
-      "summary_zh": "预测市场平台Kalshi周一的赔率显示，通胀将更为温和，且7月数据超出经济学家一致预期的可能性很小。"
+      "id": "d1300b61171764b8325e98bd58c50ebb586e7f6d",
+      "title": "Stock futures little changed as investors weigh Iran, Hormuz deal prospects: Live updates",
+      "summary": "Investors weighed signs of progress toward reopening the Strait of Hormuz against doubts that the U.S",
+      "title_zh": "股指期货几乎持平，投资者权衡伊朗与霍尔木兹协议前景：实时更新",
+      "summary_zh": "投资者在重开霍尔木兹海峡的进展迹象与美国方面的疑虑之间权衡。"
     },
     {
-      "id": "da5999146d9c473c4ac7eef9cb5d47b806926e02",
-      "title": "Report: Nvidia is partnering with several companies on a $500 billion AI financing deal",
-      "summary": "Several companies have aligned with Nvidia around a $500 billion artificial intelligence (AI) financing agreement, which is expected to be announced as early as Monday US Eastern time",
-      "title_zh": "报道：英伟达与多家公司围绕5000亿美元AI融资协议合作",
-      "summary_zh": "多家公司与英伟达围绕5000亿美元人工智能（AI）融资协议结盟，预计最快将在（美东时间）周一宣布"
+      "id": "ea5be38671be1ce08b07db04739b4f214ac2993f",
+      "title": "U.S. oil tops $84 as Hormuz deal hopes dwindle and deadlock deepens",
+      "summary": "U.S",
+      "title_zh": "霍尔木兹协议希望消退、僵局加深，美国油价升破 84 美元",
+      "summary_zh": null
     },
     {
-      "id": "8aa631f247395ca8099fade8cbde94492878ece7",
-      "title": "Hassett: if he were at the Fed he would hold rates or cut, and rules out succeeding Cook",
-      "summary": "White House National Economic Council Director Hassett said in an interview on Monday that if he were at the Fed, he would choose to hold rates steady or cut",
-      "title_zh": "哈塞特：若身在美联储将维持利率不变或降息，排除接替库克可能",
-      "summary_zh": "白宫国家经济委员会（NEC）主任哈塞特周一接受采访时表示， 如果自己身在美联储，他会选择 维持利率不变 或 降息"
+      "id": "87a77fb79656bf3613960377fa31bc2318cd363d",
+      "title": "Fed 2026 voter Hammack: a single hike is insufficient, multiple increases may be needed",
+      "summary": "Cleveland Fed President Beth Hammack sent a clear hawkish signal, saying one hike alone cannot effectively contain inflation and reaching the 2% target may require several rounds of increases.",
+      "title_zh": "美联储今年票委Hammack：一次加息力度不足，可能需要多次加息",
+      "summary_zh": "美联储克利夫兰联储主席Beth Hammack明确释放鹰派信号，表示仅靠一次加息难以有效压制通胀，实现2%目标可能需要多轮加息行动"
     },
     {
-      "id": "f6724d3b40bc333726ed3697fec5f1dcb0edadce",
-      "title": "Trump signals shift to economic pressure as Iran hardens stance over Strait of Hormuz",
-      "summary": "The escalating tally underscores how far the two sides remain from resolving a crisis that has choked the Strait of Hormuz for more than five months.",
-      "title_zh": "伊朗在霍尔木兹海峡问题上立场趋硬，特朗普示意转向经济施压",
-      "summary_zh": "不断攀升的数字凸显出，双方距离化解这场已令霍尔木兹海峡阻塞逾五个月的危机仍有多远。"
+      "id": "382b6c3997594bdc2e9e3f1aa921bef874cd0621",
+      "title": "Hormuz Deadlock: Where oil prices could head next as prospects for an imminent deal fade",
+      "summary": "Oil traders keep clinging to hope that the Strait of Hormuz will reopen",
+      "title_zh": "霍尔木兹僵局：短期协议无望，油价下一步走向何方",
+      "summary_zh": "原油交易员仍紧抱霍尔木兹海峡终将重开的希望。"
+    },
+    {
+      "id": "97a45d3ec31d5b445e94a4ea16cc92ca80780db6",
+      "title": "Citing debt-risk worries, Bank of America cuts Broadcom credit rating to neutral",
+      "summary": "Broadcom's fundamentals remain strong, but the potential credit risk from its XPV platform is emerging as a new variable for bond investors.",
+      "title_zh": "担心债务风险，美银下调博通信用评级至中性",
+      "summary_zh": "博通基本面依然强劲，但XPV平台带来的潜在信用风险正在成为债券投资者的新变量"
+    },
+    {
+      "id": "681e89ab50f2c9fe03e5dc8d4e42634ea3f6c99a",
+      "title": "Nvidia's 500 billion dollar 'circular financing'? Morgan Stanley pushes back: third parties lead the investment, Nvidia only provides 'residual-value support' yet still earns long-term revenue share",
+      "summary": "Nvidia announced mobilizing 500 billion dollars of third-party capital for AI infrastructure; Morgan Stanley argues this structure fundamentally eases market fears of 'circular financing' and opens a high-margin long-term revenue-share channel for Nvidia.",
+      "title_zh": "英伟达5000亿美元“循环融资”？大摩回击：投资由第三方主导，英伟达仅提供“残值支持”还能坐享长期分成",
+      "summary_zh": "英伟达宣布动员5000亿美元第三方资本投资AI基础设施，摩根士丹利认为这一结构性安排从根本上化解了市场对\"循环融资\"的担忧，同时为英伟达开辟了一条高毛利率的长期收入分成通道"
+    },
+    {
+      "id": "c3485ccd14b8a426c14f5b6f54ce9b5aa69c367b",
+      "title": "Tech sentiment steadies; Korean stocks up 1.2%, Samsung up about 5%, inflation worries weigh on bonds, gold falls",
+      "summary": "Four straight oil gains plus hawkish Fed comments leave markets cautious ahead of the US CPI data.",
+      "title_zh": "科技情绪企稳，韩股上涨1.2%、三星涨约5%，通胀忧虑压制债市，黄金下跌",
+      "summary_zh": "油价四连涨叠加美联储鹰派表态，市场在等待美国CPI数据前陷入谨慎观望"
     },
     {
       "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
@@ -78,274 +99,257 @@
       "summary_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行、法国巴黎银行美国公司等机构的执法行动。"
     },
     {
-      "id": "4e1ae9ddcec7e0c29022602273ef81996006842d",
-      "title": "CLS, August 11 -- Spot gold extended its gain to 1.02%, quoted at $4385.19 per ounce.",
-      "summary": "CLS, August 11 -- Spot gold extended its gain to 1.02%, quoted at $4385.19 per ounce",
-      "title_zh": "财联社8月11日电，现货黄金涨幅扩大至1.02%，报4385.19美元/盎司。",
-      "summary_zh": "财联社8月11日电，现货黄金涨幅扩大至1.02%，报4385.19美元/盎司"
+      "id": "95915d3b0db230dc5cd0923fc047fe75ea3db333",
+      "title": "Ministry of Transport: continuous rain in 14 regions poses high risk to road traffic",
+      "summary": "As of August 11, two counties in Hubei and Anhui provinces recorded 15-plus days of rain, over 600 mm cumulative, or over 300 mm exceeding three times the normal level; twelve counties in Anhui, Guangdong and Guangxi saw affected rainfall.",
+      "title_zh": "交通运输部：14个地区连续降雨 公路交通存在高风险",
+      "summary_zh": "【交通运输部：14个地区连续降雨 公路交通存在高风险】财联社8月11日电，根据交通运输部与中国气象局会商研判，结合气象部门降雨数据，截至8月11日，湖北、安徽2个省份的2个县区出现了降水天数15天以上、累计降雨量600毫米以上或累计降雨量300毫米以上且超过常年同期水平3倍的情况，安徽、广东、广西12个县区出现了降水天"
     },
     {
-      "id": "4c221007f5d580c53da1c0a60e40c63966e05446",
-      "title": "The US government has revoked more than 175,000 non-immigrant visas since the start of last year",
-      "summary": "[The US government has revoked more than 175,000 non-immigrant visas since the start of last year] CLS, August 11 -- The US State Department said in a statement on the 10th local time that since Trump began his second presidential term in January 2025, the US government has revoked more than 175,000 non-immigrant visas",
-      "title_zh": "美政府自去年初以来已吊销逾17.5万份非移民签证",
-      "summary_zh": "【美政府自去年初以来已吊销逾17.5万份非移民签证】财联社8月11日电，美国国务院当地时间10日发表声明说，自特朗普2025年1月开始其第二个总统任期以来，美国政府已吊销逾17.5万份非移民签证"
+      "id": "36ce0aaeb9deeb473d0a8638b35f4e972d850fd5",
+      "title": "Zhengzhou Commodity Exchange issues notice soliciting opinions on revising cotton, rapeseed oil and rapeseed meal option contracts",
+      "summary": "Zhengzhou Commodity Exchange issued a notice soliciting opinions on revising cotton, rapeseed oil and rapeseed meal option contracts.",
+      "title_zh": "财联社8月11日电，郑商所发布《关于就修订棉花、菜籽油、菜籽粕期权合约征求意见的公告》。",
+      "summary_zh": "财联社8月11日电，郑商所发布《关于就修订棉花、菜籽油、菜籽粕期权合约征求意见的公告》"
     },
     {
-      "id": "6ac81485b4840de822c49bce606d8f9b5d617b9a",
-      "title": "Chinese scientists reveal for the first time the full picture of an extreme heat event under an icehouse climate",
-      "summary": "[Chinese scientists reveal for the first time the full picture of an extreme heat event under an icehouse climate] CLS, August 11 -- According to the Nanjing Institute of Geology and Palaeontology of the Chinese Academy of Sciences, its Late Palaeozoic research team, led by associate researchers Yao Le and Wang Qiulai, worked with research institutions at home and abroad to systematically reveal for the first time the full picture of an extreme heat event during the Earth's second-to-last great ice age",
-      "title_zh": "我国科学家首次揭示冰室气候下极热事件完整图景",
-      "summary_zh": "【我国科学家首次揭示冰室气候下极热事件完整图景】财联社8月11日电，据中国科学院南京地质古生物研究所，该所晚古生代研究团队要乐副研究员、王秋来副研究员牵头与国内外科研机构合作，首次系统揭示了地球倒数第二次大冰期中一次极热事件的完整图景"
+      "id": "efd8e8e3058ac44740e32f2c10c592ae06ea4602",
+      "title": "Preview: the 2026 China Computing Power Conference will be held in Langfang, Hebei from September 11 to 13",
+      "summary": "The 2026 China Computing Power Conference will be held in Langfang, Hebei from September 11 to 13, themed 'Weaving the computing-power network, opening a new intelligent future'.",
+      "title_zh": "预告：2026中国算力大会将于9月11日至13日在河北廊坊举行",
+      "summary_zh": "【预告：2026中国算力大会将于9月11日至13日在河北廊坊举行】财联社8月11日电，2026中国算力大会将于9月11日至13日在河北省廊坊市举行，大会主题为“共织算力网 智启新未来”"
     },
     {
-      "id": "7fb02832b61ebc3847e48381a049ee41cef3f422",
-      "title": "CLS, August 11 -- Hang Seng Index continuous futures closed the night session up 0.07% at 25966. Hang Seng Tech Index continuous futures closed the night session up 0.18% at 4937.",
-      "summary": "CLS, August 11 -- Hang Seng Index continuous futures closed the night session up 0.07% at 25966",
-      "title_zh": "财联社8月11日电，恒生指数主连夜盘收涨0.07%，报25966点。恒生科技指数主连夜盘收涨0.18%，报4937点。",
-      "summary_zh": "财联社8月11日电，恒生指数主连夜盘收涨0.07%，报25966点"
+      "id": "245b6b4d933544f2cb65d3a21ba03701b192b29d",
+      "title": "Xingyun Technology clarifies: to date no computing-power equipment or related goods have been detained or held by customs in a way that blocks clearance",
+      "summary": "Xingyun Technology (300209.SZ) issued a clarification on market rumors, confirming after checks that claims such as 'computing cards stuck at customs' are untrue.",
+      "title_zh": "行云科技澄清：至今未发生任何算力设备及相关商品被海关扣留、滞留等无法通关的情形",
+      "summary_zh": "【行云科技澄清：至今未发生任何算力设备及相关商品被海关扣留、滞留等无法通关的情形】财联社8月11日电，行云科技(300209.SZ)发布关于市场传闻的澄清公告，公司关注到网络平台出现“算力卡被卡在海关”等不实言论，经核查确认相关传言均不属实"
     },
     {
-      "id": "53cb85ee50fe161c4ddade028237723ea012b9ab",
-      "title": "A magnitude 3.8 earthquake struck Gao County, Yibin, Sichuan, at a focal depth of 5 kilometres",
-      "summary": "[A magnitude 3.8 earthquake struck Gao County, Yibin, Sichuan, at a focal depth of 5 kilometres] CLS, August 11 -- The China Earthquake Networks Center formally determined that a magnitude 3.8 earthquake occurred at 02:40 on August 11 in Gao County, Yibin, Sichuan (28.54 degrees north, 104.65 degrees east), at a focal depth of 5 kilometres",
-      "title_zh": "四川宜宾市高县发生3.8级地震 震源深度5千米",
-      "summary_zh": "【四川宜宾市高县发生3.8级地震 震源深度5千米】财联社8月11日电，中国地震台网正式测定：8月11日02时40分在四川宜宾市高县（北纬28.54度，东经104.65度）发生3.8级地震，震源深度5千米"
+      "id": "68f5ed3de7fcd93c7507a3d3b7341606256d0c86",
+      "title": "Foreign Ministry urges the Pacific Islands Forum secretariat to abide by the one-China principle",
+      "summary": "The Foreign Ministry urged the Pacific Islands Forum secretariat to abide by the one-China principle.",
+      "title_zh": "外交部：敦促太平洋岛国论坛秘书处恪守一个中国原则",
+      "summary_zh": "【外交部：敦促太平洋岛国论坛秘书处恪守一个中国原则】财联社8月11日电，外交部发言人郭嘉昆答记者问"
     },
     {
-      "id": "4bd5fd96d79df30f121b6c3cc9b341216726297d",
-      "title": "CLS, August 11 -- The dollar rose 1% against the yen to 159.32.",
-      "summary": "CLS, August 11 -- The dollar rose 1% against the yen to 159.32",
-      "title_zh": "财联社8月11日电，美元兑日元上涨1%，报159.32。",
-      "summary_zh": "财联社8月11日电，美元兑日元上涨1%，报159.32"
+      "id": "f869e6ea85cd23ec725817c13be873f5d820457d",
+      "title": "Shanghai Futures Exchange takes position-limiting regulatory measures against some clients",
+      "summary": "The Shanghai Futures Exchange announced that on August 11 a group of actually-controlled related accounts exceeded intraday open-interest limits on related contracts, triggering exchange action.",
+      "title_zh": "上期所：对部分客户采取限制开仓监管措施",
+      "summary_zh": "【上期所：对部分客户采取限制开仓监管措施】财联社8月11日电，上海期货交易所发布公告，2026年8月11日，1组实际控制关系账户在相关合约上账户组日内开仓交易量超限达到交易所处理标准"
     },
     {
-      "id": "24637da6030681a394c58fa0ca5127b84f7567d3",
-      "title": "The average US temperature in July set a new record high since 1895",
-      "summary": "[The average US temperature in July set a new record high since 1895] CLS, August 11 -- Data released by the US National Oceanic and Atmospheric Administration (NOAA) showed that July was the month with the highest average US temperature on record",
-      "title_zh": "美国7月平均气温刷新1895年以来最高纪录",
-      "summary_zh": "【美国7月平均气温刷新1895年以来最高纪录】财联社8月11日电，美国国家海洋和大气管理局（NOAA）发布的数据显示，7月是有记录以来美国平均气温最高的一个月"
+      "id": "c647e8f931980f266d0f770d669cb6851079d384",
+      "title": "Japanese executive detained in China over a case; Foreign Ministry responds: handled according to law",
+      "summary": "The Foreign Ministry said the case is handled according to law.",
+      "title_zh": "日企高管在华涉案被拘留 外交部回应：依法查处",
+      "summary_zh": "【日企高管在华涉案被拘留 外交部回应：依法查处】财联社8月11日电，外交部发言人郭嘉昆答记者问"
     },
     {
-      "id": "b8ae75488aa7387b6954c70b91cb48d7fdd9e5ca",
-      "title": "Iran's president held seven to eight hours of talks with the supreme leader",
-      "summary": "[Iran's president held seven to eight hours of talks with the supreme leader] CLS, August 11 -- Iranian President Pezeshkian said on August 10 that he had recently held talks with Iran's supreme leader Mojtaba Khamenei: 'the talks lasted seven or eight hours, and Mojtaba is in good health'",
-      "title_zh": "伊朗总统与最高领袖会谈七八个小时",
-      "summary_zh": "【伊朗总统与最高领袖会谈七八个小时】财联社8月11日电，伊朗总统佩泽希齐扬8月10日表示，他近日与伊朗最高领袖穆杰塔巴·哈梅内伊举行会谈，“会谈持续了七八个小时，穆杰塔巴哈健康状况很好”"
+      "id": "d492fb44e3879ddfbc59b6db90c42187fcacea6b",
+      "title": "In the first seven months, China-Laos Railway import-export value rose 29.9% year on year",
+      "summary": "In the first seven months, the China-Laos Railway import-export value exceeded 20 billion yuan, up 29.9% year on year.",
+      "title_zh": "前7个月中老铁路进出口货值同比增长29.9%",
+      "summary_zh": "【前7个月中老铁路进出口货值同比增长29.9%】财联社8月11日电，记者从昆明海关获悉，今年前7个月，中老铁路进出口货值超200亿元，同比增长29.9%"
     },
     {
-      "id": "765590271caddaf9f723e539d3078e8ea48eaa8d",
-      "title": "The US federal deficit for the first 10 months of fiscal 2026 was $1.8 trillion",
-      "summary": "[The US federal deficit for the first 10 months of fiscal 2026 was $1.8 trillion] CLS, August 11 -- According to Congressional Budget Office estimates, the total US federal budget deficit for the first 10 months of fiscal 2026 was $1.8 trillion",
-      "title_zh": "美国2026财年前10个月联邦赤字为1.8万亿美元",
-      "summary_zh": "【美国2026财年前10个月联邦赤字为1.8万亿美元】财联社8月11日电，据美国国会预算办公室估算，2026财年前10个月，美国联邦预算赤字总额为1.8万亿美元"
+      "id": "ca0713b1f92b2482e1021445a1a663d2ba6d61d0",
+      "title": "Ministry of Water Resources and CMA jointly issue red mountain-flood disaster meteorological warning",
+      "summary": "The Ministry of Water Resources and CMA issued a red mountain-flood warning: from 20:00 on August 11 to 20:00 on August 12, parts of southwest Hebei, east Shanxi, east Zhejiang and west-central Henan face high risk (orange), with parts of central Henan at very high risk (red).",
+      "title_zh": "水利部和中国气象局联合发布红色山洪灾害气象预警",
+      "summary_zh": "【水利部和中国气象局联合发布红色山洪灾害气象预警】财联社8月11日电，水利部和中国气象局8月11日18时联合发布红色山洪灾害气象预警：预计，8月11日20时至12日20时，河北西南部、山西东部、浙江东部、河南中西部等地部分地区发生山洪灾害可能性大（橙色预警），其中，河南中部局地发生山洪灾害可能性很大（红色预警）"
     },
     {
-      "id": "ed802785d6374c6d98e96e3810ed027eb1b549ac",
-      "title": "CLS, August 11 -- White House Press Secretary Leavitt said Blanche has been sworn in as US Attorney General.",
-      "summary": "CLS, August 11 -- White House Press Secretary Leavitt said Blanche has been sworn in as US Attorney General",
-      "title_zh": "财联社8月11日电，美国白宫新闻秘书莱维特表示，布兰奇已宣誓就任美国司法部长。",
-      "summary_zh": "财联社8月11日电，美国白宫新闻秘书莱维特表示，布兰奇已宣誓就任美国司法部长"
+      "id": "726c37b79e91c33afd5c3d1e6c098f46b0a0d89d",
+      "title": "Yongjie New Materials: shareholders plan to cut holdings by up to 3% combined",
+      "summary": "Yongjie New Materials (603271.SH) said shareholders plan to reduce holdings by up to 5.9441 million shares, or 3% of total share capital, via block and auction trades.",
+      "title_zh": "永杰新材：股东拟合计减持不超3%股份",
+      "summary_zh": "【永杰新材：股东拟合计减持不超3%股份】财联社8月11日电，永杰新材(603271.SH)公告称，公司股东前海股权基金、中原前海基金及齐鲁前海基金因自身资金需求，拟自公告披露之日起15个交易日后的3个月内，通过大宗交易和集中竞价方式合计减持不超过594.41万股，占公司总股本的3%"
     },
     {
-      "id": "45f066b2ebdee7c46c2099edd112bc6b99bd9289",
-      "title": "CLS, August 11 -- Colombian President Abelardo de la Espriella said on the afternoon of August 10 local time that the powerful earthquake that morning had killed 111 people.",
-      "summary": "CLS, August 11 -- Colombian President Abelardo de la Espriella said on the afternoon of August 10 local time that the powerful earthquake that morning had killed 111 people",
-      "title_zh": "财联社8月11日电，哥伦比亚总统阿韦拉多·德拉埃斯普列亚当地时间8月10日下午表示，当天早上发生的强烈地震已造成111人遇难。",
-      "summary_zh": "财联社8月11日电，哥伦比亚总统阿韦拉多·德拉埃斯普列亚当地时间8月10日下午表示，当天早上发生的强烈地震已造成111人遇难"
+      "id": "3e25580c1adb2f41ee9343f3163a34c44333a83f",
+      "title": "Nationz: raises prices on some products by 10% to 20% from October 1",
+      "summary": "Nationz issued a price-adjustment notice; citing the AI-driven supply-chain reshuffle, it will raise prices on some products by 10% to 20% from October 1.",
+      "title_zh": "国民技术：自10月1日起对公司部分产品价格上调10%—20%",
+      "summary_zh": "【国民技术：自10月1日起对公司部分产品价格上调10%—20%】财联社8月11日电，国民技术发布产品价格调整通知函称，今年以来，受AI产业持续升温的影响，全球供应链结构深刻调整，半导体的产品结构、生产成本与交期也因市场需求而发生较大变化"
     },
     {
-      "id": "f1fbf6166895008d33e1174839f38b7bda8a33bd",
-      "title": "CLS, August 11 -- WTI crude futures extended their gain to 5%, quoted at $82.11 per barrel.",
-      "summary": "CLS, August 11 -- WTI crude futures extended their gain to 5%, quoted at $82.11 per barrel",
-      "title_zh": "财联社8月11日电，WTI原油期货价格涨幅扩大至5%，报82.11美元/桶。",
-      "summary_zh": "财联社8月11日电，WTI原油期货价格涨幅扩大至5%，报82.11美元/桶"
+      "id": "91049a3d63b9617157f40d9aeda2c570aa1390b3",
+      "title": "Thailand's SET index closed down 0.7% at 1612.62",
+      "summary": "Thailand's SET index closed down 0.7% at 1612.62.",
+      "title_zh": "财联社8月11日电，泰国SET指数收盘下跌0.7%，报1612.62点。",
+      "summary_zh": "财联社8月11日电，泰国SET指数收盘下跌0.7%，报1612.62点"
     },
     {
-      "id": "764aa80b342a5f3dcf1489811702af08da7fcf71",
-      "title": "China's CPI and PPI both fall, gold may enter a right-side trend, and Congo's mining ban intensifies the resource contest -- 0810 macro digest",
-      "summary": "July CPI fell year on year from 1% to 0.5%, core CPI from 1% to 0.9%, and PPI from 4.1% to 3.5%, all below expectations",
-      "title_zh": "中国CPI与PPI双回落，黄金或进入右侧行情，刚果禁矿加剧资源博弈---0810宏观脱水",
-      "summary_zh": "7月CPI同比从1%降至0.5%，核心CPI从1%降至0.9%，PPI同比从4.1%降至3.5%，均低于预期"
+      "id": "fbc196fa3d1cf1a6a92401541ef9ba2118df4254",
+      "title": "Google to expand Americas subsea cable network with three new systems: Alisios, Canoa and Olaluz",
+      "summary": "Google announced it will expand global network infrastructure in the Americas, deploying three new subsea cable systems — Alisios, Canoa and Olaluz.",
+      "title_zh": "财联社8月11日电，谷歌宣布将在美洲扩建全球网络基础设施，部署阿尔西西奥斯（Alisios）、卡诺亚（Canoa）与奥拉图兹（Olaluz）三套全新海底光缆系统。",
+      "summary_zh": "财联社8月11日电，谷歌宣布将在美洲扩建全球网络基础设施，部署阿尔西西奥斯（Alisios）、卡诺亚（Canoa）与奥拉图兹（Olaluz）三套全新海底光缆系统"
     },
     {
-      "id": "a0da4ffcde348443e5393f1129afac5af6c3feab",
-      "title": "Western Europe has faced persistent extreme heat and drought this summer",
-      "summary": "[Western Europe has faced persistent extreme heat and drought this summer] CLS, August 11 -- The World Meteorological Organization said on social media on the 10th that the latest data from the Copernicus Climate Change Service under the European Centre for Medium-Range Weather Forecasts showed Western Europe endured persistent heat and drought in July 2026, with the June to July average temperature reaching the highest level on record",
-      "title_zh": "西欧今夏持续遭遇极端高温和干旱",
-      "summary_zh": "【西欧今夏持续遭遇极端高温和干旱】财联社8月11日电，世界气象组织10日在社交媒体上表示，欧洲中期天气预报中心下属哥白尼气候变化服务局的最新数据显示，2026年7月西欧持续遭遇高温和干旱，6月至7月平均气温达到历史最高水平"
+      "id": "90385af2e35f3be76f6721ce3daf5a44429dc7dd",
+      "title": "JPMorgan raises CoreWeave target price from 105 dollars to 110 dollars",
+      "summary": "JPMorgan raised CoreWeave's target price from 105 dollars to 110 dollars.",
+      "title_zh": "财联社8月11日电，摩根大通将Coreweave目标股价从105美元上调至110美元。",
+      "summary_zh": "财联社8月11日电，摩根大通将Coreweave目标股价从105美元上调至110美元"
     },
     {
-      "id": "31a3fe218fd32e312edd4037195e18b364f8cf0b",
-      "title": "The Fed's policy paradox: tightening credit on the private sector while staying tolerant of expanding government deficits",
-      "summary": "Over the past five years the Fed has fallen short on both halves of its dual mandate -- inflation has persistently deviated from the 2% target, while the main engine of employment growth has been systematically suppressed under policy pressure",
-      "title_zh": "美联储的政策悖论：对私营部门收紧银根，却对政府赤字扩张保持宽容",
-      "summary_zh": "过去五年，美联储在双重使命上双双失守——通胀持续偏离2%目标，就业增长的主力引擎却在政策压力下遭到系统性压制"
+      "id": "5c635f756408fbcfc3756cd3da00d8d5387b98d8",
+      "title": "In the first half, the General Administration of Customs approved 15000 intellectual-property customs-protection filings",
+      "summary": "In the first half, customs nationwide detained 13000 batches (36.09 million pieces) of suspected infringing goods and approved 15000 IP customs-protection filings.",
+      "title_zh": "上半年海关总署审核通过知识产权海关保护备案1.5万件",
+      "summary_zh": "【上半年海关总署审核通过知识产权海关保护备案1.5万件】财联社8月11日电，记者从海关总署获悉，今年上半年，全国海关共查扣侵权嫌疑货物1.3万批次、3609万件，海关总署审核通过知识产权海关保护备案1.5万件，办理知识产权海关保护总担保165件"
     },
     {
-      "id": "fae3007dca500b917e26e864a210f944d854c025",
-      "title": "Longsys: first-half 2026 net profit of 10.577 billion yuan, up 71,528.66% year on year",
-      "summary": "Longsys announced first-half 2026 revenue of 24.088 billion yuan, up 136.26% year on year",
-      "title_zh": "江波龙：2026年上半年净利润105.77亿元，同比增长71,528.66%",
-      "summary_zh": "江波龙公告，2026年上半年营业收入240.88亿元，同比增长136.26%"
+      "id": "eb458206b243800659b4ae3bb53b5a5f60b11615",
+      "title": "US July NFIB small-business optimism index 99.8 versus 97.4 prior",
+      "summary": "The US July NFIB small-business optimism index was 99.8, versus 97.4 prior.",
+      "title_zh": "财联社8月11日电，美国7月NFIB小型企业信心指数为99.8，前值97.4。",
+      "summary_zh": "财联社8月11日电，美国7月NFIB小型企业信心指数为99.8，前值97.4"
     },
     {
-      "id": "53e6be588f9f140fab1001531bc5b7377e4f552d",
-      "title": "CLS, August 11 -- The Colombian earthquake has killed at least 77 people.",
-      "summary": "CLS, August 11 -- The Colombian earthquake has killed at least 77 people",
-      "title_zh": "财联社8月11日电，哥伦比亚地震已造成至少77人遇难。",
-      "summary_zh": "财联社8月11日电，哥伦比亚地震已造成至少77人遇难"
+      "id": "96b9a367fbde8580f146f0ecdc2d9bb4cc60ce97",
+      "title": "Zhengzhou adjusts housing-provident-fund contribution base",
+      "summary": "Zhengzhou's housing-provident-fund center issued a notice adjusting the 2026 contribution base.",
+      "title_zh": "郑州调整住房公积金缴存基数",
+      "summary_zh": "【郑州调整住房公积金缴存基数】财联社8月11日电，郑州住房公积金管理中心发布关于调整2026年度住房公积金缴存基数的通知"
     },
     {
-      "id": "32a4d66015a8ead2ccc45e708035f1b651341274",
-      "title": "CLS, August 11 -- Trump will sign an executive order on childhood vaccination today.",
-      "summary": "CLS, August 11 -- Trump will sign an executive order on childhood vaccination today",
-      "title_zh": "财联社8月11日电，特朗普将于今日签署有关儿童疫苗接种的行政命令。",
-      "summary_zh": "财联社8月11日电，特朗普将于今日签署有关儿童疫苗接种的行政命令"
+      "id": "f13284966189c6e5365796eda959d60761e53883",
+      "title": "Anhui Construction: deputy general manager He Hongchun placed in custody and resigns",
+      "summary": "Anhui Construction (600502.SH) said it received notice that deputy general manager He Hongchun has been placed in custody.",
+      "title_zh": "安徽建工：副总经理何洪春被留置并辞职",
+      "summary_zh": "【安徽建工：副总经理何洪春被留置并辞职】财联社8月11日电，安徽建工(600502.SH)公告称，公司近日收到相关监察委员会通知，副总经理何洪春被实施留置"
     },
     {
-      "id": "1f10ab78def49abc552d54fd85cfe22ddf011b99",
-      "title": "CLS, August 11 -- Trump said Iran should be held responsible for the losses in Lebanon and Gaza, and also for the losses suffered by neighbouring countries.",
-      "summary": "CLS, August 11 -- Trump said Iran should be held responsible for the losses in Lebanon and Gaza, and also for the losses suffered by neighbouring countries",
-      "title_zh": "财联社8月11日电，特朗普表示，伊朗应为黎巴嫩和加沙的损失负责，也应该对邻国遭受的损失负责。",
-      "summary_zh": "财联社8月11日电，特朗普表示，伊朗应为黎巴嫩和加沙的损失负责，也应该对邻国遭受的损失负责"
+      "id": "16283243d77a5c19be5a9b158236e29dd365a011",
+      "title": "State Council approves in principle the 15th Five-Year forest annual-harvest quota for key forest areas",
+      "summary": "The State Council approved in principle the 15th Five-Year annual forest-harvest quota for key forest areas drafted by the National Forestry Bureau.",
+      "title_zh": "国务院原则同意国家林草局编制的重点林区“十五五”期间森林年采伐限额",
+      "summary_zh": "【国务院原则同意国家林草局编制的重点林区“十五五”期间森林年采伐限额】财联社8月11日电，国务院原则同意国家林草局编制的重点林区“十五五”期间森林年采伐限额"
     },
     {
-      "id": "c101d59067a25aaad6af48e5690b663391361fa9",
-      "title": "Persistent heavy snow across much of South Africa has severely disrupted transport",
-      "summary": "[Persistent heavy snow across much of South Africa has severely disrupted transport] CLS, August 11 -- Many parts of South Africa continued to face heavy snow, freezing rain and strong winds on the 10th, with severe snow accumulation in the mountains of KwaZulu-Natal province, some roads forced to close, large numbers of vehicles stranded and transport disrupted",
-      "title_zh": "南非多地遭遇持续强降雪 交通严重受阻",
-      "summary_zh": "【南非多地遭遇持续强降雪 交通严重受阻】财联社8月11日电，南非多地10日持续遭遇强降雪、冻雨和大风天气，夸祖鲁-纳塔尔省山区积雪严重，部分道路被迫关闭，大量车辆滞留，交通运输受到影响"
+      "id": "82ea4db8144f938f28ac0ba21a58008c2db007cd",
+      "title": "Trump says he spoke recently to Fed Chairman Warsh, denies regular calls",
+      "summary": "The president said he had recently been in touch with the Fed chairman, but denied regular contact amid concerns about central bank independence.",
+      "title_zh": "特朗普称近期曾与美联储主席沃什通话，否认频繁联络",
+      "summary_zh": "总统表示近期曾与美联储主席联系，但在央行独立性受关切之际，否认存在定期接触。"
     },
     {
-      "id": "7f0f5b07dc96f05090389337fbbdf97b92947e7c",
-      "title": "CLS, August 11 -- Barclays kept its Brent crude price forecasts unchanged: $96 per barrel in 2026 and $85 per barrel in 2027.",
-      "summary": "CLS, August 11 -- Barclays kept its Brent crude price forecasts unchanged: $96 per barrel in 2026 and $85 per barrel in 2027",
-      "title_zh": "财联社8月11日电，巴克莱银行维持其对布伦特原油的价格预测不变：2026年为每桶96美元，2027年为每桶85美元。",
-      "summary_zh": "财联社8月11日电，巴克莱银行维持其对布伦特原油的价格预测不变：2026年为每桶96美元，2027年为每桶85美元"
+      "id": "6bbbbfa0a072223bbe1c223450d957528f369611",
+      "title": "Here's how the market may react to July's CPI report, according to JPMorgan",
+      "summary": "Stocks could be in for some notable swings on Wednesday after July's consumer price index reading.",
+      "title_zh": "据摩根大通，市场对七月 CPI 报告可能作何反应",
+      "summary_zh": "在七月消费者价格指数公布后，股市周三可能出现明显波动。"
     },
     {
-      "id": "545a1e9d10916926687c689eeb0d6c40a8bdaceb",
-      "title": "CLS, August 11 -- US Africa Command confirmed that a military aircraft crashed in Djibouti on August 9.",
-      "summary": "CLS, August 11 -- US Africa Command confirmed that a military aircraft crashed in Djibouti on August 9",
-      "title_zh": "财联社8月11日电，美军非洲司令部证实8月9日一架军机在吉布提坠毁。",
-      "summary_zh": "财联社8月11日电，美军非洲司令部证实8月9日一架军机在吉布提坠毁"
+      "id": "6516f75b1c29b482c48266ab353646e61e231d78",
+      "title": "Johnson Matthey shareholders approve special dividend, share consolidation",
+      "summary": null,
+      "title_zh": "庄信万丰股东批准特别股息与股份合并",
+      "summary_zh": null
     },
     {
-      "id": "9f2f16ae5d3615b0f5c78fb1b813ee4c00256caa",
-      "title": "Bitcoin teeters on 200-period MA: Live levels",
-      "title_zh": "比特币在200周期均线上摇摇欲坠：实时点位"
+      "id": "17277d166528fdeeddc342a21710e8934bc40e1a",
+      "title": "Phillip Securities maintains AMD stock rating on AI chip demand outlook",
+      "summary": null,
+      "title_zh": "辉立证券基于 AI 芯片需求前景维持 AMD 评级",
+      "summary_zh": null
     },
     {
-      "id": "06716ddb8c5df60e831355dee3df6b91558d5afc",
-      "title": "Tesla trapped at $329 resistance in bull-trap zone: Live levels",
-      "title_zh": "特斯拉受困于329美元阻力位的多头陷阱区间：实时点位"
+      "id": "4160956d1755ab30d2bbb875878573ff6435ff79",
+      "title": "FIFA World Cup 'will never be as profitable' if Infantino is ousted, Trump warns amid global soccer revolt",
+      "summary": "President Gianni Infantino pushed FIFA's commercialization drive, which culminated in the largest, most profitable World Cup on record",
+      "title_zh": "特朗普在全球足坛反对声中警告：若因凡蒂诺下台，世界杯「将不再如此盈利」",
+      "summary_zh": "主席詹尼·因凡蒂诺推动了国际足联的商业化进程，最终成就了有史以来规模最大、最赚钱的一届世界杯。"
     },
     {
-      "id": "3f02d3176da24f99f487a46683a5a9406d311afd",
-      "title": "Trump signs executive order calling for fewer childhood vaccines, falsely linking shots to autism",
-      "summary": "The order builds on the Trump administration's efforts to reshape the childhood shot schedule under HHS Secretary RFK Jr., a longtime a vaccine skeptic.",
-      "title_zh": "特朗普签署行政命令要求减少儿童疫苗接种，并错误地将疫苗与自闭症相关联",
-      "summary_zh": "该命令延续了特朗普政府在长期持疫苗怀疑立场的卫生与公众服务部部长小罗伯特·肯尼迪领导下重塑儿童疫苗接种时间表的努力。"
+      "id": "8c4c8f4379ebadca549eb1960b73a24e944e4fb3",
+      "title": "US-Iran deal a distant prospect; analysts warn oil could spike to 120 to 140 dollars",
+      "summary": "The Hormuz Strait deadlock persists, putting repricing pressure on oil.",
+      "title_zh": "美伊协议遥遥无期，分析师警告：油价或冲上120-140美元",
+      "summary_zh": "霍尔木兹海峡僵局持续发酵，油价面临重新定价压力"
     },
     {
-      "id": "b76df48c8422b265e540b528c183834ab4bf5668",
-      "title": "At least 111 killed after powerful earthquake hits western Colombia",
-      "summary": "The tremor was felt in Colombia's capital, Bogota, and as far away as Venezuela.",
-      "title_zh": "哥伦比亚西部发生强烈地震，已造成至少111人遇难",
-      "summary_zh": "哥伦比亚首都波哥大乃至远至委内瑞拉均有震感。"
+      "id": "5299c8d4f886bde10cf99efef363737ab07f4a12",
+      "title": "Wall Street just endorsed Jensen Huang's 'big concept' for AI. What now?",
+      "summary": "The first three-plus years of the AI buildout has been funded by record amounts of equity and debt issued by leading tech companies",
+      "title_zh": "华尔街刚刚认可了黄仁勋的 AI「大概念」。接下来呢？",
+      "summary_zh": "人工智能建设头三年多，由领先科技公司发行的创纪录股权与债务融资支撑。"
     },
     {
-      "id": "c256cfa8d1ace691baf2e28c077342d821c73a32",
-      "title": "Meta's latest model advances Zuckerberg's vision for personal AI assistants",
-      "summary": "Every weekday, the Investing Club releases the Homestretch; an actionable afternoon update just in time for the last hour of trading.",
-      "title_zh": "Meta最新模型推进扎克伯格的个人AI助手愿景",
-      "summary_zh": "每个工作日，投资俱乐部都会发布“最后冲刺”栏目：一份恰好赶在交易日最后一小时前推出、可付诸操作的午后更新。"
+      "id": "646df0e906175a9f578c5cd707f38e7d8cd0190d",
+      "title": "Hotel giant says ‘growing middle class’ boosted hotel demand despite Middle East hit",
+      "summary": "IHG reported higher first-half profit as U.S",
+      "title_zh": "酒店巨头称「不断壮大的中产阶级」提振需求，尽管中东冲击仍在",
+      "summary_zh": "洲际酒店集团（IHG）公布上半年利润增长。"
     },
     {
-      "id": "ef91823a1f50cd2e791651053bd4782ef7d91323",
-      "title": "HHS moves to tighten oversight of food ingredients as safety concerns mount",
-      "summary": "HHS moves to tighten oversight of food ingredients and define ultra-processed foods as food safety concerns raise questions about FDA visibility.",
-      "title_zh": "食品安全担忧升温，美国卫生与公众服务部着手收紧食品成分监管",
-      "summary_zh": "在食品安全担忧引发外界对FDA监管透明度质疑之际，美国卫生与公众服务部着手收紧食品成分监管并界定超加工食品。"
+      "id": "a7e87ca7c3cc385a2fb6646b5731931d5fb0cc52",
+      "title": "U.S. judge ends graft case against Indian billionaire Gautam Adani",
+      "summary": "A U.S",
+      "title_zh": "美国法官了结针对印度富豪高塔姆·阿达尼的腐败案",
+      "summary_zh": null
     },
     {
-      "id": "fb4f5c212bd6d7d2d64dbd33f6d6da85e274d418",
-      "title": "OpenAI expands Daybreak cybersecurity initiative as AI agent threats evolve",
-      "summary": "The company introduced Daybreak in May as a way for its ecosystem partners to use its most advanced AI models to adapt to a rapidly changing threat landscape.",
-      "title_zh": "随着AI智能体威胁演进，OpenAI扩大Daybreak网络安全计划",
-      "summary_zh": "该公司于5月推出Daybreak，让其生态合作伙伴能够使用其最先进的AI模型，以适应快速变化的威胁形势。"
+      "id": "42d9d02c65c2f0c93a5c5be5af2c8a63dbc3e42c",
+      "title": "Colombia rescue efforts press on after quake, death toll expected to rise",
+      "summary": "The 7.4-magnitude earthquake tore through Colombia's coffee-growing heartland early on Monday, killing at least 164 people.",
+      "title_zh": "哥伦比亚地震后救援持续，死亡人数预计上升",
+      "summary_zh": "周一早些时候，7.4 级地震袭击哥伦比亚咖啡产区腹地，造成至少 164 人死亡。"
     },
     {
-      "id": "394b08b587ff2e2b84034afbc7c92f347e836788",
-      "title": "Oil in U.S. Strategic Petroleum Reserve falls below 300 million barrels, lowest since 1983",
+      "id": "564dce65c035beb93debc398cd60fcd1b75e857e",
+      "title": "Eli Lilly takes weight-loss pill battle global with first Foundayo approval outside U.S.",
+      "summary": "Lilly's Foundayo wins U.K",
+      "title_zh": "礼来凭美国外首个 Foundayo 获批，将减重药战推向全球",
+      "summary_zh": "礼来 Foundayo 在英国获批。"
+    },
+    {
+      "id": "5222a28c5ed5f857afd071f2cb8b89e7cea5a53f",
+      "title": "SK Hynix becomes Kioxia's largest shareholder; Japan's biggest NAND maker changes hands",
+      "summary": "Toshiba's continued reduction of its Kioxia stake unexpectedly reshaped the company's ownership.",
+      "title_zh": "SK海力士成铠侠最大股东，日本最大NAND厂“易主”",
+      "summary_zh": "东芝持续减持铠侠股份，意外改变了后者的股权结构"
+    },
+    {
+      "id": "3f74a554bf3092d0e5fce37b875bcaf3c620eb9d",
+      "title": "Shanghai issues the 15th Five-Year Plan for its software and information-services industry",
+      "summary": "The Shanghai Municipal Commission of Economy and Informatization issued the 15th Five-Year Plan, targeting by 2030 an industry scale of 4 trillion yuan and value-added above 1.1 trillion yuan.",
+      "title_zh": "上海印发《上海市软件和信息服务业发展“十五五”规划》",
+      "summary_zh": "上海市经济和信息化委员会日前印发《上海市软件和 信息服务 业发展“十五五”规划》，其中提出，到2030年，把上海软件和 信息服务 业打造成经济增长“ 动力源 ”，AI赋能应用“主阵地”，参与全球竞争“桥头堡”，主要实现以下目标：产业总量规模进一步扩大，产业规模力争达到4万亿元，产业增加值突破1.1万亿元"
+    },
+    {
+      "id": "b4ccdad47a760dfa5d4a1bb6d5354515e5cea5d5",
+      "title": "Foxconn Industrial Internet: first-half 2026 net profit 23.74 billion yuan, up 95.99% year on year",
+      "summary": "FII announced first-half 2026 operating revenue of 557.861 billion yuan, up 54.63% year on year.",
+      "title_zh": "工业富联：2026年上半年净利润237.4亿元 同比增长95.99%",
+      "summary_zh": "工业富联公告，2026年上半年营业收入5578.61亿元，同比增长54.63%"
+    },
+    {
+      "id": "78614bb7a740838790b27e87c840b113a5e0d60b",
+      "title": "Treasury yields up as oil prices jump and investors await inflation data",
       "summary": "U.S",
-      "title_zh": "美国战略石油储备原油量跌破3亿桶，为1983年以来最低",
-      "summary_zh": "美国"
+      "title_zh": "油价跳涨、投资者等待通胀数据，国债收益率走高",
+      "summary_zh": null
     },
     {
-      "id": "f469b56b9f5be004d2ff55ab523187872331f68b",
-      "title": "Three reasons Goldman's co-head of global banking and markets says to stay invested",
-      "summary": "Goldman Sachs' Ashok Varadhan pointed to three reasons for his constructive outlook.",
-      "title_zh": "高盛全球银行与市场业务联席主管给出三个应继续持仓的理由",
-      "summary_zh": "高盛的阿肖克·瓦拉丹为其乐观展望给出了三点理由。"
+      "id": "5cbe02b5dc322c1b986d5364672b7e3f6ded783c",
+      "title": "Zelenskyy warns Putin is preparing for escalation by bringing in North Korean military equipment",
+      "summary": "His comments come shortly after deadly Russian attacks on cities across Ukraine overnight.",
+      "title_zh": "泽连斯基警告：普京正调入朝鲜军事装备，准备升级",
+      "summary_zh": "此番表态发生在俄军夜间对乌克兰多座城市发动致命袭击后不久。"
     },
     {
-      "id": "0aedf5ac70c37bf2ec2e82f7ac21c2cc153a0b93",
-      "title": "Intel plans $15 billion stock offering as AI demand accelerates",
-      "summary": "Technology giants have shelled out trillions to support insatiable AI demand and the infrastructure buildout.",
-      "title_zh": "AI需求加速，英特尔计划发行150亿美元股票",
-      "summary_zh": "科技巨头已投入数万亿美元，以支撑永不满足的AI需求与基础设施建设。"
-    },
-    {
-      "id": "64bc50cc636281658e6ed8acbc8d0051e1ed5556",
-      "title": "Berkshire shares appear to be breaking out. Katie Stockton says it's a timely buying opportunity",
-      "summary": "Shares of the conglomerate look like a timely opportunity as investors search for high quality names in volatile times.",
-      "title_zh": "伯克希尔股价似已突破，凯蒂·斯托克顿称这是恰逢其时的买入机会",
-      "summary_zh": "在动荡时期投资者寻找高质量标的之际，这家综合企业集团的股票看起来是一个恰逢其时的机会。"
-    },
-    {
-      "id": "6b7058fca16d03bdb6443127812d94643964163b",
-      "title": "CrowdStrike, Palo Alto hit records after Black Hat cyber conference illuminates rising AI threat",
-      "summary": "The industry's annual Black Hat conference renewed demand for AI-powered cybersecurity tools",
-      "title_zh": "黑帽网络安全大会凸显AI威胁上升，CrowdStrike与Palo Alto股价创历史新高",
-      "summary_zh": "该行业一年一度的黑帽大会重新点燃了市场对AI驱动的网络安全工具的需求"
-    },
-    {
-      "id": "6ed161128baee3d2b1c7a2108040d83ee8d005de",
-      "title": "SpaceX stock rebounds to near $135 IPO price",
-      "summary": "SpaceX reported better-than-expected revenue in its second-quarter earnings report last week.",
-      "title_zh": "SpaceX股价反弹至接近135美元的IPO发行价",
-      "summary_zh": "SpaceX上周发布的第二季度财报显示营收好于预期。"
-    },
-    {
-      "id": "b5505199acc663992c3b4cff69cafd9684ce4909",
-      "title": "Trump demands compensation from Iran and says it will feature in all future negotiating demands, as Iran reshuffles commanders in quick succession",
-      "summary": "The contest between the United States and Iran over ending the conflict and the negotiations that follow is still under way",
-      "title_zh": "特朗普要求伊朗赔偿、称将纳入未来所有谈判要求，伊朗密集换将",
-      "summary_zh": "美国与伊朗围绕结束冲突及后续谈判的博弈仍在继续"
-    },
-    {
-      "id": "8cca77b17d51e1208e2d1f302f042a9edbc269d6",
-      "title": "OpenAI releases GPT-5.6-Cyber",
-      "summary": "OpenAI releases GPT-5.6-Cyber",
-      "title_zh": "OpenAI发布GPT-5.6-Cyber",
-      "summary_zh": "OpenAI发布GPT-5.6-Cyber"
-    },
-    {
-      "id": "df0b040355b1bb1891ecffc46b499a1f2e3e3f2a",
-      "title": "First time since 1983! The US strategic petroleum reserve fell below 300 million barrels, and crude rose more than 4% intraday",
-      "summary": "The US Strategic Petroleum Reserve (SPR) hit another record low last week, falling below 300 million barrels for the first time since 1983",
-      "title_zh": "1983年来首次！美国战略油储跌破3亿桶，原油盘中涨逾4%",
-      "summary_zh": "美国战略石油储备（SPR）上周再创新低，自1983年以来首次跌破3亿桶"
-    },
-    {
-      "id": "17215704c15e7d774816b9931242594cf1fb9c15",
-      "title": "OpenAI: launching premium ChatGPT Enterprise seats priced from at least $100 per month",
-      "summary": "OpenAI: launching premium ChatGPT Enterprise seats",
-      "title_zh": "OpenAI：推出ChatGPT企业版高级席位，月租至少100美元",
-      "summary_zh": "OpenAI：推出ChatGPT企业版高级席位"
+      "id": "1643a92a205cb6443e173fc7978de4242dc4fc63",
+      "title": "Hormuz unlikely to reopen soon; aluminum extends seven-day rally to a seven-week high",
+      "summary": "The US-Iran talks are deadlocked, making a Hormuz reopening increasingly unlikely; supply worries in aluminum keep building, pushing prices higher for a seventh straight session.",
+      "title_zh": "霍尔木兹短期难重开，铝价连涨七日创七周新高",
+      "summary_zh": "美伊谈判陷入僵局，令霍尔木兹海峡重开前景日益渺茫，铝市供应担忧持续升温，推动金属铝价格连续第七个交易日走高"
     }
   ],
-  "updated_at": "2026-08-10T20:39:00Z"
+  "updated_at": "2026-08-11T11:30:00Z"
 }
