@@ -1,355 +1,351 @@
 {
-  "items": [
-    {
-      "id": "8052a734abf7362d605590541defe312ef455df7",
-      "title": "Meta and Nvidia plant 'very firm flag' in open-weight AI race led by Chinese Labs",
-      "summary": "With China way ahead in the market for open-weight models, Meta and Nvidia are both doing what they can to put the U.S",
-      "title_zh": "在由中国实验室领跑的开源权重 AI 竞赛中，Meta 与英伟达竖起“非常坚定的旗帜”",
-      "summary_zh": "在开源权重模型市场中国遥遥领先之际，Meta 与英伟达都在尽其所能为美国争取主动权。"
-    },
-    {
-      "id": "d16aa80a50bf6fc02783bec09ca02d8d96455152",
-      "title": "US July CPI rose 3.4% year-on-year, in line with expectations; Fed September hike bets cool further",
-      "summary": "On Wednesday, Labor Department data showed US July CPI inflation matched market forecasts exactly, weakening investor bets on a Fed September rate hike.",
-      "title_zh": "美国7月CPI同比增长3.4%符合市场预期 美联储9月加息预期进一步降温",
-      "summary_zh": "当地时间周三，美国劳工部公布的数据显示，美国7月CPI通胀与市场预测完全一致，削弱了投资者对美联储9月加息的预期"
-    },
-    {
-      "id": "d7eefbbd3abdaf5d3b781efc7ef84e89f69b1a57",
-      "title": "Russia July CPI rose 0.54% month-on-month vs 0.68% estimate; up 5.98% year-on-year vs 6.10% estimate",
-      "summary": "Russia's July CPI rose 0.54% month-on-month against a 0.68% consensus estimate.",
-      "title_zh": "财联社8月13日电，俄罗斯7月CPI环比上涨0.54%，预估增幅为0.68%。俄罗斯7月CPI同比上涨5.98%，预估增幅为6.10%。",
-      "summary_zh": "财联社8月13日电，俄罗斯7月CPI环比上涨0.54%，预估增幅为0.68%"
-    },
-    {
-      "id": "f5e53099fbd4e764799998c6779a8e86f8d8702f",
-      "title": "July US CPI expected to cool; Fed rate-hike bets may face a second blow",
-      "summary": "On the evening of August 12, the Bureau of Labor Statistics will release July CPI data.",
-      "title_zh": "7月美国CPI预计降温：美联储加息预期或迎二次冲击",
-      "summary_zh": "8月12日晚间，美国劳工统计局（BLS）将公布7月份CPI数据"
-    },
-    {
-      "id": "f49149104a7b536096b14b8d426c884c58873ef2",
-      "title": "Nvidia, Intel, Google: Wall Street is partying like it’s 1999",
-      "summary": "The signs are all around that Wall Street is back in that dangerous atmosphere of giddy euphoria that those with long memories will remember from the infamous d",
-      "title_zh": "英伟达、英特尔、谷歌：华尔街正像 1999 年那样狂欢",
-      "summary_zh": "种种迹象显示，华尔街重回那种令人眩晕的狂热氛围，久经历练的人会记得那场臭名昭著的泡沫。"
-    },
-    {
-      "id": "0efae7538d91d4d42c4378de3242b8fea9af3bd2",
-      "title": "Houthi attack kills six in Red Sea; Trump slams Iran as hopes for Hormuz Strait deal dim",
-      "summary": "After the incidents in Bab el-Mandeb and the Gulf of Oman, President Donald Trump on Truth Social wrote of the Strait of Hormuz, \"I THINK WE WILL KEEP IT!\"",
-      "title_zh": "胡塞武装红海袭击致六人死亡；特朗普抨击伊朗，霍尔木兹海峡协议希望渺茫",
-      "summary_zh": "在曼德海峡与阿曼湾事件后，特朗普总统在 Truth Social 上就霍尔木兹海峡写道：“我认为我们会守住它！”"
-    },
-    {
-      "id": "5d79aa70b09a77d0bf4bea73694a847319ea8d44",
-      "title": "AI’s costly build-out complicates the Fed’s inflation fight",
-      "summary": "Tech leaders say AI will drive down costs",
-      "title_zh": "AI 高昂的建设投入令美联储的抗通胀之战更复杂",
-      "summary_zh": "科技领袖称 AI 将压低成本。"
-    },
-    {
-      "id": "2911da0645ebfabfd41189d72c7e14a8aa6cb188",
-      "title": "Unless you're earning this much, your savings are losing money to inflation every day",
-      "summary": "You're losing purchasing power if the APY on your savings account doesn't keep up with inflation.",
-      "title_zh": "除非你赚到这么多，否则你的储蓄每天都在被通胀吞噬",
-      "summary_zh": "如果储蓄账户的年化收益率跟不上通胀，你的购买力就在流失。"
-    },
-    {
-      "id": "38de4588fdbf9e3321b74ddcb905e85e68bd8be5",
-      "title": "Solar eclipse drives Europe hotel prices to over $1,000 a night",
-      "summary": "Eclipse demand pushed some Spain and Iceland stays above $1,000 a night, while Iceland hotels cut prices sharply closer to Aug",
-      "title_zh": "日食推动欧洲酒店价格飙升至每晚逾 1000 美元",
-      "summary_zh": "日食需求将西班牙与冰岛部分住宿价格推高至每晚逾 1000 美元，而冰岛酒店在临近八月时大幅降价。"
-    },
-    {
-      "id": "3e73a5c7bddde3b1903656aa7cf603f239c71336",
-      "title": "Fully in line with expectations: US July CPI year-on-year gain narrowed to 3.4%, core CPI slowed to 2.5%",
-      "summary": "July US inflation matched expectations across the board, temporarily easing fears of upside surprises, but not enough to remove uncertainty over the Fed's policy path.",
-      "title_zh": "全面符合预期！美国7月CPI同比涨幅收窄至3.4%，核心CPI同比放缓至2.5%",
-      "summary_zh": "美国7月通胀数据全面符合市场预期，暂时缓解了外界对物价压力超预期的担忧，但尚不足以改变美联储货币政策走向的不确定性"
-    },
-    {
-      "id": "be36c2918189eb43005f96cdc70a0c6fcff90e91",
-      "title": "Against the grain: Goldman strategists say the Fed may hold rates steady all year, pushing back on hike bets",
-      "summary": "Goldman diverges sharply from the consensus, expecting the Fed to keep rates unchanged for the foreseeable future and sees inflation pressures easing through the second half of 2026.",
-      "title_zh": "唱反调！高盛策略师：美联储年内或将全线按兵不动，驳斥市场加息预期",
-      "summary_zh": "高盛与市场主流预期出现明显分歧—— 该行认为美联储将在可预见的未来维持利率不变，并预计通胀压力将在2026年下半年逐步消退"
-    },
-    {
-      "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
-      "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-      "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-      "title_zh": "美联储理事会就现代化互助银行组织规则的提案征求意见",
-      "summary_zh": "美联储理事会就现代化互助银行组织规则的提案公开征求意见。"
-    },
-    {
-      "id": "51bdb202dd58e4b5d03a7f03beae1d271730a57a",
-      "title": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, Inc., BNP Paribas Securities Corp., and Community Bankshares, Inc.",
-      "summary": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, I",
-      "title_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行相关实体的执法行动",
-      "summary_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行（BNP Paribas S.A.）、BNP Paribas USA、BNP Paribas Securities Corp. 及 Community Bankshares 的执法行动。"
-    },
-    {
-      "id": "5d9b382785f093e5660e9b3782106d2276728387",
-      "title": "Romania to shut a second nuclear reactor in the Lower Danube region on August 13",
-      "summary": "Romania will shut a second nuclear reactor in the Lower Danube region on August 13.",
-      "title_zh": "财联社8月13日电，罗马尼亚将于8月13日在低地多瑙河区域关闭第二座核反应堆。",
-      "summary_zh": "财联社8月13日电，罗马尼亚将于8月13日在低地多瑙河区域关闭第二座核反应堆"
-    },
-    {
-      "id": "0f4ea039029e6275c223b91c358bd666441a6425",
-      "title": "Palestinian president meets Turkish president, discusses Israel-Palestine situation",
-      "summary": "Palestinian President Abbas held formal talks with Turkish President Erdogan in Ankara on the 12th, discussing the Israel-Palestine situation.",
-      "title_zh": "巴勒斯坦总统与土耳其总统会谈 讨论巴以局势等",
-      "summary_zh": "【巴勒斯坦总统与土耳其总统会谈 讨论巴以局势等】财联社8月13日电，巴勒斯坦总统阿巴斯当地时间12日在安卡拉同土耳其总统埃尔多安举行正式会谈"
-    },
-    {
-      "id": "2452c00cd796e453eda1a6c2f2f43156fab8d4bf",
-      "title": "2D nature of high-temperature superconductivity confirmed; Fudan collaboration publishes in Nature",
-      "summary": "A Fudan University team published in Nature on August 12 a study titled 'Superconducting 2D cuprate with a single CuO2 plane,' successfully thinning a cuprate high-temperature superconductor to a single CuO2 plane.",
-      "title_zh": "证实高温超导的二维本质 复旦大学合作研究成果在自然杂志发表",
-      "summary_zh": "【证实高温超导的二维本质 复旦大学合作研究成果在自然杂志发表】财联社8月13日电，复旦大学物理学系张远波教授团队与合作者8月12日晚以“Superconducting 2D cuprate with a single CuO₂ plane”为题在《自然》（Nature）发表研究成果，成功将铜基高温超导体削薄至仅含一个超"
-    },
-    {
-      "id": "1e7db6172853b02a53e86c735bdb08722c6cf0b7",
-      "title": "South Sudan cholera outbreak kills 1,721; confirmed cases exceed 110,000",
-      "summary": "Since September 2025, South Sudan's health ministry has recorded 1,721 cholera deaths and 110,574 confirmed cases.",
-      "title_zh": "南苏丹霍乱疫情致1721人死亡 确诊病例超11万例",
-      "summary_zh": "【南苏丹霍乱疫情致1721人死亡 确诊病例超11万例】财联社8月13日电，南苏丹卫生部长卢克·汤普森·托安在新闻发布会上表示，自2025年9月以来，南苏丹卫生部门已登记1721例霍乱疫情死亡病例和110574例确诊病例"
-    },
-    {
-      "id": "3dff1447cc05a9181ce9f074a85a0130470690f5",
-      "title": "Short seller Viceroy Research says it is shorting Blue Moon Metals; shares down over 10%",
-      "summary": "Short seller Viceroy Research says it is shorting Blue Moon Metals, whose shares are currently down more than 10%.",
-      "title_zh": "财联社8月12日电，做空机构Viceroy Research表示其正在做空Blue Moon Metals，该公司股价目前跌超10%。",
-      "summary_zh": "财联社8月12日电，做空机构Viceroy Research表示其正在做空Blue Moon Metals，该公司股价目前跌超10%"
-    },
-    {
-      "id": "8a1a954afd10e094e158a2e3c441a048693a2540",
-      "title": "Luyuan Info: Murata inductor products began rising in price in July",
-      "summary": "The company is a major authorized distributor for Murata, mainly handling its MLCC products plus a small amount of inductors, beads, sensors, and EMI filters.",
-      "title_zh": "力源信息：村田电感产品七月份已开始涨价",
-      "summary_zh": "【力源信息：村田电感产品七月份已开始涨价】财联社8月12日电，力源信息在互动平台表示，公司是MURATA（村田）的主要授权分销商，主要代理其MLCC产品及少量电感、磁珠、传感器、EMI滤波器等产品"
-    },
-    {
-      "id": "09e41d4fed7224431f12e332706cda7b3938837f",
-      "title": "Standard Chartered-led Anchorpoint launches Hong Kong dollar stablecoin",
-      "summary": "Standard Chartered-led licensed stablecoin issuer Anchorpoint Financial announced the launch of a Hong Kong dollar stablecoin.",
-      "title_zh": "渣打牵头的Anchorpoint推出港元稳定币",
-      "summary_zh": "【渣打牵头的Anchorpoint推出港元稳定币】财联社8月12日电，据一封电子邮件声明显示，渣打牵头的持牌稳定币发行机构Anchorpoint Financial宣布推出港元稳定币"
-    },
-    {
-      "id": "e93c13e8c1706cc72d7cd40a667fcce0a8abdf71",
-      "title": "Switzerland plans law to force deferred bank executive bonuses, up to five years",
-      "summary": "The Swiss government wants to enshrine in law a requirement to defer bank executives' bonuses for several years, part of a post-Credit Suisse regulatory package.",
-      "title_zh": "瑞士拟立法强制延迟银行高管奖金发放 最长可达五年",
-      "summary_zh": "【瑞士拟立法强制延迟银行高管奖金发放 最长可达五年】财联社8月12日电，瑞士政府希望把银行高管奖金递延数年发放的要求写入法律，作为瑞信倒闭后加强金融监管的一揽子措施之一"
-    },
-    {
-      "id": "07673a23b9ba5ca63a1d0a777b40fa3295ee7e41",
-      "title": "Tencent Holdings ADR extends intraday loss to 5%",
-      "summary": "Tencent Holdings ADR extended its intraday decline to 5%.",
-      "title_zh": "财联社8月12日电，腾讯控股ADR日内跌幅扩大至5%。",
-      "summary_zh": "财联社8月12日电，腾讯控股ADR日内跌幅扩大至5%"
-    },
-    {
-      "id": "a0f491cbcb8249c1a04d12c480bc0fd758d808ce",
-      "title": "European stocks close slightly lower",
-      "summary": "European stocks closed slightly lower: the FTSE 100 fell 0.10%, the CAC 40 fell 0.59%, the DAX fell 0.17%, and the FTSE Italia MIB fell 0.07%.",
-      "title_zh": "欧洲股市小幅收跌",
-      "summary_zh": "【欧洲股市小幅收跌】财联社8月12日电，欧洲股市小幅收跌，英国富时100指数跌0.10%，法国CAC40指数跌0.59%，德国DAX30指数跌0.17%，富时意大利MIB指数跌0.07%"
-    },
-    {
-      "id": "d0143354d9db2ea16bf68453150f5dd171c9663c",
-      "title": "Chengzhi Co.: H1 net profit up 1,416% year-on-year",
-      "summary": "The company reported its 2026 interim results: operating revenue of 6.147 billion yuan, up 2.77% year-on-year, and net profit attributable to shareholders of 290 million yuan, up 1,416.23%.",
-      "title_zh": "诚志股份：上半年净利润同比增长1416%",
-      "summary_zh": "【诚志股份：上半年净利润同比增长1416%】财联社8月12日电，诚志股份(000990.SZ)公告称，公司发布2026年半年度报告，实现营业收入61.47亿元，同比增长2.77%；归属于上市公司股东的净利润2.9亿元，同比增长1416.23%"
-    },
-    {
-      "id": "4585773016b273efc44071687a2d4a99412ff928",
-      "title": "Lumentum shares extend gain to 14% as Q4 revenue, profit, and guidance top estimates",
-      "summary": "Lumentum shares extended their gain to 14% after the company's fiscal Q4 revenue, profit, and next-quarter guidance all beat expectations.",
-      "title_zh": "财联社8月12日电，Lumentum股价涨幅扩大至14%，公司第四财季营收、利润以及下一季业绩指引全面超预期。",
-      "summary_zh": "财联社8月12日电，Lumentum股价涨幅扩大至14%，公司第四财季营收、利润以及下一季业绩指引全面超预期"
-    },
-    {
-      "id": "a411b25837edfbc03cf1a47c72a8d5b0fb75e656",
-      "title": "[Premium Notes] 1.6T optical modules boost aluminum nitride thermal material demand; high-end powder and thin-film lithium niobate enter validation and ramp-up",
-      "summary": null,
-      "title_zh": "【金牌纪要库】1.6T光模块推升氮化铝散热材料需求，高端粉体与薄膜铌酸锂进入验证放量期",
-      "summary_zh": null
-    },
-    {
-      "id": "48cc7c9fb40c70fb49ab4cf65631c09420a493d0",
-      "title": "SpaceX AI launches Grok 4.6",
-      "summary": "SpaceX AI says it launched GROK 4.6, priced at $2 per million input tokens and $6 per million output tokens.",
-      "title_zh": "SpaceX AI：推出Grok 4.6",
-      "summary_zh": "【SpaceX AI：推出Grok 4.6】财联社8月12日电，SpaceX AI表示，推出GROK 4.6，GROK 4.6的定价设定为每百万TOKEN输入2美元，每百万TOKEN输出6美元"
-    },
-    {
-      "id": "3968fa5447d2ca83b1956b242025c56ada97a8e8",
-      "title": "Tencent: WorkBuddy paying-user gross margin rivals Tencent Cloud's overall gross margin",
-      "summary": "At today's results call, CSO James Mitchell said domestic token prices are indeed low, but token production costs are also extremely low, far below widespread external assumptions.",
-      "title_zh": "腾讯：WorkBuddy付费用户毛利率可与腾讯云整体毛利率媲美",
-      "summary_zh": "【腾讯：WorkBuddy付费用户毛利率可与腾讯云整体毛利率媲美】财联社8月12日电，腾讯首席战略官James Mitchell在今日晚间的业绩会上表示，“国内的Token价格确实很低，但Token生产成本也极低，远低于外界的普遍认知和预估"
-    },
-    {
-      "id": "d54aa4ab828bc0ba0bf4e7003ba8de2f4dbb566b",
-      "title": "Tencent's Martin Lau: gradually build a high-margin AI-native business; can lease infrastructure in the worst case",
-      "summary": "The company's business now splits into existing core operations and a new 'AI-native' segment covering models, applications, and the related compute infrastructure.",
-      "title_zh": "腾讯刘炽平：逐步建立高盈利AI原生业务 最坏情况下可选择出租基础设施",
-      "summary_zh": "【腾讯刘炽平：逐步建立高盈利AI原生业务 最坏情况下可选择出租基础设施】财联社8月12日电，腾讯控股总裁刘炽平在今日晚间的业绩会上表示，公司目前业务可分为现有核心业务、新型“AI原生”业务两部分，其中“AI原生”业务即包括模型、应用及相应的计算基础设施"
-    },
-    {
-      "id": "a4833ced29f0912c70eedb9644138effad1c86c8",
-      "title": "Bank of America to buy 49.9% of Jio Financial subsidiary for about $1.9 billion",
-      "summary": "Bank of America will acquire 49.9% of a Jio Financial subsidiary for about $1.9 billion.",
-      "title_zh": "财联社8月12日电，美国银行将以约19亿美元收购Jio金融子公司49.9%的股份。",
-      "summary_zh": "财联社8月12日电，美国银行将以约19亿美元收购Jio金融子公司49.9%的股份"
-    },
-    {
-      "id": "03cbe4d6c4c74b77189c5dee68dae2fae47cf0e7",
-      "title": "VIX briefly hits seven-month low, last down 0.44 points to 14.84",
-      "summary": "The fear gauge VIX briefly touched a seven-month low and was last down 0.44 points at 14.84.",
-      "title_zh": "财联社8月12日电，恐慌指数VIX短暂触及七个月低点，最新下跌0.44点至14.84。",
-      "summary_zh": "财联社8月12日电，恐慌指数VIX短暂触及七个月低点，最新下跌0.44点至14.84"
-    },
-    {
-      "id": "33afc91b94a8f636fada208748d67545dcd61820",
-      "title": "BofA hedge-fund clients keep heavy buying of US stocks; weekly flow largest since 2008",
-      "summary": "A week after BofA hedge-fund clients bought US stocks at near-record size, positioning reached its highest since 2008.",
-      "title_zh": "美银对冲基金客户继续大买美股 单周规模创出2008年以来之最",
-      "summary_zh": "【美银对冲基金客户继续大买美股 单周规模创出2008年以来之最】财联社8月12日电，美国银行对冲基金客户以接近创纪录的金额买入美国股票后一周，投资水平又达到了2008年以来最高"
-    },
-    {
-      "id": "1ea89d824275a68d96b00373f6889ae018faa439",
-      "title": "AI tech shares lead Asia higher; Korea Composite up 5%, oil extends gains, US CPI the key variable",
-      "summary": "Strong tech earnings rekindled AI-trade enthusiasm; Asian equities rose across the board on Wednesday, with US index futures also climbing.",
-      "title_zh": "AI科技股领涨亚市，韩国综指涨5%，油价延续升势，美CPI成关键变量",
-      "summary_zh": "科技股强劲财报重燃AI交易热情，亚洲股市周三全线走高，美股指数期货同步上扬"
-    },
-    {
-      "id": "f0d070b05f8dc160ce87dd3d37d3614f3af11a22",
-      "title": "I found a $100 bill in the communal washer at my Airbnb. What should I do?",
-      "summary": "“The landlord has not been here in months, so I assume it was a previous tenant.”",
-      "title_zh": "我在 Airbnb 公共洗衣机里捡到一张 100 美元钞票，该怎么办？",
-      "summary_zh": "“房东已经好几个月没来过，所以我猜那是前一位房客留下的。”"
-    },
-    {
-      "id": "25a906f84646626b120a6ed8a015e7bed1b5d305",
-      "title": "Social Security recipients will get more money next year. Here’s how much benefits may rise.",
-      "summary": "Social Security’s cost-of-living adjustment could be as much as 3.6% in 2027.",
-      "title_zh": "社保领取者明年将拿到更多钱：福利可能上涨的幅度",
-      "summary_zh": "社保的生活成本调整在 2027 年涨幅最高可能达 3.6%。"
-    },
-    {
-      "id": "7efde8318dd1c93e279b13e75b96fca71d091187",
-      "title": "Bob Iger, Joshua Kushner buy Los Angeles Lakers at a $12.5 billion valuation, source says",
-      "summary": "Venture capital founder Joshua Kushner and former Disney CEO Bob Iger acquire Mark Walter's stake in Los Angeles Lakers at valuation of more than $12 billion.",
-      "title_zh": "消息人士称，鲍勃·艾格与乔舒亚·库什纳以 125 亿美元估值收购洛杉矶湖人队",
-      "summary_zh": "风投创始人乔舒亚·库什纳与前迪士尼 CEO 鲍勃·艾格，以超过 120 亿美元的估值收购马克·沃尔特持有的洛杉矶湖人队股份。"
-    },
-    {
-      "id": "3730cdb3e990dac02eb483120745791c2670cf54",
-      "title": "Trump sued over Truth Social advance access sale",
-      "summary": "The lawsuit, filed in U.S",
-      "title_zh": "特朗普因 Truth Social 提前访问权出售遭起诉",
-      "summary_zh": null
-    },
-    {
-      "id": "503f353fb6f528408ecac31ba83e36cbdfdf1f2e",
-      "title": "Trump officials float cut to capital gains tax on home sales. What it could mean for homeowners",
-      "summary": "Trump officials may be considering a tax break for homeowners selling their primary residence in the lead up to the midterm elections.",
-      "title_zh": "特朗普政府官员提议削减房屋出售资本利得税，对房主意味着什么",
-      "summary_zh": "特朗普政府官员可能正在考虑，在中期选举前为出售自住房的房主提供税收减免。"
-    },
-    {
-      "id": "ecf8dfef04a842b7aed248a88189b4bf988dac37",
-      "title": "South Korea regulator: new single-leveraged ETF investors must complete simulated-trading practice",
-      "summary": "South Korean regulators are continuously tightening the threshold for leveraged ETF investment.",
-      "title_zh": "韩国监管：将要求单一杠杆ETF的新投资者完成模拟交易练习",
-      "summary_zh": "韩国监管层持续收紧杠杆ETF投资门槛"
-    },
-    {
-      "id": "77ee3229cdce1fa88bbef11d4a9392478d300a56",
-      "title": "The stock market's tranquility is almost unprecedented. That's a red flag for Michael Burry",
-      "summary": "The high-profile investor said major market cycles can take months or even years to unfold, making timing them dangerous for investors using leverage.",
-      "title_zh": "股市的平静几乎前所未有，对迈克尔·伯里而言却是危险信号",
-      "summary_zh": "这位知名投资者表示，主要市场周期可能历时数月甚至数年才能展开，对使用杠杆的投资者来说，择时风险极高。"
-    },
-    {
-      "id": "12b86e916c09cd03d8f7c8a0899528f234e5e694",
-      "title": "S&P 500 rises after tame inflation data; AI-related shares jump: Live updates",
-      "summary": "Investors are bracing for an important inflation report that could determine the near-term direction for interest rates.",
-      "title_zh": "通胀数据温和，标普 500 走高；AI 相关个股跳涨：实时更新",
-      "summary_zh": "投资者正屏息等待一份重要的通胀报告，其结果可能决定利率的近期走向。"
-    },
-    {
-      "id": "86de4064c2ca0b782722831787e994f15655d2ca",
-      "title": "Stocks making the biggest moves midday: Wendy's, H&R Block, Quantinuum, CoreWeave, Cava & more",
-      "summary": "These are the stocks posting the largest moves midday.",
-      "title_zh": "午盘异动个股：温蒂、H&R Block、Quantinuum、CoreWeave、Cava 等",
-      "summary_zh": "以下是午盘时段波动最大的个股。"
-    },
-    {
-      "id": "00953af6926e8dbd11d814a9b29037e2e3c195e8",
-      "title": "Amazon shares appear stuck in a rut. Trader Mike Khouw is betting things will stay that way",
-      "summary": "For investors who suspect Amazon could be range-bound for the next seven weeks, consider a “jade lizard.”",
-      "title_zh": "亚马逊股价似乎陷入泥潭，交易员 Mike Khouw 押注这种情况将持续",
-      "summary_zh": "若你认为亚马逊未来七周可能区间震荡，可考虑“jade lizard”期权策略。"
-    },
-    {
-      "id": "86017460c0420f0d3f1cacee79305d768e72acbe",
-      "title": "DeepSeek adds 'DeepSeek-V4-Pro-0813' model to API docs",
-      "summary": "On DeepSeek's API documentation 'Models & Pricing' page, the model list added DeepSeek-V4-Pro-0813, which supports both non-thinking and thinking modes.",
-      "title_zh": "DeepSeek官网API文档新增“DeepSeek-V4-Pro-0813”模型",
-      "summary_zh": "DeepSeek官网“API 文档”上的“模型 &amp; 价格”页面中，模型版本新增了DeepSeek-V4-Pro-0813，其支持非思考与思考模式"
-    },
-    {
-      "id": "c61d47503e3b02398b38cf6c50237453bb3142f7",
-      "title": "Small investors became a major stock market force. Now, they risk getting pushed back into the dark",
-      "summary": "Retail investors' access to information could take a hit at a time when they are more important than ever in financial markets.",
-      "title_zh": "散户已成股市重要力量，如今却面临被重新边缘化的风险",
-      "summary_zh": "在散户对金融市场举足轻重的当下，其信息获取渠道可能遭到打击。"
-    },
-    {
-      "id": "dda78026bf894ce63938b36afa2633ccc2133471",
-      "title": "Wendy's stock jumps on report of potential takeover bid from Nelson Peltz's Trian Fund Management",
-      "summary": "Peltz's relationship with Wendy's dates back to an activist campaign he led more than two decades ago.",
-      "title_zh": "传 Nelson Peltz 的 Trian 基金或发起收购，温蒂股价跳涨",
-      "summary_zh": "Peltz 与温蒂的渊源可追溯到他二十多年前牵头的一场激进投资者行动。"
-    },
-    {
-      "id": "36369494b5d004b76407a3df7f1e13728a5c4854",
-      "title": "OPEC monthly report: cuts 2026 global oil demand forecast; Saudi July output recovery exceeds 1 million bpd",
-      "summary": "Saudi crude output rebounded sharply in July, but renewed geopolitical conflict and blocked export routes kept the added volume from fully reaching the international market, with part diverted to domestic inventories.",
-      "title_zh": "OPEC月报：下调2026年全球石油需求预测，沙特7月复产超百万桶/日",
-      "summary_zh": "沙特7月原油产量大幅回升，但受地缘冲突重燃、出口通道受阻影响，新增产量并未完全转化为国际市场供应，部分增量转而进入国内库存"
-    },
-    {
-      "id": "8ced1a676a8d442f7ce65219500ba0b1ecd82393",
-      "title": "How to best play a vitally important AI infrastructure cog using options",
-      "summary": "While the valuation is clearly not cheap, the profitability profile is extraordinary for a hardware company.",
-      "title_zh": "如何用期权把握 AI 基础设施中这一关键环节",
-      "summary_zh": "尽管估值显然不便宜，但作为一家硬件公司，其盈利表现异常出色。"
-    },
-    {
-      "id": "9ea9f7e93a5f4e5e58435152bc0fe571aa230e1b",
-      "title": "Here's the inflation breakdown for July 2026 — in one chart",
-      "summary": "Costs remain elevated for consumers, however inflation is showing some signs of easing, economists say.",
-      "title_zh": "一张图看懂 2026 年 7 月通胀拆解",
-      "summary_zh": "经济学家表示，消费者成本仍居高不下，但通胀已显现一些缓和迹象。"
-    },
-    {
-      "id": "2ee3ca4bc53e9ab2cd96b6f3b11da0832fc60776",
-      "title": "Carmakers' 'disappearing launch events'",
-      "summary": "Author Zhou Zhiyuan: carmakers are increasingly shunning traditional launch press conferences.",
-      "title_zh": "车企“消失的发布会”",
-      "summary_zh": "作者 | 周智宇 车企越来越不喜欢办发布会了"
-    }
-  ],
-  "updated_at": "2026-08-12T11:30:00Z"
+ "items": [
+  {
+   "id": "8052a734abf7362d605590541defe312ef455df7",
+   "title": "Meta and Nvidia plant 'very firm flag' in open-weight AI race led by Chinese Labs",
+   "summary": "With China way ahead in the market for open-weight models, Meta and Nvidia are both doing what they can to put the U.S",
+   "title_zh": "在由中国实验室领跑的开源权重 AI 竞赛中，Meta 与英伟达竖起“非常坚定的旗帜”",
+   "summary_zh": "在开源权重模型市场中国已大幅领先之际，Meta 与英伟达正各尽其能，为美国在这一竞赛中插上旗帜。"
+  },
+  {
+   "id": "d16aa80a50bf6fc02783bec09ca02d8d96455152",
+   "title": "US July CPI rose 3.4% year-on-year, in line with expectations; Fed September hike bets cool further",
+   "summary": "On Wednesday, Labor Department data showed US July CPI inflation matched market forecasts exactly, weakening investor bets on a Fed September rate hike.",
+   "title_zh": "US July CPI rose 3.4% year-on-year, in line with expectations; Fed September hike bets cool further",
+   "summary_zh": "On Wednesday, Labor Department data showed US July CPI inflation matched market forecasts exactly, weakening investor bets on a Fed September rate hike."
+  },
+  {
+   "id": "f5e53099fbd4e764799998c6779a8e86f8d8702f",
+   "title": "July US CPI expected to cool; Fed rate-hike bets may face a second blow",
+   "summary": "On the evening of August 12, the Bureau of Labor Statistics will release July CPI data.",
+   "title_zh": "July US CPI expected to cool; Fed rate-hike bets may face a second blow",
+   "summary_zh": "On the evening of August 12, the Bureau of Labor Statistics will release July CPI data."
+  },
+  {
+   "id": "d7ba8723167600bdd1d2107d19fac87ac71bd9a2",
+   "title": "Alphabet’s stock slips as Nvidia’s $500 billion financing deal threatens custom chips",
+   "summary": "Investors are concerned that Alphabet faces a fresh threat from Nvidia’s plans to help fund the AI buildout alongside major Wall Street players.",
+   "title_zh": "英伟达 5000 亿美元融资交易威胁定制芯片，Alphabet 股价走低",
+   "summary_zh": "投资者担心，英伟达计划联合华尔街主要机构为 AI 建设提供融资，给 Alphabet 带来新的威胁。"
+  },
+  {
+   "id": "f49149104a7b536096b14b8d426c884c58873ef2",
+   "title": "Nvidia, Intel, Google: Wall Street is partying like it’s 1999",
+   "summary": "The signs are all around that Wall Street is back in that dangerous atmosphere of giddy euphoria that those with long memories will remember from the infamous d",
+   "title_zh": "英伟达、英特尔、谷歌：华尔街正像 1999 年那样狂欢",
+   "summary_zh": "种种迹象显示，华尔街重现了那种令人眩晕的狂热氛围，资深者仍记得那场声名狼藉的……"
+  },
+  {
+   "id": "88d7f208f2628b3aa272496e80884838c96fd467",
+   "title": "How to trade gold prices as Fed rate hike and inflation odds shifts",
+   "summary": "Gold prices have been volatile in 2026, but a recent rally shows renewed investor interest amid tamer inflation data and changing Fed rate expectations.",
+   "title_zh": "美联储加息与通胀概率生变，黄金如何交易",
+   "summary_zh": "2026 年黄金价格一直波动剧烈，但近期反弹显示，在通胀数据趋温和、美联储利率预期变化的背景下，投资者兴趣重新升温。"
+  },
+  {
+   "id": "e49da0343a66294b2fb3f0ad6274daa910211e2e",
+   "title": "Starbucks is close to the top of its multiyear range. The charts show it could break out higher",
+   "summary": "Frank Cappelleri breaks down the technicals on the coffee chain.",
+   "title_zh": "星巴克逼近多年区间顶部，图表显示或向上突破",
+   "summary_zh": "Frank Cappelleri 解析这家咖啡连锁股的技术面。"
+  },
+  {
+   "id": "f50574737b0c3129497a17cd87931c38d3d4c345",
+   "title": "Strait of Hormuz ship traffic near three-month low as U.S.-Iran deal in doubt",
+   "summary": "Traffic is about 90% lower than the daily average of 130 ships that transited Hormuz before the U.S",
+   "title_zh": "美伊协议前景不明，霍尔木兹海峡航运量逼近三个月低位",
+   "summary_zh": "当前航运量较此前每日平均 130 艘船经霍尔木兹海峡通行时低约 90%……"
+  },
+  {
+   "id": "5d79aa70b09a77d0bf4bea73694a847319ea8d44",
+   "title": "AI’s costly build-out complicates the Fed’s inflation fight",
+   "summary": "Tech leaders say AI will drive down costs",
+   "title_zh": "AI 高昂的建设成本令美联储抗通胀更棘手",
+   "summary_zh": "科技界领袖称 AI 将压低成本。"
+  },
+  {
+   "id": "38de4588fdbf9e3321b74ddcb905e85e68bd8be5",
+   "title": "Solar eclipse drives Europe hotel prices to over $1,000 a night",
+   "summary": "Eclipse demand pushed some Spain and Iceland stays above $1,000 a night, while Iceland hotels cut prices sharply closer to Aug",
+   "title_zh": "日食带动欧洲酒店价格飙至每晚逾 1000 美元",
+   "summary_zh": "日食需求推动西班牙和冰岛部分住宿价格升至每晚 1000 美元以上，而冰岛酒店临近 8 月……"
+  },
+  {
+   "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
+   "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
+   "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
+   "title_zh": "美联储理事会就现代化互助银行组织规则的提案征求意见",
+   "summary_zh": "美联储理事会就现代化互助银行组织规则的提案公开征求意见。"
+  },
+  {
+   "id": "51bdb202dd58e4b5d03a7f03beae1d271730a57a",
+   "title": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, Inc., BNP Paribas Securities Corp., and Community Bankshares, Inc.",
+   "summary": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, I",
+   "title_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行（BNP Paribas）多家实体的执法行动",
+   "summary_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行 S.A.、BNP Paribas USA……的执法行动。"
+  },
+  {
+   "id": "a7865e8b5ad126513892d2d5f9b329dac951d14f",
+   "title": "International oil prices edged up on the 12th",
+   "title_zh": "国际油价12日微涨",
+   "summary_zh": "【国际油价12日微涨】财联社8月13日电，国际油价12日微涨",
+   "summary": "International oil prices edged up on the 12th (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "d50632397359be42fc3446158b9a40e5ca924bdb",
+   "title": "US military says it has rerouted 59 merchant ships",
+   "title_zh": "美军称已使59艘商船改变航线",
+   "summary_zh": "【美军称已使59艘商船改变航线】财联社8月13日电，美国中央司令部在社交平台发文称，美军继续执行对伊朗的海上封锁，截至8月12日，已经使59艘商业船只改道，使3艘船只失去行动能力，并登临检查2艘船只",
+   "summary": "The US Central Command said in a social media post that the US military continues its maritime blockade against Iran; as of Aug 12 it had rerouted 59 commercial vessels, disabled 3 ships, and boarded 2."
+  },
+  {
+   "id": "4a68af07abf9892c58327085d47cfcdb99d37995",
+   "title": "Colombia's 7.4-magnitude quake on the 10th has killed 241 and injured 3,771, according to the national disaster risk agency",
+   "title_zh": "财联社8月13日电，哥伦比亚国家灾害风险管理局发布的数据显示，10日在该国西部发生的7.4级强震已造成241人死亡、3771人受伤。",
+   "summary_zh": "财联社8月13日电，哥伦比亚国家灾害风险管理局发布的数据显示，10日在该国西部发生的7.4级强震已造成241人死亡、3771人受伤",
+   "summary": "Colombia's National Disaster Risk Management Unit reported that the 7.4-magnitude earthquake in the west of the country on the 10th has left 241 dead and 3,771 injured."
+  },
+  {
+   "id": "091bd8a335b9b58c283948bf591bc7d8c6380a96",
+   "title": "Hang Seng Index night session falls 0.35% to 25,320",
+   "title_zh": "财联社8月13日电，恒生指数主连夜盘收跌0.35%，报25320点。",
+   "summary_zh": "财联社8月13日电，恒生指数主连夜盘收跌0.35%，报25320点",
+   "summary": "Hang Seng Index main contract night session closed down 0.35% at 25,320 points (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "59e7023011fa3df863868c236aa0c2128f99d6d8",
+   "title": "Canada and US not yet ready for a tariff deal; Ottawa unsatisfied with latest US proposal",
+   "title_zh": "财联社8月13日电，据报道，加拿大和美国尚未准备好达成关税协议，加拿大对美方最新提议仍不满意。",
+   "summary_zh": "财联社8月13日电，据报道，加拿大和美国尚未准备好达成关税协议，加拿大对美方最新提议仍不满意",
+   "summary": "Canada and the US are not yet prepared to reach a tariff agreement, and Canada remains dissatisfied with the latest US proposal (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "f22340802d16f1ba19da4a734ac6d68f57440f2d",
+   "title": "Mexico's central bank sets official peso rate at 17.0627 per dollar",
+   "title_zh": "财联社8月13日电，墨西哥央行将官方比索汇率设定为1美元兑17.0627比索。",
+   "summary_zh": "财联社8月13日电，墨西哥央行将官方比索汇率设定为1美元兑17.0627比索",
+   "summary": "Banco de Mexico set the official peso exchange rate at 17.0627 per US dollar (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "d66c6802b464c39097f57486a1a3ccecb0506ff0",
+   "title": "SpaceX extends gain to 12%, hitting a new high since July 10",
+   "title_zh": "财联社8月13日电，SpaceX涨幅扩大至12%，创下自7月10日以来的新高。",
+   "summary_zh": "财联社8月13日电，SpaceX涨幅扩大至12%，创下自7月10日以来的新高",
+   "summary": "SpaceX extended its gain to 12%, marking a new high since July 10 (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "497b021c8adaaf0e323afc2b7bdc47690746ad94",
+   "title": "Shanghai gold futures +0.36% to 959 yuan/g; silver +0.63% to 16,024 yuan/kg; SC crude +0.63% to 556 yuan/bbl",
+   "title_zh": "财联社8月13日电，沪金主力合约收涨0.36%，报959元/克。沪银主力合约收涨0.63%，报16024元/千克。SC原油主力合约收涨0.63%，报556元/桶。",
+   "summary_zh": "财联社8月13日电，沪金主力合约收涨0.36%，报959元/克",
+   "summary": "Shanghai gold main contract closed up 0.36% at 959 yuan per gram (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "3e73a5c7bddde3b1903656aa7cf603f239c71336",
+   "title": "Fully in line with expectations: US July CPI year-on-year gain narrowed to 3.4%, core CPI slowed to 2.5%",
+   "summary": "July US inflation matched expectations across the board, temporarily easing fears of upside surprises, but not enough to remove uncertainty over the Fed's policy path.",
+   "title_zh": "Fully in line with expectations: US July CPI year-on-year gain narrowed to 3.4%, core CPI slowed to 2.5%",
+   "summary_zh": "July US inflation matched expectations across the board, temporarily easing fears of upside surprises, but not enough to remove uncertainty over the Fed's policy path."
+  },
+  {
+   "id": "8e497f7cd760be43efbc0589522187de3ce477cf",
+   "title": "Lebanese army accuses Israel of violating framework accord with continued strikes in south Lebanon",
+   "title_zh": "黎政府军指责以色列违反框架协议持续袭击黎南部",
+   "summary_zh": "【黎政府军指责以色列违反框架协议持续袭击黎南部】财联社8月13日电，黎巴嫩政府军12日发表声明说，以色列持续违反现有框架协议和国际法，对黎南部发动持续袭击并炸毁多处建筑，阻碍当地居民返回家园以及黎军部署",
+   "summary": "The Lebanese army said on the 12th that Israel keeps violating the existing framework accord and international law with sustained strikes on south Lebanon, destroying buildings and hindering residents' return and the army's deployment (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "be36c2918189eb43005f96cdc70a0c6fcff90e91",
+   "title": "Against the grain: Goldman strategists say the Fed may hold rates steady all year, pushing back on hike bets",
+   "summary": "Goldman diverges sharply from the consensus, expecting the Fed to keep rates unchanged for the foreseeable future and sees inflation pressures easing through the second half of 2026.",
+   "title_zh": "Against the grain: Goldman strategists say the Fed may hold rates steady all year, pushing back on hike bets",
+   "summary_zh": "Goldman diverges sharply from the consensus, expecting the Fed to keep rates unchanged for the foreseeable future and sees inflation pressures easing through the second half of 2026."
+  },
+  {
+   "id": "e376cc4b0a484815d99a51c7fe0236fe6bfabf3e",
+   "title": "Iraqi PM: Sept 30 is deadline for international coalition troop withdrawal",
+   "title_zh": "伊拉克总理：9月30日为国际联盟撤军最后期限",
+   "summary_zh": "【伊拉克总理：9月30日为国际联盟撤军最后期限】财联社8月13日电，据伊拉克总理媒体办公室声明，伊拉克总理扎伊迪当地时间12日会见了到访的美军中央司令部司令库珀",
+   "summary": "Iraqi Prime Minister al-Sudani met with visiting US Central Command commander Cooper on the 12th; per the PM's media office, Sept 30 is the deadline for the international coalition's withdrawal (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "199c2335e0ed788f7309c81005e078f008bd27cd",
+   "title": "US July budget deficit $432.31 bln vs $346.0 bln expected",
+   "title_zh": "财联社8月13日电，美国7月预算赤字为4323.1亿美元，预估为赤字3460亿美元。",
+   "summary_zh": "财联社8月13日电，美国7月预算赤字为4323.1亿美元，预估为赤字3460亿美元",
+   "summary": "The US July budget deficit came in at $432.31 billion versus an expected $346.0 billion (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "0846838fb04eab0c4181ae77dd6c54523e3e6e56",
+   "title": "Kuwait foils terror plot targeting a key facility",
+   "title_zh": "科威特挫败一起针对重要设施的恐袭图谋",
+   "summary_zh": "【科威特挫败一起针对重要设施的恐袭图谋】财联社8月13日电，科威特内政部12日宣布，安全部门成功挫败一起针对科威特一处重要设施的“恐怖袭击图谋”，并抓获一名与“伊斯兰国”组织有关联的科威特公民",
+   "summary": "Kuwait's Interior Ministry said on the 12th that security forces foiled a 'terrorist plot' against a key facility and arrested a Kuwaiti national linked to ISIS (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "300ba3af836aee217f48c3521949497d3ba8344b",
+   "title": "CBOE Volatility Index falls below 15, lowest since Jan 9",
+   "title_zh": "财联社8月13日电，芝加哥期权交易所波动率指数跌破15，触及1月9日以来新低。",
+   "summary_zh": "财联社8月13日电，芝加哥期权交易所波动率指数跌破15，触及1月9日以来新低",
+   "summary": "The CBOE Volatility Index dropped below 15, its lowest since Jan 9 (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "a7e9b4dc0f21818667783732970d55bc4e699acc",
+   "title": "Google execs reportedly held all-hands last week on AI unit restructuring",
+   "title_zh": "财联社8月13日电，谷歌高管据悉上周召开全员会议，以回应员工关切，解决AI部门重组问题。",
+   "summary_zh": "财联社8月13日电，谷歌高管据悉上周召开全员会议，以回应员工关切，解决AI部门重组问题",
+   "summary": "Google executives reportedly held an all-hands meeting last week to address employee concerns and resolve the AI unit restructuring (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "bf73be100672573c305759a9f2f4361583c37b9a",
+   "title": "Canada weighs auto-tariff proposal in US talks",
+   "title_zh": "加拿大在对美谈判中权衡汽车关税提议",
+   "summary_zh": "【加拿大在对美谈判中权衡汽车关税提议】财联社8月13日电，加拿大官员据悉正考虑提议接受美国汽车关税，以换取对符合《美墨加协定》规则的汽车降低关税",
+   "summary": "Canadian officials are reportedly considering proposing acceptance of US auto tariffs in exchange for lower tariffs on vehicles compliant with USMCA rules (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "ab8e1f0a1cf764a8b43e57eaa5b71f1e91e04176",
+   "title": "Alumina night session +1%",
+   "title_zh": "氧化铝夜盘涨1%",
+   "summary_zh": "【氧化铝夜盘涨1%】财联社8月13日电，上期所基本金属夜盘收盘涨跌不一，氧化铝涨1%",
+   "summary": "SHFE base metals closed mixed in night session; alumina rose 1% (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "7b708005f4fea7d9f8a7ad0c4da258e02e69a049",
+   "title": "US 10Y Treasury auction yield 4.683%, highest since 2007",
+   "title_zh": "美国财政部10年期国债中标收益率4.683% 创2007年以来最高",
+   "summary_zh": "【美国财政部10年期国债中标收益率4.683% 创2007年以来最高】财联社8月13日电，美国财政部新发420亿美元10年期国债，中标收益率4.683%，而发行前交易水平4.682%；中标收益率创2007年以来最高，而上月第二次续发中标收益率为4.580%",
+   "summary": "The US Treasury sold $42 billion of 10-year notes at a high yield of 4.683% (vs 4.682% when-issued), the highest since 2007; last month's reopening yielded 4.580% (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "23415ad68453ec6f9ee3b4bf4b0c59cce8581cf0",
+   "title": "SpaceX extends gain to 8.5%",
+   "title_zh": "财联社8月13日电，SpaceX涨幅扩大至8.5%。",
+   "summary_zh": "财联社8月13日电，SpaceX涨幅扩大至8.5%",
+   "summary": "SpaceX extended its gain to 8.5% (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "67f518a609bdc87ba9626d93575a77d7d6c11e6e",
+   "title": "Blackstone weighs dropping $3 billion debt-financing plan",
+   "title_zh": "黑石考虑放弃30亿美元债务融资计划",
+   "summary_zh": "【黑石考虑放弃30亿美元债务融资计划】财联社8月13日电，黑石集团据悉正在考虑放弃一项约30亿美元的债务融资计划，该计划原本有助于公司向投资者返还部分资金",
+   "summary": "Blackstone is reportedly considering dropping a roughly $3 billion debt-financing plan that was meant to help return capital to investors (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "9196245187b94062c10315e53d190e64c9aace44",
+   "title": "Italy's Mount Etna keeps erupting, flights disrupted",
+   "title_zh": "意大利埃特纳火山持续喷发 航班受影响",
+   "summary_zh": "【意大利埃特纳火山持续喷发 航班受影响】财联社8月13日电，本月初，位于意大利西西里岛的埃特纳火山发生喷发并持续至今",
+   "summary": "Mount Etna on Sicily began erupting earlier this month and continues to do so, disrupting flights (Cailian Press, Aug 13)."
+  },
+  {
+   "id": "1ea89d824275a68d96b00373f6889ae018faa439",
+   "title": "AI tech shares lead Asia higher; Korea Composite up 5%, oil extends gains, US CPI the key variable",
+   "summary": "Strong tech earnings rekindled AI-trade enthusiasm; Asian equities rose across the board on Wednesday, with US index futures also climbing.",
+   "title_zh": "AI tech shares lead Asia higher; Korea Composite up 5%, oil extends gains, US CPI the key variable",
+   "summary_zh": "Strong tech earnings rekindled AI-trade enthusiasm; Asian equities rose across the board on Wednesday, with US index futures also climbing."
+  },
+  {
+   "id": "c7b937060857ea288b9c13427601f8d1daf596ed",
+   "title": "Bitcoin hovers at $62,500 support in downtrend: Live levels",
+   "summary": "",
+   "title_zh": "比特币在下行趋势中于 62,500 美元支撑位徘徊：实时点位"
+  },
+  {
+   "id": "1234fb2cae63a273620f373bd39eb4da66a99dff",
+   "title": "Tesla tests key resistance at $327: Live levels",
+   "summary": "",
+   "title_zh": "特斯拉在 327 美元关键阻力位试探：实时点位"
+  },
+  {
+   "id": "6862d07f97faf2a09cd6a8524d4987e58bb88d3e",
+   "title": "Netlist stock surges after filing ITC complaint against Micron",
+   "summary": "",
+   "title_zh": "Netlist 起诉美光（Micron）后股价飙升"
+  },
+  {
+   "id": "1adcad4d3a6df55a75af0fce2a652acae434e7ab",
+   "title": "Nasdaq 100 stalls below 30,000 in tight consolidation: Live levels",
+   "summary": "",
+   "title_zh": "纳斯达克 100 在 30,000 下方窄幅盘整：实时点位"
+  },
+  {
+   "id": "a0676c7a3551d2fbd543fe3f349367e65e0c1952",
+   "title": "Now China wants to become the shop floor for the Muslim world",
+   "summary": "Chinese exporters are moving into halal food, cosmetics and fashion, but success in this vast market depends on something harder to manufacture than cheap goods",
+   "title_zh": "如今中国想成为穆斯林世界的“代工厂”",
+   "summary_zh": "中国出口商正进军清真食品、化妆品与时尚领域，但要在这一庞大市场取得成功，靠的并非廉价商品所能轻易制造的东西。"
+  },
+  {
+   "id": "12155062bee612af5561423cb0e03288284839d5",
+   "title": "Social Security recipients will get more money next year. Here’s how much the COLA may boost benefits.",
+   "summary": "Social Security’s cost-of-living adjustment could be as much as 3.6% in 2027.",
+   "title_zh": "社保领取者明年将拿到更多钱：生活成本调整（COLA）或上调多少",
+   "summary_zh": "社保的生活成本调整（COLA）在 2027 年涨幅最高可达 3.6%。"
+  },
+  {
+   "id": "8e296f8aef617bc3bdd5aee963574c392eccfef3",
+   "title": "Missing one week of pay would cause half of Americans a major hardship. 4 tips for managing a cash crunch",
+   "summary": "If missing one week of pay would wreak havoc on your finances, here are a few tips to help bridge the gap in your paychecks.",
+   "title_zh": "少发一周工资就会让半数美国人陷入严重困境：应对现金流紧张的 4 个建议",
+   "summary_zh": "如果少发一周工资就会让你的财务陷入混乱，以下建议可帮你填补工资缺口。"
+  },
+  {
+   "id": "665dd8c5c7a773aa043f1c67f000b3e3dc6998a5",
+   "title": "Google’s new Pixel 11 puts Gemini at center of AI phone battle with Apple",
+   "summary": "Google is launching the Pixel 11 lineup weeks before Apple rolls out a rebuilt Siri powered by Gemini AI models.",
+   "title_zh": "谷歌新款 Pixel 11 将 Gemini 置于与苹果 AI 手机之争的核心",
+   "summary_zh": "谷歌将在苹果推出由 Gemini AI 模型驱动、重构版 Siri 的数周前，发布 Pixel 11 系列。"
+  },
+  {
+   "id": "ad9c1943ec6b518b027f38e40b2a1634c61f6107",
+   "title": "SpaceX short sellers are running out of bullets as stock rebounds more than 40% off low",
+   "summary": "Short interest in SpaceX fell to about 11% of the company's publicly traded shares Wednesday, down sharply from a peak of 34% last week, according to S3.",
+   "title_zh": "SpaceX 股价自低点反弹逾 40%，空头弹药用尽",
+   "summary_zh": "据 S3 数据，周三 SpaceX 的卖空比例降至约 11% 的流通股，较上周 34% 的峰值大幅回落。"
+  },
+  {
+   "id": "897493181b9b49698ffba09cb9e4f4765a15c217",
+   "title": "SpaceXAI's new weapon: Grok 4.6 agent beats GPT-5.6 and Fable 5 in tests, priced at half rivals",
+   "title_zh": "SpaceXAI新“杀器”：Grok 4.6智能体测试力压GPT-5.6、Fable 5，定价仅竞品一半",
+   "summary_zh": "美东时间8月12日周三，马斯克旗下SpaceXAI正式发布新一代大模型Grok 4.6",
+   "summary": "On Wednesday, Aug 12 (ET), Musk's SpaceXAI officially released its new-generation model Grok 4.6."
+  },
+  {
+   "id": "fbfe074f9eb08d54f198e899274a13c96c5692ef",
+   "title": "S&P 500 rises after tame inflation data; AI-related shares jump: Live updates",
+   "summary": "Investors are bracing for an important inflation report that could determine the near-term direction for interest rates.",
+   "title_zh": "温和通胀数据后标普 500 走高，AI 相关个股跳涨：实时更新",
+   "summary_zh": "投资者正为一份重要通胀报告做好准备，该报告或决定利率的近期走向。"
+  },
+  {
+   "id": "7969e87da097b79a66029e8e2744536256142fb1",
+   "title": "U.S. budget deficit surged in July to highest level since March 2021",
+   "summary": "Beyond the big single-month jump, the collective red ink over the 10 months of the fiscal year rose to nearly $1.8 trillion, surpassing the same period in 2025.",
+   "title_zh": "美国 7 月预算赤字激增，创 2021 年 3 月以来最高",
+   "summary_zh": "除单月大幅跳升外，本财年 10 个月的累计赤字增至近 1.8 万亿美元，超过 2025 年同期。"
+  },
+  {
+   "id": "7309398e023fcdfa510119f951187ea2aa08c4a3",
+   "title": "CEO of Intel just gave Jim Cramer one more reason to call it his favorite stock",
+   "summary": "Intel on Wednesday revealed CEO Lip-Bu Tan as a big buyer in the massive stock sale that the company announced this week.",
+   "title_zh": "英特尔 CEO 又给了 Jim Cramer 一个称之为“最爱股票”的理由",
+   "summary_zh": "英特尔周三披露，CEO 陈立武（Lip-Bu Tan）在本周公司宣布的大规模股票出售中是重要买家。"
+  },
+  {
+   "id": "c6b741208c80dc655b3c5b54bd1f8fefcf3378e3",
+   "title": "The stock market's tranquility is almost unprecedented. That's a red flag for Michael Burry",
+   "summary": "The high-profile investor said major market cycles can take months or even years to unfold, making timing them dangerous for investors using leverage.",
+   "title_zh": "股市的平静近乎前所未有，这对 Michael Burry 而言是危险信号",
+   "summary_zh": "这位知名投资者表示，主要市场周期可能历时数月甚至数年才展开，对使用杠杆的投资者而言，择时尤为危险。"
+  },
+  {
+   "id": "0b48d136dd364c8590128734e38ff5212a23ae35",
+   "title": "'Nobody wants it': Lettuce prices see record-setting plunge as cyclospora spooks consumers",
+   "summary": "Lettuce prices posted their sharpest month-over-month decline on record as diners reconsider the vegetable amid the cyclospora outbreak.",
+   "title_zh": "“没人想要了”：隐孢子虫吓退消费者，生菜价格创纪录暴跌",
+   "summary_zh": "在隐孢子虫疫情下，就餐者重新审视这种蔬菜，生菜价格录得有记录以来最大环比跌幅。"
+  }
+ ],
+ "updated_at": "2026-08-12T20:30:47Z"
 }
