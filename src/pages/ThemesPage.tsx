@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ChevronRight } from "lucide-react";
 import { useDataset } from "@/hooks/useDataset";
 import type { CommoditiesEnvelope, CryptoEnvelope, EquitiesEnvelope, SectorsEnvelope } from "@/schemas";
 import { MemorySectorTable } from "@/components/equities/MemorySectorTable";
@@ -28,6 +30,7 @@ import { displayCryptoName, displayLocalizedValue } from "@/lib/displayLanguage"
 /** One theme card: label, 1d/1M changes, percentile band, constituent chips (#93). */
 function ThemeCard({ theme }: { theme: { key: string; change_1d: number | null; change_1m: number | null; percentile_1y: number | null; percentile_1y_obs: number; constituents: string[] } }) {
   const { t } = useTranslation("themes");
+  const [constituentsOpen, setConstituentsOpen] = useState(false);
   const dTone = dirTone(theme.change_1d);
   const pct = theme.percentile_1y;
   const band =
@@ -62,14 +65,24 @@ function ThemeCard({ theme }: { theme: { key: string; change_1d: number | null; 
           ) : null}
         </div>
         {theme.constituents.length > 0 ? (
-          <div className="flex flex-wrap gap-1">
-            {theme.constituents.slice(0, 8).map((sym) => (
-              <span key={sym} className="rounded border border-hairline px-1 py-0.5 font-mono text-xs text-muted-foreground">
-                {sym}
-              </span>
-            ))}
+          <div className="flex flex-col gap-1">
+            <div className="flex flex-wrap gap-1">
+              {(constituentsOpen ? theme.constituents : theme.constituents.slice(0, 8)).map((sym) => (
+                <span key={sym} className="rounded border border-hairline px-1 py-0.5 font-mono text-xs text-muted-foreground">
+                  {sym}
+                </span>
+              ))}
+            </div>
             {theme.constituents.length > 8 ? (
-              <span className="px-0.5 text-xs text-muted-foreground">+{theme.constituents.length - 8}</span>
+              <button
+                type="button"
+                onClick={() => setConstituentsOpen((v) => !v)}
+                aria-expanded={constituentsOpen}
+                className="inline-flex min-h-[28px] items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+              >
+                <span>{constituentsOpen ? t("constituents.showFewer") : t("constituents.showAll", { count: theme.constituents.length })}</span>
+                <ChevronRight className={`h-3.5 w-3.5 transition-transform ${constituentsOpen ? "rotate-90" : ""}`} aria-hidden />
+              </button>
             ) : null}
           </div>
         ) : null}

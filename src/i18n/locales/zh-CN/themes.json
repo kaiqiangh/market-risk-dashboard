@@ -43,6 +43,10 @@
   "gaming": "游戏",
   "digital_advertising": "数字广告",
   "fintech": "金融科技",
+  "constituents": {
+    "showAll": "查看全部 {{count}} 只",
+    "showFewer": "收起"
+  },
   "period": {
     "oneWeek": "周涨跌",
     "oneMonth": "月涨跌"

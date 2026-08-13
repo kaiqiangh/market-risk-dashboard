@@ -43,7 +43,7 @@ export function NewsCard({ item }: NewsCardProps) {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+            className="inline-flex min-h-[28px] items-center gap-1 text-xs text-primary hover:underline"
             aria-label={t("readMore")}
           >
             {t("readMore")}

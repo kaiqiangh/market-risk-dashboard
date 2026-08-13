@@ -14,5 +14,11 @@
   "readMore": "Read more",
   "none": "No news",
   "total": "Total news",
+  "filter": {
+    "label": "Filter by importance",
+    "all": "All",
+    "high": "High",
+    "mediumPlus": "Medium+"
+  },
   "translationUnavailable": "Translation unavailable"
 }

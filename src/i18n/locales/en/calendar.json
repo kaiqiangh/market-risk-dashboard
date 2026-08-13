@@ -3,7 +3,8 @@
   "subtitle": "Economic + earnings calendar (next 7 days)",
   "type": {
     "economic": "Economic",
-    "earnings": "Earnings"
+    "earnings": "Earnings",
+    "fomc": "FOMC"
   },
   "importance": {
     "high": "High",
@@ -19,6 +20,10 @@
     "source": "Source"
   },
   "none": "No calendar events",
+  "filter": {
+    "label": "Filter by type",
+    "all": "All"
+  },
   "display": {
     "earningsSuffix": "Earnings",
     "events": {

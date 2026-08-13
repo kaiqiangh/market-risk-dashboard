@@ -78,6 +78,7 @@ export function Navbar() {
             <NavLink
               key={page}
               to={`/${segment}/${page}`}
+              aria-label={t(`nav.${page}`)}
               className={({ isActive }) =>
                 cn(
                   "flex min-h-11 shrink-0 items-center gap-1 rounded-md px-1 py-2 text-xs font-medium transition-colors sm:min-h-0 sm:gap-1.5 sm:px-2.5 sm:py-1.5 sm:text-xs",
@@ -92,7 +93,7 @@ export function Navbar() {
                 const Icon = PAGE_ICONS[page];
                 return <Icon className="h-3.5 w-3.5" aria-hidden />;
               })()}
-              <span>{t(`nav.${page}`)}</span>
+              <span className="hidden sm:inline">{t(`nav.${page}`)}</span>
             </NavLink>
           ))}
           <div ref={moreRef} className="relative sm:hidden">
@@ -109,7 +110,7 @@ export function Navbar() {
               onClick={() => setMoreOpen((open) => !open)}
             >
               <MoreHorizontal className="h-4 w-4" aria-hidden />
-              <span>{t("nav.more")}</span>
+              <span className="hidden sm:inline">{t("nav.more")}</span>
             </button>
             {moreOpen ? <div className="absolute left-0 top-full z-50 mt-1 min-w-40 rounded-md border border-border bg-popover p-1 shadow-lg" role="menu">
               {morePages.map((page) => {

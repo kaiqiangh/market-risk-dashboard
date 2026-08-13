@@ -14,5 +14,11 @@
   "readMore": "阅读原文",
   "none": "暂无新闻",
   "total": "新闻总数",
+  "filter": {
+    "label": "按重要性筛选",
+    "all": "全部",
+    "high": "高",
+    "mediumPlus": "中及以上"
+  },
   "translationUnavailable": "暂无本语言翻译"
 }

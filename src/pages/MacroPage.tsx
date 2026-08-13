@@ -106,7 +106,7 @@ export default function MacroPage() {
                   key={group}
                   type="button"
                   onClick={() => setHistoryGroup(group)}
-                  className={`rounded-full border px-2.5 py-0.5 text-xs transition-colors ${
+                  className={`rounded-full border px-2.5 py-0.5 text-xs min-h-[28px] transition-colors ${
                     historyGroup === group
                       ? "border-fresh-ok/40 bg-fresh-ok/10 text-fresh-ok"
                       : "border-hairline text-muted-foreground hover:text-foreground"
@@ -121,7 +121,7 @@ export default function MacroPage() {
                     key={slice}
                     type="button"
                     onClick={() => setHistorySlice(slice)}
-                    className={`rounded-full border px-2.5 py-0.5 text-xs transition-colors ${
+                    className={`rounded-full border px-2.5 py-0.5 text-xs min-h-[28px] transition-colors ${
                       historySlice === slice
                         ? "border-fresh-ok/40 bg-fresh-ok/10 text-fresh-ok"
                         : "border-hairline text-muted-foreground hover:text-foreground"

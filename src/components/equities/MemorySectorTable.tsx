@@ -1,3 +1,5 @@
+import { useMemo, useState } from "react";
+import { ChevronDown, ChevronUp, ChevronsUpDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -6,6 +8,7 @@ import { dirTone, dirClasses } from "@/lib/riskColors";
 import { formatChange, formatMoney } from "@/lib/format";
 import type { EquityAsset, MemoryProxy } from "@/schemas";
 import { displayLocalizedValue } from "@/lib/displayLanguage";
+import { cn } from "@/lib/utils";
 
 /**
  * MemorySectorTable: memory sector (Micron + A-share memory, architecture §8.10 pool).
@@ -19,6 +22,38 @@ export interface MemorySectorTableProps {
 export function MemorySectorTable({ assets, memory }: MemorySectorTableProps) {
   const { t, i18n } = useTranslation("equities");
   const locale = i18n.language;
+
+  type SortKey = "change_1d" | "change_1w" | "change_1m";
+  const [sortKey, setSortKey] = useState<SortKey | null>(null);
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+
+  const sortedAssets = useMemo(() => {
+    if (!sortKey) return assets;
+    const dir = sortDir === "asc" ? 1 : -1;
+    return [...assets].sort((a, b) => {
+      const av = a[sortKey];
+      const bv = b[sortKey];
+      if (av === null && bv === null) return 0;
+      if (av === null) return 1; // nulls always last
+      if (bv === null) return -1;
+      return (av - bv) * dir;
+    });
+  }, [assets, sortKey, sortDir]);
+
+  const toggleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("desc");
+    }
+  };
+
+  const sortColumns = [
+    { field: "change_1d" as SortKey, labelKey: "change1d" },
+    { field: "change_1w" as SortKey, labelKey: "change1w" },
+    { field: "change_1m" as SortKey, labelKey: "change1m" },
+  ];
 
   return (
     <Card>
@@ -64,16 +99,34 @@ export function MemorySectorTable({ assets, memory }: MemorySectorTableProps) {
                   <th className="py-1.5 pr-2 font-medium">{t("table.symbol")}</th>
                   <th className="py-1.5 pr-2 font-medium">{t("table.name")}</th>
                   <th className="py-1.5 pr-2 text-right font-medium">{t("table.price")}</th>
-                  <th className="py-1.5 pr-2 text-right font-medium">{t("table.change1d")}</th>
-                  <th className="py-1.5 pr-2 text-right font-medium">{t("table.change1w")}</th>
-                  <th className="py-1.5 text-right font-medium">{t("table.change1m")}</th>
+                  {sortColumns.map(({ field, labelKey }) => {
+                    const active = sortKey === field;
+                    const Icon = active ? (sortDir === "asc" ? ChevronUp : ChevronDown) : ChevronsUpDown;
+                    return (
+                      <th
+                        key={field}
+                        className="py-1.5 pr-2 text-right font-medium"
+                        aria-sort={active ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => toggleSort(field)}
+                          aria-label={`${t("sort.activate")} ${t(`table.${labelKey}`)}`}
+                          className="inline-flex items-center gap-1 hover:text-foreground"
+                        >
+                          <span>{t(`table.${labelKey}`)}</span>
+                          <Icon className={cn("h-3 w-3", active ? "text-fresh-ok" : "text-muted-foreground/60")} aria-hidden />
+                        </button>
+                      </th>
+                    );
+                  })}
                 </tr>
               </thead>
               <tbody>
-                {assets.map((a) => {
+                {sortedAssets.map((a) => {
                   const name = displayLocalizedValue(a.name, a.name_zh, locale);
                   return (
-                    <tr key={a.symbol} className="border-b border-border/50 last:border-0">
+                    <tr key={a.symbol} className="border-b border-border/50 last:border-0 hover:bg-[rgba(107,163,201,0.07)]">
                       <td className="py-1.5 pr-2 font-mono text-foreground">{a.symbol}</td>
                       <td className="py-1.5 pr-2">{name}</td>
                       <td className="py-1.5 pr-2 text-right tabular-nums">{formatMoney(a.price, a.currency, locale)}</td>

@@ -100,7 +100,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
       </Card>
 
       {/* 6 dimension cards */}
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid min-w-0 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
         {result.dimensions.map((dim) => {
           const tone = riskLevelTone(
             dim.score >= 70 ? "high_risk" : dim.score >= 50 ? "caution" : dim.score >= 30 ? "low_risk" : "risk_on",
@@ -156,7 +156,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
                     </thead>
                     <tbody>
                       {dim.indicators.map((ind) => (
-                        <tr key={ind.key} className="border-b border-border/50 last:border-0" data-testid="risk-indicator">
+                        <tr key={ind.key} className="border-b border-border/50 last:border-0 hover:bg-[rgba(107,163,201,0.07)]" data-testid="risk-indicator">
                           <td className="py-1.5 pr-2">
                             <div className="flex items-center gap-1.5">
                               <span className="text-foreground">{t(RISK_INDICATOR_KEYS[ind.key] ?? "indicatorNames.unknown")}</span>
@@ -210,7 +210,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
                               ? "unavailable"
                               : signal.triggered ? "triggered" : "notTriggered";
                             return (
-                              <tr key={signal.key} className="border-b border-border/50 last:border-0" data-testid="cross-asset-signal">
+                              <tr key={signal.key} className="border-b border-border/50 last:border-0 hover:bg-[rgba(107,163,201,0.07)]" data-testid="cross-asset-signal">
                                 <td className="py-1.5 pr-2">
                                   <div className="flex flex-wrap items-center gap-1.5">
                                     <span className="text-foreground">{t(`crossAssetSignals.signalNames.${signal.key}`, { defaultValue: t("indicatorNames.unknown") })}</span>

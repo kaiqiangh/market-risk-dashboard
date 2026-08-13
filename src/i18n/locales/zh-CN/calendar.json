@@ -3,7 +3,8 @@
   "subtitle": "经济日历 + 财报日历（未来 7 天）",
   "type": {
     "economic": "经济",
-    "earnings": "财报"
+    "earnings": "财报",
+    "fomc": "FOMC"
   },
   "importance": {
     "high": "高",
@@ -19,6 +20,10 @@
     "source": "来源"
   },
   "none": "暂无日历事件",
+  "filter": {
+    "label": "按类型筛选",
+    "all": "全部"
+  },
   "display": {
     "earningsSuffix": "财报",
     "events": {
