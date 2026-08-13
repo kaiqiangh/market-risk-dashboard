@@ -19,6 +19,10 @@
     "source": "Source"
   },
   "none": "No calendar events",
+  "filter": {
+    "label": "Filter by type",
+    "all": "All"
+  },
   "display": {
     "earningsSuffix": "Earnings",
     "events": {

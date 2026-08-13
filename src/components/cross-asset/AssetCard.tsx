@@ -38,7 +38,7 @@ export function AssetCard({ symbol, name, value, change1d, sub, className }: Ass
         <span className={cn("text-sm font-semibold tabular-nums", classes.text)}>
           {change1d === null || change1d === undefined ? "—" : formatChange(change1d, locale)}
         </span>
-        {sub ? <span className="truncate text-xs text-muted-foreground">{sub}</span> : null}
+        {sub ? <span className="min-w-0 text-right text-xs text-muted-foreground">{sub}</span> : null}
       </div>
     </div>
   );

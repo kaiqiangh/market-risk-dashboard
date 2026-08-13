@@ -19,6 +19,10 @@
     "source": "来源"
   },
   "none": "暂无日历事件",
+  "filter": {
+    "label": "按类型筛选",
+    "all": "全部"
+  },
   "display": {
     "earningsSuffix": "财报",
     "events": {

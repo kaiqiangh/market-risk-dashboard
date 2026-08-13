@@ -43,6 +43,10 @@
   "gaming": "Gaming",
   "digital_advertising": "Digital Advertising",
   "fintech": "FinTech",
+  "constituents": {
+    "showAll": "Show all {{count}}",
+    "showFewer": "Show fewer"
+  },
   "period": {
     "oneWeek": "1W",
     "oneMonth": "1M"
