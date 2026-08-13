@@ -3,8 +3,7 @@
   "subtitle": "经济日历 + 财报日历（未来 7 天）",
   "type": {
     "economic": "经济",
-    "earnings": "财报",
-    "fomc": "FOMC"
+    "earnings": "财报"
   },
   "importance": {
     "high": "高",

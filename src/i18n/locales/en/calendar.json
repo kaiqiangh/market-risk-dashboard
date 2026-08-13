@@ -3,8 +3,7 @@
   "subtitle": "Economic + earnings calendar (next 7 days)",
   "type": {
     "economic": "Economic",
-    "earnings": "Earnings",
-    "fomc": "FOMC"
+    "earnings": "Earnings"
   },
   "importance": {
     "high": "High",
