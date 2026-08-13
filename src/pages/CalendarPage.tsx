@@ -19,7 +19,7 @@ export default function CalendarPage() {
   const calendarQ = useDataset<CalendarEnvelope>("calendar");
   const [filter, setFilter] = useState<"all" | CalendarEvent["type"]>("all");
 
-  const events = calendarQ.data?.payload.events ?? [];
+  const events = useMemo(() => calendarQ.data?.payload.events ?? [], [calendarQ.data]);
   const types = useMemo(() => Array.from(new Set(events.map((e) => e.type))), [events]);
   const filtered = filter === "all" ? events : events.filter((e) => e.type === filter);
 
