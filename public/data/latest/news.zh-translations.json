@@ -1,349 +1,320 @@
 {
- "items": [
-  {
-   "id": "a1d2119e70d1db5bcef9a74b95852cc8b07a05c7",
-   "title": "Tiger Global builds Q2 positions in SpaceX and AMD, trims Google, TSMC, Nvidia and others",
-   "title_zh": "老虎环球Q2建仓SpaceX和AMD 减持谷歌、台积电、英伟达等",
-   "summary": "CLS, Aug 15 — Tiger Global made large-scale Q2 positioning changes, building new positions in SpaceX and AMD while trimming Google, TSMC and Nvidia.",
-   "summary_zh": "【老虎环球Q2建仓SpaceX和AMD 减持谷歌、台积电、英伟达等】财联社8月15日电，老虎环球基金二季度大规模调仓"
-  },
-  {
-   "id": "4a19d12317a1abe026ada7b4aa37aa804ac7915f",
-   "title": "German Farmers' Association: heat and drought may cut harvests in some regions or cause total crop failure",
-   "title_zh": "德国农民协会：高温干旱或致部分地区农作物减产甚至绝收",
-   "summary": "CLS, Aug 15 — The German Farmers' Association said persistent high temperatures and drought could significantly reduce German agricultural output this year.",
-   "summary_zh": "【德国农民协会：高温干旱或致部分地区农作物减产甚至绝收】财联社8月15日电，德国农民协会表示，受持续高温干旱影响，今年德国农业可能出现明显减产"
-  },
-  {
-   "id": "57eac4407b568680e639e39721412d89f2b5f2b6",
-   "title": "CLS, Aug 15 — Broadcom's decline widened to 6.7%, its biggest intraday drop since June 5.",
-   "title_zh": "财联社8月15日电，博通跌幅扩大至6.7%，创下自6月5日以来的最大日内跌幅。",
-   "summary": "CLS, Aug 15 — Broadcom's decline widened to 6.7%, its biggest intraday drop since June 5.",
-   "summary_zh": "财联社8月15日电，博通跌幅扩大至6.7%，创下自6月5日以来的最大日内跌幅"
-  },
-  {
-   "id": "a01cb4790910612037176ee994ccf6bea87eb299",
-   "title": "Chicago Fed President Goolsbee encouraged by cooling inflation but wants more evidence",
-   "title_zh": "芝加哥联储行长古尔斯比对通胀降温感到鼓舞 仍希望看到更多证据",
-   "summary": "CLS, Aug 15 — Chicago Fed President Austan Goolsbee said recent disinflation is encouraging, but he wants to see more similar signs in the coming months to confirm inflation is returning toward the Fed's 2% target.",
-   "summary_zh": "【芝加哥联储行长古尔斯比对通胀降温感到鼓舞 仍希望看到更多证据】财联社8月15日电，芝加哥联储行长奥斯坦·古尔斯比表示，近期通胀降温令他受到鼓舞，但他希望在未来几个月看到更多类似迹象，以确认通胀在向美联储2%的目标水平回落"
-  },
-  {
-   "id": "e96aa0515232c83c86d23f8beae9a081da2f158f",
-   "title": "Luigi Mangione pleads guilty in federal case related to UnitedHealthcare CEO killing",
-   "title_zh": "路易吉·曼吉奥内就联合健康CEO遇害案联邦指控认罪",
-   "summary": "Mangione's lawyers argue his federal plea bars his prosecution for murder in state court for Brian Thompson's slaying due to New York's double jeopardy law",
-   "summary_zh": "曼吉奥内的律师辩称，根据纽约州双重追诉法律，其联邦认罪将阻止其在州法院就布莱恩·汤普森被杀案被起诉谋杀。"
-  },
-  {
-   "id": "467b2a3a7ed1297088db7bb30f9ea3ef017eef4e",
-   "title": "What flash memory maker SanDisk told investors this week is a boon for our newest stock",
-   "title_zh": "闪存制造商闪迪本周向投资者传达的内容利好我们的最新持仓",
-   "summary": "Every weekday, the Investing Club releases the Homestretch; an actionable afternoon update just in time for the last hour of trading.",
-   "summary_zh": "每个工作日，投资俱乐部都会发布Homestretch——一份恰逢交易最后一小时的可操作午后更新。"
-  },
-  {
-   "id": "4936223c113e7b2c207bd7f64c6cad8a9908a4ca",
-   "title": "Fed unexpectedly pauses RMP purchases: Wall Street expects a pause lasting at least until October; TD Securities sees a possible restart before year-end",
-   "title_zh": "美联储意外暂停RMP购债：华尔街料至少持续至10月，道明证券称年末前或重启",
-   "summary": "A notable new shift has emerged in the Fed's assessment of banking-system liquidity.",
-   "summary_zh": "美联储对银行体系流动性的判断出现了一个值得关注的新变化"
-  },
-  {
-   "id": "bf7f49c8bc9a9d794b48be39edf7423398c953ea",
-   "title": "Seth Klarman’s hedge fund Baupost buys Into Ackman’s Pershing Square, adds to tech bets",
-   "title_zh": "塞斯·卡拉曼的对冲基金Baupost买入阿克曼的Pershing Square股份，加码科技押注",
-   "summary": "The Boston-based investment firm disclosed a small stake in Pershing Square Inc., which trades under the ticker symbol PS.",
-   "summary_zh": "这家总部位于波士顿的投资公司披露持有Pershing Square Inc.的小额股份，该股代码为PS。"
-  },
-  {
-   "id": "f810312d682ccae66303c73db1ecf422c388ef3f",
-   "title": "July inflation cools; will the Fed hike in September? Two Fed officials signal different views",
-   "summary": "On Aug 13, Cleveland Fed President Beth Hammack, a voting member this year, and Richmond Fed President Tom Barkin, an alternate voter, each spoke.",
-   "title_zh": "7月通胀数据有所回落 9月加不加息？两位美联储官员释放出不同信号",
-   "summary_zh": "8月13日，美联储今年票委、克利夫兰联储主席Beth Hammack和今年为候补票委的里士满联储主席Tom Barkin分别发表讲话"
-  },
-  {
-   "id": "184a811c5573cf1afe574c60b361cc4d53c59bde",
-   "title": "US July PPI misses expectations, further cooling September rate-hike bets",
-   "summary": "After July CPI came in broadly in line on Wednesday, Thursday's US July producer price index also remained mild, showing easing inflation pressure.",
-   "title_zh": "美国7月PPI通胀不及预期 美联储9月加息预期进一步降温",
-   "summary_zh": "在此前一天美国7月份CPI通胀全面符合预期之后，周四公布的美国7月生产者价格指数(PPI)整体涨幅也保持温和，显示通胀压力进一步缓解"
-  },
-  {
-   "id": "9d2f5b8035607418d93230139f4add4d9cb1e952",
-   "title": "US August University of Michigan consumer sentiment preliminary misses expectations; near-term inflation expectations above prior",
-   "title_zh": "美国8月密歇根大学消费者信心指数初值不及预期，短期通胀预期高于前值",
-   "summary": "US August UMich 1-year inflation expectations preliminary 4.3, expected 4.2, prior 4.2.",
-   "summary_zh": "美国8月密歇根大学1年通胀预期初值 4.3，预期 4.2，前值 4.2"
-  },
-  {
-   "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
-   "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-   "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-   "title_zh": "美联储理事会就现代化互助银行组织规则的提案征求意见",
-   "summary_zh": "美联储理事会就现代化互助银行组织规则的提案公开征求意见。"
-  },
-  {
-   "id": "51bdb202dd58e4b5d03a7f03beae1d271730a57a",
-   "title": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, Inc., BNP Paribas Securities Corp., and Community Bankshares, Inc.",
-   "summary": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, I",
-   "title_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行（BNP Paribas）多家实体的执法行动",
-   "summary_zh": "美联储理事会对 Small Business Bank 采取执法行动，并宣布终止对法国巴黎银行 S.A.、BNP Paribas USA、BNP Paribas Securities Corp. 及 Community Bankshares 的执法行动。"
-  },
-  {
-   "id": "6aa0757019a293f76380a9fc85069c3143f813f5",
-   "title": "International oil prices rose on Aug 14",
-   "title_zh": "国际油价14日上涨",
-   "summary": "CLS, Aug 15 — International oil prices rose on Aug 14.",
-   "summary_zh": "【国际油价14日上涨】财联社8月15日电，国际油价14日上涨"
-  },
-  {
-   "id": "6d40b709e476c6060e7cbe4020212a7ba81311f1",
-   "title": "CLS, Aug 15 — Trump says the U.S. will strike Iran at the economic level.",
-   "title_zh": "财联社8月15日电，特朗普表示，将从经济层面打击伊朗。",
-   "summary": "CLS, Aug 15 — Trump says the U.S. will strike Iran at the economic level.",
-   "summary_zh": "财联社8月15日电，特朗普表示，将从经济层面打击伊朗"
-  },
-  {
-   "id": "d2dea6ed1104f2862a742a8d51d0c25bb6c9a029",
-   "title": "Dollar index fell on Aug 14",
-   "title_zh": "美元指数14日下跌",
-   "summary": "CLS, Aug 15 — The dollar index, which measures the greenback against six major currencies, fell 0.3% on the day, closing at 99.667 at the end of trading.",
-   "summary_zh": "【美元指数14日下跌】财联社8月15日电，衡量美元对六种主要货币的美元指数当天下跌0.3%，在汇市尾市收于99.667"
-  },
-  {
-   "id": "4fa701da54aa3843680e1e3764c3d64f906e4b47",
-   "title": "Report: Tesla plans to launch the new Roadster as early as this month",
-   "title_zh": "报道：特斯拉计划最早于本月推出新款Roadster跑车",
-   "summary": "The new Roadster, delayed for nearly eight years by Tesla, may finally be unveiled.",
-   "summary_zh": "特斯拉拖延近八年的新款Roadster，或终于要揭开面纱"
-  },
-  {
-   "id": "16a801ee9db22cd3aec6550c574635a817ddc461",
-   "title": "Yemeni government forces say Houthis fired 6 ballistic missiles at Mocha port",
-   "title_zh": "也门政府军称胡塞武装发射6枚弹道导弹袭击摩卡港",
-   "summary": "CLS, Aug 15 — Yemeni government forces said the Houthis fired 6 ballistic missiles at Mocha port in southwest Yemen, targeting local civilian and state facilities in an attempt to blockade residents and worsen their plight.",
-   "summary_zh": "【也门政府军称胡塞武装发射6枚弹道导弹袭击摩卡港】财联社8月15日电，也门政府军表示，也门胡塞武装向也门西南部摩卡港发射6枚弹道导弹，并以当地民用和国家设施为袭击目标，企图对民众实施封锁、加剧民众困境"
-  },
-  {
-   "id": "f68289cccd556107411c87b37ebb17f68f7492ea",
-   "title": "CLS, Aug 15 — Hang Seng Index futures night session closed up 0.61%; Hang Seng Tech Index futures up 0.81%.",
-   "title_zh": "财联社8月15日电，恒生指数主连夜盘收涨0.61%，恒生科技指数主连夜盘收涨0.81%。",
-   "summary": "CLS, Aug 15 — Hang Seng Index futures night session closed up 0.61%; Hang Seng Tech Index futures up 0.81%.",
-   "summary_zh": "财联社8月15日电，恒生指数主连夜盘收涨0.61%，恒生科技指数主连夜盘收涨0.81%"
-  },
-  {
-   "id": "d38e85c38ad5133ad04b51b4fcb88c1f61b0f1bb",
-   "title": "CLS, Aug 15 — JPMorgan reportedly terminates banking relationship with Polymarket.",
-   "title_zh": "财联社8月15日电，摩根大通据称终止与Polymarket的银行业务关系。",
-   "summary": "CLS, Aug 15 — JPMorgan reportedly terminates banking relationship with Polymarket.",
-   "summary_zh": "财联社8月15日电，摩根大通据称终止与Polymarket的银行业务关系"
-  },
-  {
-   "id": "86121e87c33c2d69eb5ed445a14b90ebdd81eee5",
-   "title": "CLS, Aug 15 — Hong Kong Observatory issues yellow rainstorm warning.",
-   "title_zh": "财联社8月15日电，香港天文台发布黄色暴雨警告。",
-   "summary": "CLS, Aug 15 — Hong Kong Observatory issues yellow rainstorm warning.",
-   "summary_zh": "财联社8月15日电，香港天文台发布黄色暴雨警告"
-  },
-  {
-   "id": "7496cabfff283ee5fd2f5bd788f0398650563fd9",
-   "title": "CLS, Aug 15 — SHFE crude oil futures main contract closed up 2.60% in night trading at 569.30 yuan/barrel; Shanghai silver 2609 up 0.68% at 15,820 yuan/kg; Shanghai gold 2609 up 0.63% at 949...",
-   "title_zh": "财联社8月15日电，上期所原油期货主力合约夜盘收涨2.60%，报569.30元人民币/桶。沪银2609合约夜盘收涨0.68%，报15820元/千克。沪金2609合约夜盘收涨0.63%，报949...",
-   "summary": "CLS, Aug 15 — SHFE crude oil futures main contract night session closed up 2.60% at 569.30 yuan/barrel.",
-   "summary_zh": "财联社8月15日电，上期所原油期货主力合约夜盘收涨2.60%，报569.30元人民币/桶"
-  },
-  {
-   "id": "d71a17a958fc823b26b29cd08c2e447144570302",
-   "title": "CLS, Aug 15 — Mexico's central bank sets official peso rate at 17.0218 per U.S. dollar.",
-   "title_zh": "财联社8月15日电，墨西哥央行将官方比索汇率设定为1美元兑17.0218比索。",
-   "summary": "CLS, Aug 15 — Mexico's central bank sets official peso rate at 17.0218 per U.S. dollar.",
-   "summary_zh": "财联社8月15日电，墨西哥央行将官方比索汇率设定为1美元兑17.0218比索"
-  },
-  {
-   "id": "8874d162d5290d06aae46b6f6b2beba7e25a4066",
-   "title": "‘Absolutely unacceptable’: Japan PM Takaichi condemns Putin’s visit to disputed Kuril Islands",
-   "title_zh": "「绝对不可接受」：日本首相高市早苗谴责普京访问争议的北方四岛",
-   "summary": "Japan protested Vladimir Putin’s first visit to the disputed Kuril Islands, escalating tensions over territory claimed by both Tokyo and Moscow.",
-   "summary_zh": "日本对普京首次访问争议的北方四岛提出抗议，围绕东京与莫斯科均宣称主权的领土，紧张局势进一步升级。"
-  },
-  {
-   "id": "58839553859b69772849cc34e52dcc636d6184e9",
-   "title": "CLS, Aug 15 — White House press secretary Leavitt says the U.S. has more means to pressure Iran and can keep punishing Iran while weakening its economy.",
-   "title_zh": "财联社8月15日电，白宫新闻秘书莱维特表示，美国还有更多施压伊朗的手段。美国可以继续惩罚伊朗并削弱其经济。",
-   "summary": "CLS, Aug 15 — White House press secretary Leavitt said the U.S. has more means to pressure Iran.",
-   "summary_zh": "财联社8月15日电，白宫新闻秘书莱维特表示，美国还有更多施压伊朗的手段"
-  },
-  {
-   "id": "46e565e5a4cc9c8ea967aa93f06b220fe0e613ac",
-   "title": "CLS, Aug 15 — Natural gas pipeline project for Oracle's data center postponed to February 2027.",
-   "title_zh": "财联社8月15日电，用于甲骨文数据中心的天然气管道项目已被推迟至2027年2月。",
-   "summary": "CLS, Aug 15 — Natural gas pipeline project for Oracle's data center postponed to February 2027.",
-   "summary_zh": "财联社8月15日电，用于甲骨文数据中心的天然气管道项目已被推迟至2027年2月"
-  },
-  {
-   "id": "70b422398e390b538e50a482e05696a3707634af",
-   "title": "CLS, Aug 15 — Chile's Codelco reportedly to shut the Chuquicamata and Ministro Hales mines.",
-   "title_zh": "财联社8月15日电，智利国家铜业公司（Codelco）据悉将关停丘基卡马塔（Chuquicamata）和米尼斯特罗·哈尔斯（Ministro Hales）两座矿山。",
-   "summary": "CLS, Aug 15 — Chile's Codelco reportedly to shut the Chuquicamata and Ministro Hales mines.",
-   "summary_zh": "财联社8月15日电，智利国家铜业公司（Codelco）据悉将关停丘基卡马塔（Chuquicamata）和米尼斯特罗·哈尔斯（Ministro Hales）两座矿山"
-  },
-  {
-   "id": "25ef33fae63c63d56a5c065d0498bb1e2f682cbf",
-   "title": "CLS, Aug 15 — Iran's president reportedly to visit India for the BRICS summit.",
-   "title_zh": "财联社8月15日电，伊朗总统据悉将出访印度参加金砖国家峰会。",
-   "summary": "CLS, Aug 15 — Iran's president reportedly to visit India for the BRICS summit.",
-   "summary_zh": "财联社8月15日电，伊朗总统据悉将出访印度参加金砖国家峰会"
-  },
-  {
-   "id": "64433b458e26dff0c7e00ca94b749dd083e709f6",
-   "title": "India cuts windfall tax on refined fuel exports",
-   "title_zh": "印度下调成品油出口暴利税",
-   "summary": "CLS, Aug 15 — India lowered the gasoline export windfall tax from 3.5 rupees per litre to zero effective Aug 15, cut the aviation turbine fuel export tax from 22 rupees to 19.5 rupees per litre, and the diesel export tax from 25.5 to 24 rupees per litre.",
-   "summary_zh": "【印度下调成品油出口暴利税】财联社8月15日电，印度自8月15日起将汽油出口暴利税从每升3.5卢比降至零，将航空涡轮燃料出口暴利税从每升22卢比下调至19.5卢比，将柴油出口暴利税从每升25.5卢比下调至24卢比"
-  },
-  {
-   "id": "27bc35c4d809f8216dd2cc91789e7d2fc87f18e0",
-   "title": "CLS, Aug 15 — The VIX fear gauge widened its decline, touching the lowest intraday level since December 30 last year.",
-   "title_zh": "财联社8月15日电，恐慌指数VIX跌幅扩大，触及去年12月30日以来的盘中最低点。",
-   "summary": "CLS, Aug 15 — The VIX fear gauge widened its decline, touching the lowest intraday level since December 30 last year.",
-   "summary_zh": "财联社8月15日电，恐慌指数VIX跌幅扩大，触及去年12月30日以来的盘中最低点"
-  },
-  {
-   "id": "68db6bdefe4394a69660328ea88d452565f9bff6",
-   "title": "CLS, Aug 15 — Zambia's electoral commission lifted the earlier suspension of vote counting around 18:00 local time on Aug 14.",
-   "title_zh": "财联社8月15日电，赞比亚选举委员会于当地时间14日18时左右宣布解除此前的大选计票暂停措施。",
-   "summary": "CLS, Aug 15 — Zambia's electoral commission lifted the earlier suspension of vote counting around 18:00 local time on Aug 14.",
-   "summary_zh": "财联社8月15日电，赞比亚选举委员会于当地时间14日18时左右宣布解除此前的大选计票暂停措施"
-  },
-  {
-   "id": "59982caf385a64d98c8e1111994ff077d391184f",
-   "title": "Federal Reserve Board issues enforcement action with former employee of Regions Bank",
-   "summary": "Federal Reserve Board issues enforcement action with former employee of Regions Bank",
-   "title_zh": "美联储对 Regions Bank 前雇员采取执法行动",
-   "summary_zh": "美联储理事会宣布对 Regions Bank 一名前雇员采取执法行动。"
-  },
-  {
-   "id": "7329ab38cc8c974d8f40f8ff154266a1e0dd44c5",
-   "title": "Luigi Mangione admits killing insurance CEO, pleads guilty in federal case",
-   "title_zh": "路易吉·曼吉奥内承认杀害保险业CEO，就联邦指控认罪"
-  },
-  {
-   "id": "01616b1ae1fe32ad21a355c3c16a53d2d74b423a",
-   "title": "Viavi Solutions director Joanne Solomon sells $429,200 in stock",
-   "title_zh": "Viavi Solutions董事Joanne Solomon出售价值429,200美元的股票"
-  },
-  {
-   "id": "3357ae42e0a23a5da0d6e542dac657a975c5053c",
-   "title": "Luigi Mangione pleads guilty in federal court to stalking health-insurance CEO",
-   "title_zh": "路易吉·曼吉奥内在联邦法院就跟踪健康保险CEO的指控认罪",
-   "summary": "Luigi Mangione, who is accused of killing a UnitedHealthcare executive, pled guilty to federal stalking charges ahead of a high-profile state murder trial in Ne",
-   "summary_zh": "被控杀害一名联合健康高管的曼吉奥内在纽约备受瞩目的州谋杀审判前，对联邦跟踪指控认罪。"
-  },
-  {
-   "id": "f4a042c2eae2e050cfdcc7b0c776ec96b841ee47",
-   "title": "Owning a home is overrated. Renting is now often a much better money move.",
-   "title_zh": "买房被高估了：如今租房往往更划算",
-   "summary": "There are better ways to think about investments than homeownership.",
-   "summary_zh": "比起买房，还有更好的投资思考方式。"
-  },
-  {
-   "id": "69d6488267dd4b8a3e9e315f2bcee8c89f31d7c4",
-   "title": "Mamdani's NYC pied-à-terre tax can continue rollout during court appeal",
-   "summary": "The tax championed by Mayor Zohran Mamdani has drawn the ire of President Donald Trump, who said it must be stopped and vowed to explore federal options.",
-   "title_zh": "马姆达尼的纽约'公寓税'在上诉期间可继续推进",
-   "summary_zh": "市长佐兰·马姆达尼力推的这项税种招致特朗普总统的不满，他表示必须叫停，并誓言探索联邦层面的应对选项。"
-  },
-  {
-   "id": "010c4fbfb2d2471708ad289192c8dd24dd7ba89a",
-   "title": "Regulators and banks step up scrutiny of prediction markets",
-   "title_zh": "监管机构和银行加大对预测市场的审查力度",
-   "summary": "The CFTC is reviewing prediction betting platforms' so-called mention markets, people familiar with the matter confirmed to CNBC.",
-   "summary_zh": "知情人士向CNBC证实，CFTC正在审查预测投注平台所谓的“提及市场”（mention markets）。"
-  },
-  {
-   "id": "f6d8c32c4e4c9dc5aa7c629d1ebd34a5122cc703",
-   "title": "Trump asks Supreme Court to let White House ballroom construction continue",
-   "title_zh": "特朗普请求最高法院允许白宫宴会厅继续施工",
-   "summary": "President Donald Trump tore down the White House East Wing to make way for the ballroom project.",
-   "summary_zh": "特朗普总统拆除了白宫东翼，为宴会厅项目让路。"
-  },
-  {
-   "id": "04d82ed67498d270dfb4cfb107c0d7b49bcdef00",
-   "title": "OpenAI talent exodus raises 'huge red flag' ahead of IPO",
-   "title_zh": "OpenAI人才外流在IPO前夕亮起“巨大红旗”",
-   "summary": "OpenAI's C-suite turnover gives investors another reason for concern as the company pushes toward a mammoth IPO.",
-   "summary_zh": "OpenAI的高管层变动让投资者在推进大规模IPO之际又多了一个担忧的理由。"
-  },
-  {
-   "id": "6f494d79fe2607d34bab29fa2c6f87f0eb18bffc",
-   "title": "Drone stocks rally after Trump orders tariffs on foreign-made components",
-   "title_zh": "特朗普下令对外国制造零部件加征关税后，无人机股上涨",
-   "summary": "The U.S"
-  },
-  {
-   "id": "e45e9456df3dbe0aa5af6082b64c1ee44218e780",
-   "title": "10-year Treasury yield inches higher as traders digest soft retail sales, monitor the Middle East",
-   "title_zh": "10年期美债收益率小幅走高，交易员消化疲软的零售销售数据并关注中东局势",
-   "summary": "The moves come after the latest retail sales figures missed expectations and the U.S",
-   "summary_zh": "这些走势出现在最新零售销售数据不及预期之后，美国……"
-  },
-  {
-   "id": "2b7d68d0789a78f9109c0191cad0fd025eb2236b",
-   "title": "Lamborghini unveils Revuelto SV, its most powerful production car ever",
-   "title_zh": "兰博基尼发布史上最强量产车Revuelto SV",
-   "summary": "Lamborghini's Revuelto SV is a limited-edition V12 hybrid with over 1,050 horsepower, a 2.4-second 0-to-100 kph time and a $741,172 starting price.",
-   "summary_zh": "兰博基尼Revuelto SV是一款限量版V12混动车型，功率超过1,050马力，0-100公里/小时加速时间2.4秒，起售价741,172美元。"
-  },
-  {
-   "id": "196beefd5f59fd4ea04aa1bb3e220af8f4474991",
-   "title": "Suspect in UnitedHealth executive killing pleads guilty to federal charges",
-   "title_zh": "美联合健康集团高管枪杀案嫌疑人就联邦指控认罪",
-   "summary": "On Aug 14 local time, Luigi Mangione formally pleaded guilty in the killing of UnitedHealth Insurance CEO Brian Thompson.",
-   "summary_zh": "当地时间8月14日，路易吉·曼吉奥内就枪杀联合健康保险首席执行官布赖恩·汤普森（Brian Thompson）一案正式认罪"
-  },
-  {
-   "id": "0e096b501670d59c742850c7f7522adad5d01551",
-   "title": "Alibaba open-sources Qwen3.8; Qwen models exceed 3 billion global downloads",
-   "title_zh": "阿里开源Qwen3.8，千问大模型全球下载超30亿次",
-   "summary": "On the evening of Aug 14, Alibaba Qwen officially open-sourced the Qwen3.8 series; all developers, research institutions and enterprises can freely download, deploy and use it.",
-   "summary_zh": "8月14日晚，阿里千问正式开源Qwen3.8系列模型，所有开发者、科研机构和企业均可自由下载、部署和使用"
-  },
-  {
-   "id": "76c25cced3dbe89a8a1ed1704ef5dc498f46451c",
-   "title": "The one big takeaway from a huge earnings season",
-   "title_zh": "这个庞大财报季的一大启示",
-   "summary": "The market is winding down an exceptionally strong reporting season, and there's an underlying trend that remains front and center.",
-   "summary_zh": "市场正在为一个异常强劲的财报季收尾，一个潜在趋势仍处于核心位置。"
-  },
-  {
-   "id": "873b12fa761bddd781ebc2b425bcd249c0cc1c4a",
-   "title": "Group including Jeff Bezos buys minority stake in Liverpool FC, with option to become controlling owner",
-   "title_zh": "包括杰夫·贝索斯在内的财团购入利物浦足球俱乐部少数股权，并拥有成为控股股东的期权",
-   "summary": "The group that includes Jeff Bezos has an option to become the majority shareholder within the next year.",
-   "summary_zh": "包括杰夫·贝索斯在内的财团拥有在未来一年内成为多数股东的选择权。"
-  },
-  {
-   "id": "ae80ea62b64de5629b22bae94fcb497d989a7ac8",
-   "title": "Disney CEO Josh D'Amaro tells CNBC parks were 'big surprise' in last quarter, company has 'clarity' and 'stability'",
-   "title_zh": "迪士尼CEO乔什·达马罗告诉CNBC：乐园业务是上季度的“大惊喜”，公司拥有“清晰度”与“稳定性”",
-   "summary": "New CEO Josh D'Amaro has said his strategy for continued growth at Disney is centered around storytelling, intellectual property and technology.",
-   "summary_zh": "新任CEO乔什·达马罗表示，他推动迪士尼持续增长的战略围绕故事讲述、知识产权和技术展开。"
-  },
-  {
-   "id": "0d526c9be40687437ab81be5959be3874d63346f",
-   "title": "Court rules companies can't import Gilead medications from overseas in blow to AFP health programs",
-   "title_zh": "法院裁定企业不得从海外进口吉利德药物，重创AFP健康项目",
-   "summary": "A U.S"
-  },
-  {
-   "id": "b8a4dae00b3068786f1a5a2da0a9be037d2a54ec",
-   "title": "Gaoyi Asset adds heavily to Micron and SanDisk in Q2; TSMC becomes top holding",
-   "summary": "The overseas holdings of the 100-billion-yuan private fund Gaoyi Asset were disclosed.",
-   "title_zh": "高毅资产二季度大幅加仓美光科技与闪迪 台积电升至第一大重仓股",
-   "summary_zh": "千亿私募高毅资产的海外持仓曝光"
-  }
- ],
- "updated_at": "2026-08-14T20:31:00Z"
+  "items": [
+    {
+      "id": "deb4efe6e529d3a1d4e599cb7df72daa3048e38e",
+      "title": "Nvidia eyes investing $3 billion in SoftBank's SB Energy under OpenAI data center deal, Information says",
+      "summary": "The proposed investment ⁠is part of Nvidia's talks with OpenAI ⁠and SB Energy on providing credit support for a panned Ohio data center campus, the report said.",
+      "title_zh": "英伟达考虑向软银SB Energy投资30亿美元 涉OpenAI数据中心交易（The Information）",
+      "summary_zh": "报道称，拟议投资是英伟达与OpenAI及SB Energy就俄亥俄州数据中心园区提供信贷支持谈判的一部分。"
+    },
+    {
+      "id": "45a756d0d6c28bca46b2f1195e03fd741fd48319",
+      "title": "Inflation moderated as Intel and Nvidia fueled the AI trade in last week's market",
+      "summary": "No surprises on inflation and new financing developments in the artificial intelligence trade drove the record-breaking action on Wall Street last week.",
+      "title_zh": "上周英特尔与英伟达助推AI行情 通胀数据温和回落",
+      "summary_zh": "通胀数据无意外、AI交易获新增融资进展，推动华尔街上周创纪录上涨。"
+    },
+    {
+      "id": "41b829525ecf2afbd1e877ad1447da2641eab0d2",
+      "title": "Why Nvidia’s $500bn investment mobilization is a positive for the stock",
+      "summary": null,
+      "title_zh": "英伟达5000亿美元投资动员 为何利好其股价？",
+      "summary_zh": null
+    },
+    {
+      "id": "413462b2f8967c35af4673b71e370d53e52f43cc",
+      "title": "Nvidia weighs $3 bln in SB Energy for Ohio AI data center - The Information",
+      "summary": null,
+      "title_zh": "英伟达考虑向SB Energy投资30亿美元 用于俄亥俄州AI数据中心（The Information）",
+      "summary_zh": null
+    },
+    {
+      "id": "4daaefaf05047e166f4217b75bbcd2678815f4b0",
+      "title": "Nvidia discloses $21 billion stake in SpaceX at end of second quarter",
+      "summary": "Nvidia's stake in SpaceX, which came through an investment in xAI, was worth about $21 billion at the end of the second quarter.",
+      "title_zh": "英伟达披露二季度末持有SpaceX约210亿美元股权",
+      "summary_zh": "英伟达通过投资xAI获得的SpaceX股权，截至二季度末价值约210亿美元。"
+    },
+    {
+      "id": "4e95daeb98653dc30a201ba654fbdb779498cb75",
+      "title": "Iran rebuffs Trump's claim over Strait of Hormuz amid report of another ship being struck",
+      "summary": "Iran's deputy foreign minister says Hormuz \"will remain Iranian\" after Trump's claim that the waterway would soon become U.S",
+      "title_zh": "伊朗驳斥特朗普涉霍尔木兹海峡言论 另据报道又一艘船只遇袭",
+      "summary_zh": "在特朗普声称该水道将很快归美国所有后，伊朗副外长表示，霍尔木兹海峡“仍将是伊朗的”。"
+    },
+    {
+      "id": "52861dd6ee9f5799b308166ebd942e0e61fa7218",
+      "title": "AOC says she's been saving up to freeze her eggs. Here's how much the procedure can cost",
+      "summary": "AOC is highlighting the cost of freezing her eggs",
+      "title_zh": "AOC称一直在为冻卵手术攒钱 这项手术费用几何？",
+      "summary_zh": "AOC正呼吁人们关注冻卵手术的费用问题。"
+    },
+    {
+      "id": "37dd490e9a85811d00a05bb8e642a8662d833be6",
+      "title": "I drove Tesla FSD, Rivian Autonomy+ ‘hands-free’ driving systems. Here’s how they compare",
+      "summary": "Rivian is trying to catch up to Tesla's \"hands-free\" capabilities, but with additional safety guardrails that the Elon Musk company doesn't have.",
+      "title_zh": "我实测了特斯拉FSD与Rivian Autonomy+“解放双手”驾驶系统 对比如何？",
+      "summary_zh": "Rivian正试图追赶特斯拉的“解放双手”能力，但其配备了马斯克旗下公司所没有的额外安全护栏。"
+    },
+    {
+      "id": "c21bf145432f3df032f5e21af66ddcc0c6146fc3",
+      "title": "Owning a home is overrated. Renting is now often a much better money move.",
+      "summary": "There are better ways to think about investments than homeownership.",
+      "title_zh": "买房被高估了 如今租房往往是更划算的选择",
+      "summary_zh": "比起拥有住房，投资还有更好的思路。"
+    },
+    {
+      "id": "689161e21e736b8f95e496e358ae9a6bf451dbe9",
+      "title": "Lala strengthens into a hurricane and bears down on Hawaii’s Big Island with heavy rain, winds",
+      "summary": "The Big Island has not experienced a direct hurricane landfall in 155 years.",
+      "title_zh": "飓风Lala增强并向夏威夷大岛逼近 带来强降雨和大风",
+      "summary_zh": "大岛已有155年未经历过飓风直接登陆。"
+    },
+    {
+      "id": "7d7781f84a9b07fb66ca07d8608d97dbc862d043",
+      "title": "Social Security recipients will get more money next year. Here’s how much the COLA may boost benefits.",
+      "summary": "Social Security’s cost-of-living adjustment could be as much as 3.6% in 2027.",
+      "title_zh": "明年美国社保领取者将获更多钱 COLA可能带来多大涨幅？",
+      "summary_zh": "社保生活成本调整（COLA）在2027年可能高达3.6%。"
+    },
+    {
+      "id": "8134025db7a0e60e61424a1f4e574921b26b76fb",
+      "title": "At least 1 student among 5 people shot at Virginia State University as police investigate",
+      "summary": "A shooting involving several suspects and multiple people shot at Virginia State University prompted a campus lockdown early Saturday.",
+      "title_zh": "弗吉尼亚州立大学枪击事件致5人中弹 至少1人为学生 警方展开调查",
+      "summary_zh": "弗吉尼亚州立大学发生枪击事件，涉及多名嫌疑人、多人中弹，周六清晨校园进入封锁状态。"
+    },
+    {
+      "id": "5734d6c0d2a0c739b96c4dbdcad805972046977d",
+      "title": "Luigi Mangione pleads guilty in federal case related to UnitedHealthcare CEO killing",
+      "summary": "Mangione's lawyers argue his federal plea bars his prosecution for murder in state court for Brian Thompson's slaying due to New York's double jeopardy law",
+      "title_zh": "路易吉·曼焦内就联合健康CEO遇害案相关联邦案件认罪",
+      "summary_zh": "曼焦内的律师辩称，根据纽约州双重追诉法律，其联邦认罪应阻止州法院就布莱恩·汤普森被杀案对其提起谋杀起诉。"
+    },
+    {
+      "id": "78c8b5fea8e2fdad605b494f5d04fd6ee563e050",
+      "title": "Marijuana reform is emerging as a midterm elections issue on both sides of the aisle",
+      "summary": "With November's midterms fast approaching, cannabis reform is an issue",
+      "title_zh": "大麻改革正成为美国中期选举两党共同关注的议题",
+      "summary_zh": "随着11月中期选举临近，大麻改革成为一个议题。"
+    },
+    {
+      "id": "492e11b1fbddc2b4f792e131efab3875e40f68f3",
+      "title": "Federal Reserve Board announces approval of the application by Coastal Bend Bancshares, Inc.",
+      "summary": "Federal Reserve Board announces approval of the application by Coastal Bend Bancshares, Inc.",
+      "title_zh": "美联储理事会宣布批准Coastal Bend Bancshares公司的申请",
+      "summary_zh": "美联储理事会宣布批准Coastal Bend Bancshares, Inc.的申请。"
+    },
+    {
+      "id": "c680c122cbba91812d956d822be1dbf67fe71a81",
+      "title": "Federal Reserve Board announces approval of the application by FS Bancorp, Inc.",
+      "summary": "Federal Reserve Board announces approval of the application by FS Bancorp, Inc.",
+      "title_zh": "美联储理事会宣布批准FS Bancorp公司的申请",
+      "summary_zh": "美联储理事会宣布批准FS Bancorp, Inc.的申请。"
+    },
+    {
+      "id": "a29277f3b5826c01e78f88ce3213a65aab627188",
+      "title": "Federal Reserve Board announces approval of the application by Banco Santander, S.A. and Santander Holdings USA, Inc.",
+      "summary": "Federal Reserve Board announces approval of the application by Banco Santander, S.A",
+      "title_zh": "美联储理事会宣布批准桑坦德银行及桑坦德美国控股公司的申请",
+      "summary_zh": "美联储理事会宣布批准Banco Santander, S.A.及Santander Holdings USA, Inc.的申请。"
+    },
+    {
+      "id": "90898f2d06d5bee806a20d0c3913d01397d02d85",
+      "title": "Fed's Goolsbee wants more evidence of cooling inflation; jobs and growth stable",
+      "summary": "Chicago Fed President Austan Goolsbee said recent inflation data is encouraging, but he wants to see more sustained cooling evidence before confirming inflation is steadily returning to the Fed's 2% target.",
+      "title_zh": "美联储Goolsbee：希望看到更多通胀降温证据，就业与经济增长稳定",
+      "summary_zh": "芝加哥联邦储备银行行长Austan Goolsbee表示，近期通胀数据令人鼓舞，但他希望看到更多持续降温的证据，才能确认通胀正稳步回归美联储2%的目标"
+    },
+    {
+      "id": "1da700d1aee45e1c3fab19973168f9696a26e79b",
+      "title": "Heavy rain in Japan's Chiba Prefecture kills 9, floods more than 1,000 homes",
+      "summary": "CLS, Aug 16 - Torrential rain in Chiba Prefecture since Aug 13 has killed 9 people and flooded more than 1,000 homes, according to the prefectural government and police.",
+      "title_zh": "日本千叶县暴雨已致9人死亡 超千栋房屋被淹",
+      "summary_zh": "【日本千叶县暴雨已致9人死亡 超千栋房屋被淹】财联社8月16日电，据日本千叶县政府和警方16日公布的消息，截至目前，千叶县13日开始的暴雨已导致9人死亡，受淹房屋超过1000栋"
+    },
+    {
+      "id": "3b4c09eec690e06387bdd77bbdf08a63fa571936",
+      "title": "Ecuador's President Noboa arrives in Beijing to begin visit to China",
+      "summary": "CLS, Aug 16 - Daniel Noboa, President of the Republic of Ecuador, arrived in Beijing this morning (Aug 16) to begin an 8-day visit to China.",
+      "title_zh": "厄瓜多尔总统诺沃亚抵达北京 开启访华行程",
+      "summary_zh": "【厄瓜多尔总统诺沃亚抵达北京 开启访华行程】财联社8月16日电，今天（16日）早晨，厄瓜多尔共和国总统丹尼尔·罗伊－希尔克里斯特·诺沃亚·阿辛抵达北京，开始为期8天的访华行程"
+    },
+    {
+      "id": "8354676ef899ff0413f5cdfc68e917b47f0d93e9",
+      "title": "Severe weather hits US state of Indiana, at least 5 dead",
+      "summary": "CLS, Aug 16 - Indiana authorities said severe storms and flooding that swept the state this week have killed at least 5 people, CCTV reported on Aug 15 local time.",
+      "title_zh": "美国印第安纳州遭遇恶劣天气 至少5人死亡",
+      "summary_zh": "【美国印第安纳州遭遇恶劣天气 至少5人死亡】财联社8月16日电，央视记者当地时间8月15日获悉，美国印第安纳州当局表示，本周席卷全州的强风暴和洪水已导致至少5人死亡"
+    },
+    {
+      "id": "3fcfadd22e28e6e75e535431433ed30b7fd2515a",
+      "title": "New South Wales to launch gun buyback program after Bondi shooting",
+      "summary": "CLS, Aug 16 - The New South Wales government will launch a gun buyback program, according to Australian reports on Aug 15 local time.",
+      "title_zh": "邦迪枪击案后澳新州将启动枪支回购计划",
+      "summary_zh": "【邦迪枪击案后澳新州将启动枪支回购计划】财联社8月16日电，据澳大利亚方面当地时间15日消息，澳新南威尔士州政府将启动枪支回购计划"
+    },
+    {
+      "id": "d9a376db6db80eb9018c871fd141f8c4719075e4",
+      "title": "Magnitude 6.2 earthquake strikes waters off Central Sulawesi, Indonesia",
+      "summary": "CLS, Aug 16 - A magnitude 6.2 earthquake struck waters off Central Sulawesi at 23:25 local time on Aug 15 at a depth of 44 km, according to Indonesia's meteorology, climatology and geophysics agency.",
+      "title_zh": "印尼中苏拉威西省附近海域发生6.2级地震",
+      "summary_zh": "【印尼中苏拉威西省附近海域发生6.2级地震】财联社8月16日电，据印尼气象、气候和地球物理局发布的报告，当地时间8月15日23时25分，印尼中苏拉威西省附近海域发生6.2级地震， 震源深度44公里"
+    },
+    {
+      "id": "52ee68e6eb765a21a9502f577d15faafc6978d2c",
+      "title": "Boat capsizing in Zimbabwe kills 68",
+      "summary": "CLS, Aug 16 - Zimbabwe police said on Aug 15 the death toll from a boat capsizing on Lake Kariba in the country's north on the afternoon of Aug 11 has risen to 68.",
+      "title_zh": "津巴布韦船只倾覆已致68人死亡",
+      "summary_zh": "【津巴布韦船只倾覆已致68人死亡】财联社8月16日电，当地时间15日，津巴布韦警方公布，该国北部卡里巴湖11日下午发生的船只倾覆事故死亡人数上升到68人"
+    },
+    {
+      "id": "dfbf96aa031e5db32575604e0c972dcb65b49aa5",
+      "title": "Broadcom plunges 6% overnight: AI's next hurdle is financing costs",
+      "summary": "On Aug 14, Broadcom closed at $393.08, down 5.92% in a single day, erasing about $118 billion in market value; it briefly fell to $388.5 intraday.",
+      "title_zh": "博通一夜跌6%：AI的下一道坎，是融资成本",
+      "summary_zh": "8 月 14 日，博通股价收于 393.08 美元，单日下跌 5.92%，市值蒸发约 1180 亿美元，盘中一度跌至 388.5 美元"
+    },
+    {
+      "id": "6ebe2c5e33894c56a27fcea159a7e09bb9bfbdfb",
+      "title": "Thailand sets up dedicated body to strengthen data center oversight",
+      "summary": "CLS, Aug 15 - The Thai government website announced on Aug 14 the establishment of a 'Data Center Operation Policy Committee'.",
+      "title_zh": "泰国成立专门机构强化数据中心管理",
+      "summary_zh": "【泰国成立专门机构强化数据中心管理】财联社8月15日电，泰国政府网站14日发布公告，宣布设立“数据中心经营政策委员会”"
+    },
+    {
+      "id": "5bd844538e910dbf95335a171e5a60d648ef48b6",
+      "title": "Lebanon condemns Israeli strikes on southern Lebanon as violation of framework agreement",
+      "summary": "CLS, Aug 15 - President Aoun condemned Israeli airstrikes on southern Lebanon on Aug 15, saying they violate the tripartite framework agreement and international law and killed an entire family in Ansar village in the Nabatieh area.",
+      "title_zh": "黎巴嫩谴责以色列袭击黎南违反框架协议",
+      "summary_zh": "【黎巴嫩谴责以色列袭击黎南违反框架协议】财联社8月15日电，黎巴嫩总统奥恩15日谴责以色列当天对黎南地区发动的空袭，称以方袭击违反黎以美三方框架协议和国际法，导致奈拜提耶地区安萨尔村一家人全部遇难"
+    },
+    {
+      "id": "bdcad7496f7c9e97f2a07b8f202b8d4d0a198ca4",
+      "title": "Shijiazhuang issues yellow thunderstorm warning at 21:44 on Aug 15",
+      "summary": "CLS, Aug 15 - Shijiazhuang Meteorological Observatory issued a yellow thunderstorm warning at 21:44 on Aug 15: thunderstorms are expected in all districts from late tonight to the morning of Aug 16, with short-duration heavy rain and strong gusts; residents are advised to take precautions.",
+      "title_zh": "石家庄市气象台8月15日21时44分发布雷电黄色预警信号",
+      "summary_zh": "【石家庄市气象台8月15日21时44分发布雷电黄色预警信号】财联社8月15日电，石家庄市气象台2026年08月15日21时44分发布雷电黄色预警信号：预计今天后半夜到16日上午，我市全部县区有雷阵雨或阵雨，雷雨时伴有短时强降水、短时大风等强对流天气，请注意防范"
+    },
+    {
+      "id": "a79ad72087d060c1c553c095a7e2c89cc484825a",
+      "title": "Domestic AI computing power rides expansion wave: big tech boosts investment beyond expectations, multiple supply-chain links ramp up capacity",
+      "summary": "CLS, Aug 15 - China's domestic AI computing power industry chain is seeing a new wave of investment.",
+      "title_zh": "国产算力迎扩张浪潮：大厂“超预期”加码投资 产业链多环节开启扩产",
+      "summary_zh": "【国产算力迎扩张浪潮：大厂“超预期”加码投资 产业链多环节开启扩产】财联社8月15日电，国产算力产业链正掀起新一轮投资热潮"
+    },
+    {
+      "id": "82e4c7b2cba8019af8fcd8108d7f6735af25ba20",
+      "title": "Navigation warning: military exercise in South China Sea waters",
+      "summary": "CLS, Aug 15 - Jiangmen Maritime Safety Administration issued a navigation warning: military exercises will be held in parts of the South China Sea from Aug 16 to 17, 00:00-12:00 daily; entry is prohibited.",
+      "title_zh": "航行警告：南海海域军事训练",
+      "summary_zh": "【航行警告：南海海域军事训练】财联社8月15日电，据中国海事局网站消息，江门海事局发布航行警告，8月16日至17日，每天0时至12时，南海部分海域进行军事训练，禁止驶入"
+    },
+    {
+      "id": "077ff61e37fa026207eea49e3a7604df0b4179e9",
+      "title": "SASAC head Cheng Fubo inspects PetroChina: firmly uphold energy security mission, accelerate building world-class integrated energy and chemical company",
+      "summary": "CLS, Aug 15 - Cheng Fubo, Secretary and Director of SASAC's Party Committee, visited PetroChina on Aug 14 to review energy security, tech innovation, industrial development, reform and party building work, stressing the need to study and implement President Xi's important remarks on national energy security and fully implement the 'Four Revolutions, One Cooperation' new energy security strategy.",
+      "title_zh": "程福波到中国石油调研强调：坚决扛牢能源安全使命 加快建设世界一流综合性能源化工企业",
+      "summary_zh": "【程福波到中国石油调研强调：坚决扛牢能源安全使命 加快建设世界一流综合性能源化工企业】财联社8月15日电，国务院国资委党委书记、主任程福波8月14日到中国石油调研保障能源安全、科技创新和产业发展、深化改革和党的建设等工作，强调要深入学习贯彻习近平总书记关于国家能源安全的重要论述，全面落实“四个革命、一个合作”能源安全新"
+    },
+    {
+      "id": "24449afafe67d8930cccb916b505683cbb6be486",
+      "title": "Sogang University in South Korea leaks 180,000 personal records, possibly including Park Geun-hye",
+      "summary": "CLS, Aug 15 - Sogang University confirmed on Aug 15 that about 180,000 personal records were leaked, involving current students, graduates, faculty and others, believed to include the personal information of former President Park Geun-hye.",
+      "title_zh": "韩国西江大学18万条个人信息泄露 朴槿惠或在其中",
+      "summary_zh": "【韩国西江大学18万条个人信息泄露 朴槿惠或在其中】财联社8月15日电，韩国西江大学15日确认，该校约18万条个人信息泄露，涉及在校学生、毕业生、教职员和其他人员，据信包括韩国前总统朴槿惠的个人信息"
+    },
+    {
+      "id": "cd39494f3e54cd4bfb2d61fe62d8f29c7cf1a48d",
+      "title": "Indonesia earthquake death toll rises to 47",
+      "summary": "CLS, Aug 15 - The death toll from the 7.7-magnitude earthquake in East Nusa Tenggara has risen to 47 as of 18:48 Jakarta time (19:48 Beijing time), according to the latest data from Indonesia's National Disaster Management Agency.",
+      "title_zh": "印尼地震死亡人数上升至47人",
+      "summary_zh": "【印尼地震死亡人数上升至47人】财联社8月15日电，根据印尼国家抗灾署公布的最新数据，截至印尼雅加达时间今天18时48分（北京时间19时48分），印尼东努沙登加拉省7.7级地震造成的死亡人数已升至47人"
+    },
+    {
+      "id": "5a7c65905d6a9e7b0f0533186ddbbc9d5bf68b75",
+      "title": "UN allocates additional funds to fight Ebola outbreak",
+      "summary": "CLS, Aug 15 - Thomas Fletcher, UN Under-Secretary-General for Humanitarian Affairs, said on Aug 14 that the Ebola virus is 'gaining the upper hand' in DR Congo.",
+      "title_zh": "联合国追加资金应对埃博拉疫情",
+      "summary_zh": "【联合国追加资金应对埃博拉疫情】财联社8月15日电，联合国分管人道主义事务的副秘书长托马斯·弗莱彻14日表示，埃博拉病毒正在刚果（金）“占据上风”"
+    },
+    {
+      "id": "6750c37920ff4482d8108f9b7ad4f0aaf1c87129",
+      "title": "Iran says it has reached agreement with Oman on Strait of Hormuz transit plan",
+      "summary": "CLS, Aug 15 - Despite US obstruction, talks between Iran and Oman are progressing and the two sides have reached an agreement on a transit plan for the Strait of Hormuz, Iranian Foreign Ministry spokesman Baghaei said on Aug 15.",
+      "title_zh": "伊朗称已与阿曼就霍尔木兹海峡通行方案达成协议",
+      "summary_zh": "【伊朗称已与阿曼就霍尔木兹海峡通行方案达成协议】财联社8月15日电，伊朗外交部发言人巴加埃当地时间8月15日表示，尽管美国从中阻挠，伊朗和阿曼之间的会谈仍在积极推进，双方已就霍尔木兹海峡航道通行方案达成协议"
+    },
+    {
+      "id": "2aa88ab2c7d7aa5c1c0fb86ec6d72cb248f4eb29",
+      "title": "'AI-era financial innovation': the 'seller guarantee' model behind Broadcom's plunge",
+      "summary": "AI infrastructure financing is undergoing structural change, and the market is beginning to price that change in.",
+      "title_zh": "“AI版金融创新”：博通大跌背后的AI芯片“卖方担保”模式",
+      "summary_zh": "AI基础设施融资正在经历一场结构性变革，而市场正开始为这场变革定价"
+    },
+    {
+      "id": "66e8ea8e4028499f1effeb08d9f5720ad7abd822",
+      "title": "Breach on east bank of Jialu River in Zhoukou, Henan successfully closed",
+      "summary": "CLS, Aug 15 - After round-the-clock emergency efforts, the 117-meter breach on the east bank of the Jialu River in Chuanhui District, Zhoukou City, Henan Province was successfully closed at 20:29 on Aug 15.",
+      "title_zh": "河南周口川汇区贾鲁河东岸堤防溃口成功合龙",
+      "summary_zh": "【河南周口川汇区贾鲁河东岸堤防溃口成功合龙】财联社8月15日电，经过多方应急抢险力量昼夜不停努力，8月15日晚上8时29分，河南省周口市川汇区贾鲁河东岸堤防117米溃口成功合龙"
+    },
+    {
+      "id": "a099d1c410f94fa6194453ef3a81fb7b36d997b3",
+      "title": "Shooting at Virginia State University in the US",
+      "summary": "CLS, Aug 15 - A shooting occurred at Virginia State University, with multiple people shot and the campus placed under lockdown, according to US reports on Aug 15.",
+      "title_zh": "美国弗吉尼亚州立大学发生枪击事件",
+      "summary_zh": "【美国弗吉尼亚州立大学发生枪击事件】财联社8月15日电，据美国方面15日消息，美国弗吉尼亚州立大学发生枪击事件，多人中枪，校园随即进入封锁状态"
+    },
+    {
+      "id": "18f953adbebff1d35153c16601ea9b318ca235d2",
+      "title": "Grand gathering marking 100th anniversary of Comrade Jiang Zemin's birth to be held in Beijing on morning of 17th; Xi Jinping to attend and deliver important speech",
+      "summary": "The gathering marking the 100th anniversary of Comrade Jiang Zemin's birth will be held at 10:00 am on Aug 17 at the Great Hall of the People in Beijing.",
+      "title_zh": "纪念江泽民同志诞辰100周年大会17日上午在京隆重举行 习近平将出席大会并发表重要讲话",
+      "summary_zh": "【纪念江泽民同志诞辰100周年大会17日上午在京隆重举行 习近平将出席大会并发表重要讲话】纪念江泽民同志诞辰100周年大会将于8月17日上午10时在人民大会堂隆重举行"
+    },
+    {
+      "id": "e3dc99e1959b183d64fc9fc374032f1271698fb5",
+      "title": "Multiple departments hold joint meeting to deploy flood control and rescue in key regions",
+      "summary": "CLS, Aug 15 - The Office of the National Flood Control and Drought Relief Headquarters and the Ministry of Emergency Management on Aug 15 continued joint consultations with the China Meteorological Administration, Ministry of Water Resources and key provinces including Heilongjiang, Jiangsu, Zhejiang, Anhui, Henan and Guangdong to assess recent heavy rainfall and deploy flood control and rescue work in key regions.",
+      "title_zh": "多部门会商部署重点地区防汛抢险工作",
+      "summary_zh": "【多部门会商部署重点地区防汛抢险工作】财联社8月15日电，国家防总办公室、应急管理部8月15日继续组织中国气象局、水利部、自然资源部、工业和信息化部、住房和城乡建设部、交通运输部等部门以及黑龙江、江苏、浙江、安徽、河南、广东等重点省份联合会商，研判近期强降雨影响，研究部署重点地区防汛抢险工作"
+    },
+    {
+      "id": "06dc1a9487ef963b026fdad7c06f7acb5d73a5ee",
+      "title": "'AI-era financial innovation': Nvidia's '$500 billion master plan'",
+      "summary": "Nvidia is reshaping its business boundaries in an unprecedented way - transforming from a chip maker into an AI-infrastructure 'financial partner', built around a new cloud-service revenue-sharing model that trades downside support for profit-sharing.",
+      "title_zh": "“AI版金融创新”：英伟达的“5000亿美元大算盘”",
+      "summary_zh": "英伟达正在以一种前所未有的方式重塑自身的商业边界——从芯片制造商向AI基础设施\"金融合伙人\"转型，其核心是一套以\"兜底换分润\"为逻辑的新云服务收益共享模式"
+    },
+    {
+      "id": "78ab9a7ac1659bb3a09aa55f9cd2b23b14f932e3",
+      "title": "Broadcom plunges 20% - what is the market afraid of?",
+      "summary": "On Aug 11, Bank of America credit analyst Tom Curcuruto published a brief downgrade report.",
+      "title_zh": "博通暴跌20% 市场在怕什么？",
+      "summary_zh": "8月11日，美国银行信用分析师Tom Curcuruto发了一份不长的降级报告"
+    },
+    {
+      "id": "ecb8d1cb17f4e33270a8b39df31ed7676279c946",
+      "title": "This week's 'core logic': will the Fed hold rates in September?",
+      "summary": "With US inflation data unexpectedly cooling and jobs and consumption softening, market bets on a September Fed rate hike retreated sharply this week - but abnormal signals at the long end of the bond market, surging oil prices and hawkish officials' insistence are challenging the 'pause narrative'.",
+      "title_zh": "本周市场的“核心逻辑”：美联储9月不加息了？",
+      "summary_zh": "美国通胀数据意外降温，叠加就业与消费走软，本周市场对美联储9月加息的押注急剧退潮，但债券市场长端的异常信号、油价飙升以及鹰派官员的坚持，正在向这一\"暂停叙事\"发出挑战"
+    },
+    {
+      "id": "5a22ace330546334fd1d824b3e683e75be93ab5e",
+      "title": "Nvidia discloses SpaceX stake for first time, holding about $21 billion indirectly via xAI",
+      "summary": "Nvidia disclosed its SpaceX position for the first time, holding about $21 billion indirectly through an investment in xAI.",
+      "title_zh": "英伟达首度披露SpaceX持仓，借道xAI间接持有约210亿美元",
+      "summary_zh": "英伟达首度披露SpaceX持仓，借道xAI间接持有约210亿美元"
+    },
+    {
+      "id": "2872fceada6da61b8b18a091045d53331c500472",
+      "title": "Global markets: US stocks edge lower; memory and optical-communication shares surge, SanDisk up over 7%",
+      "summary": "US markets: all three major US indices closed lower on Aug 14.",
+      "title_zh": "全球市场：美股三大指数小幅收跌 存储、光通信股大涨 闪迪涨超7%",
+      "summary_zh": "美股市场： 美股三大指数08月14日收盘全线下跌"
+    }
+  ],
+  "updated_at": "2026-08-15T22:33:00Z"
 }
