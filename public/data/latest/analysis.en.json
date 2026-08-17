@@ -1,59 +1,59 @@
 {
   "schema_version": "1.1.0",
-  "generated_at": "2026-08-17T11:31:00Z",
+  "generated_at": "2026-08-17T22:00:16Z",
   "language": "en",
   "market_state": "caution",
   "market_regime": "goldilocks",
-  "summary": "Pre-market, the composite risk score eased to 42.42 (caution / goldilocks) with the 1-day trend at -0.46 and the 1-week trend at -0.76; all seven datasets are fresh. Rates fell across the curve overnight - the ten-year at 4.63, the two-year at 4.15, the real rate at 2.39 - and the dollar slid to a three-month low (119.06) as soft retail sales and PPI cooled September hike bets. Disinflation continues (CPI 3.30, core 2.47, PCE 3.29). The memory supercycle is the standout theme: the A-share memory chain surged at Monday's China close (ChangXin +12.00%, Tongfu +10.01%, JCET +9.07%) while Micron rose 2.30% on Friday, even as hedge funds took profit (Druckenmiller cleared Micron; Bridgewater nearly cleared Micron in the second quarter). The macro dimension (60.99) remains the binding constraint via the real rate at 2.39 (97.59 percentile), and labor cracks persist (payrolls -23.0, participation 61.4).",
+  "summary": "Post-market, the composite risk score ticked up to 42.53 (caution / goldilocks), with the 1-day trend at +0.11 and the 1-week trend at -0.56; all 7 datasets are fresh. US indices closed modestly lower — SPY -0.47% — as Middle East risk lifted oil and pushed yields higher: the 10-year rose 5bp to 4.68 and the real rate sits at 2.41 (98.24 percentile), keeping macro the binding constraint. The memory supercycle remains the dominant theme: Micron +4.13% (1-week +17.51%), the Memory theme +3.62% and semiconductor equipment +3.66% led, while the A-share memory chain surged at the China close (ChangXin +12.0%, Tongfu +10.0%, JCET +9.07%) and CXMT's market cap returned to 4 trillion (~2.5 Moutai). Software, cloud and ad-tech lagged hard (digital advertising -3.06%, AI software -2.26%, fintech -2.22%) with Nvidia flat at -0.07%. Breadth is extremely narrow: the new-highs ratio collapsed to 0.65% (1 in 155) even as 69.68% of names sit above their 200-day. Rate-hike expectations cooled on soft retail sales and fading inflation (CPI 3.30, core 2.47); the dollar slid to 118.90, gold gained 2.12% and reclaimed 4400, VIX fell to 14.25 and HY OAS tightened to 2.67.",
   "top_risk_drivers": [
     {
-      "claim": "Macro remains the binding constraint: the real rate at 2.39 sits at the 97.59 percentile and the ten-year at 4.63 at the 95.99 percentile, keeping the macro dimension at 60.99.",
+      "claim": "Macro remains the binding constraint: the real rate at 2.41 sits at the 98.24 percentile and the 10-year yield rose 5bp to 4.68 as Middle East risk lifted oil, holding the macro dimension at 60.6.",
       "evidence_refs": [
         {
           "dataset": "risk",
           "path": "payload.dimensions[0].indicators[0].value",
           "metric": "real_rate_dfii10",
-          "value": 2.39
+          "value": 2.41
         },
         {
           "dataset": "macro",
           "path": "payload.rates[0].value",
           "metric": "dgs10",
-          "value": 4.63
+          "value": 4.68
         }
       ]
     },
     {
-      "claim": "The labor backdrop is cracking: payrolls at -23.0, participation at 61.4 and continuing claims at 1777000.",
+      "claim": "Breadth is fracturing: the new-highs ratio collapsed to 0.65% (1 in 155 names) while 69.68% of names still trade above their 200-day — the rally is increasingly a memory-led minority.",
       "evidence_refs": [
         {
-          "dataset": "macro",
-          "path": "payload.labor[0].value",
-          "metric": "payems",
-          "value": -23.0
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[1].value",
+          "metric": "new_highs_ratio",
+          "value": 0.0065
         },
         {
-          "dataset": "macro",
-          "path": "payload.labor[4].value",
-          "metric": "civpart",
-          "value": 61.4
-        },
-        {
-          "dataset": "macro",
-          "path": "payload.labor[3].value",
-          "metric": "ccsa",
-          "value": 1777000.0
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[0].value",
+          "metric": "breadth_above_ma200",
+          "value": 0.6968
         }
       ]
     },
     {
-      "claim": "The memory supercycle drives returns but positioning is turning: the Memory theme rose 4.36%, ChangXin +12.00% and Tongfu +10.01% at the China close, yet Druckenmiller cleared Micron and Bridgewater nearly cleared Micron in the second quarter.",
+      "claim": "The tape is concentrated in one trade: Micron +4.13% (1-week +17.51%), the Memory theme +3.62%, and the A-share memory chain at the China close (ChangXin +12.0%, Tongfu +10.0%, JCET +9.07%) with CXMT's market cap back to 4 trillion (~2.5 Moutai).",
       "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[2].change_1d",
+          "metric": "change_1d",
+          "value": 4.1259
+        },
         {
           "dataset": "sectors",
           "path": "payload.themes[7].change_1d",
           "metric": "change_1d",
-          "value": 4.3648
+          "value": 3.6205
         },
         {
           "dataset": "equities",
@@ -68,15 +68,15 @@
           "value": 10.0064
         },
         {
-          "dataset": "news",
-          "path": "payload.items[0].importance",
-          "metric": "importance",
-          "value": 61.8
+          "dataset": "equities",
+          "path": "payload.assets[14].change_1d",
+          "metric": "change_1d",
+          "value": 9.0713
         }
       ]
     },
     {
-      "claim": "Cross-asset confirmation is the largest single contributor at 7.50, and it sits exactly at the neutral 0.50 - the top driver is a proxy, not a hard signal.",
+      "claim": "Cross-asset confirmation sits at exactly 0.50 and is the largest single contribution (+7.50) — but it is a proxy (discounted 0.8), not a hard signal, so the top driver adds limited information.",
       "evidence_refs": [
         {
           "dataset": "risk",
@@ -87,20 +87,26 @@
       ]
     },
     {
-      "claim": "Geopolitical tail risk is live: Strait of Hormuz shipping has ground to a halt ahead of the U.S.-Iran ceasefire expiry, and Iran conditions reopening on US commitments.",
+      "claim": "The AI-capex financing engine is the session's story: Nvidia is backing $105B of financing for an OpenAI data center in Ohio, following SEC guidance that takes sponsors off the hook for data-center bonds — with Samsung and SK Hynix lifting capex 35% as the memory build-out extends.",
       "evidence_refs": [
         {
           "dataset": "news",
-          "path": "payload.items[3].importance",
+          "path": "payload.items[0].importance",
           "metric": "importance",
-          "value": 51.51
+          "value": 62.31
+        },
+        {
+          "dataset": "news",
+          "path": "payload.items[1].importance",
+          "metric": "importance",
+          "value": 60.13
         }
       ]
     }
   ],
   "supporting_signals": [
     {
-      "claim": "Disinflation is broadening: CPI 3.30 (prior 3.46), core 2.47 (prior 2.57), PCE 3.29 (prior 3.42), cooling September hike odds and pushing the dollar to a three-month low at 119.06.",
+      "claim": "Disinflation is broadening and rate-hike bets are fading: after soft retail sales, CPI 3.30 (prior 3.46), core 2.47, PCE 3.29; the dollar slid to 118.90.",
       "evidence_refs": [
         {
           "dataset": "macro",
@@ -124,174 +130,187 @@
           "dataset": "macro",
           "path": "payload.fx[0].value",
           "metric": "dtwexbgs",
-          "value": 119.0649
+          "value": 118.9028
         }
       ]
     },
     {
-      "claim": "Volatility and credit stay benign: VIX 14.63, high-yield OAS 2.71 and investment-grade OAS 0.79 all unchanged or lower, keeping the goldilocks regime intact.",
+      "claim": "Risk-appetite metrics are calm: VIX fell to 14.25 from 14.63, HY OAS tightened to 2.67 from 2.71, and IG OAS is 0.8 — the goldilocks inputs remain intact.",
       "evidence_refs": [
         {
           "dataset": "risk",
           "path": "payload.dimensions[3].indicators[0].value",
           "metric": "vix",
-          "value": 14.63
+          "value": 14.25
         },
         {
-          "dataset": "macro",
-          "path": "payload.credit[0].value",
-          "metric": "bamlh0a0hym2",
-          "value": 2.71
+          "dataset": "risk",
+          "path": "payload.dimensions[1].indicators[2].value",
+          "metric": "hy_oas",
+          "value": 2.67
         },
         {
-          "dataset": "macro",
-          "path": "payload.credit[1].value",
-          "metric": "bamlc0a0cm",
-          "value": 0.79
+          "dataset": "risk",
+          "path": "payload.dimensions[1].indicators[3].value",
+          "metric": "ig_oas",
+          "value": 0.8
         }
       ]
     },
     {
-      "claim": "The A-share memory chain closed broadly higher: ChangXin +12.00%, JCET +9.07%, GigaDevice +6.35%, Longsys +3.15%.",
+      "claim": "Crypto is bid: BTC +2.30% to 64323, ETH +1.69% to 1904.45, SOL +2.12% to 75.91 — risk appetite persists beyond equities.",
       "evidence_refs": [
         {
-          "dataset": "equities",
-          "path": "payload.assets[5].change_1d",
-          "metric": "change_1d",
-          "value": 11.9971
+          "dataset": "crypto",
+          "path": "payload.assets[0].price",
+          "metric": "price",
+          "value": 64323.0
         },
         {
-          "dataset": "equities",
-          "path": "payload.assets[14].change_1d",
-          "metric": "change_1d",
-          "value": 9.0713
+          "dataset": "crypto",
+          "path": "payload.assets[1].price",
+          "metric": "price",
+          "value": 1904.45
         },
         {
-          "dataset": "equities",
-          "path": "payload.assets[6].change_1d",
-          "metric": "change_1d",
-          "value": 6.3524
-        },
-        {
-          "dataset": "equities",
-          "path": "payload.assets[7].change_1d",
-          "metric": "change_1d",
-          "value": 3.1517
+          "dataset": "crypto",
+          "path": "payload.assets[2].price",
+          "metric": "price",
+          "value": 75.91
         }
       ]
     },
     {
-      "claim": "US megacaps diverge: AMD rose 6.50% on Druckenmiller's buy while Broadcom fell 5.94% and Micron gained 2.30%.",
+      "claim": "Chip stocks extended the AI-led rally: Micron and Sandisk climbed on firmer confidence in AI spending, and SpaceX's public-market strength is read as a positive for Nvidia and Google.",
       "evidence_refs": [
         {
-          "dataset": "equities",
-          "path": "payload.assets[3].change_1d",
-          "metric": "change_1d",
-          "value": 6.4968
+          "dataset": "news",
+          "path": "payload.items[3].importance",
+          "metric": "importance",
+          "value": 56.61
         },
         {
-          "dataset": "equities",
-          "path": "payload.assets[1].change_1d",
-          "metric": "change_1d",
-          "value": -5.9428
-        },
-        {
-          "dataset": "equities",
-          "path": "payload.assets[2].change_1d",
-          "metric": "change_1d",
-          "value": 2.2983
+          "dataset": "news",
+          "path": "payload.items[4].importance",
+          "metric": "importance",
+          "value": 54.36
         }
       ]
     }
   ],
   "contradicting_signals": [
     {
-      "claim": "Hedge funds are selling what the market is buying: Druckenmiller cleared Broadcom, Intel and Micron while adding Amazon and AMD; Bridgewater nearly cleared Micron in the second quarter.",
+      "claim": "Equities closed lower (SPY -0.47%) even as VIX fell and credit tightened — the tape turned risk-off while volatility and credit stayed risk-on.",
       "evidence_refs": [
         {
           "dataset": "news",
-          "path": "payload.items[0].importance",
+          "path": "payload.items[2].importance",
           "metric": "importance",
-          "value": 61.8
+          "value": 59.24
         }
       ]
     },
     {
-      "claim": "Breadth is not confirming: the new-highs ratio is just 4.52% even as breadth above the 200-day is 73.55% - the rally is narrow.",
-      "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[2].indicators[1].value",
-          "metric": "new_highs_ratio",
-          "value": 0.0452
-        },
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[2].indicators[0].value",
-          "metric": "breadth_above_ma200",
-          "value": 0.7355
-        }
-      ]
-    },
-    {
-      "claim": "Software and cloud are lagging: cybersecurity -2.54%, cloud computing -2.11%, enterprise software -2.07% and AI software -1.77%.",
+      "claim": "Software, cloud and ad-tech lag hard: digital advertising -3.06%, AI software -2.26%, fintech -2.22%, cloud computing -1.87%, cybersecurity -1.82%, gaming -1.77% — a rotation, not broad participation.",
       "evidence_refs": [
         {
           "dataset": "sectors",
-          "path": "payload.themes[3].change_1d",
+          "path": "payload.themes[18].change_1d",
           "metric": "change_1d",
-          "value": -2.544
-        },
-        {
-          "dataset": "sectors",
-          "path": "payload.themes[2].change_1d",
-          "metric": "change_1d",
-          "value": -2.1136
-        },
-        {
-          "dataset": "sectors",
-          "path": "payload.themes[4].change_1d",
-          "metric": "change_1d",
-          "value": -2.07
+          "value": -3.0592
         },
         {
           "dataset": "sectors",
           "path": "payload.themes[1].change_1d",
           "metric": "change_1d",
-          "value": -1.7745
+          "value": -2.2607
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[19].change_1d",
+          "metric": "change_1d",
+          "value": -2.2204
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[2].change_1d",
+          "metric": "change_1d",
+          "value": -1.8749
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[3].change_1d",
+          "metric": "change_1d",
+          "value": -1.8173
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[17].change_1d",
+          "metric": "change_1d",
+          "value": -1.7739
         }
       ]
     },
     {
-      "claim": "Rates moved lower but the real rate remains extreme: the ten-year real rate at 2.39 is at the 97.59 percentile - the disinflation trade has not yet relieved the tightest input in the risk model.",
+      "claim": "Labor cracks persist: payrolls -23.0, participation 61.4 and initial jobless claims rose, even as the unemployment rate improved to 4.1.",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.labor[0].value",
+          "metric": "payems",
+          "value": -23.0
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.labor[4].value",
+          "metric": "civpart",
+          "value": 61.4
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.labor[2].value",
+          "metric": "icsa",
+          "value": 209000.0
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.labor[1].value",
+          "metric": "unrate",
+          "value": 4.1
+        }
+      ]
+    },
+    {
+      "claim": "The goldilocks read is under strain: the new-highs ratio of 0.65% contradicts \"healthy breadth,\" and the 30-year Treasury topped 5.31%, a 19-year high, even as hike odds fell.",
       "evidence_refs": [
         {
           "dataset": "risk",
-          "path": "payload.dimensions[0].indicators[0].value",
-          "metric": "real_rate_dfii10",
-          "value": 2.39
+          "path": "payload.dimensions[2].indicators[1].value",
+          "metric": "new_highs_ratio",
+          "value": 0.0065
         }
       ]
     }
   ],
   "what_changed_today": [
-    "Composite score eased 0.46 overnight to 42.42; the 1-week trend turned more negative at -0.76.",
-    "Rates fell across the curve: ten-year 4.68 to 4.63, two-year 4.20 to 4.15, real 2.42 to 2.39; the dollar slipped to 119.06 from 119.51.",
-    "A-share memory names surged at the China close: ChangXin +12.00%, Tongfu +10.01%, JCET +9.07%.",
-    "Hedge-fund positioning headlines flipped the memory trade: Druckenmiller bought Chinese ADRs for the first time in two years and cleared Micron."
+    "The composite score rose 0.11 on the day to 42.53, and the 1-week trend turned more negative at -0.56.",
+    "US indices closed lower on Middle East risk: SPY -0.47%, oil up, and the 10-year up 5bp to 4.68; the real rate is 2.41.",
+    "The memory trade extended: Micron +4.13% (1-week +17.51%), Sandisk +8%, the Memory theme +3.62% and semiconductor equipment +3.66%; the A-share chain closed +12.0%/+10.0%/+9.07% (ChangXin/Tongfu/JCET).",
+    "Software/cloud/ad-tech rotated lower: digital advertising -3.06%, AI software -2.26%, fintech -2.22%, cloud -1.87%; Nvidia -0.07%, Broadcom -0.14%, AMD -1.63%, Tesla -0.87%.",
+    "Rate-hike expectations cooled and the dollar slid to 118.90; gold gained 2.12% and reclaimed 4400, VIX fell to 14.25 and HY OAS tightened to 2.67."
   ],
   "watch_next": [
-    "BIDU earnings Tuesday, then TGT Wednesday and BABA/WMT Thursday set the tone for US consumer reads.",
-    "NVDA earnings late next week (forecast 2.08), with GDP and Personal Income and Outlays the same day (high importance).",
-    "Track the U.S.-Iran ceasefire expiry and any Hormuz shipping disruption for energy and freight risk.",
-    "Watch whether A-share memory leadership extends to US names at the open, and whether software/cloud catch up."
+    "BIDU reports earnings on Tuesday, TGT on Wednesday, and BABA/WMT on Thursday — the consumer read-through for the week.",
+    "Nvidia reports on the 26th, the same day as GDP and Personal Income and Outlays (both high importance) — the pivotal print of the week; consensus EPS 2.08.",
+    "Watch the Middle East: Kushner says the US and Iran have \"not reached consensus,\" oil is up, and US-Canada auto-tariff talks are deadlocked.",
+    "Watch breadth at the open: with the new-highs ratio at 0.65%, the memory-led tape needs broadening — and whether the A-share memory chain keeps leading (CXMT at 4 trillion)."
   ],
   "bull_case": {
-    "title": "Rates relief + memory supercycle",
+    "title": "Rates relief + memory supercycle intact",
     "points": [
-      "Disinflation holds (CPI 3.30, core 2.47) and the Fed stays on hold, letting the ten-year drift lower from 4.63.",
-      "Memory capex and pricing strength spread: the theme is up 4.36% and the A-share chain closed at multi-day highs (ChangXin +12.00%).",
-      "Volatility stays low (VIX 14.63) with credit firm (HY OAS 2.71), keeping the goldilocks regime intact."
+      "Disinflation holds (CPI 3.30, core 2.47) and hike odds fade, easing pressure on the 10-year at 4.68.",
+      "Memory capex and pricing keep compounding: Micron +4.13% (1-week +17.51%), Samsung and SK Hynix capex +35%, CXMT back to 4 trillion.",
+      "Volatility and credit stay calm (VIX 14.25, HY OAS 2.67), keeping the goldilocks regime intact."
     ],
     "evidence_refs": [
       {
@@ -310,71 +329,71 @@
         "dataset": "macro",
         "path": "payload.rates[0].value",
         "metric": "dgs10",
-        "value": 4.63
-      },
-      {
-        "dataset": "sectors",
-        "path": "payload.themes[7].change_1d",
-        "metric": "change_1d",
-        "value": 4.3648
+        "value": 4.68
       },
       {
         "dataset": "equities",
-        "path": "payload.assets[5].change_1d",
+        "path": "payload.assets[2].change_1d",
         "metric": "change_1d",
-        "value": 11.9971
+        "value": 4.1259
       },
       {
         "dataset": "risk",
         "path": "payload.dimensions[3].indicators[0].value",
         "metric": "vix",
-        "value": 14.63
+        "value": 14.25
       },
       {
-        "dataset": "macro",
-        "path": "payload.credit[0].value",
-        "metric": "bamlh0a0hym2",
-        "value": 2.71
+        "dataset": "risk",
+        "path": "payload.dimensions[1].indicators[2].value",
+        "metric": "hy_oas",
+        "value": 2.67
       }
     ]
   },
   "base_case": {
     "title": "Caution holds; macro stays the ceiling",
     "points": [
-      "The score hovers near 42.42: disinflation caps downside but the 97.59-percentile real rate caps upside.",
-      "Rotation within tech continues - memory/gaming lead (memory +4.36%, gaming +2.38%) while software/cloud lag (cybersecurity -2.54%).",
-      "Earnings season provides the swing factor: BIDU, TGT, BABA/WMT this week and NVDA next week."
+      "The score hovers near 42.53: disinflation caps downside while the 98.24-percentile real rate caps upside.",
+      "Rotation within tech persists — memory/equipment lead (+3.62%/+3.66%) while software/cloud lag (-3.06%/-2.26%).",
+      "Earnings are the swing factor: BIDU, TGT, BABA/WMT this week, then NVDA on the 26th."
     ],
     "evidence_refs": [
       {
         "dataset": "risk",
         "path": "payload.total_score",
         "metric": "total_score",
-        "value": 42.42
+        "value": 42.53
       },
       {
         "dataset": "risk",
         "path": "payload.dimensions[0].indicators[0].value",
         "metric": "real_rate_dfii10",
-        "value": 2.39
+        "value": 2.41
       },
       {
         "dataset": "sectors",
         "path": "payload.themes[7].change_1d",
         "metric": "change_1d",
-        "value": 4.3648
+        "value": 3.6205
       },
       {
         "dataset": "sectors",
-        "path": "payload.themes[17].change_1d",
+        "path": "payload.themes[6].change_1d",
         "metric": "change_1d",
-        "value": 2.3805
+        "value": 3.6581
       },
       {
         "dataset": "sectors",
-        "path": "payload.themes[3].change_1d",
+        "path": "payload.themes[18].change_1d",
         "metric": "change_1d",
-        "value": -2.544
+        "value": -3.0592
+      },
+      {
+        "dataset": "sectors",
+        "path": "payload.themes[1].change_1d",
+        "metric": "change_1d",
+        "value": -2.2607
       },
       {
         "dataset": "calendar",
@@ -403,13 +422,19 @@
     ]
   },
   "bear_case": {
-    "title": "Growth cracks widen or geopolitics ignite",
+    "title": "Narrow tape, growth cracks, geopolitics",
     "points": [
-      "Labor softness spreads: payrolls -23.0, participation 61.4, continuing claims 1777000 - a stall would hit consumer earnings.",
-      "A US-Iran breakdown shuts Hormuz for longer, spiking energy and refueling inflation just as markets price disinflation.",
-      "The AI trade keeps narrowing: new-highs ratio 4.52% means a memory-led tape is one bad print away from a breadth unwind."
+      "The tape is one memory-led engine: a new-highs ratio of 0.65% means any AI-spending disappointment hits an already narrow market.",
+      "Labor cracks spread (payrolls -23.0, participation 61.4), and a Middle East oil shock would lift the 10-year from 4.68 just as markets price disinflation.",
+      "The long end is already re-pricing: the 30-year Treasury topped 5.31%, a 19-year high."
     ],
     "evidence_refs": [
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[1].value",
+        "metric": "new_highs_ratio",
+        "value": 0.0065
+      },
       {
         "dataset": "macro",
         "path": "payload.labor[0].value",
@@ -424,37 +449,25 @@
       },
       {
         "dataset": "macro",
-        "path": "payload.labor[3].value",
-        "metric": "ccsa",
-        "value": 1777000.0
-      },
-      {
-        "dataset": "news",
-        "path": "payload.items[3].importance",
-        "metric": "importance",
-        "value": 51.51
-      },
-      {
-        "dataset": "risk",
-        "path": "payload.dimensions[2].indicators[1].value",
-        "metric": "new_highs_ratio",
-        "value": 0.0452
+        "path": "payload.rates[0].value",
+        "metric": "dgs10",
+        "value": 4.68
       }
     ]
   },
-  "confidence": 0.85,
+  "confidence": 0.82,
   "evidence_refs": [
     {
       "dataset": "risk",
       "path": "payload.total_score",
       "metric": "total_score",
-      "value": 42.42
+      "value": 42.53
     },
     {
       "dataset": "risk",
       "path": "payload.confidence",
       "metric": "confidence",
-      "value": 0.9229
+      "value": 0.9219
     },
     {
       "dataset": "risk",
@@ -466,25 +479,19 @@
       "dataset": "risk",
       "path": "payload.dimensions[0].indicators[0].value",
       "metric": "real_rate_dfii10",
-      "value": 2.39
+      "value": 2.41
     },
     {
       "dataset": "macro",
       "path": "payload.rates[0].value",
       "metric": "dgs10",
-      "value": 4.63
+      "value": 4.68
     },
     {
       "dataset": "macro",
       "path": "payload.rates[1].value",
       "metric": "dgs2",
-      "value": 4.15
-    },
-    {
-      "dataset": "macro",
-      "path": "payload.rates[2].value",
-      "metric": "dfii10",
-      "value": 2.39
+      "value": 4.17
     },
     {
       "dataset": "macro",
@@ -506,9 +513,9 @@
     },
     {
       "dataset": "macro",
-      "path": "payload.labor[3].value",
-      "metric": "ccsa",
-      "value": 1777000.0
+      "path": "payload.labor[2].value",
+      "metric": "icsa",
+      "value": 209000.0
     },
     {
       "dataset": "macro",
@@ -532,25 +539,25 @@
       "dataset": "macro",
       "path": "payload.fx[0].value",
       "metric": "dtwexbgs",
-      "value": 119.0649
+      "value": 118.9028
     },
     {
       "dataset": "risk",
       "path": "payload.dimensions[3].indicators[0].value",
       "metric": "vix",
-      "value": 14.63
+      "value": 14.25
     },
     {
-      "dataset": "macro",
-      "path": "payload.credit[0].value",
-      "metric": "bamlh0a0hym2",
-      "value": 2.71
+      "dataset": "risk",
+      "path": "payload.dimensions[1].indicators[2].value",
+      "metric": "hy_oas",
+      "value": 2.67
     },
     {
-      "dataset": "macro",
-      "path": "payload.credit[1].value",
-      "metric": "bamlc0a0cm",
-      "value": 0.79
+      "dataset": "risk",
+      "path": "payload.dimensions[1].indicators[3].value",
+      "metric": "ig_oas",
+      "value": 0.8
     },
     {
       "dataset": "risk",
@@ -562,31 +569,43 @@
       "dataset": "risk",
       "path": "payload.dimensions[2].indicators[1].value",
       "metric": "new_highs_ratio",
-      "value": 0.0452
+      "value": 0.0065
     },
     {
       "dataset": "risk",
       "path": "payload.dimensions[2].indicators[0].value",
       "metric": "breadth_above_ma200",
-      "value": 0.7355
+      "value": 0.6968
     },
     {
       "dataset": "equities",
-      "path": "payload.assets[3].change_1d",
+      "path": "payload.assets[0].change_1d",
       "metric": "change_1d",
-      "value": 6.4968
+      "value": -0.0666
     },
     {
       "dataset": "equities",
       "path": "payload.assets[1].change_1d",
       "metric": "change_1d",
-      "value": -5.9428
+      "value": -0.1425
     },
     {
       "dataset": "equities",
       "path": "payload.assets[2].change_1d",
       "metric": "change_1d",
-      "value": 2.2983
+      "value": 4.1259
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[3].change_1d",
+      "metric": "change_1d",
+      "value": -1.6311
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[4].change_1d",
+      "metric": "change_1d",
+      "value": -0.8677
     },
     {
       "dataset": "equities",
@@ -596,75 +615,111 @@
     },
     {
       "dataset": "equities",
-      "path": "payload.assets[14].change_1d",
-      "metric": "change_1d",
-      "value": 9.0713
-    },
-    {
-      "dataset": "equities",
-      "path": "payload.assets[6].change_1d",
-      "metric": "change_1d",
-      "value": 6.3524
-    },
-    {
-      "dataset": "equities",
-      "path": "payload.assets[7].change_1d",
-      "metric": "change_1d",
-      "value": 3.1517
-    },
-    {
-      "dataset": "equities",
       "path": "payload.assets[15].change_1d",
       "metric": "change_1d",
       "value": 10.0064
     },
     {
+      "dataset": "equities",
+      "path": "payload.assets[14].change_1d",
+      "metric": "change_1d",
+      "value": 9.0713
+    },
+    {
+      "dataset": "crypto",
+      "path": "payload.assets[0].price",
+      "metric": "price",
+      "value": 64323.0
+    },
+    {
+      "dataset": "crypto",
+      "path": "payload.assets[1].price",
+      "metric": "price",
+      "value": 1904.45
+    },
+    {
+      "dataset": "crypto",
+      "path": "payload.assets[2].price",
+      "metric": "price",
+      "value": 75.91
+    },
+    {
       "dataset": "sectors",
       "path": "payload.themes[7].change_1d",
       "metric": "change_1d",
-      "value": 4.3648
+      "value": 3.6205
     },
     {
       "dataset": "sectors",
-      "path": "payload.themes[17].change_1d",
+      "path": "payload.themes[6].change_1d",
       "metric": "change_1d",
-      "value": 2.3805
+      "value": 3.6581
     },
     {
       "dataset": "sectors",
-      "path": "payload.themes[3].change_1d",
+      "path": "payload.themes[18].change_1d",
       "metric": "change_1d",
-      "value": -2.544
-    },
-    {
-      "dataset": "sectors",
-      "path": "payload.themes[2].change_1d",
-      "metric": "change_1d",
-      "value": -2.1136
-    },
-    {
-      "dataset": "sectors",
-      "path": "payload.themes[4].change_1d",
-      "metric": "change_1d",
-      "value": -2.07
+      "value": -3.0592
     },
     {
       "dataset": "sectors",
       "path": "payload.themes[1].change_1d",
       "metric": "change_1d",
-      "value": -1.7745
+      "value": -2.2607
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[19].change_1d",
+      "metric": "change_1d",
+      "value": -2.2204
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[2].change_1d",
+      "metric": "change_1d",
+      "value": -1.8749
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[3].change_1d",
+      "metric": "change_1d",
+      "value": -1.8173
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[17].change_1d",
+      "metric": "change_1d",
+      "value": -1.7739
     },
     {
       "dataset": "news",
       "path": "payload.items[0].importance",
       "metric": "importance",
-      "value": 61.8
+      "value": 62.31
+    },
+    {
+      "dataset": "news",
+      "path": "payload.items[1].importance",
+      "metric": "importance",
+      "value": 60.13
+    },
+    {
+      "dataset": "news",
+      "path": "payload.items[2].importance",
+      "metric": "importance",
+      "value": 59.24
     },
     {
       "dataset": "news",
       "path": "payload.items[3].importance",
       "metric": "importance",
-      "value": 51.51
+      "value": 56.61
+    },
+    {
+      "dataset": "news",
+      "path": "payload.items[4].importance",
+      "metric": "importance",
+      "value": 54.36
     },
     {
       "dataset": "calendar",
@@ -693,8 +748,8 @@
   ],
   "data_freshness": "fresh",
   "lineage": {
-    "fact_generation_id": "sha256:d9a11fc118bf616d82fa6a5302ab188fd14670b98a3c8dfe60a9ebe163093508",
-    "fact_generated_at": "2026-08-17T10:29:07Z",
+    "fact_generation_id": "sha256:c8375d4d9609cc8c23153c0808bcdc151a963c89017fc46d2f7db21b3390f778",
+    "fact_generated_at": "2026-08-17T21:50:02Z",
     "input_freshness": {
       "macro": "fresh",
       "equities": "fresh",
@@ -704,6 +759,6 @@
       "sectors": "fresh",
       "risk": "fresh"
     },
-    "pair_id": "premarket-2026-08-17T11:31Z"
+    "pair_id": "postmarket-2026-08-17T2200Z"
   }
 }
