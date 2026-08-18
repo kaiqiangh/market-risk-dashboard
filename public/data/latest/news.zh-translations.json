@@ -1,353 +1,355 @@
 {
-  "items": [
-    {
-      "id": "693ca8932ea78f9047342b40299bd83ec2b22c7c",
-      "title": "Nvidia backing $105 billion in financing for OpenAI data center in Ohio",
-      "summary": "Technology giants are shelling out billions to scale capacity to meet massive data center demand.",
-      "title_zh": "英伟达为OpenAI俄亥俄数据中心提供1050亿美元融资支持",
-      "summary_zh": "科技巨头正斥资数十亿美元扩张产能，以满足庞大的数据中心需求。"
-    },
-    {
-      "id": "94ff0507b6d5efa2ee6516b3e3df97a3b679bb4d",
-      "title": "Nvidia financing initiative follows SEC guidance that takes sponsors off the hook for data center investments",
-      "summary": "Recent SEC instructions on data center bonds appear applicable to the recent Nvidia financing move, lawyers say.",
-      "title_zh": "英伟达融资举措紧随SEC指引，数据中心投资发起人责任获豁免",
-      "summary_zh": "律师称，SEC近期关于数据中心债券的指引似乎适用于英伟达最近的融资动作。"
-    },
-    {
-      "id": "3e0a6f697b3f1e3d798e1ef4f42346cdd538b5d3",
-      "title": "Nasdaq closes down 0.3% as memory and optical-communication sectors gain against the trend",
-      "summary": "CLS Aug 18: Middle East risk pushed oil and Treasury yields higher; all three major US indices closed lower — Nasdaq -0.32%, Dow -0.51%, S&P 500 -0.52%.",
-      "title_zh": "纳指收跌0.3% 存储、光通信板块逆势走强",
-      "summary_zh": "【纳指收跌0.3% 存储、光通信板块逆势走强】财联社8月18日电，中东风险推高油价和美债收益率，美股三大指数集体收跌，纳指跌0.32%，道指跌0.51%，标普500指数跌0.52%"
-    },
-    {
-      "id": "dc72d958bd90b9813cb54f376162263f42191513",
-      "title": "Fed rate-hike expectations cool, AI sentiment warms, Nasdaq futures rise, memory chip stocks rally broadly, gold reclaims 4400",
-      "summary": "US July retail sales unexpectedly fell, reinforcing concerns about a cooling US economy; September rate-hike expectations cooled quickly and the dollar stayed under pressure.",
-      "title_zh": "美联储加息预期降温，AI情绪回暖，纳指期货走高，存储芯片股普涨，黄金再站上4400美元",
-      "summary_zh": "美国7月零售销售意外下滑，进一步强化市场对美国经济降温的担忧，美联储9月加息预期快速降温，美元持续承压"
-    },
-    {
-      "id": "f00181162b7895d762b9389a4967d8f55c3d2ed8",
-      "title": "SpaceX’s stock is rising, and that’s a good sign for Nvidia and Google",
-      "summary": "Some big names saw sizable paper gains on their SpaceX stakes when the stock went public, but trading has been volatile since then.",
-      "title_zh": "SpaceX股价走高，对英伟达和谷歌是利好信号",
-      "summary_zh": "SpaceX上市时，一些大公司所持股份曾获得可观账面收益，但此后交易波动较大。"
-    },
-    {
-      "id": "63075882d957c3bbf431f16df6f52c7c5617c5c0",
-      "title": "Global markets: US stocks close lower, memory and optical-communication sectors gain against the trend, Sandisk up over 8%",
-      "summary": "US market: All three major US indices closed lower on August 17.",
-      "title_zh": "全球市场：美股收跌 存储、光通信板块逆势走强 闪迪涨超8%",
-      "summary_zh": "美股市场： 美股三大指数08月17日收盘全线下跌"
-    },
-    {
-      "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
-      "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-      "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-      "title_zh": "美联储理事会就互助银行组织规则现代化提案征求意见",
-      "summary_zh": "美联储理事会就一项互助银行组织规则现代化提案征求意见。"
-    },
-    {
-      "id": "51bdb202dd58e4b5d03a7f03beae1d271730a57a",
-      "title": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, Inc., BNP Paribas Securities Corp., and Community Bankshares, Inc.",
-      "summary": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, I",
-      "title_zh": "美联储理事会对小型商业银行采取执法行动，并宣布终止对法国巴黎银行及Community Bankshares等机构的执法行动",
-      "summary_zh": "美联储理事会对小型商业银行采取执法行动，并宣布终止对法国巴黎银行（BNP Paribas S.A.、BNP Paribas USA, Inc.、BNP Paribas Securities Corp.）及Community Bankshares, Inc.的执法行动。"
-    },
-    {
-      "id": "0d09fef4f59a6c2242e679f1bcfa0e47fc76b221",
-      "title": "CLS Aug 18: Turkish President Erdogan and US President Trump held a phone call.",
-      "summary": "CLS Aug 18: Turkish President Erdogan and US President Trump held a phone call.",
-      "title_zh": "财联社8月18日电，土耳其总统埃尔多安与美国总统特朗普通电话。",
-      "summary_zh": "财联社8月18日电，土耳其总统埃尔多安与美国总统特朗普通电话"
-    },
-    {
-      "id": "79d40862fa8efae0d21804a2dbae1be88fd07859",
-      "title": "CLS Aug 18: US judge blocks Trump administration's plan to move the FBI's new headquarters from Maryland to Washington, D.C.",
-      "summary": "CLS Aug 18: US judge blocks Trump administration's plan to move the FBI's new headquarters from Maryland to Washington, D.C.",
-      "title_zh": "财联社8月18日电，美国法官阻止特朗普政府将联邦调查局新总部选址从马里兰州迁至华盛顿特区的计划。",
-      "summary_zh": "财联社8月18日电，美国法官阻止特朗普政府将联邦调查局新总部选址从马里兰州迁至华盛顿特区的计划"
-    },
-    {
-      "id": "5220f042513c2aa7c33212bad2380c4f5ff1b280",
-      "title": "Venezuela quake death toll rises to 6,438",
-      "summary": "CLS Aug 18: Jorge Rodríguez, president of Venezuela's National Assembly, said on social media that the death toll from the June 24 earthquake has risen to 6,438.",
-      "title_zh": "委内瑞拉强震已致6438人死亡",
-      "summary_zh": "【委内瑞拉强震已致6438人死亡】财联社8月18日电，委内瑞拉全国代表大会主席豪尔赫·罗德里格斯在社交媒体发文称，在6月24日地震中遇难的人数已升至6438人"
-    },
-    {
-      "id": "258d958f4c30952396b53e1daf3e021c4018a4d0",
-      "title": "CLS Aug 18: US-Canada trade talks reportedly deadlocked over auto tariffs.",
-      "summary": "CLS Aug 18: US-Canada trade talks reportedly deadlocked over auto tariffs.",
-      "title_zh": "财联社8月18日电，美国和加拿大的贸易谈判据悉因汽车关税问题陷入僵局。",
-      "summary_zh": "财联社8月18日电，美国和加拿大的贸易谈判据悉因汽车关税问题陷入僵局"
-    },
-    {
-      "id": "19448a12552c794563af5b994e0d2087ff41abc4",
-      "title": "CLS Aug 18: Petrobras executive says Amazon river-mouth drilling has cost about $300 million so far.",
-      "summary": "CLS Aug 18: Petrobras executive says Amazon river-mouth drilling has cost about $300 million so far.",
-      "title_zh": "财联社8月18日电，巴西国家石油公司高管称，亚马孙河口钻井迄今已耗资约3亿美元。",
-      "summary_zh": "财联社8月18日电，巴西国家石油公司高管称，亚马孙河口钻井迄今已耗资约3亿美元"
-    },
-    {
-      "id": "d8c4939e029c180bfabf2251f0703375cccb51b0",
-      "title": "CLS Aug 18: FTSE China A50 index futures close down 0.23% in night session.",
-      "summary": "CLS Aug 18: FTSE China A50 index futures close down 0.23% in night session.",
-      "title_zh": "财联社8月18日电，富时中国A50指数期货夜盘收跌0.23%。",
-      "summary_zh": "财联社8月18日电，富时中国A50指数期货夜盘收跌0.23%"
-    },
-    {
-      "id": "20fc0c28a9efed5f7eb57b58d06ea929a4002259",
-      "title": "CXMT's market cap returns to 4 trillion yuan — about 2.5 Moutai. Is the AI memory dividend just beginning?",
-      "summary": "ChangXin Memory's market cap has again surpassed 4 trillion yuan, making it the most valuable A-share company and overtaking Tencent in Hong Kong. Behind it: the AI-driven DRAM upcycle, accelerating domestic substitution and capacity expansion — and analysts say this rally is far from over.",
-      "title_zh": "长鑫市值重回4万亿≈2.5个茅台，AI存储的红利才刚开始？",
-      "summary_zh": "长鑫科技市值再次突破4万亿元，登顶A股\"市值一哥\"，同时超越港股腾讯，这背后是AI驱动的DRAM景气周期、国产替代加速与产能扩张三重逻辑的共振——而分析师认为，这场行情远未到终点"
-    },
-    {
-      "id": "32dc6852efd31916d7337b602640dc1cf5e307bb",
-      "title": "Key economic events and data to watch on Tuesday (August 18)",
-      "summary": "Tuesday Aug 18: 14:00 UK July unemployment rate; 17:00 Germany and eurozone August ZEW economic sentiment; 20:15 US ADP employment change for the week ending Aug 1; 20:30 US July housing starts (annualized), import price index and building permits; 21:15 US ...",
-      "title_zh": "周二（8月18日）重点关注财经事件和经济数据",
-      "summary_zh": "【周二（8月18日）重点关注财经事件和经济数据】 ① 14:00 英国7月失业率 ② 17:00 德国8月ZEW经济景气指数；欧元区8月ZEW经济景气指数 ③ 20:15 美国至8月1日当周ADP就业人数周度变动 ④ 20:30 美国7月新屋开工总数年化；美国7月进口物价指数；美国7月营建许可总数 ⑤ 21:15 美国"
-    },
-    {
-      "id": "d9f71ce8a5d71add1dfa093ab835b5020b26cfb7",
-      "title": "CLS Aug 18: NASA says it selected multiple companies to provide payload processing services, including Blue Origin, Firefly Aerospace and L3Harris.",
-      "summary": "CLS Aug 18: NASA says it selected multiple companies to provide payload processing services.",
-      "title_zh": "财联社8月18日电，美国国家航空航天局（NASA）表示，选择多家公司提供有效载荷处理服务。入选公司包括蓝色起源、萤火虫宇航和L3Harri。",
-      "summary_zh": "财联社8月18日电，美国国家航空航天局（NASA）表示，选择多家公司提供有效载荷处理服务"
-    },
-    {
-      "id": "8957727b4c5155255308dc580e5c00f5857880e2",
-      "title": "Japan and UK sold US Treasuries in June",
-      "summary": "CLS Aug 18: US Treasury data released Monday shows foreign holdings of US Treasuries fell sharply in June, dropping about $72.1 billion to roughly $9.3 trillion — the largest monthly decline since March.",
-      "title_zh": "日本、英国6月抛售美国国债",
-      "summary_zh": "【日本、英国6月抛售美国国债】财联社8月18日电，美国财政部周一公布的数据显示，外国持有的该国国债6月出现大幅下降，海外持仓6月降至约9.3万亿美元，环比减少721亿美元，规模为3月以来最大"
-    },
-    {
-      "id": "42f6f0c19bc626f23278ba307c262028359ba5ed",
-      "title": "CLS Aug 18: US officials reportedly propose deducting only US-specific content to exempt Canadian autos from the 15% tariff; Canada wants all North American content deducted.",
-      "summary": "CLS Aug 18: US officials reportedly propose deducting only US-specific content to exempt Canadian autos from the 15% tariff; Canada wants all North American content deducted.",
-      "title_zh": "财联社8月18日电，美方官员据悉提议仅扣除美国专属价值含量来减免加拿大汽车15%的关税，但加方官员要求扣除全部北美价值含量。",
-      "summary_zh": "财联社8月18日电，美方官员据悉提议仅扣除美国专属价值含量来减免加拿大汽车15%的关税，但加方官员要求扣除全部北美价值含量"
-    },
-    {
-      "id": "2378cd5205b3abd76ab8e60a236aab195ed2656c",
-      "title": "CLS Aug 18: Brazil's XP Inc reports Q2 net revenue of 4.88 billion reais vs 4.86 billion expected; adjusted EPS 2.67 reais vs 2.63 expected.",
-      "summary": "CLS Aug 18: Brazil's XP Inc reports Q2 net revenue of 4.88 billion reais vs 4.86 billion expected; adjusted EPS 2.67 reais vs 2.63 expected.",
-      "title_zh": "财联社8月18日电，巴西金融投资平台XP INC第二季度净收入为48.8亿雷亚尔，市场预估为48.6亿雷亚尔；第二季度调整后每股收益为2.67雷亚尔，市场预期为2.63雷亚尔...",
-      "summary_zh": "财联社8月18日电，巴西金融投资平台XP INC第二季度净收入为48.8亿雷亚尔，市场预估为48.6亿雷亚尔；第二季度调整后每股收益为2.67雷亚尔，市场预期为2.63雷亚尔"
-    },
-    {
-      "id": "2ac3b552d6287da1bab7891470b9117b04a77e44",
-      "title": "Livermore China ADR leaders index closes up 0.88%",
-      "summary": "CLS Aug 18: The Livermore China ADR leaders index closed up 0.88%.",
-      "title_zh": "利弗莫尔中概股龙头指数收涨0.88%",
-      "summary_zh": "【利弗莫尔中概股龙头指数收涨0.88%】财联社8月18日电，利弗莫尔中概股龙头指数收涨0.88%"
-    },
-    {
-      "id": "f21f8657260617f55456e781fa6baa2e5c09e39c",
-      "title": "Nvidia invests $1.5 billion in SB Energy, locking in 8GW of AI computing power with OpenAI as sole tenant",
-      "summary": "Nvidia is pushing its competitive boundary from chips and servers into the most fundamental layer of AI data centers — land, power and construction.",
-      "title_zh": "英伟达掷15亿美元入股SB Energy ，锁定8GW AI算力，OpenAI将成为唯一租户",
-      "summary_zh": "英伟达正在把竞争边界从芯片和服务器，进一步推进到AI数据中心最底层的土地、电力和建筑"
-    },
-    {
-      "id": "15dbc1b7fb4894fd01a298f2a71cd5d3cbe655d1",
-      "title": "CLS Aug 18: Buss family reportedly selling remaining Lakers stake to Kushner and Iger.",
-      "summary": "CLS Aug 18: Buss family reportedly selling remaining Lakers stake to Kushner and Iger.",
-      "title_zh": "财联社8月18日电，巴斯家族据悉将出售其剩余湖人队的股份给库什纳和艾格。",
-      "summary_zh": "财联社8月18日电，巴斯家族据悉将出售其剩余湖人队的股份给库什纳和艾格"
-    },
-    {
-      "id": "f04faca23054e72923d2c38e928c18a23dce6516",
-      "title": "CLS Aug 18: Anthropic's annualized revenue run rate is reportedly on track to exceed $65 billion, up more than sixfold from end of last year.",
-      "summary": "CLS Aug 18: Anthropic's annualized revenue run rate is reportedly on track to exceed $65 billion, up more than sixfold from end of last year.",
-      "title_zh": "财联社8月18日电，据报道，Anthropic按当前业务表现计算的年化营收有望突破650亿美元，较去年底的水平攀升逾六倍。",
-      "summary_zh": "财联社8月18日电，据报道，Anthropic按当前业务表现计算的年化营收有望突破650亿美元，较去年底的水平攀升逾六倍"
-    },
-    {
-      "id": "62a03746e914c7b36336a05e5c8c7ad973c0a843",
-      "title": "FIFA COO, who publicly criticized Infantino, departs",
-      "summary": "CLS Aug 18: FIFA confirmed its working relationship with COO Kevin Lamour has ended.",
-      "title_zh": "曾公开批评因凡蒂诺 国际足联首席运营官已离任",
-      "summary_zh": "【曾公开批评因凡蒂诺 国际足联首席运营官已离任】财联社8月18日电，国际足联确认与其首席运营官凯文·拉穆尔之间的工作关系已结束"
-    },
-    {
-      "id": "1de0c426b6ed95f64a150cf62043f6a243ec0cbe",
-      "title": "CLS Aug 18: JPMorgan downgrades East Money to Neutral from Overweight, target price 22 yuan, implying 12% upside.",
-      "summary": "CLS Aug 18: JPMorgan downgrades East Money to Neutral from Overweight, target price 22 yuan, implying 12% upside.",
-      "title_zh": "财联社8月18日电，摩根大通将东方财富评级下调至中性，之前的评级为超配，现目标价22元人民币，即上涨12%。",
-      "summary_zh": "财联社8月18日电，摩根大通将东方财富评级下调至中性，之前的评级为超配，现目标价22元人民币，即上涨12%"
-    },
-    {
-      "id": "cb3069dedc56e09bdccaad43412f3bada92ff39d",
-      "title": "Dollar index falls on the 17th",
-      "summary": "CLS Aug 18: The dollar index, which measures the greenback against six major currencies, fell 0.03% on the day, closing at 99.636 in late trading.",
-      "title_zh": "美元指数17日下跌",
-      "summary_zh": "【美元指数17日下跌】财联社8月18日电，衡量美元对六种主要货币的美元指数当天下跌0.03%，在汇市尾市收于99.636"
-    },
-    {
-      "id": "8330a9937d363f8a78b334a68d5fb8c9c3f9f348",
-      "title": "International oil prices rise on the 17th",
-      "summary": "CLS Aug 18: International oil prices rose on August 17.",
-      "title_zh": "国际油价17日上涨",
-      "summary_zh": "【国际油价17日上涨】财联社8月18日电，国际油价17日上涨"
-    },
-    {
-      "id": "097fd350b72bd2c6f249ee58579c1292fe3a1022",
-      "title": "Kushner says US and Iran have yet to reach consensus",
-      "summary": "CLS Aug 18: Jared Kushner, President Trump's son-in-law, says dialogue between US and Iranian government departments has reached an \"unprecedented\" level, while admitting the two sides have \"not yet reached consensus.\"",
-      "title_zh": "库什纳称美伊双方尚未达成共识",
-      "summary_zh": "【库什纳称美伊双方尚未达成共识】财联社8月18日电，美国总统特朗普的女婿库什纳称，美国与伊朗政府各部门之间的对话力度达到“前所未有”的水平，但他同时承认双方“尚未达成共识”"
-    },
-    {
-      "id": "4dc021ba063415bdea5745ac445ec70cb868791d",
-      "title": "Nvidia reports earnings next week — likely another \"Beat & Raise\", but markets may not be satisfied",
-      "summary": "Nvidia faces its quarterly earnings \"big test\" next Thursday.",
-      "title_zh": "英伟达下周公布财报，大概率又是“Beat & Raise”，但市场未必满意",
-      "summary_zh": "英伟达下周四将迎来季度财报“大考”"
-    },
-    {
-      "id": "818b4babb8c2c12ba03b6a99f6e479ff444c0daa",
-      "title": "Nvidia executive: we build robots not to beat rivals, but to create a market from scratch",
-      "summary": "Nvidia research VP Liu Mingyu believes AI-era compute demand will explode as robots proliferate — every household may own two or three robots, sharply lifting compute demand.",
-      "title_zh": "英伟达高管：我们做机器人，不为打败对手，要凭空造出一个市场",
-      "summary_zh": "英伟达研究副总裁刘洺堉认为，AI时代算力需求将因机器人普及而爆发式增长，每个家庭可能拥有两三个机器人，大幅拉动算力需求"
-    },
-    {
-      "id": "bd451ed8c68d651eed8dac5d05f1e7da18f6bd41",
-      "title": "Samsung and SK Hynix H1 capex surges 35%! Nvidia not among Samsung's top five customers",
-      "summary": "Driven by AI demand, Samsung Electronics and SK Hynix are aggressively expanding capacity; combined semiconductor-facility investment in H1 2026 rose more than 30% year over year.",
-      "title_zh": "三星、SK海力士上半年资本开支大增 35%！英伟达未入三星前五大客户",
-      "summary_zh": "三星电子与SK海力士在人工智能需求驱动下大举扩张产能，两家公司2026年上半年半导体设施投资合计同比增长逾三成"
-    },
-    {
-      "id": "4e7d25c0ca85bbb66dcb705e6ab370861a26f08a",
-      "title": "UPS vs FedEx: valuation, earnings, and dividend compared",
-      "summary": "",
-      "title_zh": "UPS 与 FedEx 对比：估值、盈利与股息"
-    },
-    {
-      "id": "9d4dd8a0c5aee43e4cb93485926dfc646862a177",
-      "title": "Micron, Sandisk and other chip stocks climb as investors get more confident about AI spending",
-      "summary": "AI companies are seeing improved financial performance, according to reports, and memory-chip companies may be able to better fend off Chinese competition with new products.",
-      "title_zh": "投资者对AI支出信心增强，美光、闪迪等芯片股走高",
-      "summary_zh": "据报道，AI公司财务表现改善，存储芯片企业或能凭借新产品更好地抵御中国竞争对手的冲击。"
-    },
-    {
-      "id": "a1e69b4807d6a7418fa7511aeb83c26849fdec67",
-      "title": "‘I’m running out of time’: I sold my $300,000 rental property at a $75,000 loss. Should I buy another one to avoid taxes?",
-      "summary": "“My CPA hasn’t gotten back to me.”",
-      "title_zh": "“我时间不多了”：我以7.5万美元亏损卖掉30万美元的出租房，该再买一套来避税吗？",
-      "summary_zh": "“我的注册会计师还没回复我。”"
-    },
-    {
-      "id": "f810312d682ccae66303c73db1ecf422c388ef3f",
-      "title": "July inflation eases — rate hike in September? Two Fed officials send divergent signals",
-      "summary": "On Aug 13, Cleveland Fed President Beth Hammack, this year's FOMC voter, and Richmond Fed President Tom Barkin, this year's alternate voter, delivered separate remarks.",
-      "title_zh": "7月通胀数据有所回落 9月加不加息？两位美联储官员释放出不同信号",
-      "summary_zh": "8月13日，美联储今年票委、克利夫兰联储主席Beth Hammack和今年为候补票委的里士满联储主席Tom Barkin分别发表讲话"
-    },
-    {
-      "id": "184a811c5573cf1afe574c60b361cc4d53c59bde",
-      "title": "US July PPI inflation misses expectations, further cooling September rate hike bets",
-      "summary": "A day after July CPI inflation came in fully in line with expectations, Thursday's US July Producer Price Index (PPI) also showed a modest overall increase, indicating further easing of inflation pressure.",
-      "title_zh": "美国7月PPI通胀不及预期 美联储9月加息预期进一步降温",
-      "summary_zh": "在此前一天美国7月份CPI通胀全面符合预期之后，周四公布的美国7月生产者价格指数(PPI)整体涨幅也保持温和，显示通胀压力进一步缓解"
-    },
-    {
-      "id": "6019d74e58b1fec07e9b5c999843f1b2d666f2c0",
-      "title": "August 18 digest of front-page headlines from China's four major securities newspapers and key financial media",
-      "summary": "Tuesday Aug 18 digest: Shanghai Securities News — first-seven-months economic performance released; the \"stability\" theme is unchanged with clear contributions from new growth drivers; July saw some indicators slow on short-term domestic and external shocks, but the economy's \"stable\" foundation is intact.",
-      "title_zh": "8月18日国内四大证券报纸、重要财经媒体头版头条内容精华摘要",
-      "summary_zh": "8月18日(星期二)，今日报刊头条主要内容精华如下： 上海证券报 前7个月经济运行成绩单出炉 “稳”的主基调未变 新动能贡献明显 受国内外短期因素冲击影响，7月多项经济指标增速有所回落，但经济“稳”的主基调没有改变"
-    },
-    {
-      "id": "5c5b3d8162e62507aa1e85c687d90c24996e3608",
-      "title": "L3Harris ousts CEO Chris Kubasik over unspecified 'conduct,' stock drops 4%",
-      "summary": "Chris Kubasik was ousted as Lockheed Martin's incoming CEO in 2012 after what that company called \"close personal relationship with a subordinate employee.\"",
-      "title_zh": "L3Harris 因未说明的“行为”罢免CEO Chris Kubasik，股价下跌4%",
-      "summary_zh": "Chris Kubasik 曾在2012年因被洛克希德·马丁称为“与下属员工关系过密”而失去其即将接任的CEO职位。"
-    },
-    {
-      "id": "13a0583cb157cf22da4129d1ad8c342bd7bfe22f",
-      "title": "Anthropic tells investors annualized revenue run rate climbed to $65 billion in July",
-      "summary": "Anthropic's revenue run rate is up about sevenfold from a year earlier.",
-      "title_zh": "Anthropic 告知投资者：7月年化营收运行率已攀升至650亿美元",
-      "summary_zh": "Anthropic 的年化营收运行率较一年前增长约7倍。"
-    },
-    {
-      "id": "c529a746a45486159468756715b94f4404fcec85",
-      "title": "Paramount seeks $1.88 billion bond from state AGs to cover costs of WBD merger delay",
-      "summary": "Paramount agreed to delay its proposed acquisition of WBD to as late as June 2027 while the state AGs' case heads to trial.",
-      "title_zh": "Paramount 寻求从州总检察长处获得18.8亿美元保证金，以覆盖WBD合并延期成本",
-      "summary_zh": "在州总检察长案件进入庭审期间，Paramount 同意将其拟议收购 WBD 的时间推迟至最晚2027年6月。"
-    },
-    {
-      "id": "03fd783a80cfbae78b8a5d4de3b48c20a64fa2b8",
-      "title": "Anthropic's July annualized revenue reportedly tops $65 billion, up over sevenfold from end of last year",
-      "summary": "Bloomberg, citing sources: Anthropic PBC is growing at an annualized revenue pace above $65 billion, more than seven times the level at end of last year.",
-      "title_zh": "Anthropic 7月年化营收据称超650亿美元，较去年年底增超7倍",
-      "summary_zh": "据彭博援引知情人士透露，Anthropic PBC目前正以超过650亿美元的年化营收速度增长，较去年年底的水平增长逾7倍"
-    },
-    {
-      "id": "f7af938a740fa191d250c80259e144c7bb77dd7d",
-      "title": "What will TV look like in three years? Media insiders share their predictions",
-      "summary": "CNBC asked media insiders what they think the TV market — from pay TV subscribers to sports ratings — will look like in three years.",
-      "title_zh": "三年后的电视会是什么样？业内高管分享预测",
-      "summary_zh": "CNBC 询问业内高管对三年后电视市场（从付费电视用户到体育收视率）的看法。"
-    },
-    {
-      "id": "a42d656b036736832a1beeffbc8bcf3e8cf80555",
-      "title": "Disney's new parks boss outlines investment strategy, with superfans at the fore",
-      "summary": "Disney Experiences chief Thomas Mazloum is focused on balancing the needs of its most ardent parkgoers with its less frequent visitors.",
-      "title_zh": "迪士尼新乐园负责人勾勒投资战略，超级粉丝优先",
-      "summary_zh": "迪士尼体验业务负责人 Thomas Mazloum 专注于平衡最忠实的游客与偶访游客的需求。"
-    },
-    {
-      "id": "10ac1fbc3aadf672a9a2c7c4b711fddc6671c303",
-      "title": "Sanders proposes bill to stop Social Security benefit garnishment for unpaid student loans",
-      "summary": "Sen",
-      "title_zh": "桑德斯提议立法，禁止因未偿还学生贷款扣押社会保障福利"
-    },
-    {
-      "id": "83ec51c767247b814cd3f441816d4a5fc20f309c",
-      "title": "UK, Japan and China all trimmed US Treasury holdings in June",
-      "summary": "US Treasury data shows Japan held $1.117 trillion, down $26.4 billion from May; the UK held $939.9 billion, down $8.7 billion; China held $633.4 billion, down $26 billion.",
-      "title_zh": "6月英国、日本和中国持有的美国国债规模均较5月下降",
-      "summary_zh": "美国财政部数据显示，其中，日本持有美债1.117万亿美元，较5月减少264亿美元；英国持有9399亿美元，环比减少87亿美元；中国持有6334亿美元，环比减少260亿美元"
-    },
-    {
-      "id": "0c2ebcc55167c8069a4d1b7612b25f8b24d07c73",
-      "title": "OpenAI executive departures raise concerns; president plays them down: it's normal, we're just too closely watched",
-      "summary": "OpenAI co-founder and president Greg Brockman said Monday that the recent spate of executive departures is not unusual, business momentum remains strong, and the company is actively addressing a cybersecurity incident involving one of its AI models.",
-      "title_zh": "OpenAI高管接连离职引担忧，总裁“灭火”：其实很正常，只是我们太受关注",
-      "summary_zh": "OpenAI联合创始人兼总裁Greg Brockman周一表示，近期公司高管接连离职并不罕见，公司业务增长势头依然强劲，并正积极应对一起涉及旗下AI模型的网络安全事件"
-    },
-    {
-      "id": "7129dc9df88be5e3cead3e8bb2185cef715c9736",
-      "title": "30-year Treasury yield tops 5.31%, the highest in 19 years",
-      "summary": "Treasury yields were higher as traders awaited the latest FOMC minutes due later this week.",
-      "title_zh": "30年期美债收益率突破5.31%，创19年新高",
-      "summary_zh": "美债收益率走高，交易员等待本周晚些时候发布的最新FOMC会议纪要。"
-    },
-    {
-      "id": "fedc7eb49be7a46160893876f67354dd1c2a4d17",
-      "title": "Goldman says AI productivity gains are not here yet. But these stocks will benefit most when they begin",
-      "summary": "The investment bank compared companies' labor intensity and artificial intelligence sensitivity to see where AI implementation gains will make an impact.",
-      "title_zh": "高盛：AI生产率红利尚未到来，但一旦开启这些股票受益最大",
-      "summary_zh": "该投行比较了各公司的劳动密集度与AI敏感度，以判断AI落地收益将在何处显现。"
-    },
-    {
-      "id": "0175febb6248973dd8547dbe11d958634bd5843b",
-      "title": "This small-cap ETF just hit a fresh high and its members have lots of cash. Wall Street likes these stocks",
-      "summary": "Some small-cap stocks offer a potent combination of dividends and healthy free cash flows",
-      "title_zh": "这只小盘股ETF刚创出新高，成分股现金充裕，华尔街看好这些股票",
-      "summary_zh": "部分小盘股兼具丰厚的股息与健康的自由现金流。"
-    }
-  ],
-  "updated_at": "2026-08-17T22:00:16Z"
+ "items": [
+  {
+   "id": "a3a0b68f5040e169704d0164242d9c89a9032eb0",
+   "title": "GigaDevice: first-half net profit up 1091.5% year on year",
+   "summary": "CLS Aug 18 - GigaDevice (603986.SH) released its 2026 interim report: revenue of 11.566 billion yuan, up 178.67% year on year; net profit attributable to shareholders of 6.857 billion yuan, up 1091.5% year on year.",
+   "title_zh": "兆易创新：上半年净利润同比增长1091.5%",
+   "summary_zh": "【兆易创新：上半年净利润同比增长1091.5%】财联社8月18日电，兆易创新(603986.SH)发布2026年半年度报告，实现营业收入115.66亿元，同比增长178.67%；归属于上市公司股东的净利润68.57亿元，同比增长1091.5%"
+  },
+  {
+   "id": "693ca8932ea78f9047342b40299bd83ec2b22c7c",
+   "title": "Nvidia backing $105 billion in financing for OpenAI data center in Ohio",
+   "summary": "Technology giants are shelling out billions to scale capacity to meet massive data center demand.",
+   "title_zh": "英伟达为OpenAI俄亥俄数据中心提供1050亿美元融资支持",
+   "summary_zh": "科技巨头正斥资数十亿美元扩张产能，以满足庞大的数据中心需求。"
+  },
+  {
+   "id": "94ff0507b6d5efa2ee6516b3e3df97a3b679bb4d",
+   "title": "Nvidia financing initiative follows SEC guidance that takes sponsors off the hook for data center investments",
+   "summary": "Recent SEC instructions on data center bonds appear applicable to the recent Nvidia financing move, lawyers say.",
+   "title_zh": "英伟达融资举措紧随SEC指引，数据中心投资发起人责任获豁免",
+   "summary_zh": "律师称，SEC近期关于数据中心债券的指引似乎适用于英伟达最近的融资动作。"
+  },
+  {
+   "id": "6cc91257b8dbef4346439af20e0d637214f9ef31",
+   "title": "GigaDevice: 2026 half-year net profit up 1091.5% year on year",
+   "summary": "GigaDevice released its 2026 interim report: revenue of 11.566 billion yuan, up 178.67% year on year; net profit attributable to shareholders of 6.857 billion yuan, up 1091.5% year on year.",
+   "title_zh": "兆易创新：2026年半年度净利润同比增长1091.5%",
+   "summary_zh": "兆易创新发布2026年半年度报告，实现营业收入115.66亿元，同比增长178.67%；归属于上市公司股东的净利润68.57亿元，同比增长1091.5%"
+  },
+  {
+   "id": "4217a14d1b1e2c9d430b4069030b15a97e88e5e0",
+   "title": "Global bond yields hit multi-decade highs as governments pay the price for U.S.-Iran stalemate",
+   "summary": "International government bond yields followed U.S",
+   "title_zh": "美伊僵局令各国政府付出代价，全球债券收益率触及数十年高位",
+   "summary_zh": null
+  },
+  {
+   "id": "357664468e3e30d0533b7bf0473f41d7eccaa3bc",
+   "title": "Germany's gas storage critically low; UBS warns winter gas prices may surge, inflation risk skewed higher",
+   "summary": "Germany's natural gas inventories sit at recent-year lows for this time of year.",
+   "title_zh": "德国天然气库存严重不足，瑞银：今冬气价或大涨，通胀面临上行风险",
+   "summary_zh": "德国天然气库存正处于近年同期低位"
+  },
+  {
+   "id": "f9a1c5a08863cf998514a172ce4f81b30d11f942",
+   "title": "Transsion catches the window: phone prices rise first, memory costs have yet to catch up",
+   "summary": "Smartphone sales fell, yet Transsion Holdings still delivered its best interim report in recent years.",
+   "title_zh": "传音吃到窗口期：手机先涨价，存储成本还没追上",
+   "summary_zh": "智能手机卖得更少了，传音控股却交出了近年来最好看的一份半年报"
+  },
+  {
+   "id": "570c4faec969bce8200748a94499fe9619898fd8",
+   "title": "South Korea must brace for ‘worst-case scenario,’ President Lee says, as Trump cuts military drills",
+   "summary": "The annual exercises, are defensive and not intended to attack North Korea or raise tensions on the peninsula, Lee said.",
+   "title_zh": "李总统：特朗普削减军演，韩国必须为“最坏情形”做好准备",
+   "summary_zh": "李总统表示，年度演习属于防御性质，无意攻击朝鲜或加剧半岛紧张局势。"
+  },
+  {
+   "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
+   "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
+   "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
+   "title_zh": "美联储理事会就互助银行组织规则现代化提案征求意见",
+   "summary_zh": "美联储理事会就一项互助银行组织规则现代化提案征求意见。"
+  },
+  {
+   "id": "51bdb202dd58e4b5d03a7f03beae1d271730a57a",
+   "title": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, Inc., BNP Paribas Securities Corp., and Community Bankshares, Inc.",
+   "summary": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, I",
+   "title_zh": "美联储理事会对小型商业银行采取执法行动，并宣布终止对法国巴黎银行及Community Bankshares等机构的执法行动",
+   "summary_zh": "美联储理事会对小型商业银行采取执法行动，并宣布终止对法国巴黎银行（BNP Paribas S.A.、BNP Paribas USA, Inc.、BNP Paribas Securities Corp.）及Community Bankshares, Inc.的执法行动。"
+  },
+  {
+   "id": "0254e3ba17e7fc42b0147897a01c5a01912f2fe2",
+   "title": "Yitian Intelligent: subsidiary signs 1-billion-yuan computing-center construction contract",
+   "summary": "CLS Aug 18 - Yitian Intelligent (300911.SZ) announced that its wholly-owned subsidiary Gansu Yisuan signed a computing-center construction contract with Company Z, total value 1 billion yuan, including 832 million yuan for equipment procurement and 168 million yuan for system-integration services.",
+   "title_zh": "亿田智能：子公司签署10亿元算力中心建设合同",
+   "summary_zh": "【亿田智能：子公司签署10亿元算力中心建设合同】财联社8月18日电，亿田智能(300911.SZ)公告称，公司全资子公司甘肃亿算与Z公司签署《亿田算力中心项目建设合同》，合同总价款10亿元，其中设备采购8.32亿元，系统集成服务1.68亿元"
+  },
+  {
+   "id": "1947bc746c3be909cec5491428c1d317f7026904",
+   "title": "Global funds net sold 3.4 billion rupees of Indian stocks last session, NSDL data show",
+   "summary": "CLS Aug 18 - Data from India's National Securities Depository Limited (NSDL) show global funds net sold 3.4 billion rupees of Indian equities in the previous trading day.",
+   "title_zh": "财联社8月18日电，印度国家证券存管有限公司(NSDL)数据显示，全球基金在前一交易日净卖出34亿卢比的印度股票。",
+   "summary_zh": "财联社8月18日电，印度国家证券存管有限公司(NSDL)数据显示，全球基金在前一交易日净卖出34亿卢比的印度股票"
+  },
+  {
+   "id": "05d71ab3e9b1d47f34233677419d5115f758f4b2",
+   "title": "All newly recruited community positions opened to college graduates",
+   "summary": "CLS Aug 18 - The Ministry of Human Resources and Social Security, the Central Social Work Department and the Ministry of Civil Affairs jointly issued a notice on optimizing urban-rural community positions to absorb college graduates, supporting grassroots governance with talent.",
+   "title_zh": "社区所有新聘岗位向高校毕业生开放",
+   "summary_zh": "【社区所有新聘岗位向高校毕业生开放】财联社8月18日电，人力资源社会保障部、中央社会工作部、民政部日前联合印发《关于优化城乡社区岗位吸纳高校毕业生就业工作的通知》，全力促进更多高校毕业生到城乡社区就业，为基层治理提供人才支撑"
+  },
+  {
+   "id": "9e303fa32f85bbf9df8b93499642868729988a77",
+   "title": "CSRC approves registration of Guotai Haitian China Construction rental-housing closed-end infrastructure REIT",
+   "summary": "CLS Aug 18 - The CSRC approved the registration of the Guotai Haitong China Construction rental-housing closed-end infrastructure securities investment fund, a contract-type closed-end fund with a 62-year term.",
+   "title_zh": "证监会：准予国泰海通中国建筑租赁住房封闭式基础设施证券投资基金注册",
+   "summary_zh": "【证监会：准予国泰海通中国建筑租赁住房封闭式基础设施证券投资基金注册】财联社8月18日电，证监会准予国泰海通中国建筑租赁住房封闭式基础设施证券投资基金注册，基金类型为契约型封闭式，基金合同期限为62年"
+  },
+  {
+   "id": "cafecef19e7956992b896255f8869a697f0e0c08",
+   "title": "Citi raises Salesforce price target from $187 to $204",
+   "summary": "CLS Aug 18 - Citi raised its Salesforce price target from $187 to $204.",
+   "title_zh": "财联社8月18日电，花旗将Salesforce目标价从187美元上调至204美元。",
+   "summary_zh": "财联社8月18日电，花旗将Salesforce目标价从187美元上调至204美元"
+  },
+  {
+   "id": "4f6f1fcfd3ccf1579e9b9cbcd235387794d54b3d",
+   "title": "Haisco: innovative drug HSK51155 tablets receive clinical-trial approval",
+   "summary": "CLS Aug 18 - Haisco (002653.SZ) announced it received a Drug Clinical Trial Approval Notice from the National Medical Products Administration, approving clinical trials for its innovative drug HSK51155 tablets.",
+   "title_zh": "海思科：创新药HSK51155片获临床试验批准通知书",
+   "summary_zh": "【海思科：创新药HSK51155片获临床试验批准通知书】财联社8月18日电，海思科(002653.SZ)公告称，公司近日收到国家药品监督管理局下发的《药物临床试验批准通知书》，同意创新药HSK51155片开展临床试验"
+  },
+  {
+   "id": "f6ba9b275c0fece78650b375ee9fc7fc2235beeb",
+   "title": "Macao to provide free community medical services",
+   "summary": "CLS Aug 18 - The Macao SAR government officially released the third five-year development plan (2026-2030) for Macao's economic and social development.",
+   "title_zh": "澳门提供免费社区医疗服务",
+   "summary_zh": "【澳门提供免费社区医疗服务】财联社8月18日电，澳门特区政府8月18日正式公布《澳门特别行政区经济和社会发展第三个五年规划（2026-2030年）》"
+  },
+  {
+   "id": "2f4fafa54f58b54b6399eb2b2a6ea9d90831da76",
+   "title": "Aoto Electronics: plans placement raising up to 265 million yuan for Micro LED COB smart-manufacturing upgrade",
+   "summary": "CLS Aug 18 - Aoto Electronics (002587.SZ) announced a simplified private-placement plan for 2026, raising no more than 265 million yuan (net of issuance costs) for the Micro LED COB smart-manufacturing upgrade project and smart display-related projects...",
+   "title_zh": "奥拓电子：拟定增募资不超2.65亿元用于Micro LED COB智能制造升级建设项目等",
+   "summary_zh": "【奥拓电子：拟定增募资不超2.65亿元用于Micro LED COB智能制造升级建设项目等】财联社8月18日电，奥拓电子(002587.SZ)公告称，公司发布2026年度以简易程序向特定对象发行股票预案，拟发行股票募集资金总额不超过2.65亿元，扣除发行费用后拟用于Micro LED COB智能制造升级建设项目、智能视"
+  },
+  {
+   "id": "4688bbb00f7a98f85e1319eed1d81d830d4e104c",
+   "title": "Home Depot Q2 same-store sales rise 1.7%, above 0.94% expected",
+   "summary": "CLS Aug 18 - Home Depot's second-quarter same-store sales rose 1.7%, versus expectations of 0.94% growth.",
+   "title_zh": "财联社8月18日电，家得宝第二季度同店销售额增长1.7%，预期为增长0.94%。",
+   "summary_zh": "财联社8月18日电，家得宝第二季度同店销售额增长1.7%，预期为增长0.94%"
+  },
+  {
+   "id": "3e2469df4d67bf6dd23803e025360423dcfc4856",
+   "title": "Home Depot Q2 net sales $47.86 billion vs $47.33 billion estimate; keeps FY outlook of roughly +2.5% to +4.5%",
+   "summary": "CLS Aug 18 - Home Depot's second-quarter net sales were $47.86 billion versus a $47.33 billion estimate; the company still forecasts full-year revenue change of roughly +2.5% to +4.5%.",
+   "title_zh": "财联社8月18日电，家得宝第二季度销售净额478.6亿美元，预估473.3亿美元；仍然预测全年营收变动大约+2.5％至+4.5％。",
+   "summary_zh": "财联社8月18日电，家得宝第二季度销售净额478.6亿美元，预估473.3亿美元；仍然预测全年营收变动大约+2.5％至+4.5％"
+  },
+  {
+   "id": "07424a443d73f4d3705fe7e049e5559e005c949b",
+   "title": "Gao Dongsheng, Party secretary and vice chairman of Bengbu State-owned Capital Operation Holding Group, under investigation",
+   "summary": "CLS Aug 18 - According to the Anhui discipline-inspection website, Gao Dongsheng, Party secretary and vice chairman of Bengbu State-owned Capital Operation Holding Group, is suspected of serious violations of discipline and law and is under disciplinary review and supervisory investigation.",
+   "title_zh": "蚌埠市国有资本运营控股集团有限公司党委书记、副董事长高东升接受审查调查",
+   "summary_zh": "【蚌埠市国有资本运营控股集团有限公司党委书记、副董事长高东升接受审查调查】财联社8月18日电，据安徽纪检监察网 ，蚌埠市国有资本运营控股集团有限公司党委书记、副董事长高东升涉嫌严重违纪违法，经安徽省纪委监委指定管辖，目前正接受滁州市纪委监委纪律审查和监察调查"
+  },
+  {
+   "id": "9aac1db77a797b137b5385fc7017456f67fcb44d",
+   "title": "Southbound capital nets about HK$14 billion in buying today, highest single-day inflow in a month",
+   "summary": "CLS Aug 18 - Southbound capital recorded net buying of HK$14.002 billion today, the highest single-day net inflow since July 9.",
+   "title_zh": "南向资金今日净买入约140亿港元 创近一个月单日买入新高",
+   "summary_zh": "【南向资金今日净买入约140亿港元 创近一个月单日买入新高】财联社8月18日电，南向资金今日净买入140.02亿港元，为7月9日以来单日净买入新高"
+  },
+  {
+   "id": "942548177403806fc5ecf16bf4282b595528d023",
+   "title": "Fuhuang Steel: creditor files for pre-restructuring and restructuring",
+   "summary": "CLS Aug 18 - Fuhuang Steel Structure (002743.SZ) announced it received a notice from Hefei Intermediate Court; creditor Chaohu Lushun Transportation Co. applied for pre-restructuring and restructuring on grounds that the company cannot repay due debts and clearly lacks solvency but has restructuring value.",
+   "title_zh": "富煌钢构：被债权人申请预重整及重整",
+   "summary_zh": "【富煌钢构：被债权人申请预重整及重整】财联社8月18日电，富煌钢构(002743.SZ)公告称，公司收到合肥中院《通知书》，债权人巢湖市麓顺运输有限公司以公司不能清偿到期债务且明显缺乏清偿能力，但具有重整价值为由，向法院申请对公司进行预重整和重整"
+  },
+  {
+   "id": "24f7911e0fa2858b5dfed11b6c6a206abfefaba8",
+   "title": "Xiong'an-Xinzhou high-speed railway enters static acceptance; expected ready to open by end of March next year",
+   "summary": "CLS Aug 18 - The Xiong'an-Xinzhou high-speed railway officially entered static acceptance, laying the groundwork for joint commissioning, trial runs and on-schedule opening.",
+   "title_zh": "雄忻高铁开启静态验收 预计明年3月底具备开通条件",
+   "summary_zh": "【雄忻高铁开启静态验收 预计明年3月底具备开通条件】财联社8月18日电，雄忻高铁正式开启静态验收，为后续联调联试、试运行及按期开通运营奠定基础"
+  },
+  {
+   "id": "323be4051bb0595a0ee1adc867469f17ff71aa4a",
+   "title": "Tencent repurchased 681,000 shares for HK$300.5 million on Aug 18",
+   "summary": "CLS Aug 18 - Tencent Holdings repurchased 681,000 shares for HK$300.5 million on Aug 18.",
+   "title_zh": "财联社8月18日电，腾讯控股于8月18日以3.005亿港元回购68.1万股股份。",
+   "summary_zh": "财联社8月18日电，腾讯控股于8月18日以3.005亿港元回购68.1万股股份"
+  },
+  {
+   "id": "048869a78993efbb629299b6d4c4c5bcbfb6d879",
+   "title": "[Institutional trade-list analysis] Server power + energy storage + central SOE: server power products use SiC and GaN devices, meeting 80PLUS titanium-efficiency requirements, benefiting from DSP digital design, with customers such as H3C and Ruijie Networks...",
+   "summary": "",
+   "title_zh": "【机构龙虎榜解读】服务器电源+储能+央企，旗下服务器电源产品采用SiC和GaN器件，达到80PLUS钛金效率要求，受益于DSP数字化设计，获得了新华三、锐捷网络等优质...",
+   "summary_zh": null
+  },
+  {
+   "id": "8b22a1b1ac9763c45621c82a233a257c869c9360",
+   "title": "Shanghai Electric Power: Binhai 2x1000MW expansion project fully commissioned",
+   "summary": "CLS Aug 18 - Shanghai Electric Power (600021.SH) announced that Unit 6 of the Guodian Investment Binhai 2x1000MW expansion project, built by its controlling subsidiary Jiangsu Electric Power, passed the 168-hour full-load trial run and was officially commissioned.",
+   "title_zh": "上海电力：滨海2×100万千瓦扩建项目全面建成投产",
+   "summary_zh": "【上海电力：滨海2×100万千瓦扩建项目全面建成投产】财联社8月18日电，上海电力(600021.SH)公告称，公司控股子公司国家电投集团江苏电力有限公司投资建设的国电投滨海2×100万千瓦扩建项目6号机组顺利通过168小时满负荷试运行，正式投产"
+  },
+  {
+   "id": "cfef049b6e62039b9ceef2ad45395b7c91ce24fa",
+   "title": "Yakang: subsidiary signs 868 million yuan computing-services procurement contracts",
+   "summary": "CLS Aug 18 - Yakang (301085.SZ) announced its subsidiary Beijing Yakang Zhisuan signed General Computing Technology Service Agreements (I) and (II) with supplier A, purchasing computing services and network products; each contract is 434 million yuan before tax, 868 million yuan in total.",
+   "title_zh": "亚康股份：下属公司签订8.68亿元算力服务采购合同",
+   "summary_zh": "【亚康股份：下属公司签订8.68亿元算力服务采购合同】财联社8月18日电，亚康股份(301085.SZ)公告称，公司下属公司北京亚康智算科技有限公司与供应商A公司分别签订《通用算力技术服务协议(一)》《通用算力技术服务协议(二)》，采购算力服务及网络相关产品服务，两份合同含税金额均为4.34亿元，合计8.68亿元，服务"
+  },
+  {
+   "id": "38b2cd937574efdc223f6be7b09cd2b4ce5ac8c1",
+   "title": "Andeli: co-controller Wang An transfers 45% of Andeli Group to his daughter Wang Meng",
+   "summary": "CLS Aug 18 - Andeli (605198.SH) announced a change in the shareholding structure of controlling shareholder Andeli Group: co-actual controller Wang An transferred 45% of Andeli Group to his daughter Wang Meng, and Yang Yuhua transferred 10% to Wang Shujuan.",
+   "title_zh": "安德利：实控人之一王安向其女王萌转让安德利集团45%股权",
+   "summary_zh": "【安德利：实控人之一王安向其女王萌转让安德利集团45%股权】财联社8月18日电，安德利(605198.SH)公告称，公司控股股东安德利集团股权结构变动，实际控制人之一王安向其女王萌转让安德利集团45%股权，杨玉华将10%股权转让给王淑娟"
+  },
+  {
+   "id": "eb3119ae3ee43946688d02c8417b42f7326e18d0",
+   "title": "Bitcoin is overdue for moves of 30% or more, Fundstrat says",
+   "summary": "Bitcoin could be poised for a move of around 30% or more over the next two months, said Fundstrat.",
+   "title_zh": "Fundstrat：比特币或将迎来30%甚至更大的行情波动",
+   "summary_zh": "Fundstrat 表示，未来两个月内比特币可能出现约 30% 甚至更大的行情波动。"
+  },
+  {
+   "id": "453f5840bd2bf6d1e78ef394908e39119b8bdc1e",
+   "title": "'Absolutely crazy': Here's what South Korean stock investors are doing in U.S. markets",
+   "summary": "South Korean stock investors have made 'absolutely crazy' bets as they flee their home market, while global investors pile in.",
+   "title_zh": "“简直疯狂”：韩国股票投资者正在美股市场做什么",
+   "summary_zh": "韩国股票投资者在逃离本土市场的同时做出了“简直疯狂”的押注，而全球投资者正纷纷涌入。"
+  },
+  {
+   "id": "98347ab02556e3aae2f5b5ea3744fca21229015a",
+   "title": "Global markets: US stocks close lower; storage and optical-communications stocks gain against the trend, SanDisk up over 8%",
+   "summary": "US markets: all three major US indices closed lower on Aug 17.",
+   "title_zh": "全球市场：美股收跌 存储、光通信板块逆势走强 闪迪涨超8%",
+   "summary_zh": "美股市场： 美股三大指数08月17日收盘全线下跌"
+  },
+  {
+   "id": "f810312d682ccae66303c73db1ecf422c388ef3f",
+   "title": "July inflation eases — rate hike in September? Two Fed officials send divergent signals",
+   "summary": "On Aug 13, Cleveland Fed President Beth Hammack, this year's FOMC voter, and Richmond Fed President Tom Barkin, this year's alternate voter, delivered separate remarks.",
+   "title_zh": "7月通胀数据有所回落 9月加不加息？两位美联储官员释放出不同信号",
+   "summary_zh": "8月13日，美联储今年票委、克利夫兰联储主席Beth Hammack和今年为候补票委的里士满联储主席Tom Barkin分别发表讲话"
+  },
+  {
+   "id": "184a811c5573cf1afe574c60b361cc4d53c59bde",
+   "title": "US July PPI inflation misses expectations, further cooling September rate hike bets",
+   "summary": "A day after July CPI inflation came in fully in line with expectations, Thursday's US July Producer Price Index (PPI) also showed a modest overall increase, indicating further easing of inflation pressure.",
+   "title_zh": "美国7月PPI通胀不及预期 美联储9月加息预期进一步降温",
+   "summary_zh": "在此前一天美国7月份CPI通胀全面符合预期之后，周四公布的美国7月生产者价格指数(PPI)整体涨幅也保持温和，显示通胀压力进一步缓解"
+  },
+  {
+   "id": "edd862388d936723f66b77f8b415887fd8cd0757",
+   "title": "Trump's Oman bomb threat an attempt to get their 'attention,' says former ambassador",
+   "summary": "The attack caused damage to the engine room and resulted in a crew casualty, UKMTO said, adding that the remaining crew were being assisted by the Omani Coast G",
+   "title_zh": "前大使：特朗普的“阿曼炸弹威胁”意在引起他们的“注意”",
+   "summary_zh": null
+  },
+  {
+   "id": "10d16914dcba9d13434ed9789505da38b7c3ca12",
+   "title": "Russia says its economy is strong. It just fired a top economist who warned otherwise",
+   "summary": "Andrei Klepach was reportedly fired from his role after presenting a report warning that Russia could not win a prolonged war of attrition with Ukraine.",
+   "title_zh": "俄罗斯宣称经济强劲，却刚解雇了一位发出相反警告的首席经济学家",
+   "summary_zh": "据报道，安德烈·克列帕奇在提交了一份警告俄罗斯无法赢得与乌克兰的长期消耗战的报告后被解职。"
+  },
+  {
+   "id": "0fb755b4b320cd91ebbee6c7736547f05cc1372e",
+   "title": "Home Depot reaffirms guidance amid 'frozen housing market conditions'",
+   "summary": "Home Depot reported second fiscal quarter results that beat Wall Street expectations on the top and bottom lines.",
+   "title_zh": "家得宝在“冰冻住房市场”环境下重申业绩指引",
+   "summary_zh": "家得宝第二财季业绩在营收和利润上均超出华尔街预期。"
+  },
+  {
+   "id": "16acc212f400b04602499270c8e3286c5cc21ec1",
+   "title": "Xiaomi Q2 net profit 9.46 billion yuan vs 5.76 billion estimate; adjusted net profit 6.22 billion yuan vs 6.31 billion estimate",
+   "summary": "Xiaomi's second-quarter net profit was 9.46 billion yuan, versus an estimate of 5.76 billion yuan; adjusted net profit was 6.22 billion yuan, versus an estimate of 6.31 billion yuan.",
+   "title_zh": "小米集团 第二季度净利润94.6亿元人民币，预估57.6亿元人民币；第二季度调整后净利润62.2亿元人民币，预估63.1亿元人民币",
+   "summary_zh": "小米集团 第二季度净利润94.6亿元人民币，预估57.6亿元人民币；第二季度调整后净利润62.2亿元人民币，预估63.1亿元人民币"
+  },
+  {
+   "id": "0447d30734f7f37772e0d8dc2cdb2b49ea87ed21",
+   "title": "In conversation with Fu Peng: Is the AI productivity narrative entering a falsification gap? Markets face a critical window",
+   "summary": "\"Watching the market from the trading desk, Fu Peng comments on finance\" - Season 7 of Fu Peng Says, fully upgraded! Subscribe now. The season-long thread: is the productivity-driven narrative entering a falsification gap? Wall Street CN: as Season 7 launches and Season 6 wraps, we ask Fu to define Season 6.",
+   "title_zh": "对话付鹏：AI生产力叙事进入证伪空档期？市场正迎来关键窗口期！",
+   "summary_zh": "“ 交易桌前看天下，付鹏说来评财经 ” 《付鹏说·第七季》全新升级！ 立即订阅 贯穿全季的主线：生产力驱动的叙事进入证伪空档期？ 华尔街见闻： 作为新一季《付鹏说》的上新和第六季的收官，想请付总亲自为第六季下一个定义"
+  },
+  {
+   "id": "90c30437c0b23c5c6d19d175bc23386bd9a5d82c",
+   "title": "How investors profit from soccer even as Premier League club losses skyrocket",
+   "summary": "While English football clubs are gaining popularity with investors across the globe, teams remain risky and often unprofitable ventures.",
+   "title_zh": "英超俱乐部亏损飙升，投资者仍如何从足球中获利",
+   "summary_zh": "尽管英国足球俱乐部在全球投资者中日益受欢迎，但俱乐部仍是高风险且往往不盈利的生意。"
+  },
+  {
+   "id": "2a770c27ede770165fcec1554e1e8ddf8e176cfa",
+   "title": "Premier Li Qiang signs State Council decree publishing decision to amend Housing Provident Fund Management Regulations",
+   "summary": "Premier Li Qiang recently signed a State Council decree publishing the Decision on Amending the Regulations on the Administration of Housing Provident Funds, effective Sep 20, 2026.",
+   "title_zh": "李强签署国务院令 公布《国务院关于修改〈住房公积金管理条例〉的决定》",
+   "summary_zh": "国务院总理李强日前签署国务院令，公布《国务院关于修改〈住房公积金管理条例〉的决定》（以下简称《决定》），自2026年9月20日起施行"
+  },
+  {
+   "id": "6a34e21a651d5afa6e8a9864047431abd6f20eb2",
+   "title": "Premier Li Qiang signs State Council decree publishing decision to amend Housing Provident Fund Management Regulations",
+   "summary": "Premier Li Qiang recently signed a State Council decree publishing the Decision on Amending the Regulations on the Administration of Housing Provident Funds, effective Sep 20, 2026.",
+   "title_zh": "李强签署国务院令 公布《国务院关于修改〈住房公积金管理条例〉的决定》",
+   "summary_zh": "国务院总理李强日前签署国务院令，公布《国务院关于修改〈住房公积金管理条例〉的决定》（以下简称《决定》），自2026年9月20日起施行"
+  },
+  {
+   "id": "5933ce103d3f86fde57b08b498f1e76da98e338f",
+   "title": "Baidu Q2 revenue 31.33 billion yuan vs 31.59 billion estimate",
+   "summary": "Baidu's second-quarter adjusted profit per ADS was 7.22 yuan, versus an estimate of 9.75 yuan.",
+   "title_zh": "百度集团第二季度营收313.3亿元人民币，预估315.9亿元人民币",
+   "summary_zh": "百度集团第二季度经调整每ADS利润 7.22元人民币，预估9.75元人民币"
+  },
+  {
+   "id": "9b6d3de26f2ded61d319a25248e6d726c3cd8827",
+   "title": "BofA global fund manager survey: out-of-control bond market is now the second-largest tail risk, behind the AI bubble",
+   "summary": "Global fund manager sentiment is near multi-year highs, but alarms over disorderly yield rises are quietly sounding.",
+   "title_zh": "美银全球基金经理调查：债市失控已升至第二大尾部风险，仅次于AI泡沫",
+   "summary_zh": "全球基金经理情绪达近年峰值，但收益率无序上行的警报正在悄然拉响"
+  },
+  {
+   "id": "b12aec36bb4eefbe7cde6cc7b9fbbb26d59fd16f",
+   "title": "The US government and AI are competing for money; BofA: time to buy gold",
+   "summary": "The US government is about to owe $40 trillion.",
+   "title_zh": "美国政府和AI开始抢钱，美银：现在该买黄金了",
+   "summary_zh": "美国政府马上就要欠下40万亿美元"
+  },
+  {
+   "id": "c64abafbf3340bb4f7934b4fb287531156a70a50",
+   "title": "China Unicom: 2026 H1 revenue 201.4 billion yuan; computing revenue 41.9 billion yuan, up 13% year on year",
+   "summary": "China Unicom announced on the Hong Kong exchange: solid 2026 H1 revenue despite industry-wide growth challenges - revenue of 201.4 billion yuan, up 0.6% year on year; near-term profit pressure from VAT and labor-cost timing, with the full-year profit decline expected to narrow markedly; 2026 H1 net profit of 9.5 billion yuan, down 34.6% year on year.",
+   "title_zh": "中国联通：2026上半年营业收入人民币2,014亿元，算力收入人民币419亿元，同比增长13%",
+   "summary_zh": "中国联通在港交所公告：2026上半年收入表现稳健，在行业整体增长面临挑战的情况下，营业收入人民币2,014亿元，同比提升0.6%；受增值税及人工成本投入节奏变化影响，盈利短期承压，预计全年利润降幅将明显收窄，2026上半年净利润人民币95亿元，同比下降34.6%"
+  },
+  {
+   "id": "cb9a90ffc8ba8a203e1bbebf49157d5d890e987e",
+   "title": "After the 60/40 portfolio fails, does gold reclaim the defensive core? Morgan Stanley's Wilson: the 25-year bull market is not over",
+   "summary": "The hedging logic of the traditional 60/40 stock-bond portfolio is being challenged, and gold may reclaim the defensive core of asset allocation.",
+   "title_zh": "60/40组合失效后，黄金站上“防御C位”？大摩Wilson：25年牛市仍未结束",
+   "summary_zh": "传统60/40股债组合的避险逻辑正在遭遇挑战，黄金或重新站上资产配置的“防御C位”"
+  },
+  {
+   "id": "19b54069227ecfafd76022bfbf2de59bda7699fd",
+   "title": "US Treasury selloff not over? Three concerns loom; institutions warn the rout could worsen",
+   "summary": "The 30-year US Treasury yield has spiked to near 20-year highs, and multiple strategists warn the selloff is far from over.",
+   "title_zh": "美债暴跌还没完？三大隐忧悬顶：机构警告美债抛售潮或进一步恶化",
+   "summary_zh": "30年期美国国债收益率飙升至近20年高位，而多位策略师警告，这场抛售潮远未结束"
+  },
+  {
+   "id": "4f11e2d75f0c884422c22e50d1c50db29577dc5f",
+   "title": "After gold breaks 4400: is a second leg starting?",
+   "summary": "From late June to early August, London spot gold traded in a narrow range around $4,000 per ounce for nearly two months.",
+   "title_zh": "黄金冲破4400之后：第二轮行情正在启动？",
+   "summary_zh": "6月底至8月上旬，伦敦金现围绕4000美元/盎司展开长达近两个月的窄幅震荡"
+  },
+  {
+   "id": "a6987e79bf08f73b13f116d71c7d05ee1e8a833e",
+   "title": "Google goes to Australia to borrow - because the US isn't enough?",
+   "summary": "Google parent Alphabet is preparing its first-ever Australian-dollar bond, planning to raise about A$5 billion (roughly US$3.6 billion).",
+   "title_zh": "谷歌跑去澳洲借钱 是因为美国不够借了！？",
+   "summary_zh": "谷歌母公司Alphabet正筹备其上市以来的首笔澳元债券，计划募资约50亿澳元（约合36亿美元）"
+  }
+ ],
+ "updated_at": "2026-08-18T11:30:00Z"
 }
