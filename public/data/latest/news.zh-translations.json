@@ -1,353 +1,355 @@
 {
   "items": [
     {
-      "id": "3ce940581e0caee656d8595365590fab727126ea",
-      "title": "Morgan Stanley warns memory price hikes remain aggressive, mature-node DRAM may rise 50% in Q3",
-      "title_zh": "大摩警告：内存涨价情况仍然激进 Q3成熟制程DRAM可能涨价50%",
-      "summary": "CLS Aug 19 - According to Morgan Stanley's latest forecast, prices for mature DRAM such as DDR4 will rise 50% in Q3 2026 and a further 10% in Q4.",
-      "summary_zh": "【大摩警告：内存涨价情况仍然激进 Q3成熟制程DRAM可能涨价50%】财联社8月19日电，根据摩根士丹利的最新预测，2026年第三季度，DDR4等成熟DRAM的价格将上涨50%，第四季度将再涨10%"
-    },
-    {
-      "id": "00059f82cef305fc9497ddc01da9b0cef2a17ae2",
-      "title": "CLS Aug 19 - Asian currency index climbs to its highest level since March on expectations of a dovish Federal Reserve",
-      "title_zh": "财联社8月19日电，受美联储鸽派立场预期提振，亚洲外汇指数升至3月以来最高水平。",
-      "summary": "CLS Aug 19 - The Asian currency index climbed to its highest level since March, buoyed by expectations of a dovish Federal Reserve stance.",
-      "summary_zh": "财联社8月19日电，受美联储鸽派立场预期提振，亚洲外汇指数升至3月以来最高水平"
+      "id": "2443127fd0e1b3573893985aadfff71ae2b8aeda",
+      "title": "JPMorgan's latest Tesla factory research on Robotaxi scaled deployment and the Optimus robot's market launch timeline",
+      "summary": "Tesla's two core narratives — scaled Robotaxi deployment and Optimus humanoid commercialization — are moving from concept to a quantifiable execution path.",
+      "title_zh": "关于Robotaxi规模化部署和Optimus机器人上市节奏，这是摩根大通特斯拉工厂的最新调研",
+      "summary_zh": "特斯拉两大核心叙事——Robotaxi规模化部署与Optimus人形机器人商业化——正从概念走向可量化的执行路径"
     },
     {
       "id": "4386633c5d54948f0b3b6654e5a46e5426334aa2",
       "title": "Memory chips are minting money: GigaDevice first-half net profit of 6.8 billion yuan up more than tenfold, aiming to lift market share broadly in the second half",
-      "title_zh": "存储芯片赚疯了！兆易创新上半年净利68亿增逾10倍 下半年要全面提升市占率",
       "summary": "On Aug 18, GigaDevice (603986.SH), China's leading memory chip design company, formally released its 2026 interim results report.",
-      "summary_zh": "8月18日，国内 存储芯片 设计龙头 兆易创新 （603986.SH）正式披露2026年半年度业绩报告"
+      "title_zh": "Memory chips are minting money: GigaDevice first-half net profit of 6.8 billion yuan up more than tenfold, aiming to lift market share broadly in the second half",
+      "summary_zh": "On Aug 18, GigaDevice (603986.SH), China's leading memory chip design company, formally released its 2026 interim results report."
     },
     {
       "id": "6dd6d6db1433906bfadddced3fb26ed3a81e6603",
       "title": "Nvidia's AI moat is shifting from chips to capital",
-      "title_zh": "英伟达的 AI 护城河正从芯片转向资本",
       "summary": "Nvidia still has dominant market share in AI chips, but with competition picking up steam, the company is taking greater advantage of another key asset.",
-      "summary_zh": "英伟达在 AI 芯片市场仍占据主导份额，但随着竞争升温，公司正更多地借力另一项关键资产。"
+      "title_zh": "英伟达的 AI 护城河正从芯片转向资本",
+      "summary_zh": "英伟达在 AI 芯片市场仍占据主导份额，但随着竞争升温，公司正更多地借助另一项关键资产。"
+    },
+    {
+      "id": "810304f23a7847c7dadfd96b04c5a83a748c29c1",
+      "title": "Lowe's gives muted outlook as it sees 'pressure' in home improvement spending",
+      "summary": "Lowe's reported mixed results as the retailer said it continued to see pressure in home improvement spending.",
+      "title_zh": "劳氏展望疲软，称家装支出持续承压",
+      "summary_zh": "劳氏财报表现喜忧参半，该零售商表示家装支出仍持续承压。"
+    },
+    {
+      "id": "c0ce8096ee926a6b73cc76d367cc07c2e51efc5b",
+      "title": "Treasury yields pull back from multi-decade highs ahead of FOMC minutes",
+      "summary": "The yield on the 10-year U.S",
+      "title_zh": "美联储会议纪要公布前，美债收益率从数十年高位回落",
+      "summary_zh": null
+    },
+    {
+      "id": "42ff551763471b6f9eddb4a2e5c158d32f533e8c",
+      "title": "Decoding the central-bank 'Game of Thrones': former Fed senior economist Hu Jie on the upheaval and shock at the world's leading central bank",
+      "summary": "In 2026 investors face a harsh reality: since Kevin Warsh succeeded Powell as Fed chair, the analytical framework markets used to understand the Fed over the past eight years may have broken down entirely.",
+      "title_zh": "解密央行版“权力的游戏”：原美联储高级经济学家胡捷带你看清全球第一央行的变局与冲击",
+      "summary_zh": "2026年，全球投资者正面临一个残酷的现实：当凯文·沃什接棒鲍威尔成为新一届美联储主席后的那一刻开始，过去8年市场用来理解美联储的分析框架可能已经彻底失效了"
+    },
+    {
+      "id": "574ab1354a69796eca12b93a4daef2a6ad5e4c7f",
+      "title": "Buyback speculation at the memory leader: SK Hynix's 'end of silent period' and a shareholder-return revolution",
+      "summary": "After the close on Aug 19, SK Hynix announced it will repurchase 40 trillion won of treasury shares.",
+      "title_zh": "存储龙头回购猜想：海力士的\"静默期终点\"与股东回报革命",
+      "summary_zh": "8月19日盘后，SK海力士宣布将回购40万亿韩元库存股"
     },
     {
       "id": "259a253111c6350f0b762d5d5d79165e6d38afa1",
       "title": "The most sensitive moment for Treasuries: a 16 billion dollar long-bond auction plus Fed minutes will test the market in the early hours",
-      "title_zh": "美债最敏感时刻：160亿美元长债拍卖+美联储纪要，明日凌晨考验市场",
       "summary": "Global bond markets are living through the most violent selloff in decades, and the U.S. market is about to face two major stress tests on the same day.",
-      "summary_zh": "全球债市正经历数十年来最猛烈的抛售浪潮，而美国市场即将在同一天面临两大压力测试"
+      "title_zh": "The most sensitive moment for Treasuries: a 16 billion dollar long-bond auction plus Fed minutes will test the market in the early hours",
+      "summary_zh": "Global bond markets are living through the most violent selloff in decades, and the U.S. market is about to face two major stress tests on the same day."
     },
     {
       "id": "a20e22711e316c93a279dc301b150629a353492c",
       "title": "Why not buy memory stocks? The heavyweights answer: the harder they rally, the more worried I get",
-      "title_zh": "为什么不买存储股？大佬们：涨得越狠，我越担心",
       "summary": "Ben Thompson argues that memory makers turning themselves into an absolute supply-chain chokepoint, like a blockaded Strait of Hormuz, will ultimately backfire, because it pushes tech giants to optimize algorithms and use less memory.",
-      "summary_zh": "大佬Ben Thompson认为，内存制造商将自身变成供应链的绝对瓶颈（如同被封锁的霍尔木兹海峡）最终会“自食其果”，因为这会倒逼科技巨头通过优化算法来减少对内存的使用"
-    },
-    {
-      "id": "58a8ffd0051f501d569613e44867f07b46ee5efe",
-      "title": "Why not buy memory stocks? Here is the answer from two heavyweights",
-      "title_zh": "为什么不买存储股？这是两位大佬的回答",
-      "summary": "Amid the AI infrastructure investment boom, memory chip stocks look like beneficiaries of exploding compute demand, yet two well-known investors and tech analysts remain cautious.",
-      "summary_zh": "在AI基础设施投资热潮中，存储芯片股看似受益于算力需求爆发，但两位知名投资人和科技分析师却对此保持谨慎"
-    },
-    {
-      "id": "a01402ef2d5a2f19b2beda4e84db11d8bfcaae85",
-      "title": "Nvidia has not cut GPU prices, but it is already quietly discounting",
-      "title_zh": "英伟达GPU没降价，但已经在偷偷“打折”",
-      "summary": "Well-known tech business strategy analyst Ben Thompson dissects Nvidia's hidden door: you think its windfall margins are undiminished? In fact it is quietly cutting prices in disguise. Nvidia appears to have defended stunning margins, but is really being propped up by circular financing.",
-      "summary_zh": "知名科技商业战略分析师Ben Thompson深度剖析英伟达暗门： 你以为它暴利不减？其实它在偷偷“变相降价”！ 英伟达看似守住了惊人的高利润率，实则全靠“循环融资”玩法在硬撑"
+      "title_zh": "Why not buy memory stocks? The heavyweights answer: the harder they rally, the more worried I get",
+      "summary_zh": "Ben Thompson argues that memory makers turning themselves into an absolute supply-chain chokepoint, like a blockaded Strait of Hormuz, will ultimately backfire, because it pushes tech giants to optimize algorithms and use less memory."
     },
     {
       "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
       "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-      "title_zh": "美联储理事会就互助银行组织规则现代化提案征求意见",
       "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-      "summary_zh": "美联储理事会就一项互助银行组织规则现代化提案征求意见。"
+      "title_zh": "美联储就现代化互助银行组织规则的提案征求意见",
+      "summary_zh": "美联储理事会就一项现代化互助银行组织规则的提案公开征求意见。"
     },
     {
       "id": "51bdb202dd58e4b5d03a7f03beae1d271730a57a",
       "title": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, Inc., BNP Paribas Securities Corp., and Community Bankshares, Inc.",
-      "title_zh": "美联储理事会对小型商业银行采取执法行动，并宣布终止对法国巴黎银行及 Community Bankshares 等机构的执法行动",
       "summary": "Federal Reserve Board issues enforcement action with Small Business Bank and announces termination enforcement actions with BNP Paribas S.A., BNP Paribas USA, I",
-      "summary_zh": "美联储理事会对小型商业银行采取执法行动，并宣布终止对法国巴黎银行（BNP Paribas S.A.、BNP Paribas USA, Inc.、BNP Paribas Securities Corp.）及 Community Bankshares, Inc. 的执法行动。"
+      "title_zh": "美联储对小企业银行采取执法行动，并终止对法国巴黎银行等多家机构的执法措施",
+      "summary_zh": "美联储理事会对小企业银行采取执法行动，并宣布终止对法国巴黎银行（BNP Paribas S.A.）、法国巴黎银行美国公司、法国巴黎银行证券及 Community Bankshares 的执法行动。"
     },
     {
-      "id": "e3513bb466e410c8fa9b350b814aee8e61890854",
-      "title": "Ministry of Water Resources: the flood control situation in the Taihu Lake basin remains severe and complex",
-      "title_zh": "水利部：太湖流域防汛形势依然严峻复杂",
-      "summary": "CLS Aug 19 - Li Guoying, deputy commander of the State Flood Control and Drought Relief Headquarters and Minister of Water Resources, chaired a special consultation on the morning of Aug 19, joining the ministry's Taihu Basin Authority by video link to assess how the flood situation in the basin is developing and to further arrange flood defense work there.",
-      "summary_zh": "【水利部：太湖流域防汛形势依然严峻复杂】财联社8月19日电，国家防总副总指挥、水利部部长李国英8月19日上午主持召开专题会商，视频连线水利部太湖流域管理局，分析研判太湖流域汛情发展态势，进一步安排部署太湖流域洪水防御工作"
+      "id": "46212e67e8941f04465fb1241590fe3ed86dc939",
+      "title": "CLS Aug 19 — Microsoft's AI chief marketing officer Andrea Marad is reportedly leaving, according to people familiar with the matter.",
+      "summary": "CLS Aug 19 — Microsoft's AI chief marketing officer Andrea Marad is reportedly leaving, according to people familiar with the matter.",
+      "title_zh": "财联社8月19日电，据报道，知情人士透露，微软人工智能首席营销官安德里亚·马拉德将离职。",
+      "summary_zh": "财联社8月19日电，据报道，知情人士透露，微软人工智能首席营销官安德里亚·马拉德将离职"
     },
     {
-      "id": "06b5618871bc683fb974f6d78c303a5faccfca1b",
-      "title": "Today's investment sentiment highlights",
-      "title_zh": "今日投资舆情热点",
-      "summary": "Today's investment sentiment highlights: 1) Property chain: the State Council amended the Regulations on the Administration of Housing Provident Funds, bringing renovation and property management fees into the scope of withdrawals and broadening how the funds may be withdrawn and used.",
-      "summary_zh": "【今日投资舆情热点】 1）地产链：国务院修改《住房公积金管理条例》 装修、物业费纳入提取范围，拓宽提取和使用范围"
+      "id": "018526f0e43c9b2b8ad8a76b3dfa273f9f406b42",
+      "title": "YTO Express: first-half net profit 3.175 billion yuan, up 73.44% year-on-year",
+      "summary": "CLS Aug 19 — YTO Express (600233.SH) reported its 2026 interim results: operating revenue 38.893 billion yuan, up 8.39% year-on-year; net profit attributable to shareholders 3.175 billion yuan, up 73.44%.",
+      "title_zh": "圆通速递：上半年净利润31.75亿元 同比增长73.44%",
+      "summary_zh": "【圆通速递：上半年净利润31.75亿元 同比增长73.44%】财联社8月19日电，圆通速递(600233.SH)公告称，公司发布2026年半年度报告，实现营业收入388.93亿元，同比增长8.39%；归属于上市公司股东的净利润31.75亿元，同比增长73.44%"
     },
     {
-      "id": "0dc0faf709245ccb4d61c4ebb4e3d41d39c04f71",
-      "title": "CLS Aug 19 - Onshore yuan closes at 6.7377 against the dollar, up 50 pips from the previous session",
-      "title_zh": "财联社8月19日电，在岸人民币兑美元收盘报6.7377，较上一交易日上涨50点。",
-      "summary": "CLS Aug 19 - The onshore yuan closed at 6.7377 against the U.S. dollar, up 50 pips from the previous trading day.",
-      "summary_zh": "财联社8月19日电，在岸人民币兑美元收盘报6.7377，较上一交易日上涨50点"
+      "id": "bf7b4fe72af65755ff8aaba0c4a4504aa4c7e3c5",
+      "title": "CLS Aug 19 — Dollar-yen breaks below 159, down 0.37% on the day.",
+      "summary": "CLS Aug 19 — Dollar-yen breaks below 159, down 0.37% on the day.",
+      "title_zh": "财联社8月19日电，美元兑日元失守159，日内跌幅0.37%。",
+      "summary_zh": "财联社8月19日电，美元兑日元失守159，日内跌幅0.37%"
     },
     {
-      "id": "0c105da7a1e6c377fa1b3ac388fe7dcd831a62ba",
-      "title": "South Korean household credit enters the 2,000 trillion won era",
-      "title_zh": "韩国家庭信贷迈入2000万亿韩元时代",
-      "summary": "CLS Aug 19 - Driven by a sharp increase in housing-related loans and in credit loans used for leveraged stock trading, South Korean household credit topped 2,000 trillion won for the first time.",
-      "summary_zh": "【韩国家庭信贷迈入2000万亿韩元时代】财联社8月19日电，受住房相关贷款及用于杠杆炒股的信用贷款大幅增加推动，韩国家庭信贷规模首次突破2000万亿韩元"
+      "id": "c211fdb9bf5895b61c438bd1adbb939f386383ef",
+      "title": "CLS Aug 19 — Global funds net-bought Indian stocks worth 29.3 billion rupees in the previous session.",
+      "summary": "CLS Aug 19 — Global funds net-bought Indian stocks worth 29.3 billion rupees in the previous session.",
+      "title_zh": "财联社8月19日电，全球基金在前一交易日净买入价值293亿卢比的印度股票。",
+      "summary_zh": "财联社8月19日电，全球基金在前一交易日净买入价值293亿卢比的印度股票"
     },
     {
-      "id": "2b93ef8d8203a76ded8e546939f4c275ba3768d0",
-      "title": "Lion Microelectronics: 12-inch wafer shipments up sharply, wafers have entered a price upcycle",
-      "title_zh": "立昂微：12英寸硅片出货量大幅增长 硅片已进入涨价周期",
-      "summary": "CLS Aug 19 - Lion Microelectronics (605358.SH) released an investor relations activity record, saying the fundraising investment projects tied to its 2021 private placement have all come on stream as scheduled.",
-      "summary_zh": "【立昂微：12英寸硅片出货量大幅增长 硅片已进入涨价周期】财联社8月19日电，立昂微(605358.SH)发布投资者关系活动记录表公告，公司2021年定增对应的募集资金投资项目均已如期投产"
+      "id": "a14bf55c0acf37b1946700f67e1ae4198df95639",
+      "title": "Shanghai Airport: first-half net profit up 16.46% year-on-year, plans dividend of 2.7 yuan per 10 shares",
+      "summary": "CLS Aug 19 — Shanghai Airport (600009.SH) reported 2026 interim results: operating revenue 6.503 billion yuan, up 2.35% year-on-year; net profit attributable to shareholders 1.216 billion yuan, up 16.46%.",
+      "title_zh": "上海机场：上半年净利润同比增长16.46% 拟10派2.7元",
+      "summary_zh": "【上海机场：上半年净利润同比增长16.46% 拟10派2.7元】财联社8月19日电，上海机场(600009.SH)发布2026年半年度报告，实现营业收入65.03亿元，同比增长2.35%；归属于上市公司股东的净利润12.16亿元，同比增长16.46%"
     },
     {
-      "id": "b9f6956a6a9c69650c8e0bd842909f4edf873ec2",
-      "title": "CRRC Times Electric: first-half net profit up 2.44% year on year, plans a 4.6 yuan dividend per 10 shares",
-      "title_zh": "时代电气：上半年净利润同比增长2.44% 拟每10股派4.6元",
-      "summary": "CLS Aug 19 - CRRC Times Electric (688187.SH) said in its 2026 interim report that revenue reached 13.071 billion yuan, up 7.01% year on year, while net profit attributable to shareholders of the listed company was 1.712 billion yuan, up 2.44% year on year.",
-      "summary_zh": "【时代电气：上半年净利润同比增长2.44% 拟每10股派4.6元】财联社8月19日电，时代电气(688187.SH)公告称，公司发布2026年半年度报告，实现营业收入130.71亿元，同比增长7.01%；归属于上市公司股东的净利润17.12亿元，同比增长2.44%"
+      "id": "5ba38409f21a4a03204120c6c995f86b388d4700",
+      "title": "China Northern Rare Earth's interim report shows Zhang Jianping exited the top-10 shareholders list, after ranking fourth-largest in Q1",
+      "summary": "CLS Aug 19 — Per China Northern Rare Earth's (600111.SH) 2026 interim report, Zhang Jianping is absent from the top-10 shareholders as of June 30; per the Q1 report, he held 72.2544 million shares as of March 31, the fourth-largest shareholder.",
+      "title_zh": "北方稀土半年报显示章建平退出十大股东名单 一季度曾位列第四大股东",
+      "summary_zh": "【北方稀土半年报显示章建平退出十大股东名单 一季度曾位列第四大股东】财联社8月19日电，根据北方稀土(600111.SH)2026年半年报，截至2026年6月30日，十大股东名单未见章建平的身影；而根据北方稀土2026年一季报，截至2026年3月31日，章建平持有公司7225.44万股股份，为公司第四大股东"
     },
     {
-      "id": "f0a340cdeefe8c0dee4a7084154445cedc38ee03",
-      "title": "CLS Aug 19 - Carlsberg shares fall 3.3% after first-half results",
-      "title_zh": "财联社8月19日电，嘉士伯股价在公布上半年业绩后下跌3.3%。",
-      "summary": "CLS Aug 19 - Carlsberg shares fell 3.3% after the company reported its first-half results.",
-      "summary_zh": "财联社8月19日电，嘉士伯股价在公布上半年业绩后下跌3.3%"
+      "id": "4ccd7426b02bc5b9e9a9f0ce2008f3a2bcb54166",
+      "title": "China Railway Construction wins multiple major projects worth a combined 44.31 billion yuan",
+      "summary": "CLS Aug 19 — CRCC (601186.SH) announced it recently won multiple projects each above 1.5 billion yuan, including 13 projects such as urban-village renewal, an unmanned electric-truck transport project at Huaneng's East Inner Mongolia open-pit mine, the Sanshandao offshore wind farm, and the Kuitun-Dushanzi-Kuqa expressway.",
+      "title_zh": "中国铁建：中标多个重大项目合计金额443.1亿元",
+      "summary_zh": "【中国铁建：中标多个重大项目合计金额443.1亿元】财联社8月19日电，中国铁建(601186.SH)公告称，公司近期中标多个单体15亿元以上重大项目，包括范家店、康乐里人民里片区城中村改造项目、华能蒙东公司伊敏露天矿无人电车智能运输工程、三山岛一海上风电场项目、G3033奎屯-独山子-库车高速公路项目等13个项目，项"
     },
     {
-      "id": "d0357e5135c448ca120b4ee9f1cb3cef18a1bd77",
-      "title": "Huasheng Lithium Battery Materials terminates a 360 million yuan hazardous waste treatment project investment",
-      "title_zh": "华盛锂电：终止3.6亿元危废处置项目投资",
-      "summary": "CLS Aug 19 - Huasheng Lithium Battery Materials (688353.SH) said its board approved terminating the investment in a center for incineration and resource recycling of 144,000 tonnes of combined solid, liquid and gaseous hazardous waste per year.",
-      "summary_zh": "【华盛锂电：终止3.6亿元危废处置项目投资】财联社8月19日电，华盛锂电(688353.SH)公告称，公司董事会审议通过终止投资年处理144,000吨固液气综合危废焚烧处置&amp;资源化循环利用中心项目"
+      "id": "b47c7eff737a3796fba4c264ed0ebfc4852585b1",
+      "title": "Seres 2026 interim report: revenue 57.493 billion yuan, AITO deliveries up 10.2% year-on-year",
+      "summary": "CLS Aug 19 — Seres released its 2026 interim report on Aug 19: first-half revenue 57.493 billion yuan, R&D investment 7.007 billion yuan, up 34.8% year-on-year.",
+      "title_zh": "赛力斯2026年半年报：营收574.93亿元 问界交付同比增长10.2%",
+      "summary_zh": "【赛力斯2026年半年报：营收574.93亿元 问界交付同比增长10.2%】财联社8月19日电，赛力斯8月19日发布2026年半年报，上半年实现营业收入574.93亿元，研发投入70.07亿元，同比增长34.8%"
     },
     {
-      "id": "07335c8fa628b2ae008fc79636b662ac121235fc",
-      "title": "Xiamen Tungsten New Energy: first-half net profit up 46.62% year on year, plans a 3 yuan dividend per 10 shares",
-      "title_zh": "厦钨新能：上半年净利润同比增长46.62% 拟每10股派3元",
-      "summary": "CLS Aug 19 - Xiamen Tungsten New Energy (688778.SH) said in its 2026 interim report that revenue reached 14.488 billion yuan, up 91.09% year on year, while net profit attributable to shareholders of the listed company was 491 million yuan, up 46.62% year on year.",
-      "summary_zh": "【厦钨新能：上半年净利润同比增长46.62% 拟每10股派3元】财联社8月19日电，厦钨新能(688778.SH)公告称，公司发布2026年半年度报告，实现营业收入144.88亿元，同比增长91.09%；归属于上市公司股东的净利润4.91亿元，同比增长46.62%"
+      "id": "8559b53658bb49cfbe249004deda99c6d484f9fd",
+      "title": "NAFMII imposes a serious warning on Shengda Futures",
+      "summary": "CLS Aug 19 — China's National Association of Financial Market Institutional Investors announced self-regulatory penalties: Shengda Futures lent trading instant-messaging accounts to related personnel, failed to perform active management duties, and did not fully record bond-trading or separate front/back-office roles.",
+      "title_zh": "交易商协会：对盛达期货予以严重警告",
+      "summary_zh": "【交易商协会：对盛达期货予以严重警告】财联社8月19日电，中国银行间市场交易商协会8月19日发布自律处分信息：盛达期货有限公司（下称盛达期货）作为银行间债券市场交易机构，向相关人员出借交易即时通讯工具账户，未就相关产品切实履行主动管理职责，同时存在未按规定实现债券交易业务全程留痕、前后台业务岗位未相互分离的情况"
     },
     {
-      "id": "bef06a78de70d4defc9061eaa4c754f0a4b67d31",
-      "title": "United States issues a final industry injury determination in the anti-dumping and countervailing case on L-lysine imported from China",
-      "title_zh": "美国对进口自中国的L-赖氨酸作出双反产业损害终裁",
-      "summary": "CLS Aug 19 - According to China Trade Remedy Information, on Aug 18 the U.S. International Trade Commission (ITC) voted an affirmative final industry injury determination in the anti-dumping and countervailing duty case on L-lysine imported from China, finding that the products alleged to have been dumped and subsidized caused material injury to the relevant U.S. industry.",
-      "summary_zh": "【美国对进口自中国的L-赖氨酸作出双反产业损害终裁】财联社8月19日电，据中国贸易救济信息网，8月18日，美国国际贸易委员会（ITC）投票对进口自中国的L-赖氨酸（L-lysine）作出反倾销和反补贴产业损害肯定性终裁，认定被主张存在倾销和补贴行为的涉案产品对美国相关产业造成了实质性损害"
+      "id": "141f01d7c7358c8d8127a34d82cc8ccef5fa7ad2",
+      "title": "Ukraine's Verkhovna Rada approves appointment of Sybiha as foreign minister",
+      "summary": "CLS Aug 19 — Ukraine's parliament (Verkhovna Rada) on the 19th approved Andriy Sybiha as foreign minister with 266 votes in favor.",
+      "title_zh": "乌克兰最高拉达批准任命瑟比加为外交部长",
+      "summary_zh": "【乌克兰最高拉达批准任命瑟比加为外交部长】财联社8月19日电，乌克兰最高拉达（议会）19日以266票赞成批准任命安德烈·瑟比加为外交部长"
     },
     {
-      "id": "274be50938fc3866ecdbe7eb64b056c1fb5049cc",
-      "title": "Palm oil prices climb to an eight-month high as El Nino worsens drought in Southeast Asia",
-      "title_zh": "棕榈油价格升至八个月高位 因厄尔尼诺加剧东南亚干旱",
-      "summary": "CLS Aug 19 - Palm oil prices extended their gains after closing on Tuesday at the highest level since December 2024.",
-      "summary_zh": "【棕榈油价格升至八个月高位 因厄尔尼诺加剧东南亚干旱】财联社8月19日电，棕榈油价格周二收于2024年12月以来最高水平后延续涨势"
+      "id": "e1cb156ad58fe39863ade8bccc2657d0220835f0",
+      "title": "China Northern Rare Earth: first-half net profit up 120% year-on-year",
+      "summary": "CLS Aug 19 — China Northern Rare Earth (600111.SH) reported 2026 interim results: operating revenue 25.799 billion yuan, up 36.75% year-on-year; net profit attributable to shareholders 2.053 billion yuan, up 120.46%.",
+      "title_zh": "北方稀土：2026年半年度净利润同比增长120%",
+      "summary_zh": "【北方稀土：2026年半年度净利润同比增长120%】财联社8月19日电，北方稀土(600111.SH)公告称，公司发布2026年半年度报告，实现营业收入257.99亿元，同比增长36.75%；归属于上市公司股东的净利润20.53亿元，同比增长120.46%"
     },
     {
-      "id": "c647e371504afc6ca09e5fe7794cf92857fe9c14",
-      "title": "Brazil issues a preliminary anti-dumping ruling on glass fiber involving China",
-      "title_zh": "巴西对涉华玻璃纤维作出反倾销初裁",
-      "summary": "CLS Aug 19 - According to China Trade Remedy Information, on Aug 18 the Foreign Trade Secretariat of Brazil's Ministry of Development, Industry, Trade and Services issued Circular No. 75 of 2026, making an affirmative preliminary anti-dumping determination on glass fiber originating in China and Egypt and recommending provisional anti-dumping duties for no more than 6 months of 211.78 to 456.44 dollars per tonne for China and 243.42 dollars per tonne for Egypt.",
-      "summary_zh": "【巴西对涉华玻璃纤维作出反倾销初裁】财联社8月19日电，据中国贸易救济信息网，8月18日，巴西发展、工业、贸易和服务部外贸秘书处发布2026年第75号公告，对原产于中国和埃及的玻璃纤维作出反倾销肯定性初裁，建议征收不超过 6个月的临时反倾销税，中国为211.78－456.44美元/吨，埃及为243.42美元/吨"
+      "id": "e13de1897e82605759278e66e66daa7eb6da15db",
+      "title": "Guangdong Maritime Safety Administration activates Level-IV emergency response for tropical cyclone",
+      "summary": "CLS Aug 19 — Per the Guangdong MSA, a disturbance over the northern South China Sea will intensify into a tropical depression on the night of Aug 19 and may make landfall around the 20th along the coast from eastern Hainan to the Leizhou Peninsula.",
+      "title_zh": "广东海事局启动防热带气旋四级应急响应",
+      "summary_zh": "【广东海事局启动防热带气旋四级应急响应】财联社8月19日电，记者19日下午从广东海事局了解到，根据气象预报，南海北部海面上的扰动云团将于8月19日夜间加强为热带低压，未来其向西偏北方向移动，可能于20日前后在海南东部到雷州半岛沿海登陆"
     },
     {
-      "id": "494f15b3b30575f3f77dff24aa61f621f2809d2d",
-      "title": "Australia issues a final ruling in the anti-dumping administrative review on interchangeable bolted clipping systems imported from China",
-      "title_zh": "澳大利亚对进口自中国的可互换夹紧螺栓夹头作出反倾销行政复审终裁",
-      "summary": "CLS Aug 19 - According to China Trade Remedy Information, on Aug 17 the Australian Anti-Dumping Commission issued Notice No. 2026/057, in which the Minister for Industry and Science accepted the Anti-Dumping Review Panel's findings on interchangeable bolted clipping systems imported from China.",
-      "summary_zh": "【澳大利亚对进口自中国的可互换夹紧螺栓夹头作出反倾销行政复审终裁】财联社8月19日电，据中国贸易救济信息网，8月17日，澳大利亚反倾销税委员会发布第2026/057号公告，澳大利亚工业与科技部长接受了澳大利亚反倾销复审组对进口自中国的可互换夹紧螺栓夹头（Interchangeable Bolted Clipping S"
+      "id": "377cdb9d6e53e97dfc1060d6a4095a829dfe73dc",
+      "title": "Helicopter carrying tourists crashes in Kenya",
+      "summary": "CLS Aug 19 — Kenya's civil aviation authority confirmed on the 19th that a tourist helicopter crashed in Samburu County, with witnesses reporting smoke and fire at the scene.",
+      "title_zh": "一架载有游客的直升机在肯尼亚坠毁",
+      "summary_zh": "【一架载有游客的直升机在肯尼亚坠毁】财联社8月19日电，肯尼亚民航局19日确认，一架载有游客的直升机当天在肯尼亚桑布鲁郡坠毁，目击者报告现场有浓烟和火光"
     },
     {
-      "id": "355d30ff550f90a900c03adac899b412e11d3e75",
-      "title": "CLS Aug 19 - Dollar/yen extends losses, down 0.3% to 159.09 for a fresh intraday low",
-      "title_zh": "财联社8月19日电，美元/日元跌幅扩大，下挫0.3%至159.09点，创日内新低。",
-      "summary": "CLS Aug 19 - The dollar/yen pair extended its losses, falling 0.3% to 159.09 and setting a fresh intraday low.",
-      "summary_zh": "财联社8月19日电，美元/日元跌幅扩大，下挫0.3%至159.09点，创日内新低"
+      "id": "15a2da3c54843554821af41fb2b2be59a05693cb",
+      "title": "Haikou issues red rainstorm alert; some areas to see up to 180 mm of rainfall",
+      "summary": "CLS Aug 19 — Haikou's meteorological observatory upgraded the rainstorm orange alert to a red alert at 17:37 on Aug 19, 2026.",
+      "title_zh": "海口发布暴雨红色预警信号 多地将有最大180毫米降水",
+      "summary_zh": "【海口发布暴雨红色预警信号 多地将有最大180毫米降水】财联社8月19日电，海南海口市气象台2026年8月19日17时37分变更暴雨橙色预警信号为暴雨红色预警信号"
     },
     {
-      "id": "75398878517463c6cc1a769ac55983d8e30ceb68",
-      "title": "Hong Kong's Hang Seng Index closes up 0.09% while the Hang Seng Tech Index falls 1.21%",
-      "title_zh": "香港恒生指数收涨0.09% 恒生科技指数跌1.21%",
-      "summary": "CLS Aug 19 - Hong Kong's Hang Seng Index closed up 0.09%, while the Hang Seng Tech Index fell 1.21%.",
-      "summary_zh": "【香港恒生指数收涨0.09% 恒生科技指数跌1.21%】财联社8月19日电，香港恒生指数收涨0.09%，恒生科技指数跌1.21%"
+      "id": "275bc0e46ee17a2076ed57bc6d7c39f4a9fe520a",
+      "title": "CLS Aug 19 — France's 30-year bond yield rises 2 bps intraday to 4.9163%, a fresh 18-year high.",
+      "summary": "CLS Aug 19 — France's 30-year bond yield rises 2 bps intraday to 4.9163%, a fresh 18-year high.",
+      "title_zh": "财联社8月19日电，法国30年期国债收益率日内上涨2个基点至4.9163%，续创18年来新高。",
+      "summary_zh": "财联社8月19日电，法国30年期国债收益率日内上涨2个基点至4.9163%，续创18年来新高"
     },
     {
-      "id": "87e8de261e5e93f48e633a1cf44424eceec6c144",
-      "title": "SK Hynix ADRs rise 7.1% in pre-market trading",
-      "title_zh": "SK海力士ADR盘前上涨7.1%",
-      "summary": "CLS Aug 19 - SK Hynix ADRs rose 7.1% in pre-market trading after the company announced a 29 billion dollar share buyback plan.",
-      "summary_zh": "【SK海力士ADR盘前上涨7.1%】财联社8月19日电，SK海力士ADR盘前上涨7.1%，之前该公司宣布290亿美元股票回购计划"
+      "id": "e25e6e6f4c1f97b37bce6b74518710e6ab29ea1d",
+      "title": "Airbus A350F orders top 100, deliveries expected in the second half of 2027",
+      "summary": "CLS Aug 19 — Airbus freighter marketing head Crawford Hamilton disclosed in Beijing on Aug 18 the latest progress on the new large wide-body freighter A350F.",
+      "title_zh": "空客A350F订单破百 预计2027年下半年交付",
+      "summary_zh": "【空客A350F订单破百 预计2027年下半年交付】财联社8月19日电，空客货机市场负责人Crawford Hamilton 8月18日在京披露了全新一代大型宽体货机A350F的最新进展"
     },
     {
-      "id": "7aec525649b205e9c858b1804dd2fbdfeac0224d",
-      "title": "Shanghai's 15th Five-Year Plan for Digital Shanghai: study a mechanism for a third-generation internet (Web3.0) innovation testing ground",
-      "title_zh": "《上海市“数字上海”建设“十五五”规划》：开展第三代互联网（Web3.0）创新试验场机制研究",
-      "summary": "CLS Aug 19 - The General Office of the Shanghai Municipal People's Government issued the 15th Five-Year Plan for the Construction of Digital Shanghai.",
-      "summary_zh": "【《上海市“数字上海”建设“十五五”规划》：开展第三代互联网（Web3.0）创新试验场机制研究】财联社8月19日电，上海市人民政府办公厅印发《上海市“数字上海”建设“十五五”规划》"
+      "id": "be284ed5a6e3f4c88c6aa5283026aed0781fd463",
+      "title": "CLS Aug 19 — Germany's 30-year bond yield rises 1 bp intraday to 3.7844%, a fresh 15-year high.",
+      "summary": "CLS Aug 19 — Germany's 30-year bond yield rises 1 bp intraday to 3.7844%, a fresh 15-year high.",
+      "title_zh": "财联社8月19日电，德国30年期国债收益率上涨1个基点至3.7844%，续创15年来新高。",
+      "summary_zh": "财联社8月19日电，德国30年期国债收益率上涨1个基点至3.7844%，续创15年来新高"
     },
     {
-      "id": "4479692e4fea454f27cafe34ff0c66df47d641e3",
-      "title": "CPCA: nationwide NEV passenger vehicle retail sales of 399,000 units on Aug 1-16, down 15% year on year",
-      "title_zh": "乘联分会：8月1-16日全国乘用车新能源市场零售39.9万辆 同比下降15%",
-      "summary": "CLS Aug 19 - According to the China Passenger Car Association, nationwide NEV passenger vehicle retail sales reached 399,000 units on Aug 1-16, down 15% from the same period last August and up 1% from the same period a month earlier, with cumulative retail sales of 6.067 million units so far this year, down 13%; nationwide NEV wholesale volumes from passenger vehicle makers were 425,000 units on Aug 1-16.",
-      "summary_zh": "【乘联分会：8月1-16日全国乘用车新能源市场零售39.9万辆 同比下降15%】财联社8月19日电，据乘联分会消息，8月1-16日，全国乘用车新能源市场零售39.9万辆，同比去年8月同期下降15%，较上月同期增长1%，今年以来累计零售606.7万辆，同比下降13%；8月1-16日，全国乘用车厂商新能源批发42.5万辆，"
+      "id": "eb9c383d49c5b9e940bc592f7c2dcfd50e0ac6f6",
+      "title": "AMEC plans to invest 3.5 billion yuan in phase-two Lingang industrial base, focusing on etch, metrology and thin-film deposition equipment",
+      "summary": "CLS Aug 19 — AMEC (688012.SH) said its wholly-owned Lingang subsidiary plans to build the phase-two Lingang industrial base with total investment of 3.5 billion yuan, including 1.7 billion yuan in fixed assets.",
+      "title_zh": "中微公司：拟投资35亿元建设临港产业化基地二期项目 聚焦刻蚀设备、量检测设备、薄膜沉积设备等产品",
+      "summary_zh": "【中微公司：拟投资35亿元建设临港产业化基地二期项目 聚焦刻蚀设备、量检测设备、薄膜沉积设备等产品】财联社8月19日电，中微公司(688012.SH)公告称，公司全资子公司中微临港拟在临港新片区投资建设中微临港产业化基地(二期)项目，计划总投资35亿元，其中固定资产投资17亿元"
+    },
+    {
+      "id": "a78f2c9c18191c2b676f08f0c296fd354a7a2fb8",
+      "title": "AMEC: first-half net profit up 300% year-on-year",
+      "summary": "CLS Aug 19 — AMEC (688012.SH) reported 2026 interim results: operating revenue 6.691 billion yuan, up 34.89% year-on-year; net profit attributable to shareholders 2.825 billion yuan, up 300.22%.",
+      "title_zh": "中微公司：上半年净利润同比增长300%",
+      "summary_zh": "【中微公司：上半年净利润同比增长300%】财联社8月19日电，中微公司(688012.SH)发布2026年半年度报告，实现营业收入66.91亿元，同比增长34.89%；归属于上市公司股东的净利润28.25亿元，同比增长300.22%"
+    },
+    {
+      "id": "fd9ee43ea62cc3ca79c159eb7f383fd864ebf66e",
+      "title": "A suspect in the Nord Stream pipeline blast arrested in Croatia",
+      "summary": "CLS Aug 19 — Germany's federal prosecutor's office said on the 19th that a Ukrainian suspect allegedly involved in the Nord Stream gas pipeline explosion was arrested that day in Croatia.",
+      "title_zh": "北溪管道爆炸案一名嫌疑人在克罗地亚被捕",
+      "summary_zh": "【北溪管道爆炸案一名嫌疑人在克罗地亚被捕】财联社8月19日电，德国联邦检察院当地时间8月19日发布声明称，涉嫌参与“北溪”天然气管道爆炸事件的一名乌克兰籍嫌疑人当天在克罗地亚被捕"
     },
     {
       "id": "01e010c9f2b89dbcadc54cbfde9b8b16ea61f48e",
       "title": "Global markets: U.S. stocks close lower as AI-themed sectors including memory and optical communications pull back sharply, SanDisk and SK Hynix fall more than 9%",
-      "title_zh": "全球市场：美股收跌 存储、光通信等AI概念板块大幅回落 闪迪、SK海力士跌超9%",
       "summary": "U.S. equity market: the three major U.S. indexes all closed lower on Aug 18.",
-      "summary_zh": "美股市场： 美股三大指数08月18日收盘全线下跌"
-    },
-    {
-      "id": "51b8427bdcb4708b5073bc4bc8e09ec8f81be491",
-      "title": "Income investors need to 'wake up' to the new market regime. Where to find solid yields now",
-      "title_zh": "收益型投资者需要「醒过来」，认清新的市场格局：现在到哪里寻找稳健收益",
-      "summary": "With Kevin Warsh heading the Federal Reserve, investors must accept the reality of a new market regime, said Luis Alvarado at Wells Fargo Investment Institute.",
-      "summary_zh": "富国银行投资研究所的 Luis Alvarado 表示，随着凯文·沃什执掌美联储，投资者必须接受新市场格局的现实。"
+      "title_zh": "Global markets: U.S. stocks close lower as AI-themed sectors including memory and optical communications pull back sharply, SanDisk and SK Hynix fall more than 9%",
+      "summary_zh": "U.S. equity market: the three major U.S. indexes all closed lower on Aug 18."
     },
     {
       "id": "14bd773a24df06dd4beab3329155a338465a11c2",
       "title": "ESPN co-founder Bill Rasmussen dies at 93 from the effects of Parkinson’s disease",
-      "title_zh": "ESPN 联合创始人比尔·拉斯穆森因帕金森病并发症去世，享年 93 岁",
       "summary": "Bill Rasmussen, who co-founded ESPN in 1979 after being fired from a public relations job in the World Hockey Association, died Tuesday",
-      "summary_zh": "比尔·拉斯穆森于周二去世。他曾在世界曲棍球协会的公关岗位上被解雇，随后于 1979 年联合创办了 ESPN。"
+      "title_zh": "ESPN 联合创始人比尔·拉斯穆森因帕金森并发症逝世，享年 93 岁",
+      "summary_zh": "比尔·拉斯穆森于周二逝世；他 1979 年创立 ESPN 前，曾在世界冰球协会的公关职位上被解雇。"
     },
     {
-      "id": "d71513c5f1d1740e9f0a3db9bd622c0b090e1861",
-      "title": "Trump says no talks scheduled with Iran as he teases action in Hormuz Strait",
-      "title_zh": "特朗普称与伊朗没有安排会谈，同时暗示将在霍尔木兹海峡采取行动",
-      "summary": "Trump insists the U.S., not Iran, is in control of the strait, even though transiting vessels continue to come under attack and few attempt the crossing.",
-      "summary_zh": "特朗普坚称控制该海峡的是美国而非伊朗，尽管过境船只持续遭到袭击，且鲜有船舶尝试通行。"
+      "id": "b4c7a52471be53c3f68d27927eac7a1fe708b624",
+      "title": "Target hikes outlook as sales rebound and huge tariff refund boosts bottom line",
+      "summary": "Target posted better-than-expected second-quarter sales and raised its full-year outlook.",
+      "title_zh": "塔吉特上调业绩展望，销售反弹叠加巨额关税退税提振利润",
+      "summary_zh": "塔吉特第二季度销售好于预期，并上调了全年业绩展望。"
     },
     {
-      "id": "9f3fda36de2194ccab4fdcc3a1a81ac48792145b",
-      "title": "Oil hits three-week high on uncertainty over Hormuz",
-      "title_zh": "油价因霍尔木兹局势不确定性升至三周高位"
+      "id": "c73f8e06520c9ae5810c05dd8236cc3caefa8bd6",
+      "title": "AMEC: first-half 2026 net profit 2.825 billion yuan, up 300.22% year-on-year",
+      "summary": "AMEC reported first-half 2026 operating revenue of 6.691 billion yuan, up 34.89% year-on-year.",
+      "title_zh": "中微公司：2026年上半年净利润28.25亿元，同比增300.22%",
+      "summary_zh": "中微公司公告，2026年上半年营业收入66.91亿元，同比增长34.89%"
     },
     {
-      "id": "a0f00f9fa850b4cee84476178360a4f2c5f4c027",
-      "title": "Kuaishou Technology second-quarter revenue of 35.54 billion yuan versus an estimate of 35.51 billion yuan",
-      "title_zh": "快手科技第二季度营收355.4亿元人民币，预估355.1亿元人民币",
-      "summary": "Kuaishou Technology posted second-quarter net profit of 3.15 billion yuan, versus an estimate of 3.12 billion yuan.",
-      "summary_zh": "快手科技第二季度净利润31.5亿元人民币，预估31.2亿元人民币"
+      "id": "b049bd547dc6dd4614202228348b418996c7175d",
+      "title": "Amazon to expand drone service to nearly 500 cities after targeting 1 million deliveries this year",
+      "summary": "Amazon has quietly expanded its drone service to more metro areas in recent months after receiving a key regulatory greenlight enabling longer-range deliveries.",
+      "title_zh": "亚马逊目标年内完成百万次配送后，将把无人机服务扩展至近 500 座城市",
+      "summary_zh": "在获得关键监管绿灯、可开展更长航程配送后，亚马逊近几个月已悄然将无人机服务扩展至更多都市区。"
     },
     {
-      "id": "bb85550112b620194312d48fbc5f2e8424deb978",
-      "title": "World’s largest olive oil company pops 17% as rivals circle in takeover battle",
-      "title_zh": "全球最大橄榄油公司股价飙升 17%，竞购战中对手环伺",
-      "summary": "Shares of Spain's Deoleo jumped nearly 16% on Wednesday morning amid an intensifying takeover battle for the world's largest olive oil bottler and marketer.",
-      "summary_zh": "周三上午，西班牙 Deoleo 股价上涨近 16%，此前围绕这家全球最大橄榄油瓶装及营销商的收购战持续升温。"
+      "id": "537e2d885fda5f4da7ebdfeaaceaa179dca88366",
+      "title": "World’s largest olive oil company pops over 15% as rivals circle in takeover battle",
+      "summary": "Shares of Spain's Deoleo jumped on Wednesday morning amid an intensifying takeover battle for the world's largest olive oil bottler and marketer.",
+      "title_zh": "全球最大橄榄油公司股价飙升逾 15%，收购战硝烟四起",
+      "summary_zh": "随着针对全球最大橄榄油灌装与营销商的收购战升温，西班牙 Deoleo 股价周三早盘大涨。"
+    },
+    {
+      "id": "76f475e7605d2e71a2264bae91e64f20354ef086",
+      "title": "Dollar risks are mounting. Here’s what could weaken the greenback",
+      "summary": "Currency strategists flag Treasury risk, softer U.S",
+      "title_zh": "美元风险正在积聚，哪些因素可能削弱绿币",
+      "summary_zh": null
+    },
+    {
+      "id": "7a889c43fe4e73cb5e633c6d75984a6590a46b84",
+      "title": "Zelenskyy faces challenge to his wartime rule as former defense chief calls for election",
+      "summary": "Former Ukraine Defense Minister Mykhailo Fedorov has called for wartime elections, saying Kyiv must restore its democratic process despite the ongoing war.",
+      "title_zh": "前防长呼吁举行选举，泽连斯基战时统治面临挑战",
+      "summary_zh": "乌克兰前国防部长米哈伊洛·费多罗夫呼吁在战时举行选举，称基辅须在战争持续之际恢复民主进程。"
+    },
+    {
+      "id": "e0ff0bf298211b613e0887fb72b344e4bd6134c3",
+      "title": "AI demand squeezes capacity; Samsung raises chip manufacturing prices by up to 15%",
+      "summary": "Per Reuters on Wednesday, Samsung Electronics has raised prices on new orders for some advanced-process foundry services, by up to 15%.",
+      "title_zh": "AI需求挤压产能，三星上调芯片制造价格，最高涨幅达15%",
+      "summary_zh": "据路透社周三报道， 三星电子已对部分先进制程代工服务的新订单上调价格，最高涨幅达15%"
+    },
+    {
+      "id": "b9b019f4c7a75f58a3255853cca02c908c2093b5",
+      "title": "In upset, Florida democratic socialist Nixon wins Democratic Senate primary",
+      "summary": "In Alaska, Democrat Mary Peltola and incumbent Republican Senator Dan S",
+      "title_zh": "爆冷！佛州民主社会主义者尼克松赢得民主党参议院初选",
+      "summary_zh": null
+    },
+    {
+      "id": "c5d3e8d21f1c926926900ec961992d778157c9eb",
+      "title": "Is a civilization without people meaningless? AI may already hold the answer",
+      "summary": "Imagine a world where GDP still grows, factories still run, papers still get published, knowledge still accumulates — but there are fewer and fewer people.",
+      "title_zh": "没有人的文明毫无意义？这个问题的答案已经握在了AI手里",
+      "summary_zh": "想象一个这样的世界：GDP还在增长，工厂还在运转，论文还在发表，知识还在累积——但人越来越少了"
+    },
+    {
+      "id": "278d2769de6e69f10e20a1ec3615ebb47a9e174e",
+      "title": "Iran reportedly weighs attacks on U.S. targets in Europe as UAE severs trade with Tehran",
+      "summary": "Washington and Tehran are considering next steps after negotiations fell apart, while the UAE has suspended trade with Iran.",
+      "title_zh": "据报伊朗考虑袭击驻欧美国目标，阿联酋亦切断与德黑兰贸易",
+      "summary_zh": "谈判破裂后，华盛顿与德黑兰正评估下一步行动，与此同时阿联酋已暂停与伊朗的贸易。"
+    },
+    {
+      "id": "263097462ca4965de47f991c7ff0ee3c6695f69a",
+      "title": "Fu Peng: where do we stand in this AI tech wave from a long-cycle perspective? [Fu Peng Says 1]",
+      "summary": "'Reading the world from the trading desk' — Fu Peng's commentary returns for a new season, with a paid column and community covering his latest market views and chart-data interpretations.",
+      "title_zh": "付鹏：从大周期看本轮AI科技浪潮，我们处在什么阶段？【付鹏说1】",
+      "summary_zh": "“ 交易桌前看天下，付鹏说来评财经 ” 《付鹏说·第七季》全新升级！ 立即订阅 《 付鹏说第七季 》全新升级上线，在日常视频的基础上， 新增专栏交流群更新付鹏说最新市场观点&amp;图表数据解读（社群第一时间更新） 除了付鹏说日常内容，还新增了专栏在线阅读文档，给大家发送每日交易关注早报，和值得关注的研究报告，延展阅读"
+    },
+    {
+      "id": "cc95677bba5ac4ffd4b52f8da48d3f8aaa68e9ed",
+      "title": "Unitree's IPO is a 'milestone' for humanoid robots: market faces a 1-6 month digestion period as valuation logic shifts from scarcity to commercialization proof",
+      "summary": "Unitree's listing on the STAR Market marks the humanoid-robot industry's entry into public-market pricing — not just one company's debut, but a systemic reset of the sector's valuation logic.",
+      "title_zh": "宇树IPO是人形机器人“里程碑事件”：市场面临1-6个月消化期，估值逻辑从稀缺性转向商业化验证",
+      "summary_zh": "宇树科技（Unitree）登陆科创板，标志着人形机器人行业正式进入公开市场定价时代——这不仅是单一公司的上市事件，更是整个赛道估值逻辑的系统性重置"
+    },
+    {
+      "id": "4a1075fc8f87b98ec076070b8d3fcd8b1f4e686c",
+      "title": "Kuaishou Q2 revenue 35.54 billion yuan; Kling AI revenue up over 200%, MAU well above estimates",
+      "summary": "Kuaishou's Q2 results were broadly in line with market expectations, with several core metrics steady; monthly active users significantly beat estimates, signaling continued platform growth.",
+      "title_zh": "快手科技Q2营收355.4亿元人民币，可灵AI收入涨超200%，月活用户大超预估",
+      "summary_zh": "快手科技第二季度业绩整体符合市场预期，多项核心指标表现稳健，其中月活跃用户数显著超出预估，显示平台用户规模持续扩张"
+    },
+    {
+      "id": "fb25729a665d7574e1408169a30a828ae0d02805",
+      "title": "In the AI boom, why does Japanese manufacturing 'earn but not expand'?",
+      "summary": "The global AI investment surge has driven huge demand for semiconductors and electronic components, lifting Japan's export prices, yet export volumes have barely moved.",
+      "title_zh": "AI盛世，日本制造业为何“只赚钱不扩产”？",
+      "summary_zh": "全球AI投资热潮催生对半导体及电子元器件的庞大需求，日本出口价格随之水涨船高，但出口量却几乎纹丝不动"
     },
     {
       "id": "6dc3906cbe3198915ef15c0a580692b7e1e611fa",
       "title": "Zhipu founder Tang Jie on scaling laws: trillion-parameter models were a detour for the industry, and the next key step lies in post-training",
-      "title_zh": "智谱创始人唐杰聊Scaling Law：大模型万亿参数曾是行业走的弯路，下一步关键在后训练",
       "summary": "Tang Jie, founder of Zhipu AI, posted on X on the 19th, systematically setting out his latest understanding of scaling laws and citing GLM-5.3 as a controlled-variable experiment supporting that judgment.",
-      "summary_zh": "智谱人工智能创始人唐杰19日在X平台发文，系统阐述其对Scaling Law的最新理解，并以GLM-5.3作为\"控制变量实验\"佐证这一判断"
+      "title_zh": "Zhipu founder Tang Jie on scaling laws: trillion-parameter models were a detour for the industry, and the next key step lies in post-training",
+      "summary_zh": "Tang Jie, founder of Zhipu AI, posted on X on the 19th, systematically setting out his latest understanding of scaling laws and citing GLM-5.3 as a controlled-variable experiment supporting that judgment."
     },
     {
       "id": "d8945708b8b26ba47002eee8eb654e6e06351611",
       "title": "Xiaomi paid a 3 billion yuan memory tax",
-      "title_zh": "小米交了30亿“内存税”",
       "summary": "Will today be rough? one user asked in a third-party Xiaomi investor community, while others wondered whether the coming year would be any better.",
-      "summary_zh": "“今天会不会很难？” 一位用户在第三方小米投资者社群里提问，更有人发出了“未来一年会不会好”的疑问"
+      "title_zh": "Xiaomi paid a 3 billion yuan memory tax",
+      "summary_zh": "Will today be rough? one user asked in a third-party Xiaomi investor community, while others wondered whether the coming year would be any better."
     },
     {
       "id": "c5dd1b2ffacfb4728f7e8c93e060eef03ec68992",
       "title": "Unitree shares surge in a memorable IPO scene: Wang Xingxing looks utterly calm, like an ordinary working person; his upper-tier partnership stake in Shanghai Yuyi will all go to employee incentives",
-      "title_zh": "宇树科技股价暴涨，IPO名场面：王兴兴表情极为平静像“打工人”！其所持上海宇翼上层合伙份额将全部用于员工激励",
       "summary": "On Aug 19, Unitree Robotics listed on the STAR Market and began trading, opening up more than 629% at 1,100 yuan per share.",
-      "summary_zh": "8月19日，宇树科技登陆科创板正式挂牌交易，开盘涨超629%，报1100元/股"
-    },
-    {
-      "id": "50ce41a1f8c52dd083d457cc8e7c21f48cc6d9ee",
-      "title": "Treasury yields are closing in on 5%, yet U.S. stocks have risen 80%",
-      "title_zh": "美债逼近5%，美股反而涨了80%",
-      "summary": "Veteran U.S. equity traders Dan Nathan and Guy Adami break down the underlying logic: the last time Treasury yields hit 5%, the S&P 500 stood at only 4,200; now, with the United States carrying 40 trillion dollars of debt, the index has forced its way up to 7,700.",
-      "summary_zh": "美股资深交易员 Dan Nathan 和 Guy Adami 拆解了背后的底层逻辑： 上一次美债收益率冲到 5% 时，标普 500 只有 4200 点； 如今美国背着 40 万亿巨额债务，大盘却强行飙到了 7700 点"
-    },
-    {
-      "id": "6041da74d0294e01472719cf2181022a8cd57ac7",
-      "title": "AI compute being this profitable right now is precisely the most dangerous moment",
-      "title_zh": "现在AI算力这么赚钱，恰恰是最危险的时刻",
-      "summary": "Well-known tech business strategy analyst Ben Thompson draws analogies with shipping and memory cycles, arguing that windfall profits in AI compute are inducing simultaneous capacity expansion.",
-      "summary_zh": "知名科技商业战略分析师Ben Thompson以航运、内存周期类比，指出AI算力暴利正诱发同步扩产"
-    },
-    {
-      "id": "ff2a3e90f604d2f2079a6e1b4bfb9228a9158241",
-      "title": "China’s backflipping robot maker Unitree pops 542% in Shanghai debut",
-      "title_zh": "中国会后空翻的机器人制造商宇树科技上海上市首日大涨 542%",
-      "summary": "Unitree Robotics shares rise 542% on their first day of trading in Shanghai",
-      "summary_zh": "宇树科技股价在上海上市首日上涨 542%。"
-    },
-    {
-      "id": "eed73a8b36bb3e90530158e4840de164baa40f85",
-      "title": "Iran reportedly weighs attacks on U.S. targets in Europe as UAE severs trade with Tehran",
-      "title_zh": "据报道伊朗考虑袭击美国在欧洲的目标，阿联酋切断与德黑兰的贸易",
-      "summary": "Washington and Tehran are considering next steps after negotiations fell apart, while the UAE has suspended trade with Iran.",
-      "summary_zh": "谈判破裂后，华盛顿与德黑兰正在考虑下一步举措，阿联酋已暂停与伊朗的贸易。"
-    },
-    {
-      "id": "baecac39a53dc103c44c89bebef6e1389729a8f0",
-      "title": "Zelenskyy faces challenge to his wartime rule as former defense chief calls for election",
-      "title_zh": "前国防部长呼吁举行选举，泽连斯基的战时执政面临挑战",
-      "summary": "Former Ukraine Defense Minister Mykhailo Fedorov has called for wartime elections, saying Kyiv must restore its democratic process despite the ongoing war.",
-      "summary_zh": "乌克兰前国防部长米哈伊洛·费多罗夫呼吁举行战时选举，称基辅必须在战争持续的情况下恢复民主程序。"
-    },
-    {
-      "id": "05e8f8d17fdbead23f9f185d3db146ef79c38bba",
-      "title": "A-share indexes close lower across the board as Unitree soars 460% on its trading debut",
-      "title_zh": "A股三大指数集体收跌 宇树科技上市首日大涨460%",
-      "summary": "China's three major A-share indexes weakened together today. At the close, the Shanghai Composite was down 2.40% at 3,894.42, the Shenzhen Component fell 5.01% to 13,890.15, and the ChiNext Index lost 6.26% to 3,473.49.",
-      "summary_zh": "A股三大指数今日集体走弱，截止收盘，沪指跌2.40%，收报3894.42点；深证成指跌5.01%，收报13890.15点；创业板指跌6.26%，收报3473.49点"
-    },
-    {
-      "id": "cd2b854e9e9752b1c5d00329c5b6d1f97129f8be",
-      "title": "Goldman Sachs on how to understand the current wave of AI investment",
-      "title_zh": "高盛解读：如何理解当前的AI投资？",
-      "summary": "Goldman Sachs executives Sharmin Mossavar-Rahmani and Jim Covello note that consumer adoption of AI is fast but 95% of users stay on free tiers and cannot be monetized, while enterprises spend heavily on AI implementation without making money, leaving almost all of the economic value with semiconductor companies, which is unsustainable.",
-      "summary_zh": "高盛高管Sharmin Mossavar-Rahmani和Jim Covello指出，AI消费端采用快，但95%用户用免费版，无法变现；企业端砸钱实施AI却未赚钱，经济价值几乎全归半导体公司，不可持续"
-    },
-    {
-      "id": "cb0e64db5ffd3e3c51692c168022a0e80222ca5a",
-      "title": "Goldman studied where AI is squeezing labor markets. Here's what it found",
-      "title_zh": "高盛研究了 AI 正在挤压哪些劳动力市场，以下是研究发现",
-      "summary": "Goldman Sachs found that AI is starting to weigh on employment across developed economies.",
-      "summary_zh": "高盛发现，AI 已开始对发达经济体的就业形成压力。"
-    },
-    {
-      "id": "aee6fbe20c332c55f1c14dbe92b9f621ba68612c",
-      "title": "SK Hynix will use at least 50% of the free cash flow generated between 2025 and 2027 for shareholder returns",
-      "title_zh": "SK海力士：将在2025至2027年间，期间产生的自由现金流的至少50%用于股东回报",
-      "summary": "SK Hynix said it will use at least 50% of the free cash flow generated over the 2025 to 2027 period for shareholder returns.",
-      "summary_zh": "SK海力士：将在2025至2027年间，期间产生的自由现金流的至少50%用于股东回报"
-    },
-    {
-      "id": "8a65b408b910944cb3e7bf8a1499efd5956877b0",
-      "title": "The 30-year Treasury yield tops 5.3%: why is the Goldilocks trade suffering long-end pain?",
-      "title_zh": "30年期美债突破5.3%！“金发姑娘”为何遭遇长端之痛？",
-      "summary": "On Aug 18, the 30-year Treasury yield rose intraday to 5.32%, its highest since 2007, extending the recent trend of persistent selling in long-dated Treasuries.",
-      "summary_zh": "8月18日，30年期美债收益率盘中升至5.32%，创2007年以来新高，延续近期长端美债遭持续抛售的趋势"
-    },
-    {
-      "id": "6a5666c166b9e205be4633f4fbec0ddf460a34e7",
-      "title": "BTIG: once the music stops, the game of musical chairs in U.S. stocks can end at any moment",
-      "title_zh": "BTIG：\"音乐\"一旦停止，美股抢椅子游戏随时结束",
-      "summary": "An unprecedented structural split is playing out in the U.S. equity market.",
-      "summary_zh": "美股市场正在上演一场前所未见的结构性分裂"
-    },
-    {
-      "id": "ead241ae05a88bef72341fd1b68b4d854e118087",
-      "title": "Managing more than 10,000 sheep with AI coding",
-      "title_zh": "用AI Coding管理10000+只羊",
-      "summary": "In Yanchi County, Ningxia, the three farms run by Xixianji currently raise more than 10,000 sheep.",
-      "summary_zh": "在宁夏盐池县，西鲜记的三座养殖场里，目前养着 10000 多只羊"
+      "title_zh": "Unitree shares surge in a memorable IPO scene: Wang Xingxing looks utterly calm, like an ordinary working person; his upper-tier partnership stake in Shanghai Yuyi will all go to employee incentives",
+      "summary_zh": "On Aug 19, Unitree Robotics listed on the STAR Market and began trading, opening up more than 629% at 1,100 yuan per share."
     }
   ],
-  "updated_at": "2026-08-19T08:44:02Z"
+  "updated_at": "2026-08-19T11:30:00Z"
 }
