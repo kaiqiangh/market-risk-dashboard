@@ -1,1 +1,520 @@
-{"schema_version":"1.1.0","generated_at":"2026-08-19T11:30:00Z","language":"en","market_state":"caution","market_regime":"goldilocks","summary":"Pre-market, the dashboard sits in caution under a goldilocks regime: total risk 44.35, up 2.4 on the day, after a sharp overnight repricing of the global memory and semiconductor trade, with Micron down 7.02 percent and the memory theme down 8.78 percent. The A-share storage chain closed sharply lower, GigaDevice down 7.56 percent and JCET down 8.99 percent, even as GigaDevice reported first-half profit up more than tenfold, a sign of profit-taking in a crowded long. The binding ceiling stays the macro dimension, the ten-year real rate at 2.44 (99.28 percentile) and the ten-year yield at 4.72 (98.48 percentile), while disinflation, CPI 3.30, core 2.47, PCE 3.29, and a softer dollar at 118.90 keep the soft-landing bid intact. Watch TGT earnings today, BABA and WMT tomorrow, and NVDA with GDP next week as the next catalysts.","top_risk_drivers":[{"claim":"The overnight global memory and semiconductor repricing is the day's dominant risk: Micron fell 7.02 percent, the memory theme fell 8.78 percent, and GigaDevice fell 7.56 percent, a crowded-trade unwind after the storage super-cycle run.","evidence_refs":[{"dataset":"equities","path":"payload.assets[2].change_1d","metric":"change_1d","value":-7.0166,"updated_at":null},{"dataset":"sectors","path":"payload.themes[7].change_1d","metric":"change_1d","value":-8.7843,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"equities","path":"payload.assets[6].change_1d","metric":"change_1d","value":-7.5629,"updated_at":null}]},{"claim":"The structural rate ceiling is unchanged: the ten-year real rate at 2.44 sits at the 99.28 percentile, the ten-year yield at 4.72 at the 98.48 percentile, and the ten-year over the two-year curve at 0.53, still the dominant macro risk driver.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.44,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.72,"updated_at":"2026-08-17T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[0].indicators[1].value","metric":"yield_curve_10y2y","value":0.5299999999999994,"updated_at":null}]},{"claim":"Risk appetite cooled at the margin: high-yield OAS widened to 2.7 from 2.67 and the VIX rose to 15.19 from 14.25, a modest but broad-based tightening of financial conditions.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[1].indicators[2].value","metric":"hy_oas","value":2.7,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":15.19,"updated_at":null}]},{"claim":"The labor market shows a persistent fissure: payrolls at -23.0, continuing claims at 1777000, and the participation rate at 61.4, even as the unemployment rate sits at 4.1.","evidence_refs":[{"dataset":"macro","path":"payload.labor[0].value","metric":"payems","value":-23.0,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.labor[3].value","metric":"ccsa","value":1777000.0,"updated_at":"2026-08-01T00:00:00Z"},{"dataset":"macro","path":"payload.labor[4].value","metric":"civpart","value":61.4,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.labor[1].value","metric":"unrate","value":4.1,"updated_at":"2026-07-01T00:00:00Z"}]}],"supporting_signals":[{"claim":"Disinflation stays intact and the dollar is softening: CPI 3.30, core 2.47, PCE 3.29, and the broad dollar at 118.90, down from 119.18, keep the soft-landing bid alive.","evidence_refs":[{"dataset":"macro","path":"payload.inflation[0].value","metric":"cpiaucsl","value":3.30386,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.inflation[1].value","metric":"cpilfesl","value":2.46652,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.inflation[2].value","metric":"pcepilfe","value":3.28653,"updated_at":"2026-06-01T00:00:00Z"},{"dataset":"macro","path":"payload.fx[0].value","metric":"dtwexbgs","value":118.9028,"updated_at":"2026-08-14T00:00:00Z"}]},{"claim":"The broad risk-appetite proxy still favors risk: cross-asset confirmation at 0.625 is the top contributor at 7.50, and breadth above the two-hundred-day average is 0.6581.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.625,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[0].value","metric":"breadth_above_ma200","value":0.6581,"updated_at":null}]},{"claim":"The regime remains goldilocks, low volatility with positive momentum and healthy breadth, even after the equity selloff.","evidence_refs":[{"dataset":"risk","path":"payload.regime","metric":"regime","value":"goldilocks","updated_at":null}]}],"contradicting_signals":[{"claim":"The selloff looks narrow rather than systemic: new highs ratio is 0.0 yet breadth above the two-hundred-day average is 0.6581 and cross-asset confirmation holds at 0.625, so the move reads as mega-cap rotation, not broad deterioration.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.0,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[0].value","metric":"breadth_above_ma200","value":0.6581,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.625,"updated_at":null}]},{"claim":"The risk-score rise is concentrated in the equity and credit legs while the macro dimension stays complete and disinflation progresses, so the regime signal, goldilocks, is unchanged even as total risk prints 44.35.","evidence_refs":[{"dataset":"risk","path":"payload.total_score","metric":"total_score","value":44.35,"updated_at":null},{"dataset":"risk","path":"payload.regime","metric":"regime","value":"goldilocks","updated_at":null}]}],"what_changed_today":["Total risk rose to 44.35, up 2.4 on the day, as global semiconductors and memory sold off overnight (Micron -7.02 percent, memory theme -8.78 percent).","The A-share storage chain closed sharply lower, GigaDevice -7.56 percent and JCET -8.99 percent, even as GigaDevice posted first-half profit up more than tenfold.","Financial conditions tightened at the margin: high-yield OAS to 2.7 from 2.67 and the VIX to 15.19 from 14.25, while the dollar softened to 118.90 from 119.18.","Disinflation held: CPI 3.30 versus 3.46, core 2.47 versus 2.57, PCE 3.29 versus 3.42, keeping the rate-cut path plausible."],"watch_next":["TGT reports today and BABA with WMT report tomorrow; NVDA earnings and GDP land next week as the next macro catalysts.","Whether the memory and semiconductor selloff is a one-day rotation or the start of a broader AI-trade unwind, with the memory theme at -8.78 percent and semiconductor equipment at -6.85 percent.","Watch the ten-year real rate at 2.44 (99.28 percentile) and the ten-year yield at 4.72 (98.48 percentile) as the binding ceiling on equity risk premium."],"bull_case":{"title":"Bull case: disinflation revives the soft-landing bid","points":["Disinflation is intact, CPI 3.30, core 2.47, PCE 3.29, and the dollar at 118.90 keeps the goldilocks regime, low volatility with positive momentum, in place.","Cross-asset confirmation at 0.625, the top contributor at 7.50, shows the broad risk-appetite proxy still favors risk even after the semiconductor shakeout."],"evidence_refs":[{"dataset":"macro","path":"payload.inflation[0].value","metric":"cpiaucsl","value":3.30386,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.fx[0].value","metric":"dtwexbgs","value":118.9028,"updated_at":"2026-08-14T00:00:00Z"},{"dataset":"risk","path":"payload.regime","metric":"regime","value":"goldilocks","updated_at":null},{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.625,"updated_at":null}]},"base_case":{"title":"Base case: cautious consolidation inside goldilocks","points":["Risk prints 44.35 in caution; the memory and semiconductor shakeout looks like a crowded-trade rotation, not a regime break, with total risk up only 2.4 on the day.","The ten-year real rate at 2.44 (99.28 percentile) and the ten-year yield at 4.72 (98.48 percentile) cap the upside; a decisive break lower would reopen the rally."],"evidence_refs":[{"dataset":"risk","path":"payload.total_score","metric":"total_score","value":44.35,"updated_at":null},{"dataset":"sectors","path":"payload.themes[7].change_1d","metric":"change_1d","value":-8.7843,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.44,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.72,"updated_at":"2026-08-17T00:00:00Z"}]},"bear_case":{"title":"Bear case: the AI-memory unwind goes broad","points":["If the memory and semiconductor selloff spreads beyond mega-cap names, with the A-share storage chain already down 7.56 to 8.99 percent, breadth above the two-hundred-day average at 0.6581 and cross-asset confirmation at 0.625 could roll over.","A re-acceleration in yields, the ten-year at 4.72 and the real rate at 2.44 (99.28 percentile), would compress the already-thin equity risk premium."],"evidence_refs":[{"dataset":"equities","path":"payload.assets[6].change_1d","metric":"change_1d","value":-7.5629,"updated_at":null},{"dataset":"equities","path":"payload.assets[14].change_1d","metric":"change_1d","value":-8.9909,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[0].value","metric":"breadth_above_ma200","value":0.6581,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.625,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.72,"updated_at":"2026-08-17T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.44,"updated_at":null}]},"confidence":0.9279,"evidence_refs":[{"dataset":"equities","path":"payload.assets[2].change_1d","metric":"change_1d","value":-7.0166,"updated_at":null},{"dataset":"sectors","path":"payload.themes[7].change_1d","metric":"change_1d","value":-8.7843,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"equities","path":"payload.assets[6].change_1d","metric":"change_1d","value":-7.5629,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.44,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.72,"updated_at":"2026-08-17T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[0].indicators[1].value","metric":"yield_curve_10y2y","value":0.5299999999999994,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[1].indicators[2].value","metric":"hy_oas","value":2.7,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":15.19,"updated_at":null},{"dataset":"macro","path":"payload.labor[0].value","metric":"payems","value":-23.0,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.labor[3].value","metric":"ccsa","value":1777000.0,"updated_at":"2026-08-01T00:00:00Z"},{"dataset":"macro","path":"payload.labor[4].value","metric":"civpart","value":61.4,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.labor[1].value","metric":"unrate","value":4.1,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.inflation[0].value","metric":"cpiaucsl","value":3.30386,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.inflation[1].value","metric":"cpilfesl","value":2.46652,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.inflation[2].value","metric":"pcepilfe","value":3.28653,"updated_at":"2026-06-01T00:00:00Z"},{"dataset":"macro","path":"payload.fx[0].value","metric":"dtwexbgs","value":118.9028,"updated_at":"2026-08-14T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.625,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[0].value","metric":"breadth_above_ma200","value":0.6581,"updated_at":null},{"dataset":"risk","path":"payload.regime","metric":"regime","value":"goldilocks","updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.0,"updated_at":null},{"dataset":"risk","path":"payload.total_score","metric":"total_score","value":44.35,"updated_at":null},{"dataset":"equities","path":"payload.assets[14].change_1d","metric":"change_1d","value":-8.9909,"updated_at":null}],"lineage":{"fact_generation_id":"sha256:86ced8a20a365da5de186b3ce28f4bc2e8022cbce66e6e50ec90e472cb371d30","fact_generated_at":"2026-08-19T10:34:58Z","input_freshness":{"macro":"fresh","equities":"fresh","crypto":"fresh","news":"fresh","calendar":"fresh","sectors":"fresh","risk":"fresh"},"pair_id":"premarket-2026-08-19T11:30Z"},"data_freshness":"fresh"}
+{
+  "schema_version": "1.1.0",
+  "generated_at": "2026-08-20T11:30:00Z",
+  "language": "en",
+  "market_state": "caution",
+  "market_regime": "goldilocks",
+  "summary": "Pre-market risk reads caution at a score of 44.35 under a goldilocks regime (confidence 0.9279). Overnight the tape rolled over on the AI and memory trade: Micron fell 7.0166 percent, Nvidia 2.3421 percent and the memory theme 8.7843 percent, while A-share memory leaders closed lower (GigaDevice down 7.5629 percent, Longsys down 8.0547 percent). The macro dimension stays the binding constraint — the ten-year real rate at 2.44 sits at the 99.28 percentile and the ten-year yield at 4.72 at the 98.48 percentile — yet volatility is benign with the VIX at 15.19 and high-yield OAS at 2.7. Breadth is narrow with 0.6581 of names above their 200-day average and a new-highs ratio of 0.0. Watch U.S. retail sales and the BABA and WMT earnings due this session, plus the upcoming Nvidia print as the next catalyst for the memory and AI complex.",
+  "top_risk_drivers": [
+    {
+      "claim": "The macro dimension stays the binding constraint: the ten-year real rate at 2.44 sits at the 99.28 percentile and the ten-year yield at 4.72 at the 98.48 percentile, the two most stretched readings in the stack.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[0].indicators[0].value",
+          "metric": "real_rate_dfii10",
+          "value": 2.44,
+          "updated_at": null
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.rates[0].value",
+          "metric": "dgs10",
+          "value": 4.72,
+          "updated_at": "2026-08-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "The AI and memory trade rolled over: Micron fell 7.0166 percent, the memory theme 8.7843 percent, semiconductor equipment 6.8462 percent and semis 4.1992 percent.",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[2].change_1d",
+          "metric": "change_1d",
+          "value": -7.0166,
+          "updated_at": null
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[7].change_1d",
+          "metric": "change_1d",
+          "value": -8.7843,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[6].change_1d",
+          "metric": "change_1d",
+          "value": -6.8462,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.sectors[0].change_1d",
+          "metric": "change_1d",
+          "value": -4.1992,
+          "updated_at": "2025-12-22T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "A-share memory leaders closed lower with GigaDevice down 7.5629 percent and Longsys down 8.0547 percent, confirming the cross-market storage shakeout.",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[6].change_1d",
+          "metric": "change_1d",
+          "value": -7.5629,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[7].change_1d",
+          "metric": "change_1d",
+          "value": -8.0547,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "Labor cracks persist beneath the soft-landing bid: payroll employment at -23.0, the unemployment rate at 4.1, participation at 61.4 and continuing claims at 1777000.0.",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.labor[0].value",
+          "metric": "payems",
+          "value": -23.0,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.labor[1].value",
+          "metric": "unrate",
+          "value": 4.1,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.labor[4].value",
+          "metric": "civpart",
+          "value": 61.4,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.labor[3].value",
+          "metric": "ccsa",
+          "value": 1777000.0,
+          "updated_at": "2026-08-01T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "supporting_signals": [
+    {
+      "claim": "Volatility stays benign with the VIX at 15.19 and realized vol at 13.6536, well below stress thresholds.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[0].value",
+          "metric": "vix",
+          "value": 15.19,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[1].value",
+          "metric": "realized_vol",
+          "value": 13.6536,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "Credit is calm: high-yield OAS at 2.7 and investment-grade OAS at 0.81 both sit near cycle lows.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[1].indicators[2].value",
+          "metric": "hy_oas",
+          "value": 2.7,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[1].indicators[3].value",
+          "metric": "ig_oas",
+          "value": 0.81,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "Disinflation persists as headline CPI prints 3.30386, core CPI 2.46652 and PCE 3.28653.",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.inflation[0].value",
+          "metric": "cpiaucsl",
+          "value": 3.30386,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.inflation[1].value",
+          "metric": "cpilfesl",
+          "value": 2.46652,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.inflation[2].value",
+          "metric": "pcepilfe",
+          "value": 3.28653,
+          "updated_at": "2026-06-01T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "contradicting_signals": [
+    {
+      "claim": "Cross-asset confirmation reads 0.625, the single largest contributor to the risk score and a sign the selloff is narrow rather than systemic.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[4].indicators[0].value",
+          "metric": "cross_asset_confirmation",
+          "value": 0.625,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "Equity structure is not breaking down: 0.6581 of names hold above their 200-day average and new lows sit at just 0.0129.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[0].value",
+          "metric": "breadth_above_ma200",
+          "value": 0.6581,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[2].value",
+          "metric": "new_lows_ratio",
+          "value": 0.0129,
+          "updated_at": null
+        }
+      ]
+    }
+  ],
+  "what_changed_today": [
+    "The memory and semiconductor block rolled over, with the memory theme down 8.7843 percent and Micron down 7.0166 percent.",
+    "The macro dimension held as the binding constraint at a score of 60.34 with the ten-year real rate at 2.44.",
+    "Risk printed 44.35, unchanged on the day (1-day change 0.0) but up 0.73 on the 1-week view."
+  ],
+  "watch_next": [
+    "U.S. retail sales and the BABA and WMT earnings due this session.",
+    "The upcoming Nvidia print as the next catalyst for the memory and AI complex.",
+    "Any repricing of the ten-year real rate above 2.44 toward the 99.28 percentile extremes."
+  ],
+  "bull_case": {
+    "title": "Bull case: a benign vol cushion absorbs the semis shakeout",
+    "points": [
+      "Volatility stays contained with the VIX at 15.19 and high-yield OAS at 2.7, leaving room for a relief bounce.",
+      "Disinflation persists as CPI prints 3.30386 and core CPI 2.46652, keeping the goldilocks backdrop intact."
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[3].indicators[0].value",
+        "metric": "vix",
+        "value": 15.19,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[1].indicators[2].value",
+        "metric": "hy_oas",
+        "value": 2.7,
+        "updated_at": null
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.inflation[0].value",
+        "metric": "cpiaucsl",
+        "value": 3.30386,
+        "updated_at": "2026-07-01T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.inflation[1].value",
+        "metric": "cpilfesl",
+        "value": 2.46652,
+        "updated_at": "2026-07-01T00:00:00Z"
+      }
+    ]
+  },
+  "base_case": {
+    "title": "Base case: caution holds in a goldilocks regime",
+    "points": [
+      "Risk stays in caution at 44.35 with a goldilocks regime and confidence 0.9279.",
+      "The macro constraint (real rate 2.44 at the 99.28 percentile) caps upside while credit and vol stay benign."
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "risk",
+        "path": "payload.total_score",
+        "metric": "total_score",
+        "value": 44.35,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.regime",
+        "metric": "regime",
+        "value": "goldilocks",
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.confidence",
+        "metric": "confidence",
+        "value": 0.9279,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[0].indicators[0].value",
+        "metric": "real_rate_dfii10",
+        "value": 2.44,
+        "updated_at": null
+      }
+    ]
+  },
+  "bear_case": {
+    "title": "Bear case: a macro repricing breaks the goldilocks hold",
+    "points": [
+      "A push of the ten-year real rate above 2.44 toward the 99.28 percentile reprices duration and pressures risk assets.",
+      "A deepening labor crack (payroll employment at -23.0, participation 61.4) would threaten the soft-landing bid."
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[0].indicators[0].value",
+        "metric": "real_rate_dfii10",
+        "value": 2.44,
+        "updated_at": null
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.labor[0].value",
+        "metric": "payems",
+        "value": -23.0,
+        "updated_at": "2026-07-01T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.labor[4].value",
+        "metric": "civpart",
+        "value": 61.4,
+        "updated_at": "2026-07-01T00:00:00Z"
+      }
+    ]
+  },
+  "confidence": 0.9279,
+  "evidence_refs": [
+    {
+      "dataset": "risk",
+      "path": "payload.total_score",
+      "metric": "total_score",
+      "value": 44.35,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.confidence",
+      "metric": "confidence",
+      "value": 0.9279,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.regime",
+      "metric": "regime",
+      "value": "goldilocks",
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[0].indicators[0].value",
+      "metric": "real_rate_dfii10",
+      "value": 2.44,
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.rates[0].value",
+      "metric": "dgs10",
+      "value": 4.72,
+      "updated_at": "2026-08-17T00:00:00Z"
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[2].change_1d",
+      "metric": "change_1d",
+      "value": -7.0166,
+      "updated_at": null
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[7].change_1d",
+      "metric": "change_1d",
+      "value": -8.7843,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[6].change_1d",
+      "metric": "change_1d",
+      "value": -6.8462,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.sectors[0].change_1d",
+      "metric": "change_1d",
+      "value": -4.1992,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[6].change_1d",
+      "metric": "change_1d",
+      "value": -7.5629,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[7].change_1d",
+      "metric": "change_1d",
+      "value": -8.0547,
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.labor[0].value",
+      "metric": "payems",
+      "value": -23.0,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.labor[1].value",
+      "metric": "unrate",
+      "value": 4.1,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.labor[4].value",
+      "metric": "civpart",
+      "value": 61.4,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.labor[3].value",
+      "metric": "ccsa",
+      "value": 1777000.0,
+      "updated_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[3].indicators[0].value",
+      "metric": "vix",
+      "value": 15.19,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[3].indicators[1].value",
+      "metric": "realized_vol",
+      "value": 13.6536,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[1].indicators[2].value",
+      "metric": "hy_oas",
+      "value": 2.7,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[1].indicators[3].value",
+      "metric": "ig_oas",
+      "value": 0.81,
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.inflation[0].value",
+      "metric": "cpiaucsl",
+      "value": 3.30386,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.inflation[1].value",
+      "metric": "cpilfesl",
+      "value": 2.46652,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.inflation[2].value",
+      "metric": "pcepilfe",
+      "value": 3.28653,
+      "updated_at": "2026-06-01T00:00:00Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[4].indicators[0].value",
+      "metric": "cross_asset_confirmation",
+      "value": 0.625,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[2].indicators[0].value",
+      "metric": "breadth_above_ma200",
+      "value": 0.6581,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[2].indicators[2].value",
+      "metric": "new_lows_ratio",
+      "value": 0.0129,
+      "updated_at": null
+    }
+  ],
+  "lineage": {
+    "fact_generation_id": "sha256:245ed63ba520d4e777fbba772bdc3af5e7c1084aea75b8f07a50b0f635d9ebf2",
+    "fact_generated_at": "2026-08-19T12:59:40Z",
+    "input_freshness": {
+      "macro": "fresh",
+      "equities": "fresh",
+      "crypto": "fresh",
+      "news": "fresh",
+      "calendar": "fresh",
+      "sectors": "fresh",
+      "risk": "fresh"
+    },
+    "pair_id": "premarket-2026-08-20T11:30Z"
+  },
+  "data_freshness": "fresh"
+}
