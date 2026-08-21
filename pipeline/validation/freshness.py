@@ -39,6 +39,12 @@ class FreshnessVerdict(NamedTuple):
     reason: FreshnessReason
 
 
+#: Clock-skew tolerance. A timestamp up to this far in the *future* is treated as current
+#: (producer clock slightly ahead); anything further ahead cannot certify freshness — a
+#: bogus or hostile timestamp must degrade loudly, not vouch for itself.
+FUTURE_SKEW_TOLERANCE_MINUTES = 5.0
+
+
 def evaluate_freshness(
     updated_at: str | None,
     expected_minutes: int,
@@ -48,7 +54,7 @@ def evaluate_freshness(
 
     - fresh   : latest update ≤ 1.5× expected interval
     - delayed : 1.5× ~ 3×
-    - stale   : > 3×
+    - stale   : > 3× (including a timestamp further ahead than the skew tolerance)
     - missing : never had data / file missing
     """
     if not updated_at:
@@ -63,6 +69,9 @@ def evaluate_freshness(
         updated = updated.replace(tzinfo=timezone.utc)
 
     age_minutes = (now - updated).total_seconds() / 60.0
+    if age_minutes < -FUTURE_SKEW_TOLERANCE_MINUTES:
+        # Future-dated beyond skew tolerance: never fresh, whatever the naive arithmetic says.
+        return "stale"
     if age_minutes <= 1.5 * expected_minutes:
         return "fresh"
     if age_minutes <= 3.0 * expected_minutes:

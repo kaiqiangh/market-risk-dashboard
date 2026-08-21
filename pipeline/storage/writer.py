@@ -16,6 +16,8 @@ from pathlib import Path
 from typing import Any
 
 from pipeline.schemas import BaseEnvelope
+from pipeline.schemas.envelope import SCHEMA_VERSION
+from pipeline.schemas.metadata import METADATA_SCHEMA_VERSION
 from pipeline.utils import now_utc
 
 
@@ -155,7 +157,9 @@ class StorageWriter:
         partial run did not attempt.
         """
         path = self.metadata_dir / "freshness.json"
-        return self._read_json(path, default={"schema_version": "1.1.0", "datasets": {}})
+        # The absent-file shell must match what a real run writes (outcomes renders both
+        # metadata files with METADATA_SCHEMA_VERSION) — a restated literal drifted to 1.1.0.
+        return self._read_json(path, default={"schema_version": METADATA_SCHEMA_VERSION, "datasets": {}})
 
     def read_sources_raw(self) -> dict[str, Any]:
         """The sources metadata file as it stands, or an empty shell if absent.
@@ -164,7 +168,7 @@ class StorageWriter:
         partial run did not attempt.
         """
         path = self.metadata_dir / "sources.json"
-        return self._read_json(path, default={"schema_version": "1.2.0", "domains": {}})
+        return self._read_json(path, default={"schema_version": METADATA_SCHEMA_VERSION, "domains": {}})
 
     def write_freshness_metadata(self, payload: dict[str, Any]) -> None:
         """Write the whole freshness file in one shot.
@@ -205,7 +209,8 @@ class StorageWriter:
         """
         self.write_json(self.metadata_dir / "sources.json", payload)
 
-    def write_schema_version(self, version: str = "1.0.0") -> None:
+    def write_schema_version(self, version: str = SCHEMA_VERSION) -> None:
+        """Publish the data-contract version marker (defaults to the live SCHEMA_VERSION)."""
         path = self.metadata_dir / "schema-version.json"
         self.write_json(path, {"schema_version": version, "updated_at": now_utc()})
 

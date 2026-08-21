@@ -1251,7 +1251,7 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         # Metadata: both files rendered from the one outcome record, last, so a dataset that
         # died mid-run is reported as missing rather than silently omitted.
         _publish_metadata(writer, outcomes, results["provider_status"])
-        writer.write_schema_version("1.0.0")
+        writer.write_schema_version()  # defaults to the live SCHEMA_VERSION
     except Exception as exc:  # noqa: BLE001
         return False, f"write to disk failed: {exc}"
 
@@ -1415,6 +1415,22 @@ def main(argv: list[str] | None = None) -> int:
     if args.backfill:
         return _run_backfill()
 
+    # E-5: the failure report must stay writable even when collection itself crashes.
+    # Without this skeleton, an exception raised by _run_collection left `results`
+    # unbound, so the except block's own NameError was swallowed and no run-report
+    # was ever written for an early crash.
+    results: dict[str, Any] = {
+        "durations": {},
+        "degraded": [],
+        "provider_status": {},
+        "histories": {},
+        "qualities": [],
+        "prev_total_score": None,
+        "prev_dim_scores": None,
+        "risk_history": [],
+        "series_history": {},
+        "macro_meta": {},
+    }
     try:
         started = time.monotonic()
         run_started_at = now_utc()

@@ -93,6 +93,10 @@ def is_schema_compatible(file_version: str, current_version: str = SCHEMA_VERSIO
     fv, cv = _parts(file_version), _parts(current_version)
     if not fv or not cv:
         return False
+    # Fail-closed on truncated versions ("1", "1.1"): a foreign/hand-edited file must be
+    # rejected as incompatible unless it carries the full major.minor.patch shape.
+    if len(fv) < 3 or len(cv) < 3:
+        return False
     return fv[0] == cv[0] and fv[1] <= cv[1]
 
 # ISO 8601 UTC + Z, e.g. 2026-08-03T10:00:00Z (fractional seconds allowed)
