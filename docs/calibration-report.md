@@ -108,6 +108,10 @@ The signals provide broad event coverage but weak precision and lower recall tha
 
 Policy version `1.0.0` is published in the Risk Lab contract and run report. No live score weights, thresholds, or confidence arithmetic were changed.
 
+The technical indicator path now uses standard 14-period Wilder smoothing for RSI instead
+of a simple rolling average. This methodology correction can shift RSI-derived values;
+the golden score test records the current output, without changing thresholds or weights.
+
 ## 6. Interpretation
 
 - **Warning effectiveness:** both 2008 and 2020 triggered a high score ≥60 before the risk peak (34 / 7 days early), showing the model can emit a stress signal before the main decline phase; the 2020 signal was faster (40 → 60 in 4 days), consistent with the steep slope of the COVID crash.
