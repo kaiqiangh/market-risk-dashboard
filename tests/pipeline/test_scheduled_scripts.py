@@ -39,6 +39,13 @@ set -u
 printf '%s\\n' "$*" >> "$FAKE_GIT_LOG"
 case "${1:-}" in
   pull) exit "${FAKE_GIT_PULL:-0}" ;;
+  status)
+    # porcelain stub (#190): "dirty" emits an untracked-style entry, clean prints nothing.
+    if [[ "${FAKE_GIT_STATUS:-clean}" != "clean" ]]; then
+      printf ' M public/data/latest/market.json\n'
+    fi
+    exit 0
+    ;;
   diff)
     if [[ "${FAKE_GIT_DIFF:-clean}" == "clean" ]]; then exit 0; else exit 1; fi
     ;;
@@ -100,7 +107,8 @@ def test_pull_failure_stops_before_collection(tmp_path: Path) -> None:
 
 
 def test_no_change_is_success_without_commit_or_push(tmp_path: Path) -> None:
-    result, log = _run_scheduled(tmp_path, FAKE_GIT_DIFF="clean")
+    # Default stubs report a clean porcelain status - nothing meaningful changed.
+    result, log = _run_scheduled(tmp_path)
 
     assert result.returncode == 0
     assert "no meaningful changes" in result.stdout
@@ -109,7 +117,7 @@ def test_no_change_is_success_without_commit_or_push(tmp_path: Path) -> None:
 
 
 def test_commit_failure_is_fatal_and_does_not_push(tmp_path: Path) -> None:
-    result, log = _run_scheduled(tmp_path, FAKE_GIT_DIFF="changed", FAKE_GIT_COMMIT="1")
+    result, log = _run_scheduled(tmp_path, FAKE_GIT_STATUS="dirty", FAKE_GIT_COMMIT="1")
 
     assert result.returncode == 23
     assert "nothing was pushed" in result.stderr
@@ -118,7 +126,7 @@ def test_commit_failure_is_fatal_and_does_not_push(tmp_path: Path) -> None:
 
 
 def test_push_failure_keeps_verified_local_commit_for_retry(tmp_path: Path) -> None:
-    result, log = _run_scheduled(tmp_path, FAKE_GIT_DIFF="changed", FAKE_GIT_PUSH="1")
+    result, log = _run_scheduled(tmp_path, FAKE_GIT_STATUS="dirty", FAKE_GIT_PUSH="1")
 
     assert result.returncode == 24
     assert "abc123" in result.stderr
@@ -127,7 +135,7 @@ def test_push_failure_keeps_verified_local_commit_for_retry(tmp_path: Path) -> N
 
 
 def test_remote_mismatch_is_fatal_after_push(tmp_path: Path) -> None:
-    result, log = _run_scheduled(tmp_path, FAKE_GIT_DIFF="changed", FAKE_GIT_REMOTE="different")
+    result, log = _run_scheduled(tmp_path, FAKE_GIT_STATUS="dirty", FAKE_GIT_REMOTE="different")
 
     assert result.returncode == 24
     assert "remote verification failed" in result.stderr
@@ -136,7 +144,7 @@ def test_remote_mismatch_is_fatal_after_push(tmp_path: Path) -> None:
 
 
 def test_success_verifies_remote_commit(tmp_path: Path) -> None:
-    result, log = _run_scheduled(tmp_path, FAKE_GIT_DIFF="changed")
+    result, log = _run_scheduled(tmp_path, FAKE_GIT_STATUS="dirty")
 
     assert result.returncode == 0
     assert "published commit abc123" in result.stdout
@@ -155,7 +163,7 @@ def test_success_verifies_remote_commit(tmp_path: Path) -> None:
 def test_scheduled_failure_classes_have_stable_exit_codes(
     tmp_path: Path, env_name: str, env_value: str, expected: int
 ) -> None:
-    result, log = _run_scheduled(tmp_path, FAKE_GIT_DIFF="changed", **{env_name: env_value})
+    result, log = _run_scheduled(tmp_path, FAKE_GIT_STATUS="dirty", **{env_name: env_value})
 
     assert result.returncode == expected
     if env_name == "FAKE_VALIDATE_STATUS":
@@ -235,3 +243,74 @@ def test_missing_node_fails_mandatory_secret_scan(tmp_path: Path) -> None:
 
     assert result.returncode == 10
     assert "mandatory secret scan cannot run" in result.stderr
+
+
+# ---- #190: porcelain change detection, single-instance lock, branch parameterization ----
+
+
+def test_new_untracked_file_triggers_commit_even_when_diff_is_clean(tmp_path: Path) -> None:
+    """The #190 bug: git diff --quiet missed NEW untracked files, so a brand-new dataset
+    was silently never committed. Porcelain status must be the decision driver."""
+    result, log = _run_scheduled(tmp_path, FAKE_GIT_STATUS="dirty", FAKE_GIT_DIFF="clean")
+
+    assert result.returncode == 0
+    assert "commit" in log
+    assert "push" in log
+    assert "no meaningful changes" not in result.stdout
+
+
+def test_lock_conflict_exits_25_without_running_pipeline(tmp_path: Path) -> None:
+    """A concurrent instance (fresh lock) must stop the run before any collection."""
+    lock_dir = tmp_path / "sched.lock"
+    lock_dir.mkdir()
+    # Force the mkdir mechanism (#190 review): flock exists on Linux CI, and the
+    # conflict semantics differ between mechanisms - this test pins the portable path.
+    result, log = _run_scheduled(
+        tmp_path, SCHEDULED_LOCK_DIR=str(lock_dir), SCHEDULED_LOCK_MODE="mkdir"
+    )
+
+    assert result.returncode == 25
+    assert "python -m pipeline.run" not in log
+    assert lock_dir.exists(), "a loser must never remove the winner's lock"
+
+
+def test_stale_lock_is_reclaimed_and_run_proceeds(tmp_path: Path) -> None:
+    """A crashed run's leftover lock older than the stale window must not wedge the
+    scheduler forever."""
+    import time
+
+    lock_dir = tmp_path / "sched.lock"
+    lock_dir.mkdir()
+    old = time.time() - 9000  # default stale window is 7200s
+    os.utime(lock_dir, (old, old))
+    result, log = _run_scheduled(
+        tmp_path,
+        SCHEDULED_LOCK_DIR=str(lock_dir),
+        SCHEDULED_LOCK_MODE="mkdir",
+        FAKE_GIT_STATUS="dirty",
+    )
+
+    assert result.returncode == 0
+    assert "removing stale lock" in result.stderr
+    assert "commit" in log
+
+
+def test_branch_parameterization_reaches_git_calls(tmp_path: Path) -> None:
+    """SCHEDULED_BRANCH must thread through pull and push."""
+    result, log = _run_scheduled(
+        tmp_path, SCHEDULED_BRANCH="main", FAKE_GIT_STATUS="dirty", FAKE_GIT_REMOTE="abc123"
+    )
+
+    assert result.returncode == 0
+    assert "--rebase origin main" in log
+    assert "push origin main" in log
+
+
+def test_timeout_wrapper_wraps_network_steps(tmp_path: Path) -> None:
+    """Network steps still reach git with expected args under the timeout wrapper."""
+    result, log = _run_scheduled(tmp_path, FAKE_GIT_STATUS="dirty")
+
+    assert result.returncode == 0
+    assert "--rebase origin dev" in log
+    assert "push origin dev" in log
+    assert "ls-remote origin refs/heads/dev" in log
