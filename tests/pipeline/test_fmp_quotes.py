@@ -122,6 +122,7 @@ def test_key_gated_fallback_without_key_is_skipped_not_failed() -> None:
 
     class _KeyedFake(_FakeProvider):
         # Real key-gated providers use None when the environment is unset.
+        requires_api_key = True
         api_key = None
 
     providers = [

@@ -20,7 +20,6 @@ from pipeline.fedwatch import (
     FedWatchInput,
     compute_fedwatch,
     enrich_with_history,
-    fetch_contract_price,
     insufficient_data_snapshot,
     load_history,
     meeting_date_for_contract,
@@ -172,16 +171,34 @@ class MacroCollector:
             self.degraded.append("FedWatch: no EFFR anchor")
             return self._accumulate(insufficient_data_snapshot(None))
 
-        prices: dict[str, float | None] = {}
-        for code in next_contract_codes():
-            try:
-                prices[code] = fetch_contract_price(code)
-            except ProviderError as exc:
-                self.degraded.append(f"FedWatch {code}: {exc}")
-                self._degraded_sources.add("fedwatch")
-                prices[code] = None
-
         codes = next_contract_codes()
+        prices: dict[str, float | None] = {}
+        errors: list[str] = []
+        outcomes: list[dict[str, Any]] = []
+        for code in codes:
+            try:
+                out = self.registry.call(
+                    "fedwatch", "get_contract_prices", f"fedwatch_{code}", args=([code],)
+                )
+                prices.update(out["result"])
+                outcomes.append(out["meta"])
+            except ProviderError as exc:
+                errors.append(f"{code}: {exc}")
+        if outcomes:
+            first = outcomes[0]
+            self.provider_status["fedwatch"] = {
+                **first,
+                "used_fallback": any(meta.get("used_fallback") for meta in outcomes),
+                "from_cache": all(meta.get("from_cache") for meta in outcomes),
+                "degraded": bool(errors) or any(meta.get("degraded") for meta in outcomes),
+                "errors": errors,
+            }
+        if errors:
+            self._degraded_sources.add("fedwatch")
+            self.degraded.append("FedWatch: " + "; ".join(errors[:3]))
+        if not outcomes:
+            self.provider_status["fedwatch"] = {"degraded": True, "errors": errors}
+
         if not any(v is not None for v in prices.values()):
             self._fedwatch_failed = True
             self._degraded_sources.add("fedwatch")

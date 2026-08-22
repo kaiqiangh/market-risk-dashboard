@@ -11,7 +11,6 @@ import pytest
 
 from pipeline.collectors.macro import (
     DEFAULT_SERIES,
-    FREQ_SPEC,
     SERIES_GROUPS,
     MacroCollector,
     _group_of,
@@ -41,6 +40,13 @@ class _FakeRegistry:
 
     def call(self, domain: str, method: str, key: str, args=(), kwargs=None):
         kwargs = kwargs or {}
+        if domain == "fedwatch":
+            self.calls.append((domain, method, key, kwargs))
+            code = str(args[0][0])
+            return {
+                "result": {code: 94.75 if code == "ZQU26.CBT" else 94.70},
+                "meta": {"provider": "fedwatch", "used_fallback": False, "from_cache": False, "degraded": False},
+            }
         series_id = str(args[0])
         self.calls.append((domain, method, series_id, kwargs))
         if series_id in self._fail:
@@ -53,7 +59,10 @@ def _all_series_rows() -> dict[str, list[dict]]:
 
 
 def _collector(registry, tmp_path: Path) -> MacroCollector:
-    return MacroCollector(registry, Settings(_env_file=None, artifacts_dir=tmp_path))
+    return MacroCollector(
+        registry,
+        Settings(_env_file=None, artifacts_dir=tmp_path, data_dir=tmp_path / "data"),
+    )
 
 
 class TestRoster:
@@ -126,6 +135,22 @@ class TestCollector:
         collector.collect()
         assert sum(1 for _, _, sid, _ in registry.calls if sid == "DFF") == 1
 
+    def test_fedwatch_uses_registry_and_generates_codes_once(self, tmp_path: Path, monkeypatch) -> None:
+        registry = _FakeRegistry(_all_series_rows())
+        collector = _collector(registry, tmp_path)
+        codes_calls: list[bool] = []
+        monkeypatch.setattr(
+            "pipeline.collectors.macro.next_contract_codes",
+            lambda: codes_calls.append(True) or ["ZQU26.CBT", "ZQZ26.CBT"],
+        )
+
+        snapshot = collector._collect_fedwatch()
+
+        assert snapshot is not None
+        assert len(codes_calls) == 1
+        assert any(domain == "fedwatch" and method == "get_contract_prices" for domain, method, *_ in registry.calls)
+        assert sum(1 for domain, _, _, _ in registry.calls if domain == "fedwatch") == 2
+
     def test_change_1m_is_frequency_aware(self, tmp_path: Path, monkeypatch) -> None:
         """#84 §6a: 21 rows is one month only for daily series; a monthly series must
         use a 1-row lookback or the "1m" label lies by 21×."""
@@ -176,7 +201,7 @@ class TestHistory:
 
         bundle = json.loads((tmp_path / "history" / "macro" / "fx.30d.json").read_text(encoding="utf-8"))
         assert set(bundle) == set(SERIES_GROUPS["fx"])
-        for series, cols in bundle.items():
+        for _series, cols in bundle.items():
             assert len(cols["d"]) == 30 and len(cols["v"]) == 30
 
         manifest = json.loads((tmp_path / "history" / "macro" / "index.json").read_text(encoding="utf-8"))

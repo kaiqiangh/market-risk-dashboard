@@ -18,9 +18,10 @@ from __future__ import annotations
 
 import re
 import time
-from datetime import date, datetime, timezone
+from datetime import date
 from typing import Any
 
+from pipeline.providers._util import UA, _today
 from pipeline.providers.base import (
     BaseProvider,
     ProviderError,
@@ -29,11 +30,6 @@ from pipeline.providers.base import (
 
 FRED_BASE = "https://api.stlouisfed.org/fred"
 FOMC_CALENDAR_URL = "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
-UA = (
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"
-)
-
 #: release_id allowlist (verified live 2026-08-07) → (name, ET release time, importance).
 #: The names are stable public release titles; the ids are immutable.
 RELEASES: dict[int, tuple[str, str, str]] = {
@@ -171,6 +167,8 @@ class FredCalendarProvider(BaseProvider):
         html = resp.text
         out: list[dict[str, Any]] = []
         sections = _year_sections(html)
+        if not sections:
+            raise ProviderError("FOMC calendar parse returned no year sections")
         for idx, (section_start, year) in enumerate(sections):
             section_end = sections[idx + 1][0] if idx + 1 < len(sections) else len(html)
             section = html[section_start:section_end]
@@ -209,6 +207,8 @@ class FredCalendarProvider(BaseProvider):
                         "source": "fomc",
                     }
                 )
+        if not out:
+            raise ProviderError("FOMC calendar parse returned no meeting rows")
         return out
 
 
@@ -218,7 +218,3 @@ def _year_sections(html: str) -> list[tuple[int, int]]:
     for m in re.finditer(r"<h4><a id=\"\d+\">(\d{4}) FOMC Meetings</a></h4>", html):
         out.append((m.end(), int(m.group(1))))
     return out
-
-
-def _today() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d")

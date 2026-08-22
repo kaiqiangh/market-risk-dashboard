@@ -20,7 +20,7 @@ Three outcomes per fallback:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Literal
 
 from pipeline.providers.base import BaseProvider, ProviderHealth
 
@@ -69,7 +69,7 @@ def fallback_providers(providers: list[BaseProvider]) -> list[BaseProvider]:
     for provider in providers:
         by_domain.setdefault(provider.domain, []).append(provider)
     fallbacks: list[BaseProvider] = []
-    for domain, domain_providers in by_domain.items():
+    for _domain, domain_providers in by_domain.items():
         min_priority = min(p.priority for p in domain_providers)
         fallbacks.extend(p for p in domain_providers if p.priority > min_priority)
     return fallbacks
@@ -83,9 +83,7 @@ def check_fallbacks(providers: list[BaseProvider]) -> FallbackCheckResult:
         # never failed (a permanently red scheduled job becomes ignored noise, which is
         # the exact failure mode #100 exists to prevent). Key-gated providers are still
         # exercised by the daily pipeline run.
-        has_api_key = hasattr(provider, "api_key")
-        api_key = getattr(provider, "api_key", None)
-        if has_api_key and not api_key:
+        if getattr(provider, "requires_api_key", False) and not getattr(provider, "api_key", None):
             result.probes.append(
                 FallbackProbe(
                     domain=provider.domain,

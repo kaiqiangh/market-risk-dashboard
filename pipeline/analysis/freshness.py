@@ -22,9 +22,17 @@ from pipeline.validation.freshness import evaluate_freshness
 AnalysisDecision = Literal["run", "skip_missing", "run_stale", "run_degraded"]
 
 
-def evaluate_analysis_freshness(facts: FactLayer, now: datetime | None = None) -> tuple[FreshnessStatus, AnalysisDecision]:
+def evaluate_analysis_freshness(
+    facts: FactLayer,
+    now: datetime | None = None,
+    *,
+    interval_min: int | None = None,
+) -> tuple[FreshnessStatus, AnalysisDecision]:
     """Combined determination: time dimension + fact layer data quality. Returns (status, decision)."""
-    time_status = evaluate_freshness(facts.generated_at, expected_interval_minutes("analysis"), now)
+    effective_interval = interval_min if interval_min is not None else expected_interval_minutes("analysis")
+    if effective_interval <= 0:
+        raise ValueError("analysis interval must be positive")
+    time_status = evaluate_freshness(facts.generated_at, effective_interval, now)
 
     degraded_datasets = [
         key for key, status in facts.data_freshness.items() if status in ("degraded", "missing")
@@ -50,12 +58,21 @@ def main(argv: list[str] | None = None) -> int:
         print("[freshness] missing (fact layer not found) decision=skip_missing", file=sys.stderr)
         return 0
 
-    facts = FactLayer.model_validate(json.loads(facts_path.read_text(encoding="utf-8")))
-    status, decision = evaluate_analysis_freshness(facts)
-    interval = args.interval_min or expected_interval_minutes("analysis")
+    try:
+        facts = FactLayer.model_validate(json.loads(facts_path.read_text(encoding="utf-8")))
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        print(f"[freshness] invalid facts.json: {exc}", file=sys.stderr)
+        return 1
+    interval = args.interval_min if args.interval_min is not None else expected_interval_minutes("analysis")
+    try:
+        status, decision = evaluate_analysis_freshness(facts, interval_min=interval)
+    except ValueError as exc:
+        print(f"[freshness] invalid interval: {exc}", file=sys.stderr)
+        return 1
+    interval_source = "flag" if args.interval_min is not None else "registry"
     print(
         f"[freshness] status={status} decision={decision} "
-        f"generated_at={facts.generated_at} expected_interval_min={interval}"
+        f"generated_at={facts.generated_at} expected_interval_min={interval} interval_source={interval_source}"
     )
     return 0
 

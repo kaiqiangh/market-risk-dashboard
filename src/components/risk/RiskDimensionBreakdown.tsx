@@ -114,7 +114,6 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
               <CardHeader className="flex-row items-start justify-between gap-2">
                 <div className="flex flex-col gap-1">
                   <CardTitle>{t(RISK_DIMENSION_KEYS[dim.key])}</CardTitle>
-                  <p className="text-xs text-muted-foreground">{t(RISK_DIMENSION_KEYS[dim.key])}</p>
                 </div>
                 <div className="flex flex-col items-end gap-1.5">
                   <div className={`flex items-center gap-1.5 text-sm font-medium ${trendClasses.text}`}>
@@ -133,6 +132,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
                     <span>{t("dimension.weight")}: {formatNumber(dim.weight, locale, 1)}%</span>
                     <span>{t("dimension.effectiveWeight")}: {formatNumber(dim.effective_weight, locale, 1)}%</span>
                     <span>{t("dimension.coverage")}: {formatRatio(dim.coverage, locale)}</span>
+                    <span>{t("dimension.effectiveCoverage")}: {formatRatio(dim.effective_coverage ?? dim.coverage, locale)}</span>
                   </div>
                 </div>
                 {dim.missing_indicators?.length ? (

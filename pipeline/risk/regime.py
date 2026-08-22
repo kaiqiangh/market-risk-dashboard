@@ -54,7 +54,7 @@ def infer_regime(ctx: dict[str, Any]) -> tuple[str, list[str]]:
 
     # Reflation: steepening curve + strong momentum (the dollar index was never read
     # by this branch — #71 removed the dead read rather than restoring a modelling term)
-    if curve is not None and curve > 0.5 and (momentum is None or momentum > 5):
+    if curve is not None and curve > 0.5 and momentum is not None and momentum > 5:
         evidence.append(f"Yield curve={curve:.2f} > 0.5 and strong momentum")
         return "reflation", evidence
 
@@ -69,7 +69,11 @@ def infer_regime(ctx: dict[str, Any]) -> tuple[str, list[str]]:
         return "late_cycle", evidence
 
     # Goldilocks: low vol + positive momentum + healthy breadth
-    if (vix is None or vix < 18) and (momentum is None or momentum > 0) and (breadth is None or breadth > 0.5):
+    if (
+        vix is not None and vix < 18
+        and momentum is not None and momentum > 0
+        and breadth is not None and breadth > 0.5
+    ):
         evidence.append("low vol + positive momentum + healthy breadth")
         return "goldilocks", evidence
 

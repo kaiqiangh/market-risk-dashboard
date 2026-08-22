@@ -1,5 +1,6 @@
 import { HashRouter } from "react-router-dom";
 import { AppRoutes } from "./router";
+import { ErrorBoundary } from "@/components/layout/ErrorBoundary";
 
 /**
  * App shell.
@@ -9,7 +10,9 @@ import { AppRoutes } from "./router";
 export default function App() {
   return (
     <HashRouter>
-      <AppRoutes />
+      <ErrorBoundary>
+        <AppRoutes />
+      </ErrorBoundary>
     </HashRouter>
   );
 }

@@ -205,8 +205,8 @@ def _settings_with_factor(tmp_path: Path, value: float | None) -> Settings:
 #: news and calendar degrade as a single unit — any number of failures is one failed source.
 _BINARY_COLLECTORS = frozenset({"news", "calendar"})
 
-#: Every collector whose published `data_quality` must track the configured factor.
-COLLECTOR_NAMES = ("macro", "market", "news", "calendar")
+#: Collectors with a single quality helper whose output is independently configurable.
+COLLECTOR_NAMES = ("macro", "news", "calendar")
 
 
 def _effective_failures(collector: str, failed: int) -> int:
@@ -220,10 +220,6 @@ def _quality_at(settings: Settings, collector: str, failed: int) -> float:
     if collector == "macro":
         instance = MacroCollector(registry, settings)
         instance._degraded_sources.update(("fred", "fedwatch")[:failed])
-        return instance._quality()
-    if collector == "market":
-        instance = MarketCollector(registry, AssetUniverse(settings.load_universe()), settings)
-        instance._dataset_degraded.update(("equities", "crypto", "commodities", "sectors")[:failed])
         return instance._quality()
     if collector == "news":
         instance = NewsCollector(registry, settings)
@@ -382,8 +378,6 @@ def test_degrade_factor_honours_config_override(tmp_path) -> None:
 
     assert _quality_at(settings, "macro", 1) == 0.5
     assert _quality_at(settings, "macro", 2) == 0.25
-    assert _quality_at(settings, "market", 1) == 0.5
-    assert _quality_at(settings, "market", 2) == 0.25
     assert _quality_at(settings, "news", 1) == 0.5
     assert _quality_at(settings, "calendar", 1) == 0.5
 
@@ -407,16 +401,13 @@ def test_degrade_factor_still_compounds(tmp_path) -> None:
     settings = _settings_with_factor(tmp_path, factor)
 
     assert _quality_at(settings, "macro", 2) == factor**2
-    assert _quality_at(settings, "market", 2) == factor**2
     assert quality_factor(2, settings=settings) == factor**2
 
     # Not the same as a single application — the bug this guards against.
     assert _quality_at(settings, "macro", 2) != factor
-    assert _quality_at(settings, "market", 2) != factor
     assert quality_factor(2, settings=settings) != factor
 
     # …and it keeps compounding beyond two.
-    assert _quality_at(settings, "market", 3) == pytest.approx(factor**3)
 
 
 # ---- Behaviour is unchanged at the default value ----

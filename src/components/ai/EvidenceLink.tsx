@@ -8,8 +8,8 @@ import type { EvidenceRef } from "@/schemas";
 /**
  * EvidenceLink: evidence citation chips (architecture §8.9, spec #23 ticket #29).
  * Each chip shows dataset:metric + updated timestamp (source + timestamp), wired to
- * the underlying fact/news item. Click: scroll to + highlight the matching indicator,
- * and always expand the inline value (accessibility — not dependent on scrolling).
+ * the underlying fact/news item. Click expands the inline value (accessibility — not
+ * dependent on scrolling).
  */
 export interface EvidenceLinkProps {
   refs: EvidenceRef[];
@@ -22,15 +22,9 @@ export function EvidenceLink({ refs }: EvidenceLinkProps) {
 
   if (refs.length === 0) return null;
 
-  const highlight = (ref: EvidenceRef): void => {
+  const toggleActive = (ref: EvidenceRef): void => {
     const key = `${ref.dataset}:${ref.path}`;
     setActive((prev) => (prev === key ? null : key));
-    const el = document.querySelector<HTMLElement>(`[data-evidence-path="${ref.path}"]`);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-      el.classList.add("ring-2", "ring-primary");
-      window.setTimeout(() => el.classList.remove("ring-2", "ring-primary"), 2000);
-    }
   };
 
   return (
@@ -47,7 +41,16 @@ export function EvidenceLink({ refs }: EvidenceLinkProps) {
             key={key}
             variant="outline"
             className="cursor-pointer rounded-sm border-hairline bg-surface-2 px-1.5 py-0 font-mono text-xs text-muted-foreground transition-colors duration-150 hover:border-primary/40 hover:text-foreground"
-            onClick={() => highlight(ref)}
+            role="button"
+            tabIndex={0}
+            aria-pressed={expanded}
+            onClick={() => toggleActive(ref)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                toggleActive(ref);
+              }
+            }}
             title={`${ref.dataset} ${ref.path}`}
           >
             {ref.dataset}:{ref.metric}

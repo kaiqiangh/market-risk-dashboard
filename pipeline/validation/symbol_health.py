@@ -39,7 +39,6 @@ inside the functions), matching the ``ci_checks`` argument conventions:
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from pathlib import Path
 from typing import Any
@@ -114,8 +113,12 @@ def check(data_dir: Path) -> tuple[int, str]:
             "gate skipped (partial/news-only data state)"
         )
     try:
-        data = json.loads(sources_path.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError) as exc:
+        # Local import: ci_checks is the validation authority and pulls heavy deps;
+        # keeping it lazy preserves this cheap module import (same reason as Settings).
+        from pipeline.validation.ci_checks import load_json_strict
+
+        data = load_json_strict(sources_path)  # NaN/Infinity constants rejected (#191)
+    except (ValueError, OSError) as exc:  # JSONDecodeError subclasses ValueError
         # A corrupt sources.json is a data-quality failure already reported by ci_checks
         # ("metadata/sources.json: parse failed"); this read-only gate does not add a second
         # failure path for a file it cannot assess.

@@ -220,6 +220,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--zh", type=Path, default=None, help="analysis.zh-CN.json (default contract path)")
     parser.add_argument("--en", type=Path, default=None, help="analysis.en.json (default contract path)")
     parser.add_argument("--facts", type=Path, default=None, help="facts.json (default contract path)")
+    parser.add_argument(
+        "--require-lineage",
+        action="store_true",
+        help="require the analysis pair to match facts generation and freshness",
+    )
     args = parser.parse_args(argv)
 
     zh_path = args.zh or output_path("analysis_zh")
@@ -230,8 +235,20 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[validate] analysis file missing: {zh_path} / {en_path} (validate after AI automation output)", file=sys.stderr)
         return 1
 
+    facts_available = facts_path.exists()
+    checks = ["schema", "bilingual consistency"]
+    checks.append("evidence_refs" if facts_available else "evidence_refs: SKIPPED (facts.json missing)")
+    if args.require_lineage:
+        checks.append("lineage" if facts_available else "lineage: FAILED (facts.json missing)")
+
+    print(f"[validate] checks: {', '.join(checks)}")
     try:
-        issues, _, _ = validate_analysis_pair(zh_path, en_path, facts_path if facts_path.exists() else None)
+        issues, _, _ = validate_analysis_pair(
+            zh_path,
+            en_path,
+            facts_path if facts_available else None,
+            require_lineage=args.require_lineage,
+        )
     except Exception as exc:  # noqa: BLE001 — CLI top-level catch and print
         print(f"[validate] validation failed (schema error): {exc}", file=sys.stderr)
         return 1
@@ -242,7 +259,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  - {issue}")
         return 1
 
-    print("[validate] passed: schema ✓ evidence_refs ✓ bilingual consistency ✓")
+    print(f"[validate] passed: {', '.join(checks)}")
     return 0
 
 

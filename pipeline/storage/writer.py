@@ -16,6 +16,8 @@ from pathlib import Path
 from typing import Any
 
 from pipeline.schemas import BaseEnvelope
+from pipeline.schemas.envelope import SCHEMA_VERSION
+from pipeline.schemas.metadata import METADATA_SCHEMA_VERSION
 from pipeline.utils import now_utc
 
 
@@ -51,14 +53,19 @@ class UndatedRowError(StorageError):
         super().__init__(f"history row in {series!r} {reason}: {row!r}")
 
 
+#: Self-describing contract version for metadata/translations.json (#191).
+#: Distinct from METADATA_SCHEMA_VERSION: this file has its own tiny shape and its
+#: own bump cadence. Single source — record_translations restated it twice before.
+TRANSLATIONS_SCHEMA_VERSION = "1.0.0"
+
+
 class StorageWriter:
     def __init__(self, data_dir: Path) -> None:
         self.data_dir = data_dir
         self.latest_dir = data_dir / "latest"
         self.history_dir = data_dir / "history"
         self.metadata_dir = data_dir / "metadata"
-        self.feeds_dir = data_dir / "feeds"
-        for d in (self.latest_dir, self.history_dir, self.metadata_dir, self.feeds_dir):
+        for d in (self.latest_dir, self.history_dir, self.metadata_dir):
             d.mkdir(parents=True, exist_ok=True)
 
     # ---- Serialization ----
@@ -89,11 +96,32 @@ class StorageWriter:
         fd, tmp_name = tempfile.mkstemp(dir=str(path.parent), prefix=f".{path.name}.", suffix=".tmp")
         tmp_path = Path(tmp_name)
         try:
+            # mkstemp creates 0600 by design; a PUBLISHED artifact must be group/other
+            # READABLE (#191: public/data/latest was landing -rw-------, unreadable by
+            # the Pages deploy user). The base is deliberately capped at 0644 - never
+            # granting group/other write regardless of umask - so this is publish policy,
+            # not literal open(2) semantics. Reading the umask requires the set-0-and-
+            # restore dance; this is a single-threaded CLI.
+            umask = os.umask(0)
+            os.umask(umask)
+            os.fchmod(fd, 0o644 & ~umask)
             with os.fdopen(fd, "w", encoding="utf-8") as handle:
                 handle.write(payload)
                 handle.flush()
                 os.fsync(handle.fileno())
             os.replace(tmp_path, path)
+            # Best-effort directory fsync (#191): makes the rename itself durable on
+            # filesystems that support it. POSIX does not require open(dir) to work,
+            # so any failure here is noise-suppressed, not a data loss path — the file
+            # content is already fsynced above.
+            try:
+                dir_fd = os.open(path.parent, os.O_RDONLY)
+                try:
+                    os.fsync(dir_fd)
+                finally:
+                    os.close(dir_fd)
+            except OSError:
+                pass
         except BaseException:
             # BaseException, not Exception: KeyboardInterrupt and SystemExit are precisely
             # the interruptions this method exists to survive, and neither is an Exception.
@@ -127,25 +155,6 @@ class StorageWriter:
         self.write_json(series_dir / "90d.json", merged[-90:])
         self.write_json(series_dir / "index.json", {"series": series_name, "updated_at": now_utc(), "count": len(merged)})
 
-    def append_history(self, series_name: str, row: dict[str, Any]) -> None:
-        series_dir = self.history_dir / series_name
-        series_dir.mkdir(parents=True, exist_ok=True)
-        existing = self._read_json(series_dir / "daily.json", default=[])
-        merged = _merge_by_date(existing, [row], series=series_name)
-        self.write_json(series_dir / "daily.json", merged)
-        self.write_json(series_dir / "30d.json", merged[-30:])
-        self.write_json(series_dir / "90d.json", merged[-90:])
-
-    def snapshot_append(self, name: str, row: dict[str, Any]) -> None:
-        """feeds/{name}.json snapshot append (FedWatch accumulation, review P0-1)."""
-        path = self.feeds_dir / f"{name}.json"
-        history = self._read_json(path, default=[])
-        today = now_utc()[:10]
-        history = [h for h in history if str(h.get("date", ""))[:10] != today]
-        history.append(row)
-        history.sort(key=lambda h: h.get("date", ""))
-        self.write_json(path, history)
-
     # ---- Metadata ----
 
     def read_freshness_raw(self) -> dict[str, Any]:
@@ -155,7 +164,9 @@ class StorageWriter:
         partial run did not attempt.
         """
         path = self.metadata_dir / "freshness.json"
-        return self._read_json(path, default={"schema_version": "1.1.0", "datasets": {}})
+        # The absent-file shell must match what a real run writes (outcomes renders both
+        # metadata files with METADATA_SCHEMA_VERSION) — a restated literal drifted to 1.1.0.
+        return self._read_json(path, default={"schema_version": METADATA_SCHEMA_VERSION, "datasets": {}})
 
     def read_sources_raw(self) -> dict[str, Any]:
         """The sources metadata file as it stands, or an empty shell if absent.
@@ -164,7 +175,7 @@ class StorageWriter:
         partial run did not attempt.
         """
         path = self.metadata_dir / "sources.json"
-        return self._read_json(path, default={"schema_version": "1.2.0", "domains": {}})
+        return self._read_json(path, default={"schema_version": METADATA_SCHEMA_VERSION, "domains": {}})
 
     def write_freshness_metadata(self, payload: dict[str, Any]) -> None:
         """Write the whole freshness file in one shot.
@@ -180,10 +191,12 @@ class StorageWriter:
         """Chinese translation merge record (architecture §2 L320 metadata/translations.json, P1-6).
 
         status: "merged" | "skipped" | "missing"; the merge time is recorded as well.
+        The schema version comes from ONE module constant (#191; the T1 review flagged
+        two restated literals here that would drift on the next version bump).
         """
         path = self.metadata_dir / "translations.json"
-        data = self._read_json(path, default={"schema_version": "1.0.0", "last_merge": None})
-        data["schema_version"] = "1.0.0"
+        data = self._read_json(path, default={"schema_version": TRANSLATIONS_SCHEMA_VERSION, "last_merge": None})
+        data["schema_version"] = TRANSLATIONS_SCHEMA_VERSION
         data["updated_at"] = now_utc()
         data["last_merge"] = {
             "status": status,
@@ -205,7 +218,8 @@ class StorageWriter:
         """
         self.write_json(self.metadata_dir / "sources.json", payload)
 
-    def write_schema_version(self, version: str = "1.0.0") -> None:
+    def write_schema_version(self, version: str = SCHEMA_VERSION) -> None:
+        """Publish the data-contract version marker (defaults to the live SCHEMA_VERSION)."""
         path = self.metadata_dir / "schema-version.json"
         self.write_json(path, {"schema_version": version, "updated_at": now_utc()})
 

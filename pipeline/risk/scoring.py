@@ -70,7 +70,7 @@ def _finite_history(history: Sequence[float]) -> list[float]:
 def percentile_rank(value: float, history: Sequence[float]) -> float:
     """Historical percentile (0-100): share of samples ≤ value.
 
-    Consistent with percentile_risk_score semantics (<= count / total).
+    Uses the share of finite samples at or below the value.
     """
     hist = _finite_history(history)
     if not hist:
@@ -129,28 +129,3 @@ def compute_indicator_score(
         return percentile_to_risk(pct, direction), round(pct, 2), (round(z, 4) if z is not None else None)
     score = heuristic_risk_score(key, value)
     return (score if score is not None else fallback), None, None
-
-
-def percentile_risk_score(
-    value: float | None,
-    history: Sequence[float],
-    direction: str = "higher_is_riskier",
-    fallback: float = 50.0,
-) -> float | None:
-    """Historical percentile → risk score (0-100). higher_is_riskier: percentile is the risk score.
-
-    Backward-compatible interface: returns fallback when there is no history.
-    """
-    if value is None:
-        return None
-    if not history:
-        return fallback
-    below = sum(1 for v in history if v <= value)
-    pct = below / len(history) * 100.0
-    if direction == "lower_is_riskier":
-        return round(100.0 - pct, 2)
-    return round(pct, 2)
-
-
-def clamp01(value: float) -> float:
-    return max(0.0, min(1.0, value))

@@ -103,7 +103,7 @@ def test_normal_collect_publishes_the_planned_telemetry(tmp_path: Path, monkeypa
     monkeypatch.setattr(collector, "_collect_equities", lambda: EquitiesDataset(assets=[]))
     monkeypatch.setattr(collector, "_collect_crypto", lambda: CryptoDataset(assets=[]))
     monkeypatch.setattr(collector, "_collect_commodities", lambda: CommoditiesDataset(assets=[]))
-    monkeypatch.setattr(collector, "_collect_sectors", lambda _equities: SectorsDataset(sectors=[], themes=[]))
+    monkeypatch.setattr(collector, "_collect_sectors", lambda: SectorsDataset(sectors=[], themes=[]))
 
     result = collector.collect()
     telemetry = result["provider_status"]["market"]["collection_telemetry"]
@@ -125,7 +125,7 @@ def test_quality_and_degradation_are_scoped_per_market_dataset(tmp_path: Path, m
 
     monkeypatch.setattr(collector, "_collect_crypto", collect_crypto)
     monkeypatch.setattr(collector, "_collect_commodities", lambda: CommoditiesDataset(assets=[]))
-    monkeypatch.setattr(collector, "_collect_sectors", lambda _equities: SectorsDataset(sectors=[], themes=[]))
+    monkeypatch.setattr(collector, "_collect_sectors", lambda: SectorsDataset(sectors=[], themes=[]))
     registry.degraded_domains.add("news")
 
     result = collector.collect()
@@ -149,7 +149,7 @@ def test_sectors_degraded_detail_names_failed_theme_series(tmp_path: Path, monke
     monkeypatch.setattr(collector, "_collect_equities", lambda: EquitiesDataset(assets=[]))
     monkeypatch.setattr(collector, "_collect_crypto", lambda: CryptoDataset(assets=[]))
     monkeypatch.setattr(collector, "_collect_commodities", lambda: CommoditiesDataset(assets=[]))
-    monkeypatch.setattr(collector, "_collect_sectors", lambda _equities: SectorsDataset(sectors=[], themes=[]))
+    monkeypatch.setattr(collector, "_collect_sectors", lambda: SectorsDataset(sectors=[], themes=[]))
 
     result = collector.collect()
 
@@ -165,7 +165,7 @@ def test_sectors_degraded_detail_empty_when_theme_series_fresh(tmp_path: Path, m
     monkeypatch.setattr(collector, "_collect_equities", lambda: EquitiesDataset(assets=[]))
     monkeypatch.setattr(collector, "_collect_crypto", lambda: CryptoDataset(assets=[]))
     monkeypatch.setattr(collector, "_collect_commodities", lambda: CommoditiesDataset(assets=[]))
-    monkeypatch.setattr(collector, "_collect_sectors", lambda _equities: SectorsDataset(sectors=[], themes=[]))
+    monkeypatch.setattr(collector, "_collect_sectors", lambda: SectorsDataset(sectors=[], themes=[]))
 
     result = collector.collect()
 

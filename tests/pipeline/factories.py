@@ -342,6 +342,7 @@ def make_risk_dimension(**overrides: Any) -> dict[str, Any]:
             "score": 64.0,
             "indicators": [make_risk_indicator()],
             "coverage": 1.0,
+            "effective_coverage": 1.0,
             "trend": "rising",
             "evidence_state": "complete",
             "missing_indicators": [],

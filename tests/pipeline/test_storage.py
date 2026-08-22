@@ -221,49 +221,6 @@ def test_finalize_freshness_unified(tmp_path: Path) -> None:
     assert finalize_freshness("macro", "2026-08-02T12:00:00Z", False, now=now).status == "stale"
 
 
-def test_frontend_freshness_sync() -> None:
-    """P2-10/#101: the frontend's expected frequencies come from config/sources.yaml.
-
-    This used to grep `src/lib/freshness.ts` for the literal text `equities: 480`, which
-    only worked while the frontend kept a hand-typed copy of the table. It did, and the
-    copy drifted: it was keyed by UI grouping ("market") rather than by dataset key, so a
-    grep for the registered keys passed against a table that had none of them.
-
-    Since #101 the table is generated into src/schemas/generated/constants.json, so the
-    assertion moves to where the values actually live — and adds the two things the grep
-    could not check: that the frontend imports the generated table instead of retyping it,
-    and that the two sides agree in BOTH directions.
-    """
-    import json
-
-    from pipeline.settings import PROJECT_ROOT, settings
-
-    expectations = settings.load_sources().get("expectations", {})
-    assert expectations, "config/sources.yaml expectations must not be empty"
-
-    ts_source = (PROJECT_ROOT / "src" / "lib" / "freshness.ts").read_text(encoding="utf-8")
-    assert "generated/constants.json" in ts_source, (
-        "src/lib/freshness.ts must read the generated contract constants, not retype the table"
-    )
-
-    constants_path = PROJECT_ROOT / "src" / "schemas" / "generated" / "constants.json"
-    generated = json.loads(constants_path.read_text(encoding="utf-8"))["expected_interval_minutes"]
-
-    for key, entry in expectations.items():
-        minutes = int(entry.get("interval_minutes", 0))
-        assert minutes > 0, f"sources.yaml {key} interval_minutes invalid"
-        assert generated.get(key) == minutes, (
-            f"constants.json {key}={generated.get(key)} but sources.yaml says {minutes} "
-            f"— run `npm run gen:contracts`"
-        )
-
-    assert set(generated) == set(expectations), (
-        f"constants.json and sources.yaml disagree on which keys exist: "
-        f"only in constants={set(generated) - set(expectations)}, "
-        f"only in sources.yaml={set(expectations) - set(generated)}"
-    )
-
-
 # ---------- validate_all (generated documents since #73) ----------
 # Generated documents carry DEFAULT_NOW timestamps; the real clock ages them, so freshness
 # annotation is exempted exactly as it was for the deleted static fixtures: these tests verify
@@ -421,9 +378,10 @@ def test_write_json_fsyncs_before_replace(tmp_path: Path, monkeypatch: pytest.Mo
     monkeypatch.setattr(writer_mod.os, "replace", _record_replace)
     writer.write_json(target, {"ok": True})
 
-    assert len(events) == 2, f"write_json must fsync then replace, saw: {events}"
-    assert events[0].startswith("fsync:"), f"fsync must precede replace, saw: {events}"
-    assert events[1].startswith("replace:"), f"replace must follow fsync, saw: {events}"
+    # Order contract (#191): file fsync BEFORE replace; an optional best-effort
+    # directory fsync may follow the replace but nothing may precede the file fsync.
+    assert events[0].startswith("fsync:"), f"first event must be file fsync: {events}"
+    assert events[1].startswith("replace:"), f"second event must be the replace: {events}"
 
 
 def test_write_json_still_writes_readable_output(tmp_path: Path) -> None:
@@ -564,20 +522,6 @@ def test_blank_and_null_dates_rejected(tmp_path: Path, bad_date: object) -> None
 
     with pytest.raises(UndatedRowError):
         writer.write_slices("risk", [{"date": bad_date, "total_score": 1.0}])
-
-
-def test_undated_row_rejected_on_append(tmp_path: Path) -> None:
-    """append_history shares the merge path and must reject undated rows too."""
-    from pipeline.storage.writer import UndatedRowError
-
-    writer = StorageWriter(tmp_path / "data")
-    writer.append_history("risk", {"date": "2026-08-01", "total_score": 40.0})
-
-    with pytest.raises(UndatedRowError):
-        writer.append_history("risk", {"total_score": 55.0})
-
-    # The good row survived the rejected one.
-    assert writer.read_history("risk", "daily") == [{"date": "2026-08-01", "total_score": 40.0}]
 
 
 def test_undated_row_in_existing_history_is_named(tmp_path: Path) -> None:

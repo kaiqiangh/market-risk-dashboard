@@ -9,11 +9,11 @@ import pytest
 from pipeline.risk import confidence as conf_mod
 from pipeline.risk import regime as regime_mod
 from pipeline.risk.model import RiskModel
+from pipeline.risk.model import _parse_thresholds
 from pipeline.risk.scoring import (
     compute_indicator_score,
     heuristic_risk_score,
     percentile_rank,
-    percentile_risk_score,
     z_score,
 )
 from pipeline.schemas import (
@@ -22,6 +22,8 @@ from pipeline.schemas import (
     EquitiesEnvelope,
     MacroDataset,
     MacroEnvelope,
+    RiskDimension,
+    RiskIndicator,
     RiskModelResult,
 )
 
@@ -32,15 +34,6 @@ def test_heuristic_risk_score_bounds() -> None:
     assert heuristic_risk_score("vix", 100) == 98.0  # clamped at bounds
     assert heuristic_risk_score("vix", None) is None
     assert heuristic_risk_score("unknown_key", 10) is None
-
-
-def test_percentile_risk_score() -> None:
-    history = list(range(1, 101))  # 1..100
-    assert percentile_risk_score(100, history, "higher_is_riskier") == 100.0
-    assert percentile_risk_score(1, history, "higher_is_riskier") < 5
-    # lower_is_riskier inverted
-    low = percentile_risk_score(1, history, "lower_is_riskier")
-    assert low > 95
 
 
 def test_percentile_rank_and_zscore() -> None:
@@ -87,6 +80,12 @@ def test_regime_goldilocks() -> None:
     # low vol + positive momentum + healthy breadth + non-extreme curve → goldilocks
     regime, _ = regime_mod.infer_regime({"vix": 12.0, "hy_oas": 2.5, "yield_curve_10y2y": 0.3, "breadth_above_ma200": 0.7, "momentum_3m": 8.0})
     assert regime in ("goldilocks", "risk_on")
+
+
+def test_regime_does_not_treat_unmeasured_inputs_as_passing() -> None:
+    regime, evidence = regime_mod.infer_regime({"yield_curve_10y2y": 0.8})
+    assert regime == "indeterminate"
+    assert evidence == []
 
 
 def _macro_with_rates(*, value: float | None = None) -> MacroDataset:
@@ -138,6 +137,15 @@ def test_risk_model_produces_valid_result() -> None:
     assert result.calibration_policy_version == "1.0.0"
     assert result.calibration_status == "provisional"
     assert "definitive probability" not in result.disclaimer or "modeled estimate" in result.disclaimer
+
+
+def test_golden_score_preserves_current_outputs() -> None:
+    result = RiskModel().score(_synthetic_context())
+    assert result.total_score == 54.7
+    assert result.risk_level == "caution"
+    assert [driver.indicator_key for driver in result.top_drivers] == [
+        "hy_oas", "cross_asset_confirmation", "real_rate_dfii10", "vix", "yield_curve_10y2y"
+    ]
 
 
 def test_risk_evidence_state_and_bounds_are_published() -> None:
@@ -421,6 +429,14 @@ def test_confidence_consistency() -> None:
     assert conf_mod.consistency_from_dimension_scores([0, 100]) < 0.5
 
 
+def test_thresholds_are_sorted_and_reject_unknown_rules() -> None:
+    thresholds = _parse_thresholds({"crisis": {"gte": 90}, "risk_on": {"lt": 20}})
+    assert thresholds[0][0] == "risk_on"
+    assert thresholds[1][0] == "crisis"
+    with pytest.raises(ValueError, match="unknown risk level"):
+        _parse_thresholds({"unknown": {"gte": 0}})
+
+
 
 # ---------- #67: config == code, direction agrees with the scoring table ----------
 
@@ -612,15 +628,43 @@ def _synthetic_ctx_confidence() -> float:
 
 
 def test_proxy_indicator_discounts_coverage() -> None:
-    """#69: a proxy-backed indicator counts for less than a measured one in coverage."""
+    """Availability and proxy trust are published separately (#194)."""
     result = RiskModel().score(_synthetic_context())
     es = next(d for d in result.dimensions if d.key == "equity_structure")
     assert all(i.is_proxy for i in es.indicators if i.value is not None)
-    assert es.coverage < 1.0, (
-        "equity_structure is 5/5 proxy indicators; coverage must be discounted below 1.0"
+    assert es.coverage == 1.0
+    assert es.effective_coverage == pytest.approx(0.8, abs=1e-4)
+
+
+def test_coverage_uses_configured_indicator_weights() -> None:
+    model = RiskModel()
+    high_weight_missing = RiskIndicator(
+        key="high_weight", label="High weight", risk_score=50, weight=10, source="test", is_proxy=False
     )
-    # The discount is the proxy knob (0.8), not a full 1.0.
-    assert es.coverage == pytest.approx(0.8, abs=1e-4)
+    low_weight_available = RiskIndicator(
+        key="low_weight", label="Low weight", value=1, risk_score=50, weight=1, source="test", is_proxy=False
+    )
+    dimensions, _, _ = model._build_dimensions(
+        {}, {"macro": lambda _: [high_weight_missing, low_weight_available]}, {}, 0.8
+    )
+
+    assert dimensions[0].coverage == pytest.approx(1 / 11, abs=1e-4)
+    assert dimensions[0].effective_coverage == pytest.approx(1 / 11, abs=1e-4)
+
+
+def test_legacy_risk_dimension_leaves_trust_coverage_unset() -> None:
+    dimension = RiskDimension.model_validate(
+        {
+            "key": "macro",
+            "label": "Macro",
+            "weight": 20,
+            "effective_weight": 20,
+            "score": 50,
+            "coverage": 0.75,
+        }
+    )
+
+    assert dimension.effective_coverage is None
 
 
 def test_proxy_dimension_confidence_baseline_reduced() -> None:
@@ -628,7 +672,8 @@ def test_proxy_dimension_confidence_baseline_reduced() -> None:
     result = RiskModel().score(_synthetic_context())
     es = next(d for d in result.dimensions if d.key == "equity_structure")
     ca = next(d for d in result.dimensions if d.key == "cross_asset")
-    assert es.coverage < 1.0 and ca.coverage < 1.0
+    assert es.coverage == 1.0 and ca.coverage == 1.0
+    assert es.effective_coverage < 1.0 and ca.effective_coverage < 1.0
     # A fully-covered run would score higher; the baseline is honest, not a regression.
     assert result.confidence < 1.0
     assert "coverage" in result.confidence_factors
@@ -665,7 +710,8 @@ def test_discount_uses_shared_constant(monkeypatch) -> None:
     monkeypatch.setattr(conf_mod, "proxy_discount_factor", lambda *a, **k: 0.5)
     result = RiskModel().score(_synthetic_context())
     es = next(d for d in result.dimensions if d.key == "equity_structure")
-    assert es.coverage == pytest.approx(0.5, abs=1e-4)
+    assert es.coverage == 1.0
+    assert es.effective_coverage == pytest.approx(0.5, abs=1e-4)
 
 
 # ---------- #71: the regime says indeterminate when nothing fired ----------

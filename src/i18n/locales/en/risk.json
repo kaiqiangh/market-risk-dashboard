@@ -62,11 +62,12 @@
     "title": "Risk Dimensions",
     "weight": "Weight",
     "effectiveWeight": "Effective weight",
+    "effectiveCoverage": "Trust-adjusted coverage",
     "score": "Score",
     "coverage": "Coverage",
     "trend": "Trend",
     "indicators": "Indicators",
-    "disclaimer": "When a dimension is missing, its weight is re-normalized across remaining dimensions while coverage and confidence are reduced."
+    "disclaimer": "When a dimension is missing, its weight is re-normalized across remaining dimensions. Availability and trust-adjusted coverage are shown separately."
   },
   "crossAssetSignals": {
     "title": "Governed cross-asset diagnostics",

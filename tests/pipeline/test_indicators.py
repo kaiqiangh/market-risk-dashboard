@@ -1,10 +1,10 @@
-"""Indicators tests (technical/breadth/flow/trend)."""
+"""Indicators tests (technical/breadth/trend)."""
 
 from __future__ import annotations
 
 import pytest
 
-from pipeline.indicators import breadth, flow, technical, trend
+from pipeline.indicators import breadth, technical, trend
 
 
 def _rows(closes: list[float]) -> list[dict]:
@@ -25,6 +25,11 @@ def test_rsi_extremes() -> None:
     down = list(range(30, 1, -1))  # continuously falling → RSI 0
     rsi_down = technical.rsi(down, 14)
     assert rsi_down is not None and rsi_down < 5
+
+
+def test_rsi_uses_wilder_smoothing() -> None:
+    values = [100, 101, 102, 101, 100, 101, 103, 102, 104, 103, 105, 104, 106, 105, 107, 106, 105, 104, 106, 108, 107, 109]
+    assert technical.rsi(values, 14) == pytest.approx(66.521, abs=1e-4)
 
 
 def test_distance_from_ma() -> None:
@@ -58,16 +63,6 @@ def test_breadth_snapshot() -> None:
     assert snap["breadth_above_ma200"] == round(2 / 3, 4)  # SPY/SOXX above MA200, IWM below
     assert snap["is_proxy"] is True
     assert snap["small_cap_relative"] is not None
-
-
-def test_flow_snapshot() -> None:
-    rows = _rows([100.0] * 30)
-    rows[-1]["volume"] = 5000.0  # volume spike
-    snap = flow.flow_snapshot(rows)
-    assert snap["obv"] is not None
-    assert snap["mfi"] is not None
-    assert snap["relative_volume"] is not None
-    assert snap["is_proxy"] is True
 
 
 def test_trend_snapshot() -> None:
