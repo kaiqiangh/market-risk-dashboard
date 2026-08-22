@@ -45,3 +45,25 @@ def latest_row_timestamp(rows: Iterable[dict[str, Any]], field: str = "date") ->
     values = [normalize_source_timestamp(row.get(field)) for row in rows]
     valid = [value for value in values if value is not None]
     return max(valid) if valid else None
+
+def row_count_for(name: str, payload: Any) -> int | None:
+    """Rows carried by a registered payload under its DatasetSpec.row_key (#89).
+
+    The ONE implementation of this question. run.py's envelope assembly and
+    scripts/backfill_metadata.py must answer it identically - two hand-copied versions
+    had already diverged (one returned 0 where the other returns None, which is the
+    difference between "empty" and "not applicable") before this helper absorbed
+    them (#188). Derived datasets (risk, dashboard) are single objects: they get
+    None and skip the emptiness check rather than being scored empty forever.
+
+    The registry import is function-local to avoid a schemas/metadata import cycle.
+    """
+    from pipeline.schemas import registry as dataset_registry
+
+    spec = dataset_registry.BY_KEY.get(name)
+    if spec is None or not spec.row_counted or spec.row_key is None:
+        return None
+    rows = payload.get(spec.row_key) if isinstance(payload, dict) else getattr(payload, spec.row_key, None)
+    if isinstance(rows, (list, tuple, dict)):
+        return len(rows)
+    return None

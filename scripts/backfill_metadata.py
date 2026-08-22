@@ -1,33 +1,34 @@
 #!/usr/bin/env python3
-"""One-shot backfill: regenerate ``public/data/metadata/freshness.json`` and ``sources.json``.
+"""One-shot backfill: regenerate metadata/freshness.json and metadata/sources.json.
 
 Why this exists (#89, #101):
-    The committed ``public/data`` snapshot predates the new freshness model. Its two metadata
-    documents were hand-shaped and failed the new ``check:data`` gate: ``freshness.json`` used
-    free-text reasons ("degraded"/"ok"), omitted ``factlayer``/``news_translations``, and
-    contained an unregistered ``facts`` key; ``sources.json`` used the OLD provider-domain shape
-    (no per-domain ``status``/``reason``). Both must be rebuilt as *projections of one record*.
+    The committed public/data snapshot predates the new freshness model; both metadata
+    documents were hand-shaped and failed check:data. They must be rebuilt as projections
+    of one record (RunOutcomes), which is what this script does.
 
 What this does (and does not do):
-    - Loads each committed envelope under ``public/data/latest/*.json`` — the data snapshot is
-      PRESERVED; this script only rewrites ``metadata/``, never ``latest/``.
-    - Re-derives each enveloped dataset's verdict through ``finalize_freshness`` — the single
-      authoritative producer. This is what enforces the #89 invariant that ``fresh`` requires a
-      non-empty payload: ``calendar`` ships ``events: []`` so it is rebuilt as ``empty``
-      (``no_events_in_window``), not the ``fresh`` it falsely claimed.
-    - Derives ``factlayer`` from ``aggregate_freshness`` of its inputs (a derived dataset is only
-      as fresh as its stalest input → ``input_dataset_unhealthy`` when an input is degraded).
-    - Treats the AI-produced standalone files (``analysis.*``, ``news.zh-translations``) as
-      ``fresh``/``ok`` because they exist and validate — absence would be the degraded mode, not
-      a wrong status.
-    - Renders both documents through ``RunOutcomes`` so they are, by construction, two views of
-      one truth and cannot contradict (the #89 failure mode).
+    - Loads each committed envelope under <data-dir>/latest/*.json - the data snapshot is
+      PRESERVED; this script only rewrites metadata, never latest/.
+    - Re-derives each enveloped verdict through finalize_freshness - the single
+      authoritative producer (#89 invariant: fresh requires a non-empty payload).
+    - Derives factlayer from aggregate_freshness of its inputs.
+    - Treats AI-produced standalone files (analysis.*, news_translations) honestly (#188):
+      absent -> missing; present but schema-invalid -> degraded/provider_parse_error;
+      present and valid -> fresh/ok. The old behavior recorded fresh on existence alone -
+      exactly the dishonesty #89 removed.
+    - Writes both documents through StorageWriter's atomic path (#188): a repair tool must
+      never leave the files it repairs truncated after a mid-write crash.
 
-Run from the repo root:  .venv/bin/python scripts/backfill_metadata.py
+Failure semantics (#188): an unreadable or non-object latest/*.json is skipped with a named
+stderr note (consistent with the provider loop) and the script exits 1 - silently partial
+metadata from a repair tool would be a trap.
+
+Run from the repo root:  .venv/bin/python scripts/backfill_metadata.py [--data-dir public/data]
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from datetime import datetime, timedelta, timezone
@@ -36,75 +37,131 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+from pipeline.metadata import row_count_for  # noqa: E402
 from pipeline.schemas import registry  # noqa: E402
 from pipeline.schemas.envelope import FreshnessReason  # noqa: E402
 from pipeline.storage.outcomes import RunOutcomes  # noqa: E402
+from pipeline.storage.writer import StorageWriter  # noqa: E402
 from pipeline.validation.freshness import (  # noqa: E402
+    REPRESENTATIVE_BAND_FACTOR,
     aggregate_freshness,
     expected_interval_minutes_for,
     finalize_freshness,
 )
 
-DATA_DIR = ROOT / "public" / "data"
-LATEST_DIR = DATA_DIR / "latest"
-FRESHNESS_PATH = DATA_DIR / "metadata" / "freshness.json"
-SOURCES_PATH = DATA_DIR / "metadata" / "sources.json"
 
-# Primary row-count field per row-counted enveloped dataset lives on the registry spec
-# (``DatasetSpec.row_key``) — the one home, shared with ``run.py`` and ``ci_checks.py``.
+def _load(path: Path, key: str) -> dict | None:
+    """Read one published document, or None with a NAMED stderr note (#188).
 
-
-def _load(key: str) -> dict:
-    spec = registry.require(key)
-    # Take the first published filename for the dataset.
-    return json.loads((LATEST_DIR / spec.filenames[0]).read_text(encoding="utf-8"))
-
-
-def _row_count(key: str, payload: dict) -> int | None:
-    spec = registry.require(key)
-    if spec.row_key is None:
+    The old unguarded version crashed the whole backfill on the first corrupt file while
+    the provider loop right below deliberately skipped - two failure philosophies in one
+    script. Skip-and-report everywhere; the exit code carries the failure.
+    """
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"  [skip] {key}: unreadable {path.name}: {exc}", file=sys.stderr)
         return None
-    value = payload.get(spec.row_key)
-    if value is None:
-        return 0
-    return len(value) if isinstance(value, list) else 0
+    if not isinstance(value, dict):
+        print(f"  [skip] {key}: {path.name} is not a JSON object", file=sys.stderr)
+        return None
+    return value
 
 
 def _frozen_now(key: str, generated_at: str, status: str) -> datetime | None:
-    """Pick ``now`` so the time ladder in ``finalize_freshness`` reproduces ``status``.
+    """Pick now so the time ladder in finalize_freshness reproduces status.
 
-    Only relevant for the non-degraded, non-empty time states (fresh/delayed/stale). For
-    degraded/empty/missing the clock is ignored, so ``None`` (use real now) is fine.
+    Only relevant for the time states (fresh/delayed/stale); for degraded/empty/missing
+    the clock is ignored, so None (use real now) is fine. Band factors come from
+    validation.freshness (single source, #188); an unparseable generated_at returns None
+    instead of crashing the backfill.
     """
-    if status == "fresh":
-        factor = 1.0
-    elif status == "delayed":
-        factor = 2.0
-    elif status == "stale":
-        factor = 4.0
-    else:
+    factor = REPRESENTATIVE_BAND_FACTOR.get(status)
+    if factor is None:
         return None
-    gen = datetime.fromisoformat(generated_at.replace("Z", "+00:00"))
+    try:
+        gen = datetime.fromisoformat(generated_at.replace("Z", "+00:00"))
+    except (ValueError, AttributeError):
+        print(f"  [warn] {key}: unparseable generated_at; using real now", file=sys.stderr)
+        return None
     interval = expected_interval_minutes_for(key, 480)
     return gen + timedelta(minutes=interval * factor)
 
 
-def main() -> int:
+def _record_ai_documents(outcomes: RunOutcomes, latest_dir: Path) -> None:
+    """Record the AI-produced standalone files with schema-verified honesty (#188).
+
+    The old docstring claimed "present and validate" while the code only checked
+    existence. Now every registered filename must exist AND validate through the
+    spec's own model before the dataset may be recorded fresh.
+    """
+    for key in ("analysis", "news_translations"):
+        spec = registry.require(key)
+        failure: str | None = None
+        for filename in spec.filenames:
+            path = latest_dir / filename
+            if not path.exists():
+                failure = "missing " + filename
+                break
+            loaded = _load(path, key)
+            if loaded is None:
+                failure = "unreadable " + filename
+                break
+            try:
+                spec.model.model_validate(loaded)
+            except Exception as exc:  # noqa: BLE001 - any invalid document is one degraded dataset
+                failure = "invalid " + filename + ": " + type(exc).__name__
+                break
+        if failure is None:
+            outcomes.record(key, "fresh", FreshnessReason(code="ok", detail="AI documents present and schema-valid"))
+            state = "fresh"
+            note = "(ok) [AI documents validated]"
+        elif failure.startswith("missing"):
+            outcomes.record(key, "missing", FreshnessReason(code="not_collected_this_run", detail=failure))
+            state = "missing"
+            note = "(" + failure + ")"
+        else:
+            outcomes.record(key, "degraded", FreshnessReason(code="provider_parse_error", detail=failure))
+            state = "degraded"
+            note = "(" + failure + ")"
+        print("  " + key.ljust(10) + " -> " + state.ljust(9) + " " + note)
+
+
+def _display(path: Path) -> str:
+    """Path as repo-relative when it lives under ROOT, else absolute (#188: --data-dir)."""
+    try:
+        return str(path.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Rebuild freshness.json and sources.json from committed envelopes")
+    parser.add_argument("--data-dir", type=Path, default=ROOT / "public" / "data")
+    args = parser.parse_args(argv)
+    data_dir = args.data_dir
+    latest_dir = data_dir / "latest"
+
     outcomes = RunOutcomes()
+    writer = StorageWriter(data_dir)
+    skipped = 0
 
     # --- Enveloped datasets: verdict through the single producer. ---
     enveloped_statuses: list[str] = []
     for key in (spec.key for spec in registry.DATASETS if spec.enveloped):
-        env = _load(key)
+        spec = registry.require(key)
+        env = _load(latest_dir / spec.filenames[0], key)
+        if env is None:
+            skipped += 1
+            continue
         prov = env.get("provenance", {}) or {}
-        status = env.get("freshness_status")
-        is_degraded = status == "degraded"
+        status = env.get("freshness_status") or ""
         verdict = finalize_freshness(
             key,
             env.get("generated_at"),
-            is_degraded,
-            now=_frozen_now(key, env.get("generated_at", ""), status),
-            row_count=_row_count(key, env.get("payload", {})),
+            status == "degraded",
+            now=_frozen_now(key, env.get("generated_at", "") or "", status),
+            row_count=row_count_for(key, env.get("payload", {})),
             used_fallback=bool(prov.get("used_fallback")),
             from_cache=bool(prov.get("from_cache")),
         )
@@ -117,38 +174,36 @@ def main() -> int:
             from_cache=bool(prov.get("from_cache")),
         )
         enveloped_statuses.append(verdict.status)
-        print(f"  {key:10s} -> {verdict.status:9s} ({verdict.reason.code})")
+        print("  " + key.ljust(10) + " -> " + verdict.status.ljust(9) + " (" + verdict.reason.code + ")")
 
     # --- factlayer: derived from its inputs. ---
-    factlayer_status = aggregate_freshness(enveloped_statuses)
-    factlayer_code = "input_dataset_unhealthy" if factlayer_status in ("degraded", "missing", "stale", "empty") else "ok"
-    outcomes.record(
-        "factlayer",
-        factlayer_status,
-        FreshnessReason(code=factlayer_code, detail=""),
-    )
-    print(f"  {'factlayer':10s} -> {factlayer_status:9s} ({factlayer_code}) [aggregated from inputs]")
+    factlayer_status = aggregate_freshness(enveloped_statuses) if enveloped_statuses else "missing"
+    if factlayer_status in ("degraded", "missing", "stale", "empty"):
+        factlayer_code = "input_dataset_unhealthy"
+    else:
+        factlayer_code = "ok"
+    outcomes.record("factlayer", factlayer_status, FreshnessReason(code=factlayer_code, detail=""))
+    print("  factlayer   -> " + factlayer_status.ljust(9) + " (" + factlayer_code + ") [aggregated from inputs]")
 
-    # --- AI-produced standalone files: present and valid -> fresh/ok. ---
-    for key in ("analysis", "news_translations"):
-        outcomes.record(key, "fresh", FreshnessReason(code="ok", detail=""))
-        print(f"  {key:10s} -> {'fresh':9s} (ok) [AI-produced file present]")
+    # --- AI-produced standalone files: present AND schema-valid -> fresh/ok (#188). ---
+    _record_ai_documents(outcomes, latest_dir)
 
     # --- Provider status for sources.json, lifted from each domain's envelopes. ---
     provider_status: dict[str, dict] = {}
     previous_sources: dict = {}
-    if SOURCES_PATH.exists():
+    sources_path = data_dir / "metadata" / "sources.json"
+    if sources_path.exists():
         try:
-            previous_sources = json.loads(SOURCES_PATH.read_text(encoding="utf-8"))
+            previous_sources = json.loads(sources_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             previous_sources = {}
     for domain, keys in registry.DOMAIN_DATASETS.items():
         provs = []
         for k in keys:
-            try:
-                provs.append(_load(k).get("provenance", {}) or {})
-            except Exception:  # noqa: BLE001 - a missing envelope should not abort the backfill
-                continue
+            kspec = registry.require(k)
+            loaded = _load(latest_dir / kspec.filenames[0], k)
+            if loaded is not None:
+                provs.append(loaded.get("provenance", {}) or {})
         if not provs:
             continue
         status = {
@@ -171,11 +226,21 @@ def main() -> int:
     freshness_doc = outcomes.freshness_projection(None)
     sources_doc = outcomes.sources_projection(provider_status)
 
-    FRESHNESS_PATH.write_text(json.dumps(freshness_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    SOURCES_PATH.write_text(json.dumps(sources_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    # Atomic, same-filesystem writes (#188): a repair tool must not leave truncated metadata.
+    freshness_path = data_dir / "metadata" / "freshness.json"
+    writer.write_json(freshness_path, freshness_doc)
+    writer.write_json(data_dir / "metadata" / "sources.json", sources_doc)
 
-    print(f"\nWrote {FRESHNESS_PATH.relative_to(ROOT)} ({len(freshness_doc['datasets'])} datasets)")
-    print(f"Wrote {SOURCES_PATH.relative_to(ROOT)} ({len(sources_doc['domains'])} domains)")
+    freshness_rel = _display(freshness_path)
+    sources_rel = _display(data_dir / "metadata" / "sources.json")
+    n_datasets = len(freshness_doc["datasets"])
+    n_domains = len(sources_doc["domains"])
+    print("")
+    print(f"Wrote {freshness_rel} ({n_datasets} datasets)")
+    print(f"Wrote {sources_rel} ({n_domains} domains)")
+    if skipped:
+        print(f"[backfill_metadata] {skipped} dataset(s) skipped; metadata is PARTIAL", file=sys.stderr)
+        return 1
     return 0
 
 

@@ -44,6 +44,13 @@ class FreshnessVerdict(NamedTuple):
 #: bogus or hostile timestamp must degrade loudly, not vouch for itself.
 FUTURE_SKEW_TOLERANCE_MINUTES = 5.0
 
+#: Mid-band representative ages, as multiples of a dataset's expected interval, used when a
+#: one-shot tool must REPRODUCE a status from a timestamp (scripts/backfill_metadata.py picks
+#: a frozen "now" inside each band: fresh=1.0x, delayed=2.0x, stale=4.0x). Exported so the
+#: ladder knowledge lives beside the bands it mirrors (#188): if evaluate_freshness's bands
+#: ever move, this table moves with them instead of drifting in a script.
+REPRESENTATIVE_BAND_FACTOR: dict[str, float] = {"fresh": 1.0, "delayed": 2.0, "stale": 4.0}
+
 
 def is_future_beyond_skew(updated_at: str | None, now: datetime | None = None) -> bool:
     """True when updated_at lies further ahead than FUTURE_SKEW_TOLERANCE_MINUTES.
