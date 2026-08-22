@@ -187,5 +187,5 @@ websockets==17.0.1
     # via yfinance
 xlrd==2.0.2
     # via akshare
-yfinance==1.5.2
+yfinance==1.6.0
     # via market-risk-dashboard (pyproject.toml)
