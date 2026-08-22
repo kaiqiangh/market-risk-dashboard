@@ -31,7 +31,7 @@ from typing import Any
 from pipeline import __version__
 from pipeline.collectors import CalendarCollector, MacroCollector, MarketCollector, NewsCollector
 from pipeline.factlayer import FactLayerBuilder
-from pipeline.metadata import oldest_source_timestamp
+from pipeline.metadata import oldest_source_timestamp, row_count_for
 from pipeline.providers import ProviderRegistry, build_registry
 from pipeline.report import write_run_report
 from pipeline.risk.model import RiskModel
@@ -400,18 +400,11 @@ def dataset_health(writer: StorageWriter, command: str, *, run_started_at: str) 
 def _row_count(name: str, payload: Any) -> int | None:
     """How many rows a payload carries, or ``None`` when the question does not apply.
 
-    This is what makes ``empty`` reachable and enforces "``fresh`` requires a non-empty
-    payload" (#89). Derived datasets (``risk``, ``dashboard``) are a single object rather than
-    a collection, so asking whether they are empty is a category error — they return ``None``
-    and skip the check rather than being scored as empty forever.
+    Delegates to the one implementation in pipeline.metadata (#188): a second hand-copied
+    version in scripts/backfill_metadata.py had diverged (0-vs-None for non-list payloads),
+    which is exactly the drift this repo's single-source-of-truth rule exists to prevent.
     """
-    spec = dataset_registry.BY_KEY.get(name)
-    if spec is None or not spec.row_counted or spec.row_key is None:
-        return None
-    rows = payload.get(spec.row_key) if isinstance(payload, dict) else getattr(payload, spec.row_key, None)
-    if isinstance(rows, (list, tuple, dict)):
-        return len(rows)
-    return None
+    return row_count_for(name, payload)
 
 
 def _assemble(
@@ -1424,7 +1417,7 @@ def main(argv: list[str] | None = None) -> int:
         return _run_analysis_only()
 
     if args.backfill:
-        return _run_backfill()
+        return run_backfill()
 
     # E-5: the failure report must stay writable even when collection itself crashes.
     # Without this skeleton, an exception raised by _run_collection left `results`
@@ -1669,29 +1662,78 @@ def _run_analysis_only() -> int:
     return 0
 
 
-def _run_backfill() -> int:
-    """Warm-up backfill of 30-90 days (except FedWatch, architecture §1.7/review P1-5).
+def _period_for_days(days: int) -> str:
+    """Map a warm-up window to the coarsest provider period that covers it (#188).
+
+    Band tops are what the provider periods actually COVER (yahoo "1mo"/"3mo"/"6mo"
+    deliver ~30/91/183 daily bars), so a --days value is never silently under-fetched:
+    31 days asks for and receives 3 months of history. Before this mapping the fetch
+    hardcoded "1y", so a 30-day warm-up silently spent a year of quota - the opposite
+    error, fixed at the same time.
+    """
+    if days <= 30:
+        return "1mo"
+    if days <= 91:
+        return "3mo"
+    if days <= 183:
+        return "6mo"
+    return "1y"
+
+
+def run_backfill(window_days: int = 90) -> int:
+    """Warm-up backfill of the requested window in days (except FedWatch, architecture §1.7).
 
     Pull benchmark + all US equity history; history/market writes only the SPY benchmark
     series (to avoid different symbols overwriting each other when merging by date), while
     other symbols only warm the last-good cache for quote use.
+
+    Per-symbol failures stay non-interrupting (degradation contract) but are no longer
+    stdout-only (#188): they land in artifacts/logs/run-report-*.json as failed_datasets,
+    so a partially-warmed cache is visible to operators without touching the published
+    metadata files.
     """
-    print("[pipeline] backfill: backfilling 30-90 days of history…")
+    period = _period_for_days(window_days)
+    print(f"[pipeline] backfill: last {window_days} days (provider period {period}; FedWatch accumulates from launch)")
+    started = time.monotonic()
     registry = build_registry(settings)
     writer = StorageWriter(settings.data_dir)
     universe = AssetUniverse.load(settings)
 
+    failed: list[str] = []
+    durations: dict[str, float] = {}
     for symbol in ["SPY", "IWM", "SOXX", *[a.symbol for a in universe.us_equities]]:
+        symbol_started = time.monotonic()
         try:
-            out = registry.call("quotes", "get_history", f"backfill_{symbol}", args=(symbol, "1y"))
+            out = registry.call("quotes", "get_history", f"backfill_{symbol}", args=(symbol, period))
             rows = out["result"].rows
             if symbol == "SPY":
                 writer.write_slices("market", [{"date": r["date"], "symbol": symbol, "close": r["close"]} for r in rows if r.get("close") is not None])
             print(f"  {symbol}: {len(rows)} rows backfilled")
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:  # noqa: BLE001 - degradation contract: one symbol never blocks the rest
+            failed.append(symbol)
             print(f"  {symbol}: backfill failed (degraded, not interrupted): {exc}")
-    print("[pipeline] backfill: complete")
+        finally:
+            durations[f"backfill_{symbol}"] = time.monotonic() - symbol_started
+
+    durations["total"] = time.monotonic() - started
+    write_run_report(
+        settings.artifacts_dir,
+        command="backfill",
+        ok=True,
+        durations=durations,
+        provider_status={},
+        degraded=[],
+        dataset_counts={},
+        failed_datasets=failed or None,
+    )
+    if failed:
+        print(f"[pipeline] backfill: complete WITH FAILURES ({', '.join(failed)}); see run-report")
+    else:
+        print("[pipeline] backfill: complete")
     return 0
+
+
+
 
 
 def _print_plan(command: str, args: argparse.Namespace) -> None:
