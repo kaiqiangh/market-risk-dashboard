@@ -318,11 +318,38 @@ def check_news_duplicates(latest_dir: Path, report: CheckReport) -> None:
             report.error(f"news.json: duplicate news (title+source+published_at) {sig[0]!r} (appears {count} times)")
 
 
+def _series_label(series_dir: Path, data_dir: Path) -> str:
+    """Stable diagnostic label: path under history/, e.g. macro/BAA10Y (#191)."""
+    return series_dir.relative_to(data_dir / "history").as_posix()
+
+def _discover_series_dirs(data_dir: Path) -> list[Path]:
+    """Every directory owning a daily.json is a series (#191).
+
+    The tree nests (history/risk, history/macro/BAA10Y), so a single-level iterdir
+   would mistake the intermediate macro/ for a series; anchoring on the daily.json
+    leaf handles any depth without restating series names.
+    """
+    return sorted(
+        (p.parent for p in (data_dir / "history").rglob("daily.json")), key=lambda p: str(p)
+    )
+
+
 def check_history(data_dir: Path, report: CheckReport) -> None:
-    """History slices: file parseable + row structure (date + total_score range)."""
-    for series in ("risk", "market"):
+    """History slices: file parseable + row structure (date + total_score range).
+
+    The series list comes from the FILESYSTEM (#191): the old ("risk", "market")
+    literals left history/macro/* (the durable ICE BofA archive) and any future
+    series with zero validation coverage while pretending the gate was green.
+    """
+    history_root = data_dir / "history"
+    if not history_root.exists():
+        report.warn("history/: directory missing entirely (should exist after warm-up backfill)")
+        return
+    series_dirs = _discover_series_dirs(data_dir)
+    for series_dir in series_dirs:
+        series = _series_label(series_dir, data_dir)
         for slice_name in ("30d", "90d", "daily"):
-            path = data_dir / "history" / series / f"{slice_name}.json"
+            path = series_dir / f"{slice_name}.json"
             if not path.exists():
                 report.warn(f"history/{series}/{slice_name}.json missing (should exist after warm-up backfill)")
                 continue
@@ -351,13 +378,63 @@ def check_history(data_dir: Path, report: CheckReport) -> None:
                     else:
                         if not (0.0 <= score <= 100.0):
                             report.error(f"history/{series}/{slice_name}.json: total_score out of range [0,100]: {score}")
-        index_path = data_dir / "history" / series / "index.json"
+        index_path = series_dir / "index.json"
         if index_path.exists():
             report.files_checked += 1
             try:
                 load_json_strict(index_path)
             except Exception as exc:  # noqa: BLE001
                 report.error(f"history/{series}/index.json: parse failed: {exc}")
+
+
+def check_slice_consistency(data_dir: Path, report: CheckReport) -> None:
+    """Pre-slices must equal the tail of their daily file, for EVERY series (#191).
+
+    write_slices writes daily/30d/90d/index as separate atomic files - a crash between
+    them can leave the group diverged (30d stale vs daily fresh), and nothing detected
+    it. This check closes that gap, filesystem-driven so nested archives like
+    history/macro/*/ are covered without restating series names.
+    """
+    history_root = data_dir / "history"
+    if not history_root.exists():
+        return
+    for series_dir in _discover_series_dirs(data_dir):
+        series = _series_label(series_dir, data_dir)
+        daily_path = series_dir / "daily.json"
+        if not daily_path.exists():
+            continue  # absence itself is reported by check_history
+        try:
+            daily = load_json_strict(daily_path)
+        except Exception as exc:  # noqa: BLE001 - already reported by check_history;
+            continue  # a second error for the same file would just be noise
+        if not isinstance(daily, list):
+            continue
+        for slice_name in ("30d", "90d"):
+            slice_path = series_dir / f"{slice_name}.json"
+            if not slice_path.exists():
+                continue  # warm-up state; check_history warns on the miss
+            try:
+                sliced = load_json_strict(slice_path)
+            except Exception:  # noqa: BLE001 - same single-report convention as above
+                continue
+            n = int(slice_name[:-1])
+            expected = daily[-n:]
+            if sliced != expected:
+                report.error(
+                    f"history/{series}/{slice_name}.json: diverged from daily.json tail"
+                    f" ({len(sliced)} rows vs last {len(expected)}) - regenerate slices"
+                )
+        index_path = series_dir / "index.json"
+        if index_path.exists():
+            try:
+                index_data = load_json_strict(index_path)
+            except Exception:  # noqa: BLE001 - same single-report convention as above
+                continue
+            count = index_data.get("count") if isinstance(index_data, dict) else None
+            if count is not None and not isinstance(count, int):
+                report.error(f"history/{series}/index.json: count should be an integer, got {count!r}")
+            elif isinstance(count, int) and count != len(daily):
+                report.error(f"history/{series}/index.json: count {count} != {len(daily)} daily rows")
 
 
 def check_metadata_and_feeds(data_dir: Path, report: CheckReport) -> None:
@@ -390,6 +467,7 @@ def _run_all(data_dir: Path, latest: Path, now: datetime) -> CheckReport:
     check_latest(latest, report, now)
     check_news_duplicates(latest, report)
     check_history(data_dir, report)
+    check_slice_consistency(data_dir, report)
     check_metadata_and_feeds(data_dir, report)
     return report
 

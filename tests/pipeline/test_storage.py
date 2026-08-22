@@ -421,9 +421,10 @@ def test_write_json_fsyncs_before_replace(tmp_path: Path, monkeypatch: pytest.Mo
     monkeypatch.setattr(writer_mod.os, "replace", _record_replace)
     writer.write_json(target, {"ok": True})
 
-    assert len(events) == 2, f"write_json must fsync then replace, saw: {events}"
-    assert events[0].startswith("fsync:"), f"fsync must precede replace, saw: {events}"
-    assert events[1].startswith("replace:"), f"replace must follow fsync, saw: {events}"
+    # Order contract (#191): file fsync BEFORE replace; an optional best-effort
+    # directory fsync may follow the replace but nothing may precede the file fsync.
+    assert events[0].startswith("fsync:"), f"first event must be file fsync: {events}"
+    assert events[1].startswith("replace:"), f"second event must be the replace: {events}"
 
 
 def test_write_json_still_writes_readable_output(tmp_path: Path) -> None:
