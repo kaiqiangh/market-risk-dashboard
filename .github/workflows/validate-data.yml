@@ -26,7 +26,7 @@ on:
       - "scripts/validate_data.sh"
       - "scripts/validate-json.mjs"
       - "scripts/scan-secrets.mjs"
-      - "config/sources.yaml"
+      - "config/**"
       - ".github/workflows/validate-data.yml"
   workflow_dispatch:
 

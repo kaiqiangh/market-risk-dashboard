@@ -45,8 +45,24 @@ jobs:
         run: |
           python -m pip install --constraint constraints/py312.txt -e ".[dev]"
 
-      - name: Run pipeline test suite
-        run: python -m pytest tests/pipeline/
+      - name: Run pipeline test suite with coverage
+        run: |
+          python -m pytest tests/pipeline/ --cov=pipeline --cov-report=term-missing --cov-report=xml
+          python -m coverage report -m | tee /tmp/python-coverage.txt
+
+      - name: Publish Python coverage summary
+        if: always()
+        run: |
+          {
+            echo "## Python coverage"
+            if [ -f /tmp/python-coverage.txt ]; then
+              echo '```text'
+              cat /tmp/python-coverage.txt
+              echo '```'
+            else
+              echo "Coverage report unavailable."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Validate committed data (full authority, contract, and secret gates)
         run: scripts/validate_data.sh --scheduled --data-dir public/data
@@ -59,6 +75,28 @@ jobs:
 
       - name: F821 must fail the build (everything else advisory)
         run: ruff check . --select F821
+
+      - name: Ruff advisory report
+        if: always()
+        continue-on-error: true
+        run: |
+          set +e
+          ruff check . --output-format=json > /tmp/ruff-advisory.json
+          ruff_code=$?
+          set -e
+          python - "$ruff_code" <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          import sys
+
+          try:
+              findings = json.load(open("/tmp/ruff-advisory.json", encoding="utf-8"))
+          except (OSError, json.JSONDecodeError):
+              findings = []
+          print("## Ruff advisory")
+          print(f"- `ruff check .` exit code: {sys.argv[1]}")
+          print(f"- Findings: {len(findings)}")
+          PY
+          exit 0
 
   frontend:
     runs-on: ubuntu-latest
@@ -95,8 +133,28 @@ jobs:
       - name: Type check
         run: npm run typecheck
 
-      - name: Test
-        run: npm test
+      - name: Test with coverage
+        run: npm test -- --coverage
+
+      - name: Publish frontend coverage summary
+        if: always()
+        run: |
+          node <<'NODE' >> "$GITHUB_STEP_SUMMARY"
+          const fs = require("node:fs");
+          const path = "coverage/coverage-summary.json";
+          console.log("## Frontend coverage");
+          if (!fs.existsSync(path)) {
+            console.log("Coverage report unavailable.");
+            process.exit(0);
+          }
+          const total = JSON.parse(fs.readFileSync(path, "utf8")).total;
+          console.log("| Metric | Covered | Total | Percent |");
+          console.log("| --- | ---: | ---: | ---: |");
+          for (const key of ["lines", "statements", "functions", "branches"]) {
+            const metric = total[key];
+            console.log(`| ${key} | ${metric.covered} | ${metric.total} | ${metric.pct}% |`);
+          }
+          NODE
 
       - name: Build
         run: npm run build
