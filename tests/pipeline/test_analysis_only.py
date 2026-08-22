@@ -66,6 +66,11 @@ def analysis_only_env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> dict[s
 
     settings = Settings(_env_file=None, data_dir=tmp_path, artifacts_dir=tmp_path / "artifacts")
     monkeypatch.setattr(run_mod, "settings", settings)
+    # #192: the AI-pair/report helpers moved to pipeline.analysis_pair, which resolves
+    # settings in its own namespace - patch it too or reports land in the real repo tree.
+    import pipeline.analysis_pair as analysis_pair_mod
+
+    monkeypatch.setattr(analysis_pair_mod, "settings", settings)
     monkeypatch.setattr(contract_mod, "ANALYSIS_DIR", latest)
     # INPUT_FILES was derived from the ORIGINAL ANALYSIS_DIR at import time — repoint it
     # or input_path("facts") would read the real public/data/latest/facts.json (and the

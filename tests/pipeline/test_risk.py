@@ -263,7 +263,7 @@ def test_vix_in_rates_is_not_used_as_a_compatibility_fallback() -> None:
 
 
 def test_build_risk_context_carries_canonical_vix_and_realized_volatility() -> None:
-    from pipeline.run import _build_risk_context
+    from pipeline.risk_context import _build_risk_context
     from tests.pipeline.factories import make_envelope
 
     histories = {
@@ -305,7 +305,7 @@ def test_build_risk_context_carries_canonical_vix_and_realized_volatility() -> N
 
 
 def test_cross_asset_signals_are_null_aware_and_new_proxies_are_diagnostic_only() -> None:
-    from pipeline.run import _build_risk_context
+    from pipeline.risk_context import _build_risk_context
 
     histories = {
         "SPY": [{"close": 100.0}, {"close": 99.0}],
@@ -348,7 +348,7 @@ def test_cross_asset_signals_are_null_aware_and_new_proxies_are_diagnostic_only(
 
 
 def test_cross_asset_missing_inputs_do_not_count_as_benign() -> None:
-    from pipeline.run import _build_risk_context
+    from pipeline.risk_context import _build_risk_context
 
     empty = SimpleNamespace(payload=SimpleNamespace(assets=[]))
     context = _build_risk_context(
