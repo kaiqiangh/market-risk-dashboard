@@ -7,12 +7,12 @@ it contains no business logic.
 
 from __future__ import annotations
 
-import math
 import time
 from typing import Any
 
 import yfinance as yf
 
+from pipeline.providers._util import _f as _clean
 from pipeline.providers.base import (
     BaseProvider,
     HistoryResult,
@@ -84,15 +84,6 @@ class YahooProvider(BaseProvider):
             raise
         except Exception as exc:  # noqa: BLE001
             raise ProviderError.from_exception(exc, detail=f"{symbol}: yfinance history failed") from exc
-            if hist is None or len(hist) == 0:
-                raise ProviderError(f"{symbol}: yfinance history is empty")
-            rows = _to_rows(hist)
-            self._history_1y[symbol] = rows
-            return rows
-        except ProviderError:
-            raise
-        except Exception as exc:  # noqa: BLE001
-            raise ProviderError.from_exception(exc, detail=f"{symbol}: yfinance history failed") from exc
 
     def health(self) -> ProviderHealth:
         started = time.monotonic()
@@ -126,7 +117,7 @@ class YahooProvider(BaseProvider):
             price = closes[-1]
             change_1d = _pct(price, closes[-2])
             change_1w = _pct(price, closes[-6]) if len(closes) >= 6 else None
-            change_1m = _pct(price, closes[-21]) if len(closes) >= 21 else _pct(price, closes[0])
+            change_1m = _pct(price, closes[-21]) if len(closes) >= 21 else None
             volume = rows[-1].get("volume") if rows else None
             return QuoteResult(
                 symbol=symbol,
@@ -203,14 +194,6 @@ class YahooAShareProvider(YahooProvider):
 
 
 def _pct(latest: float, prev: float) -> float | None:
-    if prev is None or math.isnan(prev) or prev == 0:
+    if prev is None or prev == 0:
         return None
     return round((latest - prev) / prev * 100.0, 4)
-
-
-def _clean(value) -> float | None:
-    try:
-        f = float(value)
-        return None if (math.isnan(f) or math.isinf(f)) else round(f, 6)
-    except (TypeError, ValueError):
-        return None

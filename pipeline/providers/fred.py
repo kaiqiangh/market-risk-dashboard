@@ -5,12 +5,12 @@ Direct httpx connection with retry/rate limiting; API key comes from the local .
 
 from __future__ import annotations
 
-import math
 import time
 from typing import Any
 
 import httpx
 
+from pipeline.providers._util import _f
 from pipeline.providers.base import (
     BaseProvider,
     ProviderError,
@@ -150,8 +150,8 @@ class FredProvider(BaseProvider):
             if value in (".", "", None):
                 continue
             try:
-                fv = float(value)
-                if math.isnan(fv) or math.isinf(fv):
+                fv = _f(value)
+                if fv is None:
                     continue
                 rows.append({"date": obs["date"], "value": fv})
             except (TypeError, ValueError):

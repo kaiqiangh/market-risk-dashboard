@@ -12,11 +12,11 @@ is a *fallback only*; FMP remains the primary and its failure still degrades the
 
 from __future__ import annotations
 
-import math
 import time
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, timedelta
 from typing import Any
 
+from pipeline.providers._util import UA, _f, _today
 from pipeline.providers.base import (
     BaseProvider,
     ProviderError,
@@ -24,10 +24,6 @@ from pipeline.providers.base import (
 )
 
 NASDAQ_EARNINGS = "https://api.nasdaq.com/api/calendar/earnings"
-UA = (
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"
-)
 
 #: Nasdaq session tokens → the shared BMO/AMC vocabulary (verified live 2026-08-07).
 _SESSION = {
@@ -76,10 +72,18 @@ class NasdaqCalendarProvider(BaseProvider):
         if end_d < start_d:
             return []
         items: list[dict[str, Any]] = []
+        errors: list[str] = []
+        successful_days = 0
         cursor = start_d
         while cursor <= end_d:
-            items.extend(self._fetch_day(cursor.isoformat()))
+            try:
+                items.extend(self._fetch_day(cursor.isoformat()))
+                successful_days += 1
+            except ProviderError as exc:
+                errors.append(f"{cursor.isoformat()}: {exc}")
             cursor += timedelta(days=1)
+        if successful_days == 0 and errors:
+            raise ProviderError("Nasdaq earnings all days failed: " + "; ".join(errors[:3]))
         return items
 
     def _fetch_day(self, day: str) -> list[dict[str, Any]]:
@@ -120,11 +124,6 @@ def _money(value) -> float | None:
     if cleaned in {"", "-", "—", "&nbsp;"}:
         return None
     try:
-        f = float(cleaned)
-        return None if (math.isnan(f) or math.isinf(f)) else round(f, 6)
-    except ValueError:
+        return _f(cleaned)
+    except (TypeError, ValueError):
         return None
-
-
-def _today() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d")

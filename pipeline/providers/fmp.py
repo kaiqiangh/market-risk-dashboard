@@ -15,10 +15,10 @@ Since #83 the free tier lives on the ``/stable`` namespace — ``/api/v3/*`` ret
 
 from __future__ import annotations
 
-import math
 import time
 from typing import Any
 
+from pipeline.providers._util import _f, _today
 from pipeline.providers.base import (
     BaseProvider,
     ProviderError,
@@ -39,6 +39,8 @@ class FmpBaseProvider(BaseProvider):
     `health()` skeletons are the repo-wide convention; only the client + key setup was
     duplicated verbatim between the two classes in this module.
     """
+
+    requires_api_key = True
 
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
@@ -183,17 +185,3 @@ class FmpQuotesProvider(FmpBaseProvider):
     # NOTE: no get_history — the free tier has no stable history endpoint (verified live,
     # #100); the collector's quote/history decoupling (#97) publishes the quote with None
     # technicals rather than dropping the symbol.
-
-
-def _f(value) -> float | None:
-    try:
-        f = float(value)
-        return None if (math.isnan(f) or math.isinf(f)) else round(f, 6)
-    except (TypeError, ValueError):
-        return None
-
-
-def _today() -> str:
-    from datetime import datetime, timezone
-
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d")

@@ -15,10 +15,12 @@ reflects the run cadence — the CN-close vintage at that hour is expected, not 
 
 from __future__ import annotations
 
-import math
 import time
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FutureTimeout
 from typing import Any
 
+from pipeline.providers._util import _f, _today
 from pipeline.providers.base import (
     BaseProvider,
     HistoryResult,
@@ -40,12 +42,12 @@ class AkshareProvider(BaseProvider):
     domain = "a_share"
     # Tencent backend host (the per-(provider,host) limiter/breaker identity).
     hosts = ("web.ifzq.gtimg.cn",)
+    timeout_seconds = 15.0
 
     def health(self) -> ProviderHealth:
         started = time.monotonic()
         try:
-            import akshare  # noqa: F401  # constraint: import only here
-
+            self.get_history("603986.SH", period="1mo")
             return ProviderHealth(
                 provider=self.name, ok=True,
                 latency_ms=round((time.monotonic() - started) * 1000, 1),
@@ -76,12 +78,18 @@ class AkshareProvider(BaseProvider):
                 raise ProviderError(f"{symbol}: akshare history is empty")
             return df
 
+        executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="akshare")
+        future = executor.submit(_fetch)
         try:
             # #103/E-3: no nested retry (akshare failures are mostly persistent
             # ProxyError) — retries/classification live in ProviderRegistry.call.
-            df = _fetch()
+            df = future.result(timeout=self.timeout_seconds)
+        except FutureTimeout as exc:
+            raise ProviderError(f"{symbol}: akshare history timed out", cls="transient") from exc
         except Exception as exc:  # noqa: BLE001
             raise ProviderError.from_exception(exc, detail=f"{symbol}: akshare history failed") from exc
+        finally:
+            executor.shutdown(wait=False, cancel_futures=True)
 
         rows: list[dict[str, Any]] = []
         for _, row in df.iterrows():
@@ -110,26 +118,10 @@ class AkshareProvider(BaseProvider):
             volume=hist.rows[-1].get("volume"),
             source="akshare", provider=self.name, updated_at=now_utc(), is_proxy=False,
         )
-
-
-def _f(value) -> float | None:
-    try:
-        f = float(value)
-        return None if (math.isnan(f) or math.isinf(f)) else round(f, 6)
-    except (TypeError, ValueError):
-        return None
-
-
 def _pct(latest: float, prev: float) -> float | None:
     if prev is None or prev == 0:
         return None
     return round((latest - prev) / prev * 100.0, 4)
-
-
-def _today() -> str:
-    from datetime import datetime, timezone
-
-    return datetime.now(timezone.utc).strftime("%Y%m%d")
 
 
 def _start_date(period: str) -> str:

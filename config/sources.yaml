@@ -47,6 +47,8 @@ providers:
     - { name: fmp_quotes, priority: 2, max_concurrency: 1, min_interval_ms: 1000 }
   macro:
     - { name: fred, priority: 1, max_concurrency: 2, min_interval_ms: 600 }
+  fedwatch:
+    - { name: fedwatch, priority: 1, max_concurrency: 1, min_interval_ms: 1000 }
   crypto:
     - { name: coingecko, priority: 1, max_concurrency: 2, min_interval_ms: 400 }
     # Not implemented yet — the disabled entry is inert (never constructed), not a typo gate.
@@ -89,4 +91,3 @@ operations:
   news_max_items: 50
   news_summary_max_chars: 160
   recency_half_life_hours: 48.0
-

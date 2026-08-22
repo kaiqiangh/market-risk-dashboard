@@ -84,6 +84,30 @@ def test_http_error_raises(tmp_path: Path) -> None:
         provider.get_earnings_calendar("2026-08-01", "2026-08-01")
 
 
+def test_one_failed_day_does_not_discard_successful_days(tmp_path: Path) -> None:
+    client = _Client(
+        [
+            _Resp(200, _earnings_payload([{"symbol": "AAPL", "time": "time-pre-market"}])),
+            _Resp(500),
+            _Resp(200, _earnings_payload([{"symbol": "MSFT", "time": "time-after-hours"}])),
+        ]
+    )
+    provider = _provider(tmp_path)
+    provider._client = client
+
+    rows = provider.get_earnings_calendar("2026-08-01", "2026-08-03")
+
+    assert [row["symbol"] for row in rows] == ["AAPL", "MSFT"]
+
+
+def test_parse_failure_is_reported_when_every_day_fails(tmp_path: Path) -> None:
+    provider = _provider(tmp_path)
+    provider._client = _Client([_Resp(500), _Resp(500)])
+
+    with pytest.raises(ProviderError, match="all days failed"):
+        provider.get_earnings_calendar("2026-08-01", "2026-08-02")
+
+
 def test_reversed_window_returns_empty(tmp_path: Path) -> None:
     provider = _provider(tmp_path)
     provider._client = _Client([])

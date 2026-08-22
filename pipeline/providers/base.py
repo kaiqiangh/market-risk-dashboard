@@ -33,14 +33,16 @@ import random
 import re
 import time
 from abc import ABC, abstractmethod
+from collections.abc import Generator
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
 from datetime import UTC, datetime
 from pathlib import Path
 from threading import Semaphore
-from typing import Any, Generator
+from typing import Any
 
 import httpx
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, RootModel
 
 from pipeline.degrade import degrade_factor as resolve_degrade_factor
 from pipeline.schemas.envelope import SCHEMA_VERSION
@@ -51,8 +53,6 @@ logger = logging.getLogger(__name__)
 
 # Default timeout/retry (overridable by config/sources.yaml degrade)
 DEFAULT_TIMEOUT_SECONDS = 10.0
-DEFAULT_MAX_RETRIES = 2
-DEFAULT_BACKOFF_BASE = 1.0
 
 #: Error classes (one taxonomy, #103).
 TRANSIENT = "transient"
@@ -155,29 +155,28 @@ class GuardedClient(httpx.Client):
         timeout: float = DEFAULT_TIMEOUT_SECONDS,
         headers: dict[str, str] | None = None,
         relay_hosts: set[str] | None = None,
+        transport: httpx.BaseTransport | None = None,
     ) -> None:
         super().__init__(
             timeout=timeout,
             headers=headers,
             follow_redirects=False,
+            transport=transport,
             event_hooks={"request": [self._check_request], "response": [self._check_response]},
         )
         self._allowed_hosts = set(allowed_hosts)
         # S-3 trust:relay — a hop redirected *from* a relay host is vouched for by the relay
         # and skips the allowlist check (rsshub.app's routes forward to arbitrary publishers).
         self._relay_hosts = set(relay_hosts or ())
-        self._last_host: str | None = None
 
     def _check_request(self, request: httpx.Request) -> None:
         if request.url.scheme != "https":
             raise ProviderError(f"blocked: non-https outbound {request.url}")
         # A redirect source that is a relay vouches for the target host (S-3).
-        if self._last_host in self._relay_hosts:
-            self._last_host = request.url.host
+        if request.extensions.get("relay_vouched") is True:
             return
         if request.url.host not in self._allowed_hosts:
             raise ProviderError(f"blocked: host {request.url.host} not in outbound allowlist")
-        self._last_host = request.url.host
 
     def _check_response(self, response: httpx.Response) -> None:
         length = response.headers.get("Content-Length")
@@ -189,10 +188,17 @@ class GuardedClient(httpx.Client):
         2 MB streaming cap — chunked bodies are bounded by reading, not by Content-Length."""
         from urllib.parse import urljoin
 
+        previous_host: str | None = None
+        base_extensions = dict(kwargs.pop("extensions", {}) or {})
         for _ in range(MAX_REDIRECT_HOPS + 1):
-            with super().stream("GET", url, **kwargs) as response:
+            extensions = {
+                **base_extensions,
+                "relay_vouched": previous_host in self._relay_hosts,
+            }
+            with super().stream("GET", url, extensions=extensions, **kwargs) as response:
                 if response.status_code >= 300 and response.headers.get("location"):
-                    url = urljoin(str(url), response.headers["location"])
+                    previous_host = response.url.host
+                    url = urljoin(str(response.url), response.headers["location"])
                     continue
                 return self._read_bounded(response)
         raise ProviderError(f"blocked: more than {MAX_REDIRECT_HOPS} redirect hops")
@@ -206,8 +212,13 @@ class GuardedClient(httpx.Client):
             if total > MAX_RESPONSE_BYTES:
                 raise ProviderError(f"blocked: response exceeds {MAX_RESPONSE_BYTES} bytes ({response.url})")
             chunks.append(chunk)
-        response._content = b"".join(chunks)  # type: ignore[attr-defined]
-        return response
+        return httpx.Response(
+            status_code=response.status_code,
+            headers=response.headers,
+            content=b"".join(chunks),
+            request=response.request,
+            extensions=response.extensions,
+        )
 
 
 def guarded_client(
@@ -251,7 +262,7 @@ class ProviderError(Exception):
         """
         if isinstance(exc, ProviderError):
             return exc
-        message = redact(detail if detail is not None else str(exc))
+        message = detail if detail is not None else str(exc)
         kind = type(exc).__name__
         if isinstance(exc, httpx.HTTPStatusError):
             response = exc.response
@@ -309,8 +320,82 @@ class HistoryResult(BaseModel):
     period: str = "1y"
 
 
-# Methods that need type restoration (for cache rebuild)
-_RESULT_TYPES: dict[str, type] = {"get_quote": QuoteResult, "get_history": HistoryResult}
+class EarningsRow(BaseModel):
+    symbol: str = Field(min_length=1)
+    date: str = Field(min_length=1)
+    eps_estimate: float | None = None
+    eps_actual: float | None = None
+    revenue_estimate: float | None = None
+    revenue_actual: float | None = None
+    session: str | None = None
+
+
+class EconomicRow(BaseModel):
+    id: str = Field(min_length=1)
+    title: str = Field(min_length=1)
+    date: str = Field(min_length=1)
+    time_et: str = Field(min_length=1)
+    importance: str = "medium"
+    country: str = "US"
+    source: str = Field(min_length=1)
+
+
+class NewsRow(BaseModel):
+    title: str = Field(min_length=1)
+    source: str = Field(min_length=1)
+    source_id: str = Field(min_length=1)
+    url: str = Field(min_length=1)
+    published_at: str = Field(min_length=1)
+    lang: str = "en"
+    summary: str = ""
+    category_hint: str | None = None
+
+
+class CryptoAssetRow(BaseModel):
+    symbol: str = Field(min_length=1)
+    name: str = Field(min_length=1)
+    price: float
+    change_1d: float | None = None
+    change_1w: float | None = None
+    change_1m: float | None = None
+    market_cap: float | None = None
+    volume_24h: float | None = None
+    source: str = Field(min_length=1)
+    updated_at: str = Field(min_length=1)
+
+
+class CryptoMarketResult(BaseModel):
+    assets: list[CryptoAssetRow]
+    btc_dominance: float | None = None
+    stablecoin_mcap: float | None = None
+    market_cap_total: float | None = None
+    sentiment: str | None = None
+
+
+class SeriesRow(BaseModel):
+    date: str = Field(min_length=1)
+    value: float
+
+
+class FedWatchPrices(RootModel[dict[str, float | None]]):
+    pass
+
+# Provider method → replay model. List-valued methods are dumped back to dictionaries so
+# collectors keep their existing row access while malformed entries are quarantined first.
+_RESULT_MODELS: dict[str, type[BaseModel]] = {
+    "get_quote": QuoteResult,
+    "get_history": HistoryResult,
+    "get_history_range": HistoryResult,
+    "get_earnings_calendar": EarningsRow,
+    "get_economic_calendar": EconomicRow,
+    "fetch_news": NewsRow,
+    "get_crypto_market": CryptoMarketResult,
+    "get_series": SeriesRow,
+    "get_contract_prices": FedWatchPrices,
+}
+_LIST_RESULT_METHODS = frozenset(
+    {"get_earnings_calendar", "get_economic_calendar", "fetch_news", "get_series"}
+)
 
 
 class BaseProvider(ABC):
@@ -322,6 +407,7 @@ class BaseProvider(ABC):
     #: Host(s) this provider talks to, used as the per-host rate-limit bucket key (#103).
     #: Subclasses with dynamic hosts (RSS per-source) declare a synthetic bucket.
     hosts: tuple[str, ...] = ("general",)
+    requires_api_key: bool = False
 
     def __init__(self, settings: Settings | None = None) -> None:
         self.settings = settings or Settings()
@@ -537,10 +623,20 @@ class ProviderRegistry:
 
         data = cached.get("data")
         provider = str(cached.get("provider", "unknown"))
-        restore_type = _RESULT_TYPES.get(method)
-        if restore_type is not None and isinstance(data, dict):
+        restore_type = _RESULT_MODELS.get(method)
+        if restore_type is not None:
             try:
-                data = restore_type.model_validate(data)
+                if method in _LIST_RESULT_METHODS:
+                    if not isinstance(data, list):
+                        raise TypeError("cached result is not a list")
+                    data = [restore_type.model_validate(row).model_dump(mode="python") for row in data]
+                else:
+                    restored = restore_type.model_validate(data)
+                    data = (
+                        restored.model_dump(mode="python")
+                        if method in {"get_crypto_market", "get_contract_prices"}
+                        else restored
+                    )
             except Exception:  # noqa: BLE001 - a replay that fails validation is a miss, not an error
                 self._quarantine(path)
                 return None
@@ -602,6 +698,7 @@ class ProviderRegistry:
                     "used_fallback": index > 0,
                     "from_cache": False,
                     "degraded": index > 0,
+                    "errors": [],
                 }
                 self.breaker.record_success(provider, host)
                 if index > 0:
@@ -614,7 +711,7 @@ class ProviderRegistry:
                 if exc.cls == RATE_LIMITED:
                     # A rate-limited verdict trips the host limiter for the rest of the run (#103).
                     self.limiter.trip(host)
-                errors.append(f"{provider.name}: {redact(str(exc))}")
+                errors.append(f"{provider.name}: {exc}")
                 continue
 
         # All Providers failed → last-good cache (expired/undated/version-mismatched entries
@@ -688,12 +785,13 @@ class ProviderRegistry:
 
     def status(self) -> dict[str, list[dict[str, Any]]]:
         out: dict[str, list[dict[str, Any]]] = {}
-        for domain, providers in self._providers.items():
+        providers = [provider for domain_providers in self._providers.values() for provider in domain_providers]
+        with ThreadPoolExecutor(max_workers=min(4, max(1, len(providers)))) as pool:
+            health = dict(zip(providers, pool.map(lambda provider: provider.health(), providers), strict=True))
+        for domain, domain_providers in self._providers.items():
             out[domain] = []
-            for provider in providers:
-                health = provider.health()
-                self.health_map[provider.name] = health
-                out[domain].append(health.model_dump())
+            for provider in domain_providers:
+                result = health[provider]
+                self.health_map[provider.name] = result
+                out[domain].append(result.model_dump())
         return out
-
-

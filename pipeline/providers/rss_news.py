@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import time
 from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from typing import Any
 from urllib.parse import urlparse
 
@@ -20,13 +21,15 @@ import feedparser
 import httpx
 
 from pipeline.config.models import NewsSource
-from pipeline.providers.base import BaseProvider, ProviderError, ProviderHealth, guarded_client, redact
-from pipeline.utils import now_utc
-
-UA = (
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+from pipeline.providers._util import UA
+from pipeline.providers.base import (
+    BaseProvider,
+    ProviderError,
+    ProviderHealth,
+    guarded_client,
+    redact,
 )
+from pipeline.utils import now_utc
 
 
 class RssNewsProvider(BaseProvider):
@@ -104,7 +107,7 @@ class RssNewsProvider(BaseProvider):
                     raw, channel_link = self._fetch_feed(url)
                     normalized: list[dict[str, Any]] = []
                     invalid_entries = 0
-                    for entry in raw[:max_items]:
+                    for entry in raw:
                         item = _normalize_entry(
                             entry, source, source_id,
                             max_chars=self.summary_max_chars, channel_link=channel_link,
@@ -113,6 +116,8 @@ class RssNewsProvider(BaseProvider):
                             invalid_entries += 1
                             continue
                         normalized.append(item)
+                        if len(normalized) >= max_items:
+                            break
                     if not normalized:
                         raise ProviderError(f"RSS source returned no valid entries ({invalid_entries} invalid)")
                     fetched_at = now_utc()
@@ -185,8 +190,9 @@ def _entry_date(entry: Any) -> str | None:
         if not raw:
             continue
         try:
-            parser = getattr(feedparser, "_parse_date", None) or getattr(feedparser.datetimes, "_parse_date", None)
-            parsed = parser(raw) if parser else None
+            parsed = entry.get(f"{key}_parsed")
+            if parsed is None:
+                parsed = parsedate_to_datetime(raw)
             if parsed:
                 if hasattr(parsed, "tm_year"):
                     parsed = datetime(*parsed[:6], tzinfo=timezone.utc)

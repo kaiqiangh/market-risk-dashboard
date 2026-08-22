@@ -6,13 +6,10 @@ On rate limiting, raise ProviderError → degradation chain (FedWatch absence do
 
 from __future__ import annotations
 
+from pipeline.providers._util import UA
 from pipeline.providers.base import ProviderError
 
 YAHOO_CHART = "https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
-UA = (
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"
-)
 
 
 def fetch_contract_price(symbol: str, timeout: float = 12.0) -> float | None:

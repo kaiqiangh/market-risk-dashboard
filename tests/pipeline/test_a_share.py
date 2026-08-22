@@ -4,6 +4,7 @@ quote/history decoupling that lets a cached quote survive a missing history."""
 from __future__ import annotations
 
 import sys
+import time
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
@@ -71,6 +72,21 @@ class TestAkshareTencentBackend:
         assert calls[0]["adjust"] == "qfq"
         assert result.rows[-1]["close"] == pytest.approx(385.0)
         assert result.rows[0]["date"] == "2026-08-05"
+
+    def test_history_timeout_is_enforced(self, tmp_path: Path, monkeypatch) -> None:
+        from pipeline.providers.akshare_provider import AkshareProvider
+
+        class _SlowAK:
+            def stock_zh_a_hist_tx(self, **kwargs):
+                time.sleep(0.05)
+                return pd.DataFrame()
+
+        monkeypatch.setitem(sys.modules, "akshare", _SlowAK())
+        provider = AkshareProvider(Settings(_env_file=None, artifacts_dir=tmp_path))
+        provider.timeout_seconds = 0.001
+
+        with pytest.raises(ProviderError, match="timed out"):
+            provider.get_history("603986.SH", period="1y")
 
 
 class _FakeRegistry:

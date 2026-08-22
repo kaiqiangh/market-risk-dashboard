@@ -5,12 +5,12 @@ Direct httpx connection; Demo key read from .env (DATA_COINGECKO_API_KEY).
 
 from __future__ import annotations
 
-import math
 import time
 from typing import Any
 
 import httpx
 
+from pipeline.providers._util import _f
 from pipeline.providers.base import (
     BaseProvider,
     ProviderError,
@@ -25,6 +25,7 @@ class CoinGeckoProvider(BaseProvider):
     name = "coingecko"
     domain = "crypto"
     hosts = ("api.coingecko.com",)
+    requires_api_key = True
 
     def __init__(self, settings=None) -> None:
         super().__init__(settings)
@@ -47,6 +48,8 @@ class CoinGeckoProvider(BaseProvider):
 
     def health(self) -> ProviderHealth:
         started = time.monotonic()
+        if not self.api_key:
+            return ProviderHealth(provider=self.name, ok=False, error="missing DATA_COINGECKO_API_KEY", checked_at=None)
         try:
             data = self._get_simple_price()
             ok = bool(data)
@@ -62,8 +65,8 @@ class CoinGeckoProvider(BaseProvider):
                 error=str(exc)[:200], checked_at=None,
             )
 
-    def _get(self, path: str, params: dict[str, Any]) -> dict[str, Any]:
-        def _fetch() -> dict[str, Any]:
+    def _get(self, path: str, params: dict[str, Any]) -> Any:
+        def _fetch() -> Any:
             resp = self._client.get(f"{CG_BASE}{path}", params=params, headers=self._headers())
             if resp.status_code != 200:
                 # #103/E-3: classification (429 → rate_limited) + redaction at one boundary.
@@ -74,7 +77,7 @@ class CoinGeckoProvider(BaseProvider):
                     detail=f"CoinGecko {path}: HTTP {resp.status_code}",
                 )
             data = resp.json()
-            if not isinstance(data, dict):
+            if not isinstance(data, (dict, list)):
                 raise ProviderError("CoinGecko unexpected payload")
             return data
 
@@ -82,34 +85,46 @@ class CoinGeckoProvider(BaseProvider):
         return _fetch()
 
     def _get_simple_price(self) -> dict[str, Any]:
-        return self._get("/simple/price", {"ids": ",".join(self.cg_ids), "vs_currencies": "usd"})
+        data = self._get("/simple/price", {"ids": ",".join(self.cg_ids), "vs_currencies": "usd"})
+        if not isinstance(data, dict):
+            raise ProviderError("CoinGecko simple price returned an unexpected payload")
+        return data
 
     def get_crypto_market(self) -> dict[str, Any]:
         """Return {assets: [...], btc_dominance, market_cap_total}."""
-        price_data = self._get_simple_price()
-        id_map = self.cg_id_map
+        if not self.api_key:
+            raise ProviderError("CoinGecko: missing DATA_COINGECKO_API_KEY")
+        market_data = self._get(
+            "/coins/markets",
+            {
+                "vs_currency": "usd",
+                "ids": ",".join(self.cg_ids),
+                "price_change_percentage": "24h,7d,30d",
+            },
+        )
+        if not isinstance(market_data, list):
+            raise ProviderError("CoinGecko market data returned an unexpected payload")
 
-        # Per-asset details (market cap/volume) — one call per coin, 3 total, quota is manageable
         assets: list[dict[str, Any]] = []
-        for cg_id, symbol in id_map.items():
-            detail = self._get(
-                f"/coins/{cg_id}",
-                {"localization": "false", "tickers": "false", "community_data": "false", "developer_data": "false"},
-            )
-            md = detail.get("market_data", {})
-            price = md.get("current_price", {}).get("usd")
+        for detail in market_data:
+            if not isinstance(detail, dict):
+                continue
+            symbol = self.cg_id_map.get(str(detail.get("id", "")).lower())
+            if symbol is None:
+                continue
+            price = detail.get("current_price")
             if price is None:
                 continue
             assets.append(
                 {
                     "symbol": symbol,
-                    "name": detail.get("name", symbol),
+                    "name": detail.get("name") or symbol,
                     "price": _f(price),
-                    "change_1d": _f(md.get("price_change_percentage_24h")),
-                    "change_1w": _f(md.get("price_change_percentage_7d")),
-                    "change_1m": _f(md.get("price_change_percentage_30d")),
-                    "market_cap": _f(md.get("market_cap", {}).get("usd")),
-                    "volume_24h": _f(md.get("total_volume", {}).get("usd")),
+                    "change_1d": _f(detail.get("price_change_percentage_24h")),
+                    "change_1w": _f(detail.get("price_change_percentage_7d")),
+                    "change_1m": _f(detail.get("price_change_percentage_30d")),
+                    "market_cap": _f(detail.get("market_cap")),
+                    "volume_24h": _f(detail.get("total_volume")),
                     "source": "coingecko",
                     "updated_at": now_utc(),
                 }
@@ -124,16 +139,6 @@ class CoinGeckoProvider(BaseProvider):
             "market_cap_total": _f(gd.get("total_market_cap", {}).get("usd")),
             "sentiment": None,
         }
-
-
-def _f(value) -> float | None:
-    try:
-        f = float(value)
-        return None if (math.isnan(f) or math.isinf(f)) else round(f, 6)
-    except (TypeError, ValueError):
-        return None
-
-
 def _ratio01(value) -> float | None:
     """CoinGecko percentage (e.g. 56.23) → 0-1 ratio."""
     f = _f(value)

@@ -203,3 +203,11 @@ def test_all_sources_failed_raises(tmp_path: Path) -> None:
     provider._client = client
     with pytest.raises(ProviderError, match="all sources failed"):
         provider.get_economic_calendar("2026-08-07", "2026-08-30")
+
+
+def test_fomc_markup_without_year_sections_is_not_silent_empty(tmp_path: Path) -> None:
+    provider = _provider(tmp_path)
+    provider._client = _Client(fred_by_release={}, fomc_html="<html>changed</html>")
+
+    with pytest.raises(ProviderError, match="no year sections"):
+        provider._fomc_meetings("2026-08-07", "2026-08-30")

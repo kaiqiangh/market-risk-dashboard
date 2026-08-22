@@ -14,6 +14,7 @@ Pins the contracts the ticket installs (E-3, S-1, S-2, #91/#92):
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import httpx
@@ -23,6 +24,7 @@ from pipeline.providers.base import (
     PERMANENT,
     RATE_LIMITED,
     TRANSIENT,
+    GuardedClient,
     ProviderError,
     ProviderHealth,
     ProviderRegistry,
@@ -134,6 +136,24 @@ def test_key_bearing_http_error_never_reaches_the_caller(tmp_path: Path) -> None
         registry.call("test", "get_quote", "q1", args=("SYM",))
     assert key not in str(excinfo.value)
     assert "apikey" not in str(excinfo.value)
+
+
+def test_redirect_relay_voucher_is_scoped_to_one_request() -> None:
+    """A relay may vouch for its redirect target without leaking trust to another GET."""
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.host == "relay.example":
+            return httpx.Response(302, headers={"location": "https://publisher.example/feed"}, request=request)
+        return httpx.Response(200, content=b"ok", request=request)
+
+    client = GuardedClient(
+        {"relay.example"}, relay_hosts={"relay.example"}, transport=httpx.MockTransport(handler)
+    )
+    try:
+        assert client.get("https://relay.example/feed").text == "ok"
+        with pytest.raises(ProviderError, match="not in outbound allowlist"):
+            client.get("https://blocked.example/feed")
+    finally:
+        client.close()
 
 
 # -------------------------------------------------------------------------------------
@@ -293,4 +313,35 @@ def test_cache_version_mismatch_is_quarantined_miss(tmp_path: Path) -> None:
     with pytest.raises(ProviderError, match="all Providers failed"):
         registry.call("test", "get_quote", "q_old", args=("SYM",))
     assert not path.exists()
+    assert path.with_name(path.name + ".corrupt").exists()
+
+
+@pytest.mark.parametrize(
+    ("method", "data"),
+    [
+        ("get_earnings_calendar", [{"date": "2026-08-06"}]),
+        ("get_economic_calendar", [{"id": "econ-1", "title": "CPI"}]),
+        ("fetch_news", [{"title": "headline"}]),
+        ("get_crypto_market", {"assets": [{"price": 100.0}]}),
+    ],
+)
+def test_corrupt_parseable_domain_cache_is_quarantined(
+    tmp_path: Path, method: str, data: object
+) -> None:
+    registry = _registry(tmp_path, _FakeProvider())
+    path = registry._cache_path("test", method)
+    path.write_text(
+        json.dumps(
+            {
+                "method": method,
+                "data": data,
+                "fetched_at": now_utc(),
+                "provider": "fake",
+                "schema_version": "1.1.0",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    assert registry._load_last_good("test", method, method) is None
     assert path.with_name(path.name + ".corrupt").exists()

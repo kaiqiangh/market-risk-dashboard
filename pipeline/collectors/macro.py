@@ -20,7 +20,6 @@ from pipeline.fedwatch import (
     FedWatchInput,
     compute_fedwatch,
     enrich_with_history,
-    fetch_contract_price,
     insufficient_data_snapshot,
     load_history,
     meeting_date_for_contract,
@@ -172,16 +171,20 @@ class MacroCollector:
             self.degraded.append("FedWatch: no EFFR anchor")
             return self._accumulate(insufficient_data_snapshot(None))
 
-        prices: dict[str, float | None] = {}
-        for code in next_contract_codes():
-            try:
-                prices[code] = fetch_contract_price(code)
-            except ProviderError as exc:
-                self.degraded.append(f"FedWatch {code}: {exc}")
-                self._degraded_sources.add("fedwatch")
-                prices[code] = None
-
         codes = next_contract_codes()
+        try:
+            out = self.registry.call("fedwatch", "get_contract_prices", "fedwatch_contracts", args=(codes,))
+            prices: dict[str, float | None] = out["result"]
+            self.provider_status["fedwatch"] = out["meta"]
+            if out["meta"].get("degraded"):
+                self._degraded_sources.add("fedwatch")
+                self.degraded.append("FedWatch: provider served degraded data")
+        except ProviderError as exc:
+            prices = {}
+            self.provider_status["fedwatch"] = {"degraded": True, "error": str(exc)}
+            self.degraded.append(f"FedWatch: {exc}")
+            self._degraded_sources.add("fedwatch")
+
         if not any(v is not None for v in prices.values()):
             self._fedwatch_failed = True
             self._degraded_sources.add("fedwatch")
