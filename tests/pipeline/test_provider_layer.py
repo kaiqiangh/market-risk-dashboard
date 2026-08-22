@@ -52,6 +52,34 @@ def test_redact_strips_url_queries_and_masks_key_shapes() -> None:
     assert len(redact(long)) == 200
 
 
+def test_redact_masks_fmp_and_coingecko_key_shapes() -> None:
+    """Synthetic shapes only — never a real key (#189).
+
+    A 32-char mixed-case alnum token (FMP style is not always hex) and a CG- prefixed
+    demo key were empirically NOT masked before #189; the scan-secrets literal gate was
+    the only thing standing between them and a published file.
+    """
+    fmp_style = "aB3dEf7hIj9kLmN0pQr5tUv8wXyZ1234"  # 32 mixed-case alnum, synthetic
+    assert fmp_style not in redact("history fetch failed for " + fmp_style)
+    assert "***" in redact("history fetch failed for " + fmp_style)
+
+    cg_key = "CG-" + "zK9pQ2mX7vB4nR8t"  # CoinGecko demo shape, synthetic
+    assert cg_key not in redact("coingecko error: key " + cg_key)
+    assert "CG-***" in redact("coingecko error: key " + cg_key)
+
+    # Boundary precision: a 35-char token sits between the two windows ({32} has no
+    # end-boundary mid-run; {36,64} starts at 36), so it survives - proof the new rule
+    # masks exactly its window, not everything around it.
+    tok35 = "a" * 17 + "B" * 18
+    assert tok35 in redact("token " + tok35)
+
+    # A 40-hex run is INSIDE the pre-existing deliberate 36-64 mask window (any 36-64
+    # alnum token reads as a long credential in free text). Dedupe ids never travel
+    # through provider error text, so nothing published loses its id.
+    sha1 = "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    assert sha1 not in redact("weird payload " + sha1)
+
+
 def test_from_exception_classifies_and_redacts_http_errors() -> None:
     request = httpx.Request("GET", "https://api.fmp.example/calendar?apikey=0123456789abcdef0123456789abcdef")
     response = httpx.Response(429, request=request, headers={"Retry-After": "5"})
