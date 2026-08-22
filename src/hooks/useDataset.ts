@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import type { z } from "zod";
-import { datasetClient, type DatasetOptions } from "@/lib/api";
+import { datasetClient, type DatasetOptions, type HistoryKey, type MetadataKey } from "@/lib/api";
 import { staleTimeFor } from "@/lib/freshness";
 import type { DatasetKey } from "@/schemas";
 
@@ -25,7 +25,7 @@ export interface UseDatasetResult<T> {
 }
 
 export function useDataset<T>(
-  key: DatasetKey,
+  key: DatasetKey | HistoryKey | MetadataKey,
   opts: DatasetOptions = {},
   schema?: z.ZodTypeAny,
 ): UseDatasetResult<T> {

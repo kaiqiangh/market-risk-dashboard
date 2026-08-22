@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import echarts from "./echarts";
 import { chartTheme } from "./theme";
@@ -37,7 +37,15 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
   const { t, i18n } = useTranslation("dashboard");
   const locale = i18n.language;
   const ref = useRef<HTMLDivElement>(null);
+  const chartRef = useRef<echarts.ECharts | null>(null);
   const [mode, setMode] = useState<"echarts" | "fallback">("echarts");
+  const chartData = useMemo(
+    () => ({
+      dates: points.map((p) => p.date),
+      scores: points.map((p) => Number(p.total_score.toFixed(2))),
+    }),
+    [points],
+  );
 
   useEffect(() => {
     if (!ref.current || points.length === 0) return;
@@ -45,13 +53,26 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
       setMode("fallback");
       return;
     }
-    let chart: echarts.ECharts | undefined;
     try {
-      chart = echarts.init(ref.current);
-      const th = chartTheme();
-      const dates = points.map((p) => p.date);
-      const scores = points.map((p) => Number(p.total_score.toFixed(2)));
-      chart.setOption({
+      chartRef.current = echarts.init(ref.current);
+    } catch {
+      setMode("fallback");
+    }
+    const onResize = () => chartRef.current?.resize();
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      chartRef.current?.dispose();
+      chartRef.current = null;
+    };
+  }, [points.length]);
+
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart) return;
+    const th = chartTheme();
+    chart.setOption(
+      {
         grid: { left: 8, right: 16, top: 24, bottom: 8, containLabel: true },
         tooltip: {
           trigger: "axis",
@@ -64,7 +85,7 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
         },
         xAxis: {
           type: "category",
-          data: dates,
+          data: chartData.dates,
           axisLine: { lineStyle: { color: th.grid } },
           axisLabel: { color: th.axis, fontSize: 10 },
         },
@@ -81,7 +102,7 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
             type: "line",
             smooth: true,
             showSymbol: false,
-            data: scores,
+            data: chartData.scores,
             lineStyle: { color: th.accent, width: 1.5 },
             areaStyle: { color: th.accentSoft },
             // Risk thresholds in risk tones (the only saturated marks on the chart)
@@ -96,18 +117,10 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
             },
           },
         ],
-      });
-      const onResize = () => chart?.resize();
-      window.addEventListener("resize", onResize);
-      return () => {
-        window.removeEventListener("resize", onResize);
-        chart?.dispose();
-      };
-    } catch {
-      setMode("fallback");
-      return;
-    }
-  }, [points, locale, t]);
+      },
+      { notMerge: true },
+    );
+  }, [chartData, locale, t]);
 
   if (points.length === 0) {
     return <EmptyState title={t("trend.empty")} message={t("trend.emptyHint")} data-testid="chart-empty" />;

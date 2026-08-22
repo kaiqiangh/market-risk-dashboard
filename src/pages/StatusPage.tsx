@@ -1,7 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { datasetClient } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { StatusBadge } from "@/components/layout/StatusBadge";
 import { ErrorState } from "@/components/ui/ErrorState";
@@ -10,6 +8,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { formatDateTime } from "@/lib/format";
 import { FreshnessDocument, SourcesDocument, utcDateTime, type DomainStatus } from "@/schemas";
 import { displayProvider, displayReasonDetail } from "@/lib/displayLanguage";
+import { useDataset } from "@/hooks/useDataset";
 
 /**
  * StatusPage: system status page — the page whose job is truthfulness, so it validates
@@ -39,26 +38,9 @@ export default function StatusPage() {
   const { t, i18n } = useTranslation("status");
   const locale = i18n.language;
 
-  const sourcesQ = useQuery({
-    queryKey: ["metadata", "sources"],
-    queryFn: () => datasetClient.fetch<z.infer<typeof SourcesDocument>>("sources", {}, SourcesDocument),
-    staleTime: 60_000,
-    retry: 1,
-  });
-
-  const freshnessQ = useQuery({
-    queryKey: ["metadata", "freshness"],
-    queryFn: () => datasetClient.fetch<z.infer<typeof FreshnessDocument>>("freshness", {}, FreshnessDocument),
-    staleTime: 60_000,
-    retry: 1,
-  });
-
-  const schemaQ = useQuery({
-    queryKey: ["metadata", "schema-version"],
-    queryFn: () => datasetClient.fetch<z.infer<typeof SchemaVersion>>("schema-version", {}, SchemaVersion),
-    staleTime: 60_000,
-    retry: 1,
-  });
+  const sourcesQ = useDataset<z.infer<typeof SourcesDocument>>("sources", {}, SourcesDocument);
+  const freshnessQ = useDataset<z.infer<typeof FreshnessDocument>>("freshness", {}, FreshnessDocument);
+  const schemaQ = useDataset<z.infer<typeof SchemaVersion>>("schema-version", {}, SchemaVersion);
 
   const datasets = freshnessQ.data?.datasets ?? {};
 

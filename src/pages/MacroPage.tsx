@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { datasetClient } from "@/lib/api";
 import { useDataset } from "@/hooks/useDataset";
 import type { MacroEnvelope } from "@/schemas";
 import { MacroIndicatorCard } from "@/components/macro/MacroIndicatorCard";
@@ -32,12 +30,21 @@ export default function MacroPage() {
   const [historyGroup, setHistoryGroup] = useState<MacroGroup>("fx");
   const [historySlice, setHistorySlice] = useState<"30d" | "90d">("30d");
 
-  const historyQ = useQuery({
-    queryKey: ["history", "macro", historyGroup, historySlice],
-    queryFn: () => datasetClient.fetch<MacroBundle>("macro", { slice: `${historyGroup}.${historySlice}` }, MacroBundleSchema),
-    staleTime: 60_000,
-    retry: 1,
-  });
+  const chartItems = useMemo(
+    () => macroQ.data?.payload.rates.concat(macroQ.data.payload.credit)
+      .filter((ind) => ind.value !== null)
+      .map((ind) => ({
+        label: t(`indicatorNames.${ind.key}`, { defaultValue: t("indicatorNames.unknown") }),
+        value: ind.value as number,
+        unit: ind.unit,
+      })) ?? [],
+    [macroQ.data, t],
+  );
+  const historyQ = useDataset<MacroBundle>(
+    "macro",
+    { slice: `${historyGroup}.${historySlice}` },
+    MacroBundleSchema,
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -62,13 +69,7 @@ export default function MacroPage() {
                 // Cross-sectional market pricing stays rates + credit: VIX (~17) on the
                 // same linear axis would flatten the % bars (review, #96) — volatility
                 // renders in its own section and history instead.
-                items={[...macroQ.data.payload.rates, ...macroQ.data.payload.credit]
-                  .filter((ind) => ind.value !== null)
-                  .map((ind) => ({
-                    label: t(`indicatorNames.${ind.key}`, { defaultValue: t("indicatorNames.unknown") }),
-                    value: ind.value as number,
-                    unit: ind.unit,
-                  }))}
+              items={chartItems}
               />
           </section>
 

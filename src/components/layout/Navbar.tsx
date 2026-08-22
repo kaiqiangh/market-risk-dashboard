@@ -112,7 +112,7 @@ export function Navbar() {
               <MoreHorizontal className="h-4 w-4" aria-hidden />
               <span className="hidden sm:inline">{t("nav.more")}</span>
             </button>
-            {moreOpen ? <div className="absolute left-0 top-full z-50 mt-1 min-w-40 rounded-md border border-border bg-popover p-1 shadow-lg" role="menu">
+            {moreOpen ? <div className="absolute left-0 top-full z-50 mt-1 min-w-40 rounded-md border border-border bg-surface-2 p-1 shadow-lg" role="menu">
               {morePages.map((page) => {
                 const Icon = PAGE_ICONS[page];
                 return (

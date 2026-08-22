@@ -95,6 +95,8 @@ describe("mobile layout", () => {
     expect(more).toBeVisible();
     expect(more.className).toContain("min-h-11");
     fireEvent.click(more);
+    const menu = screen.getByRole("menu");
+    expect(menu).toHaveClass("bg-surface-2");
     expect(screen.getByRole("menuitem", { name: /板块/ })).toBeVisible();
     fireEvent.click(screen.getByRole("menuitem", { name: /板块/ }));
     expect(screen.queryByRole("menu")).toBeNull();
