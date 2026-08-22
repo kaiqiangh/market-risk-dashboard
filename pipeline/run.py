@@ -77,6 +77,10 @@ from pipeline.validation.freshness import (
     finalize_freshness,
 )
 
+# Keep the pre-T6 imports working while the implementation lives in its focused module.
+_build_risk_context = build_risk_context
+_read_prev_risk = read_prev_risk
+
 #: The AI-side Chinese translation file the merge step consumes (#192).
 TRANSLATIONS_FILENAME = "news.zh-translations.json"
 
