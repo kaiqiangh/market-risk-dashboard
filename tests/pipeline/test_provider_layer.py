@@ -318,6 +318,27 @@ def test_cache_version_mismatch_is_quarantined_miss(tmp_path: Path) -> None:
     assert path.with_name(path.name + ".corrupt").exists()
 
 
+def test_future_cache_timestamp_is_quarantined_miss(tmp_path: Path) -> None:
+    registry = _registry(tmp_path, _FakeProvider())
+    path = registry._cache_path("test", "q_future")
+    path.write_text(
+        json.dumps(
+            {
+                "method": "get_quote",
+                "data": {"symbol": "SYM", "price": 2.0},
+                "fetched_at": "2999-01-01T00:00:00Z",
+                "provider": "fake",
+                "schema_version": "1.1.0",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    assert registry._load_last_good("test", "q_future", "get_quote") is None
+    assert not path.exists()
+    assert path.with_name(path.name + ".corrupt").exists()
+
+
 @pytest.mark.parametrize(
     ("method", "data"),
     [

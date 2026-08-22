@@ -619,7 +619,11 @@ class ProviderRegistry:
             return None
         if fetched.tzinfo is None:
             fetched = fetched.replace(tzinfo=UTC)
-        age_hours = max(0.0, (datetime.now(UTC) - fetched).total_seconds() / 3600.0)
+        now = datetime.now(UTC)
+        if fetched > now:
+            self._quarantine(path)
+            return None
+        age_hours = (now - fetched).total_seconds() / 3600.0
         if age_hours > cache_max_age_hours():
             return None
 
