@@ -66,7 +66,7 @@ lxml==6.1.1
     # via akshare
 multitasking==0.0.13
     # via yfinance
-numpy==2.5.1
+numpy==2.5.2
     # via
     #   market-risk-dashboard (pyproject.toml)
     #   exchange-calendars
