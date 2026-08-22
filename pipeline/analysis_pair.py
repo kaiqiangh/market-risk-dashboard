@@ -319,4 +319,3 @@ def write_analysis_only_report(writer: StorageWriter, outcomes: RunOutcomes) -> 
         degraded_datasets=degraded_datasets,
     )
 
-
