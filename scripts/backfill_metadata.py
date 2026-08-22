@@ -97,33 +97,34 @@ def _record_ai_documents(outcomes: RunOutcomes, latest_dir: Path) -> None:
     """
     for key in ("analysis", "news_translations"):
         spec = registry.require(key)
-        failure: str | None = None
+        kind: str | None = None  # typed branch tag; no string-prefix dispatch (#188 review)
+        detail = ""
         for filename in spec.filenames:
             path = latest_dir / filename
             if not path.exists():
-                failure = "missing " + filename
+                kind, detail = "missing", filename
                 break
             loaded = _load(path, key)
             if loaded is None:
-                failure = "unreadable " + filename
+                kind, detail = "unreadable", filename
                 break
             try:
                 spec.model.model_validate(loaded)
             except Exception as exc:  # noqa: BLE001 - any invalid document is one degraded dataset
-                failure = "invalid " + filename + ": " + type(exc).__name__
+                kind, detail = "invalid", filename + ": " + type(exc).__name__
                 break
-        if failure is None:
+        if kind is None:
             outcomes.record(key, "fresh", FreshnessReason(code="ok", detail="AI documents present and schema-valid"))
             state = "fresh"
             note = "(ok) [AI documents validated]"
-        elif failure.startswith("missing"):
-            outcomes.record(key, "missing", FreshnessReason(code="not_collected_this_run", detail=failure))
+        elif kind == "missing":
+            outcomes.record(key, "missing", FreshnessReason(code="not_collected_this_run", detail=kind + " " + detail))
             state = "missing"
-            note = "(" + failure + ")"
+            note = "(" + kind + " " + detail + ")"
         else:
-            outcomes.record(key, "degraded", FreshnessReason(code="provider_parse_error", detail=failure))
+            outcomes.record(key, "degraded", FreshnessReason(code="provider_parse_error", detail=kind + " " + detail))
             state = "degraded"
-            note = "(" + failure + ")"
+            note = "(" + kind + " " + detail + ")"
         print("  " + key.ljust(10) + " -> " + state.ljust(9) + " " + note)
 
 

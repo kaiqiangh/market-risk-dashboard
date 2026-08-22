@@ -25,13 +25,13 @@ from scripts import backfill_metadata as bfm
     [
         (1, "1mo"),
         (30, "1mo"),
-        (35, "1mo"),
-        (36, "3mo"),
+        (31, "3mo"),   # band tops are what the provider periods COVER (~30/91/183 bars)
         (90, "3mo"),
-        (100, "3mo"),
-        (101, "6mo"),
-        (200, "6mo"),
-        (201, "1y"),
+        (91, "3mo"),
+        (92, "6mo"),
+        (180, "6mo"),
+        (183, "6mo"),
+        (184, "1y"),
         (3650, "1y"),
     ],
 )
@@ -91,6 +91,8 @@ def test_run_backfill_uses_mapped_period_and_reports_failures(
     periods = {args[1] for _, args in calls}
     assert periods == {"3mo"}  # 60 days maps to 3mo, not the old hardcoded 1y
     assert reports and reports[0]["failed_datasets"] == ["IWM"]
+    # Per-symbol timings reach the report (spec D1), including for the failed symbol.
+    assert set(reports[0]["durations"]) >= {"backfill_SPY", "backfill_IWM", "total"}
     # SPY benchmark series still written to history/market despite IWM failing.
     assert slices_written and slices_written[0][0]["symbol"] == "SPY"
 
