@@ -20,6 +20,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Fail hung runners instead of burning the 6h default (#190)
+    timeout-minutes: 20
     permissions:
       contents: read
     steps:

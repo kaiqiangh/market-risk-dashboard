@@ -236,9 +236,17 @@ def test_scheduled_runner_fails_closed_after_repository_errors() -> None:
     assert "nothing was pushed" in script
     assert "local verified commit $COMMIT_SHA" in script
     assert "git rev-parse HEAD" in script
-    assert "git ls-remote origin refs/heads/dev" in script
+    # Branch is parameterized (#190): default dev via SCHEDULED_BRANCH, but never
+    # hardcoded, so a scheduled run can target another branch without edits.
+    assert 'BRANCH="${SCHEDULED_BRANCH:-dev}"' in script
+    assert "git ls-remote origin \"refs/heads/$BRANCH\"" in script
     assert "|| true" not in script
-    assert "git pull --rebase origin dev; then" in script
+    assert "git pull --rebase origin \"$BRANCH\"; then" in script
+    # Timeouts wrap every network/bulk step (#190).
+    assert "run_with_timeout 120 git pull" in script
+    assert "run_with_timeout 300 git push" in script
+    assert "run_with_timeout 30 git ls-remote" in script
+    assert "git status --porcelain -- public/ config/" in script
 
 
 def test_deploy_pages_runs_full_data_and_secret_gates() -> None:
