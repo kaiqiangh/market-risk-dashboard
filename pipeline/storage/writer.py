@@ -97,10 +97,12 @@ class StorageWriter:
         fd, tmp_name = tempfile.mkstemp(dir=str(path.parent), prefix=f".{path.name}.", suffix=".tmp")
         tmp_path = Path(tmp_name)
         try:
-            # mkstemp creates 0600 by design; a PUBLISHED file must honor the process
-            # umask like any normal create would (#191: public/data/latest was landing
-            # -rw------- and unreadable by the Pages deploy user). Reading the umask
-            # requires the set-0-and-restore dance; this is a single-threaded CLI.
+            # mkstemp creates 0600 by design; a PUBLISHED artifact must be group/other
+            # READABLE (#191: public/data/latest was landing -rw-------, unreadable by
+            # the Pages deploy user). The base is deliberately capped at 0644 - never
+            # granting group/other write regardless of umask - so this is publish policy,
+            # not literal open(2) semantics. Reading the umask requires the set-0-and-
+            # restore dance; this is a single-threaded CLI.
             umask = os.umask(0)
             os.umask(umask)
             os.fchmod(fd, 0o644 & ~umask)

@@ -57,7 +57,7 @@ def test_check_slice_consistency_detects_diverged_slices_and_count(tmp_path: Pat
 
     report = CheckReport()
     check_slice_consistency(tmp_path, report)
-    joined = chr(10).join(report.errors)
+    joined = "\n".join(report.errors)
     assert "30d.json: diverged from daily.json tail" in joined
     assert "index.json: count 5 != 30 daily rows" in joined
 
@@ -87,10 +87,9 @@ def test_translations_schema_version_single_source() -> None:
 
     assert writer_mod.TRANSLATIONS_SCHEMA_VERSION == "1.0.0"
     body = pl.Path(writer_mod.__file__).read_text(encoding="utf-8")
-    q = chr(34)
     restated = [
         line
         for line in body.splitlines()
-        if q + "1.0.0" + q in line and "TRANSLATIONS_SCHEMA_VERSION =" not in line
+        if '"1.0.0"' in line and "TRANSLATIONS_SCHEMA_VERSION =" not in line
     ]
     assert restated == [], f"translations version literal restated: {restated}"

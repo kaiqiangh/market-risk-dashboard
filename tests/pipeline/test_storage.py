@@ -425,8 +425,6 @@ def test_write_json_fsyncs_before_replace(tmp_path: Path, monkeypatch: pytest.Mo
     # directory fsync may follow the replace but nothing may precede the file fsync.
     assert events[0].startswith("fsync:"), f"first event must be file fsync: {events}"
     assert events[1].startswith("replace:"), f"second event must be the replace: {events}"
-    assert events[0].startswith("fsync:"), f"fsync must precede replace, saw: {events}"
-    assert events[1].startswith("replace:"), f"replace must follow fsync, saw: {events}"
 
 
 def test_write_json_still_writes_readable_output(tmp_path: Path) -> None:

@@ -318,6 +318,10 @@ def check_news_duplicates(latest_dir: Path, report: CheckReport) -> None:
             report.error(f"news.json: duplicate news (title+source+published_at) {sig[0]!r} (appears {count} times)")
 
 
+def _series_label(series_dir: Path, data_dir: Path) -> str:
+    """Stable diagnostic label: path under history/, e.g. macro/BAA10Y (#191)."""
+    return series_dir.relative_to(data_dir / "history").as_posix()
+
 def _discover_series_dirs(data_dir: Path) -> list[Path]:
     """Every directory owning a daily.json is a series (#191).
 
@@ -343,7 +347,7 @@ def check_history(data_dir: Path, report: CheckReport) -> None:
         return
     series_dirs = _discover_series_dirs(data_dir)
     for series_dir in series_dirs:
-        series = series_dir.name
+        series = _series_label(series_dir, data_dir)
         for slice_name in ("30d", "90d", "daily"):
             path = series_dir / f"{slice_name}.json"
             if not path.exists():
@@ -395,44 +399,42 @@ def check_slice_consistency(data_dir: Path, report: CheckReport) -> None:
     if not history_root.exists():
         return
     for series_dir in _discover_series_dirs(data_dir):
-        series = series_dir.relative_to(data_dir).as_posix().replace('history/', '', 1)
-        daily_path = series_dir / 'daily.json'
+        series = _series_label(series_dir, data_dir)
+        daily_path = series_dir / "daily.json"
         if not daily_path.exists():
             continue  # absence itself is reported by check_history
         try:
             daily = load_json_strict(daily_path)
-        except Exception as exc:  # noqa: BLE001 - already reported by check_history
-            report.error(f'history/{series}: daily.json unreadable for slice check: {exc}')
-            continue
+        except Exception as exc:  # noqa: BLE001 - already reported by check_history;
+            continue  # a second error for the same file would just be noise
         if not isinstance(daily, list):
             continue
-        for slice_name in ('30d', '90d'):
-            slice_path = series_dir / f'{slice_name}.json'
+        for slice_name in ("30d", "90d"):
+            slice_path = series_dir / f"{slice_name}.json"
             if not slice_path.exists():
                 continue  # warm-up state; check_history warns on the miss
             try:
                 sliced = load_json_strict(slice_path)
-            except Exception as exc:  # noqa: BLE001
-                report.error(f'history/{series}/{slice_name}.json: parse failed: {exc}')
+            except Exception:  # noqa: BLE001 - same single-report convention as above
                 continue
             n = int(slice_name[:-1])
             expected = daily[-n:]
             if sliced != expected:
                 report.error(
-                    f'history/{series}/{slice_name}.json: diverged from daily.json tail'
-                    f' ({len(sliced)} rows vs last {len(expected)}) - regenerate slices'
+                    f"history/{series}/{slice_name}.json: diverged from daily.json tail"
+                    f" ({len(sliced)} rows vs last {len(expected)}) - regenerate slices"
                 )
-        index_path = series_dir / 'index.json'
+        index_path = series_dir / "index.json"
         if index_path.exists():
             try:
                 index_data = load_json_strict(index_path)
-            except Exception as exc:  # noqa: BLE001
-                continue  # already reported by check_history
-            count = index_data.get('count') if isinstance(index_data, dict) else None
-            if count is not None and int(count) != len(daily):
-                report.error(
-                    f'history/{series}/index.json: count {count} != {len(daily)} daily rows'
-                )
+            except Exception:  # noqa: BLE001 - same single-report convention as above
+                continue
+            count = index_data.get("count") if isinstance(index_data, dict) else None
+            if count is not None and not isinstance(count, int):
+                report.error(f"history/{series}/index.json: count should be an integer, got {count!r}")
+            elif isinstance(count, int) and count != len(daily):
+                report.error(f"history/{series}/index.json: count {count} != {len(daily)} daily rows")
 
 
 def check_metadata_and_feeds(data_dir: Path, report: CheckReport) -> None:
