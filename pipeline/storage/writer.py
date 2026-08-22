@@ -53,6 +53,12 @@ class UndatedRowError(StorageError):
         super().__init__(f"history row in {series!r} {reason}: {row!r}")
 
 
+#: Self-describing contract version for metadata/translations.json (#191).
+#: Distinct from METADATA_SCHEMA_VERSION: this file has its own tiny shape and its
+#: own bump cadence. Single source — record_translations restated it twice before.
+TRANSLATIONS_SCHEMA_VERSION = "1.0.0"
+
+
 class StorageWriter:
     def __init__(self, data_dir: Path) -> None:
         self.data_dir = data_dir
@@ -91,11 +97,30 @@ class StorageWriter:
         fd, tmp_name = tempfile.mkstemp(dir=str(path.parent), prefix=f".{path.name}.", suffix=".tmp")
         tmp_path = Path(tmp_name)
         try:
+            # mkstemp creates 0600 by design; a PUBLISHED file must honor the process
+            # umask like any normal create would (#191: public/data/latest was landing
+            # -rw------- and unreadable by the Pages deploy user). Reading the umask
+            # requires the set-0-and-restore dance; this is a single-threaded CLI.
+            umask = os.umask(0)
+            os.umask(umask)
+            os.fchmod(fd, 0o644 & ~umask)
             with os.fdopen(fd, "w", encoding="utf-8") as handle:
                 handle.write(payload)
                 handle.flush()
                 os.fsync(handle.fileno())
             os.replace(tmp_path, path)
+            # Best-effort directory fsync (#191): makes the rename itself durable on
+            # filesystems that support it. POSIX does not require open(dir) to work,
+            # so any failure here is noise-suppressed, not a data loss path — the file
+            # content is already fsynced above.
+            try:
+                dir_fd = os.open(path.parent, os.O_RDONLY)
+                try:
+                    os.fsync(dir_fd)
+                finally:
+                    os.close(dir_fd)
+            except OSError:
+                pass
         except BaseException:
             # BaseException, not Exception: KeyboardInterrupt and SystemExit are precisely
             # the interruptions this method exists to survive, and neither is an Exception.
@@ -184,10 +209,12 @@ class StorageWriter:
         """Chinese translation merge record (architecture §2 L320 metadata/translations.json, P1-6).
 
         status: "merged" | "skipped" | "missing"; the merge time is recorded as well.
+        The schema version comes from ONE module constant (#191; the T1 review flagged
+        two restated literals here that would drift on the next version bump).
         """
         path = self.metadata_dir / "translations.json"
-        data = self._read_json(path, default={"schema_version": "1.0.0", "last_merge": None})
-        data["schema_version"] = "1.0.0"
+        data = self._read_json(path, default={"schema_version": TRANSLATIONS_SCHEMA_VERSION, "last_merge": None})
+        data["schema_version"] = TRANSLATIONS_SCHEMA_VERSION
         data["updated_at"] = now_utc()
         data["last_merge"] = {
             "status": status,
