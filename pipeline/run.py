@@ -31,8 +31,8 @@ from typing import Any
 from pipeline import __version__
 from pipeline.analysis_pair import (  # analysis-pair lifecycle (#192 extraction)
     AI_PRODUCED_DATASETS,
-    _record_ai_outcomes,
-    _write_analysis_only_report,
+    record_ai_outcomes,
+    write_analysis_only_report,
 )
 from pipeline.collectors import CalendarCollector, MacroCollector, MarketCollector, NewsCollector
 from pipeline.factlayer import FactLayerBuilder
@@ -43,8 +43,8 @@ from pipeline.risk.model import RiskModel
 from pipeline.risk_context import (  # signal assembly + gated set (#192 extraction)
     COMMAND_DATASETS,
     FULL_RUN_DATASETS,
-    _build_risk_context,
-    _read_prev_risk,
+    build_risk_context,
+    read_prev_risk,
 )
 from pipeline.schemas import (
     BaseEnvelope,
@@ -593,10 +593,10 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
                              source_updated_at=calendar_meta.get("source_updated_at"))
 
         risk_model = RiskModel(settings)
-        prev_score, prev_dims, risk_history = _read_prev_risk(writer)
+        prev_score, prev_dims, risk_history = read_prev_risk(writer)
         # #99 (verified end to end): _assemble returns AssembledDataset (the #101 single
         # assembly path); the risk context and the fact layer operate on ENVELOPES.
-        ctx = _build_risk_context(
+        ctx = build_risk_context(
             macro=macro.envelope,
             equities=equities.envelope,
             crypto=crypto.envelope,
@@ -734,7 +734,7 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         )
 
         # AI analysis freshness (P0-4)
-        _record_ai_outcomes(writer, outcomes)
+        record_ai_outcomes(writer, outcomes)
 
         # History slices
         today = now_utc()[:10]
@@ -957,7 +957,7 @@ def main(argv: list[str] | None = None) -> int:
                                 **_provider_kwargs(macro_meta, None, default="fred"),
                                 data_quality=macro_meta.get("data_quality", 1.0),
                                 source_updated_at=macro_meta.get("source_updated_at"))
-            _record_ai_outcomes(writer, outcomes)
+            record_ai_outcomes(writer, outcomes)
             _publish_metadata(writer, outcomes, results["provider_status"])
             health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
             return _finish_run(command, results, time.monotonic() - started, health)
@@ -1061,7 +1061,7 @@ def _run_fact_layer_only() -> tuple[bool, str | None]:
         ),
         provider="fact_layer",
     )
-    _record_ai_outcomes(writer, outcomes)
+    record_ai_outcomes(writer, outcomes)
     # No provider was contacted, so provider health is deliberately left as the last real run
     # left it rather than being overwritten with an empty map.
     _publish_metadata(writer, outcomes)
@@ -1101,10 +1101,10 @@ def _run_analysis_only() -> int:
     """AI analysis file validation + Chinese translation merge (architecture §1.5 steps 3/4)."""
     writer = StorageWriter(settings.data_dir)
     outcomes = RunOutcomes(scope=_run_scope("analysis-only"))
-    analysis_valid = _record_ai_outcomes(writer, outcomes)
+    analysis_valid = record_ai_outcomes(writer, outcomes)
     if not analysis_valid:
         _publish_metadata(writer, outcomes)
-        _write_analysis_only_report(writer, outcomes)
+        write_analysis_only_report(writer, outcomes)
         print("[pipeline] analysis-only: AI pair was not promoted; freshness recorded as degraded", file=sys.stderr)
         return 0
 
@@ -1126,9 +1126,9 @@ def _run_analysis_only() -> int:
             print("[pipeline] analysis-only: Chinese translation merged into news.json")
 
     outcomes = RunOutcomes(scope=_run_scope("analysis-only"))
-    _record_ai_outcomes(writer, outcomes)
+    record_ai_outcomes(writer, outcomes)
     _publish_metadata(writer, outcomes)
-    _write_analysis_only_report(writer, outcomes)
+    write_analysis_only_report(writer, outcomes)
     print("[pipeline] analysis-only: validation passed ✓")
     return 0
 

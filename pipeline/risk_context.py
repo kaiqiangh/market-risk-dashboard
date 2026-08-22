@@ -9,7 +9,7 @@ from pipeline.storage import StorageWriter
 GATED_SIGNALS = frozenset({"cyclicals_defensives_relative", "hy_treasury_relative"})
 
 
-def _build_risk_context(
+def build_risk_context(
     macro: Any,
     equities: Any,
     crypto: Any,
@@ -186,7 +186,7 @@ def _cross_asset_signal(
     }
 
 
-def _read_prev_risk(writer: StorageWriter) -> tuple[float | None, dict[str, float] | None, list[dict[str, Any]]]:
+def read_prev_risk(writer: StorageWriter) -> tuple[float | None, dict[str, float] | None, list[dict[str, Any]]]:
     """Read risk history: previous day total score / previous day dimension scores / all prior rows (P2-9 public read_history)."""
     rows = writer.read_history("risk", "daily")
     if not rows:

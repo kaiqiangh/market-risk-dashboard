@@ -304,7 +304,7 @@ def _point_in_time_context(
     previous_dimensions: dict[str, float] | None,
 ) -> dict[str, Any]:
     """Build the same context seam used by the live pipeline, using only rows through ``index``."""
-    from pipeline.run import _build_risk_context
+    from pipeline.run import build_risk_context
 
     macro = SimpleNamespace(payload=_macro_payload(panel, index))
     empty_dataset = SimpleNamespace(payload=SimpleNamespace(assets=[]))
@@ -312,7 +312,7 @@ def _point_in_time_context(
     source_metadata = panel.get("source_metadata", {})
     market_source = source_metadata.get("sources", {}).get("market", "calibration_panel")
     provenance = {"provider": str(market_source)}
-    return _build_risk_context(
+    return build_risk_context(
         macro=macro,
         equities=empty_dataset,
         crypto=empty_dataset,

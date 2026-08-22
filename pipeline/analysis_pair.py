@@ -15,22 +15,22 @@ from pipeline.validation.freshness import aggregate_freshness, finalize_freshnes
 AI_PRODUCED_DATASETS: tuple[str, ...] = ("analysis", "news_translations")
 
 
-def _analysis_pair_paths(writer: StorageWriter) -> list[Path]:
+def analysis_pair_paths(writer: StorageWriter) -> list[Path]:
     """Return the two published AI pair paths from the registry."""
     spec = dataset_registry.require("analysis")
     return [writer.latest_dir / name for name in spec.filenames]
 
 
-def _analysis_backup_paths(writer: StorageWriter) -> list[Path]:
+def analysis_backup_paths(writer: StorageWriter) -> list[Path]:
     """Return the durable last-readable pair paths outside ``latest/``."""
     backup_dir = writer.history_dir / "analysis"
     return [
         backup_dir / f"last-good.{path.name.removeprefix('analysis.')}"
-        for path in _analysis_pair_paths(writer)
+        for path in analysis_pair_paths(writer)
     ]
 
 
-def _read_analysis_pair(paths: list[Path]) -> tuple[dict[str, dict[str, Any]] | None, str | None]:
+def read_analysis_pair(paths: list[Path]) -> tuple[dict[str, dict[str, Any]] | None, str | None]:
     """Read both pair members without treating a partial pair as a valid document."""
     import json as _json
 
@@ -50,24 +50,24 @@ def _read_analysis_pair(paths: list[Path]) -> tuple[dict[str, dict[str, Any]] | 
     return documents, None
 
 
-def _remove_analysis_pair(writer: StorageWriter) -> None:
+def remove_analysis_pair(writer: StorageWriter) -> None:
     """Remove an invalid or partial candidate pair, never a durable backup."""
-    for path in _analysis_pair_paths(writer):
+    for path in analysis_pair_paths(writer):
         path.unlink(missing_ok=True)
 
 
-def _snapshot_readable_analysis_pair(
+def snapshot_readable_analysis_pair(
     writer: StorageWriter, documents: dict[str, dict[str, Any]]
 ) -> None:
     """Persist a schema-valid bilingual pair for recovery from a later bad replacement."""
-    for path in _analysis_backup_paths(writer):
+    for path in analysis_backup_paths(writer):
         source_name = f"analysis.{path.name.removeprefix('last-good.')}"
         writer.write_json(path, documents[source_name])
 
 
-def _restore_last_readable_analysis_pair(writer: StorageWriter) -> bool:
+def restore_last_readable_analysis_pair(writer: StorageWriter) -> bool:
     """Restore the last schema-valid bilingual pair, if one exists."""
-    documents, failure = _read_analysis_pair(_analysis_backup_paths(writer))
+    documents, failure = read_analysis_pair(analysis_backup_paths(writer))
     if failure or documents is None:
         return False
 
@@ -82,14 +82,14 @@ def _restore_last_readable_analysis_pair(writer: StorageWriter) -> bool:
     except Exception:  # noqa: BLE001 — an unusable backup must not replace the candidate
         return False
 
-    latest_paths = _analysis_pair_paths(writer)
+    latest_paths = analysis_pair_paths(writer)
     for latest_path in latest_paths:
         backup_name = f"last-good.{latest_path.name.removeprefix('analysis.')}"
         writer.write_json(latest_path, documents[backup_name])
     return True
 
 
-def _analysis_failure_reason(issues: list[str]) -> FreshnessReason:
+def analysis_failure_reason(issues: list[str]) -> FreshnessReason:
     """Turn validation diagnostics into a closed, redacted freshness reason."""
     lineage = any(
         "lineage" in issue or "generation_id" in issue or "fact layer" in issue
@@ -106,7 +106,7 @@ def _analysis_failure_reason(issues: list[str]) -> FreshnessReason:
     )
 
 
-def _record_analysis_outcome(writer: StorageWriter, outcomes: RunOutcomes) -> bool:
+def record_analysis_outcome(writer: StorageWriter, outcomes: RunOutcomes) -> bool:
     """Validate, snapshot, and record the AI pair against the current fact layer.
 
     The return value means the pair is structurally valid and lineage-bound. A degraded or stale
@@ -118,12 +118,12 @@ def _record_analysis_outcome(writer: StorageWriter, outcomes: RunOutcomes) -> bo
     from pipeline.analysis.validate import validate_analysis_pair
     from pipeline.schemas import FactLayer
 
-    paths = _analysis_pair_paths(writer)
-    documents, read_failure = _read_analysis_pair(paths)
+    paths = analysis_pair_paths(writer)
+    documents, read_failure = read_analysis_pair(paths)
     if read_failure or documents is None:
-        restored = _restore_last_readable_analysis_pair(writer)
+        restored = restore_last_readable_analysis_pair(writer)
         if not restored:
-            _remove_analysis_pair(writer)
+            remove_analysis_pair(writer)
         outcomes.record(
             "analysis",
             "degraded",
@@ -140,25 +140,25 @@ def _record_analysis_outcome(writer: StorageWriter, outcomes: RunOutcomes) -> bo
     except Exception:  # noqa: BLE001 — schema failure is an expected degraded AI outcome
         structural_issues = ["analysis pair schema validation failed"]
     if structural_issues:
-        if not _restore_last_readable_analysis_pair(writer):
-            _remove_analysis_pair(writer)
+        if not restore_last_readable_analysis_pair(writer):
+            remove_analysis_pair(writer)
         outcomes.record(
             "analysis",
             "degraded",
-            _analysis_failure_reason(structural_issues),
+            analysis_failure_reason(structural_issues),
             provider="ai_automation",
         )
         return False
 
-    backup_documents, backup_failure = _read_analysis_pair(_analysis_backup_paths(writer))
+    backup_documents, backup_failure = read_analysis_pair(analysis_backup_paths(writer))
     has_readable_backup = backup_documents is not None and backup_failure is None
 
     facts_path = writer.latest_dir / "facts.json"
     if not facts_path.exists():
         if has_readable_backup:
-            _restore_last_readable_analysis_pair(writer)
+            restore_last_readable_analysis_pair(writer)
         else:
-            _snapshot_readable_analysis_pair(writer, documents)
+            snapshot_readable_analysis_pair(writer, documents)
         outcomes.record(
             "analysis",
             "degraded",
@@ -175,9 +175,9 @@ def _record_analysis_outcome(writer: StorageWriter, outcomes: RunOutcomes) -> bo
         issues, zh, en = validate_analysis_pair(paths[0], paths[1], facts_path, require_lineage=True)
     except Exception:  # noqa: BLE001 — malformed facts or AI output is a degraded outcome
         if has_readable_backup:
-            _restore_last_readable_analysis_pair(writer)
+            restore_last_readable_analysis_pair(writer)
         else:
-            _snapshot_readable_analysis_pair(writer, documents)
+            snapshot_readable_analysis_pair(writer, documents)
         outcomes.record(
             "analysis",
             "degraded",
@@ -191,19 +191,19 @@ def _record_analysis_outcome(writer: StorageWriter, outcomes: RunOutcomes) -> bo
 
     if issues:
         if has_readable_backup:
-            _restore_last_readable_analysis_pair(writer)
+            restore_last_readable_analysis_pair(writer)
         else:
-            _snapshot_readable_analysis_pair(writer, documents)
+            snapshot_readable_analysis_pair(writer, documents)
         outcomes.record(
             "analysis",
             "degraded",
-            _analysis_failure_reason(issues),
+            analysis_failure_reason(issues),
             provider="ai_automation",
         )
         return False
 
     # Only a pair proven against the current fact layer may replace the durable recovery pair.
-    _snapshot_readable_analysis_pair(writer, documents)
+    snapshot_readable_analysis_pair(writer, documents)
     facts_status = aggregate_freshness(facts.data_freshness.values())
     oldest = min(str(zh.generated_at), str(en.generated_at))
     verdict = finalize_freshness("analysis", oldest, False)
@@ -224,7 +224,7 @@ def _record_analysis_outcome(writer: StorageWriter, outcomes: RunOutcomes) -> bo
     return True
 
 
-def _record_ai_outcomes(writer: StorageWriter, outcomes: RunOutcomes) -> bool:
+def record_ai_outcomes(writer: StorageWriter, outcomes: RunOutcomes) -> bool:
     """Record the datasets the AI automations produce, from what is on disk (P0-4, §1.5).
 
     These are not collected by the pipeline, so their outcome is read back from the published
@@ -242,7 +242,7 @@ def _record_ai_outcomes(writer: StorageWriter, outcomes: RunOutcomes) -> bool:
 
     for key in AI_PRODUCED_DATASETS:
         if key == "analysis":
-            analysis_valid = _record_analysis_outcome(writer, outcomes)
+            analysis_valid = record_analysis_outcome(writer, outcomes)
             continue
         spec = dataset_registry.require(key)
         paths = [writer.latest_dir / name for name in spec.filenames]
@@ -288,7 +288,7 @@ def _record_ai_outcomes(writer: StorageWriter, outcomes: RunOutcomes) -> bool:
     return analysis_valid
 
 
-def _write_analysis_only_report(writer: StorageWriter, outcomes: RunOutcomes) -> None:
+def write_analysis_only_report(writer: StorageWriter, outcomes: RunOutcomes) -> None:
     """Write an operator-facing report for the no-collection analysis command.
 
     The metadata document remains the source of truth. The report repeats only closed reason
