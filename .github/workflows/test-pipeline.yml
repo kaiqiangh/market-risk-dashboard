@@ -62,6 +62,8 @@ jobs:
 
   frontend:
     runs-on: ubuntu-latest
+    # Fail hung runners instead of burning the 6h default (#190)
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -102,6 +104,8 @@ jobs:
   dependency-review:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    # Fail hung runners instead of burning the 6h default (#190)
+    timeout-minutes: 10
     permissions:
       contents: read
       pull-requests: read

@@ -89,6 +89,8 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
+    # Fail hung runners instead of burning the 6h default (#190)
+    timeout-minutes: 20
     permissions:
       pages: write
       id-token: write

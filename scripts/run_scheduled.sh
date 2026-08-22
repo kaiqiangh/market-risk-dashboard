@@ -8,8 +8,9 @@
 # 23 = stage/commit; 24 = push or remote verification; 25 = another instance already running;
 # 2 = invalid arguments.
 #
-# Environment knobs (#190): SCHEDULED_BRANCH (default dev), SCHEDULED_TIMEOUT_PIPELINE
-# (default 3600s), SCHEDULED_LOCK_STALE (default 7200s), SCHEDULED_LOCK_DIR override for tests.
+# Environment knobs (#190): SCHEDULED_BRANCH (default dev), SCHEDULED_TIMEOUT_PIPELINE (default
+# 3600s), SCHEDULED_TIMEOUT_VALIDATE (default 1800s), SCHEDULED_LOCK_STALE (default 7200s),
+# SCHEDULED_LOCK_DIR (test override), SCHEDULED_LOCK_MODE (auto|flock|mkdir).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -25,11 +26,12 @@ VALIDATE_SCRIPT="${VALIDATE_DATA_SCRIPT:-$ROOT/scripts/validate_data.sh}"
 BRANCH="${SCHEDULED_BRANCH:-dev}"
 
 #: Timeouts (#190): every network/bulk step gets a ceiling so a hung remote cannot wedge
-#: the cron slot forever. macOS lacks coreutils timeout; gtimeout (coreutils) is accepted,
-#: and with neither the step runs bare WITH a visible warning instead of failing closed -
-#: a missing optional binary must not stop data collection.
-# Resolved with explicit probes rather than fallback chains (#190 pin): an optional
-# convenience binary is a documented absence, not a swallowed failure.
+#: the cron slot forever - collection AND validation alike (a hung validator would hold
+#: the lock past its stale window and invite a concurrent fire). macOS lacks coreutils
+#: timeout; gtimeout (coreutils) is accepted; with neither, steps run bare WITH a visible
+#: warning - a missing optional binary must not stop data collection (#190 review).
+#: Resolved with explicit probes rather than fallback chains (#190 pin): an optional
+#: convenience binary is a documented absence, not a swallowed failure.
 TIMEOUT_BIN=""
 if command -v timeout >/dev/null 2>&1; then
   TIMEOUT_BIN="$(command -v timeout)"
@@ -51,13 +53,21 @@ run_with_timeout() {
 #: Single-instance guard (#190): overlapping cron fires would interleave git state.
 #: flock where available; otherwise a portable mkdir lock (atomic) with stale-entry
 #: recovery so a crashed run cannot wedge the scheduler forever. The lock lives under
-#: .git/ by default: never committed, never pushed.
+#: .git/ by default: never committed, never pushed. SCHEDULED_LOCK_MODE forces a
+#: mechanism ("flock"|"mkdir") - tests need determinism on hosts that have one but not
+#: the other.
 LOCK_DIR="${SCHEDULED_LOCK_DIR:-$ROOT/.git/scheduled.lock}"
 LOCK_STALE_SECS="${SCHEDULED_LOCK_STALE:-7200}"
 FLOCK_BIN=""
 if command -v flock >/dev/null 2>&1; then
   FLOCK_BIN="$(command -v flock)"
 fi
+case "${SCHEDULED_LOCK_MODE:-auto}" in
+  auto)   : ;;
+  flock)  FLOCK_BIN="${FLOCK_BIN:-flock}" ;;
+  mkdir)  FLOCK_BIN="" ;;
+  *) echo "[scheduled] error: SCHEDULED_LOCK_MODE must be auto|flock|mkdir" >&2; exit 10 ;;
+esac
 
 acquire_lock() {
   if [[ -n "$FLOCK_BIN" ]]; then
@@ -68,10 +78,10 @@ acquire_lock() {
     fi
     return
   fi
+  # The mkdir fallback registers EXIT cleanup ONLY in its own winner branches: a loser
+  # must never rmdir the winner's lock. Cleanup redirects stderr because noise from an
+  # already-removed dir is expected there; it swallows no FAILURE (#190 review).
   if mkdir "$LOCK_DIR" 2>/dev/null; then
-    # Only the winner registers cleanup; a loser must never rmdir the winner’s lock.
-    # No suppression chain on the cleanup command (#190 pin): rm -rf on an
-    # this repo forbids unconditional failure suppression.
     trap 'rm -rf "$LOCK_DIR" 2>/dev/null' EXIT
     return
   fi
@@ -82,9 +92,7 @@ acquire_lock() {
     echo "[scheduled] warn: removing stale lock (age $((now - mtime))s > $LOCK_STALE_SECS)" >&2
     rm -rf "$LOCK_DIR"
     if mkdir "$LOCK_DIR" 2>/dev/null; then
-      # No suppression chain on the cleanup command (#190 pin): rm -rf on an
-    # this repo forbids unconditional failure suppression.
-    trap 'rm -rf "$LOCK_DIR" 2>/dev/null' EXIT
+      trap 'rm -rf "$LOCK_DIR" 2>/dev/null' EXIT
       return
     fi
   fi
@@ -121,11 +129,11 @@ if ! run_with_timeout "${SCHEDULED_TIMEOUT_PIPELINE:-3600}" "$PYTHON_BIN" -m pip
   exit 21
 fi
 
-# 2) Data validation (T05 gate; no commit on ERROR). Explicit $? capture (#190): the old
-#    if/else read VALIDATION_STATUS=$? inside the else arm, which works but reads as stale
-#    under set -e and was flagged in review - make the sequencing undeniable.
+# 2) Data validation (T05 gate; no commit on ERROR). Bulk step => also time-bounded
+#    (#190 review): a hung validator would otherwise hold the lock past its stale window.
+#    Explicit $? capture makes the sequencing undeniable under set -e.
 set +e
-"$VALIDATE_SCRIPT" --scheduled
+run_with_timeout "${SCHEDULED_TIMEOUT_VALIDATE:-1800}" "$VALIDATE_SCRIPT" --scheduled
 VALIDATION_STATUS=$?
 set -e
 if ((VALIDATION_STATUS == 0)); then
@@ -172,3 +180,4 @@ if ! REMOTE_SHA="$(run_with_timeout 30 git ls-remote origin "refs/heads/$BRANCH"
 fi
 
 echo "[scheduled] $(date -u +%Y-%m-%dT%H:%M:%SZ) done, published commit $COMMIT_SHA"
+

@@ -246,6 +246,9 @@ def test_scheduled_runner_fails_closed_after_repository_errors() -> None:
     assert "run_with_timeout 120 git pull" in script
     assert "run_with_timeout 300 git push" in script
     assert "run_with_timeout 30 git ls-remote" in script
+    # Validation is a bulk step too (#190 review): it must be time-bounded like the rest.
+    assert "SCHEDULED_TIMEOUT_VALIDATE:-1800" in script
+    assert "run_with_timeout \"${SCHEDULED_TIMEOUT_VALIDATE:-1800}\" \"$VALIDATE_SCRIPT\" --scheduled" in script
     assert "git status --porcelain -- public/ config/" in script
 
 

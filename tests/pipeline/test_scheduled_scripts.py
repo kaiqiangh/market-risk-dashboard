@@ -263,7 +263,11 @@ def test_lock_conflict_exits_25_without_running_pipeline(tmp_path: Path) -> None
     """A concurrent instance (fresh lock) must stop the run before any collection."""
     lock_dir = tmp_path / "sched.lock"
     lock_dir.mkdir()
-    result, log = _run_scheduled(tmp_path, SCHEDULED_LOCK_DIR=str(lock_dir))
+    # Force the mkdir mechanism (#190 review): flock exists on Linux CI, and the
+    # conflict semantics differ between mechanisms - this test pins the portable path.
+    result, log = _run_scheduled(
+        tmp_path, SCHEDULED_LOCK_DIR=str(lock_dir), SCHEDULED_LOCK_MODE="mkdir"
+    )
 
     assert result.returncode == 25
     assert "python -m pipeline.run" not in log
@@ -280,7 +284,10 @@ def test_stale_lock_is_reclaimed_and_run_proceeds(tmp_path: Path) -> None:
     old = time.time() - 9000  # default stale window is 7200s
     os.utime(lock_dir, (old, old))
     result, log = _run_scheduled(
-        tmp_path, SCHEDULED_LOCK_DIR=str(lock_dir), FAKE_GIT_STATUS="dirty"
+        tmp_path,
+        SCHEDULED_LOCK_DIR=str(lock_dir),
+        SCHEDULED_LOCK_MODE="mkdir",
+        FAKE_GIT_STATUS="dirty",
     )
 
     assert result.returncode == 0
