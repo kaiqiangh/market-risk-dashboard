@@ -910,6 +910,7 @@ def _risk_evidence_summary(results: dict[str, Any]) -> dict[str, Any]:
                 "key": dimension.key,
                 "state": dimension.evidence_state,
                 "coverage": dimension.coverage,
+                "effective_coverage": dimension.effective_coverage,
                 "effective_weight": dimension.effective_weight,
                 "missing_indicators": list(dimension.missing_indicators),
             }

@@ -94,6 +94,7 @@ class RiskModel:
         raw = self.settings.load_risk_model()
         self.model_version = str(raw.get("model_version", "1.0.0"))
         self.dim_cfg: dict[str, dict[str, float]] = raw.get("dimensions", {})
+        self.indicator_cfg: dict[str, list[dict[str, Any]]] = raw.get("indicators", {})
         thresholds = raw.get("thresholds", {}).get("risk_level", {})
         self.thresholds = _parse_thresholds(thresholds)
         cw = raw.get("confidence", {}).get("weights", {})
@@ -117,6 +118,13 @@ class RiskModel:
         self.calibration_status: RiskCalibrationStatus = calibration_status
         # 5Y window ≈ 252 trading days/year (daily-frequency series)
         self._max_history_samples = max(60, self.percentile_window_years * 252)
+
+    def _indicator_weight(self, dimension: str, key: str) -> float:
+        """Read an indicator weight from config; code must not carry a second weight table."""
+        for item in self.indicator_cfg.get(dimension, []):
+            if item.get("key") == key:
+                return float(item["weight"])
+        raise ValueError(f"risk_model.yaml: missing weight for {dimension}.{key}")
 
     # ---- 5Y history window ----
 
@@ -169,13 +177,13 @@ class RiskModel:
         curve = (dgs10.value - dgs2.value) if (dgs10 and dgs2 and dgs10.value is not None and dgs2.value is not None) else None
         dollar = next((m for m in getattr(macro, "fx", []) if m.key == "dtwexbgs"), None)
         return [
-            _ind("real_rate_dfii10", "10Y Real Rate", dfii10.value if dfii10 else None, "higher_is_riskier", "FRED", 5.0,
+            _ind("real_rate_dfii10", "10Y Real Rate", dfii10.value if dfii10 else None, "higher_is_riskier", "FRED", self._indicator_weight("macro", "real_rate_dfii10"),
                  history=self._indicator_history(ctx, "real_rate_dfii10")),
-            _ind("yield_curve_10y2y", "10Y-2Y Curve", curve, "lower_is_riskier", "FRED", 5.0,
+            _ind("yield_curve_10y2y", "10Y-2Y Curve", curve, "lower_is_riskier", "FRED", self._indicator_weight("macro", "yield_curve_10y2y"),
                  history=self._indicator_history(ctx, "yield_curve_10y2y")),
-            _ind("dollar_index", "Dollar Index", dollar.value if dollar else None, "higher_is_riskier", "FRED", 5.0,
+            _ind("dollar_index", "Dollar Index", dollar.value if dollar else None, "higher_is_riskier", "FRED", self._indicator_weight("macro", "dollar_index"),
                  history=self._indicator_history(ctx, "dollar_index")),
-            _ind("dgs10", "10Y Yield", dgs10.value if dgs10 else None, "neutral", "FRED", 5.0,
+            _ind("dgs10", "10Y Yield", dgs10.value if dgs10 else None, "neutral", "FRED", self._indicator_weight("macro", "dgs10"),
                  history=self._indicator_history(ctx, "dgs10")),
         ]
 
@@ -185,47 +193,47 @@ class RiskModel:
         w = liquidity.get("walcl")
         rr = liquidity.get("rrpontsyd")
         return [
-            _ind("fed_balance_sheet", "Fed Balance Sheet", w.value if w else None, "neutral", "FRED", 5.0,
+            _ind("fed_balance_sheet", "Fed Balance Sheet", w.value if w else None, "neutral", "FRED", self._indicator_weight("liquidity_credit", "fed_balance_sheet"),
                  history=self._indicator_history(ctx, "fed_balance_sheet")),
-            _ind("reverse_repo", "Reverse Repo", rr.value if rr else None, "neutral", "FRED", 5.0,
+            _ind("reverse_repo", "Reverse Repo", rr.value if rr else None, "neutral", "FRED", self._indicator_weight("liquidity_credit", "reverse_repo"),
                  history=self._indicator_history(ctx, "reverse_repo")),
-            _ind("hy_oas", "HY OAS", _first_value(ctx, "credit", "bamlh0a0hym2"), "higher_is_riskier", "FRED", 10.0,
+            _ind("hy_oas", "HY OAS", _first_value(ctx, "credit", "bamlh0a0hym2"), "higher_is_riskier", "FRED", self._indicator_weight("liquidity_credit", "hy_oas"),
                  history=self._indicator_history(ctx, "hy_oas")),
-            _ind("ig_oas", "IG OAS", _first_value(ctx, "credit", "bamlc0a0cm"), "higher_is_riskier", "FRED", 5.0,
+            _ind("ig_oas", "IG OAS", _first_value(ctx, "credit", "bamlc0a0cm"), "higher_is_riskier", "FRED", self._indicator_weight("liquidity_credit", "ig_oas"),
                  history=self._indicator_history(ctx, "ig_oas")),
         ]
 
     def _equity_structure_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
         breadth = ctx.get("breadth", {})
         return [
-            _ind("breadth_above_ma200", "Breadth > MA200", breadth.get("breadth_above_ma200"), "lower_is_riskier", "computed", 7.0, is_proxy=True),
-            _ind("new_highs_ratio", "New Highs Ratio", breadth.get("new_highs_ratio"), "lower_is_riskier", "computed", 4.0, is_proxy=True),
-            _ind("new_lows_ratio", "New Lows Ratio", breadth.get("new_lows_ratio"), "higher_is_riskier", "computed", 4.0, is_proxy=True),
-            _ind("small_cap_relative", "Small Cap Rel", breadth.get("small_cap_relative"), "lower_is_riskier", "computed", 4.0, is_proxy=True),
-            _ind("semis_relative", "Semis Rel", breadth.get("semis_relative"), "lower_is_riskier", "computed", 4.0, is_proxy=True),
+            _ind("breadth_above_ma200", "Breadth > MA200", breadth.get("breadth_above_ma200"), "lower_is_riskier", "computed", self._indicator_weight("equity_structure", "breadth_above_ma200"), is_proxy=True),
+            _ind("new_highs_ratio", "New Highs Ratio", breadth.get("new_highs_ratio"), "lower_is_riskier", "computed", self._indicator_weight("equity_structure", "new_highs_ratio"), is_proxy=True),
+            _ind("new_lows_ratio", "New Lows Ratio", breadth.get("new_lows_ratio"), "higher_is_riskier", "computed", self._indicator_weight("equity_structure", "new_lows_ratio"), is_proxy=True),
+            _ind("small_cap_relative", "Small Cap Rel", breadth.get("small_cap_relative"), "lower_is_riskier", "computed", self._indicator_weight("equity_structure", "small_cap_relative"), is_proxy=True),
+            _ind("semis_relative", "Semis Rel", breadth.get("semis_relative"), "lower_is_riskier", "computed", self._indicator_weight("equity_structure", "semis_relative"), is_proxy=True),
         ]
 
     def _volatility_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
         vix = _series_value(ctx, "vixcls")
         return [
-            _ind("vix", "VIX", vix, "higher_is_riskier", "FRED", 8.0,
+            _ind("vix", "VIX", vix, "higher_is_riskier", "FRED", self._indicator_weight("volatility", "vix"),
                  history=self._indicator_history(ctx, "vix")),
-            _ind("realized_vol", "Realized Vol", ctx.get("trend", {}).get("realized_vol"), "higher_is_riskier", "computed", 7.0),
+            _ind("realized_vol", "Realized Vol", ctx.get("trend", {}).get("realized_vol"), "higher_is_riskier", "computed", self._indicator_weight("volatility", "realized_vol")),
         ]
 
     def _cross_asset_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
         # 9-signal confirmation hit rate (MVP simplified): cross-asset risk confirmation
         cross = ctx.get("cross_asset", {})
         return [
-            _ind("cross_asset_confirmation", "Cross-asset Confirmation", cross.get("confirmation"), "higher_is_riskier", "computed", 15.0, is_proxy=True),
+            _ind("cross_asset_confirmation", "Cross-asset Confirmation", cross.get("confirmation"), "higher_is_riskier", "computed", self._indicator_weight("cross_asset", "cross_asset_confirmation"), is_proxy=True),
         ]
 
     def _trend_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
         trend = ctx.get("trend", {})
         return [
-            _ind("price_vs_ma200", "Price vs MA200", trend.get("price_vs_ma200"), "lower_is_riskier", "computed", 3.0),
-            _ind("drawdown_52w", "52W Drawdown", trend.get("drawdown_52w"), "lower_is_riskier", "computed", 3.0),
-            _ind("momentum_3m", "3M Momentum", trend.get("momentum_3m"), "lower_is_riskier", "computed", 4.0),
+            _ind("price_vs_ma200", "Price vs MA200", trend.get("price_vs_ma200"), "lower_is_riskier", "computed", self._indicator_weight("trend", "price_vs_ma200")),
+            _ind("drawdown_52w", "52W Drawdown", trend.get("drawdown_52w"), "lower_is_riskier", "computed", self._indicator_weight("trend", "drawdown_52w")),
+            _ind("momentum_3m", "3M Momentum", trend.get("momentum_3m"), "lower_is_riskier", "computed", self._indicator_weight("trend", "momentum_3m")),
         ]
 
     # ---- Main flow ----
@@ -242,76 +250,10 @@ class RiskModel:
 
         prev_dim_scores: dict[str, float] = ctx.get("_prev_dim_scores") or {}
         proxy_discount = conf_mod.proxy_discount_factor()
-        dimensions: list[RiskDimension] = []
-        dimension_bounds: dict[str, tuple[float, float]] = {}
-        available_indicator_count = 0
-        for dim_key, builder in builders.items():
-            indicators = builder(ctx)
-            available = [i for i in indicators if i.value is not None]
-            missing_indicators = [i.key for i in indicators if i.value is None]
-            available_indicator_count += len(available)
-            # #69: a proxy-backed indicator counts for less than a measured one in coverage —
-            # its own knob (confidence.proxy_discount_factor), NOT the degrade factor.
-            effective_available = sum(
-                proxy_discount if i.is_proxy else 1.0 for i in available
-            )
-            coverage = round(effective_available / len(indicators), 4) if indicators else 0.0
-            if available:
-                dim_score = round(sum(i.risk_score * i.weight for i in available) / sum(i.weight for i in available), 2)
-            else:
-                dim_score = 0.0
-            indicator_weight_total = sum(i.weight for i in indicators) or 1.0
-            observed_weighted_score = sum(i.risk_score * i.weight for i in available)
-            missing_weight = sum(i.weight for i in indicators if i.value is None)
-            dim_lower_bound = round(
-                max(0.0, min(100.0, observed_weighted_score / indicator_weight_total)), 2
-            )
-            dim_upper_bound = round(
-                max(
-                    0.0,
-                    min(100.0, (observed_weighted_score + 100.0 * missing_weight) / indicator_weight_total),
-                ),
-                2,
-            )
-            dimension_bounds[dim_key] = (dim_lower_bound, dim_upper_bound)
-            if not available:
-                evidence_state: RiskEvidenceState = "insufficient_evidence"
-            elif coverage < 1.0 or missing_indicators:
-                evidence_state = "partial"
-            else:
-                evidence_state = "complete"
-            cfg_weight = float(self.dim_cfg.get(dim_key, {}).get("weight", 0))
-            dimensions.append(
-                RiskDimension(
-                    key=dim_key,
-                    label=DIMENSION_LABELS.get(dim_key, dim_key),
-                    weight=cfg_weight,
-                    effective_weight=cfg_weight,
-                    score=dim_score,
-                    indicators=indicators,
-                    coverage=coverage,
-                    trend=_dim_trend(dim_score, prev_dim_scores.get(dim_key)),
-                    evidence_state=evidence_state,
-                    missing_indicators=missing_indicators,
-                )
-            )
-
-        # Renormalization: weights of dimensions with coverage=0 are redistributed proportionally
-        # across the remaining dimensions
-        total_weight = sum(d.weight for d in dimensions if d.coverage > 0)
-        if total_weight <= 0:
-            total_weight = sum(d.weight for d in dimensions) or 1.0
-        for d in dimensions:
-            if d.coverage > 0:
-                d.effective_weight = round(d.weight, 4)
-            else:
-                d.effective_weight = 0.0
-        # Redistribute the missing-dimension weight proportionally across valid dimensions
-        missing_weight = sum(d.weight for d in dimensions if d.coverage == 0)
-        if missing_weight > 0 and total_weight > 0:
-            for d in dimensions:
-                if d.coverage > 0:
-                    d.effective_weight = round(d.weight + d.weight / total_weight * missing_weight, 4)
+        dimensions, dimension_bounds, available_indicator_count = self._build_dimensions(
+            ctx, builders, prev_dim_scores, proxy_discount
+        )
+        self._renormalize_dimensions(dimensions)
 
         denom = sum(d.effective_weight for d in dimensions) or 1.0
         total_score = round(sum(d.effective_weight * d.score for d in dimensions) / denom, 2)
@@ -319,40 +261,9 @@ class RiskModel:
         # Risk level
         risk_level = self._level_for(total_score)
 
-        # Top drivers (#68): an indicator's contribution reflects its OWN share of weight
-        # within its dimension, not the dimension's weight. For indicator i in dimension d:
-        #   contribution = (d.effective_weight / W) * (i.weight / V_d) * i.risk_score
-        # where W = total effective weight and V_d = sum of available indicator weights in d.
-        # Summing over every indicator reconciles exactly with the composite score.
-        # Each driver also discloses its trust discount (#69): a proxy is discounted by the
-        # proxy knob; when the run's providers degraded, the degrade factor compounds in.
-        data_quality_now = float(ctx.get("data_quality", 1.0))
-        degrade_discount = degrade_factor() if data_quality_now < 1.0 else 1.0
-        drivers: list[DriverContribution] = []
-        for d in dimensions:
-            available = [i for i in d.indicators if i.value is not None]
-            dim_weight_sum = sum(i.weight for i in available) or 1.0
-            for ind in available:
-                contribution = round(
-                    d.effective_weight / denom * (ind.weight / dim_weight_sum) * ind.risk_score, 4
-                )
-                ind_discount = round(
-                    (proxy_discount if ind.is_proxy else 1.0) * degrade_discount, 4
-                )
-                drivers.append(
-                    DriverContribution(
-                        dimension_key=d.key,
-                        indicator_key=ind.key,
-                        label=ind.label,
-                        contribution=contribution,
-                        change_1d=None,
-                        evidence_ref=None,
-                        is_proxy=ind.is_proxy,
-                        discount=ind_discount,
-                    )
-                )
-        drivers.sort(key=lambda x: x.contribution, reverse=True)
-        top_drivers = drivers[:5]
+        top_drivers = self._build_drivers(
+            dimensions, denom, proxy_discount, float(ctx.get("data_quality", 1.0))
+        )
 
         # Regime
         regime_ctx = {
@@ -372,7 +283,8 @@ class RiskModel:
 
         # Confidence
         data_quality = float(ctx.get("data_quality", 1.0))
-        coverage = sum(d.coverage * d.weight for d in dimensions) / (sum(d.weight for d in dimensions) or 1.0)
+        availability_coverage = sum(d.coverage * d.weight for d in dimensions) / (sum(d.weight for d in dimensions) or 1.0)
+        coverage = sum(d.effective_coverage * d.weight for d in dimensions) / (sum(d.weight for d in dimensions) or 1.0)
         consistency = conf_mod.consistency_from_dimension_scores([d.score for d in dimensions])
         confidence = conf_mod.compute_confidence(data_quality, coverage, consistency, self.conf_weights)
 
@@ -385,9 +297,9 @@ class RiskModel:
             max(0.0, min(100.0, sum(d.weight * dimension_bounds[d.key][1] for d in dimensions) / configured_weight_total)),
             2,
         )
-        if available_indicator_count == 0 or coverage < self.insufficient_evidence_threshold:
+        if available_indicator_count == 0 or availability_coverage < self.insufficient_evidence_threshold:
             evidence_state: RiskEvidenceState = "insufficient_evidence"
-        elif all(d.evidence_state == "complete" for d in dimensions) and coverage >= 1.0:
+        elif all(d.evidence_state == "complete" for d in dimensions) and availability_coverage >= 1.0:
             evidence_state = "complete"
         else:
             evidence_state = "partial"
@@ -430,6 +342,106 @@ class RiskModel:
             calibration_policy_version=self.calibration_policy_version,
             calibration_status=self.calibration_status,
         )
+
+    def _build_dimensions(
+        self,
+        ctx: dict[str, Any],
+        builders: dict[str, Any],
+        prev_scores: dict[str, float],
+        proxy_discount: float,
+    ) -> tuple[list[RiskDimension], dict[str, tuple[float, float]], int]:
+        dimensions: list[RiskDimension] = []
+        bounds: dict[str, tuple[float, float]] = {}
+        available_count = 0
+        for dim_key, builder in builders.items():
+            indicators = builder(ctx)
+            available = [indicator for indicator in indicators if indicator.value is not None]
+            missing = [indicator.key for indicator in indicators if indicator.value is None]
+            available_count += len(available)
+            raw_coverage = len(available) / len(indicators) if indicators else 0.0
+            effective_available = sum(proxy_discount if indicator.is_proxy else 1.0 for indicator in available)
+            effective_coverage = effective_available / len(indicators) if indicators else 0.0
+            dim_score = (
+                round(sum(i.risk_score * i.weight for i in available) / sum(i.weight for i in available), 2)
+                if available else 0.0
+            )
+            total_indicator_weight = sum(indicator.weight for indicator in indicators) or 1.0
+            observed_weight = sum(indicator.risk_score * indicator.weight for indicator in available)
+            missing_weight = sum(indicator.weight for indicator in indicators if indicator.value is None)
+            bounds[dim_key] = (
+                round(max(0.0, min(100.0, observed_weight / total_indicator_weight)), 2),
+                round(max(0.0, min(100.0, (observed_weight + 100.0 * missing_weight) / total_indicator_weight)), 2),
+            )
+            evidence_state: RiskEvidenceState = (
+                "insufficient_evidence" if not available else "partial" if missing else "complete"
+            )
+            cfg_weight = float(self.dim_cfg.get(dim_key, {}).get("weight", 0))
+            dimensions.append(
+                RiskDimension(
+                    key=dim_key,
+                    label=DIMENSION_LABELS.get(dim_key, dim_key),
+                    weight=cfg_weight,
+                    effective_weight=cfg_weight,
+                    score=dim_score,
+                    indicators=indicators,
+                    coverage=round(raw_coverage, 4),
+                    effective_coverage=round(effective_coverage, 4),
+                    trend=_dim_trend(dim_score, prev_scores.get(dim_key)),
+                    evidence_state=evidence_state,
+                    missing_indicators=missing,
+                )
+            )
+        return dimensions, bounds, available_count
+
+    @staticmethod
+    def _renormalize_dimensions(dimensions: list[RiskDimension]) -> None:
+        """Redistribute missing dimension weights proportionally across available dimensions."""
+        total_weight = sum(d.weight for d in dimensions if d.coverage > 0)
+        total_weight = total_weight or sum(d.weight for d in dimensions) or 1.0
+        for dimension in dimensions:
+            dimension.effective_weight = round(dimension.weight, 4) if dimension.coverage > 0 else 0.0
+        missing_weight = sum(d.weight for d in dimensions if d.coverage == 0)
+        if missing_weight:
+            for dimension in dimensions:
+                if dimension.coverage > 0:
+                    dimension.effective_weight = round(
+                        dimension.weight + dimension.weight / total_weight * missing_weight, 4
+                    )
+
+    @staticmethod
+    def _build_drivers(
+        dimensions: list[RiskDimension],
+        denominator: float,
+        proxy_discount: float,
+        data_quality: float,
+    ) -> list[DriverContribution]:
+        degrade_discount = degrade_factor() if data_quality < 1.0 else 1.0
+        drivers: list[DriverContribution] = []
+        for dimension in dimensions:
+            available = [indicator for indicator in dimension.indicators if indicator.value is not None]
+            weight_sum = sum(indicator.weight for indicator in available) or 1.0
+            for indicator in available:
+                drivers.append(
+                    DriverContribution(
+                        dimension_key=dimension.key,
+                        indicator_key=indicator.key,
+                        label=indicator.label,
+                        contribution=round(
+                            dimension.effective_weight / denominator
+                            * (indicator.weight / weight_sum)
+                            * indicator.risk_score,
+                            4,
+                        ),
+                        change_1d=None,
+                        evidence_ref=None,
+                        is_proxy=indicator.is_proxy,
+                        discount=round(
+                            (proxy_discount if indicator.is_proxy else 1.0) * degrade_discount,
+                            4,
+                        ),
+                    )
+                )
+        return sorted(drivers, key=lambda driver: driver.contribution, reverse=True)[:5]
 
     def _level_for(self, total_score: float) -> RiskLevel:
         for level, rule in self.thresholds:
@@ -476,19 +488,29 @@ def _history_trends(total_score: float, rows: Any) -> tuple[float | None, float 
 
 
 def _parse_thresholds(raw: dict[str, Any]) -> list[tuple[RiskLevel, Any]]:
-    """Build (level, predicate) from config thresholds."""
-    out: list[tuple[RiskLevel, Any]] = []
+    """Build sorted (level, predicate) rules and reject ambiguous config."""
+    valid_levels = {"risk_on", "low_risk", "caution", "high_risk", "severe_risk", "crisis"}
+    out: list[tuple[float, RiskLevel, Any]] = []
     for level, rule in raw.items():
+        if level not in valid_levels:
+            raise ValueError(f"risk_model.yaml: unknown risk level {level!r}")
         if not isinstance(rule, dict):
-            continue
+            raise ValueError(f"risk_model.yaml: threshold for {level} must be a mapping")
+        if set(rule) - {"gte", "lt"} or not set(rule) & {"gte", "lt"}:
+            raise ValueError(f"risk_model.yaml: invalid threshold rule for {level}")
         if "lt" in rule and "gte" not in rule:
-            out.append((level, lambda s, r=rule: s < float(r["lt"])))
+            upper = float(rule["lt"])
+            out.append((float("-inf"), level, lambda s, r=upper: s < r))
         elif "gte" in rule and "lt" in rule:
-            out.append((level, lambda s, r=rule: float(r["gte"]) <= s < float(r["lt"])))
+            lower = float(rule["gte"])
+            upper = float(rule["lt"])
+            if lower >= upper:
+                raise ValueError(f"risk_model.yaml: invalid threshold range for {level}")
+            out.append((lower, level, lambda s, lo=lower, hi=upper: lo <= s < hi))
         elif "gte" in rule:
-            out.append((level, lambda s, r=rule: s >= float(r["gte"])))
-    # Sort by (lower bound) so the first hit takes priority
-    return out
+            lower = float(rule["gte"])
+            out.append((lower, level, lambda s, lo=lower: s >= lo))
+    return [(level, predicate) for _, level, predicate in sorted(out, key=lambda item: item[0])]
 
 
 def _series_value(ctx: dict[str, Any], key: str) -> float | None:

@@ -27,6 +27,11 @@ def test_rsi_extremes() -> None:
     assert rsi_down is not None and rsi_down < 5
 
 
+def test_rsi_uses_wilder_smoothing() -> None:
+    values = [100, 101, 102, 101, 100, 101, 103, 102, 104, 103, 105, 104, 106, 105, 107, 106, 105, 104, 106, 108, 107, 109]
+    assert technical.rsi(values, 14) == pytest.approx(66.521, abs=1e-4)
+
+
 def test_distance_from_ma() -> None:
     values = [100] * 50 + [110]  # latest above MA50
     dist = technical.distance_from_ma(values, 50)

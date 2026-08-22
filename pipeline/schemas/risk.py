@@ -81,7 +81,11 @@ class RiskDimension(ContractModel):
     effective_weight: float = Field(ge=0.0, description="weight after renormalization (redistributed when dimensions are missing)")
     score: float = Field(ge=0.0, le=100.0)
     indicators: list[RiskIndicator] = Field(default_factory=list)
-    coverage: float = Field(ge=0.0, le=1.0, description="share of indicators with data (proxy-backed indicators discounted, #69)")
+    coverage: float = Field(ge=0.0, le=1.0, description="share of configured indicators with data")
+    effective_coverage: float = Field(
+        default=0.0, ge=0.0, le=1.0,
+        description="coverage after proxy trust discount; used for confidence",
+    )
     trend: RiskTrend = "flat"
     evidence_state: RiskEvidenceState | None = None
     missing_indicators: list[str] = Field(default_factory=list)

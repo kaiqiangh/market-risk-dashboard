@@ -32,14 +32,12 @@ def rsi(values: Sequence[float], period: int = 14) -> float | None:
     """Wilder RSI(14), output 0-100."""
     if len(values) < period + 1:
         return None
-    gains: list[float] = []
-    losses: list[float] = []
-    for i in range(len(values) - period, len(values)):
-        diff = values[i] - values[i - 1]
-        gains.append(max(diff, 0.0))
-        losses.append(max(-diff, 0.0))
-    avg_gain = sum(gains) / period
-    avg_loss = sum(losses) / period
+    changes = [values[i] - values[i - 1] for i in range(1, len(values))]
+    avg_gain = sum(max(change, 0.0) for change in changes[:period]) / period
+    avg_loss = sum(max(-change, 0.0) for change in changes[:period]) / period
+    for change in changes[period:]:
+        avg_gain = (avg_gain * (period - 1) + max(change, 0.0)) / period
+        avg_loss = (avg_loss * (period - 1) + max(-change, 0.0)) / period
     if avg_loss == 0:
         return 100.0
     rs = avg_gain / avg_loss

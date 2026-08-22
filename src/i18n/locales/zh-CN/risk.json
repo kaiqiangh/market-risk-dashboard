@@ -62,11 +62,12 @@
     "title": "风险维度",
     "weight": "配置权重",
     "effectiveWeight": "有效权重",
+    "effectiveCoverage": "信任调整覆盖度",
     "score": "维度分",
     "coverage": "覆盖度",
     "trend": "趋势",
     "indicators": "指标",
-    "disclaimer": "维度缺失时权重按剩余维度比例重归一化，同时下调覆盖度与置信度。"
+    "disclaimer": "维度缺失时权重按剩余维度比例重归一化；可用性覆盖度与信任调整覆盖度会分别展示。"
   },
   "crossAssetSignals": {
     "title": "受治理的跨资产诊断",

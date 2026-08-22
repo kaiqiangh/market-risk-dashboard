@@ -16,45 +16,48 @@ dimensions:
 # Per-dimension indicator mapping (MVP level; T03 fills indicators from this table; the detailed signal list in this file is authoritative)
 indicators:
   macro:
-    - { key: real_rate_dfii10, source: FRED, metric: DFII10, label: "10Y Real Rate" }
-    - { key: yield_curve_10y2y, source: FRED, metric: DGS10-DGS2, label: "10Y-2Y Term Spread" }
-    - { key: dollar_index, source: FRED, metric: DTWEXBGS, label: "Dollar Index" }
-    - { key: dgs10, source: FRED, metric: DGS10, label: "10Y Yield" }
+    - { key: real_rate_dfii10, source: FRED, metric: DFII10, label: "10Y Real Rate", weight: 5 }
+    - { key: yield_curve_10y2y, source: FRED, metric: DGS10-DGS2, label: "10Y-2Y Term Spread", weight: 5 }
+    - { key: dollar_index, source: FRED, metric: DTWEXBGS, label: "Dollar Index", weight: 5 }
+    - { key: dgs10, source: FRED, metric: DGS10, label: "10Y Yield", weight: 5 }
   liquidity_credit:
-    - { key: hy_oas, source: FRED, metric: BAMLH0A0HYM2, label: "High Yield OAS" }
-    - { key: ig_oas, source: FRED, metric: BAMLC0A0CM, label: "Investment Grade OAS" }
-    - { key: fed_balance_sheet, source: FRED, metric: WALCL, label: "Fed Balance Sheet" }
-    - { key: reverse_repo, source: FRED, metric: RRPONTSYD, label: "Reverse Repo" }
+    - { key: hy_oas, source: FRED, metric: BAMLH0A0HYM2, label: "High Yield OAS", weight: 10 }
+    - { key: ig_oas, source: FRED, metric: BAMLC0A0CM, label: "Investment Grade OAS", weight: 5 }
+    - { key: fed_balance_sheet, source: FRED, metric: WALCL, label: "Fed Balance Sheet", weight: 5 }
+    - { key: reverse_repo, source: FRED, metric: RRPONTSYD, label: "Reverse Repo", weight: 5 }
   equity_structure:
-    - { key: breadth_above_ma200, source: computed, metric: breadth, label: "Pct Above 200-Day MA" }
-    - { key: new_highs_ratio, source: computed, metric: breadth, label: "New Highs Ratio" }
-    - { key: new_lows_ratio, source: computed, metric: breadth, label: "New Lows Ratio" }
+    - { key: breadth_above_ma200, source: computed, metric: breadth, label: "Pct Above 200-Day MA", weight: 7 }
+    - { key: new_highs_ratio, source: computed, metric: breadth, label: "New Highs Ratio", weight: 4 }
+    - { key: new_lows_ratio, source: computed, metric: breadth, label: "New Lows Ratio", weight: 4 }
     - {
         key: small_cap_relative,
         source: computed,
         metric: breadth,
         label: "Small Cap Relative Strength",
+        weight: 4,
       }
     - {
         key: semis_relative,
         source: computed,
         metric: breadth,
         label: "Semiconductors Relative Strength",
+        weight: 4,
       }
   volatility:
-    - { key: vix, source: FRED, metric: VIXCLS, label: "VIX" }
-    - { key: realized_vol, source: computed, metric: vol, label: "Realized Volatility" }
+    - { key: vix, source: FRED, metric: VIXCLS, label: "VIX", weight: 8 }
+    - { key: realized_vol, source: computed, metric: vol, label: "Realized Volatility", weight: 7 }
   cross_asset:
     - {
         key: cross_asset_confirmation,
         source: computed,
         metric: cross_asset,
         label: "Cross-Asset Confirmation Signal",
+        weight: 15,
       }
   trend:
-    - { key: price_vs_ma200, source: computed, metric: trend, label: "Price vs MA200" }
-    - { key: drawdown_52w, source: computed, metric: trend, label: "52-Week High Drawdown" }
-    - { key: momentum_3m, source: computed, metric: trend, label: "3M Momentum" }
+    - { key: price_vs_ma200, source: computed, metric: trend, label: "Price vs MA200", weight: 3 }
+    - { key: drawdown_52w, source: computed, metric: trend, label: "52-Week High Drawdown", weight: 3 }
+    - { key: momentum_3m, source: computed, metric: trend, label: "3M Momentum", weight: 4 }
 
 # Sub-indicator → 0-100 mapping (default: 5Y historical percentile window, architecture P0-5 methodology v1)
 scoring:

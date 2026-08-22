@@ -9,6 +9,7 @@ import pytest
 from pipeline.risk import confidence as conf_mod
 from pipeline.risk import regime as regime_mod
 from pipeline.risk.model import RiskModel
+from pipeline.risk.model import _parse_thresholds
 from pipeline.risk.scoring import (
     compute_indicator_score,
     heuristic_risk_score,
@@ -89,6 +90,12 @@ def test_regime_goldilocks() -> None:
     assert regime in ("goldilocks", "risk_on")
 
 
+def test_regime_does_not_treat_unmeasured_inputs_as_passing() -> None:
+    regime, evidence = regime_mod.infer_regime({"yield_curve_10y2y": 0.8})
+    assert regime == "indeterminate"
+    assert evidence == []
+
+
 def _macro_with_rates(*, value: float | None = None) -> MacroDataset:
     """A MacroDataset built entirely from the factory (#73: no direct constructor calls).
 
@@ -138,6 +145,15 @@ def test_risk_model_produces_valid_result() -> None:
     assert result.calibration_policy_version == "1.0.0"
     assert result.calibration_status == "provisional"
     assert "definitive probability" not in result.disclaimer or "modeled estimate" in result.disclaimer
+
+
+def test_golden_score_preserves_current_outputs() -> None:
+    result = RiskModel().score(_synthetic_context())
+    assert result.total_score == 54.7
+    assert result.risk_level == "caution"
+    assert [driver.indicator_key for driver in result.top_drivers] == [
+        "hy_oas", "cross_asset_confirmation", "real_rate_dfii10", "vix", "yield_curve_10y2y"
+    ]
 
 
 def test_risk_evidence_state_and_bounds_are_published() -> None:
@@ -421,6 +437,14 @@ def test_confidence_consistency() -> None:
     assert conf_mod.consistency_from_dimension_scores([0, 100]) < 0.5
 
 
+def test_thresholds_are_sorted_and_reject_unknown_rules() -> None:
+    thresholds = _parse_thresholds({"crisis": {"gte": 90}, "risk_on": {"lt": 20}})
+    assert thresholds[0][0] == "risk_on"
+    assert thresholds[1][0] == "crisis"
+    with pytest.raises(ValueError, match="unknown risk level"):
+        _parse_thresholds({"unknown": {"gte": 0}})
+
+
 
 # ---------- #67: config == code, direction agrees with the scoring table ----------
 
@@ -612,15 +636,12 @@ def _synthetic_ctx_confidence() -> float:
 
 
 def test_proxy_indicator_discounts_coverage() -> None:
-    """#69: a proxy-backed indicator counts for less than a measured one in coverage."""
+    """Availability and proxy trust are published separately (#194)."""
     result = RiskModel().score(_synthetic_context())
     es = next(d for d in result.dimensions if d.key == "equity_structure")
     assert all(i.is_proxy for i in es.indicators if i.value is not None)
-    assert es.coverage < 1.0, (
-        "equity_structure is 5/5 proxy indicators; coverage must be discounted below 1.0"
-    )
-    # The discount is the proxy knob (0.8), not a full 1.0.
-    assert es.coverage == pytest.approx(0.8, abs=1e-4)
+    assert es.coverage == 1.0
+    assert es.effective_coverage == pytest.approx(0.8, abs=1e-4)
 
 
 def test_proxy_dimension_confidence_baseline_reduced() -> None:
@@ -628,7 +649,8 @@ def test_proxy_dimension_confidence_baseline_reduced() -> None:
     result = RiskModel().score(_synthetic_context())
     es = next(d for d in result.dimensions if d.key == "equity_structure")
     ca = next(d for d in result.dimensions if d.key == "cross_asset")
-    assert es.coverage < 1.0 and ca.coverage < 1.0
+    assert es.coverage == 1.0 and ca.coverage == 1.0
+    assert es.effective_coverage < 1.0 and ca.effective_coverage < 1.0
     # A fully-covered run would score higher; the baseline is honest, not a regression.
     assert result.confidence < 1.0
     assert "coverage" in result.confidence_factors
@@ -665,7 +687,8 @@ def test_discount_uses_shared_constant(monkeypatch) -> None:
     monkeypatch.setattr(conf_mod, "proxy_discount_factor", lambda *a, **k: 0.5)
     result = RiskModel().score(_synthetic_context())
     es = next(d for d in result.dimensions if d.key == "equity_structure")
-    assert es.coverage == pytest.approx(0.5, abs=1e-4)
+    assert es.coverage == 1.0
+    assert es.effective_coverage == pytest.approx(0.5, abs=1e-4)
 
 
 # ---------- #71: the regime says indeterminate when nothing fired ----------
