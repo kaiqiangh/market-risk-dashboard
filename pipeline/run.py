@@ -931,14 +931,15 @@ def _build_dashboard(
 # Commands
 # ============================================================
 
-def _run_collection(command: str) -> dict[str, Any]:
-    """Run collection according to the command, returning collected results and durations."""
-    started = time.monotonic()
-    registry = build_registry(settings)
-    universe = AssetUniverse.load(settings)
-    writer = StorageWriter(settings.data_dir)
+def _empty_results() -> dict[str, Any]:
+    """The one initializer for a collection-result bundle (#187).
 
-    results: dict[str, Any] = {
+    Both `_run_collection` and `main()`'s crash-handler skeleton start from this factory:
+    two hand-copied literals asserting one shape is exactly the drift class this repo keeps
+    getting burned by — a key added by a collector would otherwise vanish from the next
+    early-crash failure report.
+    """
+    return {
         "durations": {},
         "degraded": [],
         "provider_status": {},
@@ -950,6 +951,16 @@ def _run_collection(command: str) -> dict[str, Any]:
         "series_history": {},
         "macro_meta": {},
     }
+
+
+def _run_collection(command: str) -> dict[str, Any]:
+    """Run collection according to the command, returning collected results and durations."""
+    started = time.monotonic()
+    registry = build_registry(settings)
+    universe = AssetUniverse.load(settings)
+    writer = StorageWriter(settings.data_dir)
+
+    results = _empty_results()
 
     need_market = command in ("full", "market-only")
     need_macro = command in ("full", "macro-only")
@@ -1419,18 +1430,7 @@ def main(argv: list[str] | None = None) -> int:
     # Without this skeleton, an exception raised by _run_collection left `results`
     # unbound, so the except block's own NameError was swallowed and no run-report
     # was ever written for an early crash.
-    results: dict[str, Any] = {
-        "durations": {},
-        "degraded": [],
-        "provider_status": {},
-        "histories": {},
-        "qualities": [],
-        "prev_total_score": None,
-        "prev_dim_scores": None,
-        "risk_history": [],
-        "series_history": {},
-        "macro_meta": {},
-    }
+    results: dict[str, Any] = _empty_results()
     try:
         started = time.monotonic()
         run_started_at = now_utc()

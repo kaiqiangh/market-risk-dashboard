@@ -52,14 +52,23 @@ def test_crash_during_collection_still_writes_failure_report(
 # ---- 2. is_schema_compatible fails closed on truncated versions ----
 
 
-@pytest.mark.parametrize("truncated", ["1", "1.1", "", "not-a-version", "1.x.0"])
-def test_is_schema_compatible_truncated_versions_fail_closed(truncated: str) -> None:
-    """A foreign short/malformed version is incompatible - never an IndexError."""
-    assert is_schema_compatible(truncated, SCHEMA_VERSION) is False
+@pytest.mark.parametrize(
+    "bad_version",
+    ["1", "1.1", "", "not-a-version", "1.x.0", "1.1.0.9", None],
+)
+def test_is_schema_compatible_non_canonical_versions_fail_closed(bad_version: object) -> None:
+    """Foreign short/over-long/malformed/non-string versions are incompatible - never an
+    IndexError or AttributeError (#187 review: over-long slices, None-ish inputs)."""
+    assert is_schema_compatible(bad_version, SCHEMA_VERSION) is False  # type: ignore[arg-type]
 
 
 def test_is_schema_compatible_current_version_accepted() -> None:
     assert is_schema_compatible(SCHEMA_VERSION, SCHEMA_VERSION) is True
+
+
+def test_is_schema_compatible_same_major_newer_patch_accepted() -> None:
+    # Patch is ignored per the documented rules ("1.0.1" case in test_schemas).
+    assert is_schema_compatible("1.1.1", SCHEMA_VERSION) is True
 
 
 # ---- 3. version literals come from the constants, not restated strings ----
@@ -93,3 +102,22 @@ def test_future_timestamp_within_skew_tolerance_is_fresh() -> None:
     now = datetime.now(timezone.utc)
     one_minute_ahead = (now + timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
     assert evaluate_freshness(one_minute_ahead, 60, now=now) == "fresh"
+
+
+# ---- 5. review fix: a future timestamp's stale verdict names its actual cause ----
+
+
+def test_finalize_future_timestamp_detail_distinguishes_from_late_fetch() -> None:
+    from pipeline.validation.freshness import finalize_freshness
+
+    now = datetime(2026, 8, 21, 12, 0, 0, tzinfo=timezone.utc)
+    two_hours_ahead = (now + timedelta(hours=2)).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    verdict = finalize_freshness("macro", two_hours_ahead, False, now=now)
+    assert verdict.status == "stale"
+    assert "future" in verdict.reason.detail.lower()
+
+    month_old = (now - timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    mundane = finalize_freshness("macro", month_old, False, now=now)
+    assert mundane.status == "stale"
+    assert "future" not in mundane.reason.detail.lower()
