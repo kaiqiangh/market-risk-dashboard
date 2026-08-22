@@ -17,7 +17,9 @@ from pathlib import Path
 
 import pytest
 
+from pipeline.analysis.build_prompt import build_prompt
 from pipeline.analysis.freshness import evaluate_analysis_freshness, evaluate_freshness
+from pipeline.analysis.freshness import main as freshness_main
 from pipeline.lineage import fact_generation_id
 from pipeline.analysis.validate import (
     compare_analysis_lineage,
@@ -27,6 +29,7 @@ from pipeline.analysis.validate import (
     validate_analysis_pair,
     validate_evidence_refs,
 )
+from pipeline.analysis.validate import main as validate_main
 from pipeline.schemas import AnalysisDataset, FactLayer
 from tests.pipeline.factories import DEFAULT_NOW, make_analysis, make_facts
 
@@ -201,3 +204,55 @@ def test_analysis_freshness_with_facts() -> None:
     status, decision = evaluate_analysis_freshness(facts, now=later)
     assert status == "fresh"
     assert decision == "run"
+
+
+def test_analysis_freshness_honors_interval_override() -> None:
+    facts = FactLayer.model_validate(make_facts(generated_at="2026-08-03T10:00:00Z"))
+    now = datetime(2026, 8, 3, 12, 0, tzinfo=timezone.utc)
+
+    status, decision = evaluate_analysis_freshness(facts, now=now, interval_min=60)
+
+    assert (status, decision) == ("delayed", "run")
+
+
+def test_freshness_cli_reports_interval_source(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    facts_path = tmp_path / "facts.json"
+    facts_path.write_text(json.dumps(make_facts()), encoding="utf-8")
+
+    assert freshness_main(["--facts", str(facts_path), "--interval-min", "60"]) == 0
+
+    output = capsys.readouterr().out
+    assert "expected_interval_min=60" in output
+    assert "interval_source=flag" in output
+
+
+def test_build_prompt_uses_schema_and_bounds_news() -> None:
+    facts = FactLayer.model_validate(
+        make_facts(news_top=[{"id": f"news-{i}", "title": "中文新闻"} for i in range(16)])
+    )
+
+    prompt = build_prompt(facts, "zh-CN")
+
+    assert prompt.index("# Input") < prompt.index("# Output contract") < prompt.index("# Rules")
+    assert "输出 JSON" in prompt
+    assert '"top_risk_drivers"' in prompt
+    assert "中文新闻" in prompt
+    assert "news-14" in prompt
+    assert "news-15" not in prompt
+
+
+def test_validate_cli_reports_skipped_checks_and_required_lineage(
+    analysis_pair: tuple[Path, Path, Path], capsys: pytest.CaptureFixture[str]
+) -> None:
+    zh_path, en_path, facts_path = analysis_pair
+    missing_facts = facts_path.parent / "missing-facts.json"
+
+    assert validate_main(["--zh", str(zh_path), "--en", str(en_path), "--facts", str(missing_facts)]) == 0
+    assert "evidence_refs: SKIPPED (facts.json missing)" in capsys.readouterr().out
+
+    assert validate_main(
+        ["--zh", str(zh_path), "--en", str(en_path), "--facts", str(missing_facts), "--require-lineage"]
+    ) == 1
+    output = capsys.readouterr().out
+    assert "lineage: FAILED (facts.json missing)" in output
+    assert "fact layer missing for lineage validation" in output

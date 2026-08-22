@@ -16,8 +16,8 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-from pipeline.analysis.contract import SCHEMA_VERSION, SUPPORTED_LANGUAGES, input_path
-from pipeline.schemas import FactLayer
+from pipeline.analysis.contract import SUPPORTED_LANGUAGES, input_path
+from pipeline.schemas import AnalysisDataset, FactLayer
 
 _SYSTEM_TASKS: dict[str, str] = {
     "zh-CN": (
@@ -35,48 +35,15 @@ _SYSTEM_TASKS: dict[str, str] = {
     ),
 }
 
-_OUTPUT_CONTRACT: dict[str, str] = {
-    "zh-CN": """输出 JSON（与 AnalysisDataset 契约一致，字段名 snake_case）：
-{
-  "schema_version": "%s",
-  "generated_at": "<当前 UTC ISO8601 Z>",
-  "language": "zh-CN",
-  "market_state": "<与事实层 risk.risk_level 完全一致>",
-  "market_regime": "<与事实层 risk.regime 完全一致>",
-  "summary": "<3-5 句总体判断>",
-  "top_risk_drivers": [{"claim": "...", "evidence_refs": [{"dataset": "...", "path": "...", "metric": "...", "value": ...}]}],
-  "supporting_signals": [{"claim": "...", "evidence_refs": [...]}],
-  "contradicting_signals": [{"claim": "...", "evidence_refs": [...]}],
-  "what_changed_today": ["..."],
-  "watch_next": ["..."],
-  "bull_case": {"title": "...", "points": ["..."], "evidence_refs": [...]},
-  "base_case": {"title": "...", "points": ["..."], "evidence_refs": [...]},
-  "bear_case": {"title": "...", "points": ["..."], "evidence_refs": [...]},
-  "confidence": <0-1>,
-  "evidence_refs": [...],
-  "data_freshness": "<fresh|delayed|stale|missing|degraded>"
-}""",
-    "en": """Output JSON (AnalysisDataset contract, snake_case field names):
-{
-  "schema_version": "%s",
-  "generated_at": "<current UTC ISO8601 Z>",
-  "language": "en",
-  "market_state": "<must equal fact layer risk.risk_level>",
-  "market_regime": "<must equal fact layer risk.regime>",
-  "summary": "<3-5 sentence overall assessment>",
-  "top_risk_drivers": [{"claim": "...", "evidence_refs": [{"dataset": "...", "path": "...", "metric": "...", "value": ...}]}],
-  "supporting_signals": [{"claim": "...", "evidence_refs": [...]}],
-  "contradicting_signals": [{"claim": "...", "evidence_refs": [...]}],
-  "what_changed_today": ["..."],
-  "watch_next": ["..."],
-  "bull_case": {"title": "...", "points": ["..."], "evidence_refs": [...]},
-  "base_case": {"title": "...", "points": ["..."], "evidence_refs": [...]},
-  "bear_case": {"title": "...", "points": ["..."], "evidence_refs": [...]},
-  "confidence": <0-1>,
-  "evidence_refs": [...],
-  "data_freshness": "<fresh|delayed|stale|missing|degraded>"
-}""",
+_OUTPUT_HEADINGS: dict[str, str] = {
+    "zh-CN": "输出 JSON；下面的 JSON Schema 由 AnalysisDataset 模型生成：",
+    "en": "Output JSON; the JSON Schema below is generated from the AnalysisDataset model:",
 }
+
+
+def _output_contract(lang: str) -> str:
+    """Render the output contract from the Python model so prompt and schema cannot drift."""
+    return f"{_OUTPUT_HEADINGS[lang]}\n{json.dumps(AnalysisDataset.model_json_schema(), ensure_ascii=False, indent=2)}"
 
 _CITATION_RULES: dict[str, str] = {
     "zh-CN": (
@@ -175,7 +142,7 @@ def _render_facts(facts: FactLayer, lang: str) -> str:
 {sector_lines}
 
 ### Top news (Top 15 by importance)
-{json.dumps(facts.news_top, ensure_ascii=False)}
+{json.dumps(facts.news_top[:15], ensure_ascii=False)}
 
 ### Calendar next 7d
 {json.dumps(facts.calendar_next7d, ensure_ascii=False)}
@@ -190,7 +157,7 @@ def build_prompt(facts: FactLayer, lang: str) -> str:
     if lang not in SUPPORTED_LANGUAGES:
         raise ValueError(f"unsupported language: {lang!r}, options: {SUPPORTED_LANGUAGES}")
     system = _SYSTEM_TASKS[lang]
-    output_contract = _OUTPUT_CONTRACT[lang] % SCHEMA_VERSION
+    output_contract = _output_contract(lang)
     citation = _CITATION_RULES[lang]
     return (
         f"# System\n{system}\n\n"
