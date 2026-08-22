@@ -271,6 +271,8 @@ def test_schema_version_supported() -> None:
         ("2.0.0", False),  # different major: structure incompatible
         ("0.9.0", False),  # earlier major
         ("not-a-version", False),
+        ("1", False),      # truncated: fail closed, never IndexError (#187)
+        ("1.1", False),    # truncated minor-only: fail closed (#187)
     ],
 )
 def test_is_schema_compatible(file_version: str, expected: bool) -> None:

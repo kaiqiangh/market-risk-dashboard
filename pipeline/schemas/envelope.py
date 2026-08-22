@@ -85,13 +85,23 @@ def is_schema_compatible(file_version: str, current_version: str = SCHEMA_VERSIO
     """
 
     def _parts(version: str) -> list[int]:
+        if not isinstance(version, str):
+            return []
         try:
-            return [int(part) for part in version.split(".")[:3]]
+            # NO [:3] slice here: an over-long version ("1.1.0.9") must reach the
+            # len != 3 guard intact, not be silently truncated into a valid shape.
+            return [int(part) for part in version.split(".")]
         except ValueError:
             return []
 
     fv, cv = _parts(file_version), _parts(current_version)
     if not fv or not cv:
+        return False
+    # Fail-closed on any non-canonical shape — truncated ("1", "1.1") AND over-long
+    # ("1.1.0.9", which the [:3] slice would otherwise silently truncate): a foreign/
+    # hand-edited file must be rejected unless it carries exactly major.minor.patch.
+    # The current-version half keeps the looser <3 bound purely as defense-in-depth.
+    if len(fv) != 3 or len(cv) < 3:
         return False
     return fv[0] == cv[0] and fv[1] <= cv[1]
 

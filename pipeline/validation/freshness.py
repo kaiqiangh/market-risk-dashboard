@@ -39,6 +39,34 @@ class FreshnessVerdict(NamedTuple):
     reason: FreshnessReason
 
 
+#: Clock-skew tolerance. A timestamp up to this far in the *future* is treated as current
+#: (producer clock slightly ahead); anything further ahead cannot certify freshness — a
+#: bogus or hostile timestamp must degrade loudly, not vouch for itself.
+FUTURE_SKEW_TOLERANCE_MINUTES = 5.0
+
+
+def is_future_beyond_skew(updated_at: str | None, now: datetime | None = None) -> bool:
+    """True when updated_at lies further ahead than FUTURE_SKEW_TOLERANCE_MINUTES.
+
+    The shared predicate behind the stale verdict in evaluate_freshness and the
+    distinguishing detail finalize_freshness attaches (#187 review): one definition,
+    so the status decision and its operator-facing explanation can never disagree.
+    Malformed or absent timestamps are simply not future - the status ladder answers
+    for them.
+    """
+    if not updated_at:
+        return False
+    try:
+        updated = datetime.fromisoformat(updated_at.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    if now is None:
+        now = datetime.now(timezone.utc)
+    if updated.tzinfo is None:
+        updated = updated.replace(tzinfo=timezone.utc)
+    return (updated - now).total_seconds() / 60.0 > FUTURE_SKEW_TOLERANCE_MINUTES
+
+
 def evaluate_freshness(
     updated_at: str | None,
     expected_minutes: int,
@@ -48,7 +76,7 @@ def evaluate_freshness(
 
     - fresh   : latest update ≤ 1.5× expected interval
     - delayed : 1.5× ~ 3×
-    - stale   : > 3×
+    - stale   : > 3× (including a timestamp further ahead than the skew tolerance)
     - missing : never had data / file missing
     """
     if not updated_at:
@@ -63,6 +91,9 @@ def evaluate_freshness(
         updated = updated.replace(tzinfo=timezone.utc)
 
     age_minutes = (now - updated).total_seconds() / 60.0
+    if age_minutes < -FUTURE_SKEW_TOLERANCE_MINUTES:
+        # Future-dated beyond skew tolerance: never fresh, whatever the naive arithmetic says.
+        return "stale"
     if age_minutes <= 1.5 * expected_minutes:
         return "fresh"
     if age_minutes <= 3.0 * expected_minutes:
@@ -125,6 +156,13 @@ def finalize_freshness(
 
     status = evaluate_freshness(generated_at, expected_interval_minutes_for(dataset, 480), now)
     code = "ok" if status == "fresh" else "interval_exceeded"
+    # A future-dated timestamp degrades to the same stale STATUS as a mundane late fetch,
+    # but the closed reason vocabulary alone would mislabel the anomaly (#187 review): name
+    # the actual event in the detail so an operator reads "clock/hostile timestamp", not
+    # "provider was slow".
+    if status == "stale" and is_future_beyond_skew(generated_at, now):
+        marker = f"generated_at lies in the future beyond the {FUTURE_SKEW_TOLERANCE_MINUTES:g}min skew tolerance"
+        detail = f"{marker}; {detail}" if detail else marker
     return FreshnessVerdict(status, _reason(error_code or code, detail))
 
 

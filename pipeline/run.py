@@ -931,14 +931,15 @@ def _build_dashboard(
 # Commands
 # ============================================================
 
-def _run_collection(command: str) -> dict[str, Any]:
-    """Run collection according to the command, returning collected results and durations."""
-    started = time.monotonic()
-    registry = build_registry(settings)
-    universe = AssetUniverse.load(settings)
-    writer = StorageWriter(settings.data_dir)
+def _empty_results() -> dict[str, Any]:
+    """The one initializer for a collection-result bundle (#187).
 
-    results: dict[str, Any] = {
+    Both `_run_collection` and `main()`'s crash-handler skeleton start from this factory:
+    two hand-copied literals asserting one shape is exactly the drift class this repo keeps
+    getting burned by — a key added by a collector would otherwise vanish from the next
+    early-crash failure report.
+    """
+    return {
         "durations": {},
         "degraded": [],
         "provider_status": {},
@@ -950,6 +951,16 @@ def _run_collection(command: str) -> dict[str, Any]:
         "series_history": {},
         "macro_meta": {},
     }
+
+
+def _run_collection(command: str) -> dict[str, Any]:
+    """Run collection according to the command, returning collected results and durations."""
+    started = time.monotonic()
+    registry = build_registry(settings)
+    universe = AssetUniverse.load(settings)
+    writer = StorageWriter(settings.data_dir)
+
+    results = _empty_results()
 
     need_market = command in ("full", "market-only")
     need_macro = command in ("full", "macro-only")
@@ -1251,7 +1262,7 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         # Metadata: both files rendered from the one outcome record, last, so a dataset that
         # died mid-run is reported as missing rather than silently omitted.
         _publish_metadata(writer, outcomes, results["provider_status"])
-        writer.write_schema_version("1.0.0")
+        writer.write_schema_version()  # defaults to the live SCHEMA_VERSION
     except Exception as exc:  # noqa: BLE001
         return False, f"write to disk failed: {exc}"
 
@@ -1415,6 +1426,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.backfill:
         return _run_backfill()
 
+    # E-5: the failure report must stay writable even when collection itself crashes.
+    # Without this skeleton, an exception raised by _run_collection left `results`
+    # unbound, so the except block's own NameError was swallowed and no run-report
+    # was ever written for an early crash.
+    results: dict[str, Any] = _empty_results()
     try:
         started = time.monotonic()
         run_started_at = now_utc()
