@@ -87,7 +87,15 @@ acquire_lock() {
   fi
   local now mtime
   now="$(date +%s)"
-  mtime="$(stat -f %m "$LOCK_DIR" 2>/dev/null || stat -c %Y "$LOCK_DIR" 2>/dev/null || echo "$now")"
+  # BSD stat uses -f while GNU stat uses -c; the wrong flag can still exit 0
+  # with filesystem text, so accept only a numeric timestamp.
+  if mtime="$(stat -c %Y "$LOCK_DIR" 2>/dev/null)" && [[ "$mtime" =~ ^[0-9]+$ ]]; then
+    :
+  elif mtime="$(stat -f %m "$LOCK_DIR" 2>/dev/null)" && [[ "$mtime" =~ ^[0-9]+$ ]]; then
+    :
+  else
+    mtime="$now"
+  fi
   if ((now - mtime > LOCK_STALE_SECS)); then
     echo "[scheduled] warn: removing stale lock (age $((now - mtime))s > $LOCK_STALE_SECS)" >&2
     rm -rf "$LOCK_DIR"
@@ -180,4 +188,3 @@ if ! REMOTE_SHA="$(run_with_timeout 30 git ls-remote origin "refs/heads/$BRANCH"
 fi
 
 echo "[scheduled] $(date -u +%Y-%m-%dT%H:%M:%SZ) done, published commit $COMMIT_SHA"
-

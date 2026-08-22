@@ -26,7 +26,7 @@ def _write_executable(path: Path, body: str) -> Path:
     return path
 
 
-def _scheduler_harness(tmp_path: Path) -> tuple[dict[str, str], Path]:
+def _scheduler_harness(tmp_path: Path, *, fake_stat: bool = False) -> tuple[dict[str, str], Path]:
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir()
     log = tmp_path / "commands.log"
@@ -75,6 +75,19 @@ printf 'validation %s\\n' "$*" >> "$FAKE_GIT_LOG"
 exit "${FAKE_VALIDATE_STATUS:-0}"
 """,
     )
+    if fake_stat:
+        _write_executable(
+            bin_dir / "stat",
+            """#!/usr/bin/env bash
+case "${FAKE_STAT_PROFILE:-gnu}:${1:-} ${2:-}" in
+  gnu:"-f %m") printf 'File: fake filesystem stats\\n'; exit 0 ;;
+  gnu:"-c %Y") printf '%s\\n' "${FAKE_STAT_MTIME:-0}"; exit 0 ;;
+  bsd:"-c %Y") printf 'File: fake filesystem stats\\n'; exit 0 ;;
+  bsd:"-f %m") printf '%s\\n' "${FAKE_STAT_MTIME:-0}"; exit 0 ;;
+esac
+exit 1
+""",
+        )
     env = {
         **os.environ,
         "PATH": f"{bin_dir}{os.pathsep}{original_path}",
@@ -85,8 +98,10 @@ exit "${FAKE_VALIDATE_STATUS:-0}"
     return env, log
 
 
-def _run_scheduled(tmp_path: Path, **overrides: str) -> tuple[subprocess.CompletedProcess[str], str]:
-    env, log = _scheduler_harness(tmp_path)
+def _run_scheduled(
+    tmp_path: Path, *, fake_stat: bool = False, **overrides: str
+) -> tuple[subprocess.CompletedProcess[str], str]:
+    env, log = _scheduler_harness(tmp_path, fake_stat=fake_stat)
     env.update(overrides)
     result = subprocess.run(
         ["bash", str(SCHEDULED_SCRIPT)],
@@ -259,14 +274,22 @@ def test_new_untracked_file_triggers_commit_even_when_diff_is_clean(tmp_path: Pa
     assert "no meaningful changes" not in result.stdout
 
 
-def test_lock_conflict_exits_25_without_running_pipeline(tmp_path: Path) -> None:
+@pytest.mark.parametrize("stat_profile", ["gnu", "bsd"])
+def test_lock_conflict_exits_25_without_running_pipeline(tmp_path: Path, stat_profile: str) -> None:
     """A concurrent instance (fresh lock) must stop the run before any collection."""
     lock_dir = tmp_path / "sched.lock"
     lock_dir.mkdir()
+    import time
+
     # Force the mkdir mechanism (#190 review): flock exists on Linux CI, and the
     # conflict semantics differ between mechanisms - this test pins the portable path.
     result, log = _run_scheduled(
-        tmp_path, SCHEDULED_LOCK_DIR=str(lock_dir), SCHEDULED_LOCK_MODE="mkdir"
+        tmp_path,
+        fake_stat=True,
+        FAKE_STAT_PROFILE=stat_profile,
+        FAKE_STAT_MTIME=str(int(time.time())),
+        SCHEDULED_LOCK_DIR=str(lock_dir),
+        SCHEDULED_LOCK_MODE="mkdir",
     )
 
     assert result.returncode == 25
@@ -274,7 +297,8 @@ def test_lock_conflict_exits_25_without_running_pipeline(tmp_path: Path) -> None
     assert lock_dir.exists(), "a loser must never remove the winner's lock"
 
 
-def test_stale_lock_is_reclaimed_and_run_proceeds(tmp_path: Path) -> None:
+@pytest.mark.parametrize("stat_profile", ["gnu", "bsd"])
+def test_stale_lock_is_reclaimed_and_run_proceeds(tmp_path: Path, stat_profile: str) -> None:
     """A crashed run's leftover lock older than the stale window must not wedge the
     scheduler forever."""
     import time
@@ -285,6 +309,8 @@ def test_stale_lock_is_reclaimed_and_run_proceeds(tmp_path: Path) -> None:
     os.utime(lock_dir, (old, old))
     result, log = _run_scheduled(
         tmp_path,
+        fake_stat=True,
+        FAKE_STAT_PROFILE=stat_profile,
         SCHEDULED_LOCK_DIR=str(lock_dir),
         SCHEDULED_LOCK_MODE="mkdir",
         FAKE_GIT_STATUS="dirty",
