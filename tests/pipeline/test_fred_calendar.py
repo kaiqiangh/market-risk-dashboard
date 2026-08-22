@@ -211,3 +211,13 @@ def test_fomc_markup_without_year_sections_is_not_silent_empty(tmp_path: Path) -
 
     with pytest.raises(ProviderError, match="no year sections"):
         provider._fomc_meetings("2026-08-07", "2026-08-30")
+
+
+def test_fomc_year_section_without_meetings_is_not_silent_empty(tmp_path: Path) -> None:
+    provider = _provider(tmp_path)
+    provider._client = _Client(
+        fred_by_release={}, fomc_html='<h4><a id="2026">2026 FOMC Meetings</a></h4>'
+    )
+
+    with pytest.raises(ProviderError, match="no meeting rows"):
+        provider._fomc_meetings("2026-08-07", "2026-08-30")

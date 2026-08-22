@@ -207,6 +207,8 @@ class FredCalendarProvider(BaseProvider):
                         "source": "fomc",
                     }
                 )
+        if not out:
+            raise ProviderError("FOMC calendar parse returned no meeting rows")
         return out
 
 

@@ -70,6 +70,7 @@ class TestAkshareTencentBackend:
 
         assert calls[0]["symbol"] == "sh603986"
         assert calls[0]["adjust"] == "qfq"
+        assert calls[0]["timeout"] == provider.timeout_seconds
         assert result.rows[-1]["close"] == pytest.approx(385.0)
         assert result.rows[0]["date"] == "2026-08-05"
 

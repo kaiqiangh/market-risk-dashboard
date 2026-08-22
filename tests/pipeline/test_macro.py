@@ -42,9 +42,10 @@ class _FakeRegistry:
         kwargs = kwargs or {}
         if domain == "fedwatch":
             self.calls.append((domain, method, key, kwargs))
+            code = str(args[0][0])
             return {
-                "result": {"ZQU26.CBT": 94.75, "ZQZ26.CBT": 94.70},
-                "meta": {"provider": "fedwatch", "used_fallback": False, "from_cache": False},
+                "result": {code: 94.75 if code == "ZQU26.CBT" else 94.70},
+                "meta": {"provider": "fedwatch", "used_fallback": False, "from_cache": False, "degraded": False},
             }
         series_id = str(args[0])
         self.calls.append((domain, method, series_id, kwargs))
@@ -148,6 +149,7 @@ class TestCollector:
         assert snapshot is not None
         assert len(codes_calls) == 1
         assert any(domain == "fedwatch" and method == "get_contract_prices" for domain, method, *_ in registry.calls)
+        assert sum(1 for domain, _, _, _ in registry.calls if domain == "fedwatch") == 2
 
     def test_change_1m_is_frequency_aware(self, tmp_path: Path, monkeypatch) -> None:
         """#84 §6a: 21 rows is one month only for daily series; a monthly series must

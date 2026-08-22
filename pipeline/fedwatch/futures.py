@@ -6,8 +6,10 @@ On rate limiting, raise ProviderError → degradation chain (FedWatch absence do
 
 from __future__ import annotations
 
+import json
+
 from pipeline.providers._util import UA
-from pipeline.providers.base import ProviderError
+from pipeline.providers.base import MAX_RESPONSE_BYTES, ProviderError
 
 YAHOO_CHART = "https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
 
@@ -28,12 +30,17 @@ def fetch_contract_price(symbol: str, timeout: float = 12.0) -> float | None:
             headers={"User-Agent": UA},
             timeout=timeout,
             impersonate="chrome",
+            allow_redirects=False,
         )
+        if 300 <= resp.status_code < 400:
+            raise ProviderError(f"Yahoo chart {symbol}: blocked redirect")
+        if len(resp.content) > MAX_RESPONSE_BYTES:
+            raise ProviderError(f"Yahoo chart {symbol}: response exceeds {MAX_RESPONSE_BYTES} bytes")
         if resp.status_code == 429:
             raise ProviderError(f"Yahoo chart {symbol}: 429 rate limited", cls="rate_limited")
         if resp.status_code != 200:
             raise ProviderError(f"Yahoo chart {symbol}: HTTP {resp.status_code}")
-        data = resp.json()
+        data = json.loads(resp.content)
     except ProviderError:
         raise
     except Exception as exc:  # noqa: BLE001

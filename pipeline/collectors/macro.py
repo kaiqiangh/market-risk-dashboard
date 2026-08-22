@@ -172,18 +172,32 @@ class MacroCollector:
             return self._accumulate(insufficient_data_snapshot(None))
 
         codes = next_contract_codes()
-        try:
-            out = self.registry.call("fedwatch", "get_contract_prices", "fedwatch_contracts", args=(codes,))
-            prices: dict[str, float | None] = out["result"]
-            self.provider_status["fedwatch"] = out["meta"]
-            if out["meta"].get("degraded"):
-                self._degraded_sources.add("fedwatch")
-                self.degraded.append("FedWatch: provider served degraded data")
-        except ProviderError as exc:
-            prices = {}
-            self.provider_status["fedwatch"] = {"degraded": True, "error": str(exc)}
-            self.degraded.append(f"FedWatch: {exc}")
+        prices: dict[str, float | None] = {}
+        errors: list[str] = []
+        outcomes: list[dict[str, Any]] = []
+        for code in codes:
+            try:
+                out = self.registry.call(
+                    "fedwatch", "get_contract_prices", f"fedwatch_{code}", args=([code],)
+                )
+                prices.update(out["result"])
+                outcomes.append(out["meta"])
+            except ProviderError as exc:
+                errors.append(f"{code}: {exc}")
+        if outcomes:
+            first = outcomes[0]
+            self.provider_status["fedwatch"] = {
+                **first,
+                "used_fallback": any(meta.get("used_fallback") for meta in outcomes),
+                "from_cache": all(meta.get("from_cache") for meta in outcomes),
+                "degraded": bool(errors) or any(meta.get("degraded") for meta in outcomes),
+                "errors": errors,
+            }
+        if errors:
             self._degraded_sources.add("fedwatch")
+            self.degraded.append("FedWatch: " + "; ".join(errors[:3]))
+        if not outcomes:
+            self.provider_status["fedwatch"] = {"degraded": True, "errors": errors}
 
         if not any(v is not None for v in prices.values()):
             self._fedwatch_failed = True

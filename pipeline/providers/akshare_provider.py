@@ -73,6 +73,7 @@ class AkshareProvider(BaseProvider):
                 start_date=_start_date(period),
                 end_date=_today(),
                 adjust="qfq",
+                timeout=self.timeout_seconds,
             )
             if df is None or len(df) == 0:
                 raise ProviderError(f"{symbol}: akshare history is empty")

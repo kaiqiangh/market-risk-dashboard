@@ -137,6 +137,7 @@ def _retry_after_seconds(response: httpx.Response | None) -> float | None:
 #: S-3: outbound redirect guard bounds — https only, at most 3 hops per request, 2 MB cap.
 MAX_REDIRECT_HOPS = 3
 MAX_RESPONSE_BYTES = 2 * 1024 * 1024
+_RELAY_VOUCH = object()
 
 
 class GuardedClient(httpx.Client):
@@ -173,7 +174,7 @@ class GuardedClient(httpx.Client):
         if request.url.scheme != "https":
             raise ProviderError(f"blocked: non-https outbound {request.url}")
         # A redirect source that is a relay vouches for the target host (S-3).
-        if request.extensions.get("relay_vouched") is True:
+        if request.extensions.get("relay_vouched") is _RELAY_VOUCH:
             return
         if request.url.host not in self._allowed_hosts:
             raise ProviderError(f"blocked: host {request.url.host} not in outbound allowlist")
@@ -190,10 +191,11 @@ class GuardedClient(httpx.Client):
 
         previous_host: str | None = None
         base_extensions = dict(kwargs.pop("extensions", {}) or {})
+        base_extensions.pop("relay_vouched", None)
         for _ in range(MAX_REDIRECT_HOPS + 1):
             extensions = {
                 **base_extensions,
-                "relay_vouched": previous_host in self._relay_hosts,
+                "relay_vouched": _RELAY_VOUCH if previous_host in self._relay_hosts else None,
             }
             with super().stream("GET", url, extensions=extensions, **kwargs) as response:
                 if response.status_code >= 300 and response.headers.get("location"):

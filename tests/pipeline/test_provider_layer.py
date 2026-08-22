@@ -152,6 +152,8 @@ def test_redirect_relay_voucher_is_scoped_to_one_request() -> None:
         assert client.get("https://relay.example/feed").text == "ok"
         with pytest.raises(ProviderError, match="not in outbound allowlist"):
             client.get("https://blocked.example/feed")
+        with pytest.raises(ProviderError, match="not in outbound allowlist"):
+            client.get("https://blocked.example/feed", extensions={"relay_vouched": True})
     finally:
         client.close()
 
