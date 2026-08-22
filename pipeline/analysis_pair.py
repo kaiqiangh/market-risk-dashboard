@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
@@ -32,8 +33,6 @@ def analysis_backup_paths(writer: StorageWriter) -> list[Path]:
 
 def read_analysis_pair(paths: list[Path]) -> tuple[dict[str, dict[str, Any]] | None, str | None]:
     """Read both pair members without treating a partial pair as a valid document."""
-    import json as _json
-
     absent = [path.name for path in paths if not path.exists()]
     if absent:
         return None, f"missing analysis pair member(s): {', '.join(absent)}"
@@ -41,8 +40,8 @@ def read_analysis_pair(paths: list[Path]) -> tuple[dict[str, dict[str, Any]] | N
     documents: dict[str, dict[str, Any]] = {}
     for path in paths:
         try:
-            value = _json.loads(path.read_text(encoding="utf-8"))
-        except (_json.JSONDecodeError, OSError):
+            value = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
             return None, f"unreadable analysis pair member: {path.name}"
         if not isinstance(value, dict):
             return None, f"analysis pair member is not an object: {path.name}"
@@ -113,8 +112,6 @@ def record_analysis_outcome(writer: StorageWriter, outcomes: RunOutcomes) -> boo
     but valid pair can still be merged into the news dataset; its freshness outcome remains
     visible to the caller and the frontend.
     """
-    import json as _json
-
     from pipeline.analysis.validate import validate_analysis_pair
     from pipeline.schemas import FactLayer
 
@@ -171,7 +168,7 @@ def record_analysis_outcome(writer: StorageWriter, outcomes: RunOutcomes) -> boo
         return False
 
     try:
-        facts = FactLayer.model_validate(_json.loads(facts_path.read_text(encoding="utf-8")))
+        facts = FactLayer.model_validate(json.loads(facts_path.read_text(encoding="utf-8")))
         issues, zh, en = validate_analysis_pair(paths[0], paths[1], facts_path, require_lineage=True)
     except Exception:  # noqa: BLE001 — malformed facts or AI output is a degraded outcome
         if has_readable_backup:
@@ -236,8 +233,6 @@ def record_ai_outcomes(writer: StorageWriter, outcomes: RunOutcomes) -> bool:
     it at all — nothing ever called the writer for that key, and an absent entry is
     indistinguishable from a healthy one.
     """
-    import json as _json
-
     analysis_valid = True
 
     for key in AI_PRODUCED_DATASETS:
@@ -265,8 +260,8 @@ def record_ai_outcomes(writer: StorageWriter, outcomes: RunOutcomes) -> bool:
         failure: str | None = None
         for path in paths:
             try:
-                data = _json.loads(path.read_text(encoding="utf-8"))
-            except (_json.JSONDecodeError, OSError) as exc:
+                data = json.loads(path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError) as exc:
                 failure = f"{path.name} unreadable: {type(exc).__name__}"
                 break
             stamp = data.get("generated_at") or data.get("updated_at") or ""
@@ -318,4 +313,3 @@ def write_analysis_only_report(writer: StorageWriter, outcomes: RunOutcomes) -> 
         skipped_datasets=[],
         degraded_datasets=degraded_datasets,
     )
-

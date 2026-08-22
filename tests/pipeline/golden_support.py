@@ -10,6 +10,8 @@ from __future__ import annotations
 
 import hashlib
 from pathlib import Path
+from typing import Any
+from unittest.mock import patch
 
 from tests.pipeline import factories
 
@@ -24,11 +26,19 @@ def manifest(root: Path) -> dict[str, str]:
     }
 
 
-def publish(writer, generated_at: str) -> None:
+@patch("pipeline.storage.outcomes.now_utc")
+def publish(writer, generated_at: str, frozen_now: Any) -> None:
     """The write sequence main() performs for the full command, narrowed to datasets that
     cover every assembly branch: risk (derived inputs), market fallback provenance, news
     default provider, calendar detail, dashboard aggregation."""
-    from pipeline.run import RunOutcomes, _build_dashboard, _finalize_and_write, _run_scope
+    frozen_now.return_value = generated_at
+    from pipeline.run import (
+        RunOutcomes,
+        _build_dashboard,
+        _finalize_and_write,
+        _publish_metadata,
+        _run_scope,
+    )
 
     outcomes = RunOutcomes(scope=_run_scope("full"))
 
@@ -64,3 +74,4 @@ def publish(writer, generated_at: str) -> None:
         writer, "dashboard", dashboard_payload, False, outcomes,
         provider="derived", data_quality=1.0, generated_at=generated_at,
     )
+    _publish_metadata(writer, outcomes)

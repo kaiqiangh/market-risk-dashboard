@@ -301,6 +301,20 @@ def _market_dataset_params(market_meta: dict[str, Any], name: str, fallback_degr
     )
 
 
+def _write_market_datasets(
+    writer: StorageWriter,
+    datasets: dict[str, AssembledDataset],
+    outcomes: RunOutcomes,
+    *,
+    order: tuple[str, ...],
+) -> dict[str, BaseEnvelope]:
+    """Write market datasets through one lifecycle while preserving command order (#192)."""
+    return {
+        name: _write_finalized(writer, name, datasets[name], outcomes)
+        for name in order
+    }
+
+
 def _finalize_and_write(
     writer: StorageWriter,
     name: str,
@@ -577,11 +591,11 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
         # full-run publish order (see _write_finalized calls below), not market-only's.
         market_datasets = {}
         for _name in ("equities", "sectors", "crypto", "commodities"):
-            _p = _market_dataset_params(market_meta, _name, market_degraded)
+            params = _market_dataset_params(market_meta, _name, market_degraded)
             market_datasets[_name] = _assemble(
-                _name, results[_name], _p["degraded"],
-                **_p["provider_kwargs"], data_quality=_p["data_quality"],
-                source_updated_at=_p["source_updated_at"], detail=_p["detail"],
+                _name, results[_name], params["degraded"],
+                **params["provider_kwargs"], data_quality=params["data_quality"],
+                source_updated_at=params["source_updated_at"], detail=params["detail"],
             )
         equities, sectors, crypto, commodities = (
             market_datasets["equities"], market_datasets["sectors"],
@@ -647,10 +661,16 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
     outcomes = RunOutcomes(scope=_run_scope(command))
     try:
         macro = _write_finalized(writer, "macro", macro, outcomes)
-        equities = _write_finalized(writer, "equities", equities, outcomes)
-        sectors = _write_finalized(writer, "sectors", sectors, outcomes)
-        crypto = _write_finalized(writer, "crypto", crypto, outcomes)
-        commodities = _write_finalized(writer, "commodities", commodities, outcomes)
+        market_envelopes = _write_market_datasets(
+            writer,
+            {"equities": equities, "sectors": sectors, "crypto": crypto, "commodities": commodities},
+            outcomes,
+            order=("equities", "sectors", "crypto", "commodities"),
+        )
+        equities, sectors, crypto, commodities = (
+            market_envelopes["equities"], market_envelopes["sectors"],
+            market_envelopes["crypto"], market_envelopes["commodities"],
+        )
         news = _write_finalized(writer, "news", news, outcomes)
         calendar = _write_finalized(writer, "calendar", calendar, outcomes)
         risk_env = _write_finalized(writer, "risk", risk_env, outcomes)
@@ -942,13 +962,18 @@ def main(argv: list[str] | None = None) -> int:
             # on the global aggregate (which news/macro/calendar would have extended).
             # (#192): same parameterization as the full path; market-only publishes in
             # this order (crypto before sectors - keep it, freshness.json row order follows).
+            market_datasets = {}
             for _name in ("equities", "crypto", "sectors", "commodities"):
-                _p = _market_dataset_params(market_meta, _name, market_meta.get("degraded"))
-                _finalize_and_write(
-                    writer, _name, results[_name], _p["degraded"], outcomes,
-                    **_p["provider_kwargs"], data_quality=_p["data_quality"],
-                    source_updated_at=_p["source_updated_at"], detail=_p["detail"],
+                params = _market_dataset_params(market_meta, _name, market_meta.get("degraded"))
+                market_datasets[_name] = _assemble(
+                    _name, results[_name], params["degraded"],
+                    **params["provider_kwargs"], data_quality=params["data_quality"],
+                    source_updated_at=params["source_updated_at"], detail=params["detail"],
                 )
+            _write_market_datasets(
+                writer, market_datasets, outcomes,
+                order=("equities", "crypto", "sectors", "commodities"),
+            )
             _publish_metadata(writer, outcomes, results["provider_status"])
             health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
             return _finish_run(command, results, time.monotonic() - started, health)

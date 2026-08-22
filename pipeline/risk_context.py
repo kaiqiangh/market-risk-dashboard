@@ -224,6 +224,3 @@ COMMAND_DATASETS: dict[str, tuple[str, ...]] = {
     "fact-layer": ("factlayer",),
     "analysis-only": (),
 }
-
-#: Datasets the AI automations produce out of band, rather than the collection run (P0-4).
-AI_PRODUCED_DATASETS: tuple[str, ...] = ("analysis", "news_translations")
