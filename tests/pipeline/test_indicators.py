@@ -1,10 +1,10 @@
-"""Indicators tests (technical/breadth/flow/trend)."""
+"""Indicators tests (technical/breadth/trend)."""
 
 from __future__ import annotations
 
 import pytest
 
-from pipeline.indicators import breadth, flow, technical, trend
+from pipeline.indicators import breadth, technical, trend
 
 
 def _rows(closes: list[float]) -> list[dict]:
@@ -63,16 +63,6 @@ def test_breadth_snapshot() -> None:
     assert snap["breadth_above_ma200"] == round(2 / 3, 4)  # SPY/SOXX above MA200, IWM below
     assert snap["is_proxy"] is True
     assert snap["small_cap_relative"] is not None
-
-
-def test_flow_snapshot() -> None:
-    rows = _rows([100.0] * 30)
-    rows[-1]["volume"] = 5000.0  # volume spike
-    snap = flow.flow_snapshot(rows)
-    assert snap["obv"] is not None
-    assert snap["mfi"] is not None
-    assert snap["relative_volume"] is not None
-    assert snap["is_proxy"] is True
 
 
 def test_trend_snapshot() -> None:

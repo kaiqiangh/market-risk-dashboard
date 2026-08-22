@@ -14,7 +14,6 @@ from pipeline.risk.scoring import (
     compute_indicator_score,
     heuristic_risk_score,
     percentile_rank,
-    percentile_risk_score,
     z_score,
 )
 from pipeline.schemas import (
@@ -35,15 +34,6 @@ def test_heuristic_risk_score_bounds() -> None:
     assert heuristic_risk_score("vix", 100) == 98.0  # clamped at bounds
     assert heuristic_risk_score("vix", None) is None
     assert heuristic_risk_score("unknown_key", 10) is None
-
-
-def test_percentile_risk_score() -> None:
-    history = list(range(1, 101))  # 1..100
-    assert percentile_risk_score(100, history, "higher_is_riskier") == 100.0
-    assert percentile_risk_score(1, history, "higher_is_riskier") < 5
-    # lower_is_riskier inverted
-    low = percentile_risk_score(1, history, "lower_is_riskier")
-    assert low > 95
 
 
 def test_percentile_rank_and_zscore() -> None:

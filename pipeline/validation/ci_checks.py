@@ -50,9 +50,6 @@ STANDALONE_MODELS: dict[str, Any] = {
     name: spec.model for name, spec in registry.standalone_specs().items()
 }
 
-# Optional envelope files (must pass validation if present; presence not required)
-OPTIONAL_ENVELOPE_MODELS: dict[str, tuple[Any, str]] = {}
-
 # Time regex: ISO 8601 UTC (YYYY-MM-DDTHH:MM:SSZ or with fractional seconds)
 _ISO_UTC_RE = re.compile(
     r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$"
@@ -101,7 +98,7 @@ def check_latest(latest_dir: Path, report: CheckReport, now: datetime) -> None:
         report.error(f"latest directory missing: {latest_dir}")
         return
 
-    known = {**ENVELOPE_MODELS, **OPTIONAL_ENVELOPE_MODELS}
+    known = ENVELOPE_MODELS
     for name, model_spec in known.items():
         path = latest_dir / name
         if not path.exists():
@@ -171,7 +168,7 @@ def _check_one(path: Path, name: str, model_spec: tuple[Any, str] | Any, report:
         report.error(f"{name}: unable to read/parse JSON (contains NaN/Infinity?): {exc}")
         return
 
-    if name in ENVELOPE_MODELS or name in OPTIONAL_ENVELOPE_MODELS:
+    if name in ENVELOPE_MODELS:
         model, dataset_key = model_spec  # type: ignore[misc]
         try:
             env = model.model_validate(data)
@@ -241,8 +238,6 @@ def validate_file(path: Path, now: datetime | None = None) -> list[str]:
     name = path.name
     if name in ENVELOPE_MODELS:
         _check_one(path, name, ENVELOPE_MODELS[name], report, now)
-    elif name in OPTIONAL_ENVELOPE_MODELS:
-        _check_one(path, name, OPTIONAL_ENVELOPE_MODELS[name], report, now)
     elif name in STANDALONE_MODELS:
         _check_one(path, name, STANDALONE_MODELS[name], report, now)
     else:

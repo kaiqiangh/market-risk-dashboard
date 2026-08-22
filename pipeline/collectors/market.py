@@ -490,7 +490,7 @@ class MarketCollector:
 
     # ---- Sectors/themes ----
 
-    def _collect_sectors(self, equities: EquitiesDataset) -> SectorsDataset:
+    def _collect_sectors(self) -> SectorsDataset:
         def _row(key: str, theme: Any) -> SectorItem:
             """Build one row from a themes.yaml definition (C-1/#102).
 
@@ -618,13 +618,6 @@ class MarketCollector:
 
     # ---- Summary ----
 
-    def _quality(self) -> float:
-        """Quality is scoped to the market collector's own outcomes."""
-        return quality_for_outcomes(
-            [name in self._dataset_degraded for name in ("equities", "crypto", "commodities", "sectors")],
-            settings=self.settings,
-        )
-
     def _reset_collection_state(self) -> None:
         """Clear generation-local market state when a collector instance is reused."""
         self.degraded.clear()
@@ -678,7 +671,7 @@ class MarketCollector:
         equities = self._collect_equities()
         crypto = self._collect_crypto()
         commodities = self._collect_commodities()
-        sectors = self._collect_sectors(equities)
+        sectors = self._collect_sectors()
         quality_by_dataset = {
             name: quality_for_outcomes([name in self._dataset_degraded], settings=self.settings)
             for name in ("equities", "crypto", "commodities", "sectors")

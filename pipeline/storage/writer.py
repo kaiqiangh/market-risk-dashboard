@@ -65,8 +65,7 @@ class StorageWriter:
         self.latest_dir = data_dir / "latest"
         self.history_dir = data_dir / "history"
         self.metadata_dir = data_dir / "metadata"
-        self.feeds_dir = data_dir / "feeds"
-        for d in (self.latest_dir, self.history_dir, self.metadata_dir, self.feeds_dir):
+        for d in (self.latest_dir, self.history_dir, self.metadata_dir):
             d.mkdir(parents=True, exist_ok=True)
 
     # ---- Serialization ----
@@ -155,25 +154,6 @@ class StorageWriter:
         self.write_json(series_dir / "30d.json", merged[-30:])
         self.write_json(series_dir / "90d.json", merged[-90:])
         self.write_json(series_dir / "index.json", {"series": series_name, "updated_at": now_utc(), "count": len(merged)})
-
-    def append_history(self, series_name: str, row: dict[str, Any]) -> None:
-        series_dir = self.history_dir / series_name
-        series_dir.mkdir(parents=True, exist_ok=True)
-        existing = self._read_json(series_dir / "daily.json", default=[])
-        merged = _merge_by_date(existing, [row], series=series_name)
-        self.write_json(series_dir / "daily.json", merged)
-        self.write_json(series_dir / "30d.json", merged[-30:])
-        self.write_json(series_dir / "90d.json", merged[-90:])
-
-    def snapshot_append(self, name: str, row: dict[str, Any]) -> None:
-        """feeds/{name}.json snapshot append (FedWatch accumulation, review P0-1)."""
-        path = self.feeds_dir / f"{name}.json"
-        history = self._read_json(path, default=[])
-        today = now_utc()[:10]
-        history = [h for h in history if str(h.get("date", ""))[:10] != today]
-        history.append(row)
-        history.sort(key=lambda h: h.get("date", ""))
-        self.write_json(path, history)
 
     # ---- Metadata ----
 

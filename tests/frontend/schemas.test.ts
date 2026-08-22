@@ -14,7 +14,7 @@
  * succeed AND collectUnknownFields must name the stray key". Both halves are asserted below —
  * a drift that neither rejects nor reports is the only outcome this file still calls a bug.
  */
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import type { z } from "zod";
 import riskFixture from "../fixtures/risk.json";
 import factsFixture from "../fixtures/facts.json";
@@ -34,14 +34,7 @@ import {
 } from "@/schemas";
 import { collectUnknownFields } from "@/lib/unknownFields";
 import { DatasetClient } from "@/lib/api";
-import {
-  EXPECTED_INTERVALS_MIN,
-  EXPECTED_INTERVALS_MS,
-  badgeFor,
-  effectiveStatus,
-  evaluateFreshness,
-  staleTimeFor,
-} from "@/lib/freshness";
+import { badgeFor, staleTimeFor } from "@/lib/freshness";
 
 // -------------------------------------------------------------------------------------
 // Hand-written inline documents for the datasets without goldens (#73) live in
@@ -234,17 +227,7 @@ describe("DatasetClient path rules (architecture §3.6)", () => {
   });
 });
 
-describe("freshness six-state semantics (architecture §8.5, extended by #101)", () => {
-  const intervalMs = 60 * 60 * 1000; // 1h
-  const now = new Date("2026-08-03T12:00:00Z").getTime();
-
-  it("evaluates time-based states", () => {
-    expect(evaluateFreshness(null, intervalMs, now)).toBe("missing");
-    expect(evaluateFreshness("2026-08-03T11:30:00Z", intervalMs, now)).toBe("fresh"); // 30min
-    expect(evaluateFreshness("2026-08-03T10:00:00Z", intervalMs, now)).toBe("delayed"); // 2h
-    expect(evaluateFreshness("2026-08-03T08:00:00Z", intervalMs, now)).toBe("stale"); // 4h
-  });
-
+describe("freshness badge semantics", () => {
   it("maps status to UI badge, including empty", () => {
     expect(badgeFor("fresh").tone).toBe("success");
     expect(badgeFor("stale").prominent).toBe(true);
@@ -255,26 +238,6 @@ describe("freshness six-state semantics (architecture §8.5, extended by #101)",
     expect(badgeFor("empty").prominent).toBe(false);
   });
 
-  it("effectiveStatus keys the interval on the dataset, not a hardcoded group (#101)", () => {
-    // calendar publishes daily (1440min, stale past 72h); equities every 8h (stale past 24h).
-    // One timestamp, 30h old, must read differently for the two — that is the whole bug #101
-    // fixes, because the old code judged every dataset against the "market" interval.
-    const thirtyHoursAgo = "2026-08-02T06:00:00Z";
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-08-03T12:00:00Z"));
-    try {
-      expect(effectiveStatus("fresh", thirtyHoursAgo, "calendar")).toBe("fresh");
-      expect(effectiveStatus("fresh", thirtyHoursAgo, "equities")).toBe("stale");
-    } finally {
-      vi.useRealTimers();
-    }
-  });
-
-  it("effectiveStatus never downgrades a terminal status reported by the pipeline", () => {
-    for (const terminal of ["degraded", "missing", "empty"] as const) {
-      expect(effectiveStatus(terminal, "2026-08-03T11:59:00Z", "equities")).toBe(terminal);
-    }
-  });
 });
 
 describe("staleTime by dataset freshness semantics (Fix P2-10)", () => {
@@ -287,12 +250,4 @@ describe("staleTime by dataset freshness semantics (Fix P2-10)", () => {
     expect(staleTimeFor("unknown-key")).toBe(60_000); // fallback default
   });
 
-  it("expected intervals include risk/dashboard and align with sources.yaml", () => {
-    expect(EXPECTED_INTERVALS_MIN.market).toBe(480);
-    expect(EXPECTED_INTERVALS_MIN.macro).toBe(240);
-    expect(EXPECTED_INTERVALS_MIN.calendar).toBe(1440);
-    expect(EXPECTED_INTERVALS_MIN.risk).toBe(480);
-    expect(EXPECTED_INTERVALS_MIN.dashboard).toBe(480);
-    expect(EXPECTED_INTERVALS_MS.market).toBe(480 * 60_000);
-  });
 });

@@ -8,7 +8,7 @@ config/themes.yaml (theme → constituents), so the reference runs theme → sym
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 from pipeline.settings import Settings
@@ -21,7 +21,6 @@ class Asset:
     name_zh: str | None
     sector: str
     market: str  # "US" | "CN" | "CRYPTO" | "METAL" | "OIL"
-    extra: dict[str, Any] = field(default_factory=dict)
 
 
 class AssetUniverse:
