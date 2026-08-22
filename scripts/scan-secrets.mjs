@@ -29,9 +29,6 @@ const ROOT = process.argv.includes("--root")
   ? resolve(process.argv[process.argv.indexOf("--root") + 1])
   : resolve(__dirname, "..");
 
-//: Untracked-but-scanned locations: run logs embed exception reprs (the #92 leak path).
-const EXTRA_DIRS = ["artifacts/logs"];
-
 //: Key-shaped tokens. Only the named-parameter shape is a pattern: this repo’s news dedupe
 //: ids are sha1 (40 hex) and appear all over the published data, so any bare-token pattern
 //: false-positives. FRED/FMP keys always travel as named query parameters (`api_key=`/
@@ -48,6 +45,16 @@ const DIST_PATTERNS = [
   /(?:api[_-]?key|apikey|access[_-]?token|auth[_-]?token)\s*[:=]\s*["']?[A-Za-z0-9._~+/=-]{16,}/i,
   /(?:secret|password)\s*[:=]\s*["'][^"']{8,}["']/i,
 ];
+
+//: Untracked-but-scanned locations (#189 review): dist/ is gitignored, so it NEVER
+//: appears in git ls-files - it must be walked explicitly or the built-bundle surface
+//: loses all coverage while the header claims it is guarded. Run logs embed exception
+//: reprs (the #92 leak path) and are likewise untracked by design.
+const UNTRACKED_SCANS = [
+  { dir: "dist", tier: DIST_PATTERNS },
+  { dir: "artifacts/logs", tier: PATTERNS },
+];
+
 
 //: Source-tier patterns (#189): ordinary CODE assigns things to variables NAMED api_key
 //: all day (settings fields, getattr fallbacks), so the broad named-parameter pattern
@@ -115,13 +122,20 @@ function walk(dir, files = []) {
 }
 
 function trackedFiles() {
-  // Every git-tracked file is publish surface (#189); artifacts/logs stay extra.
+  // Every git-tracked file is publish surface (#189). A gate that cannot enumerate
+  // its input must FAIL CLOSED (#189 review): silently scanning only the untracked
+  // dirs and printing PASSED would be the worst failure mode a publish gate can have.
   try {
-    const out = execFileSync("git", ["ls-files", "-z"], { cwd: ROOT, encoding: "utf-8" });
+    const out = execFileSync("git", ["ls-files", "-z"], {
+      cwd: ROOT,
+      encoding: "utf-8",
+      maxBuffer: 64 * 1024 * 1024, // monorepo-scale path lists exceed the 1MB default
+    });
     return out.split("\u0000").filter(Boolean).map((rel) => resolve(ROOT, rel));
-  } catch {
-    console.warn("[scan-secrets] git ls-files failed; falling back to legacy dir scan");
-    return [];
+  } catch (err) {
+    console.error("[scan-secrets] FATAL: cannot enumerate tracked files:", err.message);
+    console.error("[scan-secrets] refusing to report PASSED without a file inventory");
+    process.exit(1);
   }
 }
 
@@ -168,12 +182,11 @@ function scanFile(file, tierPatterns, label) {
   }
 }
 
-//: Tier assignment (#189): published data and logs get the broad pattern set (that is
-//: where exception reprs land), minified dist gets the strict-value set, tests get
-//: literals only, and every other tracked file gets the source tier.
+//: Tier assignment (#189): published data gets the broad pattern set (that is where
+//: exception reprs land), tests get literals only, every other TRACKED file gets the
+//: source tier. The untracked surfaces are walked separately below.
 function tierFor(rel) {
-  if (rel === "dist" || rel.startsWith("dist/")) return DIST_PATTERNS;
-  if (rel.startsWith("public/data/")) return PATTERNS;
+  if (rel.startsWith("public/data")) return PATTERNS;
   return SOURCE_PATTERNS;
 }
 
@@ -185,11 +198,11 @@ for (const file of trackedFiles()) {
   const tier = literalOnly ? [] : tierFor(rel);
   scanFile(file, tier, rel);
 }
-for (const rel of EXTRA_DIRS) {
+for (const { dir: rel, tier } of UNTRACKED_SCANS) {
   const dir = join(ROOT, rel);
   if (!existsSync(dir)) continue;
   for (const file of walk(dir)) {
-    scanFile(file, PATTERNS, rel + "/" + relative(join(ROOT, rel), file));
+    scanFile(file, tier, rel + "/" + relative(join(ROOT, rel), file));
   }
 }
 

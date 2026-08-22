@@ -97,11 +97,14 @@ def redact(text: str, max_len: int = 200) -> str:
     s = re.sub(r"(https?://[^\s\"'<>()]+?)\?[^\s\"'<>()]*", r"\1", s)
     # Mask named key parameters (api_key=, apikey=, token=, key=).
     s = re.sub(r"(?i)([?&])(?:api[_-]?key|apikey|token|key)=[^&\s\"'<>]*", r"\1***=***", s)
-    # Mask bare key-shaped tokens. Length-40 hex stays UNMASKED on purpose: the news
-    # dedupe ids are sha1 and published everywhere. The word boundaries make the 32-char
-    # rule safe against it anyway ({32} inside a 40-char run has no boundary at its end).
+    # Mask bare key-shaped tokens. Word boundaries keep each window exact: a {32} match
+    # can never bite into the middle of a longer run (no boundary mid-token), and the
+    # final {36,64} rule deliberately masks ANY long alnum token - including sha1-shaped
+    # ones. That is harmless here: news dedupe ids never travel through provider error
+    # text, so nothing published ever loses an id to this function (#189 review: the old
+    # comment claimed 40-hex stayed unmasked, contradicting the rule four lines down).
     s = re.sub(r"\b[0-9a-f]{32}\b", "***", s, flags=re.I)  # FMP/FRED: 32 lowercase hex
-    # 32-char MIXED-CASE alnum (FMP-style keys are not always hex) — empirically NOT
+    # 32-char MIXED-CASE alnum (FMP-style keys are not always hex) - empirically NOT
     # masked before #189; the scan-secrets literal gate was the only thing catching it.
     s = re.sub(r"\b[A-Za-z0-9]{32}\b", "***", s)
     # CoinGecko demo keys travel with their CG- prefix.
