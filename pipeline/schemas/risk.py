@@ -82,8 +82,8 @@ class RiskDimension(ContractModel):
     score: float = Field(ge=0.0, le=100.0)
     indicators: list[RiskIndicator] = Field(default_factory=list)
     coverage: float = Field(ge=0.0, le=1.0, description="share of configured indicators with data")
-    effective_coverage: float = Field(
-        default=0.0, ge=0.0, le=1.0,
+    effective_coverage: float | None = Field(
+        default=None, ge=0.0, le=1.0,
         description="coverage after proxy trust discount; used for confidence",
     )
     trend: RiskTrend = "flat"

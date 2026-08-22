@@ -358,14 +358,18 @@ class RiskModel:
             available = [indicator for indicator in indicators if indicator.value is not None]
             missing = [indicator.key for indicator in indicators if indicator.value is None]
             available_count += len(available)
-            raw_coverage = len(available) / len(indicators) if indicators else 0.0
-            effective_available = sum(proxy_discount if indicator.is_proxy else 1.0 for indicator in available)
-            effective_coverage = effective_available / len(indicators) if indicators else 0.0
+            total_indicator_weight = sum(indicator.weight for indicator in indicators) or 1.0
+            available_weight = sum(indicator.weight for indicator in available)
+            effective_available_weight = sum(
+                indicator.weight * (proxy_discount if indicator.is_proxy else 1.0)
+                for indicator in available
+            )
+            raw_coverage = available_weight / total_indicator_weight
+            effective_coverage = effective_available_weight / total_indicator_weight
             dim_score = (
                 round(sum(i.risk_score * i.weight for i in available) / sum(i.weight for i in available), 2)
                 if available else 0.0
             )
-            total_indicator_weight = sum(indicator.weight for indicator in indicators) or 1.0
             observed_weight = sum(indicator.risk_score * indicator.weight for indicator in available)
             missing_weight = sum(indicator.weight for indicator in indicators if indicator.value is None)
             bounds[dim_key] = (

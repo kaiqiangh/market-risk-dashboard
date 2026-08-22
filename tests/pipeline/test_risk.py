@@ -23,6 +23,8 @@ from pipeline.schemas import (
     EquitiesEnvelope,
     MacroDataset,
     MacroEnvelope,
+    RiskDimension,
+    RiskIndicator,
     RiskModelResult,
 )
 
@@ -642,6 +644,37 @@ def test_proxy_indicator_discounts_coverage() -> None:
     assert all(i.is_proxy for i in es.indicators if i.value is not None)
     assert es.coverage == 1.0
     assert es.effective_coverage == pytest.approx(0.8, abs=1e-4)
+
+
+def test_coverage_uses_configured_indicator_weights() -> None:
+    model = RiskModel()
+    high_weight_missing = RiskIndicator(
+        key="high_weight", label="High weight", risk_score=50, weight=10, source="test", is_proxy=False
+    )
+    low_weight_available = RiskIndicator(
+        key="low_weight", label="Low weight", value=1, risk_score=50, weight=1, source="test", is_proxy=False
+    )
+    dimensions, _, _ = model._build_dimensions(
+        {}, {"macro": lambda _: [high_weight_missing, low_weight_available]}, {}, 0.8
+    )
+
+    assert dimensions[0].coverage == pytest.approx(1 / 11, abs=1e-4)
+    assert dimensions[0].effective_coverage == pytest.approx(1 / 11, abs=1e-4)
+
+
+def test_legacy_risk_dimension_leaves_trust_coverage_unset() -> None:
+    dimension = RiskDimension.model_validate(
+        {
+            "key": "macro",
+            "label": "Macro",
+            "weight": 20,
+            "effective_weight": 20,
+            "score": 50,
+            "coverage": 0.75,
+        }
+    )
+
+    assert dimension.effective_coverage is None
 
 
 def test_proxy_dimension_confidence_baseline_reduced() -> None:

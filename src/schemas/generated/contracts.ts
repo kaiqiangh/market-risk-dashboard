@@ -385,7 +385,7 @@ export const RiskDimension = z
     score: z.number().finite().min(0).max(100),
     indicators: z.array(RiskIndicator).default([]),
     coverage: z.number().finite().min(0).max(1),
-    effective_coverage: z.number().finite().min(0).max(1).default(0.0),
+    effective_coverage: z.number().finite().min(0).max(1).nullable().default(null),
     trend: RiskTrend.default("flat"),
     evidence_state: RiskEvidenceState.nullable().default(null),
     missing_indicators: z.array(z.string()).default([]),

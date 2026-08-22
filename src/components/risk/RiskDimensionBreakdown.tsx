@@ -133,7 +133,7 @@ export function RiskDimensionBreakdown({ result }: RiskDimensionBreakdownProps) 
                     <span>{t("dimension.weight")}: {formatNumber(dim.weight, locale, 1)}%</span>
                     <span>{t("dimension.effectiveWeight")}: {formatNumber(dim.effective_weight, locale, 1)}%</span>
                     <span>{t("dimension.coverage")}: {formatRatio(dim.coverage, locale)}</span>
-                    <span>{t("dimension.effectiveCoverage")}: {formatRatio(dim.effective_coverage, locale)}</span>
+                    <span>{t("dimension.effectiveCoverage")}: {formatRatio(dim.effective_coverage ?? dim.coverage, locale)}</span>
                   </div>
                 </div>
                 {dim.missing_indicators?.length ? (
