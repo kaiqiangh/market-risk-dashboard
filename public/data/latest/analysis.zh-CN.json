@@ -1,1 +1,490 @@
-{"schema_version":"1.1.0","generated_at":"2026-08-21T21:01:43Z","language":"zh-CN","market_state":"caution","market_regime":"goldilocks","summary":"盘后综述（2026-08-21，周五）：美股整体维持谨慎（总风险分 45.58，caution 区间），但日内风险较昨日小幅改善（trend_1d +0.59，trend_1w +2.7）。宏观维度仍是最大压力源（得分 60.27），实际利率 2.35（5 年 96.88 百分位）、10Y 收益率 4.69（97.68 百分位）维持 restrictive 高位；美元走弱（指数 118.90）边际缓和金融条件。板块剧烈轮动：量子计算 +4.98%、EV 供应链 +4.28%、AI 软件 +2.58% 领涨，而半导体设备 -0.65%、半导体 -0.44%、数据中心 -1.37%、AI 基础设施 -0.24% 走弱；NVDA -0.98%、MU -0.77%、AVGO +1.21%，TSLA +5.14% 独强。加密资产全面走强（BTC +6.57%、ETH +5.39%、SOL +4.96%）彰显风险偏好回归。波动率低位（VIX 16.01、已实现波动率 13.18）构成支撑，但跨资产确认度仅 0.375 且市场宽度偏窄（创新高比例 5.16%、65.81% 个股站上 MA200），限制上行空间。","top_risk_drivers":[{"claim":"宏观维度得分 60.27 为六维最高，实际利率 2.35（96.88 百分位）与 10Y 收益率 4.69（97.68 百分位）维持 restrictive 高位，构成主要风险推手。","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.35,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.69,"updated_at":"2026-08-20T00:00:00Z"}]},{"claim":"跨资产确认度仅 0.375，且市场宽度偏窄：创新高比例 5.16%，但 65.81% 个股站上 MA200；半导体相对表现 -3.98%，显示风险信号未被多资产确认。","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.375,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.0516,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[0].value","metric":"breadth_above_ma200","value":0.6581,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[4].value","metric":"semis_relative","value":-3.9848,"updated_at":null}]},{"claim":"流动性缓冲变薄：逆回购 0.2（0.96 百分位，逼近地板），HY OAS 2.75、IG OAS 0.82 信用利差平稳但偏脆弱。","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[1].indicators[1].value","metric":"reverse_repo","value":0.2,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[1].indicators[2].value","metric":"hy_oas","value":2.75,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[1].indicators[3].value","metric":"ig_oas","value":0.82,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[1].indicators[0].value","metric":"fed_balance_sheet","value":6745699.0,"updated_at":null}]},{"claim":"内部板块剧烈分化：量子计算 +4.98%、AI 软件 +2.58% 走强，而半导体 -0.44%、数据中心 -1.37%、AI 基础设施 -0.24% 走弱，呈现轮动而非普涨；波动率虽低（VIX 16.01）但与高企的宏观利率（实际利率 2.35）形成背离。","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":16.01,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.35,"updated_at":null}]}],"supporting_signals":[{"claim":"加密资产全面走强：BTC +6.57%、ETH +5.39%、SOL +4.96%，显示风险偏好回归。","evidence_refs":[]},{"claim":"波动率低位（VIX 16.01、已实现波动率 13.18）与正向股价趋势（价格高于 MA200 达 8.22%、3 个月动量 3.10%）共同构成支撑。","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":16.01,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[3].indicators[1].value","metric":"realized_vol","value":13.1829,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[5].indicators[0].value","metric":"price_vs_ma200","value":8.2222,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[5].indicators[2].value","metric":"momentum_3m","value":3.0967,"updated_at":null}]},{"claim":"美元走弱（指数 118.90，处于 21.53 百分位），边际缓和全球金融条件。","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[0].indicators[2].value","metric":"dollar_index","value":118.9028,"updated_at":null}]}],"contradicting_signals":[{"claim":"宏观维度风险分高企（实际利率 2.35、10Y 4.69）与低波动率（VIX 16.01）背离：市场定价压力与利率压力不一致。","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.35,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.69,"updated_at":"2026-08-20T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":16.01,"updated_at":null}]},{"claim":"跨资产确认度仅 0.375，尽管股价趋势为正（高于 MA200 达 8.22%），显示风险信号未被多资产交叉验证。","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.375,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[5].indicators[0].value","metric":"price_vs_ma200","value":8.2222,"updated_at":null}]}],"what_changed_today":["总风险分回落至 45.58（caution），trend_1d +0.59 较昨日改善。","加密资产大涨：BTC +6.57%、ETH +5.39%、SOL +4.96%。","TSLA +5.14% 领涨汽车链；AI 软件 +2.58%、量子计算 +4.98% 领涨主题。","半导体链整体偏弱：半导体 -0.44%、半导体设备 -0.65%、数据中心 -1.37%、AI 基础设施 -0.24%；NVDA -0.98%、MU -0.77%。","实际利率 2.35 与 10Y 收益率 4.69 维持 restrictive 高位，逆回购 0.2 逼近地板。"],"watch_next":["关注 2026-08-26 重磅日：英伟达财报、PCE 个人收入与支出、GDP 二次估值同日登场；2026-08-25 ZM 财报先行。","杰克逊霍尔研讨会临近，新闻流提示其风险高于英伟达财报本身，关注鲍威尔讲话对利率路径的指引。","通胀路径：CPI 3.30、核心 CPI 2.47、PCE 3.29，关注 PCE 是否印证降温趋势。","市场宽度：关注创新高比例 5.16% 能否回升、半导体相对表现 -3.98% 是否企稳。"],"bull_case":{"title":"牛市情景：利率回落与风险偏好延续","points":["低波动率（VIX 16.01）与正向动量（价格高于 MA200 达 8.22%）支撑估值扩张。","若实际利率自 2.35 回落，宏观维度压力（60.27）将缓解，加密与成长股延续走强。","美元走弱（118.90）缓和全球金融条件，外资回流风险资产。"],"evidence_refs":[{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":16.01,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[5].indicators[0].value","metric":"price_vs_ma200","value":8.2222,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.35,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[0].indicators[2].value","metric":"dollar_index","value":118.9028,"updated_at":null}]},"base_case":{"title":"基准情景：谨慎区间维持","points":["实际利率 2.35、10Y 收益率 4.69 的 restrictive 高位限制上行空间。","偏窄的市场宽度（创新高比例 5.16%）与跨资产确认度 0.375 使风险维持区间震荡。","关注 2026-08-26 英伟达财报、PCE 与 GDP 对风险定价的催化。"],"evidence_refs":[{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.35,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.69,"updated_at":"2026-08-20T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.0516,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.375,"updated_at":null}]},"bear_case":{"title":"熊市情景：利率重定价与流动性收缩","points":["若实际利率突破 2.35、10Y 收益率升破 4.69，叠加逆回购 0.2 逼近地板，权益结构（44.06）与风险资产将承压。","半导体相对表现 -3.98% 显示轮动至防御，若跨资产确认度 0.375 进一步下滑，风险偏好反转。"],"evidence_refs":[{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.35,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.69,"updated_at":"2026-08-20T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[1].indicators[1].value","metric":"reverse_repo","value":0.2,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[4].value","metric":"semis_relative","value":-3.9848,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.375,"updated_at":null}]},"confidence":0.85,"evidence_refs":[{"dataset":"risk","path":"payload.total_score","metric":"total_score","value":45.58,"updated_at":null},{"dataset":"risk","path":"payload.confidence","metric":"confidence","value":0.9329,"updated_at":null},{"dataset":"risk","path":"payload.regime","metric":"regime","value":"goldilocks","updated_at":null},{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.35,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.69,"updated_at":"2026-08-20T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":16.01,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.375,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.0516,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[1].indicators[1].value","metric":"reverse_repo","value":0.2,"updated_at":null}],"lineage":{"fact_generation_id":"sha256:bfa1bb413a518545df866ca90f191923f61b1363215e683e56e4081ba6946fc8","fact_generated_at":"2026-08-21T20:54:48Z","input_freshness":{"macro":"fresh","equities":"fresh","crypto":"fresh","news":"fresh","calendar":"fresh","sectors":"fresh","risk":"fresh"},"pair_id":"postmarket-2026-08-21T20:54:48Z"},"data_freshness":"fresh"}
+{
+  "schema_version": "1.1.0",
+  "generated_at": "2026-08-24T21:48:20Z",
+  "language": "zh-CN",
+  "market_state": "caution",
+  "market_regime": "goldilocks",
+  "summary": "盘后视角：美股周一（08-24）全线走弱，风险综合分 44.45（谨慎 / goldilocks），日度趋势 -1.13。半导体链领跌——NVDA -2.91%（七连跌）、MU -5.83%、AMD -3.49%，存储板块 -5.75%、量子计算 -5.34% 为全天最弱主题；仅 FinTech +0.1084%。宏观面仍偏紧但通胀降温延续（CPI 3.30 / 核心 2.47），VIX 回落至 15.13，信用利差收窄（HY OAS 2.70）。crypto 逆势走强：BTC +1.67%、ETH +0.68%、SOL +1.55%。",
+  "top_risk_drivers": [
+    {
+      "claim": "风险偏好全面回落：22 个板块/主题中 21 个收跌，存储 -5.75%、量子计算 -5.34% 居前，半导体 -3.71% 同步下挫。",
+      "evidence_refs": [
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[7].change_1d",
+          "metric": "change_1d",
+          "value": -5.7456,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[14].change_1d",
+          "metric": "change_1d",
+          "value": -5.3389,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.sectors[0].change_1d",
+          "metric": "change_1d",
+          "value": -3.7131,
+          "updated_at": "2025-12-22T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "龙头半导体集体去风险：NVDA -2.91%（七连跌）、MU -5.83%、AMD -3.49%、AVGO -2.63% 全线承压。",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[0].change_1d",
+          "metric": "change_1d",
+          "value": -2.9061,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[2].change_1d",
+          "metric": "change_1d",
+          "value": -5.8286,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[3].change_1d",
+          "metric": "change_1d",
+          "value": -3.4876,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[1].change_1d",
+          "metric": "change_1d",
+          "value": -2.6299,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "利率环境仍偏紧：10Y 收益率 4.74（分位 98.56）、实际利率 2.4（分位 97.59）处高位，估值承压。",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.rates[0].value",
+          "metric": "dgs10",
+          "value": 4.74,
+          "updated_at": "2026-08-21T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.rates[2].value",
+          "metric": "dfii10",
+          "value": 2.4,
+          "updated_at": "2026-08-21T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "市场宽度偏窄：创新高占比仅 3.87%，半导体相对强度 -8.19% 显示领涨梯队熄火。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[1].value",
+          "metric": "new_highs_ratio",
+          "value": 0.0387,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[4].value",
+          "metric": "semis_relative",
+          "value": -8.1884,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "临近二元事件：NVDA 财报（08-26，预期 EPS 2.09）与 GDP / 个人收入支出（08-26，high）前，市场倾向观望。",
+      "evidence_refs": [
+        {
+          "dataset": "calendar",
+          "path": "payload.events[1].datetime",
+          "metric": "event_datetime",
+          "value": "2026-08-26T12:00:00Z",
+          "updated_at": null
+        }
+      ]
+    }
+  ],
+  "supporting_signals": [
+    {
+      "claim": "通胀延续降温：CPI 3.30 / 核心 CPI 2.47 双双回落，实际利率触顶迹象初现。",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.inflation[0].value",
+          "metric": "cpiaucsl",
+          "value": 3.30386,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.inflation[1].value",
+          "metric": "cpilfesl",
+          "value": 2.46652,
+          "updated_at": "2026-07-01T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "波动率回落：VIX 15.13 降至低位，实际波动 13.28%，风险情绪未失控。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[0].value",
+          "metric": "vix",
+          "value": 15.13,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[1].value",
+          "metric": "realized_vol",
+          "value": 13.2808,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "信用环境平稳：HY OAS 2.70 收窄，信用利差未走阔。",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.credit[0].value",
+          "metric": "bamlh0a0hym2",
+          "value": 2.7,
+          "updated_at": "2026-08-21T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "风险资产分化：crypto 逆势走强 BTC +1.67%；A 股半导体链收红（688825 +0.75%、603986 +1.38%）。",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[5].change_1d",
+          "metric": "change_1d",
+          "value": 0.7469,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[6].change_1d",
+          "metric": "change_1d",
+          "value": 1.3779,
+          "updated_at": null
+        }
+      ]
+    }
+  ],
+  "contradicting_signals": [
+    {
+      "claim": "regime 仍读为 goldilocks，但盘面却是全面的去风险，模型景气与价格行为背离。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.regime",
+          "metric": "regime",
+          "value": "goldilocks",
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "基本面转弱：非农 -23.0 万（前值 +20.0）远逊预期，与偏紧利率环境形成矛盾。",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.labor[0].value",
+          "metric": "payems",
+          "value": -23.0,
+          "updated_at": "2026-07-01T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "what_changed_today": [
+    "风险综合分 44.45，日度趋势由正转负至 -1.13。",
+    "半导体领跌：NVDA 七连跌、MU -5.83%、存储 -5.75%。",
+    "通胀降温确认：CPI 3.30 / 核心 2.47。",
+    "crypto 逆势走强 BTC +1.67%，与美股背离。"
+  ],
+  "watch_next": [
+    "08-26 NVDA 财报（预期 EPS 2.09）+ GDP + 个人收入与支出（high）。",
+    "08-25 ZM 财报（medium）。",
+    "关注 10Y 收益率 4.74 与实际利率 2.4 对估值压力。",
+    "09-04 非农就业（high），检验 -23.0 万疲弱是否延续。"
+  ],
+  "bull_case": {
+    "title": "牛市情景：利率与通胀降温驱动估值修复",
+    "points": [
+      "若 CPI 延续降温（核心 2.47），实际利率 2.4 见顶回落，成长股估值压力缓解。",
+      "VIX 15.13 维持低位、HY OAS 2.70 收窄，信用环境未恶化。"
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "macro",
+        "path": "payload.inflation[1].value",
+        "metric": "cpilfesl",
+        "value": 2.46652,
+        "updated_at": "2026-07-01T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.rates[2].value",
+        "metric": "dfii10",
+        "value": 2.4,
+        "updated_at": "2026-08-21T00:00:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[3].indicators[0].value",
+        "metric": "vix",
+        "value": 15.13,
+        "updated_at": null
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.credit[0].value",
+        "metric": "bamlh0a0hym2",
+        "value": 2.7,
+        "updated_at": "2026-08-21T00:00:00Z"
+      }
+    ]
+  },
+  "base_case": {
+    "title": "基准情景：谨慎区间震荡，等待 08-26 事件落地",
+    "points": [
+      "风险分 44.45（caution）维持，趋势 -1.13 转弱但未破位。",
+      "NVDA 财报与 GDP / PCE 前市场倾向观望，宽度偏窄（新高占比 3.87%）。"
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "risk",
+        "path": "payload.total_score",
+        "metric": "total_score",
+        "value": 44.45,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[1].value",
+        "metric": "new_highs_ratio",
+        "value": 0.0387,
+        "updated_at": null
+      }
+    ]
+  },
+  "bear_case": {
+    "title": "熊市情景：半导体去风险引发广度恶化与盈利下修",
+    "points": [
+      "若 NVDA 财报不及预期，MU -5.83% 式存储器抛售扩散至全科技，semis_relative -8.19% 加剧。",
+      "10Y 收益率 4.74 与实际利率 2.4 维持高位，高估值板块承压。"
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "equities",
+        "path": "payload.assets[2].change_1d",
+        "metric": "change_1d",
+        "value": -5.8286,
+        "updated_at": null
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.rates[0].value",
+        "metric": "dgs10",
+        "value": 4.74,
+        "updated_at": "2026-08-21T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.rates[2].value",
+        "metric": "dfii10",
+        "value": 2.4,
+        "updated_at": "2026-08-21T00:00:00Z"
+      }
+    ]
+  },
+  "confidence": 0.82,
+  "evidence_refs": [
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[7].change_1d",
+      "metric": "change_1d",
+      "value": -5.7456,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[14].change_1d",
+      "metric": "change_1d",
+      "value": -5.3389,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.sectors[0].change_1d",
+      "metric": "change_1d",
+      "value": -3.7131,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[0].change_1d",
+      "metric": "change_1d",
+      "value": -2.9061,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[2].change_1d",
+      "metric": "change_1d",
+      "value": -5.8286,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[3].change_1d",
+      "metric": "change_1d",
+      "value": -3.4876,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[1].change_1d",
+      "metric": "change_1d",
+      "value": -2.6299,
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.rates[0].value",
+      "metric": "dgs10",
+      "value": 4.74,
+      "updated_at": "2026-08-21T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.rates[2].value",
+      "metric": "dfii10",
+      "value": 2.4,
+      "updated_at": "2026-08-21T00:00:00Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[2].indicators[1].value",
+      "metric": "new_highs_ratio",
+      "value": 0.0387,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[2].indicators[4].value",
+      "metric": "semis_relative",
+      "value": -8.1884,
+      "updated_at": null
+    },
+    {
+      "dataset": "calendar",
+      "path": "payload.events[1].datetime",
+      "metric": "event_datetime",
+      "value": "2026-08-26T12:00:00Z",
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.inflation[0].value",
+      "metric": "cpiaucsl",
+      "value": 3.30386,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.inflation[1].value",
+      "metric": "cpilfesl",
+      "value": 2.46652,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[3].indicators[0].value",
+      "metric": "vix",
+      "value": 15.13,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[3].indicators[1].value",
+      "metric": "realized_vol",
+      "value": 13.2808,
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.credit[0].value",
+      "metric": "bamlh0a0hym2",
+      "value": 2.7,
+      "updated_at": "2026-08-21T00:00:00Z"
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[5].change_1d",
+      "metric": "change_1d",
+      "value": 0.7469,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[6].change_1d",
+      "metric": "change_1d",
+      "value": 1.3779,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.regime",
+      "metric": "regime",
+      "value": "goldilocks",
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.labor[0].value",
+      "metric": "payems",
+      "value": -23.0,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.total_score",
+      "metric": "total_score",
+      "value": 44.45,
+      "updated_at": null
+    }
+  ],
+  "lineage": {
+    "fact_generation_id": "sha256:8015c37573c6b3a27b914aa34bc1acd327dcaf3a567d7552a54e48052574c184",
+    "fact_generated_at": "2026-08-24T21:41:51Z",
+    "input_freshness": {
+      "macro": "fresh",
+      "equities": "fresh",
+      "crypto": "fresh",
+      "news": "fresh",
+      "calendar": "fresh",
+      "sectors": "fresh",
+      "risk": "fresh"
+    },
+    "pair_id": "postmarket-2026-08-24T21:41:51"
+  },
+  "data_freshness": "fresh"
+}
