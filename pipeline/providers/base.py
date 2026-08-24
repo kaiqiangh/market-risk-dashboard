@@ -186,7 +186,16 @@ class GuardedClient(httpx.Client):
 
     def get(self, url: str, **kwargs: Any) -> httpx.Response:
         """GET with a bounded manual redirect walk (≤ MAX_REDIRECT_HOPS hops) and a hard
-        2 MB streaming cap — chunked bodies are bounded by reading, not by Content-Length."""
+        2 MB cap (S-3).
+
+        Uses a **non-streaming** request: httpx auto-decodes ``Content-Encoding``
+        (gzip/deflate/br) correctly on the fully-buffered response, which the streaming
+        ``iter_bytes`` path in httpx 0.28.x fails to do — it raises
+        ``DecodingError: incorrect header check`` on gzipped bodies, the regression that
+        emptied every HTTP-JSON dataset on 2026-08-24 (#103 carry-forward). The per-hop
+        allowlist/https gate is preserved via the request hook; the 2 MB cap is enforced on
+        ``Content-Length`` (response hook) and, for chunked responses, on the read length.
+        """
         from urllib.parse import urljoin
 
         previous_host: str | None = None
@@ -197,30 +206,19 @@ class GuardedClient(httpx.Client):
                 **base_extensions,
                 "relay_vouched": _RELAY_VOUCH if previous_host in self._relay_hosts else None,
             }
-            with super().stream("GET", url, extensions=extensions, **kwargs) as response:
-                if response.status_code >= 300 and response.headers.get("location"):
-                    previous_host = response.url.host
-                    url = urljoin(str(response.url), response.headers["location"])
-                    continue
-                return self._read_bounded(response)
+            response = super().get(url, extensions=extensions, **kwargs)
+            if response.status_code >= 300 and response.headers.get("location"):
+                previous_host = response.url.host
+                url = urljoin(str(response.url), response.headers["location"])
+                continue
+            # S-3: refuse responses larger than 2 MB. Content-Length is also checked in the
+            # response hook; this catches chunked responses that carry no Content-Length.
+            if len(response.content) > MAX_RESPONSE_BYTES:
+                raise ProviderError(
+                    f"blocked: response exceeds {MAX_RESPONSE_BYTES} bytes ({response.url})"
+                )
+            return response
         raise ProviderError(f"blocked: more than {MAX_REDIRECT_HOPS} redirect hops")
-
-    def _read_bounded(self, response: httpx.Response) -> httpx.Response:
-        """Read the body with a 2 MB cap (S-3); raise ProviderError past the cap."""
-        chunks: list[bytes] = []
-        total = 0
-        for chunk in response.iter_bytes():
-            total += len(chunk)
-            if total > MAX_RESPONSE_BYTES:
-                raise ProviderError(f"blocked: response exceeds {MAX_RESPONSE_BYTES} bytes ({response.url})")
-            chunks.append(chunk)
-        return httpx.Response(
-            status_code=response.status_code,
-            headers=response.headers,
-            content=b"".join(chunks),
-            request=response.request,
-            extensions=response.extensions,
-        )
 
 
 def guarded_client(
