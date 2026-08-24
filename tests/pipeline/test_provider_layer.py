@@ -138,6 +138,32 @@ def test_key_bearing_http_error_never_reaches_the_caller(tmp_path: Path) -> None
     assert "apikey" not in str(excinfo.value)
 
 
+def test_guarded_client_decodes_gzipped_response() -> None:
+    """Regression (2026-08-24, #103 carry-forward): GuardedClient.get must auto-decode a
+    gzipped body. The streaming ``iter_bytes`` path in httpx 0.28.x raised
+    ``DecodingError: incorrect header check`` on gzipped responses, which emptied every
+    HTTP-JSON dataset (fred/coingecko/calendar/news). A non-streaming request decodes it."""
+    import gzip
+
+    payload = b'{"observations": [{"date": "2026-01-01", "value": "1.23"}]}'
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            content=gzip.compress(payload),
+            headers={"Content-Encoding": "gzip", "Content-Type": "application/json"},
+            request=request,
+        )
+
+    client = GuardedClient({"api.stlouisfed.org"}, transport=httpx.MockTransport(handler))
+    try:
+        resp = client.get("https://api.stlouisfed.org/fred/series/observations")
+        assert resp.status_code == 200
+        assert resp.json() == {"observations": [{"date": "2026-01-01", "value": "1.23"}]}
+    finally:
+        client.close()
+
+
 def test_redirect_relay_voucher_is_scoped_to_one_request() -> None:
     """A relay may vouch for its redirect target without leaking trust to another GET."""
     def handler(request: httpx.Request) -> httpx.Response:
