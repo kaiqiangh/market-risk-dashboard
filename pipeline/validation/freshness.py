@@ -20,6 +20,7 @@ from pipeline.schemas.envelope import (
     FreshnessStatus,
     ReasonCode,
 )
+from pipeline.utils import now_utc
 
 # Precedence for aggregating a composite dataset's freshness comes from
 # :data:`pipeline.schemas.envelope.STATUS_RANK` — the one copy of the severity map, shared
@@ -52,6 +53,18 @@ FUTURE_SKEW_TOLERANCE_MINUTES = 5.0
 REPRESENTATIVE_BAND_FACTOR: dict[str, float] = {"fresh": 1.0, "delayed": 2.0, "stale": 4.0}
 
 
+def _clock_now() -> datetime:
+    """The pipeline's canonical UTC clock (pipeline.utils.now_utc) as a datetime.
+
+    Freshness must evaluate against the same clock the rest of the pipeline freezes in
+    tests/backfill — not a raw ``datetime.now``. Otherwise a frozen ``now_utc`` (as the
+    #192 golden lock does) leaves the freshness ladder on the real wall clock and the
+    published ``freshness_status`` drifts with real time, so the golden can never
+    reproduce.
+    """
+    return datetime.fromisoformat(now_utc().replace("Z", "+00:00"))
+
+
 def is_future_beyond_skew(updated_at: str | None, now: datetime | None = None) -> bool:
     """True when updated_at lies further ahead than FUTURE_SKEW_TOLERANCE_MINUTES.
 
@@ -68,7 +81,7 @@ def is_future_beyond_skew(updated_at: str | None, now: datetime | None = None) -
     except ValueError:
         return False
     if now is None:
-        now = datetime.now(timezone.utc)
+        now = _clock_now()
     if updated.tzinfo is None:
         updated = updated.replace(tzinfo=timezone.utc)
     return (updated - now).total_seconds() / 60.0 > FUTURE_SKEW_TOLERANCE_MINUTES
@@ -93,7 +106,7 @@ def evaluate_freshness(
     except ValueError:
         return "missing"
     if now is None:
-        now = datetime.now(timezone.utc)
+        now = _clock_now()
     if updated.tzinfo is None:
         updated = updated.replace(tzinfo=timezone.utc)
 
