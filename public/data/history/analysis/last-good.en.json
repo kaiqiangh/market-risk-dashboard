@@ -1,1 +1,490 @@
-{"schema_version":"1.1.0","generated_at":"2026-08-24T21:48:20Z","language":"en","market_state":"caution","market_regime":"goldilocks","summary":"Post-market view: US equities closed broadly lower on Monday 08-24, with the composite risk score at 44.45 (caution / goldilocks) and a daily trend of -1.13. The semiconductor complex led the decline — NVDA -2.91% (seven-day losing streak), MU -5.83%, AMD -3.49%, with Memory -5.75% and Quantum Computing -5.34% the weakest themes; only FinTech +0.1084%. The macro backdrop remains restrictive but disinflation continues (CPI 3.30 / core 2.47), VIX eased to 15.13 and credit spreads tightened (HY OAS 2.70). Crypto diverged higher: BTC +1.67%, ETH +0.68%, SOL +1.55%.","top_risk_drivers":[{"claim":"风险偏好全面回落：22 个板块/主题中 21 个收跌，存储 -5.75%、量子计算 -5.34% 居前，半导体 -3.71% 同步下挫。","evidence_refs":[{"dataset":"sectors","path":"payload.themes[7].change_1d","metric":"change_1d","value":-5.7456,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[14].change_1d","metric":"change_1d","value":-5.3389,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.sectors[0].change_1d","metric":"change_1d","value":-3.7131,"updated_at":"2025-12-22T00:00:00Z"}]},{"claim":"龙头半导体集体去风险：NVDA -2.91%（七连跌）、MU -5.83%、AMD -3.49%、AVGO -2.63% 全线承压。","evidence_refs":[{"dataset":"equities","path":"payload.assets[0].change_1d","metric":"change_1d","value":-2.9061,"updated_at":null},{"dataset":"equities","path":"payload.assets[2].change_1d","metric":"change_1d","value":-5.8286,"updated_at":null},{"dataset":"equities","path":"payload.assets[3].change_1d","metric":"change_1d","value":-3.4876,"updated_at":null},{"dataset":"equities","path":"payload.assets[1].change_1d","metric":"change_1d","value":-2.6299,"updated_at":null}]},{"claim":"利率环境仍偏紧：10Y 收益率 4.74（分位 98.56）、实际利率 2.4（分位 97.59）处高位，估值承压。","evidence_refs":[{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.74,"updated_at":"2026-08-21T00:00:00Z"},{"dataset":"macro","path":"payload.rates[2].value","metric":"dfii10","value":2.4,"updated_at":"2026-08-21T00:00:00Z"}]},{"claim":"市场宽度偏窄：创新高占比仅 3.87%，半导体相对强度 -8.19% 显示领涨梯队熄火。","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.0387,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[4].value","metric":"semis_relative","value":-8.1884,"updated_at":null}]},{"claim":"临近二元事件：NVDA 财报（08-26，预期 EPS 2.09）与 GDP / 个人收入支出（08-26，high）前，市场倾向观望。","evidence_refs":[{"dataset":"calendar","path":"payload.events[1].datetime","metric":"event_datetime","value":"2026-08-26T12:00:00Z","updated_at":null}]}],"supporting_signals":[{"claim":"通胀延续降温：CPI 3.30 / 核心 CPI 2.47 双双回落，实际利率触顶迹象初现。","evidence_refs":[{"dataset":"macro","path":"payload.inflation[0].value","metric":"cpiaucsl","value":3.30386,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.inflation[1].value","metric":"cpilfesl","value":2.46652,"updated_at":"2026-07-01T00:00:00Z"}]},{"claim":"波动率回落：VIX 15.13 降至低位，实际波动 13.28%，风险情绪未失控。","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":15.13,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[3].indicators[1].value","metric":"realized_vol","value":13.2808,"updated_at":null}]},{"claim":"信用环境平稳：HY OAS 2.70 收窄，信用利差未走阔。","evidence_refs":[{"dataset":"macro","path":"payload.credit[0].value","metric":"bamlh0a0hym2","value":2.7,"updated_at":"2026-08-21T00:00:00Z"}]},{"claim":"风险资产分化：crypto 逆势走强 BTC +1.67%；A 股半导体链收红（688825 +0.75%、603986 +1.38%）。","evidence_refs":[{"dataset":"equities","path":"payload.assets[5].change_1d","metric":"change_1d","value":0.7469,"updated_at":null},{"dataset":"equities","path":"payload.assets[6].change_1d","metric":"change_1d","value":1.3779,"updated_at":null}]}],"contradicting_signals":[{"claim":"regime 仍读为 goldilocks，但盘面却是全面的去风险，模型景气与价格行为背离。","evidence_refs":[{"dataset":"risk","path":"payload.regime","metric":"regime","value":"goldilocks","updated_at":null}]},{"claim":"基本面转弱：非农 -23.0 万（前值 +20.0）远逊预期，与偏紧利率环境形成矛盾。","evidence_refs":[{"dataset":"macro","path":"payload.labor[0].value","metric":"payems","value":-23.0,"updated_at":"2026-07-01T00:00:00Z"}]}],"what_changed_today":["Composite risk 44.45; the daily trend flipped from positive to -1.13.","Semis led the decline: NVDA seven-day losing streak, MU -5.83%, Memory -5.75%.","Disinflation confirmed: CPI 3.30 / core 2.47.","Crypto diverged higher, BTC +1.67%, diverging from US equities."],"watch_next":["08-26 NVDA earnings (EPS est 2.09) + GDP + Personal Income & Outlays (high).","08-25 ZM earnings (medium).","Watch the 10Y yield 4.74 and real rate 2.4 as valuation pressure.","09-04 Employment Situation (high) tests whether the -23.0 payroll miss persists."],"bull_case":{"title":"Bull case: rate and inflation cooling drives valuation repair","points":["If CPI disinflation persists (core 2.47), the real rate 2.4 peaks and rolls over, easing growth-valuation pressure.","VIX 15.13 stays low and HY OAS 2.70 tightens; credit conditions are not deteriorating."],"evidence_refs":[{"dataset":"macro","path":"payload.inflation[1].value","metric":"cpilfesl","value":2.46652,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.rates[2].value","metric":"dfii10","value":2.4,"updated_at":"2026-08-21T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":15.13,"updated_at":null},{"dataset":"macro","path":"payload.credit[0].value","metric":"bamlh0a0hym2","value":2.7,"updated_at":"2026-08-21T00:00:00Z"}]},"base_case":{"title":"Base case: range-bound caution, awaiting 08-26 event resolution","points":["Risk score holds at 44.45 (caution); trend -1.13 is softening but not broken.","Markets lean defensive into NVDA earnings and GDP/PCE; breadth is narrow (new-high share 3.87%)."],"evidence_refs":[{"dataset":"risk","path":"payload.total_score","metric":"total_score","value":44.45,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.0387,"updated_at":null}]},"bear_case":{"title":"Bear case: semiconductor de-risking triggers breadth deterioration and earnings cuts","points":["If NVDA disappoints, MU-style (-5.83%) memory selling spreads across tech, deepening semis_relative -8.19%.","10Y yield 4.74 and real rate 2.4 stay elevated, pressuring richly-valued segments."],"evidence_refs":[{"dataset":"equities","path":"payload.assets[2].change_1d","metric":"change_1d","value":-5.8286,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.74,"updated_at":"2026-08-21T00:00:00Z"},{"dataset":"macro","path":"payload.rates[2].value","metric":"dfii10","value":2.4,"updated_at":"2026-08-21T00:00:00Z"}]},"confidence":0.82,"evidence_refs":[{"dataset":"sectors","path":"payload.themes[7].change_1d","metric":"change_1d","value":-5.7456,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[14].change_1d","metric":"change_1d","value":-5.3389,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.sectors[0].change_1d","metric":"change_1d","value":-3.7131,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"equities","path":"payload.assets[0].change_1d","metric":"change_1d","value":-2.9061,"updated_at":null},{"dataset":"equities","path":"payload.assets[2].change_1d","metric":"change_1d","value":-5.8286,"updated_at":null},{"dataset":"equities","path":"payload.assets[3].change_1d","metric":"change_1d","value":-3.4876,"updated_at":null},{"dataset":"equities","path":"payload.assets[1].change_1d","metric":"change_1d","value":-2.6299,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":4.74,"updated_at":"2026-08-21T00:00:00Z"},{"dataset":"macro","path":"payload.rates[2].value","metric":"dfii10","value":2.4,"updated_at":"2026-08-21T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.0387,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[4].value","metric":"semis_relative","value":-8.1884,"updated_at":null},{"dataset":"calendar","path":"payload.events[1].datetime","metric":"event_datetime","value":"2026-08-26T12:00:00Z","updated_at":null},{"dataset":"macro","path":"payload.inflation[0].value","metric":"cpiaucsl","value":3.30386,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"macro","path":"payload.inflation[1].value","metric":"cpilfesl","value":2.46652,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":15.13,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[3].indicators[1].value","metric":"realized_vol","value":13.2808,"updated_at":null},{"dataset":"macro","path":"payload.credit[0].value","metric":"bamlh0a0hym2","value":2.7,"updated_at":"2026-08-21T00:00:00Z"},{"dataset":"equities","path":"payload.assets[5].change_1d","metric":"change_1d","value":0.7469,"updated_at":null},{"dataset":"equities","path":"payload.assets[6].change_1d","metric":"change_1d","value":1.3779,"updated_at":null},{"dataset":"risk","path":"payload.regime","metric":"regime","value":"goldilocks","updated_at":null},{"dataset":"macro","path":"payload.labor[0].value","metric":"payems","value":-23.0,"updated_at":"2026-07-01T00:00:00Z"},{"dataset":"risk","path":"payload.total_score","metric":"total_score","value":44.45,"updated_at":null}],"lineage":{"fact_generation_id":"sha256:8015c37573c6b3a27b914aa34bc1acd327dcaf3a567d7552a54e48052574c184","fact_generated_at":"2026-08-24T21:41:51Z","input_freshness":{"macro":"fresh","equities":"fresh","crypto":"fresh","news":"fresh","calendar":"fresh","sectors":"fresh","risk":"fresh"},"pair_id":"postmarket-2026-08-24T21:41:51"},"data_freshness":"fresh"}
+{
+  "schema_version": "1.1.0",
+  "generated_at": "2026-08-24T21:48:20Z",
+  "language": "en",
+  "market_state": "caution",
+  "market_regime": "goldilocks",
+  "summary": "Post-market view: US equities closed broadly lower on Monday 08-24, with the composite risk score at 44.45 (caution / goldilocks) and a daily trend of -1.13. The semiconductor complex led the decline — NVDA -2.91% (seven-day losing streak), MU -5.83%, AMD -3.49%, with Memory -5.75% and Quantum Computing -5.34% the weakest themes; only FinTech +0.1084%. The macro backdrop remains restrictive but disinflation continues (CPI 3.30 / core 2.47), VIX eased to 15.13 and credit spreads tightened (HY OAS 2.70). Crypto diverged higher: BTC +1.67%, ETH +0.68%, SOL +1.55%.",
+  "top_risk_drivers": [
+    {
+      "claim": "Risk appetite pulled back broadly: 22 sectors/themes saw 21 close lower, with storage -5.75% and quantum computing -5.34% leading declines and semiconductors -3.71% alongside.",
+      "evidence_refs": [
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[7].change_1d",
+          "metric": "change_1d",
+          "value": -5.7456,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[14].change_1d",
+          "metric": "change_1d",
+          "value": -5.3389,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.sectors[0].change_1d",
+          "metric": "change_1d",
+          "value": -3.7131,
+          "updated_at": "2025-12-22T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "Leading semis de-risked across the board: NVDA -2.91% (seven straight losses), MU -5.83%, AMD -3.49%, AVGO -2.63% all under pressure.",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[0].change_1d",
+          "metric": "change_1d",
+          "value": -2.9061,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[2].change_1d",
+          "metric": "change_1d",
+          "value": -5.8286,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[3].change_1d",
+          "metric": "change_1d",
+          "value": -3.4876,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[1].change_1d",
+          "metric": "change_1d",
+          "value": -2.6299,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "Rate environment stays tight: 10Y yield at 4.74 (98.56th percentile) and real rates at 2.4 (97.59th percentile) sit elevated, weighing on valuations.",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.rates[0].value",
+          "metric": "dgs10",
+          "value": 4.74,
+          "updated_at": "2026-08-21T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.rates[2].value",
+          "metric": "dfii10",
+          "value": 2.4,
+          "updated_at": "2026-08-21T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "Market breadth is narrow: only 3.87% of stocks at new highs and semiconductor relative strength at -8.19% show the leadership cohort has stalled.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[1].value",
+          "metric": "new_highs_ratio",
+          "value": 0.0387,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[4].value",
+          "metric": "semis_relative",
+          "value": -8.1884,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "Binary event risk ahead: NVDA earnings (08-26, EPS consensus 2.09) and GDP / personal income & spending (08-26, high) leave the market inclined to wait and see.",
+      "evidence_refs": [
+        {
+          "dataset": "calendar",
+          "path": "payload.events[1].datetime",
+          "metric": "event_datetime",
+          "value": "2026-08-26T12:00:00Z",
+          "updated_at": null
+        }
+      ]
+    }
+  ],
+  "supporting_signals": [
+    {
+      "claim": "Disinflation continues: CPI 3.30 / core CPI 2.47 both eased, with early signs real rates have peaked.",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.inflation[0].value",
+          "metric": "cpiaucsl",
+          "value": 3.30386,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.inflation[1].value",
+          "metric": "cpilfesl",
+          "value": 2.46652,
+          "updated_at": "2026-07-01T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "Volatility has fallen: VIX at 15.13 is low and realized volatility 13.28%, so risk sentiment has not spun out of control.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[0].value",
+          "metric": "vix",
+          "value": 15.13,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[1].value",
+          "metric": "realized_vol",
+          "value": 13.2808,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "Credit conditions are stable: HY OAS narrowed to 2.70 and credit spreads have not widened.",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.credit[0].value",
+          "metric": "bamlh0a0hym2",
+          "value": 2.7,
+          "updated_at": "2026-08-21T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "Risk assets diverge: crypto strengthened against the trend (BTC +1.67%); the A-share semiconductor chain closed green (688825 +0.75%, 603986 +1.38%).",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[5].change_1d",
+          "metric": "change_1d",
+          "value": 0.7469,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[6].change_1d",
+          "metric": "change_1d",
+          "value": 1.3779,
+          "updated_at": null
+        }
+      ]
+    }
+  ],
+  "contradicting_signals": [
+    {
+      "claim": "The regime still reads goldilocks, yet the tape shows broad de-risking — model fundamentals and price behavior are diverging.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.regime",
+          "metric": "regime",
+          "value": "goldilocks",
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "Fundamentals are weakening: nonfarm payrolls at -23.0 (prior +20.0) badly missed expectations, conflicting with the tight rate environment.",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.labor[0].value",
+          "metric": "payems",
+          "value": -23.0,
+          "updated_at": "2026-07-01T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "what_changed_today": [
+    "Composite risk 44.45; the daily trend flipped from positive to -1.13.",
+    "Semis led the decline: NVDA seven-day losing streak, MU -5.83%, Memory -5.75%.",
+    "Disinflation confirmed: CPI 3.30 / core 2.47.",
+    "Crypto diverged higher, BTC +1.67%, diverging from US equities."
+  ],
+  "watch_next": [
+    "08-26 NVDA earnings (EPS est 2.09) + GDP + Personal Income & Outlays (high).",
+    "08-25 ZM earnings (medium).",
+    "Watch the 10Y yield 4.74 and real rate 2.4 as valuation pressure.",
+    "09-04 Employment Situation (high) tests whether the -23.0 payroll miss persists."
+  ],
+  "bull_case": {
+    "title": "Bull case: rate and inflation cooling drives valuation repair",
+    "points": [
+      "If CPI disinflation persists (core 2.47), the real rate 2.4 peaks and rolls over, easing growth-valuation pressure.",
+      "VIX 15.13 stays low and HY OAS 2.70 tightens; credit conditions are not deteriorating."
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "macro",
+        "path": "payload.inflation[1].value",
+        "metric": "cpilfesl",
+        "value": 2.46652,
+        "updated_at": "2026-07-01T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.rates[2].value",
+        "metric": "dfii10",
+        "value": 2.4,
+        "updated_at": "2026-08-21T00:00:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[3].indicators[0].value",
+        "metric": "vix",
+        "value": 15.13,
+        "updated_at": null
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.credit[0].value",
+        "metric": "bamlh0a0hym2",
+        "value": 2.7,
+        "updated_at": "2026-08-21T00:00:00Z"
+      }
+    ]
+  },
+  "base_case": {
+    "title": "Base case: range-bound caution, awaiting 08-26 event resolution",
+    "points": [
+      "Risk score holds at 44.45 (caution); trend -1.13 is softening but not broken.",
+      "Markets lean defensive into NVDA earnings and GDP/PCE; breadth is narrow (new-high share 3.87%)."
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "risk",
+        "path": "payload.total_score",
+        "metric": "total_score",
+        "value": 44.45,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[1].value",
+        "metric": "new_highs_ratio",
+        "value": 0.0387,
+        "updated_at": null
+      }
+    ]
+  },
+  "bear_case": {
+    "title": "Bear case: semiconductor de-risking triggers breadth deterioration and earnings cuts",
+    "points": [
+      "If NVDA disappoints, MU-style (-5.83%) memory selling spreads across tech, deepening semis_relative -8.19%.",
+      "10Y yield 4.74 and real rate 2.4 stay elevated, pressuring richly-valued segments."
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "equities",
+        "path": "payload.assets[2].change_1d",
+        "metric": "change_1d",
+        "value": -5.8286,
+        "updated_at": null
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.rates[0].value",
+        "metric": "dgs10",
+        "value": 4.74,
+        "updated_at": "2026-08-21T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.rates[2].value",
+        "metric": "dfii10",
+        "value": 2.4,
+        "updated_at": "2026-08-21T00:00:00Z"
+      }
+    ]
+  },
+  "confidence": 0.82,
+  "evidence_refs": [
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[7].change_1d",
+      "metric": "change_1d",
+      "value": -5.7456,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[14].change_1d",
+      "metric": "change_1d",
+      "value": -5.3389,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.sectors[0].change_1d",
+      "metric": "change_1d",
+      "value": -3.7131,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[0].change_1d",
+      "metric": "change_1d",
+      "value": -2.9061,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[2].change_1d",
+      "metric": "change_1d",
+      "value": -5.8286,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[3].change_1d",
+      "metric": "change_1d",
+      "value": -3.4876,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[1].change_1d",
+      "metric": "change_1d",
+      "value": -2.6299,
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.rates[0].value",
+      "metric": "dgs10",
+      "value": 4.74,
+      "updated_at": "2026-08-21T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.rates[2].value",
+      "metric": "dfii10",
+      "value": 2.4,
+      "updated_at": "2026-08-21T00:00:00Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[2].indicators[1].value",
+      "metric": "new_highs_ratio",
+      "value": 0.0387,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[2].indicators[4].value",
+      "metric": "semis_relative",
+      "value": -8.1884,
+      "updated_at": null
+    },
+    {
+      "dataset": "calendar",
+      "path": "payload.events[1].datetime",
+      "metric": "event_datetime",
+      "value": "2026-08-26T12:00:00Z",
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.inflation[0].value",
+      "metric": "cpiaucsl",
+      "value": 3.30386,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.inflation[1].value",
+      "metric": "cpilfesl",
+      "value": 2.46652,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[3].indicators[0].value",
+      "metric": "vix",
+      "value": 15.13,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[3].indicators[1].value",
+      "metric": "realized_vol",
+      "value": 13.2808,
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.credit[0].value",
+      "metric": "bamlh0a0hym2",
+      "value": 2.7,
+      "updated_at": "2026-08-21T00:00:00Z"
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[5].change_1d",
+      "metric": "change_1d",
+      "value": 0.7469,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[6].change_1d",
+      "metric": "change_1d",
+      "value": 1.3779,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.regime",
+      "metric": "regime",
+      "value": "goldilocks",
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.labor[0].value",
+      "metric": "payems",
+      "value": -23.0,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.total_score",
+      "metric": "total_score",
+      "value": 44.45,
+      "updated_at": null
+    }
+  ],
+  "lineage": {
+    "fact_generation_id": "sha256:8015c37573c6b3a27b914aa34bc1acd327dcaf3a567d7552a54e48052574c184",
+    "fact_generated_at": "2026-08-24T21:41:51Z",
+    "input_freshness": {
+      "macro": "fresh",
+      "equities": "fresh",
+      "crypto": "fresh",
+      "news": "fresh",
+      "calendar": "fresh",
+      "sectors": "fresh",
+      "risk": "fresh"
+    },
+    "pair_id": "postmarket-2026-08-24T21:41:51"
+  },
+  "data_freshness": "fresh"
+}
