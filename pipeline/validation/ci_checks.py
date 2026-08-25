@@ -31,7 +31,7 @@ from pathlib import Path
 from typing import Any
 
 from pipeline.analysis.contract import SUPPORTED_LANGUAGES
-from pipeline.analysis.validate import compare_bilingual
+from pipeline.analysis.validate import check_language_isolation, compare_bilingual
 from pipeline.schemas import registry
 from pipeline.schemas.envelope import FreshnessStatus, is_schema_compatible
 from pipeline.validation.freshness import evaluate_freshness, expected_interval_minutes_for
@@ -55,6 +55,18 @@ _ISO_UTC_RE = re.compile(
     r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$"
 )
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+# Mirrors pipeline/analysis/validate._CJK_RE and the frontend CJK guard in displayLanguage.ts.
+_CJK_RE = re.compile(r"[\u3400-\u9fff]")
+#: #225: below this coverage ratio the translation file is treated as a stale/mismatched batch
+#: (a hard error); partial coverage between this and 100% is a warning.
+_MIN_COVERAGE_RATIO = 0.5
+
+
+def _normalize_title_key(text: str) -> str:
+    """Punctuation/whitespace-insensitive title key (#225 translation coverage check)."""
+    return re.sub(r"\W+", "", text or "").lower()
+
+
 # Derived from the single definition in pipeline/schemas/envelope.py rather than restated (D-4).
 _FRESHNESS_ENUM: frozenset[str] = frozenset(FreshnessStatus.__args__)  # type: ignore[attr-defined]
 
@@ -156,6 +168,9 @@ def check_latest(latest_dir: Path, report: CheckReport, now: datetime) -> None:
             issues = compare_bilingual(zh_obj, en_obj)
             for issue in issues:
                 report.error(f"AI bilingual conclusion mismatch: {issue}")
+            iso_issues = check_language_isolation(zh_obj, en_obj)
+            for issue in iso_issues:
+                report.error(f"AI bilingual {issue}")
         except Exception as exc:  # noqa: BLE001
             report.error(f"AI bilingual validation failed: {exc}")
 
@@ -313,6 +328,96 @@ def check_news_duplicates(latest_dir: Path, report: CheckReport) -> None:
             report.error(f"news.json: duplicate news (title+source+published_at) {sig[0]!r} (appears {count} times)")
 
 
+def check_news_language(latest_dir: Path, report: CheckReport) -> None:
+    """Language isolation for news (architecture §3.4 / displayLanguage.safeDisplayText).
+
+    ``news.json`` is the canonical store; the English UI reads ``title``/``summary`` directly, so
+    those fields MUST be English. ``news.zh-translations.json`` carries the Chinese side
+    (``title_zh``/``summary_zh``); if those lack Chinese the translation is suspicious.
+    """
+    path = latest_dir / "news.json"
+    if not path.exists():
+        return
+    try:
+        data = load_json_strict(path)
+        items = data.get("payload", {}).get("items", [])
+    except Exception as exc:  # noqa: BLE001
+        report.error(f"news.json: unable to read for language check: {exc}")
+        return
+    for i, item in enumerate(items):
+        for fname in ("title", "summary"):
+            val = item.get(fname)
+            if val and _CJK_RE.search(str(val)):
+                report.error(
+                    f"news.json item[{i}].{fname}: canonical English field contains Chinese "
+                    f"(language isolation) — safeDisplayText will show 'Translation unavailable'"
+                )
+    zh_path = latest_dir / "news.zh-translations.json"
+    if zh_path.exists():
+        try:
+            zdata = load_json_strict(zh_path)
+            # The translations file may be envelope-wrapped (payload.items) or a bare item list.
+            zitems = zdata.get("payload", {}).get("items", zdata.get("items", []))
+        except Exception as exc:  # noqa: BLE001
+            report.error(f"news.zh-translations.json: unable to read for language check: {exc}")
+            return
+        for i, item in enumerate(zitems):
+            for fname in ("title_zh", "summary_zh"):
+                val = item.get(fname)
+                if val and not _CJK_RE.search(str(val)):
+                    report.warn(
+                        f"news.zh-translations.json item[{i}].{fname}: zh field contains no Chinese "
+                        f"(suspicious — translation may be missing)"
+                    )
+
+
+def check_news_translation_coverage(latest_dir: Path, report: CheckReport) -> None:
+    """The AI translation file must cover the current news batch (#225).
+
+    ``merge_translations`` (ADR-0003) matches by id. When the external AI step emits a stale
+    batch or re-derives ids, the merge silently no-ops and zh-source items keep Chinese
+    canonical text (the "Translation unavailable" bug). This gate makes that failure visible at
+    commit time: the translation file must cover ``news.json`` items by id or normalized title.
+    """
+    news_path = latest_dir / "news.json"
+    zh_path = latest_dir / "news.zh-translations.json"
+    if not news_path.exists() or not zh_path.exists():
+        return
+    try:
+        news = load_json_strict(news_path)
+        zdata = load_json_strict(zh_path)
+    except Exception as exc:  # noqa: BLE001
+        report.error(f"news translation coverage: unable to read news/translation files: {exc}")
+        return
+    n_items = news.get("payload", {}).get("items", [])
+    z_items = zdata.get("payload", {}).get("items", zdata.get("items", []))
+    if not n_items:
+        return
+    n_ids = {str(x.get("id", "")) for x in n_items if x.get("id")}
+    z_ids = {str(x.get("id", "")) for x in z_items if x.get("id")}
+    id_hits = len(n_ids & z_ids)
+    z_title_keys = {_normalize_title_key(x.get("title_zh", "")) for x in z_items if x.get("title_zh")}
+    content_hits = sum(
+        1
+        for x in n_items
+        if _normalize_title_key(x.get("title", "")) in z_title_keys
+        or _normalize_title_key(x.get("title_zh", "")) in z_title_keys
+    )
+    covered = max(id_hits, content_hits)
+    total = len(n_ids)
+    if covered < total:
+        ratio = covered / total
+        detail = (
+            f"news.zh-translations.json covers only {covered}/{total} news items "
+            f"(id overlap {id_hits}, title match {content_hits}); merge_translations will silently "
+            f"no-op for the rest and zh-source items keep Chinese canonical text"
+        )
+        if ratio < _MIN_COVERAGE_RATIO:
+            report.error(detail)
+        else:
+            report.warn(detail)
+
+
 def _series_label(series_dir: Path, data_dir: Path) -> str:
     """Stable diagnostic label: path under history/, e.g. macro/BAA10Y (#191)."""
     return series_dir.relative_to(data_dir / "history").as_posix()
@@ -461,6 +566,8 @@ def _run_all(data_dir: Path, latest: Path, now: datetime) -> CheckReport:
     report = CheckReport()
     check_latest(latest, report, now)
     check_news_duplicates(latest, report)
+    check_news_language(latest, report)
+    check_news_translation_coverage(latest, report)
     check_history(data_dir, report)
     check_slice_consistency(data_dir, report)
     check_metadata_and_feeds(data_dir, report)

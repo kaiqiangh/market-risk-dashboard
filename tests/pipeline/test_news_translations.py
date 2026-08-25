@@ -162,3 +162,38 @@ def test_merge_none_translations_is_noop():
     merged = _collector().merge_translations(news, None)
     assert merged is news
     assert merged.items[0].summary_zh is None
+
+def test_merge_falls_back_to_title_match_on_id_drift():
+    # #225: the AI step re-derives ids, so a translation with a different id must still land
+    # on its article when the normalized Chinese title matches (zh-source item).
+    news = _payload(
+        [_item(id="collector-1", lang="zh", source="东方财富", title="美联储决议：利率维持不变", summary="美联储维持利率不变。")]
+    )
+    trans = _translations(
+        NewsTranslation(
+            id="ai-1", title="Fed holds rates steady", summary="The Fed held rates unchanged.",
+            title_zh="美联储决议：利率维持不变", summary_zh="美联储维持利率不变。",
+        )
+    )
+    merged = _collector().merge_translations(news, trans)
+    item = merged.items[0]
+    assert item.title == "Fed holds rates steady"  # English canonical backfilled despite id drift
+    assert item.summary == "The Fed held rates unchanged."
+    assert item.title_zh == "美联储决议：利率维持不变"
+    assert item.summary_zh == "美联储维持利率不变。"
+
+
+def test_merge_title_fallback_en_source_overlays_chinese():
+    # #225: id drift on an en-source item still overlays the Chinese side via English title match.
+    news = _payload([_item(id="collector-2", title="Fed raises rates", summary="Fed raised rates by 25bp")])
+    trans = _translations(
+        NewsTranslation(
+            id="ai-2", title="Fed raises rates", summary="Fed raised rates by 25bp",
+            title_zh="美联储加息", summary_zh="美联储加息25个基点",
+        )
+    )
+    merged = _collector().merge_translations(news, trans)
+    item = merged.items[0]
+    assert item.title == "Fed raises rates"  # canonical English untouched
+    assert item.title_zh == "美联储加息"
+    assert item.summary_zh == "美联储加息25个基点"
