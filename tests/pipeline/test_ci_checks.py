@@ -25,6 +25,7 @@ from pipeline.validation.ci_checks import (
     CheckReport,
     _check_risk_ranges,
     _reject_constant,
+    check_news_language,
     load_json_strict,
     run_all,
 )
@@ -784,3 +785,48 @@ def test_suite_does_not_read_published_data(published_data_reads: list[str]) -> 
         + ", ".join(sorted(set(published_data_reads)))
         + " — build the data with tests/pipeline/factories.py instead"
     )
+
+
+# =====================================================================================
+# News language isolation (architecture §3.4 / safeDisplayText "Translation unavailable")
+# =====================================================================================
+
+
+def test_check_news_language_flags_chinese_canonical(tmp_path: Path) -> None:
+    """Canonical news title/summary must be English; Chinese leaks to the fallback in the UI."""
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    payload = make_news_payload(
+        items=[make_news_item(title="美联储释放利率路径耐心信号", summary="市场关注下一次 CPI 数据。")]
+    )
+    write_json(latest / "news.json", make_envelope("news", payload=payload))
+    report = CheckReport()
+    check_news_language(latest, report)
+    assert any("language isolation" in e for e in report.errors), report.errors
+
+
+def test_check_news_language_passes_for_english(tmp_path: Path) -> None:
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    payload = make_news_payload(
+        items=[make_news_item(title="Fed signals patience on rate path", summary="Markets watch the next CPI print.")]
+    )
+    write_json(latest / "news.json", make_envelope("news", payload=payload))
+    report = CheckReport()
+    check_news_language(latest, report)
+    assert not any("language isolation" in e for e in report.errors), report.errors
+
+
+def test_check_news_language_warns_on_english_zh_translation(tmp_path: Path) -> None:
+    """news.zh-translations.json zh fields should contain Chinese; an English one is suspicious."""
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    payload = make_news_payload(items=[make_news_item()])
+    write_json(latest / "news.json", make_envelope("news", payload=payload))
+    translations = make_news_translations(
+        items=[{"id": "9f86d081884c7d659a2feaa0c55ad015", "title_zh": "Fed patience signal", "summary_zh": "Markets watch CPI"}]
+    )
+    write_json(latest / "news.zh-translations.json", translations)
+    report = CheckReport()
+    check_news_language(latest, report)
+    assert any("zh field contains no Chinese" in w for w in report.warnings), report.warnings

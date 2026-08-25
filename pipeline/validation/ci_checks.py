@@ -31,7 +31,7 @@ from pathlib import Path
 from typing import Any
 
 from pipeline.analysis.contract import SUPPORTED_LANGUAGES
-from pipeline.analysis.validate import compare_bilingual
+from pipeline.analysis.validate import compare_bilingual, check_language_isolation
 from pipeline.schemas import registry
 from pipeline.schemas.envelope import FreshnessStatus, is_schema_compatible
 from pipeline.validation.freshness import evaluate_freshness, expected_interval_minutes_for
@@ -55,6 +55,8 @@ _ISO_UTC_RE = re.compile(
     r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$"
 )
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+# Mirrors pipeline/analysis/validate._CJK_RE and the frontend CJK guard in displayLanguage.ts.
+_CJK_RE = re.compile(r"[\u3400-\u9fff]")
 # Derived from the single definition in pipeline/schemas/envelope.py rather than restated (D-4).
 _FRESHNESS_ENUM: frozenset[str] = frozenset(FreshnessStatus.__args__)  # type: ignore[attr-defined]
 
@@ -156,6 +158,9 @@ def check_latest(latest_dir: Path, report: CheckReport, now: datetime) -> None:
             issues = compare_bilingual(zh_obj, en_obj)
             for issue in issues:
                 report.error(f"AI bilingual conclusion mismatch: {issue}")
+            iso_issues = check_language_isolation(zh_obj, en_obj)
+            for issue in iso_issues:
+                report.error(f"AI bilingual {issue}")
         except Exception as exc:  # noqa: BLE001
             report.error(f"AI bilingual validation failed: {exc}")
 
@@ -313,6 +318,49 @@ def check_news_duplicates(latest_dir: Path, report: CheckReport) -> None:
             report.error(f"news.json: duplicate news (title+source+published_at) {sig[0]!r} (appears {count} times)")
 
 
+def check_news_language(latest_dir: Path, report: CheckReport) -> None:
+    """Language isolation for news (architecture §3.4 / displayLanguage.safeDisplayText).
+
+    ``news.json`` is the canonical store; the English UI reads ``title``/``summary`` directly, so
+    those fields MUST be English. ``news.zh-translations.json`` carries the Chinese side
+    (``title_zh``/``summary_zh``); if those lack Chinese the translation is suspicious.
+    """
+    path = latest_dir / "news.json"
+    if not path.exists():
+        return
+    try:
+        data = load_json_strict(path)
+        items = data.get("payload", {}).get("items", [])
+    except Exception as exc:  # noqa: BLE001
+        report.error(f"news.json: unable to read for language check: {exc}")
+        return
+    for i, item in enumerate(items):
+        for field in ("title", "summary"):
+            val = item.get(field)
+            if val and _CJK_RE.search(str(val)):
+                report.error(
+                    f"news.json item[{i}].{field}: canonical English field contains Chinese "
+                    f"(language isolation) — safeDisplayText will show 'Translation unavailable'"
+                )
+    zh_path = latest_dir / "news.zh-translations.json"
+    if zh_path.exists():
+        try:
+            zdata = load_json_strict(zh_path)
+            # The translations file may be envelope-wrapped (payload.items) or a bare item list.
+            zitems = zdata.get("payload", {}).get("items", zdata.get("items", []))
+        except Exception as exc:  # noqa: BLE001
+            report.error(f"news.zh-translations.json: unable to read for language check: {exc}")
+            return
+        for i, item in enumerate(zitems):
+            for field in ("title_zh", "summary_zh"):
+                val = item.get(field)
+                if val and not _CJK_RE.search(str(val)):
+                    report.warn(
+                        f"news.zh-translations.json item[{i}].{field}: zh field contains no Chinese "
+                        f"(suspicious — translation may be missing)"
+                    )
+
+
 def _series_label(series_dir: Path, data_dir: Path) -> str:
     """Stable diagnostic label: path under history/, e.g. macro/BAA10Y (#191)."""
     return series_dir.relative_to(data_dir / "history").as_posix()
@@ -461,6 +509,7 @@ def _run_all(data_dir: Path, latest: Path, now: datetime) -> CheckReport:
     report = CheckReport()
     check_latest(latest, report, now)
     check_news_duplicates(latest, report)
+    check_news_language(latest, report)
     check_history(data_dir, report)
     check_slice_consistency(data_dir, report)
     check_metadata_and_feeds(data_dir, report)
