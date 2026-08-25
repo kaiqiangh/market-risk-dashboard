@@ -26,6 +26,7 @@ from pipeline.validation.ci_checks import (
     _check_risk_ranges,
     _reject_constant,
     check_news_language,
+    check_news_translation_coverage,
     load_json_strict,
     run_all,
 )
@@ -830,3 +831,57 @@ def test_check_news_language_warns_on_english_zh_translation(tmp_path: Path) -> 
     report = CheckReport()
     check_news_language(latest, report)
     assert any("zh field contains no Chinese" in w for w in report.warnings), report.warnings
+
+
+# =====================================================================================
+# News translation coverage (#225: the AI translation file must cover the current batch)
+# =====================================================================================
+
+
+def test_check_news_translation_coverage_flags_stale_translations(tmp_path: Path) -> None:
+    """A translation file for a different batch (no id/title overlap) must be an error."""
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    news_items = [
+        make_news_item(id=f"n{i}", lang="zh", title=f"中文新闻标题{i}", summary=f"中文摘要{i}") for i in range(10)
+    ]
+    write_json(latest / "news.json", make_envelope("news", payload=make_news_payload(items=news_items)))
+    stale = [
+        {
+            "id": f"x{i}",
+            "title": f"Unrelated story {i}",
+            "summary": f"Unrelated summary {i}",
+            "title_zh": f"无关新闻标题{i}",
+            "summary_zh": f"无关摘要{i}",
+        }
+        for i in range(10)
+    ]
+    write_json(latest / "news.zh-translations.json", make_news_translations(items=stale))
+    report = CheckReport()
+    check_news_translation_coverage(latest, report)
+    assert any("covers only" in e for e in report.errors), report.errors
+
+
+def test_check_news_translation_coverage_passes_when_aligned(tmp_path: Path) -> None:
+    """A translation file sharing ids with news.json must not raise coverage errors."""
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    news_items = [
+        make_news_item(id=f"n{i}", lang="zh", title=f"中文新闻标题{i}", summary=f"中文摘要{i}") for i in range(10)
+    ]
+    write_json(latest / "news.json", make_envelope("news", payload=make_news_payload(items=news_items)))
+    aligned = [
+        {
+            "id": f"n{i}",
+            "title": f"English title {i}",
+            "summary": f"English summary {i}",
+            "title_zh": f"中文新闻标题{i}",
+            "summary_zh": f"中文摘要{i}",
+        }
+        for i in range(10)
+    ]
+    write_json(latest / "news.zh-translations.json", make_news_translations(items=aligned))
+    report = CheckReport()
+    check_news_translation_coverage(latest, report)
+    assert not any("covers only" in e for e in report.errors), report.errors
+    assert not any("covers only" in w for w in report.warnings), report.warnings
