@@ -345,6 +345,12 @@ def check_news_language(latest_dir: Path, report: CheckReport) -> None:
         report.error(f"news.json: unable to read for language check: {exc}")
         return
     for i, item in enumerate(items):
+        # Chinese-source items (lang == "zh") carry the original-language text in the canonical
+        # title/summary until the AI brief translates them; that is the expected pre-translation
+        # state, not a contract violation. The translation-coverage gate (#225) is the intended
+        # blocker for under-translated batches, so we do not hard-fail on zh-source items here.
+        if item.get("lang") == "zh":
+            continue
         for fname in ("title", "summary"):
             val = item.get(fname)
             if val and _CJK_RE.search(str(val)):
