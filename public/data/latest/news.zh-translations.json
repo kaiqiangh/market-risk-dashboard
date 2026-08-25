@@ -12,21 +12,21 @@
       "title": "SpaceX plans to put Nvidia-powered AI satellites in orbit next year",
       "summary": "Elon Musk’s company now plans to launch orbital data centers by the end of next year.",
       "title_zh": "SpaceX 计划明年将搭载英伟达算力的 AI 卫星送入轨道",
-      "summary_zh": "埃隆·马斯克的公司现计划于明年底发射轨道数据中心。"
+      "summary_zh": "埃隆·马斯克的公司现计划于明年底前发射轨道数据中心。"
     },
     {
       "id": "d0c3e65c903d9b8a4c8b1907e66bbd9dded01629",
       "title": "Bitcoin jumps 3%, closing in on $80,000 as rally gathers pace",
       "summary": "Bitcoin closed in on the $80,000 mark, as renewed inflows into spot bitcoin ETFs and improving risk appetite extended the cryptocurrency's recent rally.",
-      "title_zh": "比特币涨3%逼近8万美元 涨势加速",
-      "summary_zh": "比特币逼近8万美元关口，现货比特币ETF资金回流与风险偏好改善延续了加密货币近期的涨势"
+      "title_zh": "比特币涨 3%，涨势加速逼近 8 万美元",
+      "summary_zh": "在现货比特币 ETF 资金重新流入与风险偏好改善的推动下，比特币反弹延续，逼近 8 万美元关口。"
     },
     {
       "id": "03ef77b80a627ceccfee46709688a82ed8740b21",
       "title": "It’s time to bet big on Nvidia’s stock, says this analyst who thinks the market has it all wrong",
       "summary": "Nvidia’s controversial financial plays could actually keep the company on top, according to this analysis.",
       "title_zh": "一位认为市场完全误判的分析师称，现在是重仓英伟达的时候了",
-      "summary_zh": "该分析认为，英伟达颇具争议的财务运作实际上可能让其继续保持领先。"
+      "summary_zh": "该分析认为，英伟达颇具争议的财务运作反而可能让其保持领先。"
     },
     {
       "id": "7b184ed2ace027e36e3b0e011071fbb3dcf634ae",
@@ -222,7 +222,7 @@
       "title": "Why bitcoin has more room to run after biggest 3-day gain since 2023, according to analysts",
       "summary": "Bitcoin's outsized rebound last week could prove more than just a short-lived relief rally.",
       "title_zh": "分析师：比特币创 2023 年以来最大三日涨幅后，仍有上行空间",
-      "summary_zh": "比特币上周的强劲反弹可能不只是一次短暂的喘息行情。"
+      "summary_zh": "比特币上周的强劲反弹或许不止是昙花一现的喘息。"
     },
     {
       "id": "0dcecc6ebed2052bb02ad2a12d5e43b02caf9001",
@@ -235,8 +235,8 @@
       "id": "11a201034a9ea5128acc4ee845a39d82c1c1fa16",
       "title": "Porsche inks $1.5 billion deal for AI deployment with India’s largest IT services firm Tata Consultancy",
       "summary": "Indian IT services giant TCS has secured a $1.5 billion contract to deploy AI for German sports carmaker Porsche.",
-      "title_zh": "保时捷与印度最大IT服务公司塔塔咨询签署15亿美元AI部署协议",
-      "summary_zh": "印度IT服务巨头塔塔咨询服务（TCS）拿下价值15亿美元的合同，为德国跑车制造商保时捷部署AI"
+      "title_zh": "保时捷与印度最大 IT 服务公司塔塔咨询签署 15 亿美元 AI 部署协议",
+      "summary_zh": "印度 IT 服务巨头 TCS 拿下 15 亿美元合同，为德国跑车制造商保时捷部署 AI。"
     },
     {
       "id": "3254f5471d8460bfe2b6be0216c3593ebaf7cc07",
@@ -250,7 +250,7 @@
       "title": "Bitcoin has beaten stocks and gold over six months. Now it’s closing in on $80,000.",
       "summary": "Bitcoin was rising Monday near the $80,000 level that it last touched in May, after the cryptocurrency surged last week on the Treasury Department’s plans to bu",
       "title_zh": "比特币六个月表现跑赢股票与黄金，现逼近 8 万美元",
-      "summary_zh": "周一比特币逼近 8 万美元关口（5 月曾触及），此前受财政部债券回购计划推动上周大涨。"
+      "summary_zh": null
     },
     {
       "id": "dc36743519e137e19328881d9e76bc1de3fe79c9",
@@ -298,8 +298,8 @@
       "id": "7e639b127007546d2c4438435197e8944bedc4db",
       "title": "Gold hits over three-month high on dollar weakness, Treasury bond buyback plans",
       "summary": "Gold prices rose to its highest in over three months, supported by a weaker U.S",
-      "title_zh": "美元走弱与美债回购计划提振 金价创逾三个月新高",
-      "summary_zh": "受美元走软与美国国债回购计划支撑，金价升至逾三个月高位"
+      "title_zh": "美元走弱与美债回购计划提振，金价创逾三个月新高",
+      "summary_zh": null
     },
     {
       "id": "83389f8ca658219b6694298af290608c9670a166",
@@ -351,5 +351,5 @@
       "summary_zh": "蒂姆·库克（Tim Cook）执掌苹果逾十年，将于下周9月1日正式卸任CEO，转任执行董事长"
     }
   ],
-  "updated_at": "2026-08-25T03:31:20Z"
+  "updated_at": "2026-08-25T11:37:45Z"
 }
