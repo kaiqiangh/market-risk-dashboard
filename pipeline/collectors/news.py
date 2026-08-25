@@ -15,12 +15,24 @@ from typing import Any
 
 from pipeline.metadata import quality_for_outcomes
 from pipeline.providers.base import ProviderError, ProviderRegistry
-from pipeline.schemas import NewsDataset, NewsItem, NewsTranslationsDataset
+from pipeline.schemas import NewsDataset, NewsItem, NewsTranslation, NewsTranslationsDataset
 from pipeline.settings import Settings
 from pipeline.universe import AssetUniverse
 from pipeline.utils import now_utc
 
 _HTML_RE = re.compile(r"<[^>]+>")
+
+
+def _normalize_title(text: str) -> str:
+    """Punctuation/whitespace-insensitive title key for the #225 merge fallback.
+
+    ``merge_translations`` matches by id; when the external AI step re-derives ids from the
+    translated text, this lets a translation still land on its article (a zh-source item's
+    Chinese title vs the record's ``title_zh``, or an en-source item's title vs the record's
+    English ``title``). Strips all non-word characters so full/half-width punctuation and
+    spacing never block a match.
+    """
+    return re.sub(r"\W+", "", text or "").lower()
 
 
 class NewsCollector:
@@ -186,13 +198,34 @@ class NewsCollector:
         Canonical bilingual model (ADR-0003): `summary`/`title` stay English, `summary_zh`/`title_zh`
         carry Chinese. A translation record carries both sides; this copies whatever it provides and
         never replaces the canonical English with Chinese (the pre-ADR-0003 overwrite bug).
+
+        Matching is by id (the canonical key) with a deterministic content fallback (#225): the
+        external AI step sometimes re-derives ids from the translated text, so a record that misses
+        the collector's id is still merged when its `title_zh` (zh-source items) or English `title`
+        (en-source items) matches the item after title normalization.
         """
         if translations is None or not translations.items:
             return news
         by_id = {t.id: t for t in translations.items}
+        by_title_zh: dict[str, list[NewsTranslation]] = {}
+        by_title_en: dict[str, list[NewsTranslation]] = {}
+        for trans in translations.items:
+            if trans.title_zh:
+                by_title_zh.setdefault(_normalize_title(trans.title_zh), []).append(trans)
+            if trans.title:
+                by_title_en.setdefault(_normalize_title(trans.title), []).append(trans)
         updated_items = []
         for item in news.items:
             trans = by_id.get(item.id)
+            if trans is None:
+                # #225: id drift from the AI translation step — fall back to title matching.
+                if item.lang == "zh":
+                    candidates = by_title_zh.get(_normalize_title(item.title or ""))
+                    if not candidates and item.title_zh:
+                        candidates = by_title_zh.get(_normalize_title(item.title_zh))
+                else:
+                    candidates = by_title_en.get(_normalize_title(item.title or ""))
+                trans = candidates[0] if candidates else None
             if trans is None:
                 updated_items.append(item)
                 continue

@@ -22,6 +22,7 @@ Fix round additions/revisions:
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 import time
 import traceback
@@ -83,6 +84,8 @@ _read_prev_risk = read_prev_risk
 
 #: The AI-side Chinese translation file the merge step consumes (#192).
 TRANSLATIONS_FILENAME = "news.zh-translations.json"
+
+_CJK_RE = re.compile(r"[\u3400-\u9fff]")
 
 
 COMMANDS = (
@@ -1123,7 +1126,17 @@ def _merge_news_translations(
     translations = NewsTranslationsDataset.model_validate(json.loads(translations_path.read_text(encoding="utf-8")))
     merged = collector.merge_translations(news, translations)
     merged_count = sum(1 for it in merged.items if it.title_zh)
-    writer.record_translations("merged", merged_count, "news.zh-translations.json merged into news.json")
+    # #225: an id/batch mismatch makes the merge silently no-op — record the honest coverage so a
+    # stale/misaligned translation file is visible instead of a false "merged" with zero effect.
+    zh_still_cjk = sum(1 for it in merged.items if it.lang == "zh" and it.title and _CJK_RE.search(it.title))
+    if zh_still_cjk:
+        reason = (
+            f"news.zh-translations.json merged {merged_count} zh sides, but {zh_still_cjk} zh-source "
+            f"items still lack English canonical (id/batch mismatch, #225)"
+        )
+    else:
+        reason = "news.zh-translations.json merged into news.json"
+    writer.record_translations("merged", merged_count, reason)
     return merged
 
 
