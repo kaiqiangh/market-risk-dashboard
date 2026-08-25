@@ -327,13 +327,13 @@ def test_ci_uses_checked_in_python_constraints() -> None:
 
 
 def test_frontend_ci_and_production_audit_gate_are_wired() -> None:
-    """Frontend checks and the moderate production audit must run before release."""
+    """Frontend checks and the high production audit must run before release."""
     test_pipeline = _read_workflow("test-pipeline.yml")
     deploy_pages = _read_workflow("deploy-pages.yml")
 
     for workflow in (test_pipeline, deploy_pages):
         assert "npm ci" in workflow
-        assert "npm audit --omit=dev --audit-level=moderate" in workflow
+        assert "npm audit --omit=dev --audit-level=high" in workflow
         for command in ("npm run lint", "npm run typecheck", "npm test", "npm run build"):
             assert command in workflow, f"missing frontend gate: {command}"
 
@@ -381,7 +381,7 @@ def test_pages_release_boundary_is_dev_and_main_and_fully_gated() -> None:
     for command in (
         "python -m pipeline.validation.ci_checks --data-dir public/data",
         "npm run check:contracts",
-        "npm audit --omit=dev --audit-level=moderate",
+        "npm audit --omit=dev --audit-level=high",
         "npm run build",
         "node scripts/scan-secrets.mjs --root .",
     ):
