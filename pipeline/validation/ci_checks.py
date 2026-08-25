@@ -377,6 +377,36 @@ def check_news_language(latest_dir: Path, report: CheckReport) -> None:
                     )
 
 
+def _parse_iso_utc(value: Any) -> datetime | None:
+    """Parse an ISO-8601 UTC timestamp (trailing ``Z`` accepted) into an aware datetime.
+
+    Returns ``None`` when the value is missing or unparseable — callers treat that as "cannot
+    prove pre-brief" and keep the strict #225 coverage gate.
+    """
+    if not isinstance(value, str) or not value:
+        return None
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def _is_pre_brief_state(news: dict[str, Any], zdata: dict[str, Any]) -> bool:
+    """True when the translation sidecar is provably older than the current news batch.
+
+    The nightly 20:30 data run commits ``news.json`` before the 21:30 post-close AI brief
+    regenerates ``news.zh-translations.json``, so ``sidecar.updated_at < news.generated_at``
+    is the expected pre-brief cadence and low coverage must not block publishing. Either
+    timestamp missing or unparseable → False: pre-brief cannot be proven, so the strict
+    coverage gate (#225) still applies.
+    """
+    news_ts = _parse_iso_utc(news.get("generated_at"))
+    sidecar_ts = _parse_iso_utc(zdata.get("updated_at"))
+    if news_ts is None or sidecar_ts is None:
+        return False
+    return sidecar_ts < news_ts
+
+
 def check_news_translation_coverage(latest_dir: Path, report: CheckReport) -> None:
     """The AI translation file must cover the current news batch (#225).
 
@@ -384,6 +414,16 @@ def check_news_translation_coverage(latest_dir: Path, report: CheckReport) -> No
     batch or re-derives ids, the merge silently no-ops and zh-source items keep Chinese
     canonical text (the "Translation unavailable" bug). This gate makes that failure visible at
     commit time: the translation file must cover ``news.json`` items by id or normalized title.
+
+    Cadence-aware (E-2 fix): the nightly 20:30 data run commits a fresh ``news.json`` before
+    the 21:30 post-close AI brief runs, so a committed ``news.zh-translations.json`` may
+    legitimately cover only the previous batch for up to an hour. When the sidecar's
+    ``updated_at`` is strictly older than ``news.json``'s ``generated_at``, low coverage is the
+    expected pre-brief state and is reported as a WARNING regardless of ratio — never an error.
+    The #225 regression this gate exists to catch — a *newer* sidecar that still covers nothing
+    (a silent no-op batch) — is preserved by the strict path: when the sidecar is as new as or
+    newer than the news batch (or either timestamp is missing/unparseable, so pre-brief cannot
+    be proven), the original ratio gate applies.
     """
     news_path = latest_dir / "news.json"
     zh_path = latest_dir / "news.zh-translations.json"
@@ -418,7 +458,9 @@ def check_news_translation_coverage(latest_dir: Path, report: CheckReport) -> No
             f"(id overlap {id_hits}, title match {content_hits}); merge_translations will silently "
             f"no-op for the rest and zh-source items keep Chinese canonical text"
         )
-        if ratio < _MIN_COVERAGE_RATIO:
+        if _is_pre_brief_state(news, zdata):
+            report.warn(detail)
+        elif ratio < _MIN_COVERAGE_RATIO:
             report.error(detail)
         else:
             report.warn(detail)

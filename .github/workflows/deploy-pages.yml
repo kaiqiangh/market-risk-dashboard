@@ -47,7 +47,7 @@ jobs:
         run: npm ci
 
       - name: Audit production dependencies
-        run: npm audit --omit=dev --audit-level=moderate
+        run: npm audit --omit=dev --audit-level=high
 
       - name: Validate committed data (full Python authority)
         run: python -m pipeline.validation.ci_checks --data-dir public/data

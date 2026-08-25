@@ -885,3 +885,83 @@ def test_check_news_translation_coverage_passes_when_aligned(tmp_path: Path) -> 
     check_news_translation_coverage(latest, report)
     assert not any("covers only" in e for e in report.errors), report.errors
     assert not any("covers only" in w for w in report.warnings), report.warnings
+
+
+def test_check_news_translation_coverage_pre_brief_sidecar_older_is_warning_not_error(tmp_path: Path) -> None:
+    """Sidecar older than the news batch: zero coverage is the expected pre-brief state.
+
+    The 20:30 data run commits a fresh news.json before the 21:30 post-close brief has run,
+    so a committed news.zh-translations.json can legitimately cover none of the new ids. When
+    the sidecar's updated_at is strictly older than news.generated_at, the gate must warn
+    (never error), regardless of coverage ratio.
+    """
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    news_items = [
+        make_news_item(id=f"n{i}", lang="zh", title=f"中文新闻标题{i}", summary=f"中文摘要{i}") for i in range(10)
+    ]
+    write_json(
+        latest / "news.json",
+        make_envelope(
+            "news",
+            generated_at="2026-08-25T19:51:47Z",
+            payload=make_news_payload(items=news_items),
+        ),
+    )
+    stale = [
+        {
+            "id": f"x{i}",
+            "title": f"Unrelated story {i}",
+            "summary": f"Unrelated summary {i}",
+            "title_zh": f"无关新闻标题{i}",
+            "summary_zh": f"无关摘要{i}",
+        }
+        for i in range(10)
+    ]
+    write_json(
+        latest / "news.zh-translations.json",
+        make_news_translations(items=stale, updated_at="2026-08-25T11:37:45Z"),
+    )
+    report = CheckReport()
+    check_news_translation_coverage(latest, report)
+    assert not any("covers only" in e for e in report.errors), report.errors
+    assert any("covers only" in w for w in report.warnings), report.warnings
+
+
+def test_check_news_translation_coverage_new_sidecar_with_zero_coverage_is_error(tmp_path: Path) -> None:
+    """Sidecar as new as or newer than the news batch: zero coverage is the #225 regression.
+
+    A translation file produced for the current batch that still covers nothing is the silent
+    no-op merge_translations bug #225 exists to catch — the strict ratio gate must fire even
+    though the sidecar timestamp is not old.
+    """
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    news_items = [
+        make_news_item(id=f"n{i}", lang="zh", title=f"中文新闻标题{i}", summary=f"中文摘要{i}") for i in range(10)
+    ]
+    write_json(
+        latest / "news.json",
+        make_envelope(
+            "news",
+            generated_at="2026-08-25T11:37:45Z",
+            payload=make_news_payload(items=news_items),
+        ),
+    )
+    stale = [
+        {
+            "id": f"x{i}",
+            "title": f"Unrelated story {i}",
+            "summary": f"Unrelated summary {i}",
+            "title_zh": f"无关新闻标题{i}",
+            "summary_zh": f"无关摘要{i}",
+        }
+        for i in range(10)
+    ]
+    write_json(
+        latest / "news.zh-translations.json",
+        make_news_translations(items=stale, updated_at="2026-08-25T19:51:47Z"),
+    )
+    report = CheckReport()
+    check_news_translation_coverage(latest, report)
+    assert any("covers only" in e for e in report.errors), report.errors
