@@ -1,100 +1,72 @@
 {
   "items": [
     {
-      "id": "11aed1a75a2e926794edda1e52b821e0e5e23294",
-      "title": "Bessent wants to rescue Treasuries, Warsh wants to fight inflation: Treasury and Fed singing different tunes?",
-      "title_zh": "贝森特想救美债，沃什却要抗通胀，财政部与美联储将“各唱各的”？",
-      "summary": "US Treasury Secretary Bessent's sudden intervention to expand long-bond buybacks is clashing head-on with Fed Chair Warsh's inflation-fighting stance.",
-      "summary_zh": "美国财政部长贝森特扩大长债回购的突然干预，正与美联储主席沃什的抗通胀立场形成正面冲突"
+      "id": "0ff59ca66af34f5837bc6f035be9d6dbcbe9d87a",
+      "title": "Nvidia earnings live updates: Q2 results, memory prices and AI outlook",
+      "title_zh": "英伟达财报实时更新：Q2 业绩、存储价格与 AI 前景",
+      "summary": "Follow Nvidia’s Q2 2027 earnings for data center results, guidance, AI demand and NVDA stock reaction in real time.",
+      "summary_zh": "实时跟踪英伟达 2027 财年 Q2 财报的数据中心业绩、业绩指引、AI 需求及 NVDA 股价反应。"
     },
     {
-      "id": "4c8fb6459efbefd85155cf3cd70724c50198329b",
-      "title": "Cailian Press, Aug 26: Hong Kong exchange data shows JPMorgan cut its stake in Montage Technology's H-shares from 9.65% to 8.96% on Aug 21, at an average price of HKD 269.3247.",
-      "title_zh": "财联社8月26日电，香港交易所信息显示，摩根大通在澜起科技H股的持股比例于08月21日从9.65%降至8.96%，卖出的平均股价为269.3247港元。",
-      "summary": "Cailian Press, Aug 26: Hong Kong exchange data shows JPMorgan reduced its holding in Montage Technology's H-shares from 9.65% to 8.96% on Aug 21, at an average sale price of HKD 269.3247.",
-      "summary_zh": "财联社8月26日电，香港交易所信息显示，摩根大通在澜起科技H股的持股比例于08月21日从9.65%降至8.96%，卖出的平均股价为269.3247港元"
+      "id": "2c9c8bd503680a520ebbecb226dd5ba4513da863",
+      "title": "S&P 500 is little changed after PCE report shows sticky inflation; Nvidia earnings on deck: Live updates",
+      "title_zh": "PCE 报告显示通胀粘性，标普 500 持平；英伟达财报在即：实时更新",
+      "summary": "The S&amp;P 500 moved slightly lower on Wednesday after the latest personal consumption expenditures price index reading revealed that inflation remains elevate",
+      "summary_zh": "最新个人消费支出价格指数显示通胀仍具粘性，标普 500 周三小幅走低。"
     },
     {
-      "id": "8b7b2353be04050aefdacebce34757e90750c9ed",
-      "title": "Cramer says Nvidia has become 'all-important' to the AI trade. Here's what to watch beyond the numbers",
-      "title_zh": "克莱默称英伟达已成为 AI 交易“重中之重”，财报本质上是整个 AI 行情的全民公投",
-      "summary": "CNBC's Jim Cramer said Nvidia has become so central to the AI ecosystem that its earnings are effectively a referendum on the entire AI trade.",
-      "summary_zh": "CNBC 的吉姆·克莱默表示，英伟达在 AI 生态中已举足轻重，其财报实质上是整个 AI 交易走向的全民公投。"
+      "id": "eb4af4b7b72d80fdf5cc3c0b37cc52979f7b47e8",
+      "title": "OpenAI’s Jalapeño AI chip brings new 'threat' to Nvidia margins as custom silicon gains ground",
+      "title_zh": "OpenAI 的 Jalapeño AI 芯片对英伟达利润率构成新「威胁」，自研芯片渐成气候",
+      "summary": "OpenAI’s Jalapeño chip beat Nvidia Blackwell systems on key inference-efficiency tests as custom AI silicon gains ground among major tech companies.",
+      "summary_zh": "随着大型科技公司纷纷布局自研 AI 芯片，OpenAI 的 Jalapeño 芯片在关键推理效率测试中击败了英伟达 Blackwell 系统。"
     },
     {
-      "id": "2565d03fce0baac6cea4856b04e79aa56abb1cc4",
-      "title": "'Big Short' investor Danny Moses calls 10-year yield, Nvidia the two most important assets for markets right now",
-      "title_zh": "《大空头》投资人丹尼·摩西：十年期美债收益率与英伟达是当下市场最重要的两类资产",
-      "summary": "The two assets are the center of gravity in financial markets at the moment, according to the Moses Ventures founder.",
-      "summary_zh": "这位 Moses Ventures 创始人表示，这两类资产是当前金融市场的重心所在。"
+      "id": "4b0c31d34aeff5c0dff2c8d2cfcf70ea184e004c",
+      "title": "Bitcoin consolidates at $78,420 with MACD warning: Live levels",
+      "title_zh": "比特币在 78,420 美元附近盘整，MACD 发出警告：关键价位"
     },
     {
-      "id": "8645db59a047a5dbe4b8adca9968da6d042468e0",
-      "title": "US stock futures subdued in run-up to Nvidia results, inflation print",
-      "title_zh": "美股期货在英伟达业绩与通胀数据公布前表现平淡"
+      "id": "72df147c3b450edbe96f6c919181ed35fbdef0f1",
+      "title": "Federal judge lifts final block on Trump mail-in voting order, clearing way for midterm restrictions",
+      "title_zh": "联邦法官解除对特朗普邮寄投票令的最后禁令，为中期选举限制铺路",
+      "summary": "The rule in question would require election officials to give USPS voter information and use federally reviewed, uniquely barcoded ballot envelopes.",
+      "summary_zh": "相关规则将要求选举官员向美国邮政提供选民信息，并使用经联邦审查、带有唯一条形码的选票信封。"
     },
     {
-      "id": "4f040ce6454869c7734ef58afe493517ea10b9c9",
-      "title": "Nvidia’s dependence on hyperscalers faces big test in earnings report",
-      "title_zh": "英伟达对超大规模云厂商的依赖将在财报中迎来大考",
-      "summary": "Nvidia is trying to expand its customer base by creating new financing options that allow for more clients to purchase its costly systems.",
-      "summary_zh": "英伟达正试图通过推出新的融资方案来扩大客户基础，让更多客户能够采购其昂贵系统。"
+      "id": "6a3b63f550c92a9fe0696961b099c01d3cee4283",
+      "title": "Micron elevates two executives. Plus, what the Meta settlement means for its top line",
+      "title_zh": "美光晋升两名高管；另有 Meta 和解案对其营收意味着什么",
+      "summary": "Every weekday, the Investing Club releases the Homestretch; an actionable afternoon update just in time for the last hour of trading.",
+      "summary_zh": "每个交易日，Investing Club 都会发布「收官」简报，在尾盘前提供可操作的午后更新。"
     },
     {
-      "id": "13f7399f4ed67c4c5dc26bc2bddae8a76fcace90",
-      "title": "OpenAI's first in-house chip already rivals Nvidia's Blackwell",
-      "title_zh": "OpenAI第一次造芯，就追到英伟达Blackwell面前",
-      "summary": "OpenAI's first self-designed chip has already caught up to Nvidia's Blackwell.",
-      "summary_zh": "OpenAI第一次造芯，就追到了英伟达Blackwell面前"
+      "id": "d2550d4fcd74da504f4b303eea41dbf934ca2ee5",
+      "title": "Fed, NASA and DOJ among victims of Chinese state-sponsored hacker group: Court documents",
+      "title_zh": "法庭文件显示：美联储、NASA 与司法部系中国国家级黑客组织受害者",
+      "summary": "Hackers targeted networks \"operated by hospitals, telecommunications providers, power companies, financial institutions, and defense contractors,\" a filing said",
+      "summary_zh": "一份法庭文件称，黑客攻击了「由医院、电信运营商、电力公司、金融机构和国防承包商运营」的网络。"
     },
     {
-      "id": "6ce1a4bb486628923212ee312b8ccca08d286aa0",
-      "title": "Nvidia earnings due tonight: the pivotal battle for the AI bull market - how to trade it?",
-      "title_zh": "英伟达财报今夜揭晓，AI牛市关键一战，该如何交易？",
-      "summary": "Nvidia's quarterly results will likely again be strong, but the market's question is no longer whether they beat estimates, but whether the beat comes with enough answers.",
-      "summary_zh": "英伟达本季财报大概率仍是一份强劲成绩单，但市场的问题已经不是\"超不超预期\"，而是超预期之后能否给出足够的答案"
-    },
-    {
-      "id": "c8b47035e99c258a7d4f87d041cbddde8ffe95c3",
-      "title": "Indian AI firm orders 9,000 Nvidia Vera Rubin units, among Asia's first buyers",
-      "title_zh": "印度AI公司订购9000台英伟达Vera Rubin，成为亚洲首批买家之一",
-      "summary": "Indian AI infrastructure company AM Intelligence announced an order for 9,000 Nvidia Vera Rubin systems, becoming one of the first Asian buyers of the top-tier compute platform, betting on its low-cost renewable-energy edge to enter global AI compute competition.",
-      "summary_zh": "印度AI基础设施公司AM Intelligence宣布订购9000台英伟达Vera Rubin系统，成为这一顶尖计算平台在亚洲的首批采购方之一，押注本国低成本可再生能源优势切入全球AI算力竞争"
-    },
-    {
-      "id": "c67024bdb0051e7c9d965859cbe286146fb0945f",
-      "title": "Awaiting Nvidia earnings, semis lead Asia-Pacific markets; Korean stocks close up 0.97%, oil slips for a third day, bonds firm",
-      "title_zh": "静待英伟达财报，半导体板块领涨亚太市场、韩股收涨0.97%，油价三连跌，债市走强",
-      "summary": "Asia-Pacific equities rose on Wednesday led by the semiconductor sector as investors held their breath for Nvidia's results to guide the AI trade.",
-      "summary_zh": "亚太股市周三走高，半导体板块领涨，投资者正屏息等待英伟达财报为人工智能行情提供方向指引"
-    },
-    {
-      "id": "b61eaae1732dac2138a3d0d24ec9e54bb3732976",
-      "title": "China's short-drama producers flood the market with cheap bets — and let audiences pick the winners",
-      "title_zh": "中国短剧制作方以廉价赌注涌入市场，并把胜负交给观众挑选",
-      "summary": "The short-drama model offers an alternative to traditional entertainment, but rising distribution costs and audience-retention challenges remain.",
-      "summary_zh": "短剧模式为传统娱乐提供了替代选择，但发行成本上升与用户留存难题依然存在。"
-    },
-    {
-      "id": "f3434c49ada9373e508bd77a5c903846c88504e3",
-      "title": "'Too much too quickly': Indonesia's growth ambitions questioned by economists",
-      "title_zh": "“步子太大”：经济学家质疑印尼的增长野心",
-      "summary": "Indonesia has set an ambitious growth target, but economists aren't sure it can get there while keeping the deficit in check.",
-      "summary_zh": "印尼设定了雄心勃勃的增长目标，但经济学家不确定其在控制赤字的同时能否实现。"
-    },
-    {
-      "id": "485a498f56a64cfe330ef51d461fddb195204be5",
-      "title": "Iran and Oman prepare Hormuz deal as U.S. holds back on secondary sanctions",
-      "title_zh": "伊朗与阿曼筹备霍尔木兹协议，美国暂不加码次级制裁",
+      "id": "f46114c14f74ed3fe819ac04febf5cc2f03b447c",
+      "title": "Iran says the U.S. is standing in the way of Hormuz deal amid talks with Oman",
+      "title_zh": "伊朗称在与阿曼谈判之际，美国正阻碍霍尔木兹协议达成",
       "summary": "Iran and Oman are approaching a deal to secure safe transit through the Strait of Hormuz and future administration of the vital economic artery.",
-      "summary_zh": "伊朗与阿曼正接近达成一项协议，以确保霍尔木兹海峡的安全通行，并规划这条重要经济通道的后续管理。"
+      "summary_zh": "伊朗与阿曼正接近达成一项协议，以确保霍尔木兹海峡的安全通行，并规划这条重要经济动脉未来的管理。"
     },
     {
-      "id": "a6e54295038a01cde93172d2fc4fc52d07042f01",
-      "title": "Warsh to speak at Jackson Hole for the first time: can the Fed and Treasury reach a new fiscal-monetary accord?",
-      "title_zh": "沃什将在杰克逊霍尔首次发声，美联储与财政部能否达成新版“财政-货币协议”？",
-      "summary": "Fed Chair Warsh will make his first public remarks at the Jackson Hole central-bank symposium this Friday, just as the US Treasury quietly launches a debt-management overhaul, with an informal coordination framework between the two policy bodies taking shape.",
-      "summary_zh": "美联储主席沃什本周五将在杰克逊霍尔全球央行年会上首度公开发声，而此时美国财政部已悄然启动债务管理转型，两大政策机构之间的非正式协调框架正逐步成形"
+      "id": "e1ce82ed39d2aa6a84546644cf0438da686e3f95",
+      "title": "New FX holdings replace domestic RRR cuts; structural divergence in the global memory super-cycle; evolution of China's housing-fund system and cash-flow management shift — 0826 macro digest",
+      "title_zh": "新增外汇占款替代国内降准，全球存储超级周期结构性分化，中国公积金制度演进与现金流管理转型---0826宏观脱水",
+      "summary": "This year the stock-bond seesaw effect in China has been muted, mainly because equities and bonds move together when funding rates fall, while the seesaw re-emerges when funding rates rise.",
+      "summary_zh": "国内今年以来股债跷跷板效应不明显，主因资金利率下行时股债同向波动、资金利率上行时跷跷板效应有所反映"
+    },
+    {
+      "id": "b530cc9ef6d35bb3bbccf58f9d1fca421734d4c6",
+      "title": "A breakout is brewing in this bitcoin-linked stock. How to trade it",
+      "title_zh": "一只比特币概念股正在酝酿突破，如何交易",
+      "summary": "Tony Zhang of OptionsPlay breaks down how he's trading this name.",
+      "summary_zh": "OptionsPlay 的 Tony Zhang 详解了他的交易思路。"
     },
     {
       "id": "e9af4cd4ca9bfeff022797bb6e3dd475b82b5004",
@@ -111,243 +83,269 @@
       "summary_zh": "美联储理事会就现代化互助银行组织规则的提案征求公众意见。"
     },
     {
-      "id": "7c46f9225732b1b74a7d71944dc8b623d27583e7",
-      "title": "Cailian Press, Aug 26: BlackRock raised its stake in Fuyao Glass's H-shares from 6.90% to 7.22% on Aug 21",
-      "title_zh": "财联社8月26日电，香港交易所信息显示，贝莱德在福耀玻璃H股的持股比例于08月21日从6.90%升至7.22%。",
-      "summary": "Cailian Press, Aug 26: Hong Kong exchange data shows BlackRock lifted its holding in Fuyao Glass's H-shares from 6.90% to 7.22% on Aug 21.",
-      "summary_zh": "财联社8月26日电，香港交易所信息显示，贝莱德在福耀玻璃H股的持股比例于08月21日从6.90%升至7.22%"
+      "id": "dc74cf61b10b102ae867b3f01cf04fcaa320e043",
+      "title": "Fed’s preferred inflation gauge shows core prices rose 3.3% annually in July",
+      "title_zh": "美联储青睐的通胀指标显示：7 月核心物价同比上涨 3.3%",
+      "summary": "The personal consumption expenditures price index was expected to rise 0.1% monthly and 3.6% on a 12-month basis, according to economists surveyed by Dow Jones.",
+      "summary_zh": "据道琼斯调查的经济学家预期，个人消费支出价格指数月度涨幅为 0.1%，12 个月涨幅为 3.6%。"
     },
     {
-      "id": "4825cbf5917747082a1d0ee0cd24987f27a842f1",
-      "title": "LiuGong: H1 net profit down 13.55% year on year",
-      "title_zh": "柳工：上半年净利润同比下降13.55%",
-      "summary": "LiuGong (000528.SZ) reported 2026 interim results: operating revenue RMB 20.674 billion, up 13.71% year on year; net profit attributable to shareholders RMB 1.063 billion, down 13.55%.",
-      "summary_zh": "【柳工：上半年净利润同比下降13.55%】财联社8月26日电，柳工(000528.SZ)公告称，公司发布2026年半年度报告，实现营业收入206.74亿元，同比增长13.71%；归属于上市公司股东的净利润10.63亿元，同比下降13.55%"
+      "id": "134e40f7582b71799e4134bf7426f90eeb7e9b32",
+      "title": "Dollar index rises on Aug 26",
+      "title_zh": "美元指数26日上涨",
+      "summary": "The dollar index, which measures the greenback against six major currencies, rose 0.25% on the day to close at 99.165 in late trading.",
+      "summary_zh": "【美元指数26日上涨】财联社8月27日电，衡量美元对六种主要货币的美元指数当天上涨0.25%，在汇市尾市收于99.165"
     },
     {
-      "id": "285138acddfaca62d33168f44fe0da3e99f8555b",
-      "title": "Zhejiang Maritime Safety Administration activates top-level (Level I) typhoon response for Typhoon Shadel (No. 18 of 2026)",
-      "title_zh": "浙江海事局启动2026年第18号台风“沙德尔”I级防台应急响应",
-      "summary": "Zhejiang MSA activated a Level I typhoon response for Typhoon Shadel (No. 18, 2026). At 17:00 on Aug 26 the severe typhoon was centered at 28.4 N, 126.4 E, about 561 km east of Wenzhou, with maximum sustained winds of force 14, central pressure 955 hPa, moving west at 10 km/h.",
-      "summary_zh": "【浙江海事局启动2026年第18号台风“沙德尔”I级防台应急响应】财联社8月26日电，浙江海事公众号消息，今年第18号台风“沙德尔”（强台风级）于8月26日17时在北纬28.4°、东经126.4°，即距温州偏东方向561公里的海面上，中心最大风力14级，中心气压为955百帕，移动方向偏西，移动速度每小时10公里"
+      "id": "86834e69c2a80cd5270f11e587d4c2a2e2a7d25c",
+      "title": "Hang Seng Index main contract slips 0.21% in night session; Hang Seng Tech down 0.37%",
+      "title_zh": "财联社8月27日电，恒生指数主连夜盘收跌0.21%，恒生科技指数主连夜盘收跌0.37%。",
+      "summary": "The Hang Seng Index main contract fell 0.21% in the night session, and the Hang Seng Tech Index main contract dropped 0.37%.",
+      "summary_zh": "财联社8月27日电，恒生指数主连夜盘收跌0.21%，恒生科技指数主连夜盘收跌0.37%"
     },
     {
-      "id": "30abefb58ff31e0ce56f7af917bff4648ef877dd",
-      "title": "JinHaiTong: H1 net profit up 125.21% year on year",
-      "title_zh": "金海通：上半年净利润同比增长125.21%",
-      "summary": "JinHaiTong (603061.SH) reported 2026 interim results: operating revenue RMB 601 million, up 95.41% year on year; net profit attributable to shareholders RMB 171 million, up 125.21%.",
-      "summary_zh": "【金海通：上半年净利润同比增长125.21%】财联社8月26日电，金海通(603061.SH)公告称，公司发布2026年半年度报告，实现营业收入6.01亿元，同比增长95.41%；归属于上市公司股东的净利润1.71亿元，同比增长125.21%"
+      "id": "5671bbaca711ec7fe56ceee9f2ad20ae856e2712",
+      "title": "Kimmeridge: up to half of US planned data centers face delay or cancellation risk",
+      "title_zh": "投资公司Kimmeridge：美国拟建的数据中心可能半数面临延期或取消风险",
+      "summary": "Investment firm Kimmeridge Energy Management Co. said that, owing to rising opposition and the complexity of physical infrastructure buildout, up to half of the data centers planned in the US face delay or cancellation risk.",
+      "summary_zh": "【投资公司Kimmeridge：美国拟建的数据中心可能半数面临延期或取消风险】财联社8月27日电，投资公司Kimmeridge Energy Management Co.表示，由于反对情绪升温以及实体基础设施建设本身的复杂性，美国拟建的数据中心最多半数面临延期或取消风险"
     },
     {
-      "id": "bf8f6c46d4e8b89469f46afdda368537e9d95c87",
-      "title": "GB Pets plans to raise up to RMB 1.1 billion for a 300,000-tonne high-end pet-food project",
-      "title_zh": "乖宝宠物：拟募资不超11亿元用于年产30万吨高端宠物主粮食品项目等",
-      "summary": "GB Pets (301498.SZ) plans to issue convertible bonds to unspecified investors, raising up to RMB 1.1 billion (inclusive), to fund a 300,000-tonne high-end pet-food project, a smart-warehouse and intelligent sorting center, a digital operations and decision platform, and to replenish working capital.",
-      "summary_zh": "【乖宝宠物：拟募资不超11亿元用于年产30万吨高端宠物主粮食品项目等】财联社8月26日电，乖宝宠物(301498.SZ)公告称，公司拟向不特定对象发行可转换公司债券，募集资金总额不超过11亿元(含本数)，扣除发行费用后拟用于年产30万吨高端宠物主粮食品项目、智能仓储及数智化分拣中心项目、数智化运营与决策平台建设项目及补"
+      "id": "2e7ea9d9d3eaeddfeda3691ffbfdfd4e7f472a6f",
+      "title": "Shanghai crude futures 2610 contract up 2.14% in night session to 576.60 yuan/barrel; Shanghai gold down 0.74%, silver down 0.48%",
+      "title_zh": "财联社8月27日电，上期所原油期货2610合约夜盘收涨2.14%，报576.60元人民币/桶。沪金夜盘收跌0.74%，沪银收跌0.48%。",
+      "summary": "The Shanghai Futures Exchange's crude futures 2610 contract rose 2.14% in the night session to 576.60 yuan per barrel.",
+      "summary_zh": "财联社8月27日电，上期所原油期货2610合约夜盘收涨2.14%，报576.60元人民币/桶"
     },
     {
-      "id": "de5655c7d7a69755501020f203d91a696c657392",
-      "title": "Coke's second round of price hikes (RMB 100/110 per tonne) fully takes effect; Lishi major mine raises price RMB 200 to 2,500",
-      "title_zh": "焦炭第二轮提涨100-100全面落地 吕梁离石主流大矿涨200至2500",
-      "summary": "On Aug 26 major steel mills in Hebei and Shandong implemented the second round of coke purchase-price increases: RMB 100 per tonne for wet-quenched coke and RMB 110 per tonne for dry-quenched coke.",
-      "summary_zh": "【焦炭第二轮提涨100-100全面落地 吕梁离石主流大矿涨200至2500】财联社8月26日电，今日河北、山东地区主流钢厂对焦炭采购价进行第二轮上调，湿熄焦幅度100元/吨，干熄焦幅度110元/吨"
+      "id": "2283b5b4f3e8c31d442a2c506eb45164e50ed57a",
+      "title": "Qatar's PM to meet Iranian officials in Tehran to discuss easing tensions",
+      "title_zh": "财联社8月27日电，卡塔尔外交部发言人表示，卡塔尔首相将在德黑兰与多名伊朗官员会面，讨论缓和紧张局势的途径。",
+      "summary": "A Qatari Foreign Ministry spokesperson said the Qatari prime minister will meet several Iranian officials in Tehran to discuss ways to de-escalate tensions.",
+      "summary_zh": "财联社8月27日电，卡塔尔外交部发言人表示，卡塔尔首相将在德黑兰与多名伊朗官员会面，讨论缓和紧张局势的途径"
     },
     {
-      "id": "d91c5c8e31c8511bf04a21c03e18140ea29dcd2c",
-      "title": "Cailian Press, Aug 26: Invesco NASDAQ Tech ETF (159509) halts trading from market open on Aug 27, resumes at 10:30, redemptions continue during halt",
-      "title_zh": "财联社8月26日电，纳指科技ETF景顺(159509)将于2026年8月27日开市起停牌，自2026年8月27日10:30起复牌，停牌期间赎回业务照常办理。",
-      "summary": "Cailian Press, Aug 26: Invesco NASDAQ Tech ETF (159509) will suspend trading from market open on Aug 27 and resume at 10:30; redemptions proceed normally during the halt.",
-      "summary_zh": "财联社8月26日电，纳指科技ETF景顺(159509)将于2026年8月27日开市起停牌，自2026年8月27日10:30起复牌，停牌期间赎回业务照常办理"
+      "id": "18d2875449d28f42696a594c76e4fba58e41702c",
+      "title": "IDC: Apple's foldable iPhone to ship over 10 million units in first year",
+      "title_zh": "IDC预测苹果折叠屏iPhone第一年出货量将超过1000万部",
+      "summary": "Research firm IDC expects Apple's much-anticipated foldable iPhone to help the foldable smartphone market reverse its decline and reach over 10 million units shipped in its first year.",
+      "summary_zh": "【IDC预测苹果折叠屏iPhone第一年出货量将超过1000万部】财联社8月27日电，研究机构IDC预计，苹果备受期待的折叠屏iPhone将帮助折叠屏智能手机市场摆脱下滑，并在上市首年实现超过1000万部的出货量"
     },
     {
-      "id": "9ccd80a40845cafe6c126ed5fa9a8fc4b9f732c2",
-      "title": "Cailian Press, Aug 26: GF NASDAQ ETF (159941) halts from market open on Aug 27, resumes at 10:30, redemptions continue during halt",
-      "title_zh": "财联社8月26日电，纳指ETF广发(159941)将于2026年8月27日开市起停牌，自2026年8月27日10:30起复牌，停牌期间赎回业务照常办理。",
-      "summary": "Cailian Press, Aug 26: GF NASDAQ ETF (159941) will suspend trading from market open on Aug 27 and resume at 10:30; redemptions proceed normally during the halt.",
-      "summary_zh": "财联社8月26日电，纳指ETF广发(159941)将于2026年8月27日开市起停牌，自2026年8月27日10:30起复牌，停牌期间赎回业务照常办理"
+      "id": "a533959dec04cd44fcb4b317f666a3e5ed795719",
+      "title": "RevMed prices pancreatic cancer drug at $39,800 per month",
+      "title_zh": "财联社8月27日电，RevMed将胰腺癌药物定价为每月39,800美元。",
+      "summary": "RevMed has priced its pancreatic cancer drug at $39,800 per month.",
+      "summary_zh": "财联社8月27日电，RevMed将胰腺癌药物定价为每月39,800美元"
     },
     {
-      "id": "841640a1d9313ac6eaebd98cc645ee5abe82f76d",
-      "title": "CVTE: H1 net profit up 282% year on year",
-      "title_zh": "视源股份：上半年净利润同比增长282%",
-      "summary": "CVTE (002841.SZ) reported 2026 interim results: operating revenue RMB 14.389 billion, up 36.2% year on year; net profit attributable to shareholders RMB 1.521 billion, up 282.44%.",
-      "summary_zh": "【视源股份：上半年净利润同比增长282%】财联社8月26日电，视源股份(002841.SZ)公告称，公司发布2026年半年度报告，实现营业收入143.89亿元，同比增长36.2%；归属于上市公司股东的净利润15.21亿元，同比增长282.44%"
+      "id": "f22f778576933c494f6c33fc5c83bbef62e3b4f7",
+      "title": "Iran's foreign minister condemns US 'economic terrorist actions' against Iran",
+      "title_zh": "伊朗外长谴责美对伊实施“经济恐怖主义行动”",
+      "summary": "Iranian Foreign Minister Araghchi sent letters to the UN Secretary-General and the rotating president of the Security Council, among others, over the US 'economic terrorist actions' against Iran.",
+      "summary_zh": "【伊朗外长谴责美对伊实施“经济恐怖主义行动”】财联社8月27日电，伊朗外长阿拉格齐就美国针对伊朗的“经济恐怖主义行动”致函联合国秘书长、安理会轮值主席等"
     },
     {
-      "id": "c1142bc049ed0231c7a75c2cb1736622a7ea6594",
-      "title": "Four-limit-up Chu Tian Long: e-CNY related revenue still below 5% of total",
-      "title_zh": "4连板楚天龙：目前数字人民币相关业务收入占公司营业收入的比重较小未达5%",
-      "summary": "Chu Tian Long (003040.SZ) said its e-CNY-related revenue remains a small share of total revenue, below 5%; the stock's cumulative close-price deviation over two sessions exceeded 20%, constituting abnormal trading volatility.",
-      "summary_zh": "【4连板楚天龙：目前数字人民币相关业务收入占公司营业收入的比重较小未达5%】财联社8月26日电，楚天龙(003040.SZ)公告称，公司股票连续两个交易日收盘价格涨幅偏离值累计超过20%，属于股票交易异常波动"
+      "id": "c79f95538d47a421603a32a3b57d374c10f645aa",
+      "title": "OpenAI expands teacher-facing ChatGPT to 55 more school districts across 20 US states, reaching 100,000+ educators",
+      "title_zh": "财联社8月27日电，OpenAI将面向教师的ChatGPT扩展至美国20个州的55个额外学区，覆盖超过10万名教育工作者和教职工。",
+      "summary": "OpenAI is expanding its teacher-facing ChatGPT to 55 additional school districts across 20 US states, covering more than 100,000 educators and staff.",
+      "summary_zh": "财联社8月27日电，OpenAI将面向教师的ChatGPT扩展至美国20个州的55个额外学区，覆盖超过10万名教育工作者和教职工"
     },
     {
-      "id": "caaf40bf48dd47186b44836cb540b254160f7025",
-      "title": "BeiGene: H1 net profit up 627%; sales growth from Brukinsa, Amgen-licensed products and tislelizumab",
-      "title_zh": "百济神州：上半年净利润同比增长627% 百悦泽®以及安进公司授权产品和百泽安®销售增长",
-      "summary": "BeiGene (688235.SH) reported 2026 interim results: operating revenue RMB 22.22 billion, up 26.84% year on year; net profit attributable to shareholders RMB 3.271 billion, up 627.15%, driven by Brukinsa, Amgen-licensed products and tislelizumab.",
-      "summary_zh": "【百济神州：上半年净利润同比增长627% 百悦泽®以及安进公司授权产品和百泽安®销售增长】财联社8月26日电，百济神州(688235.SH)发布2026年半年度报告，实现营业收入222.2亿元，同比增长26.84%；归属于上市公司股东的净利润32.71亿元，同比增长627.15%"
+      "id": "286e69f137b16df108c0a350e1b02e7433753ca0",
+      "title": "Anthropic opens Claude's Chrome browser extension to all paid subscribers",
+      "title_zh": "财联社8月27日电，Anthropic现已向所有付费订阅用户开放Claude的Chrome浏览器扩展功能。",
+      "summary": "Anthropic has opened Claude's Chrome browser extension to all paid subscribers.",
+      "summary_zh": "财联社8月27日电，Anthropic现已向所有付费订阅用户开放Claude的Chrome浏览器扩展功能"
     },
     {
-      "id": "988015a35a6ba1b937f582d07a4e6240a96241d4",
-      "title": "Cailian Press, Aug 26: EU corn imports for 2025/26 reached 2.57 million tonnes as of Aug 23, versus 1.79 million a year earlier",
-      "title_zh": "财联社8月26日电，数据显示，截至8月23日，欧盟2025/26年度玉米进口量为257万吨，上年同期为179万吨。",
-      "summary": "Cailian Press, Aug 26: data shows EU corn imports for the 2025/26 season stood at 2.57 million tonnes as of Aug 23, versus 1.79 million tonnes a year earlier.",
-      "summary_zh": "财联社8月26日电，数据显示，截至8月23日，欧盟2025/26年度玉米进口量为257万吨，上年同期为179万吨"
+      "id": "05c4b8ff06a54bed69a42a8eaf5e3d2fda473965",
+      "title": "Singapore police raid Radiant World's offices",
+      "title_zh": "财联社8月27日电，新加坡警方对Radiant World的办公室进行突击搜查。",
+      "summary": "Singapore police conducted a raid on Radiant World's offices.",
+      "summary_zh": "财联社8月27日电，新加坡警方对Radiant World的办公室进行突击搜查"
     },
     {
-      "id": "ffb5420f4c0ec586b055fb7ec98227f016c38fa9",
-      "title": "US military Black Hawk helicopter crashes in the western US",
-      "title_zh": "美军一黑鹰直升机在美西部坠毁",
-      "summary": "A US military Black Hawk helicopter crashed on Aug 25 in mountain-forest terrain near Denver, Colorado, in the western US.",
-      "summary_zh": "【美军一黑鹰直升机在美西部坠毁】财联社8月26日电，美军一架“黑鹰”直升机当地时间8月25日在美国西部科罗拉多州丹佛附近山地林区坠毁"
+      "id": "a7a50d9c6db554c3dce164b909561d4a5a871588",
+      "title": "Magnitude 5.3 earthquake strikes Colombia",
+      "title_zh": "哥伦比亚发生5.3级地震",
+      "summary": "According to the China Earthquake Networks Center, a magnitude 5.3 earthquake struck Colombia at 00:45 on Aug 27 (6.75 N, 73.08 W) at a depth of 150 km.",
+      "summary_zh": "【哥伦比亚发生5.3级地震】财联社8月27日电，中国地震台网正式测定：08月27日00时45分在哥伦比亚（北纬6.75度，西经73.08度）发生5.3级地震，震源深度150千米"
     },
     {
-      "id": "a0a4d8fe90da4bef90f44424555dde7ba36da024",
-      "title": "Sai Dou AIVA in battery-swap talks with CATL; first production car to debut this year",
-      "title_zh": "赛豆AIVA正与宁德时代探讨换电模式合作 首款量产车年内亮相",
-      "summary": "Chongqing Sai Dou Technology's VIVA brand is in discussions with CATL on a battery-swap model, according to a person familiar; details are still under discussion and the first production car will appear this year.",
-      "summary_zh": "【赛豆AIVA正与宁德时代探讨换电模式合作 首款量产车年内亮相】财联社8月26日电，从一位不愿透露姓名的知情人士处了解到，重庆赛豆科技有限公司旗下VIVA品牌正在与宁德时代探讨换电模式合作，具体合作情况还在探讨中"
+      "id": "86e9340e7b76546b508d60e9583908b2b950ea7f",
+      "title": "Kioxia reportedly to invest over 1 trillion yen in new Japan plant",
+      "title_zh": "财联社8月27日电，铠侠据悉将投资逾1万亿日元在日本建设新工厂。",
+      "summary": "Kioxia is reportedly planning to invest over 1 trillion yen to build a new plant in Japan.",
+      "summary_zh": "财联社8月27日电，铠侠据悉将投资逾1万亿日元在日本建设新工厂"
     },
     {
-      "id": "db54799f3c9fb2af357ac637d9255b978ea17e73",
-      "title": "HaoHua Technology: H1 net profit up 39.78% year on year",
-      "title_zh": "昊华科技：2026年半年度净利润同比增长39.78%",
-      "summary": "HaoHua Technology (600378.SH) reported 2026 interim results: operating revenue RMB 9.69 billion, up 24.87% year on year; net profit attributable to shareholders RMB 901 million, up 39.78%.",
-      "summary_zh": "【昊华科技：2026年半年度净利润同比增长39.78%】财联社8月26日电，昊华科技(600378.SH)发布2026年半年度报告，实现营业收入96.9亿元，同比增长24.87%；归属于上市公司股东的净利润9.01亿元，同比增长39.78%"
+      "id": "c5f800f3a6f12563072fd707415c087d280e58dd",
+      "title": "Google launches Gemini 3.5 Transcribe, boosting AI speech transcription",
+      "title_zh": "财联社8月27日电，谷歌推出Gemini 3.5 Transcribe，增强AI语音转录能力。",
+      "summary": "Google has launched Gemini 3.5 Transcribe, enhancing its AI speech-transcription capability.",
+      "summary_zh": "财联社8月27日电，谷歌推出Gemini 3.5 Transcribe，增强AI语音转录能力"
     },
     {
-      "id": "6af73ddcc8af1ec1e3cc68e1588fbddd13b1e2c7",
-      "title": "NMPA suspends sale and use of some batches of France's PIERRE FABRE Encorafenib Capsules",
-      "title_zh": "国家药监局：对法国PIERRE FABRE MEDICAMENT恩考芬尼胶囊部分批次暂停销售、使用",
-      "summary": "China's NMPA recently inspected some batches of France's PIERRE FABRE MEDICAMENT Encorafenib Capsules (registration No. HJ20250082; manufacturing address: 14 Sch...) and suspended their sale and use.",
-      "summary_zh": "【国家药监局：对法国PIERRE FABRE MEDICAMENT恩考芬尼胶囊部分批次暂停销售、使用】财联社8月26日电，国家药监局近期组织对法国PIERRE FABRE MEDICAMENT恩考芬尼胶囊（英文名称：Encorafenib Capsules；注册证号：国药准字HJ20250082；生产地址：14 Sch"
+      "id": "e744f939b859b27a6a4687716c2c34361a328bf7",
+      "title": "US Treasury sells $70 billion 5-year note at 4.393% high yield, 2.37 bid-to-cover",
+      "title_zh": "财联社8月27日电，美国财政部拍卖700亿美元五年期国债，得标利率4.393%，投标倍数2.37。",
+      "summary": "The US Treasury sold $70 billion of 5-year notes at a high yield of 4.393% with a bid-to-cover ratio of 2.37.",
+      "summary_zh": "财联社8月27日电，美国财政部拍卖700亿美元五年期国债，得标利率4.393%，投标倍数2.37"
     },
     {
-      "id": "1747bf998e048cc412e0625392ec92881beff1d4",
-      "title": "Junshi Biosciences: H1 net profit RMB 21.663 million, swinging to profit year on year",
-      "title_zh": "君实生物：2026年半年度净利润2166.3万元 同比扭亏为盈",
-      "summary": "Junshi Biosciences (688180.SH) reported 2026 interim results: operating revenue RMB 1.696 billion, up 45.18% year on year; net profit attributable to shareholders RMB 21.663 million, swinging to profit.",
-      "summary_zh": "【君实生物：2026年半年度净利润2166.3万元 同比扭亏为盈】财联社8月26日电，君实生物(688180.SH)发布2026年半年度报告，实现营业收入16.96亿元，同比增长45.18%；归属于上市公司股东的净利润2166.3万元，同比扭亏为盈"
+      "id": "59b4f782499a14c571bbd25a045075c894decb6d",
+      "title": "Italy extends diesel pump-tax cut to September 5",
+      "title_zh": "财联社8月27日电，意大利将柴油泵税减征延长至9月5日。",
+      "summary": "Italy has extended its cut to the diesel pump tax through September 5.",
+      "summary_zh": "财联社8月27日电，意大利将柴油泵税减征延长至9月5日"
     },
     {
-      "id": "6ee7788a28d05fa12e90beba716be11dacdc02b7",
-      "title": "Peskov: Putin informed of Russia-US intelligence contact outcome",
-      "title_zh": "佩斯科夫：普京已获悉俄美情报部门接触成果",
-      "summary": "Kremlin spokesman Peskov said on Aug 26 that President Putin has been briefed on the outcome of contacts between Russian intelligence and CIA Director Ratcliffe.",
-      "summary_zh": "【佩斯科夫：普京已获悉俄美情报部门接触成果】财联社8月26日电，俄罗斯总统新闻秘书佩斯科夫26日表示，俄总统普京已获悉俄情报部门与美国中情局局长拉特克利夫接触的成果"
+      "id": "c8ff472a72848a8b6c7ce3d76db9248c41186a85",
+      "title": "Anthropic to pay Nscale $45 billion to lease AI compute",
+      "title_zh": "Anthropico将向Nscale支付450亿美元租用人工智能算力",
+      "summary": "Anthropic PBC has agreed to spend $45 billion to lease AI compute at Nscale's major data-center project in West Virginia.",
+      "summary_zh": "【Anthropico将向Nscale支付450亿美元租用人工智能算力】财联社8月27日电，Anthropic PBC同意斥资450亿美元，租用Nscale位于西弗吉尼亚州主要数据中心项目的AI算力"
     },
     {
-      "id": "00bffa63f526d81c8b385b8616c21ef163e33aff",
-      "title": "Shanghai launches municipal state-owned-fund post-investment empowerment platform",
-      "title_zh": "上海启动国资基金市级投后赋能协同平台",
-      "summary": "Shanghai's municipal state-owned-fund post-investment empowerment coordination platform has formally entered operation.",
-      "summary_zh": "【上海启动国资基金市级投后赋能协同平台】财联社8月26日电，上海国资基金市级投后赋能协同平台正式投入运行"
+      "id": "7d83cf7e5fd59a20d062758ee9e0dd8c57c9b44c",
+      "title": "UK AI infrastructure firm NScale plans $71 billion West Virginia project",
+      "title_zh": "财联社8月27日电，英国AI基础设施公司NScale拟投资710亿美元建设西弗吉尼亚州项目。",
+      "summary": "UK AI infrastructure company NScale plans to invest $71 billion in a West Virginia project.",
+      "summary_zh": "财联社8月27日电，英国AI基础设施公司NScale拟投资710亿美元建设西弗吉尼亚州项目"
+    },
+    {
+      "id": "299929df15fc8b8b1112bde92301d8fcc27b9b4f",
+      "title": "LME copper settles down $96",
+      "title_zh": "LME期铜收跌96美元",
+      "summary": "LME copper settled down $96 to $14,253 per tonne.",
+      "summary_zh": "【LME期铜收跌96美元】财联社8月27日电，LME期铜收跌96美元，报14253美元/吨"
+    },
+    {
+      "id": "015d4953357602fae69c88a8279967b353aec0fc",
+      "title": "Meta settles social-media harm case with multiple US states, to pay up to ~$18 billion",
+      "title_zh": "Meta与美国多州就社交媒体危害案达成和解 最高将支付约180亿美元",
+      "summary": "Meta Platforms Inc. said it agreed to pay up to about $18 billion to settle a landmark case with multiple US states over allegations that it deliberately designed Facebook and Instagram to foster compulsive use habits among young users.",
+      "summary_zh": "【Meta与美国多州就社交媒体危害案达成和解 最高将支付约180亿美元】财联社8月27日电，Meta Platforms Inc.表示，同意支付最高约180亿美元，与美国多个州就具有里程碑意义的案件达成和解，以解决有关该公司故意将Facebook和Instagram设计成诱导年轻用户形成强迫性使用习惯的指控"
+    },
+    {
+      "id": "c67024bdb0051e7c9d965859cbe286146fb0945f",
+      "title": "Awaiting Nvidia earnings, semis lead Asia-Pacific markets; Korean stocks close up 0.97%, oil slips for a third day, bonds firm",
+      "title_zh": "Awaiting Nvidia earnings, semis lead Asia-Pacific markets; Korean stocks close up 0.97%, oil slips for a third day, bonds firm",
+      "summary": "Asia-Pacific equities rose on Wednesday led by the semiconductor sector as investors held their breath for Nvidia's results to guide the AI trade.",
+      "summary_zh": "Asia-Pacific equities rose on Wednesday led by the semiconductor sector as investors held their breath for Nvidia's results to guide the AI trade."
+    },
+    {
+      "id": "e66f9fabc9f993fb1fc54d246dd5ace2d3bd3ba9",
+      "title": "Tesla stuck in chop zone near $345: Hourly levels",
+      "title_zh": "特斯拉在 345 美元附近陷入震荡区间：分时级别关键价位"
     },
     {
       "id": "e91e3516359aa191c176fc4ce9bd3491d1406fe5",
       "title": "Global markets: three major US indices close higher; optical communications and memory sectors strong; oil prices plunge",
-      "title_zh": "全球市场：美股三大指数收涨 光通信、存储板块走强 国际油价大跌",
+      "title_zh": "Global markets: three major US indices close higher; optical communications and memory sectors strong; oil prices plunge",
       "summary": "US market: the three major US stock indices all closed higher on Aug 25.",
-      "summary_zh": "美股市场： 美股三大指数08月25日收盘全线上涨"
+      "summary_zh": "US market: the three major US stock indices all closed higher on Aug 25."
     },
     {
-      "id": "320140f580aeef21259be58d1edff6a75d98410b",
-      "title": "Iran and Oman discuss joint shipping route in Strait of Hormuz and mine clearing mission",
-      "title_zh": "伊朗与阿曼商讨霍尔木兹海峡联合航运通道及扫雷任务",
-      "summary": "Iran and Oman on Tuesday discussed a proposal to establish a jointly managed shipping route through the Strait of Hormuz.",
-      "summary_zh": "伊朗与阿曼于周二讨论了建立一条由双方共同管理的霍尔木兹海峡航运通道的提议。"
+      "id": "3d8e6b77fed55e4b30c27dbc4215dfbbae100e85",
+      "title": "OpenAI releases sweeping report on Hugging Face AI agent hack",
+      "title_zh": "OpenAI 发布关于 Hugging Face AI 智能体遭入侵的全面报告",
+      "summary": "The 37-page report walks through the actions that OpenAI's models took during a series of evaluations prior to and during the Hugging Face breach.",
+      "summary_zh": "这份 37 页的报告详述了 OpenAI 模型在 Hugging Face 遭入侵前后一系列评估中所采取的操作。"
     },
     {
-      "id": "a371956d2089a2d575243d99a67cf224fafcf38e",
-      "title": "2 of our software stocks face major tests of whether their rallies are for real",
-      "title_zh": "我们持有的两只软件股面临重大考验：反弹是否货真价实",
-      "summary": "Here are the questions we are looking to answer when CrowdStrike and Salesforce report earnings Wednesday evening.",
-      "summary_zh": "当 CrowdStrike 与 Salesforce 周三晚间公布财报时，我们需要回答的关键问题如下。"
+      "id": "8ce386e90d90d59fd2c4eec2c7f38450f0581747",
+      "title": "At least 157 killed and hundreds missing after flash floods in Nepal and China",
+      "title_zh": "尼泊尔与中国山洪暴发，至少 157 人死亡、数百人失踪",
+      "summary": "At least 403 people, including 47 from the United States, were reported missing, officials in Nepal said.",
+      "summary_zh": "尼泊尔官员称，据报告至少有 403 人失踪，其中包括 47 名美国人。"
     },
     {
-      "id": "f12465f13381b3a307eb723e1786f8d1ff606ccc",
-      "title": "Dolly Parton, queen of country music, dies at 80",
-      "title_zh": "乡村音乐女王多莉·帕顿逝世，享年 80 岁",
-      "summary": "With songs such as \"Coat of Many Colors,\" \"Jolene\" and \"I Will Always Love You,\" she was one of the best-selling female artists of all time.",
-      "summary_zh": "凭借《彩衣》、《Jolene》和《我将永远爱你》等歌曲，她成为史上最畅销的女艺人之一。"
+      "id": "bfa17da0fbedbe32797e950aea33f7cd5f24c9ff",
+      "title": "Las Vegas Sands shares are about to 'catch a heater,' says Mike Khouw",
+      "title_zh": "Mike Khouw 称：拉斯维加斯金沙股价即将「起飞」",
+      "summary": "Although named after the Nevada gaming mecca, Las Vegas Sands has largely depended on the Asia/Macau story of the last decade.",
+      "summary_zh": "尽管以内华达州博彩胜地命名，拉斯维加斯金沙过去十年很大程度上依赖亚洲/澳门的故事线。"
+    },
+    {
+      "id": "6ab2a9d7b02088d1aa8126fdbd735b0122c411fc",
+      "title": "Anthropic and Nscale strike $45 billion cloud deal, sources say",
+      "title_zh": "据消息人士：Anthropic 与 Nscale 达成 450 亿美元云算力协议",
+      "summary": "Anthropic will rent around 460 megawatts of compute capacity at an Nscale data center development in West Virgina, according to sources.",
+      "summary_zh": "据消息人士称，Anthropic 将租用 Nscale 位于西弗吉尼亚州数据中心项目约 460 兆瓦的算力。"
+    },
+    {
+      "id": "819be32001d282d3ee818f7907308cff5ec878d6",
+      "title": "How Dolly Parton inspired women in leadership: 'We all owe Dolly a debt'",
+      "title_zh": "多莉·帕顿如何激励女性领导者：「我们都欠多莉一份情」",
+      "summary": "The legendary Dolly Parton inspired women to dream bigger and fight for what they deserve",
+      "summary_zh": "传奇人物多莉·帕顿激励女性敢于梦想更大，并为应得之物而战。"
+    },
+    {
+      "id": "ff97abf7bbd6b91bb7b73dc4aad1cb97d4f75256",
+      "title": "An auto parts stock bottomed in May and is set to keep rallying, according to the charts",
+      "title_zh": "技术图表显示：一只汽车零部件股 5 月见底，有望继续上攻",
+      "summary": "Frank Cappelleri of CappThesis breaks down the technicals on this auto parts name.",
+      "summary_zh": "CappThesis 的 Frank Cappelleri 拆解了这只汽车零部件股的技术面。"
+    },
+    {
+      "id": "5756be5d3ef1b806d33e69b1563f6ee8ae85ad64",
+      "title": "Apple sets iPhone launch event for Sept. 9, first under new CEO John Ternus",
+      "title_zh": "苹果定档 9 月 9 日举行 iPhone 发布会，系新任 CEO John Ternus 首秀",
+      "summary": "Analysts expect the company to launch new iPhones and Apple Watches at the event, including the company's first folding phone",
+      "summary_zh": "分析师预计苹果将在发布会上推出新款 iPhone 与 Apple Watch，包括其首款折叠屏手机。"
     },
     {
       "id": "73bd432d0c26da54df206c68dec1d08416ad218d",
       "title": "OpenAI's in-house chip hits key breakthrough: latency and efficiency beat Nvidia's GB300",
-      "title_zh": "OpenAI自研芯片取得关键突破：响应速度、能效表现击败英伟达GB300",
+      "title_zh": "OpenAI's in-house chip hits key breakthrough: latency and efficiency beat Nvidia's GB300",
       "summary": "OpenAI claims its new Jalapeno chip outperformed Nvidia's current lineup in tests, underscoring progress in its self-developed AI processors.",
-      "summary_zh": "OpenAI声称其新款“Jalapeno”芯片在测试中的表现优于 英伟达 当前的产品阵容，凸显出该公司自主研发AI处理器取得的进展"
+      "summary_zh": "OpenAI claims its new Jalapeno chip outperformed Nvidia's current lineup in tests, underscoring progress in its self-developed AI processors."
     },
     {
-      "id": "0717819f9a11ab3a454d223f6973c7700f478155",
-      "title": "Musk announces AI satellites to launch next year; Nvidia to report earnings",
-      "title_zh": "马斯克宣布明年发射AI卫星！英伟达将公布财报",
-      "summary": "US AI hardware stocks staged a collective rebound.",
-      "summary_zh": "美股AI硬件股集体反攻"
+      "id": "17ddacdc2151e43d49caa0b126326258a27c88ae",
+      "title": "Zhipu launches lightweight flagship model to rival DeepSeek, powered by 100,000 domestic chips",
+      "title_zh": "智谱推出对标DeepSeek的轻量旗舰模型，由10万国产卡支持",
+      "summary": "Zhipu released GLM-5.3 Flash, a lightweight flagship model aimed at rivaling DeepSeek V4 Flash, drawing on a cluster of over 100,000 domestic chips for inference serving.",
+      "summary_zh": "智谱发布旨在对标 DeepSeek V4 Flash 的轻量级旗舰模型 GLM-5.3 Flash ，调用超过 10 万张国产芯片集群用于该模型推理服务"
     },
     {
-      "id": "dcb80942ce9646c6d55c8a6a5b2850a275823fce",
-      "title": "Oil prices extend slide as Iran and Oman eye temporary Hormuz deal",
-      "title_zh": "油价延续跌势，伊朗与阿曼拟达成临时霍尔木兹协议",
-      "summary": "West Texas Intermediate and Brent crude’s October contracts declined by almost 7% and 9% in five days, respectively.",
-      "summary_zh": "西得州中质原油与布伦特原油的十月合约在五个交易日内分别下跌近 7% 与 9%。"
+      "id": "60e5476ee7f34b5233f5089e725684d8f800849b",
+      "title": "China-India special representatives reach 8-point consensus at 25th border talk",
+      "title_zh": "中印边界问题特别代表第25次会晤达成8点成果共识",
+      "summary": "The 25th meeting of the China-India special representatives on border issues was held in Beijing on Aug 25.",
+      "summary_zh": "8月25日，中印边界问题特别代表第25次会晤在北京举行"
     },
     {
-      "id": "32d5dad20f520cd5ff3b40374e0a464d52c28133",
-      "title": "Minutes of the Board's discount rate meetings on July 20 and July 29, 2026",
-      "title_zh": "美联储理事会 7 月 20 日与 7 月 29 日贴现率会议纪要",
-      "summary": "Minutes of the Board's discount rate meetings on July 20 and July 29, 2026",
-      "summary_zh": "美联储理事会 7 月 20 日与 7 月 29 日贴现率会议纪要。"
+      "id": "8f422b475a1abbe14e6c9da2757db1f850cb7b10",
+      "title": "Mark Walter's TWG Global says there's 'no fraud' amid probe of insurers' disclosures",
+      "title_zh": "Mark Walter 的 TWG Global 称保险披露调查「不存在欺诈」",
+      "summary": "The empire of billionaire Los Angeles Dodgers owner Mark Walter has faced media scrutiny since he said he would sell his majority share of the LA Lakers.",
+      "summary_zh": "自亿万富翁、洛杉矶道奇队老板 Mark Walter 表示将出售其持有的湖人队多数股权以来，他的商业帝国便面临媒体审视。"
     },
     {
-      "id": "77203d77a0076c0540dc7d2a62fd096301076619",
-      "title": "MiniMax: H1 revenue USD 117 million, up 283.1%; period loss USD 358 million, down 11%; gross profit USD 20.813 million, up 464.8%",
-      "title_zh": "MiniMax：上半年收入为1.17亿美元，同比增长283.1%；期内亏损3.58亿美元，同比下降11%；毛利2081.3万美元，同比增长464.8%",
-      "summary": "MiniMax: H1 revenue USD 117 million, up 283.1% year on year; period loss USD 358 million, down 11%; gross profit USD 20.813 million, up 464.8%.",
-      "summary_zh": "MiniMax：上半年收入为1.17亿美元，同比增长283.1%；期内亏损3.58亿美元，同比下降11%；毛利2081.3万美元，同比增长464.8%"
+      "id": "d9fff86c0d04e21df57526603270fb91e65c5782",
+      "title": "Economists want Warsh to share more on his view of the economy at Jackson Hole, says CNBC survey",
+      "title_zh": "CNBC 调查显示：经济学家希望 Warsh 在杰克逊霍尔更详尽阐述其经济观点",
+      "summary": "Eighty percent of CNBC Fed Survey respondents say the Federal Reserve Chairman Warsh should provide more insight into his economic views.",
+      "summary_zh": "80% 的 CNBC 美联储调查受访者认为，美联储主席 Warsh 应就其经济观点提供更多见解。"
     },
     {
-      "id": "53da3466f74260649c88d0a6178a45497700e7ad",
-      "title": "Haidilao shares jump as delivery growth and new restaurant brands boost outlook",
-      "title_zh": "海底捞股价跳涨，外卖增长与新品牌提振前景",
-      "summary": "Haidilao shares rose after results showed strong growth in delivery and newer restaurant formats, even as revenue from its core hotpot restaurants declined.",
-      "summary_zh": "海底捞公布业绩显示外卖与新店型强劲增长、核心火锅门店收入下滑之际，股价上扬。"
+      "id": "90f7c0ae56378c1406e64cacf8c0f562c87d1d16",
+      "title": "The post-penny economy: How cash rounding and credit card surcharges are changing what you pay",
+      "title_zh": "后「分币」经济：现金取整与信用卡附加费如何改变你的支付",
+      "summary": "More merchants are rounding change for cash purchases to the nearest nickel due to the end of penny production, or adding surcharges to credit card transactions",
+      "summary_zh": "由于一分硬币停止铸造，越来越多商家将现金消费找零取整到最近五分，或是对信用卡交易加收附加费。"
     },
     {
-      "id": "78a06dd2f1d2baf29b739dec7cca42199319a644",
-      "title": "After the leverage bubble unwinds and a 25% rebound, how much appeal is left in Korean stocks?",
-      "title_zh": "杠杆泡沫挤出、反弹25%后，韩股吸引力还剩下多少？",
-      "summary": "After the sharp volatility from July's de-leveraging, Korean stocks are gradually shifting from disorderly adjustment to a fundamentally driven, healthy recovery.",
-      "summary_zh": "在经历7月份去杠杆引发的剧烈波动后，韩股正逐渐从失序调整切换至基本面驱动的健康复苏阶段"
-    },
-    {
-      "id": "3969c87a331a3cb82119d37868af92c19444d135",
-      "title": "The biggest difference from 2000: nobody is hoarding tokens",
-      "title_zh": "这次和2000年最大的区别：没有人囤token",
-      "summary": "Former Nvidia engineer Neil Movva argues that, unlike the speculative bets on an unknown future during the 2000 dot-com bubble, today's AI compute (token) consumption has 'instant value' - people buy tokens to use them immediately, not to hoard - meaning inference-driven compute spending rests on real, immediate demand and won't repeat the speculative bust.",
-      "summary_zh": "英伟达前工程师Neil Movva认为，与2000年互联网泡沫时期押注未知未来的‘投机性’投资不同，当下的AI算力（Token）消费具有‘即时价值’——人们购买Token是为了立即使用而非囤积，这意味着由AI推理驱动的算力支出是建立在真实且即时的需求之上的，不会重演历史上的投机破灭"
-    },
-    {
-      "id": "fb894ab78f3629e1a7e52ad3db577a1b6311707b",
-      "title": "Li Auto Q2 revenue RMB 25.7 billion beats; gross margin narrows to 11%; Q3 guidance below consensus | earnings watch",
-      "title_zh": "理想汽车Q2营收257亿元超预期，毛利率收窄至11％，三季度指引低于预期 | 财报见闻",
-      "summary": "Li Auto's Q2 results showed year-on-year revenue decline and gross margin halved; adjusted net profit swung to a loss; Q3 revenue guidance came in more than 15% below market expectations.",
-      "summary_zh": "理想汽车公布的第二季度业绩显示，营收同比下滑、毛利率腰斩，调整后净利润由盈转亏，第三季度营收指引较市场预期低出逾15%"
-    },
-    {
-      "id": "b7bf67073ef6e4bcd4f3e506fd7c96f041661342",
-      "title": "OpenAI and Anthropic's AI workforce will surpass all humanity",
-      "title_zh": "OpenAI和Anthropic拥有的AI劳动力，将超过全人类",
-      "summary": "SemiAnalysis founder Dylan Patel says the effective compute 'population' of frontier AI labs is growing tenfold per year.",
-      "summary_zh": "SemiAnalysis创始人Dylan Patel表示前沿AI实验室的有效算力人口年增十倍"
-    },
-    {
-      "id": "874882621ab59e5cb116710ed497c0c3baa29794",
-      "title": "Report: DeepSeek's first seven months revenue RMB 475 million, up 10x year on year; API gross margin 82.9%",
-      "title_zh": "报道：DeepSeek前七个月营收4.75亿元、同比增长10倍，API毛利率达82.9%",
-      "summary": "DeepSeek's commercialization is accelerating.",
-      "summary_zh": "DeepSeek的商业化进程正在加速"
+      "id": "41ceb3c56c6556bed401c5b4447c75e2022919c0",
+      "title": "Meta settles social media addiction case with California, other states for $16.7 billion",
+      "title_zh": "Meta 与加州等州就社交媒体成瘾案达成 167 亿美元和解",
+      "summary": "Meta and state attorneys general settled a federal trial centering on allegations that company misrepresented the extent of child-related mental health harms.",
+      "summary_zh": "Meta 与多州总检察长就一桩联邦审判达成和解，该案件核心指控公司歪曲了儿童心理健康损害的严重程度。"
     }
   ],
-  "updated_at": "2026-08-26T11:44:22Z"
+  "updated_at": "2026-08-26T20:54:56Z"
 }
