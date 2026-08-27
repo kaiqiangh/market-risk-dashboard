@@ -1,351 +1,355 @@
 {
   "items": [
     {
-      "id": "0ff59ca66af34f5837bc6f035be9d6dbcbe9d87a",
-      "title": "Nvidia earnings live updates: Q2 results, memory prices and AI outlook",
-      "title_zh": "英伟达财报实时更新：Q2 业绩、存储价格与 AI 前景",
-      "summary": "Follow Nvidia’s Q2 2027 earnings for data center results, guidance, AI demand and NVDA stock reaction in real time.",
-      "summary_zh": "实时跟踪英伟达 2027 财年 Q2 财报的数据中心业绩、业绩指引、AI 需求及 NVDA 股价反应。"
+      "id": "e12856b96f2e2171ecd5db5d91b3993f0527ec2e",
+      "title": "Nasdaq futures jump as Nvidia earnings lift chip stocks: Live updates",
+      "summary": "Global investors are reacting to the earnings report from Nvidia, which surpassed analyst forecasts.",
+      "title_zh": "纳斯达克期货跳涨，英伟达财报提振芯片股：实时更新",
+      "summary_zh": "全球投资者正对英伟达超出分析师预期的财报作出反应。"
     },
     {
-      "id": "2c9c8bd503680a520ebbecb226dd5ba4513da863",
-      "title": "S&P 500 is little changed after PCE report shows sticky inflation; Nvidia earnings on deck: Live updates",
-      "title_zh": "PCE 报告显示通胀粘性，标普 500 持平；英伟达财报在即：实时更新",
-      "summary": "The S&amp;P 500 moved slightly lower on Wednesday after the latest personal consumption expenditures price index reading revealed that inflation remains elevate",
-      "summary_zh": "最新个人消费支出价格指数显示通胀仍具粘性，标普 500 周三小幅走低。"
+      "id": "f8270e4730223594ae9b89eca38f023398588b75",
+      "title": "Nvidia jumps 7% after blockbuster earnings boost AI confidence",
+      "summary": "Nvidia shares rose on Thursday after the chip giant's revenue guidance reassured investors that AI demand will remain strong.",
+      "title_zh": "英伟达在强劲财报提振 AI 信心后跳涨 7%",
+      "summary_zh": "周四，在芯片巨头营收指引打消投资者对 AI 需求持续强劲的疑虑后，英伟达股价上涨。"
     },
     {
-      "id": "eb4af4b7b72d80fdf5cc3c0b37cc52979f7b47e8",
-      "title": "OpenAI’s Jalapeño AI chip brings new 'threat' to Nvidia margins as custom silicon gains ground",
-      "title_zh": "OpenAI 的 Jalapeño AI 芯片对英伟达利润率构成新「威胁」，自研芯片渐成气候",
-      "summary": "OpenAI’s Jalapeño chip beat Nvidia Blackwell systems on key inference-efficiency tests as custom AI silicon gains ground among major tech companies.",
-      "summary_zh": "随着大型科技公司纷纷布局自研 AI 芯片，OpenAI 的 Jalapeño 芯片在关键推理效率测试中击败了英伟达 Blackwell 系统。"
+      "id": "8ad3e68830f310a61bf6272c24abe082c914491f",
+      "title": "Cailianpress August 27: Citigroup raised its Nvidia target price from $300 to $315.",
+      "summary": "Cailianpress August 27: Citigroup raised its Nvidia target price from $300 to $315.",
+      "title_zh": "Cailianpress August 27: Citigroup raised its Nvidia target price from $300 to $315.",
+      "summary_zh": "Cailianpress August 27: Citigroup raised its Nvidia target price from $300 to $315."
     },
     {
-      "id": "4b0c31d34aeff5c0dff2c8d2cfcf70ea184e004c",
-      "title": "Bitcoin consolidates at $78,420 with MACD warning: Live levels",
-      "title_zh": "比特币在 78,420 美元附近盘整，MACD 发出警告：关键价位"
+      "id": "875aef69850b172f0035b41113737779205fcb9e",
+      "title": "Jensen Huang defends Nvidia's growing financial support for AI ecosystem, says 'the risk is low'",
+      "summary": "Nvidia CEO Jensen Huang defended the chipmaker’s growing role in financing AI companies, calling its investments a “once in a generation” opportunity.",
+      "title_zh": "黄仁勋为英伟达对 AI 生态日益增加的财务支持辩护，称“风险很低”",
+      "summary_zh": "英伟达 CEO 黄仁勋为这家芯片制造商在 AI 企业融资中日益重要的角色辩护，称其投资是“一代人一次”的机遇。"
     },
     {
-      "id": "72df147c3b450edbe96f6c919181ed35fbdef0f1",
-      "title": "Federal judge lifts final block on Trump mail-in voting order, clearing way for midterm restrictions",
-      "title_zh": "联邦法官解除对特朗普邮寄投票令的最后禁令，为中期选举限制铺路",
-      "summary": "The rule in question would require election officials to give USPS voter information and use federally reviewed, uniquely barcoded ballot envelopes.",
-      "summary_zh": "相关规则将要求选举官员向美国邮政提供选民信息，并使用经联邦审查、带有唯一条形码的选票信封。"
+      "id": "298226dd4ad5f33ed203dbd22abe71524f195328",
+      "title": "European shares fall as French stock sell-off and energy drag offset Nvidia",
+      "summary": "",
+      "title_zh": "欧洲股市下跌，法国股市抛售与能源拖累抵消英伟达利好",
+      "summary_zh": null
     },
     {
-      "id": "6a3b63f550c92a9fe0696961b099c01d3cee4283",
-      "title": "Micron elevates two executives. Plus, what the Meta settlement means for its top line",
-      "title_zh": "美光晋升两名高管；另有 Meta 和解案对其营收意味着什么",
-      "summary": "Every weekday, the Investing Club releases the Homestretch; an actionable afternoon update just in time for the last hour of trading.",
-      "summary_zh": "每个交易日，Investing Club 都会发布「收官」简报，在尾盘前提供可操作的午后更新。"
+      "id": "aca1e833289a5cde007063fc580addebbbee3a30",
+      "title": "Behind Biwin Storage's explosive earnings surge: why did its 'prettiest income statement' meet a stock price halved?",
+      "summary": "On August 26, at the A-share close, Biwin Storage (688525.SH) ended at 223.35 yuan, down 1.96%, with a total market cap of about 105.3 billion yuan.",
+      "title_zh": "Behind Biwin Storage's explosive earnings surge: why did its 'prettiest income statement' meet a stock price halved?",
+      "summary_zh": "On August 26, at the A-share close, Biwin Storage (688525.SH) ended at 223.35 yuan, down 1.96%, with a total market cap of about 105.3 billion yuan."
     },
     {
-      "id": "d2550d4fcd74da504f4b303eea41dbf934ca2ee5",
-      "title": "Fed, NASA and DOJ among victims of Chinese state-sponsored hacker group: Court documents",
-      "title_zh": "法庭文件显示：美联储、NASA 与司法部系中国国家级黑客组织受害者",
-      "summary": "Hackers targeted networks \"operated by hospitals, telecommunications providers, power companies, financial institutions, and defense contractors,\" a filing said",
-      "summary_zh": "一份法庭文件称，黑客攻击了「由医院、电信运营商、电力公司、金融机构和国防承包商运营」的网络。"
+      "id": "13b98661beed9d5331d21827f25c70a778a1c578",
+      "title": "Nvidia stock is climbing after another set of blockbuster results. Here’s what Wall Street is saying.",
+      "summary": "Shares of Nvidia rose in premarket trading on Thursday",
+      "title_zh": "英伟达在又一组强劲业绩后走高。以下是华尔街的看法。",
+      "summary_zh": "英伟达股价周四在盘前交易中上涨。"
     },
     {
-      "id": "f46114c14f74ed3fe819ac04febf5cc2f03b447c",
-      "title": "Iran says the U.S. is standing in the way of Hormuz deal amid talks with Oman",
-      "title_zh": "伊朗称在与阿曼谈判之际，美国正阻碍霍尔木兹协议达成",
-      "summary": "Iran and Oman are approaching a deal to secure safe transit through the Strait of Hormuz and future administration of the vital economic artery.",
-      "summary_zh": "伊朗与阿曼正接近达成一项协议，以确保霍尔木兹海峡的安全通行，并规划这条重要经济动脉未来的管理。"
+      "id": "05bba9fc09fb5e9cc9196c89abc880dc230e773b",
+      "title": "Second straight rate hike for Asia’s number-three economy as Nvidia-led AI expansion continues",
+      "summary": "The Bank of Korea tightened monetary policy by 25 basis points to 3% Thursday while simultaneously raising growth forecasts",
+      "title_zh": "在英伟达驱动的 AI 扩张持续之际，亚洲第三大经济体连续第二次加息",
+      "summary_zh": "韩国央行周四将货币政策收紧 25 个基点至 3%，同时上调了增长预期。"
     },
     {
-      "id": "e1ce82ed39d2aa6a84546644cf0438da686e3f95",
-      "title": "New FX holdings replace domestic RRR cuts; structural divergence in the global memory super-cycle; evolution of China's housing-fund system and cash-flow management shift — 0826 macro digest",
-      "title_zh": "新增外汇占款替代国内降准，全球存储超级周期结构性分化，中国公积金制度演进与现金流管理转型---0826宏观脱水",
-      "summary": "This year the stock-bond seesaw effect in China has been muted, mainly because equities and bonds move together when funding rates fall, while the seesaw re-emerges when funding rates rise.",
-      "summary_zh": "国内今年以来股债跷跷板效应不明显，主因资金利率下行时股债同向波动、资金利率上行时跷跷板效应有所反映"
+      "id": "e945989d55cdb0b1619e3af8bca929f1e71b885a",
+      "title": "What to know about Hugging Face, the open-source AI startup reportedly catching Nvidia’s eye",
+      "summary": "New reports outline deal talks between the two companies as open-source AI technology comes more into focus.",
+      "title_zh": "关于 Hugging Face，这家据称引起英伟达注意的开源 AI 初创公司，你需要了解什么",
+      "summary_zh": "随着开源 AI 技术受到更多关注，新报导概述了两家公司之间的交易谈判。"
     },
     {
-      "id": "b530cc9ef6d35bb3bbccf58f9d1fca421734d4c6",
-      "title": "A breakout is brewing in this bitcoin-linked stock. How to trade it",
-      "title_zh": "一只比特币概念股正在酝酿突破，如何交易",
-      "summary": "Tony Zhang of OptionsPlay breaks down how he's trading this name.",
-      "summary_zh": "OptionsPlay 的 Tony Zhang 详解了他的交易思路。"
+      "id": "6402f27cbb43372fcc9b7c265e8f3acea4daaa2d",
+      "title": "Is Nvidia already the 'central bank' of AI? Behind the strong earnings, $530 billion in off-balance-sheet commitments emerges, and credit markets are on high alert",
+      "summary": "Nvidia is evolving from the world's most important AI chip supplier into the credit core of the entire AI industry chain.",
+      "title_zh": "Is Nvidia already the 'central bank' of AI? Behind the strong earnings, $530 billion in off-balance-sheet commitments emerges, and credit markets are on high alert",
+      "summary_zh": "Nvidia is evolving from the world's most important AI chip supplier into the credit core of the entire AI industry chain."
+    },
+    {
+      "id": "8afdad228e90c8f6390f3b2eec416e1f176a32ca",
+      "title": "As agentic AI booms, Nvidia's next-year guidance looks conservative!",
+      "summary": "Nvidia delivered a quarterly report that beat expectations across the board and, for the first time, gave a formal revenue framework for the next fiscal year - roughly 70% year-over-year growth.",
+      "title_zh": "As agentic AI booms, Nvidia's next-year guidance looks conservative!",
+      "summary_zh": "Nvidia delivered a quarterly report that beat expectations across the board and, for the first time, gave a formal revenue framework for the next fiscal year - roughly 70% year-over-year growth."
+    },
+    {
+      "id": "477a4da8ab3ff8c14157fb495a900dd14e56106f",
+      "title": "Qatari PM heads to Iran to 'de-escalate tensions' as tanker attack tests Trump’s Hormuz claim",
+      "summary": "The Prime Minister of U.S.-ally Qatar is in Iran for talks on Thursday as part of efforts to \"de-escalate tensions\" between Tehran and Washington.",
+      "title_zh": "卡塔尔首相乘坐前往伊朗以“缓和紧张局势”，油轮遇袭考验特朗普的霍尔木兹承诺",
+      "summary_zh": "美国盟友卡塔尔的首相周四在伊朗进行会谈，作为德黑兰与华盛顿之间“缓和紧张局势”努力的一部分。"
+    },
+    {
+      "id": "6c1f3ba7b23105e5bcbebd2546e51bfa3d9aff7a",
+      "title": "'Big Short' Michael Burry buys Nvidia call options as a 'hedge' while increasing shorts",
+      "summary": "Ahead of Nvidia's earnings, longtime bear Michael Burry rarely stepped in to buy call options on the stock, but he made clear this was merely a 'hedge' and his bearish stance remains unchanged.",
+      "title_zh": "'Big Short' Michael Burry buys Nvidia call options as a 'hedge' while increasing shorts",
+      "summary_zh": "Ahead of Nvidia's earnings, longtime bear Michael Burry rarely stepped in to buy call options on the stock, but he made clear this was merely a 'hedge' and his bearish stance remains unchanged."
+    },
+    {
+      "id": "1c0ab6303bf67083f3f153a5ad51681c1c4e34fc",
+      "title": "Goldman Sachs: Nvidia's fiscal-2027 guidance far exceeds expectations, gross margin 'shoe has dropped', raises target price to $300",
+      "summary": "Nvidia delivered a strong quarterly report; Goldman Sachs sees three catalysts driving the stock to keep outperforming the broader market.",
+      "title_zh": "Goldman Sachs: Nvidia's fiscal-2027 guidance far exceeds expectations, gross margin 'shoe has dropped', raises target price to $300",
+      "summary_zh": "Nvidia delivered a strong quarterly report; Goldman Sachs sees three catalysts driving the stock to keep outperforming the broader market."
+    },
+    {
+      "id": "5a50e3aedd9e764b35c93358e95b5b3cba4086ff",
+      "title": "Nvidia's results lift AI stocks; Korean shares rise 1.3%, US Treasuries fall and gold rises",
+      "summary": "Nvidia's stronger-than-expected revenue growth forecast rekindled market confidence in the AI investment cycle, lifting US equity futures, but inflation data staying above target kept pressure on bonds, and investors also turned their attention to the upcoming Jackson Hole symposium.",
+      "title_zh": "Nvidia's results lift AI stocks; Korean shares rise 1.3%, US Treasuries fall and gold rises",
+      "summary_zh": "Nvidia's stronger-than-expected revenue growth forecast rekindled market confidence in the AI investment cycle, lifting US equity futures, but inflation data staying above target kept pressure on bonds, and investors also turned their attention to the upcoming Jackson Hole symposium."
     },
     {
       "id": "e9af4cd4ca9bfeff022797bb6e3dd475b82b5004",
       "title": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of United Community Bank",
-      "title_zh": "美联储理事会对 Regions Bank 及 United Community Bank 前员工采取执法行动",
       "summary": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of United Community Bank",
-      "summary_zh": "美联储理事会对 Regions Bank 及 United Community Bank 前员工采取执法行动。"
+      "title_zh": "美联储理事会对 Regions Bank 与 United Community Bank 的前员工采取执法行动",
+      "summary_zh": "美联储理事会对 Regions Bank 与 United Community Bank 的前员工采取执法行动。"
     },
     {
       "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
       "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
-      "title_zh": "美联储理事会就现代化互助银行组织规则的提案征求公众意见",
       "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
+      "title_zh": "美联储理事会就现代化互助银行组织规则的提案征求公众意见",
       "summary_zh": "美联储理事会就现代化互助银行组织规则的提案征求公众意见。"
     },
     {
-      "id": "dc74cf61b10b102ae867b3f01cf04fcaa320e043",
-      "title": "Fed’s preferred inflation gauge shows core prices rose 3.3% annually in July",
-      "title_zh": "美联储青睐的通胀指标显示：7 月核心物价同比上涨 3.3%",
-      "summary": "The personal consumption expenditures price index was expected to rise 0.1% monthly and 3.6% on a 12-month basis, according to economists surveyed by Dow Jones.",
-      "summary_zh": "据道琼斯调查的经济学家预期，个人消费支出价格指数月度涨幅为 0.1%，12 个月涨幅为 3.6%。"
+      "id": "e263ec55c184ab42cb5989ec25a64b11ae49dce5",
+      "title": "Fenghua Hi-Tech: H1 net profit up 74% YoY as main product unit prices rose",
+      "summary": "[Fenghua Hi-Tech: H1 net profit up 74% YoY as main product unit prices rose] Cailianpress August 27: Fenghua Hi-Tech (000636.SZ) announced its 2026 interim report, with operating revenue of 3.5 billion yuan, up 26.28% YoY, and net profit attributable to shareholders of 290 million yuan, up 74.01% YoY.",
+      "title_zh": "Fenghua Hi-Tech: H1 net profit up 74% YoY as main product unit prices rose",
+      "summary_zh": "[Fenghua Hi-Tech: H1 net profit up 74% YoY as main product unit prices rose] Cailianpress August 27: Fenghua Hi-Tech (000636.SZ) announced its 2026 interim report, with operating revenue of 3.5 billion yuan, up 26.28% YoY, and net profit attributable to shareholders of 290 million yuan, up 74.01% YoY."
     },
     {
-      "id": "134e40f7582b71799e4134bf7426f90eeb7e9b32",
-      "title": "Dollar index rises on Aug 26",
-      "title_zh": "美元指数26日上涨",
-      "summary": "The dollar index, which measures the greenback against six major currencies, rose 0.25% on the day to close at 99.165 in late trading.",
-      "summary_zh": "【美元指数26日上涨】财联社8月27日电，衡量美元对六种主要货币的美元指数当天上涨0.25%，在汇市尾市收于99.165"
+      "id": "c10eb7dc1b5de64edcb108a9096a7f59da628db4",
+      "title": "Death toll from northern Nepal flash floods rises to 289",
+      "summary": "[Death toll from northern Nepal flash floods rises to 289] Cailianpress August 27: according to Nepal's armed police on the 27th, deaths from flash floods in northern Nepal rose to 289.",
+      "title_zh": "Death toll from northern Nepal flash floods rises to 289",
+      "summary_zh": "[Death toll from northern Nepal flash floods rises to 289] Cailianpress August 27: according to Nepal's armed police on the 27th, deaths from flash floods in northern Nepal rose to 289."
     },
     {
-      "id": "86834e69c2a80cd5270f11e587d4c2a2e2a7d25c",
-      "title": "Hang Seng Index main contract slips 0.21% in night session; Hang Seng Tech down 0.37%",
-      "title_zh": "财联社8月27日电，恒生指数主连夜盘收跌0.21%，恒生科技指数主连夜盘收跌0.37%。",
-      "summary": "The Hang Seng Index main contract fell 0.21% in the night session, and the Hang Seng Tech Index main contract dropped 0.37%.",
-      "summary_zh": "财联社8月27日电，恒生指数主连夜盘收跌0.21%，恒生科技指数主连夜盘收跌0.37%"
+      "id": "0f5e44f2f9e0d60213e810aab88bf3a586e66248",
+      "title": "STO Express: H1 net profit 1.035 billion yuan, up 128.31% YoY",
+      "summary": "[STO Express: H1 net profit 1.035 billion yuan, up 128.31% YoY] Cailianpress August 27: STO Express (002468.SZ) announced its 2026 interim report, with operating revenue of 32.491 billion yuan, up 29.83% YoY, and net profit attributable to shareholders of 1.035 billion yuan, up 128.31% YoY.",
+      "title_zh": "STO Express: H1 net profit 1.035 billion yuan, up 128.31% YoY",
+      "summary_zh": "[STO Express: H1 net profit 1.035 billion yuan, up 128.31% YoY] Cailianpress August 27: STO Express (002468.SZ) announced its 2026 interim report, with operating revenue of 32.491 billion yuan, up 29.83% YoY, and net profit attributable to shareholders of 1.035 billion yuan, up 128.31% YoY."
     },
     {
-      "id": "5671bbaca711ec7fe56ceee9f2ad20ae856e2712",
-      "title": "Kimmeridge: up to half of US planned data centers face delay or cancellation risk",
-      "title_zh": "投资公司Kimmeridge：美国拟建的数据中心可能半数面临延期或取消风险",
-      "summary": "Investment firm Kimmeridge Energy Management Co. said that, owing to rising opposition and the complexity of physical infrastructure buildout, up to half of the data centers planned in the US face delay or cancellation risk.",
-      "summary_zh": "【投资公司Kimmeridge：美国拟建的数据中心可能半数面临延期或取消风险】财联社8月27日电，投资公司Kimmeridge Energy Management Co.表示，由于反对情绪升温以及实体基础设施建设本身的复杂性，美国拟建的数据中心最多半数面临延期或取消风险"
+      "id": "d681afe74beb4a3923cc2e7df8850abe2c4f9bc3",
+      "title": "Zhongji Innolight: overseas-listed shares (H-shares) added to the Stock Connect eligible list",
+      "summary": "[Zhongji Innolight: overseas-listed shares (H-shares) added to the Stock Connect eligible list] Cailianpress August 27: Zhongji Innolight (300308.SZ) announced that, pursuant to the Shanghai/Shenzhen Stock Exchange Stock Connect implementation rules, its H-shares listed on the Hong Kong Stock Exchange will be included in Shanghai-Hong Kong Stock Connect and Shenzhen-Hong Kong Stock Connect (collectively ...",
+      "title_zh": "Zhongji Innolight: overseas-listed shares (H-shares) added to the Stock Connect eligible list",
+      "summary_zh": "[Zhongji Innolight: overseas-listed shares (H-shares) added to the Stock Connect eligible list] Cailianpress August 27: Zhongji Innolight (300308.SZ) announced that, pursuant to the Shanghai/Shenzhen Stock Exchange Stock Connect implementation rules, its H-shares listed on the Hong Kong Stock Exchange will be included in Shanghai-Hong Kong Stock Connect and Shenzhen-Hong Kong Stock Connect (collectively ..."
     },
     {
-      "id": "2e7ea9d9d3eaeddfeda3691ffbfdfd4e7f472a6f",
-      "title": "Shanghai crude futures 2610 contract up 2.14% in night session to 576.60 yuan/barrel; Shanghai gold down 0.74%, silver down 0.48%",
-      "title_zh": "财联社8月27日电，上期所原油期货2610合约夜盘收涨2.14%，报576.60元人民币/桶。沪金夜盘收跌0.74%，沪银收跌0.48%。",
-      "summary": "The Shanghai Futures Exchange's crude futures 2610 contract rose 2.14% in the night session to 576.60 yuan per barrel.",
-      "summary_zh": "财联社8月27日电，上期所原油期货2610合约夜盘收涨2.14%，报576.60元人民币/桶"
+      "id": "75b65087c2c003169b992fb4f5c4f62c300067e8",
+      "title": "Cailianpress August 27: Xiaomi Corporation repurchased 1.8 million Class B shares for HK$48.4 million on August 27.",
+      "summary": "Cailianpress August 27: Xiaomi Corporation repurchased 1.8 million Class B shares for HK$48.4 million on August 27.",
+      "title_zh": "Cailianpress August 27: Xiaomi Corporation repurchased 1.8 million Class B shares for HK$48.4 million on August 27.",
+      "summary_zh": "Cailianpress August 27: Xiaomi Corporation repurchased 1.8 million Class B shares for HK$48.4 million on August 27."
     },
     {
-      "id": "2283b5b4f3e8c31d442a2c506eb45164e50ed57a",
-      "title": "Qatar's PM to meet Iranian officials in Tehran to discuss easing tensions",
-      "title_zh": "财联社8月27日电，卡塔尔外交部发言人表示，卡塔尔首相将在德黑兰与多名伊朗官员会面，讨论缓和紧张局势的途径。",
-      "summary": "A Qatari Foreign Ministry spokesperson said the Qatari prime minister will meet several Iranian officials in Tehran to discuss ways to de-escalate tensions.",
-      "summary_zh": "财联社8月27日电，卡塔尔外交部发言人表示，卡塔尔首相将在德黑兰与多名伊朗官员会面，讨论缓和紧张局势的途径"
+      "id": "326f8326d68d10251eae19e654ef845d2e411a53",
+      "title": "Yuan Jiajun and Chen Xinwu meet Cheng Fubo, Party Secretary and Director of the State-owned Assets Supervision and Administration Commission",
+      "summary": "[Yuan Jiajun and Chen Xinwu meet Cheng Fubo, Party Secretary and Director of SASAC] Cailianpress August 27: per Chongqing Daily, Chongqing Party Secretary Yuan Jiajun and Mayor Chen Xinwu met with Cheng Fubo, Party Secretary and Director of SASAC, in Beijing.",
+      "title_zh": "Yuan Jiajun and Chen Xinwu meet Cheng Fubo, Party Secretary and Director of the State-owned Assets Supervision and Administration Commission",
+      "summary_zh": "[Yuan Jiajun and Chen Xinwu meet Cheng Fubo, Party Secretary and Director of SASAC] Cailianpress August 27: per Chongqing Daily, Chongqing Party Secretary Yuan Jiajun and Mayor Chen Xinwu met with Cheng Fubo, Party Secretary and Director of SASAC, in Beijing."
     },
     {
-      "id": "18d2875449d28f42696a594c76e4fba58e41702c",
-      "title": "IDC: Apple's foldable iPhone to ship over 10 million units in first year",
-      "title_zh": "IDC预测苹果折叠屏iPhone第一年出货量将超过1000万部",
-      "summary": "Research firm IDC expects Apple's much-anticipated foldable iPhone to help the foldable smartphone market reverse its decline and reach over 10 million units shipped in its first year.",
-      "summary_zh": "【IDC预测苹果折叠屏iPhone第一年出货量将超过1000万部】财联社8月27日电，研究机构IDC预计，苹果备受期待的折叠屏iPhone将帮助折叠屏智能手机市场摆脱下滑，并在上市首年实现超过1000万部的出货量"
+      "id": "fd747ca99d7a4f810b8f97b8caddb7599caad596",
+      "title": "Fosun International: H1 profit attributable to parent shareholders 1.72 billion yuan, up 160% YoY",
+      "summary": "[Fosun International: H1 profit attributable to parent shareholders 1.72 billion yuan, up 160% YoY] Cailianpress August 27: Fosun International announced at the HKEX that H1 2026 total revenue was 86.96 billion yuan, roughly flat YoY, with profit attributable to parent shareholders of 1.72 billion yuan, up 160.3% YoY.",
+      "title_zh": "Fosun International: H1 profit attributable to parent shareholders 1.72 billion yuan, up 160% YoY",
+      "summary_zh": "[Fosun International: H1 profit attributable to parent shareholders 1.72 billion yuan, up 160% YoY] Cailianpress August 27: Fosun International announced at the HKEX that H1 2026 total revenue was 86.96 billion yuan, roughly flat YoY, with profit attributable to parent shareholders of 1.72 billion yuan, up 160.3% YoY."
     },
     {
-      "id": "a533959dec04cd44fcb4b317f666a3e5ed795719",
-      "title": "RevMed prices pancreatic cancer drug at $39,800 per month",
-      "title_zh": "财联社8月27日电，RevMed将胰腺癌药物定价为每月39,800美元。",
-      "summary": "RevMed has priced its pancreatic cancer drug at $39,800 per month.",
-      "summary_zh": "财联社8月27日电，RevMed将胰腺癌药物定价为每月39,800美元"
+      "id": "95be7c2c160edf6ffda89cc7739386f2828ec7b2",
+      "title": "SDIC Power: H1 net profit 3.535 billion yuan, down 6.83% YoY",
+      "summary": "[SDIC Power: H1 net profit 3.535 billion yuan, down 6.83% YoY] Cailianpress August 27: SDIC Power (600886.SH) published its 2026 interim report, with operating revenue of 23.886 billion yuan, down 7.05% YoY, and net profit attributable to shareholders of 3.535 billion yuan, down 6.83% YoY.",
+      "title_zh": "SDIC Power: H1 net profit 3.535 billion yuan, down 6.83% YoY",
+      "summary_zh": "[SDIC Power: H1 net profit 3.535 billion yuan, down 6.83% YoY] Cailianpress August 27: SDIC Power (600886.SH) published its 2026 interim report, with operating revenue of 23.886 billion yuan, down 7.05% YoY, and net profit attributable to shareholders of 3.535 billion yuan, down 6.83% YoY."
     },
     {
-      "id": "f22f778576933c494f6c33fc5c83bbef62e3b4f7",
-      "title": "Iran's foreign minister condemns US 'economic terrorist actions' against Iran",
-      "title_zh": "伊朗外长谴责美对伊实施“经济恐怖主义行动”",
-      "summary": "Iranian Foreign Minister Araghchi sent letters to the UN Secretary-General and the rotating president of the Security Council, among others, over the US 'economic terrorist actions' against Iran.",
-      "summary_zh": "【伊朗外长谴责美对伊实施“经济恐怖主义行动”】财联社8月27日电，伊朗外长阿拉格齐就美国针对伊朗的“经济恐怖主义行动”致函联合国秘书长、安理会轮值主席等"
+      "id": "8c185760c45f7e1de3049c8ea78d80c82228955b",
+      "title": "Huaibei Mining: H1 net profit 1.239 billion yuan, up 20.11% YoY",
+      "summary": "[Huaibei Mining: H1 net profit 1.239 billion yuan, up 20.11% YoY] Cailianpress August 27: Huaibei Mining (600985.SH) announced its 2026 interim report, with operating revenue of 21.387 billion yuan, up 3.76% YoY, and net profit attributable to shareholders of 1.239 billion yuan, up 20.11% YoY.",
+      "title_zh": "Huaibei Mining: H1 net profit 1.239 billion yuan, up 20.11% YoY",
+      "summary_zh": "[Huaibei Mining: H1 net profit 1.239 billion yuan, up 20.11% YoY] Cailianpress August 27: Huaibei Mining (600985.SH) announced its 2026 interim report, with operating revenue of 21.387 billion yuan, up 3.76% YoY, and net profit attributable to shareholders of 1.239 billion yuan, up 20.11% YoY."
     },
     {
-      "id": "c79f95538d47a421603a32a3b57d374c10f645aa",
-      "title": "OpenAI expands teacher-facing ChatGPT to 55 more school districts across 20 US states, reaching 100,000+ educators",
-      "title_zh": "财联社8月27日电，OpenAI将面向教师的ChatGPT扩展至美国20个州的55个额外学区，覆盖超过10万名教育工作者和教职工。",
-      "summary": "OpenAI is expanding its teacher-facing ChatGPT to 55 additional school districts across 20 US states, covering more than 100,000 educators and staff.",
-      "summary_zh": "财联社8月27日电，OpenAI将面向教师的ChatGPT扩展至美国20个州的55个额外学区，覆盖超过10万名教育工作者和教职工"
+      "id": "bffcdacf62384d9428b6ac342954d963366d7613",
+      "title": "Worldia: plans private placement of up to 1.45 billion yuan for diamond micro-drill industrialization and other projects",
+      "summary": "[Worldia: plans private placement of up to 1.45 billion yuan for diamond micro-drill industrialization and other projects] Cailianpress August 27: Worldia (688028.SH) plans to issue A-shares to specific parties, raising up to 1.45 billion yuan, to be used after fees for a diamond micro-drill industrialization project (phase I), a diamond functional-components industrialization project, a diamond functional-materials R&D center, and to replenish working capital and repay interest-bearing debt.",
+      "title_zh": "Worldia: plans private placement of up to 1.45 billion yuan for diamond micro-drill industrialization and other projects",
+      "summary_zh": "[Worldia: plans private placement of up to 1.45 billion yuan for diamond micro-drill industrialization and other projects] Cailianpress August 27: Worldia (688028.SH) plans to issue A-shares to specific parties, raising up to 1.45 billion yuan, to be used after fees for a diamond micro-drill industrialization project (phase I), a diamond functional-components industrialization project, a diamond functional-materials R&D center, and to replenish working capital and repay interest-bearing debt."
     },
     {
-      "id": "286e69f137b16df108c0a350e1b02e7433753ca0",
-      "title": "Anthropic opens Claude's Chrome browser extension to all paid subscribers",
-      "title_zh": "财联社8月27日电，Anthropic现已向所有付费订阅用户开放Claude的Chrome浏览器扩展功能。",
-      "summary": "Anthropic has opened Claude's Chrome browser extension to all paid subscribers.",
-      "summary_zh": "财联社8月27日电，Anthropic现已向所有付费订阅用户开放Claude的Chrome浏览器扩展功能"
+      "id": "5c1c700318f63d16b6a2fde5fe290a1771864b85",
+      "title": "CLSA: raises Nongfu Spring target price to HK$60, maintains 'high-conviction outperform' rating",
+      "summary": "[CLSA: raises Nongfu Spring target price to HK$60, maintains 'high-conviction outperform' rating] Cailianpress August 27: CLSA said in a research note that Nongfu Spring's first-half results grew faster than peers across all business segments, demonstrating its ability to keep expanding market share.",
+      "title_zh": "CLSA: raises Nongfu Spring target price to HK$60, maintains 'high-conviction outperform' rating",
+      "summary_zh": "[CLSA: raises Nongfu Spring target price to HK$60, maintains 'high-conviction outperform' rating] Cailianpress August 27: CLSA said in a research note that Nongfu Spring's first-half results grew faster than peers across all business segments, demonstrating its ability to keep expanding market share."
     },
     {
-      "id": "05c4b8ff06a54bed69a42a8eaf5e3d2fda473965",
-      "title": "Singapore police raid Radiant World's offices",
-      "title_zh": "财联社8月27日电，新加坡警方对Radiant World的办公室进行突击搜查。",
-      "summary": "Singapore police conducted a raid on Radiant World's offices.",
-      "summary_zh": "财联社8月27日电，新加坡警方对Radiant World的办公室进行突击搜查"
+      "id": "43254ca6f34111b833c8a603a9e420e5745974db",
+      "title": "Indian IT services firm Wipro announces expansion of its Google Cloud partnership",
+      "summary": "[Indian IT services firm Wipro announces expansion of its Google Cloud partnership] Cailianpress August 27: Indian IT services firm Wipro announced an expansion of its Google Cloud partnership to accelerate the use of Gemini Enterprise and agentic AI in enterprise operations.",
+      "title_zh": "Indian IT services firm Wipro announces expansion of its Google Cloud partnership",
+      "summary_zh": "[Indian IT services firm Wipro announces expansion of its Google Cloud partnership] Cailianpress August 27: Indian IT services firm Wipro announced an expansion of its Google Cloud partnership to accelerate the use of Gemini Enterprise and agentic AI in enterprise operations."
     },
     {
-      "id": "a7a50d9c6db554c3dce164b909561d4a5a871588",
-      "title": "Magnitude 5.3 earthquake strikes Colombia",
-      "title_zh": "哥伦比亚发生5.3级地震",
-      "summary": "According to the China Earthquake Networks Center, a magnitude 5.3 earthquake struck Colombia at 00:45 on Aug 27 (6.75 N, 73.08 W) at a depth of 150 km.",
-      "summary_zh": "【哥伦比亚发生5.3级地震】财联社8月27日电，中国地震台网正式测定：08月27日00时45分在哥伦比亚（北纬6.75度，西经73.08度）发生5.3级地震，震源深度150千米"
+      "id": "a7de3a2118f084bf5888ac6f684e58c832e11b76",
+      "title": "Lianovation: H1 net profit up 583% YoY; subsidiary's investment in Zhipu Huazhang generated 589 million yuan in fair-value change gains",
+      "summary": "[Lianovation: H1 net profit up 583% YoY; subsidiary's investment in Zhipu Huazhang generated 589 million yuan in fair-value change gains] Cailianpress August 27: Lianovation (688400.SH) published its 2026 interim report, with H1 operating revenue of 1.451 billion yuan, up 6.09% YoY, and net profit attributable to shareholders of 656 million yuan, up 583.26% YoY.",
+      "title_zh": "Lianovation: H1 net profit up 583% YoY; subsidiary's investment in Zhipu Huazhang generated 589 million yuan in fair-value change gains",
+      "summary_zh": "[Lianovation: H1 net profit up 583% YoY; subsidiary's investment in Zhipu Huazhang generated 589 million yuan in fair-value change gains] Cailianpress August 27: Lianovation (688400.SH) published its 2026 interim report, with H1 operating revenue of 1.451 billion yuan, up 6.09% YoY, and net profit attributable to shareholders of 656 million yuan, up 583.26% YoY."
     },
     {
-      "id": "86e9340e7b76546b508d60e9583908b2b950ea7f",
-      "title": "Kioxia reportedly to invest over 1 trillion yen in new Japan plant",
-      "title_zh": "财联社8月27日电，铠侠据悉将投资逾1万亿日元在日本建设新工厂。",
-      "summary": "Kioxia is reportedly planning to invest over 1 trillion yen to build a new plant in Japan.",
-      "summary_zh": "财联社8月27日电，铠侠据悉将投资逾1万亿日元在日本建设新工厂"
+      "id": "c709e1bb402ef6326eaf222962d99936c029c64e",
+      "title": "HP Inc.: tariffs refunds of $127 million during the periods ended July 31, 2026, plus $91 million after the period",
+      "summary": "Cailianpress August 27: HP Inc. said that during the three- and nine-month periods ended July 31, 2026, the company received a total of $127 million in tariff refunds, and after the reporting period received a further $91 million.",
+      "title_zh": "HP Inc.: tariffs refunds of $127 million during the periods ended July 31, 2026, plus $91 million after the period",
+      "summary_zh": "Cailianpress August 27: HP Inc. said that during the three- and nine-month periods ended July 31, 2026, the company received a total of $127 million in tariff refunds, and after the reporting period received a further $91 million."
     },
     {
-      "id": "c5f800f3a6f12563072fd707415c087d280e58dd",
-      "title": "Google launches Gemini 3.5 Transcribe, boosting AI speech transcription",
-      "title_zh": "财联社8月27日电，谷歌推出Gemini 3.5 Transcribe，增强AI语音转录能力。",
-      "summary": "Google has launched Gemini 3.5 Transcribe, enhancing its AI speech-transcription capability.",
-      "summary_zh": "财联社8月27日电，谷歌推出Gemini 3.5 Transcribe，增强AI语音转录能力"
+      "id": "925bcfef5f288f9a4b49579ea5f1dce188315ba7",
+      "title": "OpenAI launches commercial operations in Brazil",
+      "summary": "[OpenAI launches commercial operations in Brazil] Cailianpress August 27: OpenAI announced on August 27 the launch of commercial operations in Brazil, with a local team in Sao Paulo supporting enterprises, developers, researchers, and public institutions.",
+      "title_zh": "OpenAI launches commercial operations in Brazil",
+      "summary_zh": "[OpenAI launches commercial operations in Brazil] Cailianpress August 27: OpenAI announced on August 27 the launch of commercial operations in Brazil, with a local team in Sao Paulo supporting enterprises, developers, researchers, and public institutions."
     },
     {
-      "id": "e744f939b859b27a6a4687716c2c34361a328bf7",
-      "title": "US Treasury sells $70 billion 5-year note at 4.393% high yield, 2.37 bid-to-cover",
-      "title_zh": "财联社8月27日电，美国财政部拍卖700亿美元五年期国债，得标利率4.393%，投标倍数2.37。",
-      "summary": "The US Treasury sold $70 billion of 5-year notes at a high yield of 4.393% with a bid-to-cover ratio of 2.37.",
-      "summary_zh": "财联社8月27日电，美国财政部拍卖700亿美元五年期国债，得标利率4.393%，投标倍数2.37"
+      "id": "a18472788d9f5a0ebc4d3479cca1512ce76855a7",
+      "title": "Zhang Zhili meets John Barker, Director General of the International Organisation of Vine and Wine",
+      "summary": "[Zhang Zhili meets John Barker, Director General of the International Organisation of Vine and Wine] Cailianpress August 27: Vice Minister of Agriculture and Rural Affairs Zhang Zhili met in Beijing on August 26 with John Barker, Director General of the OIV, and exchanged views on deepening cooperation.",
+      "title_zh": "Zhang Zhili meets John Barker, Director General of the International Organisation of Vine and Wine",
+      "summary_zh": "[Zhang Zhili meets John Barker, Director General of the International Organisation of Vine and Wine] Cailianpress August 27: Vice Minister of Agriculture and Rural Affairs Zhang Zhili met in Beijing on August 26 with John Barker, Director General of the OIV, and exchanged views on deepening cooperation."
     },
     {
-      "id": "59b4f782499a14c571bbd25a045075c894decb6d",
-      "title": "Italy extends diesel pump-tax cut to September 5",
-      "title_zh": "财联社8月27日电，意大利将柴油泵税减征延长至9月5日。",
-      "summary": "Italy has extended its cut to the diesel pump tax through September 5.",
-      "summary_zh": "财联社8月27日电，意大利将柴油泵税减征延长至9月5日"
+      "id": "b06ab9f8fdfcda87c788dbe69e7c2f6e829da1cb",
+      "title": "Biocytogen: H1 net profit up 402.29% YoY",
+      "summary": "[Biocytogen: H1 net profit up 402.29% YoY] Cailianpress August 27: Biocytogen (688796.SH) published its 2026 interim report, with operating revenue of 941 million yuan, up 51.6% YoY, and net profit attributable to shareholders of 241 million yuan, up 402.29% YoY.",
+      "title_zh": "Biocytogen: H1 net profit up 402.29% YoY",
+      "summary_zh": "[Biocytogen: H1 net profit up 402.29% YoY] Cailianpress August 27: Biocytogen (688796.SH) published its 2026 interim report, with operating revenue of 941 million yuan, up 51.6% YoY, and net profit attributable to shareholders of 241 million yuan, up 402.29% YoY."
     },
     {
-      "id": "c8ff472a72848a8b6c7ce3d76db9248c41186a85",
-      "title": "Anthropic to pay Nscale $45 billion to lease AI compute",
-      "title_zh": "Anthropico将向Nscale支付450亿美元租用人工智能算力",
-      "summary": "Anthropic PBC has agreed to spend $45 billion to lease AI compute at Nscale's major data-center project in West Virginia.",
-      "summary_zh": "【Anthropico将向Nscale支付450亿美元租用人工智能算力】财联社8月27日电，Anthropic PBC同意斥资450亿美元，租用Nscale位于西弗吉尼亚州主要数据中心项目的AI算力"
+      "id": "f712114de431c228412aa9b12af78fe80808b5f3",
+      "title": "WuXi AppTec: sale of WuXi XDC stock assets expected to affect 2026 pre-tax profit by about 3.143 billion yuan",
+      "summary": "[WuXi AppTec: sale of WuXi XDC stock assets expected to affect 2026 pre-tax profit by about 3.143 billion yuan] Cailianpress August 27: WuXi AppTec (603259.SH) announced it sold 53.524 million WuXi XDC shares via block trade, for about HK$3.920 billion.",
+      "title_zh": "WuXi AppTec: sale of WuXi XDC stock assets expected to affect 2026 pre-tax profit by about 3.143 billion yuan",
+      "summary_zh": "[WuXi AppTec: sale of WuXi XDC stock assets expected to affect 2026 pre-tax profit by about 3.143 billion yuan] Cailianpress August 27: WuXi AppTec (603259.SH) announced it sold 53.524 million WuXi XDC shares via block trade, for about HK$3.920 billion."
     },
     {
-      "id": "7d83cf7e5fd59a20d062758ee9e0dd8c57c9b44c",
-      "title": "UK AI infrastructure firm NScale plans $71 billion West Virginia project",
-      "title_zh": "财联社8月27日电，英国AI基础设施公司NScale拟投资710亿美元建设西弗吉尼亚州项目。",
-      "summary": "UK AI infrastructure company NScale plans to invest $71 billion in a West Virginia project.",
-      "summary_zh": "财联社8月27日电，英国AI基础设施公司NScale拟投资710亿美元建设西弗吉尼亚州项目"
+      "id": "3543c2d4ddc3a5d749b0ee9fb23204f548b00b41",
+      "title": "China's National Meteorological Center issues red typhoon warning",
+      "summary": "[China's National Meteorological Center issues red typhoon warning] Cailianpress August 27: the NMCC issued a red typhoon warning at 18:00 on August 27: Typhoon 'Sarika' (No. 18 this year) re-intensified from typhoon to severe typhoon at noon, and at 17:00 its center was about 320 km east of Wenzhou, Zhejiang, at 28.5N 123.9E, with maximum winds of 14 (45 m/s) and a minimum central pressure ...",
+      "title_zh": "China's National Meteorological Center issues red typhoon warning",
+      "summary_zh": "[China's National Meteorological Center issues red typhoon warning] Cailianpress August 27: the NMCC issued a red typhoon warning at 18:00 on August 27: Typhoon 'Sarika' (No. 18 this year) re-intensified from typhoon to severe typhoon at noon, and at 17:00 its center was about 320 km east of Wenzhou, Zhejiang, at 28.5N 123.9E, with maximum winds of 14 (45 m/s) and a minimum central pressure ..."
     },
     {
-      "id": "299929df15fc8b8b1112bde92301d8fcc27b9b4f",
-      "title": "LME copper settles down $96",
-      "title_zh": "LME期铜收跌96美元",
-      "summary": "LME copper settled down $96 to $14,253 per tonne.",
-      "summary_zh": "【LME期铜收跌96美元】财联社8月27日电，LME期铜收跌96美元，报14253美元/吨"
+      "id": "d3462fe98151ec5dd0d5a901ddcf067cae3468da",
+      "title": "Fed Gov Lisa Cook’s lawyer fires back at Trump's renewed threat to oust her",
+      "summary": "The Supreme Court in late June blocked Trump from firing Cook from the Federal Reserve, but left the president with a path to try again to remove her.",
+      "title_zh": "美联储理事 Lisa Cook 的律师回击特朗普再次将其免职的威胁",
+      "summary_zh": "最高法院 6 月下旬阻止了特朗普将 Cook 从美联储免职，但为总统留下了再次尝试将其免职的途径。"
     },
     {
-      "id": "015d4953357602fae69c88a8279967b353aec0fc",
-      "title": "Meta settles social-media harm case with multiple US states, to pay up to ~$18 billion",
-      "title_zh": "Meta与美国多州就社交媒体危害案达成和解 最高将支付约180亿美元",
-      "summary": "Meta Platforms Inc. said it agreed to pay up to about $18 billion to settle a landmark case with multiple US states over allegations that it deliberately designed Facebook and Instagram to foster compulsive use habits among young users.",
-      "summary_zh": "【Meta与美国多州就社交媒体危害案达成和解 最高将支付约180亿美元】财联社8月27日电，Meta Platforms Inc.表示，同意支付最高约180亿美元，与美国多个州就具有里程碑意义的案件达成和解，以解决有关该公司故意将Facebook和Instagram设计成诱导年轻用户形成强迫性使用习惯的指控"
+      "id": "196872f3f2b731370b3be995d63c58bb7cbd99b0",
+      "title": "Nvidia's results far beat expectations! Q2 revenue and profit both double; next fiscal year revenue expected to rise another 70%!",
+      "summary": "After the US market close on Wednesday, Nvidia reported its fiscal second-quarter 2027 results, with both revenue and guidance above market expectations.",
+      "title_zh": "Nvidia's results far beat expectations! Q2 revenue and profit both double; next fiscal year revenue expected to rise another 70%!",
+      "summary_zh": "After the US market close on Wednesday, Nvidia reported its fiscal second-quarter 2027 results, with both revenue and guidance above market expectations."
     },
     {
-      "id": "c67024bdb0051e7c9d965859cbe286146fb0945f",
-      "title": "Awaiting Nvidia earnings, semis lead Asia-Pacific markets; Korean stocks close up 0.97%, oil slips for a third day, bonds firm",
-      "title_zh": "Awaiting Nvidia earnings, semis lead Asia-Pacific markets; Korean stocks close up 0.97%, oil slips for a third day, bonds firm",
-      "summary": "Asia-Pacific equities rose on Wednesday led by the semiconductor sector as investors held their breath for Nvidia's results to guide the AI trade.",
-      "summary_zh": "Asia-Pacific equities rose on Wednesday led by the semiconductor sector as investors held their breath for Nvidia's results to guide the AI trade."
+      "id": "152357bbed65647e2b893b6d2a2ad2c5a714cd9a",
+      "title": "Nvidia's fiscal Q2 revenue up 106% YoY; all metrics beat market expectations",
+      "summary": "Nvidia's fiscal Q2 revenue was $96.2 billion, up 106% YoY versus a consensus of $92.38 billion; adjusted EPS was $2.22, up 120% YoY; data center revenue was $89.0 billion versus $85.86 billion expected; hyperscaler revenue was $48.71 billion versus $43.55 billion expected; AI cloud, industrial and enterprise revenue was $40.31 billion versus ...",
+      "title_zh": "Nvidia's fiscal Q2 revenue up 106% YoY; all metrics beat market expectations",
+      "summary_zh": "Nvidia's fiscal Q2 revenue was $96.2 billion, up 106% YoY versus a consensus of $92.38 billion; adjusted EPS was $2.22, up 120% YoY; data center revenue was $89.0 billion versus $85.86 billion expected; hyperscaler revenue was $48.71 billion versus $43.55 billion expected; AI cloud, industrial and enterprise revenue was $40.31 billion versus ..."
     },
     {
-      "id": "e66f9fabc9f993fb1fc54d246dd5ace2d3bd3ba9",
-      "title": "Tesla stuck in chop zone near $345: Hourly levels",
-      "title_zh": "特斯拉在 345 美元附近陷入震荡区间：分时级别关键价位"
+      "id": "9c6da0a44fc3d0dc5fdf311e827304751a71fbd9",
+      "title": "Bitcoin’s macro case is strengthening even as regulation takes a back seat, says BlackRock’s digital assets head",
+      "summary": "The flagship cryptocurrency's recent rally parallels its history of rebounding whenever investor sentiment toward other assets cools, says BlackRock's Mitchnick",
+      "title_zh": "贝莱德数字资产主管：尽管监管退居次席，比特币的宏观逻辑正在增强",
+      "summary_zh": "贝莱德的 Mitchnick 表示，这一旗舰加密货币的近期反弹与其在投资者对其他资产情绪降温时反弹的历史相呼应。"
     },
     {
-      "id": "e91e3516359aa191c176fc4ce9bd3491d1406fe5",
-      "title": "Global markets: three major US indices close higher; optical communications and memory sectors strong; oil prices plunge",
-      "title_zh": "Global markets: three major US indices close higher; optical communications and memory sectors strong; oil prices plunge",
-      "summary": "US market: the three major US stock indices all closed higher on Aug 25.",
-      "summary_zh": "US market: the three major US stock indices all closed higher on Aug 25."
+      "id": "72df147c3b450edbe96f6c919181ed35fbdef0f1",
+      "title": "Federal judge lifts final block on Trump mail-in voting order, clearing way for midterm restrictions",
+      "summary": "The rule in question would require election officials to give USPS voter information and use federally reviewed, uniquely barcoded ballot envelopes.",
+      "title_zh": "联邦法官解除对特朗普邮寄投票令的最后一道禁令，为中期选举限制扫清道路",
+      "summary_zh": "相关规则将要求选举官员向美国邮政提供选民信息，并使用经联邦审查、带有唯一条形码的选票信封。"
     },
     {
-      "id": "3d8e6b77fed55e4b30c27dbc4215dfbbae100e85",
-      "title": "OpenAI releases sweeping report on Hugging Face AI agent hack",
-      "title_zh": "OpenAI 发布关于 Hugging Face AI 智能体遭入侵的全面报告",
-      "summary": "The 37-page report walks through the actions that OpenAI's models took during a series of evaluations prior to and during the Hugging Face breach.",
-      "summary_zh": "这份 37 页的报告详述了 OpenAI 模型在 Hugging Face 遭入侵前后一系列评估中所采取的操作。"
+      "id": "b9c32ee120e478665d8ae13919a335ffb1d7053a",
+      "title": "Analysts on the impact of OpenAI's in-house chips: Nvidia's margins may face a new challenge",
+      "summary": "As OpenAI and other tech giants roll out their own chips, analysts are beginning to argue that Nvidia's near-monopoly in advanced AI chips is facing a 'threat'.",
+      "title_zh": "Analysts on the impact of OpenAI's in-house chips: Nvidia's margins may face a new challenge",
+      "summary_zh": "As OpenAI and other tech giants roll out their own chips, analysts are beginning to argue that Nvidia's near-monopoly in advanced AI chips is facing a 'threat'."
     },
     {
-      "id": "8ce386e90d90d59fd2c4eec2c7f38450f0581747",
-      "title": "At least 157 killed and hundreds missing after flash floods in Nepal and China",
-      "title_zh": "尼泊尔与中国山洪暴发，至少 157 人死亡、数百人失踪",
-      "summary": "At least 403 people, including 47 from the United States, were reported missing, officials in Nepal said.",
-      "summary_zh": "尼泊尔官员称，据报告至少有 403 人失踪，其中包括 47 名美国人。"
+      "id": "512864fbbe058a6030e86420810a8124ab5b98be",
+      "title": "Buyer demands delivery within 18 weeks! Memory standout DapuStor lands a 3.491 billion yuan order, over 1.5x last year's revenue",
+      "summary": "On the evening of August 26, DapuStor issued an announcement on a major operating contract, stating it signed a sales order on August 25 with Customer A for its core enterprise PCIe SSD products (high-speed solid-state drives using the PCIe interface protocol).",
+      "title_zh": "Buyer demands delivery within 18 weeks! Memory standout DapuStor lands a 3.491 billion yuan order, over 1.5x last year's revenue",
+      "summary_zh": "On the evening of August 26, DapuStor issued an announcement on a major operating contract, stating it signed a sales order on August 25 with Customer A for its core enterprise PCIe SSD products (high-speed solid-state drives using the PCIe interface protocol)."
     },
     {
-      "id": "bfa17da0fbedbe32797e950aea33f7cd5f24c9ff",
-      "title": "Las Vegas Sands shares are about to 'catch a heater,' says Mike Khouw",
-      "title_zh": "Mike Khouw 称：拉斯维加斯金沙股价即将「起飞」",
-      "summary": "Although named after the Nevada gaming mecca, Las Vegas Sands has largely depended on the Asia/Macau story of the last decade.",
-      "summary_zh": "尽管以内华达州博彩胜地命名，拉斯维加斯金沙过去十年很大程度上依赖亚洲/澳门的故事线。"
+      "id": "c5b9700dc6a4eed89bab26573a3114c4db4711c6",
+      "title": "Canadian Solar Inc earnings missed by $0.66, revenue topped estimates",
+      "summary": "",
+      "title_zh": "加拿大太阳能公司财报逊于预期 0.66 美元，营收超预期",
+      "summary_zh": null
     },
     {
-      "id": "6ab2a9d7b02088d1aa8126fdbd735b0122c411fc",
-      "title": "Anthropic and Nscale strike $45 billion cloud deal, sources say",
-      "title_zh": "据消息人士：Anthropic 与 Nscale 达成 450 亿美元云算力协议",
-      "summary": "Anthropic will rent around 460 megawatts of compute capacity at an Nscale data center development in West Virgina, according to sources.",
-      "summary_zh": "据消息人士称，Anthropic 将租用 Nscale 位于西弗吉尼亚州数据中心项目约 460 兆瓦的算力。"
+      "id": "7fe3ff1c528d97872be6d5dc9c713d65d189666e",
+      "title": "Canadian Solar falls 4% on earnings miss, weak Q3 outlook",
+      "summary": "",
+      "title_zh": "加拿大太阳能因财报逊于预期及第三季度展望疲弱下跌 4%",
+      "summary_zh": null
     },
     {
-      "id": "819be32001d282d3ee818f7907308cff5ec878d6",
-      "title": "How Dolly Parton inspired women in leadership: 'We all owe Dolly a debt'",
-      "title_zh": "多莉·帕顿如何激励女性领导者：「我们都欠多莉一份情」",
-      "summary": "The legendary Dolly Parton inspired women to dream bigger and fight for what they deserve",
-      "summary_zh": "传奇人物多莉·帕顿激励女性敢于梦想更大，并为应得之物而战。"
+      "id": "a9685d789c151b0da1d0e45c378eef1c2d5e380f",
+      "title": "Why Citi thinks one of the year's best-performing sectors is finishing its bull run",
+      "summary": "European banks have shaken off a weak first quarter to notch solid share price gains in the year to date, but Citi analysts warn their momentum may be fading.",
+      "title_zh": "花旗为何认为今年表现最佳的板块之一正结束其牛市行情",
+      "summary_zh": "欧洲银行摆脱疲弱的第一季度，年初至今取得稳健的股价涨幅，但花旗分析师警告其动能可能正在消退。"
     },
     {
-      "id": "ff97abf7bbd6b91bb7b73dc4aad1cb97d4f75256",
-      "title": "An auto parts stock bottomed in May and is set to keep rallying, according to the charts",
-      "title_zh": "技术图表显示：一只汽车零部件股 5 月见底，有望继续上攻",
-      "summary": "Frank Cappelleri of CappThesis breaks down the technicals on this auto parts name.",
-      "summary_zh": "CappThesis 的 Frank Cappelleri 拆解了这只汽车零部件股的技术面。"
+      "id": "f0debe64017c2e82f128b678a9c528186a7d909d",
+      "title": "OPEC+ output share falls to 40%; oil market dominance sees a structural shift",
+      "summary": "Six months after the Middle East conflict erupted, the dominant force in the global oil market is undergoing a structural shift: OPEC+, long reliant on supply adjustment to steer prices, is seeing its market share and policy effectiveness shrink in tandem.",
+      "title_zh": "OPEC+ output share falls to 40%; oil market dominance sees a structural shift",
+      "summary_zh": "Six months after the Middle East conflict erupted, the dominant force in the global oil market is undergoing a structural shift: OPEC+, long reliant on supply adjustment to steer prices, is seeing its market share and policy effectiveness shrink in tandem."
     },
     {
-      "id": "5756be5d3ef1b806d33e69b1563f6ee8ae85ad64",
-      "title": "Apple sets iPhone launch event for Sept. 9, first under new CEO John Ternus",
-      "title_zh": "苹果定档 9 月 9 日举行 iPhone 发布会，系新任 CEO John Ternus 首秀",
-      "summary": "Analysts expect the company to launch new iPhones and Apple Watches at the event, including the company's first folding phone",
-      "summary_zh": "分析师预计苹果将在发布会上推出新款 iPhone 与 Apple Watch，包括其首款折叠屏手机。"
+      "id": "eed69ebc133bd649b432d369bfa4ef63a122b34a",
+      "title": "CIA chief John Ratcliffe reportedly made secretive Moscow trip to warn Russia against attacking NATO",
+      "summary": "Russia and Ukraine have intensified long-range drone and missile strikes as fears of further escalation grow.",
+      "title_zh": "据称中情局局长 John Ratcliffe 秘密访问莫斯科，警告俄罗斯不要攻击北约",
+      "summary_zh": "随着对进一步升级的担忧加剧，俄罗斯与乌克兰加强了远程无人机与导弹袭击。"
     },
     {
-      "id": "73bd432d0c26da54df206c68dec1d08416ad218d",
-      "title": "OpenAI's in-house chip hits key breakthrough: latency and efficiency beat Nvidia's GB300",
-      "title_zh": "OpenAI's in-house chip hits key breakthrough: latency and efficiency beat Nvidia's GB300",
-      "summary": "OpenAI claims its new Jalapeno chip outperformed Nvidia's current lineup in tests, underscoring progress in its self-developed AI processors.",
-      "summary_zh": "OpenAI claims its new Jalapeno chip outperformed Nvidia's current lineup in tests, underscoring progress in its self-developed AI processors."
+      "id": "51143d5486a205a7e5c3b18caa1bc12790aec51f",
+      "title": "How to read the durability of the gold-copper-oil resonance?",
+      "summary": "Gold, copper, and crude oil are rising in rare synchrony.",
+      "title_zh": "How to read the durability of the gold-copper-oil resonance?",
+      "summary_zh": "Gold, copper, and crude oil are rising in rare synchrony."
     },
     {
-      "id": "17ddacdc2151e43d49caa0b126326258a27c88ae",
-      "title": "Zhipu launches lightweight flagship model to rival DeepSeek, powered by 100,000 domestic chips",
-      "title_zh": "智谱推出对标DeepSeek的轻量旗舰模型，由10万国产卡支持",
-      "summary": "Zhipu released GLM-5.3 Flash, a lightweight flagship model aimed at rivaling DeepSeek V4 Flash, drawing on a cluster of over 100,000 domestic chips for inference serving.",
-      "summary_zh": "智谱发布旨在对标 DeepSeek V4 Flash 的轻量级旗舰模型 GLM-5.3 Flash ，调用超过 10 万张国产芯片集群用于该模型推理服务"
-    },
-    {
-      "id": "60e5476ee7f34b5233f5089e725684d8f800849b",
-      "title": "China-India special representatives reach 8-point consensus at 25th border talk",
-      "title_zh": "中印边界问题特别代表第25次会晤达成8点成果共识",
-      "summary": "The 25th meeting of the China-India special representatives on border issues was held in Beijing on Aug 25.",
-      "summary_zh": "8月25日，中印边界问题特别代表第25次会晤在北京举行"
-    },
-    {
-      "id": "8f422b475a1abbe14e6c9da2757db1f850cb7b10",
-      "title": "Mark Walter's TWG Global says there's 'no fraud' amid probe of insurers' disclosures",
-      "title_zh": "Mark Walter 的 TWG Global 称保险披露调查「不存在欺诈」",
-      "summary": "The empire of billionaire Los Angeles Dodgers owner Mark Walter has faced media scrutiny since he said he would sell his majority share of the LA Lakers.",
-      "summary_zh": "自亿万富翁、洛杉矶道奇队老板 Mark Walter 表示将出售其持有的湖人队多数股权以来，他的商业帝国便面临媒体审视。"
-    },
-    {
-      "id": "d9fff86c0d04e21df57526603270fb91e65c5782",
-      "title": "Economists want Warsh to share more on his view of the economy at Jackson Hole, says CNBC survey",
-      "title_zh": "CNBC 调查显示：经济学家希望 Warsh 在杰克逊霍尔更详尽阐述其经济观点",
-      "summary": "Eighty percent of CNBC Fed Survey respondents say the Federal Reserve Chairman Warsh should provide more insight into his economic views.",
-      "summary_zh": "80% 的 CNBC 美联储调查受访者认为，美联储主席 Warsh 应就其经济观点提供更多见解。"
-    },
-    {
-      "id": "90f7c0ae56378c1406e64cacf8c0f562c87d1d16",
-      "title": "The post-penny economy: How cash rounding and credit card surcharges are changing what you pay",
-      "title_zh": "后「分币」经济：现金取整与信用卡附加费如何改变你的支付",
-      "summary": "More merchants are rounding change for cash purchases to the nearest nickel due to the end of penny production, or adding surcharges to credit card transactions",
-      "summary_zh": "由于一分硬币停止铸造，越来越多商家将现金消费找零取整到最近五分，或是对信用卡交易加收附加费。"
-    },
-    {
-      "id": "41ceb3c56c6556bed401c5b4447c75e2022919c0",
-      "title": "Meta settles social media addiction case with California, other states for $16.7 billion",
-      "title_zh": "Meta 与加州等州就社交媒体成瘾案达成 167 亿美元和解",
-      "summary": "Meta and state attorneys general settled a federal trial centering on allegations that company misrepresented the extent of child-related mental health harms.",
-      "summary_zh": "Meta 与多州总检察长就一桩联邦审判达成和解，该案件核心指控公司歪曲了儿童心理健康损害的严重程度。"
+      "id": "1ab137209171009a4f2acf6e270e1fc42023a200",
+      "title": "European LNG prices spike to a three-year high as Hormuz supply-cut fears cloud winter supply",
+      "summary": "European liquefied natural gas (LNG) prices rose this week to their highest level in more than three years, as the impact of the Middle East conflict on global energy supply chains deepens.",
+      "title_zh": "European LNG prices spike to a three-year high as Hormuz supply-cut fears cloud winter supply",
+      "summary_zh": "European liquefied natural gas (LNG) prices rose this week to their highest level in more than three years, as the impact of the Middle East conflict on global energy supply chains deepens."
     }
   ],
-  "updated_at": "2026-08-26T20:54:56Z"
+  "updated_at": "2026-08-27T11:44:00Z"
 }
