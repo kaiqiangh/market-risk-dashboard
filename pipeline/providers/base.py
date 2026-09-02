@@ -182,42 +182,72 @@ class GuardedClient(httpx.Client):
     def _check_response(self, response: httpx.Response) -> None:
         length = response.headers.get("Content-Length")
         if length and length.isdigit() and int(length) > MAX_RESPONSE_BYTES:
+            response.close()
             raise ProviderError(f"blocked: response exceeds {MAX_RESPONSE_BYTES} bytes ({response.url})")
 
     def get(self, url: str, **kwargs: Any) -> httpx.Response:
         """GET with a bounded manual redirect walk (≤ MAX_REDIRECT_HOPS hops) and a hard
         2 MB cap (S-3).
 
-        Uses a **non-streaming** request: httpx auto-decodes ``Content-Encoding``
-        (gzip/deflate/br) correctly on the fully-buffered response, which the streaming
-        ``iter_bytes`` path in httpx 0.28.x fails to do — it raises
-        ``DecodingError: incorrect header check`` on gzipped bodies, the regression that
-        emptied every HTTP-JSON dataset on 2026-08-24 (#103 carry-forward). The per-hop
-        allowlist/https gate is preserved via the request hook; the 2 MB cap is enforced on
-        ``Content-Length`` (response hook) and, for chunked responses, on the read length.
+        Uses a streaming request and ``iter_bytes`` so httpx decodes
+        ``Content-Encoding`` (gzip/deflate/br) while the decoded bytes are bounded. The
+        per-hop allowlist/https gate is preserved via the request hook; the 2 MB cap is
+        enforced on ``Content-Length`` (response hook) and, for chunked responses, before
+        each decoded chunk is retained.
         """
         from urllib.parse import urljoin
 
         previous_host: str | None = None
-        base_extensions = dict(kwargs.pop("extensions", {}) or {})
+        request_kwargs = dict(kwargs)
+        has_auth = "auth" in request_kwargs
+        auth = request_kwargs.pop("auth", None)
+        # GuardedClient owns redirect policy; callers cannot opt into httpx's unbounded
+        # redirect handling for a request made through this client.
+        request_kwargs.pop("follow_redirects", None)
+        base_extensions = dict(request_kwargs.pop("extensions", {}) or {})
         base_extensions.pop("relay_vouched", None)
         for _ in range(MAX_REDIRECT_HOPS + 1):
             extensions = {
                 **base_extensions,
                 "relay_vouched": _RELAY_VOUCH if previous_host in self._relay_hosts else None,
             }
-            response = super().get(url, extensions=extensions, **kwargs)
+            request = self.build_request("GET", url, extensions=extensions, **request_kwargs)
+            send_kwargs: dict[str, Any] = {"stream": True, "follow_redirects": False}
+            if has_auth:
+                send_kwargs["auth"] = auth
+            response = super().send(request, **send_kwargs)
             if response.status_code >= 300 and response.headers.get("location"):
                 previous_host = response.url.host
                 url = urljoin(str(response.url), response.headers["location"])
+                response.close()
                 continue
-            # S-3: refuse responses larger than 2 MB. Content-Length is also checked in the
-            # response hook; this catches chunked responses that carry no Content-Length.
-            if len(response.content) > MAX_RESPONSE_BYTES:
-                raise ProviderError(
-                    f"blocked: response exceeds {MAX_RESPONSE_BYTES} bytes ({response.url})"
-                )
-            return response
+            # S-3: refuse responses larger than 2 MB after decoding. Keeping only bounded
+            # chunks avoids the full buffering performed by a non-streaming Client.get().
+            body = bytearray()
+            try:
+                for chunk in response.iter_bytes(chunk_size=64 * 1024):
+                    if len(body) + len(chunk) > MAX_RESPONSE_BYTES:
+                        raise ProviderError(
+                            f"blocked: response exceeds {MAX_RESPONSE_BYTES} bytes ({response.url})"
+                        )
+                    body.extend(chunk)
+            finally:
+                response.close()
+            headers = httpx.Headers(response.headers)
+            content_encoding = headers.pop("content-encoding", None)
+            result = httpx.Response(
+                response.status_code,
+                headers=headers,
+                content=bytes(body),
+                request=response.request,
+                extensions=response.extensions,
+            )
+            # The body is already decoded, but retain the wire-level header for callers that
+            # inspect response metadata. The constructed response has _content set, so httpx
+            # will not attempt to decode it a second time.
+            if content_encoding is not None:
+                result.headers["content-encoding"] = content_encoding
+            return result
         raise ProviderError(f"blocked: more than {MAX_REDIRECT_HOPS} redirect hops")
 
 

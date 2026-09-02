@@ -21,6 +21,7 @@ import httpx
 import pytest
 
 from pipeline.providers.base import (
+    MAX_RESPONSE_BYTES,
     PERMANENT,
     RATE_LIMITED,
     TRANSIENT,
@@ -142,7 +143,7 @@ def test_guarded_client_decodes_gzipped_response() -> None:
     """Regression (2026-08-24, #103 carry-forward): GuardedClient.get must auto-decode a
     gzipped body. The streaming ``iter_bytes`` path in httpx 0.28.x raised
     ``DecodingError: incorrect header check`` on gzipped responses, which emptied every
-    HTTP-JSON dataset (fred/coingecko/calendar/news). A non-streaming request decodes it."""
+    HTTP-JSON dataset (fred/coingecko/calendar/news). The bounded streaming request decodes it."""
     import gzip
 
     payload = b'{"observations": [{"date": "2026-01-01", "value": "1.23"}]}'
@@ -160,6 +161,122 @@ def test_guarded_client_decodes_gzipped_response() -> None:
         resp = client.get("https://api.stlouisfed.org/fred/series/observations")
         assert resp.status_code == 200
         assert resp.json() == {"observations": [{"date": "2026-01-01", "value": "1.23"}]}
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize("encoding", ["deflate", "br"])
+def test_guarded_client_decodes_other_supported_content_encodings(encoding: str) -> None:
+    import zlib
+
+    import brotli
+
+    payload = b'{"value": "decoded"}'
+    compressed = zlib.compress(payload) if encoding == "deflate" else brotli.compress(payload)
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            content=compressed,
+            headers={"Content-Encoding": encoding, "Content-Type": "application/json"},
+            request=request,
+        )
+
+    client = GuardedClient({"api.example"}, transport=httpx.MockTransport(handler))
+    try:
+        assert client.get("https://api.example/data").json() == {"value": "decoded"}
+    finally:
+        client.close()
+
+
+class _TrackingStream(httpx.SyncByteStream):
+    def __init__(self, *chunks: bytes) -> None:
+        self.chunks = chunks
+        self.closed = False
+
+    def __iter__(self):
+        yield from self.chunks
+
+    def close(self) -> None:
+        self.closed = True
+
+
+def test_guarded_client_rejects_declared_oversize_and_closes_response() -> None:
+    stream = _TrackingStream(b"ok")
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            headers={"Content-Length": str(MAX_RESPONSE_BYTES + 1)},
+            stream=stream,
+            request=request,
+        )
+
+    client = GuardedClient({"api.example"}, transport=httpx.MockTransport(handler))
+    try:
+        with pytest.raises(ProviderError, match="response exceeds"):
+            client.get("https://api.example/data")
+        assert stream.closed
+    finally:
+        client.close()
+
+
+def test_guarded_client_rejects_unknown_length_oversize_and_closes_response() -> None:
+    stream = _TrackingStream(b"x" * (MAX_RESPONSE_BYTES + 1))
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, stream=stream, request=request)
+
+    client = GuardedClient({"api.example"}, transport=httpx.MockTransport(handler))
+    try:
+        with pytest.raises(ProviderError, match="response exceeds"):
+            client.get("https://api.example/data")
+        assert stream.closed
+    finally:
+        client.close()
+
+
+def test_guarded_client_rejects_decoded_gzip_oversize() -> None:
+    import gzip
+
+    compressed = gzip.compress(b"x" * (MAX_RESPONSE_BYTES + 1))
+    assert len(compressed) < MAX_RESPONSE_BYTES
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            content=compressed,
+            headers={"Content-Encoding": "gzip"},
+            request=request,
+        )
+
+    client = GuardedClient({"api.example"}, transport=httpx.MockTransport(handler))
+    try:
+        with pytest.raises(ProviderError, match="response exceeds"):
+            client.get("https://api.example/data")
+    finally:
+        client.close()
+
+
+def test_guarded_client_rejects_oversize_redirect_target() -> None:
+    stream = _TrackingStream(b"x" * (MAX_RESPONSE_BYTES + 1))
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.host == "relay.example":
+            return httpx.Response(
+                302,
+                headers={"location": "https://publisher.example/data"},
+                request=request,
+            )
+        return httpx.Response(200, stream=stream, request=request)
+
+    client = GuardedClient(
+        {"relay.example", "publisher.example"}, transport=httpx.MockTransport(handler)
+    )
+    try:
+        with pytest.raises(ProviderError, match="response exceeds"):
+            client.get("https://relay.example/data")
+        assert stream.closed
     finally:
         client.close()
 
