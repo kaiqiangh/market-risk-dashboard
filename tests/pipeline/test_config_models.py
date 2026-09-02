@@ -18,7 +18,7 @@ import pytest
 import yaml
 from pydantic import ValidationError
 
-from pipeline.config.models import ConfigError, SourcesConfig, ThemesConfig, load_config
+from pipeline.config.models import ConfigError, NewsSource, SourcesConfig, ThemesConfig, load_config
 from pipeline.providers import build_default_providers
 from pipeline.settings import Settings
 from pipeline.universe import AssetUniverse
@@ -247,6 +247,54 @@ def test_news_source_rejects_non_https_url_in_chain(tmp_path: Path) -> None:
     settings = _settings_with_config_dir(tmp_path)
     with pytest.raises(ConfigError, match="https"):
         settings.load_news_sources_config()
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "https:///missing-host/feed",
+        "https://localhost/feed",
+        "https://127.0.0.1/feed",
+        "https://10.0.0.1/feed",
+        "https://user:password@example.com/feed",
+    ],
+)
+def test_news_source_rejects_non_public_or_credentialed_url(url: str) -> None:
+    with pytest.raises(ValidationError):
+        NewsSource(id="x", name="X", url=url)
+
+
+def test_news_source_relay_redirect_hosts_are_explicit() -> None:
+    with pytest.raises(ValidationError, match="redirect_hosts"):
+        NewsSource(id="relay", name="Relay", url="https://relay.example/feed", trust="relay")
+
+    with pytest.raises(ValidationError, match="only valid for relay"):
+        NewsSource(
+            id="plain", name="Plain", url="https://example.com/feed",
+            redirect_hosts=["publisher.example"],
+        )
+
+    with pytest.raises(ValidationError, match="valid hostname"):
+        NewsSource(
+            id="relay", name="Relay", url="https://relay.example/feed", trust="relay",
+            redirect_hosts=["https://publisher.example"],
+        )
+
+    source = NewsSource(
+        id="relay", name="Relay", url="https://relay.example/feed", trust="relay",
+        redirect_hosts=["publisher.example"],
+    )
+    assert source.redirect_hosts == ["publisher.example"]
+
+
+def test_rss_provider_wires_configured_relay_targets() -> None:
+    from pipeline.providers.rss_news import RssNewsProvider
+
+    provider = RssNewsProvider(Settings(_env_file=None))
+    try:
+        assert provider._client._relay_target_hosts == {"www.cls.cn", "wallstreetcn.com"}
+    finally:
+        provider._client.close()
 
 
 def test_news_source_rejects_duplicate_url_in_chain(tmp_path: Path) -> None:

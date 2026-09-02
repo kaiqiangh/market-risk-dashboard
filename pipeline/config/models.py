@@ -14,6 +14,7 @@ authoritative shape for the same file.
 
 from __future__ import annotations
 
+import ipaddress
 from pathlib import Path
 from typing import Any, Literal, TypeVar
 from urllib.parse import urlparse
@@ -194,6 +195,51 @@ class ThemesConfig(BaseModel):
 # -------------------------------------------------------------------------------------
 
 
+def _validate_public_hostname(host: str | None, field: str) -> None:
+    """Reject malformed or obviously local destinations at the config boundary."""
+    if not host:
+        raise ValueError(f"{field} must include a hostname")
+    normalized = host.lower()
+    if normalized == "localhost" or normalized.endswith((".localhost", ".local")):
+        raise ValueError(f"{field} must not target a local hostname: {host!r}")
+    try:
+        ip = ipaddress.ip_address(host)
+    except ValueError:
+        try:
+            ascii_host = host.encode("idna").decode("ascii").lower()
+        except UnicodeError as exc:
+            raise ValueError(f"{field} is not a valid hostname: {host!r}") from exc
+        labels = ascii_host.split(".")
+        if len(ascii_host) > 253 or len(labels) < 2 or any(
+            not part
+            or len(part) > 63
+            or part[0] == "-"
+            or part[-1] == "-"
+            or any(not (char.isalnum() or char == "-") for char in part)
+            for part in labels
+        ):
+            raise ValueError(f"{field} is not a valid hostname: {host!r}") from None
+    else:
+        if not ip.is_global:
+            raise ValueError(f"{field} must not target a non-public IP: {host!r}")
+
+
+def _validate_source_url(url: str, field: str) -> None:
+    parsed = urlparse(url)
+    if parsed.scheme.lower() != "https":
+        raise ValueError(f"news source URL must be https: {url!r}")
+    if parsed.username is not None or parsed.password is not None:
+        raise ValueError(f"{field} must not contain URL credentials")
+    if parsed.fragment:
+        raise ValueError(f"{field} must not contain a URL fragment")
+    try:
+        hostname = parsed.hostname
+        _ = parsed.port
+    except ValueError as exc:
+        raise ValueError(f"{field} has an invalid host or port: {url!r}") from exc
+    _validate_public_hostname(hostname, field)
+
+
 class NewsSource(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -208,19 +254,25 @@ class NewsSource(BaseModel):
     # serves; one try per URL per run attempt. Every URL is https-only (S-3) and a chain
     # holds no exact duplicates (config-is-a-fact, ADR-0005).
     fallback_urls: list[str] = Field(default_factory=list)
-    # S-3: a relay source (rsshub.app) is allowed to redirect anywhere — it is trusted as a
-    # forwarding relay, not as a terminal host.
+    # S-3: a relay source may redirect only to its explicit forwarding destinations.
     trust: Literal["relay"] | None = None
+    # S-3: relay redirects are explicit destinations, never an arbitrary host voucher.
+    redirect_hosts: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def _chain_is_https_and_duplicate_free(self) -> "NewsSource":
         seen: set[str] = set()
         for url in self.chain_urls:
-            if urlparse(url).scheme != "https":
-                raise ValueError(f"news source URL must be https: {url!r}")
+            _validate_source_url(url, "news source URL")
             if url in seen:
                 raise ValueError(f"duplicate URL in news source chain: {url!r}")
             seen.add(url)
+        for host in self.redirect_hosts:
+            _validate_public_hostname(host, "relay redirect host")
+        if self.trust == "relay" and not self.redirect_hosts:
+            raise ValueError("relay source must declare redirect_hosts")
+        if self.trust != "relay" and self.redirect_hosts:
+            raise ValueError("redirect_hosts are only valid for relay sources")
         return self
 
     @property

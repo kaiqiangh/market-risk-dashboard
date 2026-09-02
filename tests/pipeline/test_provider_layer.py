@@ -289,7 +289,10 @@ def test_redirect_relay_voucher_is_scoped_to_one_request() -> None:
         return httpx.Response(200, content=b"ok", request=request)
 
     client = GuardedClient(
-        {"relay.example"}, relay_hosts={"relay.example"}, transport=httpx.MockTransport(handler)
+        {"relay.example"},
+        relay_hosts={"relay.example"},
+        relay_target_hosts={"publisher.example"},
+        transport=httpx.MockTransport(handler),
     )
     try:
         assert client.get("https://relay.example/feed").text == "ok"
@@ -297,6 +300,36 @@ def test_redirect_relay_voucher_is_scoped_to_one_request() -> None:
             client.get("https://blocked.example/feed")
         with pytest.raises(ProviderError, match="not in outbound allowlist"):
             client.get("https://blocked.example/feed", extensions={"relay_vouched": True})
+    finally:
+        client.close()
+
+
+def test_relay_voucher_rejects_unlisted_target() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            302,
+            headers={"location": "https://blocked.example/feed"},
+            request=request,
+        )
+
+    client = GuardedClient(
+        {"relay.example"},
+        relay_hosts={"relay.example"},
+        relay_target_hosts={"publisher.example"},
+        transport=httpx.MockTransport(handler),
+    )
+    try:
+        with pytest.raises(ProviderError, match="relay target"):
+            client.get("https://relay.example/feed")
+    finally:
+        client.close()
+
+
+def test_guarded_client_rejects_non_public_ip_even_when_allowlisted() -> None:
+    client = GuardedClient({"127.0.0.1"}, transport=httpx.MockTransport(lambda request: None))
+    try:
+        with pytest.raises(ProviderError, match="non-public outbound IP"):
+            client.get("https://127.0.0.1/feed")
     finally:
         client.close()
 

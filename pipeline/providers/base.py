@@ -37,6 +37,7 @@ from collections.abc import Generator
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
 from datetime import UTC, datetime
+from ipaddress import ip_address
 from pathlib import Path
 from threading import Semaphore
 from typing import Any
@@ -156,6 +157,7 @@ class GuardedClient(httpx.Client):
         timeout: float = DEFAULT_TIMEOUT_SECONDS,
         headers: dict[str, str] | None = None,
         relay_hosts: set[str] | None = None,
+        relay_target_hosts: set[str] | None = None,
         transport: httpx.BaseTransport | None = None,
     ) -> None:
         super().__init__(
@@ -166,15 +168,30 @@ class GuardedClient(httpx.Client):
             event_hooks={"request": [self._check_request], "response": [self._check_response]},
         )
         self._allowed_hosts = set(allowed_hosts)
-        # S-3 trust:relay — a hop redirected *from* a relay host is vouched for by the relay
-        # and skips the allowlist check (rsshub.app's routes forward to arbitrary publishers).
+        # S-3 trust:relay — a hop redirected *from* a relay host is vouched for only when its
+        # target host is explicitly configured by the source.
         self._relay_hosts = set(relay_hosts or ())
+        self._relay_target_hosts = {host.lower() for host in (relay_target_hosts or ())}
 
     def _check_request(self, request: httpx.Request) -> None:
         if request.url.scheme != "https":
             raise ProviderError(f"blocked: non-https outbound {request.url}")
+        host = request.url.host or ""
+        if host == "localhost" or host.endswith((".localhost", ".local")):
+            raise ProviderError(f"blocked: local outbound host {host}")
+        try:
+            address = ip_address(host)
+        except ValueError:
+            pass
+        else:
+            if not address.is_global:
+                raise ProviderError(f"blocked: non-public outbound IP {host}")
         # A redirect source that is a relay vouches for the target host (S-3).
         if request.extensions.get("relay_vouched") is _RELAY_VOUCH:
+            if request.url.host not in self._relay_target_hosts:
+                raise ProviderError(
+                    f"blocked: relay target {request.url.host} not in relay target allowlist"
+                )
             return
         if request.url.host not in self._allowed_hosts:
             raise ProviderError(f"blocked: host {request.url.host} not in outbound allowlist")
@@ -257,9 +274,16 @@ def guarded_client(
     timeout: float = DEFAULT_TIMEOUT_SECONDS,
     headers: dict[str, str] | None = None,
     relay_hosts: set[str] | None = None,
+    relay_target_hosts: set[str] | None = None,
 ) -> "GuardedClient":
     """Factory for :class:`GuardedClient` (kept as a function so provider call sites stay terse)."""
-    return GuardedClient(allowed_hosts, timeout=timeout, headers=headers, relay_hosts=relay_hosts)
+    return GuardedClient(
+        allowed_hosts,
+        timeout=timeout,
+        headers=headers,
+        relay_hosts=relay_hosts,
+        relay_target_hosts=relay_target_hosts,
+    )
 
 
 class ProviderError(Exception):

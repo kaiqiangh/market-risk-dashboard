@@ -19,12 +19,12 @@ sources:
   # replacement trigger) and was RETIRED. Primary + fallback below were live-probed (200 +
   # valid feed) on 08-07; a source walks its chain — any failure advances to the next URL.
   - { id: clschina, name: 财联社, url: "https://hub.slarker.me/cls/telegraph", lang: zh, weight: 4, trust: relay,
-      fallback_urls: ["https://rsshub.ktachibana.party/cls/telegraph"] }
+      redirect_hosts: ["www.cls.cn"], fallback_urls: ["https://rsshub.ktachibana.party/cls/telegraph"] }
   # Wallstreetcn: official rss.xml (https://wallstreetcn.com/rss.xml) returned S3
   # NoSuchKey when verified 2026-08 (no publicly available official RSS) → use RSSHub
   # /wallstreetcn/news; same rsshub.app retirement + fallback-chain policy as clschina.
   - { id: wallstreetcn, name: 华尔街见闻, url: "https://hub.slarker.me/wallstreetcn/news", lang: zh, weight: 3, trust: relay,
-      fallback_urls: ["https://rsshub.ktachibana.party/wallstreetcn/news"] }
+      redirect_hosts: ["wallstreetcn.com"], fallback_urls: ["https://rsshub.ktachibana.party/wallstreetcn/news"] }
 
 # Importance scoring rules (0-100): source weight + keywords + asset hits + recency
 importance:
@@ -48,4 +48,3 @@ importance:
       - "通胀"
       - "存储"
       - "减产"
-
