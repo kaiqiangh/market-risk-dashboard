@@ -12,6 +12,8 @@ Seam: the data contract + the merge step (pipeline/collectors/news.py merge_tran
 
 from __future__ import annotations
 
+import pytest
+
 from pipeline.collectors.news import NewsCollector
 from pipeline.schemas import NewsDataset, NewsItem, NewsTranslation, NewsTranslationsDataset
 
@@ -61,6 +63,12 @@ def test_news_item_accepts_summary_zh():
 def test_news_item_summary_zh_defaults_to_none_when_absent():
     item = _item()
     assert item.summary_zh is None
+
+
+@pytest.mark.parametrize("url", ["relative/news", "javascript:alert(1)", "https://user:pass@example.com/news", "https://example.com/news#part"])
+def test_news_item_rejects_unsafe_article_urls(url):
+    with pytest.raises(ValueError, match="news URL"):
+        _item(url=url)
 
 
 def test_news_item_lang_defaults_to_en_and_accepts_zh():
@@ -155,6 +163,18 @@ def test_merge_never_overwrites_canonical_english_when_record_diverges():
     assert item.summary == "Fed raised rates by 25bp"  # canonical English protected
     assert item.title == "Fed raises rates"
     assert item.summary_zh == "中文摘要"  # Chinese side still overlaid
+
+
+def test_merge_ignores_non_chinese_translation_fields():
+    news = _payload([_item(id="a")])
+    trans = _translations(
+        NewsTranslation(id="a", title_zh="English title", summary_zh="English summary")
+    )
+
+    merged = _collector().merge_translations(news, trans)
+
+    assert merged.items[0].title_zh is None
+    assert merged.items[0].summary_zh is None
 
 
 def test_merge_none_translations_is_noop():

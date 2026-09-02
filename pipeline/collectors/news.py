@@ -21,6 +21,7 @@ from pipeline.universe import AssetUniverse
 from pipeline.utils import now_utc
 
 _HTML_RE = re.compile(r"<[^>]+>")
+_CJK_RE = re.compile(r"[\u3400-\u9fff]")
 
 
 def _normalize_title(text: str) -> str:
@@ -88,7 +89,12 @@ class NewsCollector:
         low = title.lower()
         hits: list[str] = []
         for symbol, aliases in self._asset_aliases.items():
-            if any(a in low for a in aliases):
+            if any(
+                re.search(rf"(?<![a-z0-9]){re.escape(a.lower())}(?![a-z0-9])", low)
+                if a.isascii()
+                else a in low
+                for a in aliases
+            ):
                 hits.append(symbol)
         return hits
 
@@ -232,7 +238,7 @@ class NewsCollector:
             update: dict[str, Any] = {}
             # Chinese side (en-source items): overlay the translation.
             for field, value in (("title_zh", trans.title_zh), ("summary_zh", trans.summary_zh)):
-                if value:
+                if value and _CJK_RE.search(value):
                     update[field] = value
             # English side: written only for zh-source items, whose canonical English is missing
             # (their raw feed text is Chinese). en-source items already hold canonical English —

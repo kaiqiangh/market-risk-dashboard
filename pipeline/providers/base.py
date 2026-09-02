@@ -43,10 +43,11 @@ from threading import Lock, Semaphore
 from typing import Any
 
 import httpx
-from pydantic import BaseModel, Field, RootModel
+from pydantic import BaseModel, Field, RootModel, field_validator
 
 from pipeline.degrade import degrade_factor as resolve_degrade_factor
 from pipeline.schemas.envelope import SCHEMA_VERSION
+from pipeline.schemas.news import _validate_news_url
 from pipeline.settings import Settings
 from pipeline.utils import now_utc
 
@@ -403,6 +404,8 @@ class NewsRow(BaseModel):
     lang: str = "en"
     summary: str = ""
     category_hint: str | None = None
+
+    _url_is_absolute_http = field_validator("url")(_validate_news_url)
 
 
 class CryptoAssetRow(BaseModel):

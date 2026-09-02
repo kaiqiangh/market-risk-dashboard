@@ -30,6 +30,7 @@ from pipeline.providers.base import (
     GuardedClient,
     CircuitBreaker,
     HostRateLimiter,
+    NewsRow,
     ProviderError,
     ProviderHealth,
     ProviderRegistry,
@@ -85,6 +86,11 @@ def test_redact_masks_fmp_and_coingecko_key_shapes() -> None:
     # through provider error text, so nothing published loses its id.
     sha1 = "da39a3ee5e6b4b0d3255bfef95601890afd80709"
     assert sha1 not in redact("weird payload " + sha1)
+
+
+def test_news_replay_row_rejects_unsafe_article_url() -> None:
+    with pytest.raises(ValueError, match="news URL"):
+        NewsRow(title="headline", source="source", source_id="source", url="javascript:alert(1)", published_at="2026-08-03T00:00:00Z")
 
 
 def test_from_exception_classifies_and_redacts_http_errors() -> None:

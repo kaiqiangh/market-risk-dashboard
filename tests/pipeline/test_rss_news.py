@@ -99,6 +99,13 @@ def test_missing_date_is_rejected_instead_of_using_now(tmp_path, monkeypatch) ->
         provider.fetch_news()
 
 
+def test_asset_aliases_require_ascii_boundaries() -> None:
+    collector = NewsCollector(_Registry())
+
+    assert collector._map_assets("SOL and ETH gained while MU held steady") == ["MU", "ETH", "SOL"]
+    assert collector._map_assets("sold solid something mutual") == []
+
+
 class _NewsProvider:
     source_status = {
         "good": {"ok": True, "degraded": False},
