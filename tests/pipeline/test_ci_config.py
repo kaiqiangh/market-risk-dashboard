@@ -236,9 +236,10 @@ def test_scheduled_runner_fails_closed_after_repository_errors() -> None:
     assert "nothing was pushed" in script
     assert "local verified commit $COMMIT_SHA" in script
     assert "git rev-parse HEAD" in script
-    # Branch is parameterized (#190): default dev via SCHEDULED_BRANCH, but never
-    # hardcoded, so a scheduled run can target another branch without edits.
-    assert 'BRANCH="${SCHEDULED_BRANCH:-dev}"' in script
+    # Scheduled publication is intentionally fixed to dev; main is reached only
+    # through the protected PR path.
+    assert 'BRANCH="dev"' in script
+    assert "SCHEDULED_BRANCH" not in script
     assert "git ls-remote origin \"refs/heads/$BRANCH\"" in script
     assert "|| true" not in script
     assert "git pull --rebase origin \"$BRANCH\"; then" in script
@@ -380,6 +381,8 @@ def test_pages_release_boundary_is_dev_and_main_and_fully_gated() -> None:
 
     for command in (
         "python -m pipeline.validation.ci_checks --data-dir public/data",
+        "python -m pytest tests/pipeline/ --cov=pipeline --cov-report=term-missing",
+        "ruff check . --select F821",
         "npm run check:contracts",
         "npm audit --omit=dev --audit-level=high",
         "npm run build",
@@ -388,6 +391,8 @@ def test_pages_release_boundary_is_dev_and_main_and_fully_gated() -> None:
         assert command in build_job, f"release build is missing required gate: {command}"
 
     for gate in (
+        "run: python -m pytest tests/pipeline/ --cov=pipeline --cov-report=term-missing",
+        "run: ruff check . --select F821",
         "run: npm run build",
         "run: node scripts/scan-secrets.mjs --root .",
         "actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa",
@@ -396,3 +401,11 @@ def test_pages_release_boundary_is_dev_and_main_and_fully_gated() -> None:
     assert build_job.index("run: npm run build") < build_job.index(
         "run: node scripts/scan-secrets.mjs --root ."
     ) < build_job.index("actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa")
+    artifact = build_job.index(
+        "actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa"
+    )
+    for gate in (
+        "run: python -m pytest tests/pipeline/ --cov=pipeline --cov-report=term-missing",
+        "run: ruff check . --select F821",
+    ):
+        assert build_job.index(gate) < artifact
