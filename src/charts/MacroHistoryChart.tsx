@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import echarts from "./echarts";
+import type * as echarts from "echarts/core";
 import { chartTheme } from "./theme";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatDate, formatNumber } from "@/lib/format";
@@ -48,54 +48,68 @@ export function MacroHistoryChart({ bundle, height = 260 }: MacroHistoryChartPro
       setMode("fallback");
       return;
     }
+    let active = true;
     let chart: echarts.ECharts | undefined;
-    try {
-      chart = echarts.init(ref.current);
-      const th = chartTheme();
-      const allDates = Array.from(new Set(Object.values(bundle).flatMap((s) => s.d))).sort();
-      const series = Object.entries(bundle).map(([name, cols]) => ({
-        name,
-        type: "line" as const,
-        showSymbol: false,
-        connectNulls: false,
-        data: allDates.map((d) => {
-          const idx = cols.d.indexOf(d);
-          return idx >= 0 ? cols.v[idx] : null;
-        }),
-      }));
-      chart.setOption({
-        grid: { left: 8, right: 16, top: 28, bottom: 8, containLabel: true },
-        legend: { textStyle: { color: th.axis, fontSize: 10 }, top: 2 },
-        tooltip: {
-          trigger: "axis",
-          formatter: (params: unknown) => {
-            const list = params as Array<{ axisValue: string; seriesName: string; data: number | null }>;
-            if (!Array.isArray(list) || list.length === 0) return "";
-            const rows = list
-              .filter((p) => p.data !== null)
-              .map((p) => `${p.seriesName}: <b>${formatNumber(p.data as number, locale)}</b>`)
-              .join("<br/>");
-            return `${formatDate(list[0].axisValue, locale)}<br/>${rows}`;
+    const allDates = Array.from(new Set(Object.values(bundle).flatMap((s) => s.d))).sort();
+    const series = Object.entries(bundle).map(([name, cols]) => ({
+      name,
+      type: "line" as const,
+      showSymbol: false,
+      connectNulls: false,
+      data: allDates.map((d) => {
+        const idx = cols.d.indexOf(d);
+        return idx >= 0 ? cols.v[idx] : null;
+      }),
+    }));
+    const onResize = () => chart?.resize();
+    window.addEventListener("resize", onResize);
+    void import("./echarts")
+      .then(({ default: charting }) => {
+        if (!active || !ref.current) return;
+        chart = charting.init(ref.current);
+        const th = chartTheme();
+        chart.setOption({
+          grid: { left: 8, right: 16, top: 28, bottom: 8, containLabel: true },
+          legend: { textStyle: { color: th.axis, fontSize: 10 }, top: 2 },
+          tooltip: {
+            trigger: "axis",
+            formatter: (params: unknown) => {
+              const list = params as Array<{
+                axisValue: string;
+                seriesName: string;
+                data: number | null;
+              }>;
+              if (!Array.isArray(list) || list.length === 0) return "";
+              const rows = list
+                .filter((p) => p.data !== null)
+                .map((p) => `${p.seriesName}: <b>${formatNumber(p.data as number, locale)}</b>`)
+                .join("<br/>");
+              return `${formatDate(list[0].axisValue, locale)}<br/>${rows}`;
+            },
           },
-        },
-        xAxis: {
-          type: "category",
-          data: allDates,
-          axisLine: { lineStyle: { color: th.grid } },
-          axisLabel: { color: th.axis, fontSize: 10 },
-        },
-        yAxis: {
-          type: "value",
-          scale: true,
-          axisLabel: { color: th.axis, fontSize: 10 },
-          splitLine: { lineStyle: { color: th.grid } },
-        },
-        series,
+          xAxis: {
+            type: "category",
+            data: allDates,
+            axisLine: { lineStyle: { color: th.grid } },
+            axisLabel: { color: th.axis, fontSize: 10 },
+          },
+          yAxis: {
+            type: "value",
+            scale: true,
+            axisLabel: { color: th.axis, fontSize: 10 },
+            splitLine: { lineStyle: { color: th.grid } },
+          },
+          series,
+        });
+      })
+      .catch(() => {
+        if (active) setMode("fallback");
       });
-    } catch {
-      setMode("fallback");
-    }
-    return () => chart?.dispose();
+    return () => {
+      active = false;
+      window.removeEventListener("resize", onResize);
+      chart?.dispose();
+    };
   }, [bundle, locale]);
 
   if (Object.keys(bundle).length === 0) {
@@ -119,8 +133,12 @@ export function MacroHistoryChart({ bundle, height = 260 }: MacroHistoryChartPro
               return (
                 <tr key={name} className="border-b border-border/50 last:border-0">
                   <td className="py-1.5 pr-2 font-mono">{name}</td>
-                  <td className="py-1.5 pr-2 tabular-nums">{lastIdx >= 0 ? formatNumber(cols.v[lastIdx], locale) : "—"}</td>
-                  <td className="py-1.5 tabular-nums text-muted-foreground">{lastIdx >= 0 ? formatDate(cols.d[lastIdx], locale) : "—"}</td>
+                  <td className="py-1.5 pr-2 tabular-nums">
+                    {lastIdx >= 0 ? formatNumber(cols.v[lastIdx], locale) : "—"}
+                  </td>
+                  <td className="py-1.5 tabular-nums text-muted-foreground">
+                    {lastIdx >= 0 ? formatDate(cols.d[lastIdx], locale) : "—"}
+                  </td>
                 </tr>
               );
             })}
