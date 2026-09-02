@@ -927,12 +927,14 @@ def main(argv: list[str] | None = None) -> int:
     command = _resolve_command(args)
 
     # Config self-check
+    from pipeline.config.models import ConfigError
+
     try:
         settings.load_universe()
         settings.load_risk_model()
         settings.load_sources()
         settings.load_news_sources()
-    except (FileNotFoundError, ValueError) as exc:
+    except ConfigError as exc:
         print(f"[pipeline] config loading failed: {exc}", file=sys.stderr)
         return 1
 
