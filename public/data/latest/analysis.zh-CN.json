@@ -1,106 +1,167 @@
 {
   "schema_version": "1.1.0",
-  "generated_at": "2026-09-01T20:34:25Z",
+  "generated_at": "2026-09-02T10:34:09Z",
   "language": "zh-CN",
   "market_state": "caution",
   "market_regime": "goldilocks",
-  "summary": "对 2026-09-01 美股交易日的盘后解读（事实层 2026-09-01T19:34:23Z）：综合风险分日内上升 2.6 至 44.35，在 goldilocks 状态下维持 caution 级别，但盘面是无可争议的避险。全部 22 个跟踪板块与主题收跌，领跌为网络安全 -4.14%、半导体设备 -3.51%、企业软件 -3.50%、量子计算 -3.38% 与汽车 -3.34%，AI 板块整体走弱——英伟达 -1.65%、美光 -3.13%、AMD -2.36%、特斯拉 -3.34%。催化剂来自地缘：美国在霍尔木兹海峡新一轮航运遇袭后打击伊朗，伊朗随即报复，令原油大幅走高、欧洲天然气升至 2023 年以来最高。利率在冲击中进一步重定价——10Y 4.73、10Y 实际利率 2.42（98.39 百分位）、2Y 4.34——同时美联储理事巴尔（重要度 60.24）转鹰、偏向加息，FedWatch 隐含利率 3.98。但框架仍判读为 goldilocks：信用温和（高收益债 OAS 2.63、投资级 OAS 0.8），波动率受控（VIX 14.92、已实现波动率 7.34），尽管波动率维度升至 16.22；趋势结构完好（价格高于 200 日均线 7.06%、52 周回撤仅 -2.19%）。市场宽度全面转负——新低占比 0.0903、200 日均线上方占比 0.5935、小盘相对强度 -0.5633——因此这是一轮受利率与地缘压制、领涨面收窄的行情，置身于仍温和的信用与波动率背景之中。总体：这是一轮地缘驱动的避险交易日，综合分尚未完全定价；caution 来自利率锚、市场宽度与活跃的霍尔木兹尾部风险。",
+  "summary": "2026-09-02 美股盘前解读（事实层 2026-09-02T10:34:09Z）：综合风险分 44.38，日内 +0.03、周内 -0.07、月内 +3.33，在 goldilocks 机制下维持 caution，模型置信度 0.9131。隔夜 2026-09-01 美股收盘的风险规避情绪向东传导：22 个跟踪板块与主题全线收跌，领跌为机器人 -5.1775%、存储 -4.3742%、网络安全 -3.9441%、企业软件 -3.4552%、半导体设备 -3.4655%、量子计算 -3.4602%、汽车 -3.2233%，仅消费电子 -0.0694% 与数字广告 -0.7341% 接近持平。A 股半导体在 2026-09-02 收盘全线走低——688825.SH -3.8584%、002156.SZ -2.737%、000021.SZ -2.7101%、600584.SH -2.7016%、688008.SH -2.6468%、688525.SH -2.3803%、301308.SZ -1.8636%、300223.SZ -1.7954%、001309.SZ -1.2224%、300475.SZ -1.0905%、603986.SH -1.0534%——加密资产同步走弱（BTC -2.04101% 至 76516，ETH -3.85216%，SOL -4.24903%）。驱动因素是地缘政治，且已传导至利率端：中文转述报道布伦特原油 95 美元、全球债市遭猛烈抛售、韩国股市下跌 4%，CNBC 称 10Y 收益率创 2023 年末以来新高；事实层显示 10Y 报 4.75、10Y 实际利率 2.44（99.28 分位）、2Y 报 4.34、曲线仅 0.41，美元指数升至 118.7479。关键在于盈亏平衡通胀率也开始移动——5Y5Y 为 2.33、10Y 为 2.35——这已不再是纯粹的实际利率重定价。机制层面信用与波动率仍支持 goldilocks（HY OAS 2.63、IG OAS 0.8、VIX 14.92、已实现波动率 7.1774），趋势亦完好（价格高于 200 日均线 7.1935%，52 周回撤仅 -2.0697%），但内部结构趋薄：创新高占比 0.0129 对创新低占比 0.0839、站上 200 日均线广度降至 0.5806、小盘相对 -0.6647、半导体相对 -17.5978，同时非农已录得 -23.0。结论：地缘政治驱动的利率与通胀冲击正推入一个宽度收窄的盘面，而温和的信用尚未确认风险——caution 来自实际利率锚、广度与霍尔木兹尾部，而非来自压力。",
   "top_risk_drivers": [
     {
-      "claim": "利率锚是当前的核心约束：10Y 实际利率 2.42 位于 98.39 百分位，10Y 名义利率 4.73、2Y 4.34，令 10Y-2Y 曲线平坦化至 0.39。",
+      "claim": "利率锚是核心约束且再度收紧：10Y 实际利率 2.44 位于 99.28 分位，10Y 收益率从 4.73 升至 4.75，2Y 维持 4.34，10Y/2Y 曲线仅 0.41。",
       "evidence_refs": [
         {
           "dataset": "risk",
           "path": "payload.dimensions[0].indicators[0].value",
           "metric": "real_rate_dfii10",
-          "value": 2.42,
+          "value": 2.44,
           "updated_at": null
         },
         {
           "dataset": "macro",
           "path": "payload.rates[0].value",
           "metric": "dgs10",
-          "value": 4.73,
-          "updated_at": "2026-08-28T00:00:00Z"
+          "value": 4.75,
+          "updated_at": "2026-08-31T00:00:00Z"
         },
         {
           "dataset": "macro",
           "path": "payload.rates[1].value",
           "metric": "dgs2",
           "value": 4.34,
-          "updated_at": "2026-08-28T00:00:00Z"
+          "updated_at": "2026-08-31T00:00:00Z"
         },
         {
           "dataset": "risk",
           "path": "payload.dimensions[0].indicators[1].value",
           "metric": "yield_curve_10y2y",
-          "value": 0.39000000000000057,
+          "value": 0.41000000000000014,
           "updated_at": null
-        }
-      ]
-    },
-    {
-      "claim": "这是实际利率驱动的重定价，而非通胀驱动：5Y5Y 远期盈亏平衡 2.31、10Y 盈亏平衡 2.31 均未跟涨，而 10Y 实际利率升至 2.42，FedWatch 隐含利率 3.98 且偏向加息。",
-      "evidence_refs": [
-        {
-          "dataset": "macro",
-          "path": "payload.inflation[3].value",
-          "metric": "t5yifr",
-          "value": 2.31,
-          "updated_at": "2026-08-31T00:00:00Z"
-        },
-        {
-          "dataset": "macro",
-          "path": "payload.inflation[4].value",
-          "metric": "t10yie",
-          "value": 2.31,
-          "updated_at": "2026-08-31T00:00:00Z"
         },
         {
           "dataset": "macro",
           "path": "payload.rates[2].value",
           "metric": "dfii10",
-          "value": 2.42,
-          "updated_at": "2026-08-28T00:00:00Z"
+          "value": 2.44,
+          "updated_at": "2026-08-31T00:00:00Z"
         }
       ]
     },
     {
-      "claim": "抛售面广且由 AI 板块引领：网络安全 -4.14%、半导体设备 -3.51%、汽车 -3.34% 领跌全部 22 个主题，英伟达 -1.65%、美光 -3.13%、AMD -2.36%、特斯拉 -3.34%。",
+      "claim": "冲击已变成通胀故事而非仅实际利率：5Y5Y 盈亏平衡通胀率从 2.31 升至 2.33，10Y 从 2.31 升至 2.35；FedWatch 隐含利率 3.985 且偏加息，SOFR 从 3.65 升至 3.68。",
       "evidence_refs": [
         {
-          "dataset": "sectors",
-          "path": "payload.themes[3].change_1d",
-          "metric": "change_1d",
-          "value": -4.1438,
-          "updated_at": "2025-12-22T00:00:00Z"
+          "dataset": "macro",
+          "path": "payload.inflation[3].value",
+          "metric": "t5yifr",
+          "value": 2.33,
+          "updated_at": "2026-09-01T00:00:00Z"
         },
         {
-          "dataset": "sectors",
-          "path": "payload.themes[6].change_1d",
-          "metric": "change_1d",
-          "value": -3.5075,
-          "updated_at": "2025-12-22T00:00:00Z"
+          "dataset": "macro",
+          "path": "payload.inflation[4].value",
+          "metric": "t10yie",
+          "value": 2.35,
+          "updated_at": "2026-09-01T00:00:00Z"
         },
         {
-          "dataset": "sectors",
-          "path": "payload.sectors[1].change_1d",
+          "dataset": "macro",
+          "path": "payload.liquidity[4].value",
+          "metric": "sofr",
+          "value": 3.68,
+          "updated_at": "2026-08-31T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.rates[3].value",
+          "metric": "dff",
+          "value": 3.63,
+          "updated_at": "2026-08-31T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "宽度持续变薄而盘面仍在创出新低：创新高占比 0.0129（155 只中 2 只）对创新低占比 0.0839（13 只），站上 200 日均线广度从 0.5935 降至 0.5806，小盘相对 -0.6647、半导体相对 -17.5978。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[1].value",
+          "metric": "new_highs_ratio",
+          "value": 0.0129,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[2].value",
+          "metric": "new_lows_ratio",
+          "value": 0.0839,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[0].value",
+          "metric": "breadth_above_ma200",
+          "value": 0.5806,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[3].value",
+          "metric": "small_cap_relative",
+          "value": -0.6647,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[4].value",
+          "metric": "semis_relative",
+          "value": -17.5978,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "隔夜传导范围很广且先抵达亚洲：中文转述报道布伦特原油 95 美元、全球债市遭猛烈抛售、韩国股市下跌 4%；A 股半导体在 2026-09-02 收盘走低——688825.SH -3.8584%、000021.SZ -2.7101%、600584.SH -2.7016%、002156.SZ -2.737%——此前美股 AI 标的已下跌（NVDA -1.5128%、MU -2.6379%、AMD -2.3602%、TSLA -3.2233%）。",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[5].change_1d",
           "metric": "change_1d",
-          "value": -3.3428,
-          "updated_at": "2025-12-22T00:00:00Z"
+          "value": -3.8584,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[9].change_1d",
+          "metric": "change_1d",
+          "value": -2.7101,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[14].change_1d",
+          "metric": "change_1d",
+          "value": -2.7016,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[15].change_1d",
+          "metric": "change_1d",
+          "value": -2.737,
+          "updated_at": null
         },
         {
           "dataset": "equities",
           "path": "payload.assets[0].change_1d",
           "metric": "change_1d",
-          "value": -1.6464,
+          "value": -1.5128,
           "updated_at": null
         },
         {
           "dataset": "equities",
           "path": "payload.assets[2].change_1d",
           "metric": "change_1d",
-          "value": -3.1301,
+          "value": -2.6379,
           "updated_at": null
         },
         {
@@ -114,222 +175,33 @@
           "dataset": "equities",
           "path": "payload.assets[4].change_1d",
           "metric": "change_1d",
-          "value": -3.3429,
+          "value": -3.2233,
           "updated_at": null
         }
       ]
     },
     {
-      "claim": "盘面遭遇新的供给侧地缘冲击：美国在霍尔木兹海峡新一轮航运遇袭后打击伊朗，伊朗随即报复，原油大幅走高、欧洲天然气升至 2023 年以来最高（新闻重要度 52.16）；广义美元指数守在 118.75。",
+      "claim": "流动性不再是缓冲：逆回购从 6.726 骤降至 0.725，美联储资产负债表从 6745699 缩减至 6730912，美元指数从 118.3583 升至 118.7479，USD/JPY 报 159.97——在供给冲击面前这是强美元、薄储备的环境。",
       "evidence_refs": [
         {
-          "dataset": "news",
-          "path": "payload.items[3].importance",
-          "metric": "importance",
-          "value": 52.16,
-          "updated_at": "2026-09-01T18:45:02Z"
+          "dataset": "macro",
+          "path": "payload.liquidity[3].value",
+          "metric": "rrpontsyd",
+          "value": 0.725,
+          "updated_at": "2026-09-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.liquidity[0].value",
+          "metric": "walcl",
+          "value": 6730912.0,
+          "updated_at": "2026-08-26T00:00:00Z"
         },
         {
           "dataset": "macro",
           "path": "payload.fx[0].value",
           "metric": "dtwexbgs",
           "value": 118.7479,
-          "updated_at": "2026-08-28T00:00:00Z"
-        }
-      ]
-    }
-  ],
-  "supporting_signals": [
-    {
-      "claim": "美联储指引转鹰：理事巴尔（新闻重要度 60.24）表示若通胀不降温将支持加息，10Y 收益率位于 4.73，FedWatch 隐含 3.98。",
-      "evidence_refs": [
-        {
-          "dataset": "news",
-          "path": "payload.items[0].importance",
-          "metric": "importance",
-          "value": 60.24,
-          "updated_at": "2026-09-01T14:09:02Z"
-        },
-        {
-          "dataset": "macro",
-          "path": "payload.rates[0].value",
-          "metric": "dgs10",
-          "value": 4.73,
-          "updated_at": "2026-08-28T00:00:00Z"
-        }
-      ]
-    },
-    {
-      "claim": "信用拒绝确认压力：高收益债 OAS 2.63、投资级 OAS 0.8，且跨资产确认度维持在 0.75。",
-      "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[1].indicators[2].value",
-          "metric": "hy_oas",
-          "value": 2.63,
-          "updated_at": null
-        },
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[1].indicators[3].value",
-          "metric": "ig_oas",
-          "value": 0.8,
-          "updated_at": null
-        },
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[4].indicators[0].value",
-          "metric": "cross_asset_confirmation",
-          "value": 0.75,
-          "updated_at": null
-        }
-      ]
-    },
-    {
-      "claim": "重定价过程中波动率依旧受控：VIX 14.92、已实现波动率 7.34，尽管波动率维度升至 16.22。",
-      "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[3].indicators[0].value",
-          "metric": "vix",
-          "value": 14.92,
-          "updated_at": null
-        },
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[3].indicators[1].value",
-          "metric": "realized_vol",
-          "value": 7.3351,
-          "updated_at": null
-        }
-      ]
-    },
-    {
-      "claim": "趋势结构完好：价格高于 200 日均线 7.06%，52 周回撤仅 -2.19%，3 个月动量仍为正 0.16。",
-      "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[5].indicators[0].value",
-          "metric": "price_vs_ma200",
-          "value": 7.0585,
-          "updated_at": null
-        },
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[5].indicators[1].value",
-          "metric": "drawdown_52w",
-          "value": -2.1938,
-          "updated_at": null
-        },
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[5].indicators[2].value",
-          "metric": "momentum_3m",
-          "value": 0.1639,
-          "updated_at": null
-        }
-      ]
-    },
-    {
-      "claim": "A 股 AI 供应链在 CN 收盘时（由 11:30 都柏林运行捕获）与美股抛售分化：603986.sh +2.31%、300475.sz +3.43%、300223.sz +3.13%，而 688825.sh -1.01%。",
-      "evidence_refs": [
-        {
-          "dataset": "equities",
-          "path": "payload.assets[6].change_1d",
-          "metric": "change_1d",
-          "value": 2.3134,
-          "updated_at": null
-        },
-        {
-          "dataset": "equities",
-          "path": "payload.assets[12].change_1d",
-          "metric": "change_1d",
-          "value": 3.4282,
-          "updated_at": null
-        },
-        {
-          "dataset": "equities",
-          "path": "payload.assets[10].change_1d",
-          "metric": "change_1d",
-          "value": 3.1319,
-          "updated_at": null
-        },
-        {
-          "dataset": "equities",
-          "path": "payload.assets[5].change_1d",
-          "metric": "change_1d",
-          "value": -1.0068,
-          "updated_at": null
-        }
-      ]
-    }
-  ],
-  "contradicting_signals": [
-    {
-      "claim": "综合风险分本身仍受控于 44.35，且状态仍为 goldilocks——今日的抛售尚未击穿框架。",
-      "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.total_score",
-          "metric": "total_score",
-          "value": 44.35,
-          "updated_at": null
-        }
-      ]
-    },
-    {
-      "claim": "信用利差未发出警告：高收益债 OAS 2.63、投资级 OAS 0.8 均处于温和水平。",
-      "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[1].indicators[2].value",
-          "metric": "hy_oas",
-          "value": 2.63,
-          "updated_at": null
-        },
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[1].indicators[3].value",
-          "metric": "ig_oas",
-          "value": 0.8,
-          "updated_at": null
-        }
-      ]
-    },
-    {
-      "claim": "波动率依旧沉睡：VIX 14.92、已实现波动率 7.34，冲击之下对冲成本仍然低廉。",
-      "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[3].indicators[0].value",
-          "metric": "vix",
-          "value": 14.92,
-          "updated_at": null
-        },
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[3].indicators[1].value",
-          "metric": "realized_vol",
-          "value": 7.3351,
-          "updated_at": null
-        }
-      ]
-    },
-    {
-      "claim": "美元并未确认避险：广义美元指数 118.75 仅处于 20.21 百分位，欧元 1.1598、日元 159.97——这是弱美元、偏风险偏好的格局。",
-      "evidence_refs": [
-        {
-          "dataset": "risk",
-          "path": "payload.dimensions[0].indicators[2].value",
-          "metric": "dollar_index",
-          "value": 118.7479,
-          "updated_at": null
-        },
-        {
-          "dataset": "macro",
-          "path": "payload.fx[2].value",
-          "metric": "dexuseu",
-          "value": 1.1598,
           "updated_at": "2026-08-28T00:00:00Z"
         },
         {
@@ -342,32 +214,355 @@
       ]
     }
   ],
+  "supporting_signals": [
+    {
+      "claim": "22 个跟踪板块与主题全线收跌：机器人 -5.1775%、存储 -4.3742%、网络安全 -3.9441%、半导体设备 -3.4655%、企业软件 -3.4552%、量子计算 -3.4602% 领跌，连盘面中的防守方向——消费电子 -0.0694%、数字广告 -0.7341%、游戏 -0.7392%——也未能守住持平。",
+      "evidence_refs": [
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[11].change_1d",
+          "metric": "change_1d",
+          "value": -5.1775,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[7].change_1d",
+          "metric": "change_1d",
+          "value": -4.3742,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[3].change_1d",
+          "metric": "change_1d",
+          "value": -3.9441,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[6].change_1d",
+          "metric": "change_1d",
+          "value": -3.4655,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[4].change_1d",
+          "metric": "change_1d",
+          "value": -3.4552,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[14].change_1d",
+          "metric": "change_1d",
+          "value": -3.4602,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[8].change_1d",
+          "metric": "change_1d",
+          "value": -0.0694,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[18].change_1d",
+          "metric": "change_1d",
+          "value": -0.7341,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[17].change_1d",
+          "metric": "change_1d",
+          "value": -0.7392,
+          "updated_at": "2025-12-22T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "claim": "跨资产确认度为 0.75，10 个跟踪触发条件中有 6 个已触发：SPY -0.687%、比特币 -2.04101%、小盘相对 -0.6647、美元 118.7479 高于 105、实际利率 2.44 高于 1.5、黄金上涨 0.2116%。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[4].indicators[0].value",
+          "metric": "cross_asset_confirmation",
+          "value": 0.75,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[0].indicators[2].value",
+          "metric": "dollar_index",
+          "value": 118.7479,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[0].indicators[0].value",
+          "metric": "real_rate_dfii10",
+          "value": 2.44,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[3].value",
+          "metric": "small_cap_relative",
+          "value": -0.6647,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "加密资产在确认风险规避而非分散风险：BTC -2.04101% 至 76516，ETH -3.85216% 至 2365.84，SOL -4.24903% 至 98.21，BTC 占比 0.590963——高 beta 资产首先被抛售。",
+      "evidence_refs": [
+        {
+          "dataset": "crypto",
+          "path": "payload.assets[0].price",
+          "metric": "price",
+          "value": 76516.0,
+          "updated_at": null
+        },
+        {
+          "dataset": "crypto",
+          "path": "payload.assets[1].price",
+          "metric": "price",
+          "value": 2365.84,
+          "updated_at": null
+        },
+        {
+          "dataset": "crypto",
+          "path": "payload.assets[2].price",
+          "metric": "price",
+          "value": 98.21,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "劳动力这一环在数据公布前已经走弱：非农 -23.0（前值 20.0），失业率 4.1，续请失业金 1778000，而就业报告将于 2026-09-04T12:30:00Z 公布。",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.labor[0].value",
+          "metric": "payems",
+          "value": -23.0,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.labor[1].value",
+          "metric": "unrate",
+          "value": 4.1,
+          "updated_at": "2026-07-01T00:00:00Z"
+        },
+        {
+          "dataset": "macro",
+          "path": "payload.labor[3].value",
+          "metric": "ccsa",
+          "value": 1778000.0,
+          "updated_at": "2026-08-15T00:00:00Z"
+        },
+        {
+          "dataset": "calendar",
+          "path": "payload.events[1].datetime",
+          "metric": "event_datetime",
+          "value": "2026-09-04T12:30:00Z",
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "AI 板块在太平洋两岸同时杀估值：NVDA -1.5128% 报 217.440002，MU -2.6379% 报 933.440002，AMD -2.3602% 报 459.609985，AVGO -0.1782% 报 369.679993，半导体相对 -17.5978%——在任何宏观确认到来之前，领头羊已先被砍。",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[0].price",
+          "metric": "price",
+          "value": 217.440002,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[0].change_1d",
+          "metric": "change_1d",
+          "value": -1.5128,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[2].price",
+          "metric": "price",
+          "value": 933.440002,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[2].change_1d",
+          "metric": "change_1d",
+          "value": -2.6379,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[3].price",
+          "metric": "price",
+          "value": 459.609985,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[3].change_1d",
+          "metric": "change_1d",
+          "value": -2.3602,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[1].price",
+          "metric": "price",
+          "value": 369.679993,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[1].change_1d",
+          "metric": "change_1d",
+          "value": -0.1782,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[4].value",
+          "metric": "semis_relative",
+          "value": -17.5978,
+          "updated_at": null
+        }
+      ]
+    }
+  ],
+  "contradicting_signals": [
+    {
+      "claim": "信用完全没有发出警报：HY OAS 为 2.63（2.17 分位），IG OAS 为 0.8，两者都远未接近 4 的压力阈值，流动性信用维度仅 34.88 分。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[1].indicators[2].value",
+          "metric": "hy_oas",
+          "value": 2.63,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[1].indicators[3].value",
+          "metric": "ig_oas",
+          "value": 0.8,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "波动率是最有力的反驳：VIX 14.92、已实现波动率 7.1774，波动率维度仅 16.22——综合风险分 44.38 而波动率如此之低，说明市场在削减久期敞口，而非重定价系统性风险。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[0].value",
+          "metric": "vix",
+          "value": 14.92,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[1].value",
+          "metric": "realized_vol",
+          "value": 7.1774,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.total_score",
+          "metric": "total_score",
+          "value": 44.38,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "趋势完好且回撤极小：价格高于 200 日均线 7.1935%，52 周回撤仅 -2.0697%，3 个月动能为正的 0.291——这里没有任何像下跌趋势起点的迹象。",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[5].indicators[0].value",
+          "metric": "price_vs_ma200",
+          "value": 7.1935,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[5].indicators[1].value",
+          "metric": "drawdown_52w",
+          "value": -2.0697,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[5].indicators[2].value",
+          "metric": "momentum_3m",
+          "value": 0.291,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "AI 资本开支叙事仍在被强化而非撤回：中文转述报道英伟达向投资者表示，若不受供应限制，FY28 业务规模或接近翻倍；英伟达以 $3.5B 投资联发科可转债；德意志银行认为黄金卖压即将枯竭、下一轮上涨将由主动资金接棒——而黄金已上涨 0.2116%。",
+      "evidence_refs": [
+        {
+          "dataset": "news",
+          "path": "payload.items[4].importance",
+          "metric": "importance",
+          "value": 52.46,
+          "updated_at": "2026-09-02T10:29:06Z"
+        },
+        {
+          "dataset": "news",
+          "path": "payload.items[3].importance",
+          "metric": "importance",
+          "value": 52.47,
+          "updated_at": "2026-09-02T10:29:19Z"
+        }
+      ]
+    }
+  ],
   "what_changed_today": [
-    "综合风险分日内上升 2.6 至 44.35，维持 caution / goldilocks。",
-    "10Y 收益率自 4.67 升至 4.73，2Y 自 4.2 升至 4.34，实际利率 2.42（98.39 百分位，自 2.34 上行）。",
-    "10Y-2Y 曲线平坦化至 0.39，而盈亏平衡通胀维持在 2.31（5Y5Y）与 2.31（10Y）。",
-    "美联储理事巴尔（重要度 60.24）转鹰、偏向加息；FedWatch 隐含 3.98。",
-    "美国在霍尔木兹遇袭后打击伊朗，伊朗报复——活跃的供给侧尾部风险（新闻重要度 52.16）。",
-    "全部 22 个跟踪板块与主题收跌，领跌为网络安全 -4.14%、半导体设备 -3.51%。",
-    "大型 AI 股走弱：英伟达 -1.65%、美光 -3.13%、AMD -2.36%、特斯拉 -3.34%。",
-    "逆回购自 6.726 回落至 0.725（月末效应消退），SOFR 自 3.65 微升至 3.68——无融资压力。"
+    "综合风险分 44.38，日内 +0.03、周内 -0.07、月内 +3.33——置信度 0.9131，仍在 goldilocks 机制下的 caution。",
+    "利率再度上修：10Y 从 4.73 升至 4.75，10Y 实际利率从 2.42 升至 2.44（99.28 分位），曲线 0.41；盈亏平衡通胀率终于开始移动——5Y5Y 从 2.31 升至 2.33，10Y 从 2.31 升至 2.35。",
+    "波动率与信用同步小幅恶化：VIX 从 14.43 升至 14.92，已实现波动率 7.1774，HY OAS 从 2.6 升至 2.63，IG OAS 从 0.79 升至 0.8——幅度很小，但四项同向。",
+    "广度进一步恶化：站上 200 日均线比例从 0.5935 降至 0.5806，创新高占比 0.0129（155 只中 2 只），创新低占比 0.0839（155 只中 13 只），小盘相对从 -0.5633 降至 -0.6647。",
+    "A 股半导体在 2026-09-02 收盘普遍走低——688825.SH -3.8584%、002156.SZ -2.737%、000021.SZ -2.7101%、600584.SH -2.7016%、688008.SH -2.6468%、688525.SH -2.3803%、301308.SZ -1.8636%、300223.SZ -1.7954%、001309.SZ -1.2224%、300475.SZ -1.0905%、603986.SH -1.0534%——该板块连续第二个交易日下跌。",
+    "隔夜地缘局势升级：CNBC 报道伊朗称两艘油轮触及霍尔木兹水雷并对地区目标实施报复性打击；一家俄罗斯炼油厂在无人机袭击后停止原油加工；中文转述报道布伦特原油 95 美元、韩国股市下跌 4%。",
+    "AI 叙事不是转弱而是更激进：中文转述报道英伟达向投资者表示，若不受供应限制，FY28 业务规模或接近翻倍；另有 $3.5B 的联发科可转债投资；同时苹果在存储紧缺中进入 John Ternus 时代，OpenAI 预告新模型在网络安全能力上达到“关键”级别。",
+    "政策声音仍偏鹰但未定调：中文转述报道称，中外资机构认为沃什杰克逊霍尔首秀之后美联储本轮加息并非定局；加拿大央行将在周三面对关税冲击做出决议；中国央行行长潘功胜在 G20 表示，中国没有必要也无意通过汇率贬值获取贸易竞争优势。",
+    "融资在边际上变薄但未出现压力：月末回流结束后逆回购从 6.726 降至 0.725，SOFR 从 3.65 升至 3.68，美元指数从 118.3583 升至 118.7479，USD/JPY 报 159.97。"
   ],
   "watch_next": [
-    "2026-09-04T12:30:00Z 的非农就业报告是本周最高权重数据；最近一期新增就业 -23.0，失业率 4.1。",
-    "2026-09-01T14:00:00Z 的 JOLTS 职位空缺是本周首个劳动力数据。",
-    "2026-09-10 的 PPI 与 2026-09-11 的 CPI 将检验 2.31 的盈亏平衡通胀能否守住。",
-    "关注 10Y 实际利率能否守在 2.42 上方——宏观分项已处于 98.39 百分位。",
-    "高收益债 OAS 2.63 是最干净的确认指标；一旦走阔，收窄式行情将转为风险事件。",
-    "霍尔木兹是当前活跃尾部：偏加息曲线之上的原油冲击，是本 goldilocks 状态最难吸收的组合。",
-    "观察 A 股 AI 买盘（603986 +2.31%、300475 +3.43%）能否延续至美股时段或消退。"
+    "2026-09-04T12:30:00Z 的就业报告是本周最重要的数据；上一次非农读数已是 -23.0，失业率 4.1，续请失业金 1778000。",
+    "2026-09-10T12:30:00Z 的 PPI 与 2026-09-11T12:30:00Z 的 CPI 将检验 2.33 与 2.35 的盈亏平衡通胀率是否仍然锚定；若继续上行，实际利率叙事将转变为通胀叙事。",
+    "关注 10Y 实际利率是否守住 2.44 上方——宏观分项已处于 99.28 分位，10Y 的 4.75 已是多年高位。",
+    "HY OAS 的 2.63 是最清晰的信号；若从此开始走阔，宽度收窄的盘面就会变成真正的风险事件，综合风险分也将不得不脱离 44.38。",
+    "霍尔木兹是活跃的尾部风险：在偏加息的曲线之上再叠加原油冲击，是 goldilocks 机制唯一无法吸收的组合——布伦特 95 美元叠加 FedWatch 隐含 3.985，已无缓冲空间。",
+    "2026-09-03T12:00:00Z 的 DOCU 财报与 2026-09-10T12:00:00Z 的 ADBE 财报是近期仅有的个股催化剂，而两者都属于当日已下跌 -3.4552% 的软件板块。",
+    "关注 A 股半导体在 688825.SH -3.8584%、603986.SH -1.0534% 之后的下一交易日是否出现买盘，还是该板块继续走低并传导至美股开盘。"
   ],
   "bull_case": {
-    "title": "牛市情景：冲击消退、信用完好",
+    "title": "乐观情形：冲击消退，goldilocks 机制重新主导",
     "points": [
-      "信用与波动率均未发出警告：高收益债 OAS 2.63、投资级 OAS 0.8、VIX 14.92、已实现波动率 7.34。",
-      "综合分在 goldilocks 下维持 44.35——这是在压缩久期风险，而非重定价系统性风险。",
-      "若霍尔木兹缓和且 2026-09-04 就业数据转弱，2Y 可自 4.34 回落。",
-      "趋势结构完好：价格高于 200 日均线 7.06%，52 周回撤仅 -2.19%。"
+      "信用与波动率完全没有发出警报：HY OAS 2.63、IG OAS 0.8、VIX 14.92、已实现波动率 7.1774。",
+      "综合风险分 44.38 且趋势完好，处于 goldilocks——价格高于 200 日均线 7.1935%，52 周回撤仅 -2.0697%。",
+      "英伟达 FY28 指引意味着 AI 周期受制于供给而非需求；霍尔木兹若降级，原油冲击与 2.33 的盈亏平衡通胀率将同时缓解。",
+      "若 2026-09-04 非农在 -23.0 之后继续走弱，美联储就有空间忽略油价冲高；2Y 的 4.34 将率先回落。"
     ],
     "evidence_refs": [
       {
@@ -395,140 +590,88 @@
         "dataset": "risk",
         "path": "payload.dimensions[3].indicators[1].value",
         "metric": "realized_vol",
-        "value": 7.3351,
+        "value": 7.1774,
         "updated_at": null
       },
       {
         "dataset": "risk",
         "path": "payload.total_score",
         "metric": "total_score",
-        "value": 44.35,
+        "value": 44.38,
         "updated_at": null
       },
       {
         "dataset": "risk",
         "path": "payload.dimensions[5].indicators[0].value",
         "metric": "price_vs_ma200",
-        "value": 7.0585,
+        "value": 7.1935,
         "updated_at": null
       },
       {
         "dataset": "risk",
         "path": "payload.dimensions[5].indicators[1].value",
         "metric": "drawdown_52w",
-        "value": -2.1938,
+        "value": -2.0697,
         "updated_at": null
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.inflation[3].value",
+        "metric": "t5yifr",
+        "value": 2.33,
+        "updated_at": "2026-09-01T00:00:00Z"
+      },
+      {
+        "dataset": "news",
+        "path": "payload.items[4].importance",
+        "metric": "importance",
+        "value": 52.46,
+        "updated_at": "2026-09-02T10:29:06Z"
+      },
+      {
+        "dataset": "calendar",
+        "path": "payload.events[1].datetime",
+        "metric": "event_datetime",
+        "value": "2026-09-04T12:30:00Z",
+        "updated_at": null
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.labor[0].value",
+        "metric": "payems",
+        "value": -23.0,
+        "updated_at": "2026-07-01T00:00:00Z"
       },
       {
         "dataset": "macro",
         "path": "payload.rates[1].value",
         "metric": "dgs2",
         "value": 4.34,
-        "updated_at": "2026-08-28T00:00:00Z"
-      },
-      {
-        "dataset": "calendar",
-        "path": "payload.events[3].datetime",
-        "metric": "event_datetime",
-        "value": "2026-09-04T12:30:00Z",
-        "updated_at": null
+        "updated_at": "2026-08-31T00:00:00Z"
       }
     ]
   },
   "base_case": {
-    "title": "基准情景：caution 延续，领涨面进一步收窄",
+    "title": "基准情形：在仍然温和的机制下，盘面由利率主导并持续收窄",
     "points": [
-      "综合分围绕 44.35 震荡，宏观 62.84 被流动性 34.88 与波动率 16.22 对冲。",
-      "利率仍是摆动因子：10Y 4.73 与实际利率 2.42 接近各自区间顶部，压制估值扩张但不破坏趋势。",
-      "宽度维持稀薄——新低占比 0.0903、200 日均线上方占比 0.5935、小盘相对强度 -0.5633——指数波动继续依赖少数大市值标的。"
+      "综合风险分在 44.38 附近横向磨底——是 caution 而非压力——宏观分项处于 99.28 分位，抵消了 2.63 的温和信用。",
+      "盘面维持收窄：站上 200 日均线广度接近 0.5806，创新高占比 0.0129，领涨仅集中在少数 AI 标的，而半导体相对 -17.5978%。",
+      "在 2026-09-04 就业数据与 2026-09-11 CPI 揭晓 3.985 隐含加息路径之前，10Y 将在 4.73 与 4.75 之间震荡，实际利率维持 2.44。",
+      "板块损伤继续集中在高 beta 主题——机器人 -5.1775%、存储 -4.3742%——而未扩散至 -0.0694% 的消费电子。"
     ],
     "evidence_refs": [
       {
         "dataset": "risk",
         "path": "payload.total_score",
         "metric": "total_score",
-        "value": 44.35,
+        "value": 44.38,
         "updated_at": null
-      },
-      {
-        "dataset": "macro",
-        "path": "payload.rates[0].value",
-        "metric": "dgs10",
-        "value": 4.73,
-        "updated_at": "2026-08-28T00:00:00Z"
       },
       {
         "dataset": "risk",
         "path": "payload.dimensions[0].indicators[0].value",
         "metric": "real_rate_dfii10",
-        "value": 2.42,
-        "updated_at": null
-      },
-      {
-        "dataset": "risk",
-        "path": "payload.dimensions[2].indicators[2].value",
-        "metric": "new_lows_ratio",
-        "value": 0.0903,
-        "updated_at": null
-      },
-      {
-        "dataset": "risk",
-        "path": "payload.dimensions[2].indicators[0].value",
-        "metric": "breadth_above_ma200",
-        "value": 0.5935,
-        "updated_at": null
-      },
-      {
-        "dataset": "risk",
-        "path": "payload.dimensions[2].indicators[3].value",
-        "metric": "small_cap_relative",
-        "value": -0.5633,
-        "updated_at": null
-      }
-    ]
-  },
-  "bear_case": {
-    "title": "熊市情景：实际利率与原油冲击同时到来",
-    "points": [
-      "10Y 实际利率 2.42 处于 98.39 百分位、10Y 4.73，若曲线进一步计入加息，估值缓冲已不存在。",
-      "霍尔木兹供给侧冲击把总体通胀推入一条偏加息的曲线——正是打破 goldilocks 判读的组合（新闻重要度 52.16）。",
-      "稀薄的宽度是传导渠道：新低占比 0.0903、小盘相对强度 -0.5633，意味着大市值一旦失守便无承接。",
-      "盯住高收益债 OAS 2.63——从这里只能走阔，而走阔正是当前分数所缺的确认。"
-    ],
-    "evidence_refs": [
-      {
-        "dataset": "risk",
-        "path": "payload.dimensions[0].indicators[0].value",
-        "metric": "real_rate_dfii10",
-        "value": 2.42,
-        "updated_at": null
-      },
-      {
-        "dataset": "macro",
-        "path": "payload.rates[0].value",
-        "metric": "dgs10",
-        "value": 4.73,
-        "updated_at": "2026-08-28T00:00:00Z"
-      },
-      {
-        "dataset": "news",
-        "path": "payload.items[3].importance",
-        "metric": "importance",
-        "value": 52.16,
-        "updated_at": "2026-09-01T18:45:02Z"
-      },
-      {
-        "dataset": "risk",
-        "path": "payload.dimensions[2].indicators[2].value",
-        "metric": "new_lows_ratio",
-        "value": 0.0903,
-        "updated_at": null
-      },
-      {
-        "dataset": "risk",
-        "path": "payload.dimensions[2].indicators[3].value",
-        "metric": "small_cap_relative",
-        "value": -0.5633,
+        "value": 2.44,
         "updated_at": null
       },
       {
@@ -536,6 +679,164 @@
         "path": "payload.dimensions[1].indicators[2].value",
         "metric": "hy_oas",
         "value": 2.63,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[0].value",
+        "metric": "breadth_above_ma200",
+        "value": 0.5806,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[1].value",
+        "metric": "new_highs_ratio",
+        "value": 0.0129,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[4].value",
+        "metric": "semis_relative",
+        "value": -17.5978,
+        "updated_at": null
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.rates[0].value",
+        "metric": "dgs10",
+        "value": 4.75,
+        "updated_at": "2026-08-31T00:00:00Z"
+      },
+      {
+        "dataset": "calendar",
+        "path": "payload.events[1].datetime",
+        "metric": "event_datetime",
+        "value": "2026-09-04T12:30:00Z",
+        "updated_at": null
+      },
+      {
+        "dataset": "calendar",
+        "path": "payload.events[4].datetime",
+        "metric": "event_datetime",
+        "value": "2026-09-11T12:30:00Z",
+        "updated_at": null
+      },
+      {
+        "dataset": "sectors",
+        "path": "payload.themes[11].change_1d",
+        "metric": "change_1d",
+        "value": -5.1775,
+        "updated_at": "2025-12-22T00:00:00Z"
+      },
+      {
+        "dataset": "sectors",
+        "path": "payload.themes[7].change_1d",
+        "metric": "change_1d",
+        "value": -4.3742,
+        "updated_at": "2025-12-22T00:00:00Z"
+      },
+      {
+        "dataset": "sectors",
+        "path": "payload.themes[8].change_1d",
+        "metric": "change_1d",
+        "value": -0.0694,
+        "updated_at": "2025-12-22T00:00:00Z"
+      }
+    ]
+  },
+  "bear_case": {
+    "title": "悲观情形：通胀通道打开且广度崩坏",
+    "points": [
+      "盈亏平衡通胀率自 2.33 与 2.35 继续上行，10Y 突破 4.75，实际利率上穿 2.44——宏观分项在 99.28 分位已无剩余空间。",
+      "霍尔木兹实质上持续封锁：布伦特维持 95 美元、韩国股市已下跌 4%，将迫使全球久期重新定价，而 0.41 的曲线无法吸收。",
+      "信用确认转向：HY OAS 自 2.63 走阔，综合风险分离开 44.38，0.5806 的广度崩塌——0.0839 的创新低占比将成为领先指标。",
+      "AI 板块进一步杀估值：NVDA -1.5128% 与 MU -2.6379% 跌幅扩大，A 股跟随 688825.SH -3.8584% 走低，半导体相对 -17.5978% 将指数拖穿 200 日均线。"
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "macro",
+        "path": "payload.inflation[3].value",
+        "metric": "t5yifr",
+        "value": 2.33,
+        "updated_at": "2026-09-01T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.inflation[4].value",
+        "metric": "t10yie",
+        "value": 2.35,
+        "updated_at": "2026-09-01T00:00:00Z"
+      },
+      {
+        "dataset": "macro",
+        "path": "payload.rates[0].value",
+        "metric": "dgs10",
+        "value": 4.75,
+        "updated_at": "2026-08-31T00:00:00Z"
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[0].indicators[0].value",
+        "metric": "real_rate_dfii10",
+        "value": 2.44,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[1].indicators[2].value",
+        "metric": "hy_oas",
+        "value": 2.63,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.total_score",
+        "metric": "total_score",
+        "value": 44.38,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[0].value",
+        "metric": "breadth_above_ma200",
+        "value": 0.5806,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[2].value",
+        "metric": "new_lows_ratio",
+        "value": 0.0839,
+        "updated_at": null
+      },
+      {
+        "dataset": "equities",
+        "path": "payload.assets[0].change_1d",
+        "metric": "change_1d",
+        "value": -1.5128,
+        "updated_at": null
+      },
+      {
+        "dataset": "equities",
+        "path": "payload.assets[2].change_1d",
+        "metric": "change_1d",
+        "value": -2.6379,
+        "updated_at": null
+      },
+      {
+        "dataset": "equities",
+        "path": "payload.assets[5].change_1d",
+        "metric": "change_1d",
+        "value": -3.8584,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[4].value",
+        "metric": "semis_relative",
+        "value": -17.5978,
         "updated_at": null
       }
     ]
@@ -546,7 +847,7 @@
       "dataset": "risk",
       "path": "payload.total_score",
       "metric": "total_score",
-      "value": 44.35,
+      "value": 44.38,
       "updated_at": null
     },
     {
@@ -567,64 +868,155 @@
       "dataset": "risk",
       "path": "payload.dimensions[0].indicators[0].value",
       "metric": "real_rate_dfii10",
-      "value": 2.42,
+      "value": 2.44,
       "updated_at": null
     },
     {
       "dataset": "macro",
       "path": "payload.rates[0].value",
       "metric": "dgs10",
-      "value": 4.73,
-      "updated_at": "2026-08-28T00:00:00Z"
+      "value": 4.75,
+      "updated_at": "2026-08-31T00:00:00Z"
     },
     {
       "dataset": "macro",
       "path": "payload.rates[1].value",
       "metric": "dgs2",
       "value": 4.34,
-      "updated_at": "2026-08-28T00:00:00Z"
+      "updated_at": "2026-08-31T00:00:00Z"
     },
     {
       "dataset": "risk",
       "path": "payload.dimensions[0].indicators[1].value",
       "metric": "yield_curve_10y2y",
-      "value": 0.39000000000000057,
+      "value": 0.41000000000000014,
       "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.rates[2].value",
+      "metric": "dfii10",
+      "value": 2.44,
+      "updated_at": "2026-08-31T00:00:00Z"
     },
     {
       "dataset": "macro",
       "path": "payload.inflation[3].value",
       "metric": "t5yifr",
-      "value": 2.31,
-      "updated_at": "2026-08-31T00:00:00Z"
+      "value": 2.33,
+      "updated_at": "2026-09-01T00:00:00Z"
     },
     {
       "dataset": "macro",
       "path": "payload.inflation[4].value",
       "metric": "t10yie",
-      "value": 2.31,
+      "value": 2.35,
+      "updated_at": "2026-09-01T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.liquidity[4].value",
+      "metric": "sofr",
+      "value": 3.68,
+      "updated_at": "2026-08-31T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.rates[3].value",
+      "metric": "dff",
+      "value": 3.63,
       "updated_at": "2026-08-31T00:00:00Z"
     },
     {
       "dataset": "risk",
-      "path": "payload.dimensions[0].indicators[2].value",
-      "metric": "dollar_index",
-      "value": 118.7479,
+      "path": "payload.dimensions[2].indicators[1].value",
+      "metric": "new_highs_ratio",
+      "value": 0.0129,
       "updated_at": null
     },
     {
-      "dataset": "macro",
-      "path": "payload.fx[2].value",
-      "metric": "dexuseu",
-      "value": 1.1598,
-      "updated_at": "2026-08-28T00:00:00Z"
+      "dataset": "risk",
+      "path": "payload.dimensions[2].indicators[2].value",
+      "metric": "new_lows_ratio",
+      "value": 0.0839,
+      "updated_at": null
     },
     {
-      "dataset": "macro",
-      "path": "payload.fx[3].value",
-      "metric": "dexjpus",
-      "value": 159.97,
-      "updated_at": "2026-08-28T00:00:00Z"
+      "dataset": "risk",
+      "path": "payload.dimensions[2].indicators[0].value",
+      "metric": "breadth_above_ma200",
+      "value": 0.5806,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[2].indicators[3].value",
+      "metric": "small_cap_relative",
+      "value": -0.6647,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[2].indicators[4].value",
+      "metric": "semis_relative",
+      "value": -17.5978,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[5].change_1d",
+      "metric": "change_1d",
+      "value": -3.8584,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[9].change_1d",
+      "metric": "change_1d",
+      "value": -2.7101,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[14].change_1d",
+      "metric": "change_1d",
+      "value": -2.7016,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[15].change_1d",
+      "metric": "change_1d",
+      "value": -2.737,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[0].change_1d",
+      "metric": "change_1d",
+      "value": -1.5128,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[2].change_1d",
+      "metric": "change_1d",
+      "value": -2.6379,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[3].change_1d",
+      "metric": "change_1d",
+      "value": -2.3602,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[4].change_1d",
+      "metric": "change_1d",
+      "value": -3.2233,
+      "updated_at": null
     },
     {
       "dataset": "macro",
@@ -635,10 +1027,185 @@
     },
     {
       "dataset": "macro",
-      "path": "payload.liquidity[4].value",
-      "metric": "sofr",
-      "value": 3.68,
-      "updated_at": "2026-08-31T00:00:00Z"
+      "path": "payload.liquidity[0].value",
+      "metric": "walcl",
+      "value": 6730912.0,
+      "updated_at": "2026-08-26T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.fx[0].value",
+      "metric": "dtwexbgs",
+      "value": 118.7479,
+      "updated_at": "2026-08-28T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.fx[3].value",
+      "metric": "dexjpus",
+      "value": 159.97,
+      "updated_at": "2026-08-28T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[11].change_1d",
+      "metric": "change_1d",
+      "value": -5.1775,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[7].change_1d",
+      "metric": "change_1d",
+      "value": -4.3742,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[3].change_1d",
+      "metric": "change_1d",
+      "value": -3.9441,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[6].change_1d",
+      "metric": "change_1d",
+      "value": -3.4655,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[4].change_1d",
+      "metric": "change_1d",
+      "value": -3.4552,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[14].change_1d",
+      "metric": "change_1d",
+      "value": -3.4602,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[8].change_1d",
+      "metric": "change_1d",
+      "value": -0.0694,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[18].change_1d",
+      "metric": "change_1d",
+      "value": -0.7341,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "sectors",
+      "path": "payload.themes[17].change_1d",
+      "metric": "change_1d",
+      "value": -0.7392,
+      "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[4].indicators[0].value",
+      "metric": "cross_asset_confirmation",
+      "value": 0.75,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[0].indicators[2].value",
+      "metric": "dollar_index",
+      "value": 118.7479,
+      "updated_at": null
+    },
+    {
+      "dataset": "crypto",
+      "path": "payload.assets[0].price",
+      "metric": "price",
+      "value": 76516.0,
+      "updated_at": null
+    },
+    {
+      "dataset": "crypto",
+      "path": "payload.assets[1].price",
+      "metric": "price",
+      "value": 2365.84,
+      "updated_at": null
+    },
+    {
+      "dataset": "crypto",
+      "path": "payload.assets[2].price",
+      "metric": "price",
+      "value": 98.21,
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.labor[0].value",
+      "metric": "payems",
+      "value": -23.0,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.labor[1].value",
+      "metric": "unrate",
+      "value": 4.1,
+      "updated_at": "2026-07-01T00:00:00Z"
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.labor[3].value",
+      "metric": "ccsa",
+      "value": 1778000.0,
+      "updated_at": "2026-08-15T00:00:00Z"
+    },
+    {
+      "dataset": "calendar",
+      "path": "payload.events[1].datetime",
+      "metric": "event_datetime",
+      "value": "2026-09-04T12:30:00Z",
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[0].price",
+      "metric": "price",
+      "value": 217.440002,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[2].price",
+      "metric": "price",
+      "value": 933.440002,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[3].price",
+      "metric": "price",
+      "value": 459.609985,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[1].price",
+      "metric": "price",
+      "value": 369.679993,
+      "updated_at": null
+    },
+    {
+      "dataset": "equities",
+      "path": "payload.assets[1].change_1d",
+      "metric": "change_1d",
+      "value": -0.1782,
+      "updated_at": null
     },
     {
       "dataset": "risk",
@@ -656,34 +1223,6 @@
     },
     {
       "dataset": "risk",
-      "path": "payload.dimensions[2].indicators[2].value",
-      "metric": "new_lows_ratio",
-      "value": 0.0903,
-      "updated_at": null
-    },
-    {
-      "dataset": "risk",
-      "path": "payload.dimensions[2].indicators[0].value",
-      "metric": "breadth_above_ma200",
-      "value": 0.5935,
-      "updated_at": null
-    },
-    {
-      "dataset": "risk",
-      "path": "payload.dimensions[2].indicators[3].value",
-      "metric": "small_cap_relative",
-      "value": -0.5633,
-      "updated_at": null
-    },
-    {
-      "dataset": "risk",
-      "path": "payload.dimensions[2].indicators[4].value",
-      "metric": "semis_relative",
-      "value": -17.5485,
-      "updated_at": null
-    },
-    {
-      "dataset": "risk",
       "path": "payload.dimensions[3].indicators[0].value",
       "metric": "vix",
       "value": 14.92,
@@ -693,139 +1232,55 @@
       "dataset": "risk",
       "path": "payload.dimensions[3].indicators[1].value",
       "metric": "realized_vol",
-      "value": 7.3351,
-      "updated_at": null
-    },
-    {
-      "dataset": "risk",
-      "path": "payload.dimensions[4].indicators[0].value",
-      "metric": "cross_asset_confirmation",
-      "value": 0.75,
+      "value": 7.1774,
       "updated_at": null
     },
     {
       "dataset": "risk",
       "path": "payload.dimensions[5].indicators[0].value",
       "metric": "price_vs_ma200",
-      "value": 7.0585,
+      "value": 7.1935,
       "updated_at": null
     },
     {
       "dataset": "risk",
       "path": "payload.dimensions[5].indicators[1].value",
       "metric": "drawdown_52w",
-      "value": -2.1938,
+      "value": -2.0697,
       "updated_at": null
     },
     {
       "dataset": "risk",
       "path": "payload.dimensions[5].indicators[2].value",
       "metric": "momentum_3m",
-      "value": 0.1639,
+      "value": 0.291,
       "updated_at": null
-    },
-    {
-      "dataset": "equities",
-      "path": "payload.assets[0].change_1d",
-      "metric": "change_1d",
-      "value": -1.6464,
-      "updated_at": null
-    },
-    {
-      "dataset": "equities",
-      "path": "payload.assets[2].change_1d",
-      "metric": "change_1d",
-      "value": -3.1301,
-      "updated_at": null
-    },
-    {
-      "dataset": "equities",
-      "path": "payload.assets[4].change_1d",
-      "metric": "change_1d",
-      "value": -3.3429,
-      "updated_at": null
-    },
-    {
-      "dataset": "equities",
-      "path": "payload.assets[3].change_1d",
-      "metric": "change_1d",
-      "value": -2.3602,
-      "updated_at": null
-    },
-    {
-      "dataset": "equities",
-      "path": "payload.assets[1].change_1d",
-      "metric": "change_1d",
-      "value": -0.1094,
-      "updated_at": null
-    },
-    {
-      "dataset": "sectors",
-      "path": "payload.themes[3].change_1d",
-      "metric": "change_1d",
-      "value": -4.1438,
-      "updated_at": "2025-12-22T00:00:00Z"
-    },
-    {
-      "dataset": "sectors",
-      "path": "payload.sectors[1].change_1d",
-      "metric": "change_1d",
-      "value": -3.3428,
-      "updated_at": "2025-12-22T00:00:00Z"
-    },
-    {
-      "dataset": "sectors",
-      "path": "payload.themes[0].change_1d",
-      "metric": "change_1d",
-      "value": -2.734,
-      "updated_at": "2025-12-22T00:00:00Z"
-    },
-    {
-      "dataset": "sectors",
-      "path": "payload.sectors[0].change_1d",
-      "metric": "change_1d",
-      "value": -1.8115,
-      "updated_at": "2025-12-22T00:00:00Z"
     },
     {
       "dataset": "news",
-      "path": "payload.items[0].importance",
+      "path": "payload.items[4].importance",
       "metric": "importance",
-      "value": 60.24,
-      "updated_at": "2026-09-01T14:09:02Z"
+      "value": 52.46,
+      "updated_at": "2026-09-02T10:29:06Z"
     },
     {
       "dataset": "news",
       "path": "payload.items[3].importance",
       "metric": "importance",
-      "value": 52.16,
-      "updated_at": "2026-09-01T18:45:02Z"
+      "value": 52.47,
+      "updated_at": "2026-09-02T10:29:19Z"
     },
     {
       "dataset": "calendar",
-      "path": "payload.events[1].datetime",
+      "path": "payload.events[4].datetime",
       "metric": "event_datetime",
-      "value": "2026-09-01T14:00:00Z",
-      "updated_at": null
-    },
-    {
-      "dataset": "calendar",
-      "path": "payload.events[3].datetime",
-      "metric": "event_datetime",
-      "value": "2026-09-04T12:30:00Z",
-      "updated_at": null
-    },
-    {
-      "dataset": "crypto",
-      "path": "payload.assets[0].price",
-      "metric": "price",
-      "value": 77309.0,
+      "value": "2026-09-11T12:30:00Z",
       "updated_at": null
     }
   ],
   "lineage": {
-    "fact_generation_id": "sha256:e58e1be6d9aa696ff3ecfc74941ca38e22cfb62c6ae5aad84bab768ed5443c3f",
-    "fact_generated_at": "2026-09-01T19:34:23Z",
+    "fact_generation_id": "sha256:92f8af5885ba400ea571086b50bc193c98bbe3ea354358c0665bbc1b3d5f1457",
+    "fact_generated_at": "2026-09-02T10:34:09Z",
     "input_freshness": {
       "macro": "fresh",
       "equities": "fresh",
@@ -835,7 +1290,7 @@
       "sectors": "fresh",
       "risk": "fresh"
     },
-    "pair_id": "postmarket-2026-09-01T19:34:23Z"
+    "pair_id": "premarket-2026-09-02T10:34:09Z"
   },
   "data_freshness": "fresh"
 }
