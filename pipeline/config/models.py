@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import ipaddress
 from pathlib import Path
-from typing import Any, Literal, TypeVar
+from typing import Literal, TypeVar
 from urllib.parse import urlparse
 
 import yaml
@@ -137,7 +137,15 @@ class ThemeProxy(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     kind: Literal["etf", "basket"]
-    symbol: str | None = None
+    symbol: str | None = Field(default=None, min_length=1)
+
+    @model_validator(mode="after")
+    def _symbol_matches_kind(self) -> ThemeProxy:
+        if self.kind == "etf" and self.symbol is None:
+            raise ValueError("ETF theme proxy requires a symbol")
+        if self.kind == "basket" and self.symbol is not None:
+            raise ValueError("basket theme proxy must not define a symbol")
+        return self
 
 
 class ThemePercentile(BaseModel):
@@ -167,6 +175,26 @@ class ThemeDef(BaseModel):
     proxy: ThemeProxy | None = None
     percentile: ThemePercentile | None = None
     constituents: list[ThemeConstituent] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _constituents_are_unique(self) -> ThemeDef:
+        symbols = [constituent.symbol for constituent in self.constituents]
+        duplicates = sorted({symbol for symbol in symbols if symbols.count(symbol) > 1})
+        if duplicates:
+            raise ValueError(f"theme constituents must be unique: {', '.join(duplicates)}")
+        return self
+
+    @property
+    def series_symbol(self) -> str | None:
+        """Return the configured ETF series symbol, or ``None`` for a basket series."""
+        return self.proxy.symbol if self.proxy is not None and self.proxy.kind == "etf" else None
+
+
+def theme_history_symbols(theme: ThemeDef) -> set[str]:
+    """Return the non-CN symbols required to build one theme's history series."""
+    if theme.series_symbol is not None:
+        return {theme.series_symbol}
+    return {constituent.symbol for constituent in theme.constituents if not constituent.symbol.endswith((".SH", ".SZ"))}
 
 
 class ValidationConfig(BaseModel):
@@ -260,7 +288,7 @@ class NewsSource(BaseModel):
     redirect_hosts: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
-    def _chain_is_https_and_duplicate_free(self) -> "NewsSource":
+    def _chain_is_https_and_duplicate_free(self) -> NewsSource:
         seen: set[str] = set()
         for url in self.chain_urls:
             _validate_source_url(url, "news source URL")

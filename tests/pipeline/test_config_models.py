@@ -18,7 +18,17 @@ import pytest
 import yaml
 from pydantic import ValidationError
 
-from pipeline.config.models import ConfigError, NewsSource, SourcesConfig, ThemesConfig, load_config
+from pipeline.config.models import (
+    ConfigError,
+    NewsSource,
+    SourcesConfig,
+    ThemeConstituent,
+    ThemeDef,
+    ThemeProxy,
+    ThemesConfig,
+    load_config,
+    theme_history_symbols,
+)
 from pipeline.providers import build_default_providers
 from pipeline.settings import Settings
 from pipeline.universe import AssetUniverse
@@ -75,6 +85,33 @@ def test_load_config_missing_file_and_non_mapping(tmp_path: Path) -> None:
     bad.write_text("- just\n- a\n- list\n", encoding="utf-8")
     with pytest.raises(ConfigError, match="mapping"):
         load_config(bad, ThemesConfig)
+
+
+@pytest.mark.parametrize(
+    "proxy",
+    [{"kind": "etf"}, {"kind": "basket", "symbol": "SPY"}],
+)
+def test_theme_proxy_requires_kind_specific_symbol(proxy: dict[str, str]) -> None:
+    with pytest.raises(ValidationError, match="proxy"):
+        ThemesConfig.model_validate({"schema_version": "1.0.0", "themes": {"x": {"proxy": proxy}}})
+
+
+def test_theme_definition_rejects_duplicate_constituents() -> None:
+    with pytest.raises(ValidationError, match="unique"):
+        ThemeDef(
+            constituents=[
+                ThemeConstituent(symbol="NVDA"),
+                ThemeConstituent(symbol="NVDA"),
+            ]
+        )
+
+
+def test_theme_history_symbols_centralizes_etf_and_basket_selection() -> None:
+    etf = ThemeDef(proxy=ThemeProxy(kind="etf", symbol="SKYY"), constituents=[ThemeConstituent(symbol="NVDA")])
+    basket = ThemeDef(constituents=[ThemeConstituent(symbol="NVDA"), ThemeConstituent(symbol="603986.SH")])
+
+    assert theme_history_symbols(etf) == {"SKYY"}
+    assert theme_history_symbols(basket) == {"NVDA"}
 
 
 def test_themes_dangling_constituent_fails_the_run(tmp_path: Path) -> None:
@@ -323,8 +360,6 @@ def test_news_source_rejects_duplicate_url_in_chain(tmp_path: Path) -> None:
 
 def test_market_sector_rows_come_from_themes_config() -> None:
     """C-1: the collector's sector/theme rows are the themes.yaml keys, labels nowhere."""
-    from pipeline.schemas import EquitiesDataset, EquityAsset
-
     settings = Settings(_env_file=None)
     themes = settings.load_themes_config()
     universe = AssetUniverse.load(settings)
@@ -337,12 +372,6 @@ def test_market_sector_rows_come_from_themes_config() -> None:
     assert by_symbol["NVDA"].symbol == "NVDA"  # Asset has no theme attribute anymore (D-8)
     assert not hasattr(by_symbol["NVDA"], "theme")
 
-    equities = EquitiesDataset(
-        assets=[
-            EquityAsset(symbol="NVDA", name="NVIDIA", price=100.0, source="yfinance", updated_at="2026-08-04T12:00:00Z"),
-            EquityAsset(symbol="TSLA", name="Tesla", price=200.0, source="yfinance", updated_at="2026-08-04T12:00:00Z"),
-        ]
-    )
     # Just the schema contract: SectorItem no longer accepts label/label_zh (C-1).
     from pipeline.schemas import SectorItem, SectorsDataset
 

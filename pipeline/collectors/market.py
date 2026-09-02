@@ -9,6 +9,7 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any, NamedTuple
 
+from pipeline.config.models import theme_history_symbols
 from pipeline.indicators.technical import technical_snapshot
 from pipeline.indicators.themes import changes_from_closes, percentile_of_trailing_return
 from pipeline.metadata import latest_row_timestamp, oldest_source_timestamp, quality_for_outcomes
@@ -148,10 +149,7 @@ class MarketCollector:
         """Return the non-CN series symbols required by the configured themes."""
         symbols: set[str] = set()
         for theme in [*self.themes.sectors.values(), *self.themes.themes.values()]:
-            if theme.proxy is not None and theme.proxy.kind == "etf" and theme.proxy.symbol:
-                symbols.add(theme.proxy.symbol)
-            else:
-                symbols |= {c.symbol for c in theme.constituents if not c.symbol.endswith((".SH", ".SZ"))}
+            symbols |= theme_history_symbols(theme)
         return symbols
 
     def _build_history_plan(self) -> tuple[_HistoryTarget, ...]:
@@ -603,8 +601,8 @@ class MarketCollector:
         equal-weight basket chained from constituent histories already in ``self.histories``."""
         from pipeline.indicators.themes import chain_equal_weight_daily
 
-        if theme.proxy is not None and theme.proxy.kind == "etf":
-            return self.histories.get(theme.proxy.symbol, [])
+        if theme.series_symbol is not None:
+            return self.histories.get(theme.series_symbol, [])
         series_by_symbol: dict[str, list[dict[str, Any]]] = {}
         for constituent in theme.constituents:
             if constituent.symbol.endswith((".SH", ".SZ")):
