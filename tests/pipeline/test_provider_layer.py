@@ -15,6 +15,8 @@ Pins the contracts the ticket installs (E-3, S-1, S-2, #91/#92):
 from __future__ import annotations
 
 import json
+import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import httpx
@@ -26,6 +28,8 @@ from pipeline.providers.base import (
     RATE_LIMITED,
     TRANSIENT,
     GuardedClient,
+    CircuitBreaker,
+    HostRateLimiter,
     ProviderError,
     ProviderHealth,
     ProviderRegistry,
@@ -448,6 +452,24 @@ def test_circuit_breaker_success_resets_the_streak(tmp_path: Path) -> None:
     assert registry.breaker.is_open(provider, "fake.example") is False
 
 
+def test_circuit_breaker_counts_concurrent_failures_without_lost_updates() -> None:
+    provider = _FakeProvider()
+    breaker = CircuitBreaker(threshold=100)
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        list(
+            pool.map(
+                lambda _: breaker.record_failure(
+                    provider, "fake.example", ProviderError("transient", cls=TRANSIENT)
+                ),
+                range(100),
+            )
+        )
+
+    assert breaker._streak[(provider.name, "fake.example")] == 100
+    assert breaker.is_open(provider, "fake.example")
+
+
 # -------------------------------------------------------------------------------------
 # Rate-limited verdict trips the host limiter (rest of the run)
 # -------------------------------------------------------------------------------------
@@ -467,6 +489,22 @@ def test_rate_limited_trips_the_host_limiter(tmp_path: Path) -> None:
     with pytest.raises(ProviderError, match="rate-limited for the rest of the run"):
         registry.call("test", "get_quote", "q1", args=("SYM",))
     assert provider.calls == calls_before  # the limiter blocked before the provider ran
+
+
+def test_host_rate_limiter_serializes_concurrent_interval_reservations() -> None:
+    limiter = HostRateLimiter()
+    starts: list[float] = []
+
+    def call() -> None:
+        with limiter.acquire("fake.example", max_concurrency=8, min_interval_ms=5):
+            starts.append(time.monotonic())
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        list(pool.map(lambda _: call(), range(8)))
+
+    ordered = sorted(starts)
+    assert len(ordered) == 8
+    assert all(later - earlier >= 0.003 for earlier, later in zip(ordered, ordered[1:]))
 
 
 # -------------------------------------------------------------------------------------

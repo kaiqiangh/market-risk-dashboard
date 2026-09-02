@@ -39,7 +39,7 @@ from contextlib import contextmanager
 from datetime import UTC, datetime
 from ipaddress import ip_address
 from pathlib import Path
-from threading import Semaphore
+from threading import Lock, Semaphore
 from typing import Any
 
 import httpx
@@ -508,25 +508,39 @@ class HostRateLimiter:
         self._semaphores: dict[str, Semaphore] = {}
         self._next_at: dict[str, float] = {}
         self._tripped: set[str] = set()
+        self._lock = Lock()
 
     @contextmanager
     def acquire(self, host: str, max_concurrency: int, min_interval_ms: int) -> Generator[None, None, None]:
         """Hold the host's concurrency slot while waiting out the minimum interval."""
-        if host in self._tripped:
-            raise ProviderError(f"host {host} rate-limited for the rest of the run", cls=RATE_LIMITED)
-        semaphore = self._semaphores.setdefault(host, Semaphore(max_concurrency))
+        with self._lock:
+            if host in self._tripped:
+                raise ProviderError(f"host {host} rate-limited for the rest of the run", cls=RATE_LIMITED)
+            semaphore = self._semaphores.get(host)
+            if semaphore is None:
+                semaphore = self._semaphores.setdefault(host, Semaphore(max_concurrency))
         with semaphore:
-            wait = self._next_at.get(host, 0.0) - time.monotonic()
-            if wait > 0:
+            while True:
+                with self._lock:
+                    if host in self._tripped:
+                        raise ProviderError(
+                            f"host {host} rate-limited for the rest of the run", cls=RATE_LIMITED
+                        )
+                    now = time.monotonic()
+                    wait = self._next_at.get(host, 0.0) - now
+                    if wait <= 0:
+                        self._next_at[host] = now + min_interval_ms / 1000.0
+                        break
                 time.sleep(wait)
-            self._next_at[host] = time.monotonic() + min_interval_ms / 1000.0
             yield
 
     def trip(self, host: str) -> None:
-        self._tripped.add(host)
+        with self._lock:
+            self._tripped.add(host)
 
     def is_tripped(self, host: str) -> bool:
-        return host in self._tripped
+        with self._lock:
+            return host in self._tripped
 
 
 class CircuitBreaker:
@@ -543,6 +557,7 @@ class CircuitBreaker:
         self.threshold = threshold
         self._streak: dict[tuple[str, str], int] = {}
         self._open: set[tuple[str, str]] = set()
+        self._lock = Lock()
 
     @staticmethod
     def _key(provider: BaseProvider, host: str) -> tuple[str, str]:
@@ -550,21 +565,24 @@ class CircuitBreaker:
 
     def record_failure(self, provider: BaseProvider, host: str, error: ProviderError) -> None:
         key = self._key(provider, host)
-        if error.cls == PERMANENT:
-            self._streak.pop(key, None)  # permanent does not count toward the streak
-            return
-        streak = self._streak.get(key, 0) + 1
-        self._streak[key] = streak
-        if streak >= self.threshold:
-            self._open.add(key)
+        with self._lock:
+            if error.cls == PERMANENT:
+                self._streak.pop(key, None)  # permanent does not count toward the streak
+                return
+            streak = self._streak.get(key, 0) + 1
+            self._streak[key] = streak
+            if streak >= self.threshold:
+                self._open.add(key)
 
     def record_success(self, provider: BaseProvider, host: str) -> None:
         key = self._key(provider, host)
-        self._streak.pop(key, None)
-        self._open.discard(key)
+        with self._lock:
+            self._streak.pop(key, None)
+            self._open.discard(key)
 
     def is_open(self, provider: BaseProvider, host: str) -> bool:
-        return self._key(provider, host) in self._open
+        with self._lock:
+            return self._key(provider, host) in self._open
 
 
 class ProviderRegistry:
