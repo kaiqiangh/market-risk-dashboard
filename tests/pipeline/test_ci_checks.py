@@ -342,6 +342,13 @@ def test_nan_infinity_rejected(tmp_path: Path) -> None:
         load_json_strict(latest / "macro.json")
 
 
+def test_load_json_strict_preserves_array_root_types(tmp_path: Path) -> None:
+    path = tmp_path / "rows.json"
+    path.write_text('[{"value": 1}]', encoding="utf-8")
+
+    assert load_json_strict(path) == [{"value": 1}]
+
+
 def test_nan_in_published_file_is_an_error(
     synthetic_latest_dir: Path, synthetic_data_dir: Path, now: datetime
 ) -> None:

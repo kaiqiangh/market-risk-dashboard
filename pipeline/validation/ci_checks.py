@@ -24,7 +24,6 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -98,7 +97,7 @@ class CheckReport:
         return not self.errors
 
 
-def load_json_strict(path: Path) -> dict[str, Any]:
+def load_json_strict(path: Path) -> Any:
     """Read JSON and reject NaN/Infinity constants (Python accepts them by default; rejected here explicitly)."""
     text = path.read_text(encoding="utf-8")
     return json.loads(text, parse_constant=_reject_constant)
@@ -553,7 +552,7 @@ def check_slice_consistency(data_dir: Path, report: CheckReport) -> None:
             continue  # absence itself is reported by check_history
         try:
             daily = load_json_strict(daily_path)
-        except Exception as exc:  # noqa: BLE001 - already reported by check_history;
+        except Exception:  # noqa: BLE001 - already reported by check_history;
             continue  # a second error for the same file would just be noise
         if not isinstance(daily, list):
             continue

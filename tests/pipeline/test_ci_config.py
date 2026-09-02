@@ -349,6 +349,23 @@ def test_frontend_ci_and_production_audit_gate_are_wired() -> None:
     )
 
 
+def test_dependency_audit_is_blocking() -> None:
+    """High-severity npm and Python findings must fail the scheduled security workflow."""
+    text = _read_workflow("dependency-audit.yml")
+
+    assert "npm audit --audit-level=high" in text
+    assert "pip-audit" in text
+    assert "continue-on-error" not in text
+
+
+def test_secret_scan_fails_closed_on_incomplete_coverage() -> None:
+    """A skipped file must not allow the publish scanner to report PASSED."""
+    script = (REPO_ROOT / "scripts" / "scan-secrets.mjs").read_text(encoding="utf-8")
+
+    assert "filesSkipped > 0" in script
+    assert "scan coverage incomplete" in script
+
+
 def test_pages_release_boundary_is_dev_and_main_and_fully_gated() -> None:
     """Dev and main may release Pages, but only after the full build gate; PRs never do.
 

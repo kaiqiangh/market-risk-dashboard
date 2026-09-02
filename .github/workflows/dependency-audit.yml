@@ -25,8 +25,7 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
-      - name: Full npm audit (advisory)
-        continue-on-error: true
+      - name: Full npm audit (blocking)
         run: npm audit --audit-level=high
 
       - name: Setup Python
@@ -37,6 +36,5 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --constraint constraints/py312.txt -e . pip-audit
 
-      - name: Full Python audit (advisory)
-        continue-on-error: true
+      - name: Full Python audit (blocking)
         run: pip-audit
