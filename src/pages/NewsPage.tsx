@@ -26,11 +26,20 @@ export default function NewsPage() {
   const newsQ = useDataset<NewsEnvelope>("news");
 
   const [filter, setFilter] = useState<NewsFilter>(() => {
-    const stored = typeof sessionStorage !== "undefined" ? sessionStorage.getItem(SESSION_KEY) : null;
+    let stored: string | null = null;
+    try {
+      stored = typeof sessionStorage !== "undefined" ? sessionStorage.getItem(SESSION_KEY) : null;
+    } catch {
+      // Session storage can be unavailable in private or restricted browsing contexts.
+    }
     return stored === "high" || stored === "mediumPlus" ? stored : "all";
   });
   useEffect(() => {
-    sessionStorage.setItem(SESSION_KEY, filter);
+    try {
+      sessionStorage.setItem(SESSION_KEY, filter);
+    } catch {
+      // Filtering remains in-memory when session storage is unavailable.
+    }
   }, [filter]);
 
   const allItems = newsQ.data?.payload.items ?? [];
