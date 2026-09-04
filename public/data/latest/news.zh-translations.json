@@ -1,355 +1,355 @@
 {
   "items": [
     {
-      "id": "06b5458e73a1686e22cc5f54e984dd09ab057d3c",
-      "title": "Hugging Face approached Nvidia’s Huang weeks ahead of $12.9B acquisition, CEO tells CNBC",
-      "summary": "Nvidia CEO Jensen Huang said that with Hugging Face, the chipmaker will \"expand access to AI for developers and institutions worldwide.\"",
-      "title_zh": "Hugging Face 在 129 亿美元收购案前数周主动接触英伟达黄仁勋，其 CEO 向 CNBC 透露",
-      "summary_zh": "英伟达 CEO 黄仁勋表示，借助 Hugging Face，这家芯片厂商将「为全球开发者和机构扩大 AI 的可及性」。"
+      "id": "26b655641d0a3d90cab6e4207615a125e8493b3e",
+      "title": "Nvidia's investments grow to $99 billion as chip giant becomes major backer of AI companies",
+      "summary": "Nvidia reported $99 billion in equity holdings as it backs AI labs, cloud providers and infrastructure companies across the sector.",
+      "title_zh": "英伟达投资规模增至 990 亿美元，芯片巨头成为 AI 企业主要背书方",
+      "summary_zh": "英伟达披露其股权投资规模达 990 亿美元，被投对象覆盖 AI 实验室、云服务商与基础设施公司。"
     },
     {
-      "id": "5a3c9a2839d9cda822f93094d73c0a611044b14c",
-      "title": "Fed Governor Waller: if the inflation data runs hot, I would consider supporting a rate hike",
-      "summary": "Fed Governor Waller said his next decision on rates will depend \"a great deal\" on the August inflation data due next week",
-      "title_zh": "美联储理事沃勒：如果通胀数据偏热，我会考虑支持加息",
-      "summary_zh": "美联储理事沃勒表示， 他对利率的下一步决定将“很大程度上取决于”下周公布的8月通胀数据"
+      "id": "15bcf65768ad98374ce180f10b3fc091afb5e230",
+      "title": "Kioxia plans to push NAND flash to replace part of DRAM",
+      "summary": "According to the Star Market Daily on the 4th, Kioxia is pushing to use NAND flash for part of the work currently handled by server DRAM",
+      "title_zh": "铠侠拟推动NAND闪存替代部分DRAM",
+      "summary_zh": "【铠侠拟推动NAND闪存替代部分DRAM】《科创板日报》4日讯，据报道，铠侠正推动将NAND闪存用于部分服务器DRAM所承担的工作"
     },
     {
-      "id": "0fcbb1e7f03fd2c951fd4072eebb147f417ebb12",
-      "title": "CLS, September 4 — US Vice President Vance said the Federal Reserve should lower interest rates.",
-      "summary": "CLS, September 4 — US Vice President Vance said the Federal Reserve should lower interest rates",
-      "title_zh": "财联社9月4日电，美国副总统万斯表示，美联储应该降低利率。",
-      "summary_zh": "财联社9月4日电，美国副总统万斯表示，美联储应该降低利率"
+      "id": "4fabe78a48a30775db00aad7955690bedf304902",
+      "title": "Whether the Fed hikes in September hinges on next week's CPI",
+      "summary": "Whether the Fed raises rates in September may come down to next week's CPI print",
+      "title_zh": "美联储9月加不加息，就看下周CPI",
+      "summary_zh": "美联储9月加不加息，可能就押在下周CPI上"
+    },
+    {
+      "id": "7cec40a4896218065f4028680800bd153e169675",
+      "title": "Tesla's Cybercab event offers limited incremental news; scale and cost remain the core focus",
+      "summary": "On September 3, Tesla's Cybercab made its official debut and disclosed that cumulative Robotaxi mileage has passed 1 million miles",
+      "title_zh": "特斯拉Cybercab发布会增量有限，规模化和成本仍是核心关注点",
+      "summary_zh": "9月3日，特斯拉Cybercab正式亮相，并披露Robotaxi累计行驶里程突破100万英里"
+    },
+    {
+      "id": "90bc1c596e36fd3fd1a69a89bc3e3c976edbddd2",
+      "title": "The real signal from Nvidia: AI compute demand has at least another year to run",
+      "summary": "Veteran tech investors Jason Lemkin and Rory O'Driscoll said Nvidia's quarterly report sent a clear signal that AI compute demand will keep running hard for at least another year",
+      "title_zh": "英伟达真正释放的信号：AI算力需求至少再狂奔一年",
+      "summary_zh": "资深科技投资人Jason Lemkin和Rory O’Driscoll表示英伟达季报信号明确，AI算力需求至少会再狂奔一年"
+    },
+    {
+      "id": "b642f0c3bfc2de03c1d76c3fc4c2190700ddcaac",
+      "title": "Vance again publicly presses the Fed: it should cut rates",
+      "summary": "US Vice President Vance again publicly pressured the Fed to lower rates, even as the Fed chair personally nominated by Trump starts turning hawkish",
+      "title_zh": "万斯又公开喊话美联储：应该降息",
+      "summary_zh": "美国副总统万斯再度公开向美联储施压，要求降低利率——而此时，特朗普亲自提名的美联储主席开始“变鹰”"
+    },
+    {
+      "id": "069cb25c139a527c20c36fdd9182d5c9f0ed92ca",
+      "title": "Beijing: encourage domestic-service platforms and related companies to accelerate R&D on elderly-care robots, emotional-companion robots and other new technologies and products",
+      "summary": "CLS, September 4 — six departments including the Beijing Municipal Commerce Bureau issued the implementation plan on further improving home-care service quality and promoting the healthy development of the domestic service industry",
+      "title_zh": "北京：鼓励家政平台和相关企业加快研发创新养老照护机器人、情感陪伴机器人等新技术新产品",
+      "summary_zh": "【北京：鼓励家政平台和相关企业加快研发创新养老照护机器人、情感陪伴机器人等新技术新产品】财联社9月4日电，北京市商务局等6部门印发《进一步提升居家照护服务质量 推进家政服务业健康发展工作实施方案》"
+    },
+    {
+      "id": "c339fab887dedbc6c3a30735d78f24d02389eb05",
+      "title": "National Financial Regulatory Administration opens public consultation on the Measures for Information Disclosure Administration of Banks and Insurance Institutions (draft)",
+      "summary": "CLS, September 4 — the National Financial Regulatory Administration opened public consultation on the Measures for Information Disclosure Administration of Banks and Insurance Institutions (draft for comment)",
+      "title_zh": "国家金融监督管理总局就《银行保险机构信息披露管理办法（征求意见稿）》公开征求意见",
+      "summary_zh": "【国家金融监督管理总局就《银行保险机构信息披露管理办法（征求意见稿）》公开征求意见】财联社9月4日电，国家金融监督管理总局就《银行保险机构信息披露管理办法（征求意见稿）》公开征求意见"
+    },
+    {
+      "id": "8c8372ae9b100e91e998b3eeb84ace49fc586ef8",
+      "title": "Norway's sovereign wealth fund plans to cut government bond holdings; US Treasuries seen taking the largest reduction",
+      "summary": "CLS, September 4 — Norway's sovereign wealth fund proposed cutting the amount of government bonds in its $2.3 trillion portfolio to add higher-risk bonds, with US Treasuries the most affected",
+      "title_zh": "挪威主权财富基金拟降低国债持仓 美债料受最大减持影响",
+      "summary_zh": "【挪威主权财富基金拟降低国债持仓 美债料受最大减持影响】财联社9月4日电，挪威主权财富基金提议削减其2.3万亿美元投资组合中的政府债券数量，以增加风险较高债券的持仓，其中美国国债所受影响最大"
+    },
+    {
+      "id": "8ee167d5482aed342ceb2539c409b25fea12cff7",
+      "title": "Wuhan relaxes the withdrawal frequency for using housing provident funds to repay personal commercial housing loans on first self-occupied homes",
+      "summary": "CLS, September 4 — the Wuhan housing and urban-rural development authority, jointly with several departments, issued on September 4 the notice on further optimizing the city's real estate policy measures, relaxing the withdrawal frequency for using provident funds to repay personal commercial housing loans on first self-occupied homes",
+      "title_zh": "武汉：放宽首套自住房使用公积金偿还个人住房商业贷款提取频次",
+      "summary_zh": "【武汉：放宽首套自住房使用公积金偿还个人住房商业贷款提取频次】财联社9月4日电，武汉市住房和城市更新局联合多部门9月4日发布《关于进一步优化我市房地产政策措施的通知》，放宽首套自住房使用公积金偿还个人住房商业贷款提取频次"
+    },
+    {
+      "id": "b9a85e86f37bbfedda1f945a3cba099e77543bc9",
+      "title": "CLS, September 4 — Nasdaq 100 futures extended gains to 0.52% at 29,679, an intraday high",
+      "summary": "CLS, September 4 — Nasdaq 100 futures extended gains to 0.52% at 29,679, an intraday high",
+      "title_zh": "财联社9月4日电，纳斯达克100指数期货涨幅扩大至0.52%，报29679点，至盘中高点。",
+      "summary_zh": "财联社9月4日电，纳斯达克100指数期货涨幅扩大至0.52%，报29679点，至盘中高点"
+    },
+    {
+      "id": "e7a01f01f7b1e7d0a409e1a714ec900619e091ab",
+      "title": "Liyang Chip terminates acquisition of 100% equity in Guoxin Micro",
+      "summary": "CLS, September 4 — Liyang Chip (688135.SH) announced that it has decided to terminate the acquisition of 100% equity in Guoxin Micro (Chongqing) Technology",
+      "title_zh": "利扬芯片：终止收购国芯微100%股权",
+      "summary_zh": "【利扬芯片：终止收购国芯微100%股权】财联社9月4日电，利扬芯片(688135.SH)公告称，公司决定终止收购国芯微(重庆)科技有限公司100%股权事项"
+    },
+    {
+      "id": "aceef0cf00a5cc8ed2d9d9f0711f5fcbfd56b141",
+      "title": "China launches the international cislunar cubesat constellation mega-science program: all satellite launches and deployment to be completed around 2030",
+      "summary": "CLS, September 4 — according to the 2026 International Conference on Deep Space Exploration (Tiandu), China has officially launched the international cislunar cubesat constellation mega-science program, planning to work with several countries to deploy a satellite cluster in cislunar space for space environment monitoring, gamma-ray burst detection and lunar resource exploration, with all satellite launches and deployment preliminarily planned for completion around 2030",
+      "title_zh": "我国启动国际地月立方星座大科学计划：2030年左右完成全部卫星发射部署",
+      "summary_zh": "【我国启动国际地月立方星座大科学计划：2030年左右完成全部卫星发射部署】财联社9月4日电，据2026年深空探测（天都）国际会议上介绍，我国正式启动国际地月立方星座大科学计划，拟联合多个国家在地月空间部署卫星群，立体组网开展空间环境监测、伽马射线暴探测、月球资源勘探等工作，初步计划2030年左右完成全部卫星发射部署，填"
+    },
+    {
+      "id": "4c7d907eaa70d4dee7ff8fcdd5d4fac7afe6081f",
+      "title": "Fuhuang Steel Structure triggers the other risk-warning condition of 'major bank accounts frozen'; stock short name changes to 'ST Fuhuang' from September 8",
+      "summary": "CLS, September 4 — Fuhuang Steel Structure (002743.SZ) announced that due to contract disputes and overdue borrowings, as of September 3, 2026 the company and its subsidiaries had 411 bank accounts in total holding 163 million yuan, of which 280 accounts were frozen with a frozen balance of 104 million yuan",
+      "title_zh": "富煌钢构：触发“主要银行账号被冻结”的其他风险警示情形 9月8日起股票简称变更为“ST富煌”",
+      "summary_zh": "【富煌钢构：触发“主要银行账号被冻结”的其他风险警示情形 9月8日起股票简称变更为“ST富煌”】财联社9月4日电，富煌钢构(002743.SZ)公告称，因合同纠纷和借款逾期等问题，截至2026年9月3日，公司及子公司银行账户总数411个，账户余额1.63亿元，其中280个账户被冻结，被冻结余额1.04亿元"
+    },
+    {
+      "id": "0f7ccc73b3c583f31eb12c97280287a87e5eecfc",
+      "title": "The eighth China-Russia Energy Business Forum opens; Ding Xuexiang reads President Xi Jinping's congratulatory letter and delivers remarks",
+      "summary": "Local time September 4 — Ding Xuexiang, member of the Standing Committee of the Political Bureau of the CPC Central Committee and Vice Premier of the State Council, attended the opening ceremony of the eighth China-Russia Energy Business Forum in Vladivostok, Russia, where he read President Xi Jinping's congratulatory letter and delivered remarks",
+      "title_zh": "第八届中俄能源商务论坛开幕 丁薛祥宣读习近平主席贺信并致辞",
+      "summary_zh": "【第八届中俄能源商务论坛开幕 丁薛祥宣读习近平主席贺信并致辞】当地时间9月4日，中共中央政治局常委、国务院副总理丁薛祥在俄罗斯符拉迪沃斯托克出席第八届中俄能源商务论坛开幕式，宣读习近平主席贺信并致辞"
+    },
+    {
+      "id": "bfcea1a1e4d8488456037d1b7cffe062e1fd76d1",
+      "title": "Huanrui Century, 4 limit-ups in 5 days: its AI short-drama business has not yet formed scale effects in launch volume, revenue scale or cost-efficiency conversion",
+      "summary": "CLS, September 4 — Huanrui Century (000892.SZ) announced that the cumulative deviation of its share closing-price gains over three consecutive trading days exceeded 20%, constituting abnormal trading volatility",
+      "title_zh": "5天4板欢瑞世纪：公司AI短剧业务在上线数量、营收规模及成本效益转化方面尚未形成规模化效应",
+      "summary_zh": "【5天4板欢瑞世纪：公司AI短剧业务在上线数量、营收规模及成本效益转化方面尚未形成规模化效应】财联社9月4日电，欢瑞世纪(000892.SZ)公告称，公司连续三个交易日股票收盘价格涨幅偏离值累计超20%，属于股票交易异常波动"
+    },
+    {
+      "id": "6d95ece0566c2022b9649d6310ecdda603bef5da",
+      "title": "CLS, September 4 — JPMorgan cut its price target on Lululemon to $95 from $154",
+      "summary": "CLS, September 4 — JPMorgan lowered its price target on Lululemon shares to $95 from $154",
+      "title_zh": "财联社9月4日电，摩根大通将Lululemon股票目标价从154美元下调至95美元。",
+      "summary_zh": "财联社9月4日电，摩根大通将Lululemon股票目标价从154美元下调至95美元"
+    },
+    {
+      "id": "322be5b44f6a2f8c700462a94cce6bfa3ce75e2b",
+      "title": "Ministry of Water Resources: river flow at the Gyirong barrier lake in Tibet is normal and the glacial lake is stable overall",
+      "summary": "CLS, September 4 — according to the Ministry of Water Resources, the latest drone aerial photography shows normal flow in the upstream and downstream channels of the former Purepuqiang Zangbo barrier lake in Gyirong, Tibet, and normal flow through the water body of the impact pit on Nepal's Cuojian River",
+      "title_zh": "水利部：西藏吉隆堰塞湖河道过流正常 冰湖整体稳定",
+      "summary_zh": "【水利部：西藏吉隆堰塞湖河道过流正常 冰湖整体稳定】财联社9月4日电，据水利部消息，最新无人机航摄显示，西藏吉隆原普热普强藏布堰塞湖上下游河道过流正常，尼泊尔错坚河冲击坑水体正常过流"
+    },
+    {
+      "id": "6905d2ce9dd9551a6805732843261834131c2d7d",
+      "title": "[Institutional top-list read] Controlled nuclear fusion plus liquid cooling, with products widely used in data-center central air conditioning and other fields; 'megawatt-class' helium compressor units already used in major science projects such as controlled nuclear fusion, for Facebook's Denmark data cent...",
+      "summary": null,
+      "title_zh": "【机构龙虎榜解读】可控核聚变+液冷，产品已广泛应用在数据机房中央空调等领域，“兆瓦级”氦气压缩机组已用于可控核聚变等重大科学工程，为Facebook丹麦数据中...",
+      "summary_zh": null
+    },
+    {
+      "id": "945be165df26e31acdc7274fe8cde1685af66def",
+      "title": "Israeli forces seize another strategic position in southern Lebanon",
+      "summary": "CLS, September 4 — Israeli Defense Minister Katz announced today (September 4) that Israeli forces have occupied the strategically significant Ari Tahir ridge in southern Lebanon",
+      "title_zh": "以军占据黎巴嫩南部又一战略要地",
+      "summary_zh": "【以军占据黎巴嫩南部又一战略要地】财联社9月4日电，以色列国防部长卡茨今天（9月4日）宣布，以军已占领黎巴嫩南部具有战略意义的阿里塔希尔岭"
+    },
+    {
+      "id": "1fb05c5bf3f9ecf16839057a640a98a2eea7f702",
+      "title": "Mandatory national standard for e-bike charging piles officially released, specifying safety technical requirements for supporting charging facilities",
+      "summary": "CLS, September 4 — the mandatory national standard GB 47371-2026 'Safety technical specification for e-bike charging piles', developed by the Ministry of Industry and Information Technology and the State Administration for Market Regulation together with several other departments, was officially released on March 31, 2026 and will take effect on April 1, 2027",
+      "title_zh": "电动自行车充电桩强制性国家标准正式发布规范电动自行车配套充电设施安全技术指标",
+      "summary_zh": "【电动自行车充电桩强制性国家标准正式发布规范电动自行车配套充电设施安全技术指标】财联社9月4日电，工业和信息化部、市场监管总局会同自然资源部、住房城乡建设部、国家能源局、国家消防救援局组织制定的强制性国家标准GB 47371—2026《电动自行车充电桩安全技术规范》已于2026年3月31日正式发布，将于2027年4月1"
+    },
+    {
+      "id": "b1ca9e5cac2f020ef35b97513ead2a23f13fcb80",
+      "title": "Seven departments: expand the supply of AI terminals, smart wearables, green home appliances, green building materials and new energy vehicles; support green and smart consumer goods consumption",
+      "summary": "CLS, September 4 — seven departments including the Cyberspace Administration of China jointly issued the implementation plan for promoting coordinated digital and green transformation (2026-2030)",
+      "title_zh": "七部门：扩大人工智能终端、智能可穿戴、绿色家电、绿色建材、新能源汽车等产品供给 支持绿色智能商品消费",
+      "summary_zh": "【七部门：扩大人工智能终端、智能可穿戴、绿色家电、绿色建材、新能源汽车等产品供给 支持绿色智能商品消费】财联社9月4日电，中央网信办等七部门联合印发《促进数字化绿色化协同转型发展实施方案（2026-2030年）》"
+    },
+    {
+      "id": "659b81f9fbc4120cd3c4f35e857eb5c082219569",
+      "title": "CLS, September 4 — SK Hynix says no decision has been made on financing matters regarding Solidigm",
+      "summary": "CLS, September 4 — SK Hynix stated that financing matters concerning Solidigm have not yet been determined",
+      "title_zh": "财联社9月4日电，SK海力士表示，尚未确定关于Solidigm的融资事项。",
+      "summary_zh": "财联社9月4日电，SK海力士表示，尚未确定关于Solidigm的融资事项"
+    },
+    {
+      "id": "c5858abfa1f3ca9bdd0c7da77d8070720f422905",
+      "title": "Beijing: support scaled development of the domestic service industry and push key platforms and service enterprises to expand and upgrade",
+      "summary": "CLS, September 4 — six departments including the Beijing Municipal Commerce Bureau issued the implementation plan on further improving home-care service quality and promoting the healthy development of the domestic service industry, which proposes supporting the scaled development of the domestic service industry",
+      "title_zh": "北京：支持家政行业规模化发展 推动重点家政平台和服务企业扩容提质",
+      "summary_zh": "【北京：支持家政行业规模化发展 推动重点家政平台和服务企业扩容提质】财联社9月4日电，北京市商务局等6部门印发《进一步提升居家照护服务质量 推进家政服务业健康发展工作实施方案》，其中提出，支持家政行业规模化发展"
+    },
+    {
+      "id": "32f60244fa8ea9eac888370994cf0cff6dcb5f01",
+      "title": "Wantai Bio: actual controller Zhong Shanshan completes the share donation transfer, stake falls to 15.10%",
+      "summary": "CLS, September 4 — Wantai Bio (603392.SH) announced that its actual controller Zhong Shanshan gratuitously donated 33 million unrestricted tradable shares he held directly, representing 2.61% of the company's total share capital, to the Fujian Xiang'an Innovation Laboratory Science and Technology Development Foundation, and the transfer registration has been completed",
+      "title_zh": "万泰生物：实控人钟睒睒捐赠股份完成过户 持股比例降至15.10%",
+      "summary_zh": "【万泰生物：实控人钟睒睒捐赠股份完成过户 持股比例降至15.10%】财联社9月4日电，万泰生物(603392.SH)公告称，公司实际控制人钟睒睒向福建省翔安创新实验室科技发展基金会无偿捐赠其直接持有的3300万股无限售条件流通股，占公司总股本的2.61%，已完成过户登记手续"
+    },
+    {
+      "id": "8e53cb8b2d44b1d63046ff75666bd36f27bd1b8c",
+      "title": "Nvidia's Hugging Face acquisition ambition: from chip hegemon to ecosystem kingmaker",
+      "summary": "Nvidia's $12.9 billion acquisition of open-source AI platform Hugging Face marks the chip giant systematically converting its hardware advantage into structural control over the entire AI ecosystem",
+      "title_zh": "英伟达收购Hugging Face的野望：从芯片霸主到生态“造王者”",
+      "summary_zh": "英伟达以129亿美元收购AI开源平台Hugging Face，标志着这家芯片巨头正将其硬件优势系统性地转化为对整个AI生态的结构性掌控"
     },
     {
       "id": "d613b06be02f7a50ca70db3b6be397f2679eec99",
       "title": "Fed Beige Book sends mixed signals: inflation proves hard to bring down, consumption splits while AI investment stays hot",
       "summary": "Released in the early hours of Thursday Beijing time, the Fed's August Beige Book shows the US economy still expanding modestly, but growth is increasingly reliant on a handful of projects such as AI data centers, inflation pressure remains stubborn, household stress is building, and the \"K-shaped\" split in consumption is becoming more pronounced",
-      "title_zh": "美联储褐皮书释放复杂信号：通胀难降、消费分化 AI投资仍火热",
-      "summary_zh": "北京时间周四凌晨，美联储发布的8月经济形势报告《褐皮书》显示，尽管美国经济仍在温和扩张，但增长越来越依赖AI 数据中心 等少数项目，同时通胀压力依然顽固，居民端的压力正在逐步累积，消费“K型分化”愈发显著"
+      "title_zh": "美联储褐皮书释放复杂信号：通胀难降、消费分化，AI 投资仍火热",
+      "summary_zh": "北京时间周四凌晨发布的美联储 8 月《褐皮书》显示，美国经济仍在温和扩张，但增长越来越依赖 AI 数据中心等少数项目，通胀压力依然顽固，居民端压力正在累积，消费的“K 型分化”愈发显著。"
     },
     {
       "id": "4a5e0cdf6e70582a26e815bac5b6f846ad1adb50",
       "title": "Options volume erupts in retail trading favorites as Robinhood, Tesla surge",
       "summary": "Options traders are kicking off the historically worst month for stocks by piling on bullish bets on a handful of retail trading favorites.",
-      "title_zh": "散户热门标的期权成交量激增，Robinhood、特斯拉大涨",
-      "summary_zh": "在历史上股市表现最差的月份开局之际，期权交易者正大举押注少数散户热门标的上涨。"
+      "title_zh": "随着 Robinhood、特斯拉大涨，散户热门标的期权成交量爆发",
+      "summary_zh": "期权交易者正以对少数散户热门标的的看涨押注，开启历史上股市表现最差的一个月。"
     },
     {
       "id": "1118567f7d657c1d51cde786ee4024cc3e282127",
       "title": "Vance says Fed should lower interest rates: 'Would be nice to have some help'",
       "summary": "Vice President J.D",
-      "title_zh": "万斯称美联储应该降息：「能得到一些帮助会很好」",
-      "summary_zh": "副总统 J.D"
+      "title_zh": "万斯称美联储应当降息：“能得到一些帮助就再好不过”",
+      "summary_zh": "副总统 J.D（原文截断）"
     },
     {
-      "id": "18b088d422195c53aa8081d553d477162790aca9",
-      "title": "'No steering wheel, no pedals': Tesla teases fans ahead of long-awaited Cybercab update",
-      "summary": "Tesla first unveiled the Cybercab almost two years ago, and fans of the company have been waiting to hear more.",
-      "title_zh": "「没有方向盘，没有踏板」：特斯拉在期待已久的 Cybercab 更新前向粉丝预热",
-      "summary_zh": "特斯拉大约两年前首次发布 Cybercab，公司的支持者此后一直在等待更多消息。"
-    },
-    {
-      "id": "950d9d0eaeb8dfa3a295d257488ab032be68f3b1",
-      "title": "CLS, September 4 — Coinbase's chief policy officer said Coinbase has filed a registration statement with the US Securities and Exchange Commission (SEC) to offer perpetual stock warrants in the United States.",
-      "summary": "CLS, September 4 — Coinbase's chief policy officer said Coinbase has filed a registration statement with the US Securities and Exchange Commission (SEC) to offer perpetual stock warrants in the United States",
-      "title_zh": "财联社9月4日电，Coinbase首席政策官表示，Coinbase已向美国证券交易委员会（SEC）提交备案注册文件，拟在美国发售股票永久权证。",
-      "summary_zh": "财联社9月4日电，Coinbase首席政策官表示，Coinbase已向美国证券交易委员会（SEC）提交备案注册文件，拟在美国发售股票永久权证"
-    },
-    {
-      "id": "79090d7aea86de3c5886c18be03e274eac70d9d6",
-      "title": "CLS, September 4 — Fitch Ratings indicated that the capital strength of US title insurers remains robust.",
-      "summary": "CLS, September 4 — Fitch Ratings indicated that the capital strength of US title insurers remains robust",
-      "title_zh": "财联社9月4日电，惠誉评级显示，美国产权保险公司资本实力依旧强劲。",
-      "summary_zh": "财联社9月4日电，惠誉评级显示，美国产权保险公司资本实力依旧强劲"
-    },
-    {
-      "id": "7108ad19034d821c34850bef5792b613070cc6b6",
-      "title": "CLS, September 4 — The US Office of the Comptroller of the Currency has given preliminary conditional approval to Openreserve's application for a national bank charter, according to reports.",
-      "summary": "CLS, September 4 — The US Office of the Comptroller of the Currency has given preliminary conditional approval to Openreserve's application for a national bank charter, according to reports",
-      "title_zh": "财联社9月4日电，据报道，美国货币监理署初步有条件批准Openreserve申请国民银行牌照。",
-      "summary_zh": "财联社9月4日电，据报道，美国货币监理署初步有条件批准Openreserve申请国民银行牌照"
-    },
-    {
-      "id": "37adbde5b90866fde8eb05c63362782ecbea8e57",
-      "title": "CLS, September 4 — US money market fund assets hit a record high of $7.98 trillion, according to Investment Company Institute data.",
-      "summary": "CLS, September 4 — US money market fund assets hit a record high of $7.98 trillion, according to Investment Company Institute data",
-      "title_zh": "财联社9月4日电，据美国投资公司协会数据，美国货币市场基金规模创下7.98万亿美元历史新高。",
-      "summary_zh": "财联社9月4日电，据美国投资公司协会数据，美国货币市场基金规模创下7.98万亿美元历史新高"
-    },
-    {
-      "id": "90c6126b3fa0e56e776d01e3dd9a6c12e4823539",
-      "title": "CLS, September 4 — Court filings show BASF is suing Apple over alleged infringement of patents related to its facial recognition technology.",
-      "summary": "CLS, September 4 — Court filings show BASF is suing Apple over alleged infringement of patents related to its facial recognition technology",
-      "title_zh": "财联社9月4日电，法庭文件显示，巴斯夫起诉苹果涉嫌侵犯其面部识别技术相关专利。",
-      "summary_zh": "财联社9月4日电，法庭文件显示，巴斯夫起诉苹果涉嫌侵犯其面部识别技术相关专利"
-    },
-    {
-      "id": "4c55540a5c4f7f3387368dcf3a0b6a298b124fd1",
-      "title": "CLS, September 4 — Volkswagen said in a statement that its model lineup will be cut by about 50% by 2035.",
-      "summary": "CLS, September 4 — Volkswagen said in a statement that its model lineup will be cut by about 50% by 2035",
-      "title_zh": "财联社9月4日电，大众汽车声明，到2035年车型阵容将缩减约50%。",
-      "summary_zh": "财联社9月4日电，大众汽车声明，到2035年车型阵容将缩减约50%"
-    },
-    {
-      "id": "3837e4aba5f9d966c17a44eb1b7735a5c27f43f5",
-      "title": "CLS, September 4 — Volkswagen ADRs rose 4%.",
-      "summary": "CLS, September 4 — Volkswagen ADRs rose 4%",
-      "title_zh": "财联社9月4日电，大众汽车ADR上涨4%。",
-      "summary_zh": "财联社9月4日电，大众汽车ADR上涨4%"
-    },
-    {
-      "id": "ca55605c406b0644bd13386cdfd168330b890075",
-      "title": "CLS, September 4 — Hang Seng Index futures closed the night session up 1.12% at 25422.76, a premium of 209.45 points.",
-      "summary": "CLS, September 4 — Hang Seng Index futures closed the night session up 1.12% at 25422.76, a premium of 209.45 points",
-      "title_zh": "财联社9月4日电，恒指期货夜盘收涨1.12%，报25422.76点，高水209.45点。",
-      "summary_zh": "财联社9月4日电，恒指期货夜盘收涨1.12%，报25422.76点，高水209.45点"
-    },
-    {
-      "id": "18814d49b8f910cfdf185a02aea57a98e23652be",
-      "title": "CLS, September 4 — Crusoe signed a cloud computing agreement with Jane Street worth about $13 billion.",
-      "summary": "CLS, September 4 — Crusoe signed a cloud computing agreement with Jane Street worth about $13 billion",
-      "title_zh": "财联社9月4日电，Crusoe与Jane Street签署价值约130亿美元的云计算协议。",
-      "summary_zh": "财联社9月4日电，Crusoe与Jane Street签署价值约130亿美元的云计算协议"
-    },
-    {
-      "id": "3c06ef24b4c1573c9d551879dcf6ca3f7f88f830",
-      "title": "\"New Fed whisperer\" Nick Timiraos: the Fed's Waller shows a subtle shift in stance",
-      "summary": "Nick Timiraos said Fed Governor Waller's position has not fundamentally changed since July, but his leaning has clearly shifted",
-      "title_zh": "“新美联储通讯社”Nick Timiraos：美联储沃勒立场出现微妙转向",
-      "summary_zh": "Nick Timiraos表示，美联储理事沃勒的立场自7月以来并未发生根本改变，但倾向已明显转向"
-    },
-    {
-      "id": "3ed6fd6f367a4e050272c9b4bba085dd85b4df9c",
-      "title": "Israeli prime minister says Israel can topple the Iranian regime",
-      "summary": "[Israeli prime minister says Israel can topple the Iranian regime] CLS, September 4 — Israeli Prime Minister Netanyahu, speaking at an event at the Israeli military headquarters on September 3 local time, said he believes Israel is capable of \"completely eliminating the threat and toppling the Iranian regime\"",
-      "title_zh": "以色列总理称能推翻伊朗政权",
-      "summary_zh": "【以色列总理称能推翻伊朗政权】财联社9月4日电，以色列总理内塔尼亚胡当地时间9月3日在以军总部出席活动时称，他相信以色列有能力“彻底消除威胁并推翻伊朗政权”"
-    },
-    {
-      "id": "6768addb74a3608f451858caad05bf6659f0f1dc",
-      "title": "CLS, September 4 — Volkswagen said a review underpinning its 2030 strategic plan shows group-wide workforce adjustments involving about 50,000 job cuts; the core financial target is a 9% return on sales by 2030...",
-      "summary": "CLS, September 4 — Volkswagen said a review underpinning its 2030 strategic plan shows group-wide workforce adjustments involving about 50,000 job cuts; the core financial target is a 9% return on sales by 2030",
-      "title_zh": "财联社9月4日电，大众汽车表示，作为2030年战略计划基础的调查显示，公司集团范围内将调整员工规模，涉及削减约5万个岗位；核心财务目标是到2030年实现9%的销售...",
-      "summary_zh": "财联社9月4日电，大众汽车表示，作为2030年战略计划基础的调查显示，公司集团范围内将调整员工规模，涉及削减约5万个岗位；核心财务目标是到2030年实现9%的销售营业回报率"
-    },
-    {
-      "id": "458e878d432680277a16f9d913219783ba84447a",
-      "title": "CLS, September 4 — Brent crude futures settled at $95.52 a barrel, down 11 cents or 0.12%.",
-      "summary": "CLS, September 4 — Brent crude futures settled at $95.52 a barrel, down 11 cents or 0.12%",
-      "title_zh": "财联社9月4日电，布伦特原油期货结算价为每桶95.52美元，下跌11美分，跌幅0.12%。",
-      "summary_zh": "财联社9月4日电，布伦特原油期货结算价为每桶95.52美元，下跌11美分，跌幅0.12%"
-    },
-    {
-      "id": "9e3287b1b4b394b4a80c6790f5cd629cdae07f81",
-      "title": "FIFA accuses UEFA of smearing Infantino",
-      "summary": "[FIFA accuses UEFA of smearing Infantino] CLS, September 4 — According to Sky News and other outlets on September 3 local time, a court filing shows FIFA accuses UEFA of launching a \"smear campaign\" against FIFA and its president Infantino",
-      "title_zh": "国际足联指责欧足联抹黑因凡蒂诺",
-      "summary_zh": "【国际足联指责欧足联抹黑因凡蒂诺】财联社9月4日电，据英国天空新闻台等媒体当地时间9月3日报道，一份法庭文件显示，国际足联指责欧足联对国际足联及其主席因凡蒂诺发起了一场“抹黑运动”"
-    },
-    {
-      "id": "ed0fa22db32f7d8dcb8f8912253759cbc8efb31e",
-      "title": "CLS, September 4 — Iraq's state oil marketing organization SOMO said Iraq exported 73 million barrels of oil in August, the highest level since the Iran war; August oil revenue was about $4.5 billion.",
-      "summary": "CLS, September 4 — Iraq's state oil marketing organization SOMO said Iraq exported 73 million barrels of oil in August, the highest level since the Iran war; August oil revenue was about $4.5 billion",
-      "title_zh": "财联社9月4日电，伊拉克国家石油营销组织SOMO表示，伊拉克8月石油出口量为7300万桶，为伊朗战争以来最高水平；伊拉克8月石油收入约为45亿美元。",
-      "summary_zh": "财联社9月4日电，伊拉克国家石油营销组织SOMO表示，伊拉克8月石油出口量为7300万桶，为伊朗战争以来最高水平；伊拉克8月石油收入约为45亿美元"
-    },
-    {
-      "id": "e542ce4aa65292793671ce1522401ae4bc4d337c",
-      "title": "CLS, September 4 — US crude futures settled at $91.30 a barrel, up 29 cents or 0.32%.",
-      "summary": "CLS, September 4 — US crude futures settled at $91.30 a barrel, up 29 cents or 0.32%",
-      "title_zh": "财联社9月4日电，美国原油期货结算价为每桶91.30美元，上涨29美分，涨幅0.32%。",
-      "summary_zh": "财联社9月4日电，美国原油期货结算价为每桶91.30美元，上涨29美分，涨幅0.32%"
-    },
-    {
-      "id": "da4a3f7a4ee4a3c13d190452a86b3f4a729b82e7",
-      "title": "CLS, September 4 — SHFE crude oil futures closed the night session down 1.78% at 678.60 yuan a barrel. Shanghai gold rose 2.03% and Shanghai silver rose 2.88% in the night session.",
-      "summary": "CLS, September 4 — SHFE crude oil futures closed the night session down 1.78% at 678.60 yuan a barrel",
-      "title_zh": "财联社9月4日电，上期所原油期货夜盘收跌1.78%，报678.60元人民币/桶。沪金夜盘收涨2.03%，沪银收涨2.88%。",
-      "summary_zh": "财联社9月4日电，上期所原油期货夜盘收跌1.78%，报678.60元人民币/桶"
-    },
-    {
-      "id": "2b5f836fe5a78ce886070e9a4a7f6d6f3dc6b20e",
-      "title": "Israeli defense minister threatens to send Iran back to the Stone Age",
-      "summary": "[Israeli defense minister threatens to send Iran back to the Stone Age] CLS, September 4 — Israeli Defense Minister Katz threatened at a defense ministry event on September 3 that if Iran attacks Israel, Israel will shed all limits and constraints and strike all Iranian infrastructure including energy facilities, to \"send Iran back to the Stone Age and into darkness\"",
-      "title_zh": "以色列防长威胁让伊朗回到石器时代",
-      "summary_zh": "【以色列防长威胁让伊朗回到石器时代】财联社9月4日电，以色列国防部长卡茨9月3日在国防部举行的一场活动上威胁称，如果伊朗对以色列发动袭击，以色列将摆脱所有限制和束缚，打击包括能源设施在内的伊朗所有基础设施，“让伊朗回到石器时代和黑暗之中”"
+      "id": "1d8ec87d1838207dd14017de27cfb7dbb9adf1b4",
+      "title": "European stocks: What if the Fed hikes in September?",
+      "summary": null,
+      "title_zh": "欧洲股市：如果美联储 9 月加息会怎样？",
+      "summary_zh": null
     },
     {
       "id": "98fa9f23c6defaa9eb1d688eefd85446c8e2f172",
       "title": "New York Fed President Williams (the Fed's \"number three\") said recent U.S. inflation data is encouraging, inflation is on a slow downward trend, and rates are at a good level.",
       "summary": "New York Fed President Williams (the Fed's \"number three\") said recent U.S. inflation data is encouraging, inflation is on a slow downward trend, and rates are at a good level.",
-      "title_zh": "美联储“三把手”威廉姆斯：通胀呈缓慢下行趋势 利率处于良好水平",
-      "summary_zh": "纽约联储主席威廉姆斯（美联储“三把手”）称，近期美国通胀数据令人鼓舞，通胀呈缓慢下行趋势，利率处于良好水平"
+      "title_zh": "美联储“三把手”威廉姆斯：近期美国通胀数据令人鼓舞，通胀呈缓慢下行趋势，利率处于良好水平",
+      "summary_zh": "纽约联储主席威廉姆斯（美联储“三把手”）表示，近期美国通胀数据令人鼓舞，通胀呈缓慢下行趋势，利率处于良好水平。"
     },
     {
-      "id": "3272c0999d2471b74495546125d600466c5e9643",
-      "title": "CLS, September 4 — US Vice President Vance said major combat operations against Iran ended long ago, and there will be no talks with Iran unless it stops attacking ships.",
-      "summary": "CLS, September 4 — US Vice President Vance said major combat operations against Iran ended long ago, and there will be no talks with Iran unless it stops attacking ships",
-      "title_zh": "财联社9月4日电，美国副总统万斯表示，针对伊朗的主要作战行动早已结束；除非伊朗停止攻击船只，否则不会与其对话。",
-      "summary_zh": "财联社9月4日电，美国副总统万斯表示，针对伊朗的主要作战行动早已结束；除非伊朗停止攻击船只，否则不会与其对话"
+      "id": "cf40a84f120063ae705f5a9cb7320af7ccd589f5",
+      "title": "Will gold shine again? Societe Generale restarts its long call, Deutsche Bank says 'the cavalry has arrived', and top asset managers are accelerating position building",
+      "summary": "The wind in the gold market is quietly changing",
+      "title_zh": "黄金将再次闪耀？法兴重启多头、德银称“骑兵已至”，头部资管正加速建仓",
+      "summary_zh": "黄金市场的风向正在悄然发生变化"
     },
     {
-      "id": "99f86e7df293b9e3a29d6bad88ae3cdfba56bbc2",
-      "title": "Nvidia plans to acquire Hugging Face for $12.93 billion",
-      "summary": "Nvidia plans to acquire Hugging Face for $12.93 billion",
-      "title_zh": "英伟达拟以129.3亿美元收购Hugging Face",
-      "summary_zh": "英伟达拟以129.3亿美元收购Hugging Face"
+      "id": "f520b57b55a540216765d7c3a82b8f73c0b09656",
+      "title": "America's three immortals, each day-trading one market",
+      "summary": "The US now has three immortals, each day-trading one market",
+      "title_zh": "美国三大仙人，一人做T一个市场",
+      "summary_zh": "美国现在有三大仙人，一人做T一个市场"
     },
     {
-      "id": "9609469b73c090c971b15b4be03ceb01b2a715c0",
-      "title": "CLS, September 4 — OpenAI released the GPT-6 Astra model and added cybersecurity safeguards.",
-      "summary": "CLS, September 4 — OpenAI released the GPT-6 Astra model and added cybersecurity safeguards",
-      "title_zh": "财联社9月4日电，OpenAI发布GPT-6 Astra模型，并增设网络安全防护机制。",
-      "summary_zh": "财联社9月4日电，OpenAI发布GPT-6 Astra模型，并增设网络安全防护机制"
+      "id": "384051fade4babd9dbdf75e8100792c673984dc4",
+      "title": "Volkswagen jumps 6% on plans to cut 50,000 jobs amid tariffs, China competition",
+      "summary": "Volkswagen shares jumped on Friday after it announced plans to slash a further 50,000 jobs as part of its transformation plan.",
+      "title_zh": "在关税与中国竞争压力下，大众汽车计划再裁减 5 万个岗位，股价大涨 6%",
+      "summary_zh": "大众汽车股价周五大涨，此前该公司宣布作为转型计划的一部分将再裁减 5 万个岗位。"
     },
     {
-      "id": "41738cbf400f67f9a915876c05245e9a381cf91c",
-      "title": "Wall Street is betting on Fed Chair Kevin Warsh to keep a manic bond market from unraveling",
-      "summary": "The market “needs stability and trust” as a deluge of corporate bond supply is expected in the coming months.",
-      "title_zh": "华尔街押注美联储主席凯文·沃什能阻止躁动的债券市场失控",
-      "summary_zh": "在未来数月企业债供给预计大量涌现之际，市场「需要稳定与信任」。"
+      "id": "a1fa9571cafd63ec30dbd0c0380a2c9235ad5c22",
+      "title": "China Securities Regulatory Commission opens public consultation on the Measures for the Supervision and Administration of Private Investment Fund Raising (draft)",
+      "summary": "The Measures comprise seven chapters and 45 articles; the main contents include: first, clarifying the basic principle of 'sellers exercise diligence, buyers bear their own risk', specifying raising methods, and detailing prohibited conduct",
+      "title_zh": "中国证监会就《私募投资基金募集监督管理办法（征求意见稿）》公开征求意见",
+      "summary_zh": "《募集办法》共七章四十五条，主要内容包括：一是明确“卖者尽责、买者自负”的基本原则，明确募集方式，细化禁止性行为规范"
     },
     {
-      "id": "ad7ee3216ddf5b190e936046ab3308408ff3febf",
-      "title": "New doubts emerge about whether Fed will raise interest rates this month",
-      "summary": "Fed governor Christopher Waller made a strong case for the Fed to hold rates steady.",
-      "title_zh": "美联储本月是否加息再现新的疑问",
-      "summary_zh": "美联储理事克里斯托弗·沃勒有力地论证了美联储应维持利率不变。"
+      "id": "f86c9725a0e52ed7952dbb20b66f97570d1d8fc2",
+      "title": "Breaking 4.8%! The 10-year US Treasury runs without a ceiling: how much longer will the global bond storm last?",
+      "summary": "On September 1, after a gap of one month, Trump launched another military strike on Iran, and market expectations that the conflict would cool quickly evaporated",
+      "title_zh": "突破4.8%！10年美债无顶狂奔：全球债市风暴还将持续多久？",
+      "summary_zh": "9月1日，时隔一月特朗普再对伊朗发动军事打击，市场此前对冲突降温的预期迅速落空"
     },
     {
-      "id": "768eaec69c9d7a671bcb31d9e515d6665a3e0d36",
-      "title": "Buy these cheap dividend-paying energy stocks, Goldman Sachs says",
-      "summary": "The firm still sees an opportunity to grab attractive dividend-paying energy names, despite the sector's run higher this year.",
-      "title_zh": "高盛称，可买入这些估值低廉的高股息能源股",
-      "summary_zh": "尽管能源板块今年已经上涨，该机构仍认为存在买入有吸引力的高股息能源标的的机会。"
+      "id": "b8a11c5088b9ff1a31ffb27c79351ff8129fb3d0",
+      "title": "Trump strikes Iran again: a war of attrition, or one last push before the midterms?",
+      "summary": "After a relatively mild period of economic pressure across August, the US-Iran conflict escalated abruptly in early September",
+      "title_zh": "特朗普再袭伊朗：消耗战还是中期选前最后一搏？",
+      "summary_zh": "在经历整个8月相对缓和的经济施压期后，美伊冲突在9月初骤然升级"
     },
     {
-      "id": "64c462c20064012f65daa36a91bb088845bf33b8",
-      "title": "The dollar slumps against the yen toward the 155 level; CME: a break below 155 could let options selling pressure accelerate the yen's rally",
-      "summary": "The dollar fell sharply against the yen on Thursday, touching 155.34 intraday, its lowest in more than a month, for a one-day decline of 2.1%",
-      "title_zh": "美元兑日元大跌逼近155关口，CME：若跌破155，期权卖压或加速日元涨势",
-      "summary_zh": "美元兑日元汇率周四大幅下挫，盘中一度触及155.34的逾月低位，单日跌幅达2.1%"
+      "id": "cb500ca6cbe8032f332a8a57ae15b00bccb209be",
+      "title": "No steering wheel, no pedals! After a decade of Musk's promises, Cybercab is finally on the road",
+      "summary": "Musk has been sketching the Robotaxi vision for nearly ten years; this time it is being put to the test",
+      "title_zh": "没方向盘、没脚踏板！马斯克画了十年大饼，Cybercab终于上路了",
+      "summary_zh": "马斯克画了快十年的 Robotaxi 大饼，这一次要见真章了"
     },
     {
-      "id": "bb3f232747cc8810d110f89346fb1832da4ca2f0",
-      "title": "Carney claps back at Lutnick, says Canada will resume trade talks 'when the Americans are ready'",
-      "summary": "Canada has retaliated against President Donald Trump's 50% tariffs with \"dollar for dollar\" duties on U.S",
-      "title_zh": "卡尼回击卢特尼克，称加拿大将「在美方准备好时」重启贸易谈判",
-      "summary_zh": "加拿大已针对特朗普总统 50% 的关税采取反制，对美国商品加征「对等金额」的关税"
+      "id": "f02be02bfafec41283164668c0190ce6a293c685",
+      "title": "Sixteen years rooted since Tsinghua undergrad and master's; a 'post-85' platinum analyst is set to be promoted to deputy head",
+      "summary": "On September 1, industry sources said Tu Yiting, assistant to the general manager of SWS Research, will be promoted to deputy general manager of the company",
+      "title_zh": "清华本硕扎根16年，“85后”白金分析师将升任副所长",
+      "summary_zh": "9月1日，业内传出消息，上海申银万国证券研究所有限公司（下称 “ 申万宏源研究 ” ）总经理助理屠亦婷将升任公司副总经理"
     },
     {
-      "id": "90f615e122c8a8048a64ae0645ae203cc34498a7",
-      "title": "Maria Bartiromo leaves Fox News after more than a decade; no reason specified",
-      "summary": "Politically influential financial journalist Maria Bartiromo has departed Fox News Media after more than a decade, the company announced Thursday.",
-      "title_zh": "玛丽亚·巴蒂罗莫在任职十余年后离开福克斯新闻，未说明原因",
-      "summary_zh": "该公司周四宣布，具有政治影响力的财经记者玛丽亚·巴蒂罗莫在任职十余年后已离开福克斯新闻传媒。"
+      "id": "abb5c448a2df23db0f5bce00778459f7ad204818",
+      "title": "Micron's HBM capacity is expected to double before year-end, catching up with Samsung and SK Hynix",
+      "summary": "Micron Technology is aggressively expanding high-bandwidth memory (HBM) production capacity, targeting a larger share of the global AI memory market",
+      "title_zh": "美光HBM产能年底前有望翻倍，追赶三星、SK海力士步伐",
+      "summary_zh": "美光科技正大举扩张高带宽内存（HBM）生产能力，剑指全球AI内存市场更大份额"
     },
     {
-      "id": "5e641e87e96f03f567217221caba37b9d894f737",
-      "title": "Oil prices little changed after Iran fires missiles at Kuwait",
-      "summary": "U.S",
-      "title_zh": "伊朗向科威特发射导弹后，油价变动不大",
-      "summary_zh": "美国"
+      "id": "e854fab28afb3fe403670eea9c733b2bedb0da4e",
+      "title": "Argentina's Milei escalates Falklands dispute as Trump questions U.S. support for Britain",
+      "summary": "Argentina's President Javier Milei has renewed the country's claim to the Falkland Islands and threatened sanctions on oil companies.",
+      "title_zh": "在特朗普质疑美国对英国的支持之际，阿根廷总统米莱升级福克兰群岛争端",
+      "summary_zh": "阿根廷总统哈维尔·米莱重申该国对福克兰群岛的主权主张，并威胁对石油公司实施制裁。"
     },
     {
-      "id": "259916e6a9e1d8ad1eee3c6b7db81bf147818955",
-      "title": "Microsoft to impose time limits on Xbox cloud gaming subscribers as costs continue to climb",
-      "summary": "Xbox Game Pass subscribers will have cloud gaming capped starting in November.",
-      "title_zh": "成本持续攀升，微软将对 Xbox 云游戏订阅用户设置时长限制",
-      "summary_zh": "自 11 月起，Xbox Game Pass 订阅用户的云游戏时长将被设上限。"
+      "id": "6858ee5d9bffcf821a5de408769ffca76b71542e",
+      "title": "Global bond sell-off likely not over yet, Mohamed El-Erian tells CNBC",
+      "summary": "In a wide-ranging interview, the renowned economist also said the U.S",
+      "title_zh": "穆罕默德·埃尔-埃里安向 CNBC 表示，全球债市抛售可能尚未结束",
+      "summary_zh": "在一段内容广泛的采访中，这位知名经济学家还表示，美国（原文截断）"
     },
     {
-      "id": "538b4783c530686443523bc55dcc6a3c7db0a265",
-      "title": "Piper Sandler expects Robinhood to kickstart football season with a win",
-      "summary": "With less than a week until the start of football season, Piper Sandler expects Rothera's prediction market activity to jump.",
-      "title_zh": "Piper Sandler 预计 Robinhood 将以一场胜利开启橄榄球赛季",
-      "summary_zh": "距橄榄球赛季开赛不足一周，Piper Sandler 预计 Rothera 的预测市场活跃度将大幅上升。"
+      "id": "03a10426469faaed8f4817df309a2469db2c6458",
+      "title": "GPT-6, tearing down the walls between apps",
+      "summary": "Over the past three days, three of the world's leading model companies have successively updated their frontier models",
+      "title_zh": "GPT-6，“强拆”App的墙",
+      "summary_zh": "过去三天，全球三家头部模型公司接连更新了自己的前沿模型"
     },
     {
-      "id": "896dbb3b806eea18159386a164caf951c32f753c",
-      "title": "We're lifting our price targets on 2 stocks that have shaken off AI disruption concerns",
-      "summary": "Every weekday, the Investing Club releases the Homestretch; an actionable afternoon update just in time for the last hour of trading.",
-      "title_zh": "我们上调 2 只已摆脱 AI 颠覆担忧的个股目标价",
-      "summary_zh": "每个交易日，Investing Club 都会发布 Homestretch——一份恰在收盘前最后一小时发出、可直接操作的午后更新。"
+      "id": "8841c8c5e354f87c278cb5c9272852ebcef084bc",
+      "title": "Nomura: if the yen keeps weakening, the Bank of Japan could hike three times in a row",
+      "summary": "The sustained softening of the yen is pushing markets to reassess the Bank of Japan's rate-hike path",
+      "title_zh": "野村：若日元持续走弱，日本央行或连续三次加息",
+      "summary_zh": "日元持续走软正推动市场重新评估日本央行的加息路径"
     },
     {
-      "id": "14aace6d24b5fcb1a32ba43669f955c58d48eb47",
-      "title": "Facing large redemptions for a third straight quarter, Cliffwater received Q3 redemption requests for 16% and again set the redemption cap at 5%",
-      "summary": "Cliffwater LLC's flagship private credit fund again set its third-quarter redemption cap at 5%, after investors requested redemptions of roughly 16% of the fund's total shares",
-      "title_zh": "连续三季大额赎回，Cliffwater Q3遭16%赎回申请，赎回上限再次设定为5%",
-      "summary_zh": "Cliffwater LLC旗下旗舰私募信贷基金 第三季度再次将赎回上限设定为5%，此前投资者申请赎回的份额约占基金总份额的16%"
+      "id": "7327d3ebbf331ee9155c63adada68493657a0e95",
+      "title": "Meta's Zuckerberg once privately called Trump: don't set up an AI regulator",
+      "summary": "The direction of US AI regulation policy is being deeply shaped by a series of private interactions between tech giants and White House officials",
+      "title_zh": "Meta扎克伯格曾私下致电特朗普：别设AI监管机构",
+      "summary_zh": "美国AI监管政策的走向，正受到科技巨头与白宫官员之间一系列私下互动的深刻影响"
     },
     {
-      "id": "2b5ccd37da9a578c61d1d1b4488882deb3428bb1",
-      "title": "The US and Canada trade barbs from afar: Carney says a deal is negotiable but autos, steel and aluminium cannot be sacrificed, while Trump warns Canada's economy will collapse",
-      "summary": "Nearly two weeks after US-Canada trade talks broke down, Canadian Prime Minister Carney signalled a restart of negotiations while stressing that any future deal must carry \"stability and credibility\" and that the competitiveness of Canada's auto, steel and aluminium industries cannot become a bargaining sacrifice",
-      "title_zh": "美加隔空“交手”：卡尼称协议可谈、不能牺牲汽车钢铝，特朗普警告加拿大经济将崩溃",
-      "summary_zh": "美加贸易谈判破裂近两周后，加拿大总理卡尼释放重启谈判的信号，同时强调任何未来协议都必须具备“稳定性和可信度”，加拿大汽车、钢铁和铝业的竞争力不能成为谈判的牺牲品"
+      "id": "9f3eb101f689ef53129b14b23e05746139725ef5",
+      "title": "South Korea to send troops to the Strait of Hormuz? The presidential office: still at the 'research and review' stage",
+      "summary": "South Korea is accelerating research on deploying military forces to the Strait of Hormuz, but the plan has not yet been finalized",
+      "title_zh": "韩国出兵霍尔木兹海峡？韩总统府：仍处于“研究审议”阶段",
+      "summary_zh": "韩国正加快推进向霍尔木兹海峡派遣军事力量的相关研究，但目前方案尚未敲定"
     },
     {
-      "id": "6ae3e384a34f395b26f130a7da7a9cc0eaaa303e",
-      "title": "OpenAI begins rolling out Astra model after warning of its advanced cyber capabilities",
-      "summary": "OpenAI said companies participating in its application-based cybersecurity program will be first to get access to Astra.",
-      "title_zh": "在警告其高级网络能力后，OpenAI 开始推出 Astra 模型",
-      "summary_zh": "OpenAI 表示，参与其申请制网络安全项目的公司将最先获得 Astra 的使用权限。"
+      "id": "f0c4f28b6fc03a0116b773fcefd6d79162dab7b8",
+      "title": "Will China and the US issue a statement on agriculture and related non-tariff barriers? Foreign Ministry: no information to provide",
+      "summary": "On September 4, Foreign Ministry spokesperson Guo Jiakun chaired the regular press conference",
+      "title_zh": "中美或将就农业及相关非关税壁垒发布声明？外交部：无信息提供",
+      "summary_zh": "9月4日，外交部发言人郭嘉昆主持例行记者会"
     },
     {
-      "id": "611a423a7bfea21ff70182589803721cc6d632ca",
-      "title": "OpenAI releases the GPT-6 Astra model and adds cybersecurity safeguards",
-      "summary": "OpenAI releases the GPT-6 Astra model and adds cybersecurity safeguards",
-      "title_zh": "OpenAI发布GPT-6 Astra模型，并增设网络安全防护机制",
-      "summary_zh": "OpenAI发布GPT-6 Astra模型，并增设网络安全防护机制"
+      "id": "02bb17db1a61c0503911d1242da98bdf6a9f7971",
+      "title": "Ahead of US payrolls, global equities rebound, Korean stocks close up 1.64%, the yen firms and oil edges higher",
+      "summary": "Dovish-leaning comments from Fed officials led markets to reprice rate-hike expectations; global equities rose for a third straight day and Asia-Pacific assets broadly strengthened",
+      "title_zh": "美非农前夕，全球股市反弹，韩股收涨1.64%，日元强势，油价小幅走高",
+      "summary_zh": "美联储官员偏鸽表态令市场重新定价加息预期，全球股市连续第三日上涨，亚太资产普遍走强"
     },
     {
-      "id": "3abe1d338734583c2b644a38aeda3e6aa6dde8f9",
-      "title": "Gloria Steinem, a potent voice of U.S. feminism and co-founder of Ms. Magazine, has died",
-      "summary": "Gloria Steinem, the co-founder of Ms",
-      "title_zh": "美国女权运动的重要发声者、《Ms.》杂志联合创办人格洛丽亚·斯泰纳姆去世",
-      "summary_zh": "《Ms.》杂志联合创办人格洛丽亚·斯泰纳姆"
+      "id": "6d9a418caddc7551f71e4f0b4cf4362351b8a58d",
+      "title": "Report: Apple's foldable iPhone daily output is only in the 'hundreds'; supply may be tight at launch",
+      "summary": "Mass production of Apple's first foldable iPhone is running far below expectations, and supply-chain problems are threatening its market performance at initial launch",
+      "title_zh": "报道：苹果折叠屏iPhone日产量仅“几百”台，开售初期或供应紧张",
+      "summary_zh": "苹果首款折叠屏iPhone的量产进程远低于预期，供应链问题正威胁其上市初期的市场表现"
     },
     {
-      "id": "c6e5084fcb830b047f0c478fce70d2f23650c09c",
-      "title": "Leon Black sues House Oversight over Epstein probe subpoenas, won't appear Thursday",
-      "summary": "Black's attorneys say the NDAs being sought by the panel have nothing to do with his dealings with notorious sex offender Jeffrey Epstein.",
-      "title_zh": "利昂·布莱克就爱泼斯坦调查传票起诉众议院监督委员会，将不会于周四出席",
-      "summary_zh": "布莱克的律师称，该委员会索要的保密协议与他同臭名昭著的性犯罪者杰弗里·爱泼斯坦之间的往来无关。"
-    },
-    {
-      "id": "b7d60937d898c4748c2ff96072a38b79e5a8fd22",
-      "title": "ChargePoint CEO says 70% stock surge 'is the beginning of the momentum'",
-      "summary": "The infrastructure company is toward the end of a three-year business plan that has boosted revenue and significantly cut the company's losses.",
-      "title_zh": "ChargePoint 首席执行官称股价飙升 70%「只是动能的开始」",
-      "summary_zh": "这家基础设施公司的三年业务计划已接近尾声，该计划提升了收入并大幅削减了公司亏损。"
-    },
-    {
-      "id": "0664d441376ad5d4fc96169943af53866c198e64",
-      "title": "Did the G20 widen the US-Germany rift? The US was reported to be unhappy with Germany's criticism of yen intervention, and the two also clashed over Russia",
-      "summary": "US-Europe differences kept escalating during the G20 meetings",
-      "title_zh": "G20扩大美德裂痕？美国被曝不满德国批评干预日元、还就俄议题交锋",
-      "summary_zh": "G20会议期间，美欧分歧持续发酵"
-    },
-    {
-      "id": "65b2697c738e486de5141a5e961afe682fab265d",
-      "title": "Elon Musk starts spending his midterm election millions, revealing his key Senate targets",
-      "summary": "Elon Musk’s America PAC is spending in key Senate races including Texas and Maine, days after Musk met with House Speaker Mike Johnson.",
-      "title_zh": "马斯克开始投入其中期选举的数百万美元资金，透露了他的关键参议院目标",
-      "summary_zh": "在马斯克与众议院议长迈克·约翰逊会面数日后，其 America PAC 正在得克萨斯、缅因等关键参议院选区投入资金。"
-    },
-    {
-      "id": "d4cd7328495e698b1a48ae8225085ee3f54c8aa3",
-      "title": "Agriculture stocks are breaking out. Jay Woods says watch these levels",
-      "summary": "The chief market strategist of Freedom Capital Markets sees two stocks moving sharply higher.",
-      "title_zh": "农业股正在突破，Jay Woods 称需关注这些价位",
-      "summary_zh": "Freedom Capital Markets 的首席市场策略师看到两只个股大幅走高。"
-    },
-    {
-      "id": "e1d9960058bf7c9cd7c283f0ce7f1dbbc8151c77",
-      "title": "Automakers urge Congress to permanently ban Chinese connected vehicles in U.S.",
-      "summary": "Major automakers in the U.S",
-      "title_zh": "汽车制造商呼吁美国国会永久禁止中国联网汽车进入美国市场",
-      "summary_zh": "美国主要汽车制造商"
+      "id": "c4409d6818529ec799a45f2a69fcb79bf8d6efb2",
+      "title": "The inflation genie could be out of the bottle — and bond markets are sounding the alarm",
+      "summary": "Global bond yields have surged as investors assess whether rising debt, tariffs, defense spending and energy shocks could keep inflation higher for longer.",
+      "title_zh": "通胀魔鬼可能已经出瓶——债券市场正在拉响警报",
+      "summary_zh": "全球债券收益率大幅上行，投资者正在评估债务上升、关税、国防支出与能源冲击是否会让通胀在更长时间内维持高位。"
     }
   ],
-  "updated_at": "2026-09-03T20:42:06Z"
+  "updated_at": "2026-09-04T11:45:00Z"
 }
