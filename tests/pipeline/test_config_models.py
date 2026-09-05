@@ -18,7 +18,17 @@ import pytest
 import yaml
 from pydantic import ValidationError
 
-from pipeline.config.models import ConfigError, SourcesConfig, ThemesConfig, load_config
+from pipeline.config.models import (
+    ConfigError,
+    NewsSource,
+    SourcesConfig,
+    ThemeConstituent,
+    ThemeDef,
+    ThemeProxy,
+    ThemesConfig,
+    load_config,
+    theme_history_symbols,
+)
 from pipeline.providers import build_default_providers
 from pipeline.settings import Settings
 from pipeline.universe import AssetUniverse
@@ -75,6 +85,33 @@ def test_load_config_missing_file_and_non_mapping(tmp_path: Path) -> None:
     bad.write_text("- just\n- a\n- list\n", encoding="utf-8")
     with pytest.raises(ConfigError, match="mapping"):
         load_config(bad, ThemesConfig)
+
+
+@pytest.mark.parametrize(
+    "proxy",
+    [{"kind": "etf"}, {"kind": "basket", "symbol": "SPY"}],
+)
+def test_theme_proxy_requires_kind_specific_symbol(proxy: dict[str, str]) -> None:
+    with pytest.raises(ValidationError, match="proxy"):
+        ThemesConfig.model_validate({"schema_version": "1.0.0", "themes": {"x": {"proxy": proxy}}})
+
+
+def test_theme_definition_rejects_duplicate_constituents() -> None:
+    with pytest.raises(ValidationError, match="unique"):
+        ThemeDef(
+            constituents=[
+                ThemeConstituent(symbol="NVDA"),
+                ThemeConstituent(symbol="NVDA"),
+            ]
+        )
+
+
+def test_theme_history_symbols_centralizes_etf_and_basket_selection() -> None:
+    etf = ThemeDef(proxy=ThemeProxy(kind="etf", symbol="SKYY"), constituents=[ThemeConstituent(symbol="NVDA")])
+    basket = ThemeDef(constituents=[ThemeConstituent(symbol="NVDA"), ThemeConstituent(symbol="603986.SH")])
+
+    assert theme_history_symbols(etf) == {"SKYY"}
+    assert theme_history_symbols(basket) == {"NVDA"}
 
 
 def test_themes_dangling_constituent_fails_the_run(tmp_path: Path) -> None:
@@ -249,6 +286,54 @@ def test_news_source_rejects_non_https_url_in_chain(tmp_path: Path) -> None:
         settings.load_news_sources_config()
 
 
+@pytest.mark.parametrize(
+    "url",
+    [
+        "https:///missing-host/feed",
+        "https://localhost/feed",
+        "https://127.0.0.1/feed",
+        "https://10.0.0.1/feed",
+        "https://user:password@example.com/feed",
+    ],
+)
+def test_news_source_rejects_non_public_or_credentialed_url(url: str) -> None:
+    with pytest.raises(ValidationError):
+        NewsSource(id="x", name="X", url=url)
+
+
+def test_news_source_relay_redirect_hosts_are_explicit() -> None:
+    with pytest.raises(ValidationError, match="redirect_hosts"):
+        NewsSource(id="relay", name="Relay", url="https://relay.example/feed", trust="relay")
+
+    with pytest.raises(ValidationError, match="only valid for relay"):
+        NewsSource(
+            id="plain", name="Plain", url="https://example.com/feed",
+            redirect_hosts=["publisher.example"],
+        )
+
+    with pytest.raises(ValidationError, match="valid hostname"):
+        NewsSource(
+            id="relay", name="Relay", url="https://relay.example/feed", trust="relay",
+            redirect_hosts=["https://publisher.example"],
+        )
+
+    source = NewsSource(
+        id="relay", name="Relay", url="https://relay.example/feed", trust="relay",
+        redirect_hosts=["publisher.example"],
+    )
+    assert source.redirect_hosts == ["publisher.example"]
+
+
+def test_rss_provider_wires_configured_relay_targets() -> None:
+    from pipeline.providers.rss_news import RssNewsProvider
+
+    provider = RssNewsProvider(Settings(_env_file=None))
+    try:
+        assert provider._client._relay_target_hosts == {"www.cls.cn", "wallstreetcn.com"}
+    finally:
+        provider._client.close()
+
+
 def test_news_source_rejects_duplicate_url_in_chain(tmp_path: Path) -> None:
     """#124: an exact duplicate URL within a chain is a config mistake, not a fallback."""
     from pipeline.config.models import ConfigError, NewsSource
@@ -275,8 +360,6 @@ def test_news_source_rejects_duplicate_url_in_chain(tmp_path: Path) -> None:
 
 def test_market_sector_rows_come_from_themes_config() -> None:
     """C-1: the collector's sector/theme rows are the themes.yaml keys, labels nowhere."""
-    from pipeline.schemas import EquitiesDataset, EquityAsset
-
     settings = Settings(_env_file=None)
     themes = settings.load_themes_config()
     universe = AssetUniverse.load(settings)
@@ -289,12 +372,6 @@ def test_market_sector_rows_come_from_themes_config() -> None:
     assert by_symbol["NVDA"].symbol == "NVDA"  # Asset has no theme attribute anymore (D-8)
     assert not hasattr(by_symbol["NVDA"], "theme")
 
-    equities = EquitiesDataset(
-        assets=[
-            EquityAsset(symbol="NVDA", name="NVIDIA", price=100.0, source="yfinance", updated_at="2026-08-04T12:00:00Z"),
-            EquityAsset(symbol="TSLA", name="Tesla", price=200.0, source="yfinance", updated_at="2026-08-04T12:00:00Z"),
-        ]
-    )
     # Just the schema contract: SectorItem no longer accepts label/label_zh (C-1).
     from pipeline.schemas import SectorItem, SectorsDataset
 

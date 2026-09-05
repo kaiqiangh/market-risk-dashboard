@@ -7,13 +7,30 @@ Copyright boundary: store only title+source+link+self-written one-sentence summa
 from __future__ import annotations
 
 from typing import Literal
+from urllib.parse import urlparse
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from .envelope import BaseEnvelope, ContractModel, UTCDateTime
 
 NewsSentiment = Literal["positive", "negative", "neutral"]
 NewsSourceLang = Literal["en", "zh"]
+
+
+def _validate_news_url(value: str) -> str:
+    """Keep published article links absolute and browser-safe at every data boundary."""
+    parsed = urlparse(value)
+    if parsed.scheme.lower() not in {"http", "https"} or not parsed.hostname:
+        raise ValueError("news URL must be an absolute HTTP(S) URL")
+    if parsed.username is not None or parsed.password is not None:
+        raise ValueError("news URL must not contain credentials")
+    if parsed.fragment:
+        raise ValueError("news URL must not contain a fragment")
+    try:
+        _ = parsed.port
+    except ValueError as exc:
+        raise ValueError("news URL has an invalid port") from exc
+    return value
 
 
 class NewsItem(ContractModel):
@@ -31,6 +48,8 @@ class NewsItem(ContractModel):
     summary: str = Field(default="", description="English one-sentence summary (canonical bilingual, ADR-0003)")
     summary_zh: str | None = Field(default=None, description="Chinese translation of the summary (canonical bilingual, ADR-0003)")
     impact_window: str | None = None
+
+    _url_is_absolute_http = field_validator("url")(_validate_news_url)
 
 
 class NewsDataset(ContractModel):

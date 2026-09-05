@@ -24,6 +24,7 @@ from pipeline.lineage import fact_generation_id
 from pipeline.analysis.validate import (
     compare_analysis_lineage,
     compare_bilingual,
+    check_language_isolation,
     load_analysis,
     validate_analysis_lineage,
     validate_analysis_pair,
@@ -256,3 +257,37 @@ def test_validate_cli_reports_skipped_checks_and_required_lineage(
     output = capsys.readouterr().out
     assert "lineage: FAILED (facts.json missing)" in output
     assert "fact layer missing for lineage validation" in output
+
+
+def test_check_language_isolation_passes_for_english_prose(
+    analysis_pair: tuple[Path, Path, Path],
+) -> None:
+    """The factory's en brief is English prose, so language isolation must pass."""
+    zh, en = _zh_and_en(analysis_pair)
+    issues = check_language_isolation(zh, en)
+    assert issues == []
+
+
+def test_check_language_isolation_flags_chinese_claim(
+    analysis_pair: tuple[Path, Path, Path],
+) -> None:
+    """A Chinese claim in the en brief is a hard, user-visible failure (#translation-unavailable)."""
+    zh, en = _zh_and_en(analysis_pair)
+    # Inject a Chinese claim into the otherwise-English en brief.
+    en.top_risk_drivers[0].claim = "风险偏好全面回落：半导体集体下挫。"
+    issues = check_language_isolation(zh, en)
+    assert any("language isolation" in issue for issue in issues)
+    assert any("top_risk_drivers[0].claim" in issue for issue in issues)
+
+
+def test_validate_analysis_pair_runs_language_isolation(
+    analysis_pair: tuple[Path, Path, Path],
+) -> None:
+    """validate_analysis_pair must surface language-isolation issues (wired for the CI gate)."""
+    zh_path, en_path, facts_path = analysis_pair
+    # Corrupt the en file's first claim so the gate has something to catch.
+    en = load_analysis(en_path)
+    en.top_risk_drivers[0].claim = "利率环境仍偏紧，估值承压。"
+    en_path.write_text(en.model_dump_json(indent=2), encoding="utf-8")
+    issues, _, _ = validate_analysis_pair(zh_path, en_path, facts_path)
+    assert any("language isolation" in issue for issue in issues)

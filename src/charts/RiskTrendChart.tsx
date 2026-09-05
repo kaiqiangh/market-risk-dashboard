@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import echarts from "./echarts";
+import type * as echarts from "echarts/core";
 import { chartTheme } from "./theme";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatDate, formatNumber } from "@/lib/format";
@@ -39,6 +39,7 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
   const ref = useRef<HTMLDivElement>(null);
   const chartRef = useRef<echarts.ECharts | null>(null);
   const [mode, setMode] = useState<"echarts" | "fallback">("echarts");
+  const [chartReady, setChartReady] = useState(0);
   const chartData = useMemo(
     () => ({
       dates: points.map((p) => p.date),
@@ -53,14 +54,24 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
       setMode("fallback");
       return;
     }
-    try {
-      chartRef.current = echarts.init(ref.current);
-    } catch {
-      setMode("fallback");
-    }
+    let active = true;
     const onResize = () => chartRef.current?.resize();
     window.addEventListener("resize", onResize);
+    void import("./echarts")
+      .then(({ default: charting }) => {
+        if (!active || !ref.current) return;
+        try {
+          chartRef.current = charting.init(ref.current);
+          setChartReady((ready) => ready + 1);
+        } catch {
+          setMode("fallback");
+        }
+      })
+      .catch(() => {
+        if (active) setMode("fallback");
+      });
     return () => {
+      active = false;
       window.removeEventListener("resize", onResize);
       chartRef.current?.dispose();
       chartRef.current = null;
@@ -120,10 +131,16 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
       },
       { notMerge: true },
     );
-  }, [chartData, locale, t]);
+  }, [chartData, locale, t, chartReady]);
 
   if (points.length === 0) {
-    return <EmptyState title={t("trend.empty")} message={t("trend.emptyHint")} data-testid="chart-empty" />;
+    return (
+      <EmptyState
+        title={t("trend.empty")}
+        message={t("trend.emptyHint")}
+        data-testid="chart-empty"
+      />
+    );
   }
 
   if (mode === "fallback") {
@@ -140,7 +157,9 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
             {points.map((p) => (
               <tr key={p.date} className="border-b border-border/50 last:border-0">
                 <td className="px-2 py-1.5">{formatDate(p.date, locale)}</td>
-                <td className="px-2 py-1.5 text-right tabular-nums">{formatNumber(p.total_score, locale)}</td>
+                <td className="px-2 py-1.5 text-right tabular-nums">
+                  {formatNumber(p.total_score, locale)}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -153,7 +172,9 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
     <>
       <div ref={ref} style={{ height }} data-testid="risk-trend-chart" className="w-full" />
       <details className="mt-2 rounded-md border border-border px-3 py-2 text-xs">
-        <summary className="cursor-pointer font-medium text-muted-foreground">{t("trend.details")}</summary>
+        <summary className="cursor-pointer font-medium text-muted-foreground">
+          {t("trend.details")}
+        </summary>
         <div className="mt-2 overflow-x-auto">
           <table className="w-full text-left">
             <thead>
@@ -166,7 +187,9 @@ export function RiskTrendChart({ points, height = 260 }: RiskTrendChartProps) {
               {points.map((point) => (
                 <tr key={point.date} className="border-b border-border/50 last:border-0">
                   <td className="py-1.5 pr-2">{formatDate(point.date, locale)}</td>
-                  <td className="py-1.5 text-right tabular-nums">{formatNumber(point.total_score, locale)}</td>
+                  <td className="py-1.5 text-right tabular-nums">
+                    {formatNumber(point.total_score, locale)}
+                  </td>
                 </tr>
               ))}
             </tbody>

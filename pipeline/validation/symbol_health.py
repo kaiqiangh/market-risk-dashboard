@@ -39,7 +39,6 @@ inside the functions), matching the ``ci_checks`` argument conventions:
 from __future__ import annotations
 
 import argparse
-import sys
 from pathlib import Path
 from typing import Any
 
@@ -54,15 +53,13 @@ def canonical_theme_symbols() -> set[str]:
     for a theme replaces its constituents; basket themes (no ETF proxy, or ``kind: basket``)
     contribute every constituent that is not a CN ``.SH``/``.SZ`` symbol (#85).
     """
+    from pipeline.config.models import theme_history_symbols
     from pipeline.settings import Settings
 
     themes = Settings().load_themes_config()
     symbols: set[str] = set()
     for theme in [*themes.sectors.values(), *themes.themes.values()]:
-        if theme.proxy is not None and theme.proxy.kind == "etf" and theme.proxy.symbol:
-            symbols.add(theme.proxy.symbol)
-        else:
-            symbols |= {c.symbol for c in theme.constituents if not c.symbol.endswith((".SH", ".SZ"))}
+        symbols |= theme_history_symbols(theme)
     return symbols
 
 

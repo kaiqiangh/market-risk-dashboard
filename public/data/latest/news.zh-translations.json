@@ -1,33 +1,353 @@
 {
   "items": [
     {
-      "id": "3a36de59fe696109cd13aaeb365d2ca794acd965",
-      "title": "U.S., Canada fail to reach a tariff deal, deepen trade war",
-      "summary": "The United States and Canada failed to reach a trade deal late on Friday, and the U.S",
-      "title_zh": "美加未能达成关税协议，贸易战进一步升级",
-      "summary_zh": "美国和加拿大周五深夜未能达成贸易协议，而美国……"
+      "id": "48fd263cd324de0578e682dcece5555277645f04",
+      "title": "Trump turns up the heat on Warsh as Fed rate hike looms",
+      "summary": "Ten days ahead of the next Federal Reserve meeting, the Trump administration looks to be in a full-court press to halt a rate hike in its tracks.",
+      "title_zh": "美联储加息在即，特朗普加大对沃什的施压力度",
+      "summary_zh": "距离下次美联储会议还有十天，特朗普政府似乎正在全面施压，试图阻止加息落地。"
     },
     {
-      "id": "acde699439cfee8b2f6dd88685b815665316a94a",
-      "title": "Six investors reveal the biggest market risks — and one strategy they agree on",
-      "summary": "Investors see different risks threatening markets, but broadly agree that traders should diversify beyond recent winners.",
-      "title_zh": "六位投资者揭示最大的市场风险——以及他们一致认同的一项策略",
-      "summary_zh": "投资者看到了威胁市场的不同风险，但普遍认同交易者应超越近期赢家进行多元化配置。"
+      "id": "91cb5996a4114eb86265be11ef79b6cbadf3acdc",
+      "title": "Will next week's US CPI trigger a September rate hike? BofA and Citi offer two opposing scenarios",
+      "summary": "The August US CPI print due next Friday will directly determine whether the Federal Reserve can resume rate hikes at this month's meeting.",
+      "title_zh": "下周美国CPI会触发9月加息吗？美银、花旗给出两个相反剧本",
+      "summary_zh": "即将于下周五发布的美国8月CPI数据，将直接决定美联储能否在本月会议上重启加息"
     },
     {
-      "id": "01de65806e60bffa03844f9d131b9428d896aa34",
-      "title": "Treasury rescue effort failed to save the dollar but sent gold soaring — has Bessent's gamble backfired?",
-      "summary": null,
-      "title_zh": "美债没救成却坑了美元，黄金暴涨！贝森特“偷鸡不成蚀把米”？",
-      "summary_zh": null
+      "id": "39058bb548c6786c8b41c36de62c169f7ce69d72",
+      "title": "Multiple explosive devices targeting power facilities found in Germany's Saxony state",
+      "summary": "Cailianpress, Sept 6 — Police in the German state of Saxony said on Sept 5 that a total of 12 explosive devices were found near two high-voltage transmission lines in the state.",
+      "title_zh": "德国萨克森州发现多个针对电力设施的爆炸装置",
+      "summary_zh": "【德国萨克森州发现多个针对电力设施的爆炸装置】财联社9月6日电，德国萨克森州警方9月5日表示，在该州两处高压输电线路附近共发现12个爆炸装置"
     },
     {
-      "id": "e77ed2de84aaeed0e29e9377d57c3511f47ce82f",
-      "title": "Korean experts: the six core hardware technologies to watch over the next decade",
-      "summary": null,
-      "title_zh": "韩国专家：未来十年最瞩目的6大核心硬件技术",
-      "summary_zh": null
+      "id": "08dc1e6a0adf2cc7531c1af777eabc8d3fb921ec",
+      "title": "Iranian military warns of larger-scale strikes on US forces if Washington continues destabilizing actions",
+      "summary": "Cailianpress, Sept 6 — On Sept 5 local time, the Khatam al-Anbiya Central Headquarters of Iran's armed forces warned that if the United States persists in its unsafe conduct, harasses Iranian vessels and maintains its blockade of Iran, Iranian forces will strike US warships in the region more severely and may widen the scope of those strikes.",
+      "title_zh": "伊朗军方称如美继续其破坏行为 将对美军进行更大规模打击",
+      "summary_zh": "【伊朗军方称如美继续其破坏行为 将对美军进行更大规模打击】财联社9月6日电，当地时间5日，伊朗武装部队哈塔姆·安比亚中央司令部发出警告称，如美国继续进行其不安全行为，骚扰伊朗船只，继续封锁伊朗，伊朗武装部队将对该地区美国军舰进行更加严厉的打击，并且有可能扩大打击范围"
+    },
+    {
+      "id": "0c2e4f2256a72541d834cefd3ae6d4ad83200376",
+      "title": "Putin begins talks with US presidential envoys",
+      "summary": "Cailianpress, Sept 6 — On the evening of Sept 5 local time, Russian President Vladimir Putin began talks at the Kremlin with US presidential envoys Witkoff and Kushner.",
+      "title_zh": "普京开始与美国总统特使会谈",
+      "summary_zh": "【普京开始与美国总统特使会谈】财联社9月6日电，当地时间9月5日晚，俄罗斯总统普京与美国总统特使威特科夫和库什纳在克里姆林宫开始会谈"
+    },
+    {
+      "id": "d011dbc89c206269461b122cf39f8ba8c52ea86c",
+      "title": "Israeli military says it struck Hezbollah personnel and facilities in southern Lebanon",
+      "summary": "Cailianpress, Sept 6 — The Israel Defense Forces said in a Sept 5 statement that troops struck Hezbollah personnel and related infrastructure in southern Lebanon on the night of Sept 4, in response to a Hezbollah drone attack earlier that day.",
+      "title_zh": "以军称打击黎南部真主党人员和设施",
+      "summary_zh": "【以军称打击黎南部真主党人员和设施】财联社9月6日电，以色列国防军5日发表声明说，以军4日晚对黎巴嫩南部的真主党人员及相关基础设施发动袭击，以回应真主党当天早些时候的无人机袭击"
+    },
+    {
+      "id": "27d5544d42e10c37f7eea826b9e7cfbec2431399",
+      "title": "Fire at a wedding venue in the DRC capital kills at least 22",
+      "summary": "Cailianpress, Sept 6 — Local government officials in the Democratic Republic of the Congo said on Sept 5 that a fire broke out before dawn at a wedding venue in the capital Kinshasa, killing at least 22 people and injuring several others.",
+      "title_zh": "刚果（金）首都一婚礼现场发生火灾 至少22人死亡",
+      "summary_zh": "【刚果（金）首都一婚礼现场发生火灾 至少22人死亡】财联社9月6日电，当地时间5日，刚果（金）地方政府官员称，该国首都金沙萨一处婚礼现场当天凌晨发生火灾，造成至少22人死亡、多人受伤"
+    },
+    {
+      "id": "6780928c0a9b235a168de142f992b6bade39397b",
+      "title": "Russia says it hit a dry cargo ship carrying Western military supplies for Ukraine",
+      "summary": "Cailianpress, Sept 6 — The Russian Defense Ministry said on Saturday that Russian forces struck a dry cargo ship at the port of Chernomorsk in Odesa Oblast, which was carrying military technical supplies provided by Western countries to Ukraine's armed forces.",
+      "title_zh": "俄称击中一艘载有西方国家向乌提供军事物资的干货船",
+      "summary_zh": "【俄称击中一艘载有西方国家向乌提供军事物资的干货船】财联社9月6日电，俄罗斯国防部周六通报称，俄军在敖德萨州切尔诺莫尔斯克港击中一艘干货船，船上载有西方国家向乌克兰武装部队提供的军事技术物资"
+    },
+    {
+      "id": "216cf86551e9a3959595857e86864f392c1ea213",
+      "title": "641 rescue workers arrive at the site of the Suichuan mudslide in Jiangxi to carry out search and rescue",
+      "summary": "Cailianpress, Sept 5 — Driven by continuous heavy rainfall from Typhoon Saudel, a sudden mudslide struck Shixia group, Mingkeng village, Gaoping town, Suichuan county, Jiangxi province on Sept 5.",
+      "title_zh": "641名救援人员抵达江西遂川泥石流灾害现场开展搜救工作",
+      "summary_zh": "【641名救援人员抵达江西遂川泥石流灾害现场开展搜救工作】财联社9月5日电，受台风“沙德尔”持续强降雨天气影响，9月5日，江西省遂川县高坪镇明坑村石下组突发泥石流地质灾害"
+    },
+    {
+      "id": "dcd29fe721fa38594ef9c3da49b9fec650e5abf4",
+      "title": "Hamas says the \"Board of Peace\" report is \"inconsistent with the facts\"",
+      "summary": "Cailianpress, Sept 5 — The Palestinian Islamic Resistance Movement (Hamas) said in a Sept 5 statement that a recent report by the \"Board of Peace\" on the situation in the Gaza Strip is \"inconsistent with the facts\".",
+      "title_zh": "哈马斯称“和平委员会”报告“与事实不符”",
+      "summary_zh": "【哈马斯称“和平委员会”报告“与事实不符”】财联社9月5日电，巴勒斯坦伊斯兰抵抗运动（哈马斯）5日发表声明说，“和平委员会”日前关于加沙地带局势的一份报告内容“与事实不符”"
+    },
+    {
+      "id": "5ac2c2b5445f08cc28d36e65bd42195e76a1e96c",
+      "title": "Philippine Vice President Sara released after posting bail",
+      "summary": "Cailianpress, Sept 5 — Local media reported that lawyers for Philippine Vice President Sara Duterte confirmed on Sept 5 that she was released after posting bail of 360,000 pesos (about RMB 38,000) at a court in Quezon City, Metro Manila.",
+      "title_zh": "菲律宾副总统莎拉缴纳保释金后获释",
+      "summary_zh": "【菲律宾副总统莎拉缴纳保释金后获释】财联社9月5日电，据当地媒体报道，菲律宾副总统莎拉·杜特尔特的律师5日证实，莎拉当天向菲大马尼拉地区奎松市一家法院缴纳了36万比索（约合3.8万元人民币）的保释金后获释"
+    },
+    {
+      "id": "906de7c5ea424ff89bddd4ab97e969c404a9a5b1",
+      "title": "Greek fighter jet crashes, two pilots killed",
+      "summary": "Cailianpress, Sept 5 — During the Athens Flying Week event at the Tanagra air base, a Greek Air Force F-4E fighter crashed mid-performance; the two pilots on board failed to eject and have been confirmed dead, and the fire at the crash site has been extinguished.",
+      "title_zh": "希腊一架战机坠毁 两名飞行员死亡",
+      "summary_zh": "【希腊一架战机坠毁 两名飞行员死亡】财联社9月5日电，在希腊塔纳格拉空军基地举行的希腊雅典飞行周上，一架希腊空军F-4E战机在飞行表演中坠毁，机上两名飞行员未能弹射逃生，已被确认死亡，坠机现场的大火已被扑灭"
+    },
+    {
+      "id": "29027d9a43838a0f0168f6d1202f09a93164721e",
+      "title": "Science and Technology Minister Yin Hejun visits Mexico, attends the 9th meeting of the China-Mexico intergovernmental standing committee science and technology subcommittee",
+      "summary": "Cailianpress, Sept 5 — According to the Ministry of Science and Technology, from Sept 2 to 4, 2026, at the invitation of Mexican Minister of Science, Humanities, Technology and Innovation Ruiz, Minister of Science and Technology Yin Hejun led a delegation to Mexico and co-chaired the ninth meeting of the science and technology subcommittee of the China-Mexico intergovernmental standing committee in Mexico City.",
+      "title_zh": "科技部部长阴和俊访问墨西哥并出席中国—墨西哥政府间常设委员会科技分委会第九次会议",
+      "summary_zh": "【科技部部长阴和俊访问墨西哥并出席中国—墨西哥政府间常设委员会科技分委会第九次会议】财联社9月5日电，据科技部消息，2026年9月2—4日，应墨西哥科学、人文、技术和创新部部长鲁伊斯邀请，科技部部长阴和俊率团访问墨西哥，并在墨西哥城共同主持召开中墨政府间常设委员会科技分委会第九次会议"
+    },
+    {
+      "id": "847328a1fc0e8b2ece269d0d85e9f3dabb6da254",
+      "title": "US National Hurricane Center says Hurricane Karina expected to weaken rapidly before early next week",
+      "summary": "Cailianpress, Sept 5 — The US National Hurricane Center (NHC) said Hurricane Karina is expected to weaken rapidly before early next week.",
+      "title_zh": "美国国家飓风中心：飓风“卡里纳”预计将在下周初前快速减弱",
+      "summary_zh": "财联社9月5日电，美国国家飓风中心（NHC）表示，飓风卡里纳（Karina）预计将在下周初前快速减弱。"
+    },
+    {
+      "id": "7c24f2e486f202a85c783851fc15cdd079a3e89e",
+      "title": "Ukrainian president says he is willing to pause air strikes on Moscow",
+      "summary": "Cailianpress, Sept 5 — Ukrainian President Zelensky said he had just spoken by phone with representatives of the US president, and that starting with that call Ukraine is willing to observe a ceasefire arrangement on air strikes against cities involved in the negotiation process.",
+      "title_zh": "乌总统说愿暂停对莫斯科空中打击",
+      "summary_zh": "【乌总统说愿暂停对莫斯科空中打击】财联社9月5日电，乌克兰总统泽连斯基表示，刚刚与美国总统的代表通话，从当天这次通话开始，乌方愿意遵守对参与谈判进程城市实施空中打击停火安排"
+    },
+    {
+      "id": "561eb38a7cb98df14cdc034b532ea4de3d8f034f",
+      "title": "World's largest single-unit coal-to-ethylene glycol project under construction makes new progress",
+      "summary": "Cailianpress, Sept 5 — According to China National Chemical Engineering Group, the air separation unit of the 2.4 million tonne-per-year high-quality fiber-grade coal-to-ethylene glycol project of Hengyi Energy Technology (Turpan), built by China Chemical Engineering Third Construction, has officially broken ground, marking the start of core supporting works for the largest single-unit coal-to-ethylene glycol project under construction globally.",
+      "title_zh": "全球在建最大单体煤制乙二醇项目取得新进展",
+      "summary_zh": "【全球在建最大单体煤制乙二醇项目取得新进展】财联社9月5日电，据中国化学工程集团有限公司消息，近日，中国化学工程三化建承建的恒逸能源科技（吐鲁番）240万吨/年高品质纤维用煤制乙二醇项目空分装置正式开工，标志着这一全球在建单体规模最大的煤制乙二醇项目核心配套工程破土动工"
+    },
+    {
+      "id": "50f66188154be95818e7fc1f6eee2f639afe0a21",
+      "title": "US forces strike three Iranian oil tankers",
+      "summary": "Cailianpress, Sept 5 — US Central Command said in a statement today that \"after the Islamic Revolutionary Guard Corps fired ballistic missiles at two US Navy vessels patrolling regional waters, US Central Command forces struck three Iranian crude oil carriers.\"",
+      "title_zh": "美军袭击三艘伊朗油轮",
+      "summary_zh": "【美军袭击三艘伊朗油轮】财联社9月5日电，美国中央司令部今天发声明称，“在伊朗伊斯兰革命卫队向两艘在地区水域巡逻的美军舰船发射弹道导弹后，美国中央司令部部队对三艘伊朗原油运输船实施了打击"
+    },
+    {
+      "id": "0d277c2c30023b72bdf200c033625b7ee8dd50fa",
+      "title": "Jiangxi sets rules: urban greening must not follow trends in planting \"internet-famous\" flowers or lay large areas of non-functional lawn",
+      "summary": "Cailianpress, Sept 5 — The Jiangxi Provincial Department of Housing and Urban-Rural Development recently issued the \"Notice on Further Strengthening the Management of Urban Landscaping and Greening\", which was published online on Sept 3, 2026.",
+      "title_zh": "江西明确：城市绿化严禁跟风引种网红花草、大面积铺设无功能草坪",
+      "summary_zh": "【江西明确：城市绿化严禁跟风引种网红花草、大面积铺设无功能草坪】财联社9月5日电，江西省住房和城乡建设厅近日发布了《关于进一步加强城市园林绿化管理工作的通知》，并于2026年9月3日挂网公开"
+    },
+    {
+      "id": "c7ce964a5c316229ad7e9eb5e20b013867a54cd2",
+      "title": "France consolidates all of its national gold reserves on home soil",
+      "summary": "Cailianpress, Sept 5 — Earlier this year France completed the repatriation of all its official gold reserves, fully clearing out the custodial stock held in the United States.",
+      "title_zh": "法国国家黄金储备全部归集至本土",
+      "summary_zh": "【法国国家黄金储备全部归集至本土】财联社9月5日电，就在今年年初，法国刚刚完成全部官方黄金储备的本土归集，彻底清零存放在美国的托管库存"
+    },
+    {
+      "id": "34ebb68fd3084f8e676c6bd20018336e29789c86",
+      "title": "Heavy rainfall disaster kills 2 in Guidong, Hunan",
+      "summary": "Cailianpress, Sept 5 — According to the Guidong County Emergency Management and Work Safety Committee of Chenzhou City, Hunan Province, prolonged rainfall left soil water content supersaturated, triggering landslides, mudslides and other natural disasters in several townships.",
+      "title_zh": "强降雨灾害已造成湖南桂东2人死亡",
+      "summary_zh": "【强降雨灾害已造成湖南桂东2人死亡】财联社9月5日电，据湖南省郴州市桂东县应急和安全生产委员会，因长时间降雨，土壤含水量超饱和，导致部分乡镇发生山体滑坡、泥石流等自然灾害"
+    },
+    {
+      "id": "1111b4278fe44735b098a734ac67adbd315bea8a",
+      "title": "Chinese Association of Natural Science Museums issues guidelines proposing a ban on uncovered display of first-class protected animal specimens",
+      "summary": "Cailianpress, Sept 5 — The Chinese Association of Natural Science Museums issued a notice announcing the second batch of 2026 group standard projects.",
+      "title_zh": "中国自然科学博物馆学会编制指南 建议一级保护动物标本禁裸展",
+      "summary_zh": "【中国自然科学博物馆学会编制指南 建议一级保护动物标本禁裸展】财联社9月5日电，中国自然科学博物馆学会发布关于公布中国自然科学博物馆学会2026年度第二批团体标准立项的通知"
+    },
+    {
+      "id": "af391e2ea3af4bbbf5b35f14f005d9420bb2b9c6",
+      "title": "Xinwen Lianbo top headlines for Saturday, Sept 5: 23 items",
+      "summary": "Cailianpress, Sept 5 — Today's main items on Xinwen Lianbo: 1. [New ideas leading a new journey] Securing the livelihoods of thousands of households and strengthening the public safety net — delivering a new-era answer sheet for grassroots governance; 2. Deepening the fertile ground of children's culture and cultivating well-rounded socialist builders and successors — warm response to General Secretary Xi Jinping's congratulatory letter marking the 70th anniversary of the China Media Group program \"Little Trumpet\"; 3. ...",
+      "title_zh": "9月5日周六《新闻联播》要闻23条",
+      "summary_zh": "【9月5日周六《新闻联播》要闻23条】财联社9月5日电，今天《新闻联播》主要内容有： 1、【新思想引领新征程】兜住万家事 筑牢平安网 书写新时代基层治理的民生答卷； 2、深耕少儿文化沃土 培养德智体美劳全面发展的社会主义建设者和接班人——习近平总书记致信祝贺中央广播电视总台《小喇叭》节目开播70周年引发热烈反响； 3、"
+    },
+    {
+      "id": "4406e97e3cbf9f2328bd07e1b5bafe28cf2a4c4a",
+      "title": "Bitcoin consolidates near $82K resistance: Live levels",
+      "title_zh": "比特币在8.2万美元阻力位附近盘整：实时价位"
+    },
+    {
+      "id": "ab4b27806734bca4b5ee0d58dfee8ac13f562a18",
+      "title": "From 'mystery vacations' to hostels, budget travelers get thrifty as prices rise",
+      "summary": "Despite rising prices and the travel industry focusing on the luxury segment, budget-minded vacationers are still finding ways to get away.",
+      "title_zh": "从“盲盒旅行”到青年旅舍，预算型游客在涨价潮中愈发精打细算",
+      "summary_zh": "尽管价格上涨、旅游业聚焦高端市场，注重预算的度假者仍在想方设法出行。"
+    },
+    {
+      "id": "aeafd70fad99da9889b5640341291601d815116c",
+      "title": "LeBron James teases partnership with Polymarket",
+      "summary": "LeBron James on Saturday teased an upcoming partnership with the prediction markets platform Polymarket in a social media post.",
+      "title_zh": "勒布朗·詹姆斯预告与 Polymarket 达成合作",
+      "summary_zh": "勒布朗·詹姆斯周六在社交媒体发帖，预告即将与预测市场平台 Polymarket 展开合作。"
+    },
+    {
+      "id": "2445bcaab9841e0930c0198a91a5a6cca95efc0a",
+      "title": "We got more defensive last week as Wall Street raised the bar for AI stocks",
+      "summary": "We initiated positions in defensive stocks to balance our AI exposure amid higher oil prices and Treasury yields.",
+      "title_zh": "华尔街抬高AI股门槛，上周我们转向更防御的配置",
+      "summary_zh": "在油价和美债收益率走高之际，我们建仓防御性股票，以平衡AI持仓敞口。"
+    },
+    {
+      "id": "0436cab7dc0a145264141d659b9dfc433a373340",
+      "title": "U.S. attacks 3 Iranian oil tankers after missiles target Navy warships",
+      "summary": "Three Iranian crude oil carriers were hit by U.S",
+      "title_zh": "导弹袭击美军舰后，美国打击3艘伊朗油轮",
+      "summary_zh": "三艘伊朗原油运输船遭到美军打击"
+    },
+    {
+      "id": "c82df6c40624f4fd94a2faff6d302bde63097579",
+      "title": "I'm a nutritionist from Japan: 7 'essential' anti-inflammatory foods that I swear by",
+      "summary": "Japanese nutritionist and longevity expert Michiko Tomioka shares the inflammation-fighting foods that are always in her kitchen.",
+      "title_zh": "我是来自日本的营养师：我力荐的7种“必备”抗炎食物",
+      "summary_zh": "日本营养师、长寿专家富冈道子分享了她厨房里常备的抗炎食物。"
+    },
+    {
+      "id": "4178f5bc230dc52571cefccf85d406be2ff9a76b",
+      "title": "Trump’s state capitalism comes to the oil industry with his unprecedented Venezuela deal",
+      "summary": "The deal comes eight months after Washington ousted former President Nicolás Maduro in a military raid.",
+      "title_zh": "特朗普以史无前例的委内瑞拉协议，把“国家资本主义”带入石油业",
+      "summary_zh": "该协议达成于华盛顿通过军事突袭推翻前总统尼古拉斯·马杜罗八个月之后。"
+    },
+    {
+      "id": "e73f33326d53fa231ffcbc5cb844b9ac0564e884",
+      "title": "Why Walmart is moving in on DoorDash, Uber Eats delivery action, starting with donuts, coffee and sandwiches",
+      "summary": "Walmart's deal to deliver for Dunkin' follows one earlier this year for Subway sandwiches, as the nation's largest retailer targets Uber Eats and DoorDash.",
+      "title_zh": "沃尔玛为何切入 DoorDash 与 Uber Eats 的外送赛道：从甜甜圈、咖啡和三明治开始",
+      "summary_zh": "继今年早些时候为赛百味三明治提供配送后，沃尔玛又与唐恩都乐达成配送合作，这家全美最大零售商正瞄准 Uber Eats 和 DoorDash。"
+    },
+    {
+      "id": "eeb53d80d1aaa30f1c1154f053704abe6db73a46",
+      "title": "Many truckers don't feel like the rest of America about AI data centers as business booms",
+      "summary": "Sprawling data center components from HVAC systems to tubing, wiring and semiconductors arrive primarily by truck, a boon for a business hit hard by trade wars.",
+      "title_zh": "AI数据中心带动业务繁荣，但许多卡车司机的感受与其他美国人不同",
+      "summary_zh": "从暖通空调系统到管材、线缆和半导体，庞大的数据中心部件主要依靠卡车运输，这对深受贸易战打击的行业是一大利好。"
+    },
+    {
+      "id": "806f606b4f2906bcd832ca731b6fabd5ea9f11ca",
+      "title": "Federal Reserve Board issues enforcement action with former employee of Banco Popular de Puerto Rico",
+      "summary": "Federal Reserve Board issues enforcement action with former employee of Banco Popular de Puerto Rico",
+      "title_zh": "美联储理事会对波多黎各大众银行一名前员工发出执法行动",
+      "summary_zh": "美联储理事会对波多黎各大众银行一名前员工发出执法行动"
+    },
+    {
+      "id": "656e92a3367578b4186f1362e6da5af8f9c908d9",
+      "title": "Federal Reserve Board announces approval of application by National Westminster Bank Plc",
+      "summary": "Federal Reserve Board announces approval of application by National Westminster Bank Plc",
+      "title_zh": "美联储理事会宣布批准国民西敏寺银行（NatWest）的申请",
+      "summary_zh": "美联储理事会宣布批准国民西敏寺银行（NatWest）的申请"
+    },
+    {
+      "id": "b6457e9352c2925bd07740221c13c6b685f51450",
+      "title": "Federal Reserve Board issues enforcement action with SouthPoint Bancshares, Inc. and announces termination of enforcement action with Deutsche Bank AG, DB USA Corporation, and Deutsche Bank AG New York Branch",
+      "summary": "Federal Reserve Board issues enforcement action with SouthPoint Bancshares, Inc",
+      "title_zh": "美联储理事会对 SouthPoint Bancshares 公司发出执法行动，并宣布终止对德意志银行股份公司、DB USA 公司及德意志银行纽约分行的执法行动",
+      "summary_zh": "美联储理事会对 SouthPoint Bancshares 公司发出执法行动"
+    },
+    {
+      "id": "e9af4cd4ca9bfeff022797bb6e3dd475b82b5004",
+      "title": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of United Community Bank",
+      "summary": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of United Community Bank",
+      "title_zh": "美联储理事会对 Regions Bank 一名前员工及 United Community Bank 一名前员工发出执法行动",
+      "summary_zh": "美联储理事会对 Regions Bank 一名前员工及 United Community Bank 一名前员工发出执法行动"
+    },
+    {
+      "id": "717d5c4efb2f4915465e13c6258ee593e1c92fa2",
+      "title": "Minutes of the Federal Open Market Committee, July 28–29, 2026",
+      "summary": "Minutes of the Federal Open Market Committee, July 28–29, 2026",
+      "title_zh": "联邦公开市场委员会会议纪要（2026年7月28—29日）",
+      "summary_zh": "联邦公开市场委员会会议纪要（2026年7月28—29日）"
+    },
+    {
+      "id": "59982caf385a64d98c8e1111994ff077d391184f",
+      "title": "Federal Reserve Board issues enforcement action with former employee of Regions Bank",
+      "summary": "Federal Reserve Board issues enforcement action with former employee of Regions Bank",
+      "title_zh": "美联储理事会对 Regions Bank 一名前员工发出执法行动",
+      "summary_zh": "美联储理事会对 Regions Bank 一名前员工发出执法行动"
+    },
+    {
+      "id": "492e11b1fbddc2b4f792e131efab3875e40f68f3",
+      "title": "Federal Reserve Board announces approval of the application by Coastal Bend Bancshares, Inc.",
+      "summary": "Federal Reserve Board announces approval of the application by Coastal Bend Bancshares, Inc.",
+      "title_zh": "美联储理事会宣布批准 Coastal Bend Bancshares 公司的申请",
+      "summary_zh": "美联储理事会宣布批准 Coastal Bend Bancshares 公司的申请"
+    },
+    {
+      "id": "c680c122cbba91812d956d822be1dbf67fe71a81",
+      "title": "Federal Reserve Board announces approval of the application by FS Bancorp, Inc.",
+      "summary": "Federal Reserve Board announces approval of the application by FS Bancorp, Inc.",
+      "title_zh": "美联储理事会宣布批准 FS Bancorp 公司的申请",
+      "summary_zh": "美联储理事会宣布批准 FS Bancorp 公司的申请"
+    },
+    {
+      "id": "a29277f3b5826c01e78f88ce3213a65aab627188",
+      "title": "Federal Reserve Board announces approval of the application by Banco Santander, S.A. and Santander Holdings USA, Inc.",
+      "summary": "Federal Reserve Board announces approval of the application by Banco Santander, S.A",
+      "title_zh": "美联储理事会宣布批准桑坦德银行（Banco Santander, S.A.）及桑坦德美国控股公司（Santander Holdings USA, Inc.）的申请",
+      "summary_zh": "美联储理事会宣布批准桑坦德银行（Banco Santander, S.A.）的申请"
+    },
+    {
+      "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
+      "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
+      "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
+      "title_zh": "美联储理事会就现代化互助银行组织相关规则的提案征求公众意见",
+      "summary_zh": "美联储理事会就现代化互助银行组织相关规则的提案征求公众意见"
+    },
+    {
+      "id": "12b1a89f5980ba0253fa5d35fbb4d24ca457ce54",
+      "title": "Federal Reserve Board requests comment on a proposal to modernize its rule governing the extension of credit to bank \"insiders\"—bank executives, board members and major shareholders who could potentially influence a bank's lending decisions",
+      "summary": "Federal Reserve Board requests comment on a proposal to modernize its rule governing the extension of credit to bank \"insiders\"—bank executives, board",
+      "title_zh": "美联储理事会就现代化银行“内部人士”授信规则的提案征求意见——“内部人士”指可能影响银行放贷决策的银行高管、董事会成员及主要股东",
+      "summary_zh": "美联储理事会就现代化银行“内部人士”授信规则的提案征求意见——“内部人士”指银行高管、董事会成员等"
+    },
+    {
+      "id": "1935945161d7d46d837e2245329ad1f8ee93c902",
+      "title": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank",
+      "summary": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank",
+      "title_zh": "美联储理事会对 Regions Bank 一名前员工及 First Interstate Bank 一名前员工发出执法行动",
+      "summary_zh": "美联储理事会对 Regions Bank 一名前员工及 First Interstate Bank 一名前员工发出执法行动"
+    },
+    {
+      "id": "d877d3916bea617dbdf1e67428e25470afc2c6a6",
+      "title": "Federal Reserve Board issues enforcement action with Iuka Bancshares, Inc. and The Iuka State Bank",
+      "summary": "Federal Reserve Board issues enforcement action with Iuka Bancshares, Inc",
+      "title_zh": "美联储理事会对 Iuka Bancshares 公司及 Iuka 州立银行发出执法行动",
+      "summary_zh": "美联储理事会对 Iuka Bancshares 公司发出执法行动"
+    },
+    {
+      "id": "84553b0b5ba2a255e4602f6c3a9318c2557a1160",
+      "title": "Federal Reserve issues FOMC statement",
+      "summary": "Federal Reserve issues FOMC statement",
+      "title_zh": "美联储发布联邦公开市场委员会（FOMC）声明",
+      "summary_zh": "美联储发布联邦公开市场委员会（FOMC）声明"
+    },
+    {
+      "id": "23995ace0e581fbea242b2fcb14aed0116c99a51",
+      "title": "Global Markets: US Major Indexes Close Lower; Memory and Optical Communications Strengthen, Tesla Falls Nearly 6%",
+      "summary": "US market: the three major US indexes closed lower across the board on September 4.",
+      "title_zh": "全球市场：美股三大指数收跌 存储、光通信板块走强 特斯拉跌近6%",
+      "summary_zh": "美股市场： 美股三大指数09月04日收盘全线下跌"
+    },
+    {
+      "id": "2481e35c8e148d298afe7170ffd2c3b28ee452ed",
+      "title": "Tesla's stock drops 6% as Cybercab update 'underwhelms' Wall Street",
+      "summary": "Tesla's long-awaited Cybercab update failed to dazzle investors.",
+      "title_zh": "Cybercab 更新令华尔街“失望”，特斯拉股价下跌 6%",
+      "summary_zh": "特斯拉备受期待的 Cybercab 更新未能打动投资者。"
+    },
+    {
+      "id": "6043732ba61dde1a4aab881810e6098160e50457",
+      "title": "Federal Reserve Board announces termination of enforcement actions with United Texas Bank, Quontic Bank Acquisition Corp., and Quontic Bank Holdings Corp.",
+      "summary": "Federal Reserve Board announces termination of enforcement actions with United Texas Bank, Quontic Bank Acquisition Corp., and Quontic Bank Holdings Corp.",
+      "title_zh": "美联储理事会宣布终止与 United Texas Bank、Quontic Bank Acquisition Corp. 及 Quontic Bank Holdings Corp. 的执法行动",
+      "summary_zh": "美联储理事会宣布终止与上述机构的执法行动。"
+    },
+    {
+      "id": "98fa9f23c6defaa9eb1d688eefd85446c8e2f172",
+      "title": "New York Fed President Williams (the Fed's \"number three\") said recent U.S. inflation data is encouraging, inflation is on a slow downward trend, and rates are at a good level.",
+      "summary": "New York Fed President Williams (the Fed's \"number three\") said recent U.S. inflation data is encouraging, inflation is on a slow downward trend, and rates are at a good level.",
+      "title_zh": "纽约联储主席威廉姆斯（美联储“三号人物”）表示，近期美国通胀数据令人鼓舞，通胀处于缓慢下行趋势，利率处于合适水平",
+      "summary_zh": "纽约联储主席威廉姆斯（美联储“三号人物”）表示，近期美国通胀数据令人鼓舞，通胀正缓慢下行，当前利率水平合适。"
+    },
+    {
+      "id": "d613b06be02f7a50ca70db3b6be397f2679eec99",
+      "title": "Fed Beige Book sends mixed signals: inflation proves hard to bring down, consumption splits while AI investment stays hot",
+      "summary": "Released in the early hours of Thursday Beijing time, the Fed's August Beige Book shows the US economy still expanding modestly, but growth is increasingly reliant on a handful of projects such as AI data centers, inflation pressure remains stubborn, household stress is building, and the \"K-shaped\" split in consumption is becoming more pronounced",
+      "title_zh": "美联储褐皮书释放矛盾信号：通胀难降、消费分化，AI 投资持续火热",
+      "summary_zh": "北京时间周四凌晨发布的美联储 8 月褐皮书显示，美国经济仍在温和扩张，但增长日益依赖 AI 数据中心等少数项目；通胀压力依然顽固，家庭压力正在累积，消费的“K 型”分化愈发明显。"
     }
   ],
-  "updated_at": "2026-08-22T08:49:33Z"
+  "updated_at": "2026-09-05T19:35:43Z"
 }

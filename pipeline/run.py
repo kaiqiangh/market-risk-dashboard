@@ -22,6 +22,7 @@ Fix round additions/revisions:
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 import time
 import traceback
@@ -83,6 +84,8 @@ _read_prev_risk = read_prev_risk
 
 #: The AI-side Chinese translation file the merge step consumes (#192).
 TRANSLATIONS_FILENAME = "news.zh-translations.json"
+
+_CJK_RE = re.compile(r"[\u3400-\u9fff]")
 
 
 COMMANDS = (
@@ -509,13 +512,6 @@ def _run_collection(command: str) -> dict[str, Any]:
         results["degraded"].extend(macro_meta["degraded"])
         results["provider_status"].update(macro_meta["provider_status"])
         results["series_history"] = macro_meta.get("series_history", {})
-        # #96 (shape per #84 §3): per-series append-only archive + per-group 30d/90d UI
-        # bundles + manifest. Only when there is history to persist.
-        if results["series_history"]:
-            from pipeline.collectors.macro import SERIES_GROUPS
-            from pipeline.storage.macro_history import write_macro_history
-
-            write_macro_history(writer, results["series_history"], SERIES_GROUPS)
         results["qualities"].append(macro_meta["data_quality"])
         results["durations"]["macro"] = time.monotonic() - t0
 
@@ -660,6 +656,13 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
     # ---- Write (persist after unified freshness determination, P1-7) ----
     outcomes = RunOutcomes(scope=_run_scope(command))
     try:
+        # #96 (shape per #84 §3): history belongs to the same publish group as latest and
+        # metadata, so a later validation/write failure cannot leave a mixed run on disk.
+        if results.get("series_history"):
+            from pipeline.collectors.macro import SERIES_GROUPS
+            from pipeline.storage.macro_history import write_macro_history
+
+            write_macro_history(writer, results["series_history"], SERIES_GROUPS)
         macro = _write_finalized(writer, "macro", macro, outcomes)
         market_envelopes = _write_market_datasets(
             writer,
@@ -924,12 +927,14 @@ def main(argv: list[str] | None = None) -> int:
     command = _resolve_command(args)
 
     # Config self-check
+    from pipeline.config.models import ConfigError
+
     try:
         settings.load_universe()
         settings.load_risk_model()
         settings.load_sources()
         settings.load_news_sources()
-    except (FileNotFoundError, ValueError) as exc:
+    except ConfigError as exc:
         print(f"[pipeline] config loading failed: {exc}", file=sys.stderr)
         return 1
 
@@ -963,19 +968,20 @@ def main(argv: list[str] | None = None) -> int:
             # on the global aggregate (which news/macro/calendar would have extended).
             # (#192): same parameterization as the full path; market-only publishes in
             # this order (crypto before sectors - keep it, freshness.json row order follows).
-            market_datasets = {}
-            for _name in ("equities", "crypto", "sectors", "commodities"):
-                params = _market_dataset_params(market_meta, _name, market_meta.get("degraded"))
-                market_datasets[_name] = _assemble(
-                    _name, results[_name], params["degraded"],
-                    **params["provider_kwargs"], data_quality=params["data_quality"],
-                    source_updated_at=params["source_updated_at"], detail=params["detail"],
+            with writer.atomic_group():
+                market_datasets = {}
+                for _name in ("equities", "crypto", "sectors", "commodities"):
+                    params = _market_dataset_params(market_meta, _name, market_meta.get("degraded"))
+                    market_datasets[_name] = _assemble(
+                        _name, results[_name], params["degraded"],
+                        **params["provider_kwargs"], data_quality=params["data_quality"],
+                        source_updated_at=params["source_updated_at"], detail=params["detail"],
+                    )
+                _write_market_datasets(
+                    writer, market_datasets, outcomes,
+                    order=("equities", "crypto", "sectors", "commodities"),
                 )
-            _write_market_datasets(
-                writer, market_datasets, outcomes,
-                order=("equities", "crypto", "sectors", "commodities"),
-            )
-            _publish_metadata(writer, outcomes, results["provider_status"])
+                _publish_metadata(writer, outcomes, results["provider_status"])
             health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
             return _finish_run(command, results, time.monotonic() - started, health)
 
@@ -983,12 +989,18 @@ def main(argv: list[str] | None = None) -> int:
             writer = StorageWriter(settings.data_dir)
             outcomes = RunOutcomes(scope=_run_scope(command))
             macro_meta = results.get("macro_meta", {})
-            _finalize_and_write(writer, "macro", results["macro"], bool(macro_meta.get("degraded")), outcomes,
-                                **_provider_kwargs(macro_meta, None, default="fred"),
-                                data_quality=macro_meta.get("data_quality", 1.0),
-                                source_updated_at=macro_meta.get("source_updated_at"))
-            record_ai_outcomes(writer, outcomes)
-            _publish_metadata(writer, outcomes, results["provider_status"])
+            with writer.atomic_group():
+                if results.get("series_history"):
+                    from pipeline.collectors.macro import SERIES_GROUPS
+                    from pipeline.storage.macro_history import write_macro_history
+
+                    write_macro_history(writer, results["series_history"], SERIES_GROUPS)
+                _finalize_and_write(writer, "macro", results["macro"], bool(macro_meta.get("degraded")), outcomes,
+                                    **_provider_kwargs(macro_meta, None, default="fred"),
+                                    data_quality=macro_meta.get("data_quality", 1.0),
+                                    source_updated_at=macro_meta.get("source_updated_at"))
+                record_ai_outcomes(writer, outcomes)
+                _publish_metadata(writer, outcomes, results["provider_status"])
             health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
             return _finish_run(command, results, time.monotonic() - started, health)
 
@@ -996,11 +1008,12 @@ def main(argv: list[str] | None = None) -> int:
             writer = StorageWriter(settings.data_dir)
             outcomes = RunOutcomes(scope=_run_scope(command))
             news_meta = results.get("news_meta", {})
-            _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)), outcomes,
-                                **_provider_kwargs(news_meta, None, default="rss_news"),
-                                data_quality=news_meta.get("data_quality", 1.0),
-                                source_updated_at=news_meta.get("source_updated_at"))
-            _publish_metadata(writer, outcomes, results["provider_status"])
+            with writer.atomic_group():
+                _finalize_and_write(writer, "news", results["news"], bool(results.get("news_degraded", False)), outcomes,
+                                    **_provider_kwargs(news_meta, None, default="rss_news"),
+                                    data_quality=news_meta.get("data_quality", 1.0),
+                                    source_updated_at=news_meta.get("source_updated_at"))
+                _publish_metadata(writer, outcomes, results["provider_status"])
             health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
             return _finish_run(command, results, time.monotonic() - started, health)
 
@@ -1009,7 +1022,10 @@ def main(argv: list[str] | None = None) -> int:
             ok, error = _run_fact_layer_only()
         else:
             writer = StorageWriter(settings.data_dir)
-            ok, error = _run_risk_and_write(results, writer, command)
+            with writer.atomic_group() as publication:
+                ok, error = _run_risk_and_write(results, writer, command)
+                if not ok:
+                    publication.rollback()
             results["durations"]["total"] = time.monotonic() - started
 
         health = dataset_health(StorageWriter(settings.data_dir), command, run_started_at=run_started_at)
@@ -1123,7 +1139,17 @@ def _merge_news_translations(
     translations = NewsTranslationsDataset.model_validate(json.loads(translations_path.read_text(encoding="utf-8")))
     merged = collector.merge_translations(news, translations)
     merged_count = sum(1 for it in merged.items if it.title_zh)
-    writer.record_translations("merged", merged_count, "news.zh-translations.json merged into news.json")
+    # #225: an id/batch mismatch makes the merge silently no-op — record the honest coverage so a
+    # stale/misaligned translation file is visible instead of a false "merged" with zero effect.
+    zh_still_cjk = sum(1 for it in merged.items if it.lang == "zh" and it.title and _CJK_RE.search(it.title))
+    if zh_still_cjk:
+        reason = (
+            f"news.zh-translations.json merged {merged_count} zh sides, but {zh_still_cjk} zh-source "
+            f"items still lack English canonical (id/batch mismatch, #225)"
+        )
+    else:
+        reason = "news.zh-translations.json merged into news.json"
+    writer.record_translations("merged", merged_count, reason)
     return merged
 
 
