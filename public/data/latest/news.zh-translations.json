@@ -1,347 +1,318 @@
 {
   "items": [
     {
-      "id": "48fd263cd324de0578e682dcece5555277645f04",
-      "title": "Trump turns up the heat on Warsh as Fed rate hike looms",
-      "summary": "Ten days ahead of the next Federal Reserve meeting, the Trump administration looks to be in a full-court press to halt a rate hike in its tracks.",
-      "title_zh": "美联储加息在即，特朗普加大对沃什的施压力度",
-      "summary_zh": "距离下次美联储会议还有十天，特朗普政府似乎正在全面施压，试图阻止加息落地。"
-    },
-    {
-      "id": "91cb5996a4114eb86265be11ef79b6cbadf3acdc",
-      "title": "Will next week's US CPI trigger a September rate hike? BofA and Citi offer two opposing scenarios",
-      "summary": "The August US CPI print due next Friday will directly determine whether the Federal Reserve can resume rate hikes at this month's meeting.",
-      "title_zh": "下周美国CPI会触发9月加息吗？美银、花旗给出两个相反剧本",
-      "summary_zh": "即将于下周五发布的美国8月CPI数据，将直接决定美联储能否在本月会议上重启加息"
-    },
-    {
-      "id": "806f606b4f2906bcd832ca731b6fabd5ea9f11ca",
-      "title": "Federal Reserve Board issues enforcement action with former employee of Banco Popular de Puerto Rico",
-      "summary": "Federal Reserve Board issues enforcement action with former employee of Banco Popular de Puerto Rico",
-      "title_zh": "美联储理事会对波多黎各大众银行一名前员工发出执法行动",
-      "summary_zh": "美联储理事会对波多黎各大众银行一名前员工发出执法行动"
-    },
-    {
-      "id": "656e92a3367578b4186f1362e6da5af8f9c908d9",
-      "title": "Federal Reserve Board announces approval of application by National Westminster Bank Plc",
-      "summary": "Federal Reserve Board announces approval of application by National Westminster Bank Plc",
-      "title_zh": "美联储理事会宣布批准国民西敏寺银行（NatWest）的申请",
-      "summary_zh": "美联储理事会宣布批准国民西敏寺银行（NatWest）的申请"
-    },
-    {
-      "id": "b6457e9352c2925bd07740221c13c6b685f51450",
-      "title": "Federal Reserve Board issues enforcement action with SouthPoint Bancshares, Inc. and announces termination of enforcement action with Deutsche Bank AG, DB USA Corporation, and Deutsche Bank AG New York Branch",
-      "summary": "Federal Reserve Board issues enforcement action with SouthPoint Bancshares, Inc",
-      "title_zh": "美联储理事会对 SouthPoint Bancshares 公司发出执法行动，并宣布终止对德意志银行股份公司、DB USA 公司及德意志银行纽约分行的执法行动",
-      "summary_zh": "美联储理事会对 SouthPoint Bancshares 公司发出执法行动"
-    },
-    {
-      "id": "e9af4cd4ca9bfeff022797bb6e3dd475b82b5004",
-      "title": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of United Community Bank",
-      "summary": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of United Community Bank",
-      "title_zh": "美联储理事会对 Regions Bank 一名前员工及 United Community Bank 一名前员工发出执法行动",
-      "summary_zh": "美联储理事会对 Regions Bank 一名前员工及 United Community Bank 一名前员工发出执法行动"
-    },
-    {
-      "id": "717d5c4efb2f4915465e13c6258ee593e1c92fa2",
-      "title": "Minutes of the Federal Open Market Committee, July 28–29, 2026",
-      "summary": "Minutes of the Federal Open Market Committee, July 28–29, 2026",
-      "title_zh": "联邦公开市场委员会会议纪要（2026年7月28—29日）",
-      "summary_zh": "联邦公开市场委员会会议纪要（2026年7月28—29日）"
-    },
-    {
-      "id": "59982caf385a64d98c8e1111994ff077d391184f",
-      "title": "Federal Reserve Board issues enforcement action with former employee of Regions Bank",
-      "summary": "Federal Reserve Board issues enforcement action with former employee of Regions Bank",
-      "title_zh": "美联储理事会对 Regions Bank 一名前员工发出执法行动",
-      "summary_zh": "美联储理事会对 Regions Bank 一名前员工发出执法行动"
-    },
-    {
-      "id": "23995ace0e581fbea242b2fcb14aed0116c99a51",
-      "title": "Global Markets: US Major Indexes Close Lower; Memory and Optical Communications Strengthen, Tesla Falls Nearly 6%",
-      "summary": "US market: the three major US indexes closed lower across the board on September 4.",
-      "title_zh": "全球市场：美股三大指数收跌 存储、光通信板块走强 特斯拉跌近6%",
-      "summary_zh": "美股市场： 美股三大指数09月04日收盘全线下跌"
-    },
-    {
-      "id": "6043732ba61dde1a4aab881810e6098160e50457",
-      "title": "Federal Reserve Board announces termination of enforcement actions with United Texas Bank, Quontic Bank Acquisition Corp., and Quontic Bank Holdings Corp.",
-      "summary": "Federal Reserve Board announces termination of enforcement actions with United Texas Bank, Quontic Bank Acquisition Corp., and Quontic Bank Holdings Corp.",
-      "title_zh": "美联储理事会宣布终止与 United Texas Bank、Quontic Bank Acquisition Corp. 及 Quontic Bank Holdings Corp. 的执法行动",
-      "summary_zh": "美联储理事会宣布终止与上述机构的执法行动。"
-    },
-    {
-      "id": "98fa9f23c6defaa9eb1d688eefd85446c8e2f172",
-      "title": "New York Fed President Williams (the Fed's \"number three\") said recent U.S. inflation data is encouraging, inflation is on a slow downward trend, and rates are at a good level.",
-      "summary": "New York Fed President Williams (the Fed's \"number three\") said recent U.S. inflation data is encouraging, inflation is on a slow downward trend, and rates are at a good level.",
-      "title_zh": "纽约联储主席威廉姆斯（美联储“三号人物”）表示，近期美国通胀数据令人鼓舞，通胀处于缓慢下行趋势，利率处于合适水平",
-      "summary_zh": "纽约联储主席威廉姆斯（美联储“三号人物”）表示，近期美国通胀数据令人鼓舞，通胀正缓慢下行，当前利率水平合适。"
-    },
-    {
-      "id": "d613b06be02f7a50ca70db3b6be397f2679eec99",
-      "title": "Fed Beige Book sends mixed signals: inflation proves hard to bring down, consumption splits while AI investment stays hot",
-      "summary": "Released in the early hours of Thursday Beijing time, the Fed's August Beige Book shows the US economy still expanding modestly, but growth is increasingly reliant on a handful of projects such as AI data centers, inflation pressure remains stubborn, household stress is building, and the \"K-shaped\" split in consumption is becoming more pronounced",
-      "title_zh": "美联储褐皮书释放矛盾信号：通胀难降、消费分化，AI 投资持续火热",
-      "summary_zh": "北京时间周四凌晨发布的美联储 8 月褐皮书显示，美国经济仍在温和扩张，但增长日益依赖 AI 数据中心等少数项目；通胀压力依然顽固，家庭压力正在累积，消费的“K 型”分化愈发明显。"
+      "id": "1d9c252adce87685640a10747b27a57a39203d88",
+      "title_zh": "下周资本市场大事提醒：美联储9月加息悬念迎落槌时刻，华为苹果小米集体上新品，2026中国算力大会举行",
+      "title": "Next week in capital markets: Fed September rate call in focus, Huawei/Apple/Xiaomi launch new products, China 2026 Computing Power Conference held",
+      "summary": "Next week in capital markets: the Fed's September rate decision takes centre stage, Huawei, Apple and Xiaomi all launch new products, and the 2026 China Computing Power Conference is held. 1. The National Bureau of Statistics will release August CPI and PPI data on September 9.",
+      "summary_zh": "【下周资本市场大事提醒：美联储9月加息悬念迎落槌时刻，华为苹果小米集体上新品，2026中国算力大会举行】 1、国家统计局9月9日将公布8月CPI、PPI数据"
     },
     {
       "id": "c1153b981d604daa458c7c646418c37f3fd9a527",
-      "title": "NVIDIA Rubin Ultra scaled back; SemiAnalysis says AI chip competition has entered a systems war",
       "title_zh": "NVIDIA Rubin Ultra 缩水，SemiAnalysis：AI芯片竞争进入系统战",
-      "summary": "SemiAnalysis notes that roughly three months after unveiling Rubin Ultra at GTC 2026, NVIDIA scrapped the planned 4-die version over manufacturing and volume-production execution risk, moving to a smaller 2-die design.",
-      "summary_zh": "SemiAnalysis 指出，NVIDIA 在 GTC 2026 公布 Rubin Ultra 仅约三个月后，便因制造与量产执行风险取消原计划的 4-die 版本，转向规模更小的 2-die 方案"
+      "summary_zh": "SemiAnalysis 指出，NVIDIA 在 GTC 2026 公布 Rubin Ultra 仅约三个月后，便因制造与量产执行风险取消原计划的 4-die 版本，转向规模更小的 2-die 方案",
+      "title": "NVIDIA Rubin Ultra scaled back; SemiAnalysis says AI chip competition has entered a systems war",
+      "summary": "SemiAnalysis notes that roughly three months after unveiling Rubin Ultra at GTC 2026, NVIDIA scrapped the planned 4-die version over manufacturing and volume-production execution risk, moving to a smaller 2-die design."
     },
     {
-      "id": "e3482eb370dfbae12a28188316cbb717b94a252d",
-      "title": "[Research Spotlight / Company] Memory capacity expansion unlocks 2D/2.5D MEMS demand; this company enjoys rising volume and prices while actively courting core customers such as CXMT and YMTC, with capacity build-out absorbing the order ramp; beyond lowering development barriers, further technological progress is expected",
-      "title_zh": "【风口研报·公司】存储扩产释放2D/2.5D MEMS需求，这家公司产品量价齐升，积极拓长鑫、长存等核心客户，产能建设承接业务放量；不仅降低开发门槛，技术进步预计..."
+      "id": "40f91e733a1a30d66e3bf066fb00f37b60ac18e9",
+      "title_zh": "美一货机冲出跑道撞车起火",
+      "title": "US cargo plane overruns runway and catches fire",
+      "summary": "A US cargo plane overran the runway and caught fire. Cailianpress, Sept 7 - at around 2pm local time on Sept 6, an Amazon cargo plane overran the runway at Miami International Airport, triggering a large-scale emergency response and suspending airport operations.",
+      "summary_zh": "【美一货机冲出跑道撞车起火】财联社9月7日电，当地时间9月6日下午2点左右，美国亚马逊公司一架货运飞机在迈阿密国际机场冲出跑道，引发大规模紧急响应，机场暂停运营"
+    },
+    {
+      "id": "95e2296bd49fe6e9965ae35867e7de9c023e6d85",
+      "title_zh": "联合国贸发会议报告：最不发达国家数字化可交付服务发展滞后",
+      "title": "UNCTAD report: least developed countries lag behind on digitally deliverable services",
+      "summary": "UNCTAD report: least developed countries lag behind on digitally deliverable services. Cailianpress, Sept 7 - UNCTAD's latest Global Trade Update says services trade is reshaping global trade, but least developed countries are becoming increasingly marginalised in digital trade.",
+      "summary_zh": "【联合国贸发会议报告：最不发达国家数字化可交付服务发展滞后】财联社9月7日电，联合国贸易和发展会议近日发布最新《全球贸易更新》报告指出，服务贸易正在重塑全球贸易格局，但最不发达国家在数字贸易中日益边缘化"
+    },
+    {
+      "id": "fd252591487e06785fb534ba0d8a399ce4ef8c04",
+      "title_zh": "财联社9月7日电，美国交通部长达菲表示，因一架亚马逊货运飞机冲出跑道，已在迈阿密国际机场全面停航，应急人员正在评估现场情况。",
+      "title": "US Transportation Secretary Duffy says Miami airport fully grounded after Amazon cargo plane overran runway",
+      "summary": "Cailianpress, Sept 7 - US Transportation Secretary Duffy said flights at Miami International Airport have been fully suspended after an Amazon cargo plane overran the runway, with emergency personnel assessing the scene.",
+      "summary_zh": "财联社9月7日电，美国交通部长达菲表示，因一架亚马逊货运飞机冲出跑道，已在迈阿密国际机场全面停航，应急人员正在评估现场情况"
+    },
+    {
+      "id": "c32c79f514c7d5b6ff06c4dc488849bcdeb7adf2",
+      "title_zh": "伊朗将宣布霍尔木兹海峡禁区",
+      "title": "Iran to declare a restricted zone in the Strait of Hormuz",
+      "summary": "Iran will declare a restricted zone in the Strait of Hormuz. Cailianpress, Sept 7 - Iran's Supreme National Security Council secretary Rezaei said on the evening of Sept 6 local time that Iran will declare a 'restricted zone' in the Strait of Hormuz in coming days, running from the US naval blockade line into parts of the Persian Gulf.",
+      "summary_zh": "【伊朗将宣布霍尔木兹海峡禁区】财联社9月7日电，伊朗最高国家安全委员会秘书雷扎伊当地时间9月6日晚表示，未来几天，伊朗将宣布霍尔木兹海峡区域的“禁区”——“禁区”将从美国海军封锁线起算，一直延伸至波斯湾内部分水域"
+    },
+    {
+      "id": "8550beba523561306a468e2abdfec7557173c239",
+      "title_zh": "黎方称以军袭击黎南部 致3人死亡",
+      "title": "Lebanon says Israeli strike on the south kills 3",
+      "summary": "Lebanon says an Israeli strike on the south killed three people. Cailianpress, Sept 7 - Lebanon's Public Health Ministry emergency operations centre said in a statement on Sept 6 that Israeli forces used a drone to strike a car park in the Nabatieh area of southern Lebanon, killing three people.",
+      "summary_zh": "【黎方称以军袭击黎南部 致3人死亡】财联社9月7日电，黎巴嫩公共卫生部紧急行动中心当地时间6日发表声明称，当日，以色列国防军使用无人机袭击了黎南部纳巴蒂耶地区的一个停车场，造成3人遇难"
+    },
+    {
+      "id": "58fafbfe0f3c465a001e1449a29e5d5846a38e40",
+      "title_zh": "也门政府军与胡塞武装交火 造成至少117人死亡",
+      "title": "Yemen government forces clash with Houthi militia, at least 117 killed",
+      "summary": "Cailianpress, Sept 7 - clashes between Yemeni government forces and Houthi militias in Taiz and Hodeidah provinces entered a fourth day on Sept 6, leaving at least 117 people dead.",
+      "summary_zh": "【也门政府军与胡塞武装交火 造成至少117人死亡】财联社9月7日电，也门政府军与胡塞武装在塔伊兹省和荷台达省持续交火6日进入第4天"
+    },
+    {
+      "id": "d7c917f44d292a7a8de6d79ca677a99378509351",
+      "title_zh": "德国萨安州选举极右翼政党大幅领先",
+      "title": "Far-right party leads by a wide margin in German state election in Saxony-Anhalt",
+      "summary": "A far-right party leads by a wide margin in the Saxony-Anhalt state election. Cailianpress, Sept 7 - the eastern German state of Saxony-Anhalt held its state parliament election on Sept 6.",
+      "summary_zh": "【德国萨安州选举极右翼政党大幅领先】财联社9月7日电，德国东部萨克森-安哈尔特州（萨安州）9月6日举行州议会选举"
+    },
+    {
+      "id": "15fe799ca576433208ec974a3bd2116e14190c5b",
+      "title_zh": "宁夏发布山洪灾害蓝色预警 多地发布大雾橙色预警",
+      "title": "Ningxia issues blue mountain-torrent alert; orange dense-fog warnings in several areas",
+      "summary": "Ningxia issues a blue mountain-torrent disaster warning, with orange dense-fog alerts in several areas. Cailianpress, Sept 7 - according to Ningxia meteorological authorities, from 20:00 on Sept 6 to 20:00 on Sept 7 the region will be overcast with light to moderate rain (10-20 mm), moderate to heavy rain (20-40 mm) in parts of Lingwu, Litong, Hongsibu, Yanchi, Tongxin, Haiyuan and Xiji, with some townships exceeding 50 mm.",
+      "summary_zh": "【宁夏发布山洪灾害蓝色预警 多地发布大雾橙色预警】财联社9月7日电，据宁夏气象部门消息，6日20时至7日20时，全区阴有小到中雨（10～20毫米），灵武市东南部、利通区南部、红寺堡区、盐池县、同心县、海原县、西吉县有中到大雨（20～40毫米），其中盐池县、同心县、红寺堡区、海原县、西吉县的部分乡镇达50毫米以上，并伴有"
+    },
+    {
+      "id": "b7cd4a579b485a6a9df12cc194626d389f2606fa",
+      "title_zh": "俄外交部 ：高市要求俄拆除纪念碑的言论“荒谬且无视历史”",
+      "title": "Russian foreign ministry: Takaichi's call to dismantle a monument is 'absurd and disregardful of history'",
+      "summary": "Cailianpress, Sept 7 - Russian foreign ministry spokeswoman Zakharova, responding on Sept 6 to Japanese Prime Minister Sanae Takaichi's demand that Russia dismantle a monument commemorating the victory over militarist Japan, said it was as absurd as demanding 'that the wind not blow and the sun stop shining', and urged Japan not to spread its disregard for its own history to other countries.",
+      "summary_zh": "【俄外交部 ：高市要求俄拆除纪念碑的言论“荒谬且无视历史”】财联社9月7日电，俄罗斯外交部发言人扎哈罗娃6日回应日本首相高市早苗要求俄拆除战胜军国主义日本的纪念碑言论时说，这如同要求“不要刮风和太阳停止发光”一样荒谬，不要把无视本国历史的“病”传染给其他国家"
+    },
+    {
+      "id": "bbce2bf4605db797a4fb9250e9f70e888f786d78",
+      "title_zh": "财联社9月7日电，东京证交所退市数量将连续第三年创下新高。",
+      "title": "Tokyo Stock Exchange delistings set to hit a record high for a third straight year",
+      "summary": "Cailianpress, Sept 7 - the number of delistings on the Tokyo Stock Exchange is set to hit a record high for a third consecutive year.",
+      "summary_zh": "财联社9月7日电，东京证交所退市数量将连续第三年创下新高"
+    },
+    {
+      "id": "631df36260b3d8090122389b84826f346567c4ea",
+      "title_zh": "尼泊尔泥石流已致1353人死亡",
+      "title": "Nepal landslide death toll reaches 1,353",
+      "summary": "Cailianpress, Sept 7 - according to Nepal Police, as of 20:00 local time on Sept 6 the remains of 1,353 victims had been recovered from landslide-hit areas.",
+      "summary_zh": "【尼泊尔泥石流已致1353人死亡】财联社9月7日电，据尼泊尔警方公布的数据，截至当地时间9月6日20时，该国泥石流受灾地区已发现1353具遇难者遗体"
+    },
+    {
+      "id": "e64d924ad852585fe9774c8c0545a5604a4d07b5",
+      "title_zh": "财联社9月6日电，美国联邦通信委员会（FCC）主席卡尔表示，美国联邦通信委员会或将很快发布指引，禁止播出虚假民调。",
+      "title": "FCC chairman Carr says the regulator may soon issue guidance banning the broadcast of fake polls",
+      "summary": "Cailianpress, Sept 6 - US Federal Communications Commission (FCC) chairman Carr said the FCC may soon issue guidance prohibiting the broadcast of fake polls.",
+      "summary_zh": "财联社9月6日电，美国联邦通信委员会（FCC）主席卡尔表示，美国联邦通信委员会或将很快发布指引，禁止播出虚假民调"
+    },
+    {
+      "id": "e61d39e993438b62d8f30bbb2e049f21b3a58d25",
+      "title_zh": "泽连斯基结束与美方代表首轮会谈",
+      "title": "Zelensky concludes first round of talks with US representatives",
+      "summary": "Zelensky concludes the first round of talks with US representatives. Cailianpress, Sept 6 - Ukrainian President Zelensky met US special envoy Witkoff and Trump's son-in-law Kushner in Kyiv on Sept 6; the first round of talks has concluded after more than three hours.",
+      "summary_zh": "【泽连斯基结束与美方代表首轮会谈】财联社9月6日电，乌克兰总统泽连斯基当地时间9月6日在基辅会见美国总统特使威特科夫和特朗普女婿库什纳，目前双方首轮会谈已结束，时长超三小时"
+    },
+    {
+      "id": "e67a6fc1d56f2219710929abb5aee7ab063bb2a8",
+      "title_zh": "财联社9月6日电，据报道，优步已向Atoms公司投资1亿美元；Atoms已与优步展开谈判，探讨向优步提供其自动驾驶出租车相关技术。",
+      "title": "Uber invests $100 million in Atoms; in talks to supply robotaxi technology",
+      "summary": "Cailianpress, Sept 6 - according to reports, Uber has invested $100 million in Atoms; Atoms is in talks with Uber about supplying its autonomous taxi technology.",
+      "summary_zh": "财联社9月6日电，据报道，优步已向Atoms公司投资1亿美元；Atoms已与优步展开谈判，探讨向优步提供其自动驾驶出租车相关技术"
+    },
+    {
+      "id": "36fbeba208ef2a033168ccd7e38a1bfa32c92cca",
+      "title_zh": "印尼东努沙登加拉省一火山喷发",
+      "title": "Volcano erupts in Indonesia's East Nusa Tenggara province",
+      "summary": "A volcano has erupted in Indonesia's East Nusa Tenggara province. Cailianpress, Sept 6 - according to Indonesia's Centre for Volcanology and Geological Hazard Mitigation, at 21:37 local time on Sept 6 the Ili Lewotolok volcano in East Nusa Tenggara erupted, sending an ash column roughly 500 metres high lasting 32 seconds.",
+      "summary_zh": "【印尼东努沙登加拉省一火山喷发】财联社9月6日电，据印尼火山地质减灾中心消息，当地时间9月6日21时37分，位于该国东努沙登加拉省的伊里莱沃托洛科火山喷发，火山灰柱高约500米，持续时间为32秒"
+    },
+    {
+      "id": "e0e7a1fb28eb825d15896a469628ab52b16b0a62",
+      "title_zh": "财联社9月6日电，美国能源部长赖特表示，美国始终对与伊朗达成协议持开放态度，美国军方的首要目标是切断伊朗能源出口。",
+      "title": "US Energy Secretary Wright says the US is always open to a deal with Iran; the military's top goal is cutting Iran's energy exports",
+      "summary": "Cailianpress, Sept 6 - US Energy Secretary Wright said the US has always been open to reaching an agreement with Iran, and that the US military's primary objective is to cut off Iran's energy exports.",
+      "summary_zh": "财联社9月6日电，美国能源部长赖特表示，美国始终对与伊朗达成协议持开放态度，美国军方的首要目标是切断伊朗能源出口"
+    },
+    {
+      "id": "30b9c96fd4a87bbfd3e1633d9d9391e081c986db",
+      "title_zh": "财联社9月6日电，乌克兰总统泽连斯基表示，乌克兰与美国谈判代表的首次会谈已结束。",
+      "title": "Zelensky says the first meeting between Ukrainian and US negotiators has concluded",
+      "summary": "Cailianpress, Sept 6 - Ukrainian President Zelensky said the first meeting between Ukrainian and US negotiating representatives has concluded.",
+      "summary_zh": "财联社9月6日电，乌克兰总统泽连斯基表示，乌克兰与美国谈判代表的首次会谈已结束"
+    },
+    {
+      "id": "78d0b6871cc323718cd85fa0442a82012fd9a798",
+      "title_zh": "日本流感季大幅提前 八成地区病例数增加",
+      "title": "Japan's flu season arrives far earlier, with cases rising in 80% of regions",
+      "summary": "Japan's flu season has arrived far earlier, with case numbers rising in 80% of regions. Cailianpress, Sept 6 - Japanese media reported on Sept 6 that Japan has entered flu season early, the second-earliest since the current statistical method was adopted in 1999.",
+      "summary_zh": "【日本流感季大幅提前 八成地区病例数增加】财联社9月6日电，日本媒体6日报道，日本已提前进入流感流行季，为1999年启用现行统计方法以来“第二早”"
+    },
+    {
+      "id": "2f35a2b895a06b8c484b35dc002f9f0262edaf70",
+      "title_zh": "【公告全知道】液冷+数据中心+储能+算力+华为！公司液冷产品已入围某互联网大厂1.2MWCDU短名单并批量交付",
+      "title": "[Announcement digest] Liquid cooling + data centre + energy storage + computing power + Huawei: firm's liquid-cooling product shortlisted for a major internet company's 1.2MW CDU list and delivered in volume"
     },
     {
       "id": "14d49cc8c59412da1a8708e4e5a3d7435f92c53c",
-      "title": "Key week ahead: China and US CPI, Apple first foldable iPhone, Xiaomi and Huawei launches, ECB decision",
       "title_zh": "下周重磅日程：中美CPI、苹果折叠屏iPhone首秀、小米华为发布会、欧央行决议",
-      "summary": "A rundown of the major financial events for the week of Sept 7-13, all times Beijing: the calendar flags China and US inflation data. The August US CPI is the last inflation print before the Fed September meeting, and Fed mouthpiece Waller has already signalled a preference for holding rates steady.",
-      "summary_zh": "09月07日 - 09月13日当周重磅财经事件一览，以下均为北京时间： 见闻财经日历提醒下周重点关注： 中美通胀数据 ： 美国8月CPI 是美联储9月议息前最后一份通胀读数，当前美联储“传声筒”沃勒已表态倾向维持利率不变"
+      "summary_zh": "09月07日 - 09月13日当周重磅财经事件一览，以下均为北京时间： 见闻财经日历提醒下周重点关注： 中美通胀数据 ： 美国8月CPI 是美联储9月议息前最后一份通胀读数，当前美联储“传声筒”沃勒已表态倾向维持利率不变",
+      "title": "Key week ahead: China and US CPI, Apple first foldable iPhone, Xiaomi and Huawei launches, ECB decision",
+      "summary": "A rundown of the major financial events for the week of Sept 7-13, all times Beijing: the calendar flags China and US inflation data. The August US CPI is the last inflation print before the Fed September meeting, and Fed mouthpiece Waller has already signalled a preference for holding rates steady."
     },
     {
-      "id": "4ec018fbfa24779516fd3eaae982284d03234eb3",
-      "title": "China Re plans to raise RMB 3bn to strengthen core tier-1 capital",
-      "title_zh": "中国再保计划募资30亿元用于增加核心一级资本",
-      "summary": "On Sept 6, the China Re board approved and disclosed a plan for a private placement of domestic shares.",
-      "summary_zh": "【中国再保计划募资30亿元用于增加核心一级资本】9月6日，中国再保董事会审议通过并披露向特定对象发行内资股方案"
+      "id": "54cb959a6f23f858daf947b63e0f28440c7b11c7",
+      "title_zh": "比特币在79,955美元附近盘整并出现超买信号：实时价位"
     },
     {
-      "id": "25576b6ff10773630dc825a8dee4b3c6ffe55283",
-      "title": "Former vice minister of science and technology Li Meng: China future industries will cluster in six areas including AI, green and low-carbon, and computing connectivity",
-      "title_zh": "科技部原副部长李萌：我国未来产业将在人工智能、绿色低碳、计算连接等六大领域集中涌现",
-      "summary": "The 2026 Xiamen tech-innovation industry and securities development conference, together with the Jinyuan Group Cup Golden Bull Awards ceremony, was held in Xiamen on Sept 6.",
-      "summary_zh": "【科技部原副部长李萌：我国未来产业将在人工智能、绿色低碳、计算连接等六大领域集中涌现】财联社9月6日电，2026厦门科创产业与证券业发展大会暨金圆集团杯·金牛奖颁奖典礼9月6日在厦门举行"
+      "id": "23995ace0e581fbea242b2fcb14aed0116c99a51",
+      "title_zh": "全球市场：美股三大指数收跌 存储、光通信板块走强 特斯拉跌近6%",
+      "summary_zh": "美股市场： 美股三大指数09月04日收盘全线下跌",
+      "title": "Global Markets: US Major Indexes Close Lower; Memory and Optical Communications Strengthen, Tesla Falls Nearly 6%",
+      "summary": "US market: the three major US indexes closed lower across the board on September 4."
     },
     {
-      "id": "17a16cc2cff504e34081cb4ee6f91baffa5b9908",
-      "title": "Meeting with US representatives imminent; Zelensky sets out Ukraine core demands",
-      "title_zh": "与美代表会晤在即 泽连斯基明确乌方核心诉求",
-      "summary": "Ukrainian President Zelensky convened a dedicated meeting of the Ukrainian negotiating team on Sept 6, ahead of talks with US representatives, to coordinate the negotiation effort and finalise Ukraine positions and proposals.",
-      "summary_zh": "【与美代表会晤在即 泽连斯基明确乌方核心诉求】财联社9月6日电，乌克兰总统泽连斯基当地时间6日在即将与美方代表会晤前夕，召集乌方谈判团队召开专项会议，统筹部署相关谈判工作，敲定乌方谈判立场与方案"
+      "id": "d613b06be02f7a50ca70db3b6be397f2679eec99",
+      "title_zh": "美联储褐皮书释放矛盾信号：通胀难降、消费分化，AI 投资持续火热",
+      "summary_zh": "北京时间周四凌晨发布的美联储 8 月褐皮书显示，美国经济仍在温和扩张，但增长日益依赖 AI 数据中心等少数项目；通胀压力依然顽固，家庭压力正在累积，消费的“K 型”分化愈发明显。",
+      "title": "Fed Beige Book sends mixed signals: inflation proves hard to bring down, consumption splits while AI investment stays hot",
+      "summary": "Released in the early hours of Thursday Beijing time, the Fed's August Beige Book shows the US economy still expanding modestly, but growth is increasingly reliant on a handful of projects such as AI data centers, inflation pressure remains stubborn, household stress is building, and the \"K-shaped\" split in consumption is becoming more pronounced"
     },
     {
-      "id": "041ba716e9f21adfb21ea73468caea43615c53ca",
-      "title": "Red Cross Society of China allocates 2,000 relief items to Jiangxi",
-      "title_zh": "中国红十字会总会向江西调拨2000件救灾物资",
-      "summary": "In response to the severe impact of Typhoon Saudel on Jiangxi, the Red Cross Society of China activated an emergency response on Sept 6 and, matching local relief needs, dispatched 2,000 relief items including folding beds and blankets to the affected areas; the Chinese Red Cross Foundation also supported 600 family relief kits to help with evacuation, resettlement and daily living needs.",
-      "summary_zh": "【中国红十字会总会向江西调拨2000件救灾物资】财联社9月6日电，针对台风“沙德尔”对江西造成的严重影响，中国红十字会总会9月6日启动应急响应，结合当地救灾救助需求，向江西受灾地区调拨折叠床、毛巾被等救灾物资共2000件；中国红十字基金会支持赈济家庭箱600个，支持受灾地区做好群众转移安置和生活保障工作"
+      "id": "98fa9f23c6defaa9eb1d688eefd85446c8e2f172",
+      "title_zh": "纽约联储主席威廉姆斯（美联储“三号人物”）表示，近期美国通胀数据令人鼓舞，通胀处于缓慢下行趋势，利率处于合适水平",
+      "summary_zh": "纽约联储主席威廉姆斯（美联储“三号人物”）表示，近期美国通胀数据令人鼓舞，通胀正缓慢下行，当前利率水平合适。",
+      "title": "New York Fed President Williams (the Fed's \"number three\") said recent U.S. inflation data is encouraging, inflation is on a slow downward trend, and rates are at a good level.",
+      "summary": "New York Fed President Williams (the Fed's \"number three\") said recent U.S. inflation data is encouraging, inflation is on a slow downward trend, and rates are at a good level."
     },
     {
-      "id": "3408bc3660d617e06d7cd5995db3f97f5f6c00c7",
-      "title": "Rescuers conduct a blanket search of the core area in Gyirong, Tibet; 993 personal effects recovered",
-      "title_zh": "救援人员在西藏吉隆核心区域开展地毯式搜寻 发现遗物993件",
-      "summary": "Reporters learned at a Chinese and foreign media briefing held by the emergency command headquarters for the 8-26 debris flow in Gyirong county, Tibet: after the disaster, and before roads were reopened, rescuers pushed into the core area by land, water and air, using assault boats and rubber dinghies on water and flying 24 helicopter sorties to deliver rescue personnel and supplies to the core area.",
-      "summary_zh": "【救援人员在西藏吉隆核心区域开展地毯式搜寻 发现遗物993件】财联社9月6日电，记者今天从西藏自治区吉隆县“8·26”泥石流灾害应急救援指挥部举行的中外媒体见面会上了解到，灾害发生后，救援人员在道路未抢通之前，“水陆空”一体推进，水路利用冲锋舟、橡皮艇等多种方式向核心区域挺进，飞行直升机24架次向核心区域投送救援人员和"
+      "id": "6b033c0056c0879ba8265ca2c9e351e33b02977f",
+      "title_zh": "亚马逊货机冲出跑道，繁忙假日周末迈阿密机场关闭",
+      "summary_zh": "周日，一架亚马逊货机在迈阿密国际机场冲出跑道，导致这座繁忙的交通枢纽暂停航班运营。"
     },
     {
-      "id": "e94ce39c58148efc29e2f94b42f120013f0f6f3d",
-      "title": "Two mandatory national standards for elderly-care institutions issued, defining the procedure for identifying major accident hazards",
-      "title_zh": "明确养老机构重大事故隐患判定程序 两项养老机构强制性国家标准发布",
-      "summary": "The State Administration for Market Regulation recently issued the mandatory national standard Criteria for Identifying Major Accident Hazards in Elderly-Care Institutions. Built on safety-management experience nationwide, it defines the identification procedure; the rules are both scientific and practical, helping front-line managers quickly match situations to the criteria and pinpoint risks precisely.",
-      "summary_zh": "【明确养老机构重大事故隐患判定程序 两项养老机构强制性国家标准发布】财联社9月6日电，市场监管总局近日发布《养老机构重大事故隐患判定准则》强制性国家标准，该标准在总结全国养老机构安全管理经验的基础上，明确了养老机构重大事故隐患的判定程序，这套规则既科学又实用，能帮助一线管理人员迅速“对号入座”，精准识别风险"
+      "id": "488d1ff3f151c889b7e11eee0a1739006532ceb5",
+      "title_zh": "极右翼德国选择党在州选举中取得历史性胜利",
+      "summary_zh": "德国选择党目前已成为德国全国支持率最高的政党，据INSA最新民调其支持率达28%，大幅领先保守派的20%。"
     },
     {
-      "id": "acc979ac364755bbe3e9c076942aab44116a96f0",
-      "title": "The 8-26 debris flow in Gyirong, Tibet has killed 43 people and left 519 missing",
-      "title_zh": "西藏吉隆“8·26”泥石流灾害造成43人遇难 519人失联",
-      "summary": "Reporters learned from the emergency command headquarters for the 8-26 debris flow in Gyirong county, Tibet, on Sept 6 that as of 18:00 on Sept 5 the disaster had killed 43 people and left 519 missing.",
-      "summary_zh": "【西藏吉隆“8·26”泥石流灾害造成43人遇难 519人失联】9月6日，记者从西藏自治区吉隆县“8·26”泥石流灾害应急救援指挥部了解到，截至9月5日18时，灾害致43人遇难，519人失联"
+      "id": "de2212572955b8b037d05a28c779e5d32318afc6",
+      "title_zh": "美国能源部长赖特称，伊朗核协议可能永远无法达成",
+      "summary_zh": "伊朗警告将对美国实施更快、更猛烈的报复。"
     },
     {
-      "id": "38d9d9450024b21c47cbc94ccbc99f35d1e8d827",
-      "title": "Zhongtai Securities: range-bound through early to mid September, positions can still be raised gradually",
-      "title_zh": "中泰证券：9月中上旬震荡 仍可逐步提高仓位",
-      "summary": "Zhongtai Securities maintains its view that the Shanghai Composite and the STAR 50 will turn stronger again over the medium term, with early to mid September range-bound and equity positions still able to be raised gradually.",
-      "summary_zh": "【中泰证券：9月中上旬震荡 仍可逐步提高仓位】财联社9月6日电，中泰证券指出，维持上证与科创50中期再度转强的判断，9月中上旬震荡，仍可逐步提高仓位"
+      "id": "48fd263cd324de0578e682dcece5555277645f04",
+      "title_zh": "美联储加息在即，特朗普加大对沃什的施压力度",
+      "summary_zh": "距离下次美联储会议还有十天，特朗普政府似乎正在全面施压，试图阻止加息落地。",
+      "title": "Trump turns up the heat on Warsh as Fed rate hike looms",
+      "summary": "Ten days ahead of the next Federal Reserve meeting, the Trump administration looks to be in a full-court press to halt a rate hike in its tracks."
     },
     {
-      "id": "2e956ef9d94d56e202105536c285a4a2932e9f1f",
-      "title": "Ministry of Transport releases a new batch of model domestic waterway tourism routes",
-      "title_zh": "交通运输部发布新一批水路旅游精品航线案例",
-      "summary": "To further upgrade waterway tourism passenger transport and advance transport-tourism integration, the Ministry of Transport recently published a newly selected batch of model 2025 domestic waterway tourism passenger routes.",
-      "summary_zh": "【交通运输部发布新一批水路旅游精品航线案例】财联社9月6日电，为进一步推动水路旅游客运提质升级，推进交旅融合发展，交通运输部近日发布新遴选出来的一批2025年国内水路旅游客运精品航线典型案例"
+      "id": "0f32311bff9778b559ef0acc6e0f4164c0970755",
+      "title_zh": "NFL总裁罗杰·古德尔同意续签四年合同",
+      "summary_zh": "新英格兰爱国者队老板罗伯特·克拉夫特在一份备忘录中写道：「我们非常幸运，未来四年能继续由罗杰掌舵。」"
     },
     {
-      "id": "a4085bf0281a1213a0e7ba4b991f95601e5dcfe7",
-      "title": "Iran says the US must recognise that the rules of the game have changed",
-      "title_zh": "伊朗称美方应认识到游戏规则已改变",
-      "summary": "Iranian parliament speaker Ghalibaf said at an open parliamentary session on Sept 6 that the recent strikes by Iranian armed forces on US bases were only the beginning, that the US must recognise the rules of the game have changed, and that any future action against Iranian interests and security will draw a faster, fiercer and more painful response.",
-      "summary_zh": "【伊朗称美方应认识到游戏规则已改变】财联社9月6日电，伊朗议会议长卡利巴夫今天（9月6日）在议会公开会议上表示，伊朗武装力量近期对美国基地实施的打击“仅仅是一个开始”，美方应该认识到“游戏规则已经改变”，今后任何针对伊朗利益和安全的行动，都将遭到“更迅速、更猛烈、更痛苦”的回应"
+      "id": "4b3e35147ac92154f0c9df1e04520bf65d8ade50",
+      "title_zh": "美国证券交易委员会起诉ISS，特朗普政府加强对代理投票顾问机构的审查",
+      "summary_zh": "美国证券交易委员会起诉机构投资者服务公司（ISS）以强制执行一份传票，特朗普政府正加强对这家颇具影响力的代理投票顾问机构的审查。"
     },
     {
-      "id": "6b29e2abe13c3a24d88a87c2656e7e7a8f6ca439",
-      "title": "Shengu Group sets IPO price at RMB 4.39 per share",
-      "title_zh": "沈鼓集团：首次公开发行价格为4.39元/股",
-      "summary": "Shengu Group published its IPO and main-board listing announcement, setting the issue price at RMB 4.39 per share for 311 million shares.",
-      "summary_zh": "【沈鼓集团：首次公开发行价格为4.39元/股】财联社9月6日电，沈鼓集团发布首次公开发行股票并在主板上市发行公告，本次发行价格为4.39元/股，发行股票数量为3.11亿股"
+      "id": "d446ac68f79007accaf37eecb527c5026d7126d3",
+      "title_zh": "特朗普政府再次向最高法院上诉，寻求允许限制邮寄选票",
+      "summary_zh": "该项申请是在美国法院作出相关裁决后提出的。"
     },
     {
-      "id": "d794a762a5923bfbbc0fa6f4496a1fa1b1ad9311",
-      "title": "Ministry of Finance to inject RMB 10bn into China Export and Credit Insurance Corporation",
-      "title_zh": "财政部将向中国出口信用保险公司注资100亿元",
-      "summary": "Sinosure announced that the Ministry of Finance will inject RMB 10bn into the company. The capital top-up is being advanced prudently on market-based and rule-of-law principles, fully reflecting the positive outlook for the financial sector.",
-      "summary_zh": "【财政部将向中国出口信用保险公司注资100亿元】财联社9月6日电，中国出口信用保险公司宣布，财政部将向中国出口信用保险公司注资100亿元，此次资本补充工作按照市场化、法治化原则稳妥推进，充分体现金融行业发展前景向好"
+      "id": "6043732ba61dde1a4aab881810e6098160e50457",
+      "title_zh": "美联储理事会宣布终止与 United Texas Bank、Quontic Bank Acquisition Corp. 及 Quontic Bank Holdings Corp. 的执法行动",
+      "summary_zh": "美联储理事会宣布终止与上述机构的执法行动。",
+      "title": "Federal Reserve Board announces termination of enforcement actions with United Texas Bank, Quontic Bank Acquisition Corp., and Quontic Bank Holdings Corp.",
+      "summary": "Federal Reserve Board announces termination of enforcement actions with United Texas Bank, Quontic Bank Acquisition Corp., and Quontic Bank Holdings Corp."
     },
     {
-      "id": "3aa92908b31fe0404721f1b99807e1d4009378f1",
-      "title": "Ministry of Finance to inject RMB 30bn into the Export-Import Bank of China",
-      "title_zh": "财政部将向中国进出口银行注资300亿元",
-      "summary": "The Export-Import Bank of China announced that the Ministry of Finance will inject RMB 30bn into the bank, effectively consolidating its capital base and strengthening sustainable development, significantly raising its capacity to fund the real economy and opening-up and its risk-control resilience, and building a solid foundation for better fulfilling its policy-finance mandate and serving major national strategies.",
-      "summary_zh": "【财政部将向中国进出口银行注资300亿元】财联社9月6日电，中国进出口银行宣布，财政部将向中国进出口银行注资300亿元，有效巩固进出口银行资本根基、厚植可持续发展底气，显著提升服务实体经济与对外开放的资金供给能力和风险防控韧性，为更好履行政策性金融职责使命、服务国家重大战略筑牢坚实保障"
+      "id": "806f606b4f2906bcd832ca731b6fabd5ea9f11ca",
+      "title_zh": "美联储理事会对波多黎各大众银行一名前员工发出执法行动",
+      "summary_zh": "美联储理事会对波多黎各大众银行一名前员工发出执法行动",
+      "title": "Federal Reserve Board issues enforcement action with former employee of Banco Popular de Puerto Rico",
+      "summary": "Federal Reserve Board issues enforcement action with former employee of Banco Popular de Puerto Rico"
     },
     {
-      "id": "05ba77203c00fa1c8e750b02a1bdc9fe2f53682f",
-      "title": "CLS Early Brief: seven ministries explore 800V high-voltage DC power architecture for computing facilities and push single-rack deployments above 100kW; analysts see opportunity in the AIDC power-architecture shift; Inner Mongolia issues its first computing token loan",
-      "title_zh": "【财联社早知道】七部门探索算力设施800V高压直流供电架构，推动超百千瓦单机柜部署，分析师看好AIDC供电架构变革的机遇；内蒙古首笔“算力Token贷”发放"
+      "id": "656e92a3367578b4186f1362e6da5af8f9c908d9",
+      "title_zh": "美联储理事会宣布批准国民西敏寺银行（NatWest）的申请",
+      "summary_zh": "美联储理事会宣布批准国民西敏寺银行（NatWest）的申请",
+      "title": "Federal Reserve Board announces approval of application by National Westminster Bank Plc",
+      "summary": "Federal Reserve Board announces approval of application by National Westminster Bank Plc"
     },
     {
-      "id": "708bf0db486f5d842824604d826249058b8260b5",
-      "title": "Ministry of Water Resources: flow through the Gyirong barrier-lake channel is normal and the glacial lake is broadly stable",
-      "title_zh": "水利部：西藏吉隆堰塞湖河道过流正常 冰湖整体稳定",
-      "summary": "According to the Ministry of Water Resources, emergency hydrological monitoring shows no obvious change in the small downstream landslide mass at the former Purapqiangzangbu barrier lake in Gyirong, Tibet, and channel flow is normal. Slopes on both banks have been visibly affected by the debris flow, and there remains a risk that further collapse of the landslide mass could form a new barrier lake.",
-      "summary_zh": "【水利部：西藏吉隆堰塞湖河道过流正常 冰湖整体稳定】财联社9月6日电，水利部消息，水文应急监测显示，西藏吉隆原普热普强藏布堰塞湖下游小规模滑坡体无明显变化，河道过流正常，河道两侧山体受泥石流影响明显，仍存在滑坡体进一步垮塌形成新堰塞湖的风险"
+      "id": "b6457e9352c2925bd07740221c13c6b685f51450",
+      "title_zh": "美联储理事会对 SouthPoint Bancshares 公司发出执法行动，并宣布终止对德意志银行股份公司、DB USA 公司及德意志银行纽约分行的执法行动",
+      "summary_zh": "美联储理事会对 SouthPoint Bancshares 公司发出执法行动",
+      "title": "Federal Reserve Board issues enforcement action with SouthPoint Bancshares, Inc. and announces termination of enforcement action with Deutsche Bank AG, DB USA Corporation, and Deutsche Bank AG New York Branch",
+      "summary": "Federal Reserve Board issues enforcement action with SouthPoint Bancshares, Inc"
     },
     {
-      "id": "05545761780b0095c907292837d427793082bf61",
-      "title": "CLS, Sept 6: the US National Hurricane Center says Marie is expected to begin weakening later today.",
-      "title_zh": "财联社9月6日电，美国国家飓风中心称，玛丽（Marie）预计今天晚些时候将开始减弱。",
-      "summary": "CLS, Sept 6: the US National Hurricane Center says Hurricane Marie is expected to begin weakening later today.",
-      "summary_zh": "财联社9月6日电，美国国家飓风中心称，玛丽（Marie）预计今天晚些时候将开始减弱"
+      "id": "e9af4cd4ca9bfeff022797bb6e3dd475b82b5004",
+      "title_zh": "美联储理事会对 Regions Bank 一名前员工及 United Community Bank 一名前员工发出执法行动",
+      "summary_zh": "美联储理事会对 Regions Bank 一名前员工及 United Community Bank 一名前员工发出执法行动",
+      "title": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of United Community Bank",
+      "summary": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of United Community Bank"
     },
     {
-      "id": "62f869f9602cc78f6a5ee0433cbdd71c84449838",
-      "title": "CLS, Sept 6: Turkey cuts its 2027 GDP growth forecast to 4.2% from 4.3%.",
-      "title_zh": "财联社9月6日电，土耳其将2027年GDP增长预测从4.3%下调至4.2%。",
-      "summary": "CLS, Sept 6: Turkey lowered its 2027 GDP growth forecast to 4.2% from 4.3%.",
-      "summary_zh": "财联社9月6日电，土耳其将2027年GDP增长预测从4.3%下调至4.2%"
+      "id": "717d5c4efb2f4915465e13c6258ee593e1c92fa2",
+      "title_zh": "联邦公开市场委员会会议纪要（2026年7月28—29日）",
+      "summary_zh": "联邦公开市场委员会会议纪要（2026年7月28—29日）",
+      "title": "Minutes of the Federal Open Market Committee, July 28–29, 2026",
+      "summary": "Minutes of the Federal Open Market Committee, July 28–29, 2026"
     },
     {
-      "id": "5df748ee9e5428fffc33d03de8733e05a05c5dfb",
-      "title": "Shanghai SASAC: supervised enterprises to drive four shifts in AI adoption",
-      "title_zh": "上海市国资委：监管企业重点推动AI应用实现四方面转变",
-      "summary": "The Shanghai SASAC system recently opened a special seminar on artificial intelligence.",
-      "summary_zh": "【上海市国资委：监管企业重点推动AI应用实现四方面转变】财联社9月6日电，近日，上海市国资委系统人工智能专题研讨班开班"
+      "id": "59982caf385a64d98c8e1111994ff077d391184f",
+      "title_zh": "美联储理事会对 Regions Bank 一名前员工发出执法行动",
+      "summary_zh": "美联储理事会对 Regions Bank 一名前员工发出执法行动",
+      "title": "Federal Reserve Board issues enforcement action with former employee of Regions Bank",
+      "summary": "Federal Reserve Board issues enforcement action with former employee of Regions Bank"
     },
     {
-      "id": "067d8fa7f5d59789a67b2d18ec9267af7d2c674a",
-      "title": "Ministry of Finance to inject RMB 7bn into China Taiping",
-      "title_zh": "财政部将向中国太平注资70亿元",
-      "summary": "China Taiping announced that the Ministry of Finance will inject RMB 7bn into China Taiping Insurance Group Co.",
-      "summary_zh": "【财政部将向中国太平注资70亿元】财联社9月6日电，中国太平宣布，财政部将向中国太平保险集团有限责任公司注资70亿元"
+      "id": "492e11b1fbddc2b4f792e131efab3875e40f68f3",
+      "title_zh": "美联储委员会宣布批准Coastal Bend Bancshares, Inc.提交的申请",
+      "summary_zh": "美联储委员会宣布批准Coastal Bend Bancshares, Inc.提交的申请。"
     },
     {
-      "id": "583281dc21dd5c0880c2e6458475df84948456be",
-      "title": "Bitcoin trades near $80,000 as corporate demand and US crypto policy stay in focus",
-      "title_zh": "比特币在8万美元附近交投，企业需求与美国加密政策仍是市场焦点"
+      "id": "c680c122cbba91812d956d822be1dbf67fe71a81",
+      "title_zh": "美联储委员会宣布批准FS Bancorp, Inc.提交的申请",
+      "summary_zh": "美联储委员会宣布批准FS Bancorp, Inc.提交的申请。"
     },
     {
-      "id": "224fa133bfd7340312d40500566ae1f0ec6ebd2d",
-      "title": "Bitcoin bull flag 80% done, trapped in range: Hourly",
-      "title_zh": "比特币看涨旗形已完成约八成，但仍困于区间震荡：小时图"
+      "id": "a29277f3b5826c01e78f88ce3213a65aab627188",
+      "title_zh": "美联储委员会宣布批准桑坦德银行（Banco Santander, S.A.）及桑坦德美国控股公司（Santander Holdings USA, Inc.）提交的申请",
+      "summary_zh": "美联储委员会宣布批准桑坦德银行（Banco Santander, S.A.）提交的申请。"
     },
     {
-      "id": "368cb020bdc05bea2f42b166dc3ddc736516f33f",
-      "title": "Ministry of Finance to inject RMB 30bn into the Export-Import Bank of China and RMB 10bn into Sinosure",
-      "title_zh": "财政部将向中国进出口银行注资300亿元，向中国出口信用保险公司注资100亿元",
-      "summary": "On Sept 6, the Export-Import Bank of China announced that the Ministry of Finance will inject RMB 30bn into the bank.",
-      "summary_zh": "9月6日，中国进出口银行宣布，财政部将向中国进出口银行注资300亿元"
+      "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
+      "title_zh": "美联储委员会就现代化互助银行组织相关规则的提案公开征求意见",
+      "summary_zh": "美联储委员会就现代化互助银行组织相关规则的提案公开征求意见。"
     },
     {
-      "id": "9a72a4089a5a74b684b1a688964a9f5f27790645",
-      "title": "Fog and Compass",
-      "title_zh": "迷雾与罗盘",
-      "summary": "1. Industrial indecision and the swing in monetary-policy expectations: the US AI supply chain is showing clear structural divergence. Upstream hardware demand remains strong and compute-rental prices stay elevated, while downstream model vendors keep trading price for volume and token prices have fallen below end-2025 levels.",
-      "summary_zh": "1&nbsp;产业纠结期，货币政策预期的摇摆 当下美国AI产业链呈现明显的结构性分化：上游硬件端需求依旧强劲，算力租赁价格维持高位；但下游大模型厂商持续以价换量，Token价格已跌至低于2025年底的水平"
+      "id": "12b1a89f5980ba0253fa5d35fbb4d24ca457ce54",
+      "title_zh": "美联储委员会就现代化向银行「内部人士」发放信贷规则的提案征求意见——内部人士指可能影响银行放贷决策的银行高管、董事会成员及主要股东",
+      "summary_zh": "美联储委员会就现代化规范向银行「内部人士」发放信贷的规则公开征求意见，内部人士包括银行高管、董事会成员及主要股东。"
     },
     {
-      "id": "9304f8259fbef47716b82dfecd8d09c116f4f9a6",
-      "title": "Ten institutions on the market: a September rebound is in sight, but rebuilding a major trend will take longer",
-      "title_zh": "十大机构论市：9月反弹可期 但大波段行情重建需更长时间",
-      "summary": "This week the Shanghai Composite fell 0.56%, the Shenzhen Component fell 3.13% and the ChiNext fell 4.03%.",
-      "summary_zh": "本周沪指下跌0.56%，深证成指下跌3.13%，创业板指下跌4.03%"
+      "id": "1935945161d7d46d837e2245329ad1f8ee93c902",
+      "title_zh": "美联储委员会对Regions Bank前员工和First Interstate Bank前员工作出执法处理",
+      "summary_zh": "美联储委员会对Regions Bank前员工及First Interstate Bank前员工发布执法措施。"
     },
     {
-      "id": "21b461d1dd4d17ac6af6832a8339666e4917cd98",
-      "title": "The era of personal AI has arrived",
-      "title_zh": "“个人AI”时代来了！",
-      "summary": "Speaking at the IFA 2026 opening keynote on Sept 5, AMD senior vice president Jack Huynh said AI, like electricity in its day, is becoming a ubiquitous foundational capability: it does not replace humans but extends everyone imagination and agency, letting one person accomplish what once required a large team, thereby opening the era of personal AI.",
-      "summary_zh": "9月5日，AMD高级副总裁Jack Huynh在IFA 2026开幕式的演讲中表示，AI如同当年的电力，正在成为无处不在的基础能力，它不取代人类，而是扩展每个人的想象力与行动力，让一个人也能实现以前需要庞大团队才能完成的事，从而开启个人AI的新时代"
+      "id": "d877d3916bea617dbdf1e67428e25470afc2c6a6",
+      "title_zh": "美联储委员会对Iuka Bancshares, Inc.及Iuka State Bank作出执法处理",
+      "summary_zh": "美联储委员会对Iuka Bancshares, Inc.发布执法措施。"
     },
     {
-      "id": "662271bd20cda59e3449293b45c13deb0e709609",
-      "title": "Who is taking the profits from China domestic computing power?",
-      "title_zh": "谁拿走了国产算力的利润？",
-      "summary": "China computing-power industry is undergoing a deep redistribution of profits.",
-      "summary_zh": "中国算力产业正经历一场深层次的利润重分配"
+      "id": "84553b0b5ba2a255e4602f6c3a9318c2557a1160",
+      "title_zh": "美联储发布联邦公开市场委员会（FOMC）声明",
+      "summary_zh": "美联储发布联邦公开市场委员会（FOMC）声明。"
     },
     {
-      "id": "b5b3cd6e1caf736b4622e3c00bf488aee9bc6182",
-      "title": "Ministry of Finance to inject RMB 35bn into China Life Group and RMB 7bn into China Taiping",
-      "title_zh": "财政部将向中国人寿集团注资350亿元、向中国太平注资70亿元",
-      "summary": "On Sept 6, China Life Group announced that the Ministry of Finance will inject RMB 35bn into China Life Insurance (Group) Company, further strengthening its prudent operations and risk resilience and adding momentum to its focus on core business, better governance and differentiated development.",
-      "summary_zh": "9月6日， 中国人寿 集团宣布，财政部将向 中国人寿 保险（集团）公司注资350亿元，进一步增强 中国人寿 稳健经营和风险抵御能力，为公司专注主业、完善治理、错位发展注入动力"
+      "id": "bd761959afffcb14b72576ca78ddc0fce548d7cb",
+      "title_zh": "美联储委员会对Heritage State Bank前首席信贷官作出执法处理",
+      "summary_zh": "美联储委员会对Heritage State Bank前首席信贷官发布执法措施。"
     },
     {
-      "id": "a31134416e84e5f0e800e40d8c52a169fcba2e69",
-      "title": "Another incident: a batch of OpenAI agents in the US was exposed hijacking a German website to exchange methods for bypassing restrictions",
-      "title_zh": "又出事了！美国一批OpenAI智能体，被曝劫持了一个德国网站，用来相互传递突破限制的方法！",
-      "summary": "As it releases its most powerful model to date, GPT-6, OpenAI is caught up in another AI-agent safety controversy.",
-      "summary_zh": "发布迄今最强模型GPT-6之际，OpenAI又卷入一起AI智能体安全争议"
-    },
-    {
-      "id": "d7d725a7c157848ecac58b7189f44ca4a8b28d34",
-      "title": "ICBC plans to raise up to RMB 100bn and ABC up to RMB 160bn to replenish capital",
-      "title_zh": "工行拟募资不超过1000亿元、农行拟募资不超过1600亿元用于补充资本",
-      "summary": "On Sept 6, ICBC announced a proposed private placement of A shares to the Ministry of Finance of China, China National Tobacco Corporation and its related subsidiaries, planning to raise no more than RMB 100bn, which after deducting issuance expenses will be used entirely to replenish core tier-1 capital.",
-      "summary_zh": "9月6日，中国 工商银行 公告称，拟向特定对象发行A股股票，发行对象为中华人民共和国财政部、中国烟草总公司及相关子公司，计划募集资金不超过1000亿元，募集资金扣除相关发行费用后拟全部用于补充核心一级资本"
-    },
-    {
-      "id": "90d61e5661e8efe7c92cfce06ee911e9066e0303",
-      "title": "Big Tech interview question for AI product managers: how do you build an evaluation standard for a towel",
-      "title_zh": "大厂对AI产品经理的面试题：如何对毛巾建立评价标准",
-      "summary": "Meta vice president Jagjit Chawla revealed in a recent podcast that he screens AI product managers with a write-a-bath-towel-evaluation exercise, the point being to test a candidate ability to build multi-dimensional evaluation criteria.",
-      "summary_zh": "Meta副总裁Jagjit Chawla在最新播客中透露，他用“写一份浴巾评估”来筛选AI产品经理，核心是考察候选人建立多维度评估标准的能力"
-    },
-    {
-      "id": "ed974ced723a9f22923ace33612ff47e869c63b9",
-      "title": "CTA short positioning in G10 rates hits record extremes, with German bunds the largest concentration of shorts",
-      "title_zh": "CTA做空G10利率创历史极值，德国国债成最大空头集中地",
-      "summary": "According to Vanda latest CTA fixed-income positioning data, trend-following funds are now short major G10 government bond futures across the board, with German bund short exposure the most pronounced: 10-year, 30-year and 5-year bunds are all at extreme levels.",
-      "summary_zh": "根据 Vanda 最新的 CTA 固定收益仓位数据，趋势跟踪型资金目前已全面做空 G10 主要国债期货，其中德国国债的空头敞口最为突出，10年期、30年期和5年期德债均处于极端水平"
-    },
-    {
-      "id": "222209f9b2f8c53b421bbc91b436cdf578395646",
-      "title": "Nolan: my interest in the universe far exceeds my interest in AI",
-      "title_zh": "诺兰：我对宇宙的兴趣远超AI",
-      "summary": "Nolan said outright in a recent podcast that space exploration fascinates him far more than earthbound technologies such as AI, because it better fires the human imagination and passion for the unknown.",
-      "summary_zh": "诺兰在近期的播客节目中直言，宇宙探索远比AI等地球技术更让他着迷，因为那更能激发人类对未知的想象与热情"
-    },
-    {
-      "id": "20c1431b3088a3ab6e1c0f2d9b357c51704fc857",
-      "title": "Typos in the first interim report under the new chairman spark heated debate; Zijin Mining announces in the early hours that it made an error, issues a correction and apologises sincerely",
-      "title_zh": "“人民币政府”“新熊源”？新董事长上任后首份半年报出现差错引热议，紫金矿业凌晨公告：写错了，更正并诚挚致歉",
-      "summary": "In the early hours of Sept 6, Zijin Mining issued a correction announcement stating that the names of three entities in the notes to principal items of the consolidated financial statements section of its 2026 interim report and earlier announcements contained textual errors; the names in those documents are corrected to Mozhugongka County People's Government, Qinghai Xining Rural Commercial Bank Co Ltd and Jiangsu Zangqing New Energy Industry Development Fund Partnership (Limited Partnership).",
-      "summary_zh": "9月6日凌晨，紫金矿业发布更正公告称，近期公司披露的《2026年半年度报告》及前期公告中“合并财务报表主要项目注释”部分3家单位的名称出现文字错误，现将上述披露文件中所涉3家单位出错名称更正为“墨竹工卡县人民政府”“青海西宁农村商业银行股份有限公司”“江苏藏青新能源产业发展基金合伙企业（有限合伙）”"
-    },
-    {
-      "id": "d5bc3b3838e1f203c42b77ccbafbd236606ac431",
-      "title": "Weekend headlines round-up: seven ministries set out their latest plans on artificial intelligence and computing infrastructure",
-      "title_zh": "周末要闻汇总：事关人工智能、算力设施等 七部门最新部署",
-      "summary": "Key market-moving news this weekend: seven ministries issue their latest deployment on artificial intelligence and computing infrastructure; US Trade Representative Greer says China and the US may issue a statement on agriculture and related non-tariff barriers, with a response from the foreign ministry; the central bank will conduct a RMB 500bn outright reverse repo operation on Sept 7; US August payrolls beat expectations by a wide margin, lifting Fed rate-hike expectations; the US and Iran struck each other tankers and the Iranian military says larger strikes on the US may follow; the first industry rules governing private-fund raising are published.",
-      "summary_zh": "本周末影响市场的重要资讯有：事关 人工智能 、算力设施等，七部门最新部署；美国贸易代表格里尔称中美或将就农业及相关非关税壁垒发布声明，外交部回应；央行9月7日将开展5000亿元买断式逆回购操作；美国8月非农数据大超预期，美联储加息预期升温；美伊互袭油轮，伊朗军方称或对美进行更大规模打击；首个针对私募募集的行业规范出台，"
-    },
-    {
-      "id": "3b724239f041e8841c33ca8b1b2ec4d7900ea73a",
-      "title": "Key week ahead",
-      "title_zh": "下周重磅日程",
-      "summary": "China and US CPI, Apple first foldable iPhone, Xiaomi and Huawei launches, ECB decision",
-      "summary_zh": "中美CPI、苹果折叠屏iPhone首秀、小米华为发布会、欧央行决议"
+      "id": "129c769c5fd2c675a0395c0a41c34d0bbe14b499",
+      "title_zh": "美联储公布推进货币政策实施的工作组负责人及目标",
+      "summary_zh": "美联储公布其工作组的领导成员及目标，以推进货币政策的实施。"
     }
   ],
-  "updated_at": "2026-09-06T10:24:01Z"
+  "updated_at": "2026-09-06T20:27:29Z"
 }
