@@ -1,355 +1,355 @@
 {
   "items": [
     {
+      "id": "203f81157bb72660565adc1cb8f3eb8ec7c8424d",
+      "title": "Will the Fed hike next week? Tonight's CPI will settle it",
+      "summary": "The August CPI report due tonight will be the most market-moving inflation print in years",
+      "title_zh": "下周美联储加息与否，今晚CPI一锤定音？",
+      "summary_zh": "今晚公布的8月CPI报告，将是近年来最牵动市场神经的一份通胀数据"
+    },
+    {
+      "id": "7ef0c0e4ec33365dfc790900b89f1991306cb032",
+      "title": "CPI at another critical juncture: after the Fed's hike, watch for stagflation pricing to take over",
+      "summary": "The US Bureau of Labor Statistics will publish the August CPI reading on the evening of September 11, Beijing time",
+      "title_zh": "CPI再临关键窗口：美联储加息之后，警惕滞胀定价接管市场",
+      "summary_zh": "北京时间9月11日晚间，美国劳工统计局将公布8月份CPI数据"
+    },
+    {
+      "id": "c43bfb038c75d6d1b530fa266828fbe937d0d8c9",
+      "title": "Chinese Nvidia rival Enflame soars 206% on stock market debut as AI demand stays hot",
+      "summary": "Chinese AI chipmaker Enflame, an Nvidia rival and one of China's \"four little dragons,\" made its Shanghai market debut.",
+      "title_zh": "英伟达的中国对手燧原科技上市首日暴涨 206%，AI 需求持续火热",
+      "summary_zh": "中国 AI 芯片厂商燧原科技（英伟达的竞争对手、中国“四小龙”之一）在上海挂牌上市。"
+    },
+    {
+      "id": "eb2b7b7f367e245ffd18eec1f36bca10f9ec16da",
+      "title": "A retreat signal? 'The Big Short' closes out Nvidia and Palantir put options",
+      "summary": "Michael Burry announced he is scaling back risk, closing near-dated put options on Nvidia and Palantir, though his broader bearish positioning remains intact",
+      "title_zh": "撤退信号？“大空头”平仓英伟达和Palantir看跌期权",
+      "summary_zh": "“大空头”Michael Burry宣布收缩风险，平仓了英伟达和Palantir的近端看跌期权，但他的整体看空布局并未瓦解"
+    },
+    {
+      "id": "0481b54b09268dadf038ebbe9c3474776c86903a",
+      "title": "CSRC approves CICC's absorption of Dongxing Securities and Cinda Securities",
+      "summary": "Cailianshe, September 11: The CSRC issued its approval for CICC to absorb Dongxing Securities and Cinda Securities",
+      "title_zh": "证监会批复中金公司吸收合并东兴证券、信达证券",
+      "summary_zh": "【证监会批复中金公司吸收合并东兴证券、信达证券】财联社9月11日电，证监会发布关于同意中金公司吸收合并东兴证券、信达证券的批复"
+    },
+    {
+      "id": "71a0b1e2fb49000f04d0628f6fb842901731d461",
+      "title": "He Fengyang, former Party member and vice mayor of Hefei, Anhui, expelled from the Party and removed from public office for serious disciplinary and legal violations",
+      "summary": "Cailianshe, September 11: According to the Anhui provincial discipline inspection commission, He Fengyang, former Party member and vice mayor of Hefei, has been investigated and disciplined for serious violations",
+      "title_zh": "安徽省合肥市人民政府原党组成员、副市长何逢阳严重违纪违法被开除党籍和公职",
+      "summary_zh": "【安徽省合肥市人民政府原党组成员、副市长何逢阳严重违纪违法被开除党籍和公职】财联社9月11日电，据安徽省纪委监委消息：日前，经中共安徽省委批准，安徽省纪委监委对合肥市人民政府原党组成员、副市长何逢阳严重违纪违法问题进行了立案审查调查"
+    },
+    {
+      "id": "96762d3812747c057afc7c38551b007db44bdcd3",
+      "title": "BOC International Securities: senior client manager Wang Wei dismissed",
+      "summary": "Cailianshe, September 11: BOC International Securities (601696.SH) said it recently learned that senior client manager Wang Wei is under disciplinary review and supervisory investigation",
+      "title_zh": "中银证券：解聘王卫资深客户经理职务",
+      "summary_zh": "【中银证券：解聘王卫资深客户经理职务】财联社9月11日电，中银证券(601696.SH)公告称，公司近日得知资深客户经理王卫正接受纪律审查和监察调查"
+    },
+    {
+      "id": "bc2e25ab6c0fc9a7f2e79b8e9f88ddfab13c23cc",
+      "title": "Cailianshe, September 11: Russia's central bank holds its key rate at 14.00%, in line with an estimate of 14.00%",
+      "summary": "Cailianshe, September 11: Russia's central bank left its benchmark rate unchanged at 14.00%, versus an estimate of 14.00%",
+      "title_zh": "财联社9月11日电，俄罗斯央行维持基准利率在14.00%不变，预估为14.00%。",
+      "summary_zh": "财联社9月11日电，俄罗斯央行维持基准利率在14.00%不变，预估为14.00%"
+    },
+    {
+      "id": "01bb03c2398186f6410365c95b4413059d2550e7",
+      "title": "Russian fertilizer producer: BRICS countries are the main destination for Russian fertilizer exports",
+      "summary": "Cailianshe, September 11: Alexander Gilgenberg, general director of Russian phosphate fertilizer producer PhosAgro, said BRICS countries are the main buyers of Russian fertilizer",
+      "title_zh": "俄肥料生产公司：金砖国家是俄罗斯肥料出口的主要部分",
+      "summary_zh": "【俄肥料生产公司：金砖国家是俄罗斯肥料出口的主要部分】财联社9月11日电，俄罗斯含磷肥料生产商PhosAgro公司总经理亚历山大·吉尔根贝格表示，金砖国家是俄罗斯肥料的主要买家"
+    },
+    {
+      "id": "ebad5783ab5d9f8fff5154a5e8fc63c5d68c68a2",
+      "title": "Securities practitioner Zong fabricated and spread false information; CSRC imposes a five-year market ban and other penalties",
+      "summary": "Cailianshe, September 11: CSRC administrative penalty decision [2026] No. 37 shows the regulator investigated Zong Jianshu for fabricating and spreading false information. The findings include: first, Zong fabricated and spread false information - on December 16, 2025 he fabricated information about a tax rate adjustment and",
+      "title_zh": "证券从业人员宗某编造、传播虚假信息 证监会对其采取5年市场禁入等处罚措施",
+      "summary_zh": "【证券从业人员宗某编造、传播虚假信息 证监会对其采取5年市场禁入等处罚措施】财联社9月11日电，证监会发布的行政处罚决定书〔2026〕37号显示，证监会对当事人宗建树编造、传播虚假信息行为进行了立案调查，经查明，当事人存在以下违法事实：一、宗建树编造、传播虚假信息，2025年12月16日，宗建树编造税率调整相关信息，并"
+    },
+    {
+      "id": "ca199df636afcd420ff4cd4001c7921dfba09d5f",
+      "title": "Cailianshe, September 11: NYMEX front-month gasoline falls more than 2% to 3.32 dollars per gallon",
+      "summary": "Cailianshe, September 11: The NYMEX front-month gasoline contract fell more than 2%, last at 3.32 dollars per gallon",
+      "title_zh": "财联社9月11日电，NYMEX汽油主力合约跌超2%，现报3.32美元/加仑。",
+      "summary_zh": "财联社9月11日电，NYMEX汽油主力合约跌超2%，现报3.32美元/加仑"
+    },
+    {
+      "id": "25f925b10c69d8aeaa559a765f5dfce75cb2d8c5",
+      "title": "GFEX issues a notice on the polysilicon futures PS2709 contract and the lithium carbonate futures LC2709 contract",
+      "summary": "Cailianshe, September 11: GFEX announced that, after study, it has set out the following arrangements for the polysilicon futures PS2709 and lithium carbonate futures LC2709 contracts: the trading fee for PS2709 is 1/10,000 of turnover, the intraday same-day close fee is 2.5/10,000 of turnover, and each trading order",
+      "title_zh": "广期所就多晶硅期货PS2709合约、碳酸锂期货LC2709合约有关事项发布公告",
+      "summary_zh": "【广期所就多晶硅期货PS2709合约、碳酸锂期货LC2709合约有关事项发布公告】财联社9月11日电，广期所公告，经研究决定，现将多晶硅期货PS2709、碳酸锂期货LC2709合约有关事项公告如下：多晶硅期货PS2709合约交易手续费标准为成交金额的万分之一、日内平今仓交易手续费标准为成交金额的万分之二点五，交易指令每"
+    },
+    {
+      "id": "873a2103aa4233d1c42e95e41cf0ad914b1ecb2a",
+      "title": "Guangxi ends its level-3 natural disaster relief emergency response",
+      "summary": "Cailianshe, September 11: According to the office of the Guangxi disaster prevention, reduction and relief committee, as conditions in areas hit by this year's No. 19 typhoon Zitan have stabilized, and under the Guangxi natural disaster relief contingency plan, the office decided to end Guangxi's level-3 natural disaster relief emergency response at 18:00 on September 11",
+      "title_zh": "广西终止自然灾害救助三级应急响应",
+      "summary_zh": "【广西终止自然灾害救助三级应急响应】财联社9月11日电，据广西壮族自治区防灾减灾救灾委员会办公室消息，鉴于今年第19号台风“紫檀”受灾地区灾情趋于稳定，根据《广西自然灾害救助应急预案》有关规定，广西壮族自治区防灾减灾救灾委员会办公室决定于9月11日18时终止广西壮族自治区自然灾害救助三级应急响应"
+    },
+    {
+      "id": "2582f746702e8b7f2ca2e8cf793e6966e97b7216",
+      "title": "Yuanlin Co: planning a share-issue and cash asset acquisition, shares suspended",
+      "summary": "Cailianshe, September 11: Yuanlin Co (605303.SH) said it is planning to acquire a controlling stake in Hangzhou Hualan Microelectronics via a share issue and cash payment, in what is expected to be a major asset restructuring",
+      "title_zh": "园林股份：筹划发行股份及支付现金购买资产并停牌",
+      "summary_zh": "【园林股份：筹划发行股份及支付现金购买资产并停牌】财联社9月11日电，园林股份(605303.SH)公告称，公司正筹划以发行股份及支付现金方式购买杭州华澜微电子股份有限公司控股权，预计构成重大资产重组"
+    },
+    {
+      "id": "5c0bbc0517352119705374bc832523fdc8729840",
+      "title": "Zibo releases a three-year action plan for 'AI plus manufacturing'",
+      "summary": "Cailianshe, September 11: Nine departments in Zibo jointly drafted the Zibo 'AI plus Manufacturing' action plan (2026-2028)",
+      "title_zh": "淄博发布“人工智能+制造”三年行动方案",
+      "summary_zh": "【淄博发布“人工智能+制造”三年行动方案】财联社9月11日电，近日，淄博市九部门共同研究制定《淄博市“人工智能＋制造”行动方案（2026—2028年）》"
+    },
+    {
+      "id": "46160de1763bff1f73a63588358d8df7bbe6bb18",
+      "title": "Longban Media: suspension review completed, trading resumes on September 14",
+      "summary": "Cailianshe, September 11: Longban Media (605577.SH) said its shares rose about 93.47% cumulatively from August 31 to September 8, a gain that deviates from fundamentals",
+      "title_zh": "龙版传媒：停牌核查工作已完成 9月14日开市起复牌",
+      "summary_zh": "【龙版传媒：停牌核查工作已完成 9月14日开市起复牌】财联社9月11日电，龙版传媒(605577.SH)公告称，公司股票8月31日-9月8日累计涨幅约为93.47%，股价累计涨幅偏离基本面"
+    },
+    {
+      "id": "c18dee718398b2e8f3d9de6b2b24fd8a8ced5a56",
+      "title": "Yemeni official: Houthis seize a key island in the Bab el-Mandeb Strait",
+      "summary": "Cailianshe, September 11: Yemeni officials said the Houthis seized Perim Island, a core strategic position in the Bab el-Mandeb Strait, further tightening their control of the waterway",
+      "title_zh": "也门政府官员：胡塞武装夺取曼德海峡关键岛屿",
+      "summary_zh": "【也门政府官员：胡塞武装夺取曼德海峡关键岛屿】财联社9月11日电，也门政府官员11日表示，也门胡塞武装当天夺取了位于曼德海峡的核心战略要地丕林岛，进一步加强其对曼德海峡的控制"
+    },
+    {
+      "id": "7d2e0a8eb09de84cff281f4caff0e35d396bdfb8",
+      "title": "Ukraine says a Russian strike hit a petrol station in Kyiv, killing 2 and wounding 8",
+      "summary": "Cailianshe, September 11: Kyiv mayor Klitschko said a Russian strike on a petrol station in the city killed 2 people and wounded 8",
+      "title_zh": "乌称俄军袭击基辅市内加油站 造成2死8伤",
+      "summary_zh": "【乌称俄军袭击基辅市内加油站 造成2死8伤】财联社9月11日电，乌克兰基辅市市长克利奇科通报称，俄军当日对基辅的加油站发动袭击，造成2人死亡、8人受伤"
+    },
+    {
+      "id": "b6a15f26aedc081dd76c45030f9923771351eb02",
+      "title": "BOC International Securities senior client manager Wang Wei is under disciplinary review and supervisory investigation",
+      "summary": "Cailianshe, September 11: According to the disciplinary inspection group stationed at Bank of China and the Shanghai discipline inspection commission, Wang Wei, a senior client manager at BOC International Securities, is suspected of serious disciplinary and legal violations and is under review",
+      "title_zh": "中银国际证券股份有限公司资深客户经理王卫接受纪律审查和监察调查",
+      "summary_zh": "【中银国际证券股份有限公司资深客户经理王卫接受纪律审查和监察调查】财联社9月11日电，据中央纪委国家监委驻中国银行纪检监察组、上海市纪委监委消息：中银国际证券股份有限公司资深客户经理王卫涉嫌严重违纪违法，目前正接受中央纪委国家监委驻中国银行纪检监察组纪律审查和上海市监察委员会监察调查"
+    },
+    {
+      "id": "3fd562425725b2e16e85b3776d216c2275b2a9ea",
+      "title": "Maritime Silk Road index: freight rates mixed this week, composite index steady",
+      "summary": "Cailianshe, September 11: This week the Ningbo Export Container Freight Index (NCFI), part of the Maritime Silk Road Index published by the Ningbo Shipping Exchange, closed at 2582.6 points, down 0.3% from last week",
+      "title_zh": "海上丝路指数：本周航线运价涨跌互现 综合指数保持平稳",
+      "summary_zh": "【海上丝路指数：本周航线运价涨跌互现 综合指数保持平稳】财联社9月11日电，本周，宁波航运交易所发布的海上丝绸之路指数之宁波出口集装箱运价指数(NCFI)报收于2582.6点，较上周下跌0.3%"
+    },
+    {
+      "id": "91c47c59c4265bff0a94e432e169fec8ae41f478",
+      "title": "Cailianshe, September 11: Guangzhou Tinci High-Tech Materials receives a CSRC filing notice for an overseas listing",
+      "summary": "Cailianshe, September 11: Guangzhou Tinci High-Tech Materials has received a CSRC filing notice for its planned overseas offering and listing",
+      "title_zh": "财联社9月11日电，广州天赐高新材料拟境外发行上市获中国证监会备案通知书。",
+      "summary_zh": "财联社9月11日电，广州天赐高新材料拟境外发行上市获中国证监会备案通知书"
+    },
+    {
+      "id": "7ef989abd29c5a4b1648d3919fc4cc1a439ca032",
+      "title": "Li Chenggang meets Andre Desmarais, honorary chairman of the Canada-China Business Council",
+      "summary": "Cailianshe, September 11: Per the Ministry of Commerce website, on September 11 Li Chenggang, international trade representative and vice minister, met Andre Desmarais, honorary chairman of the Canada-China Business Council; the two exchanged views on China-Canada trade and economic relations",
+      "title_zh": "李成钢会见加拿大加中贸易理事会名誉主席安德烈·德马雷",
+      "summary_zh": "【李成钢会见加拿大加中贸易理事会名誉主席安德烈·德马雷】财联社9月11日电，据商务部官网，9月11日，李成钢国际贸易谈判代表兼副部长会见加拿大加中贸易理事会名誉主席安德烈·德马雷，双方就中加经贸关系等议题进行交流"
+    },
+    {
+      "id": "20b74e19f6eded0c6ec67ba5526ec696e6a6de8d",
+      "title": "China formally rolls out a data property rights registration system",
+      "summary": "Cailianshe, September 11: According to the National Data Administration, China has formally launched data property rights registration to speed up the circulation and use of data as a new production factor",
+      "title_zh": "我国正式推行数据产权登记制度",
+      "summary_zh": "【我国正式推行数据产权登记制度】财联社9月11日电，据国家数据局消息，我国正式开展数据产权登记工作，促进数据这一新型生产要素加快流通和使用"
+    },
+    {
+      "id": "7429ac2b6f68889f664a305a1c4f7c7e590c665c",
+      "title": "Tianlong-3 Y1 launch vehicle flight test mission completes its fault-closure review",
+      "summary": "Cailianshe, September 11: The Tianlong-3 Y1 launch vehicle flight test mission passed its fault-closure (zeroing) review",
+      "title_zh": "天龙三号遥一运载火箭飞行试验任务完成归零",
+      "summary_zh": "【天龙三号遥一运载火箭飞行试验任务完成归零】财联社9月11日电，天龙三号遥一运载火箭飞行试验任务通过归零"
+    },
+    {
+      "id": "aca9642bbe572ed23165a008d8206a1ab5104877",
+      "title": "New Bond King Gundlach warns: if the Fed stands pat, long-end rates will climb sharply",
+      "summary": "'New Bond King' Jeffrey Gundlach issued three warnings ahead of the Fed meeting: if the Fed does not hike, long-end rates will surge; the inflation path looks strikingly like the 1970s; and AI bond spreads have nearly doubled while US equity valuations are so high they are 'like a hotel minibar - nothing is cheap'",
+      "title_zh": "新债王Gundlach警示：若美联储按兵不动，长端利率将大幅攀升",
+      "summary_zh": "&nbsp; \"新债王\"Jeffrey Gundlach在美联储议息会议前夕发出三重警告：美联储若不加息，长端利率将大幅飙升；通胀走势与1970年代惊人相似；AI债券利差已接近翻倍，而美股估值高得\"如同酒店迷你吧——没有便宜货\""
+    },
+    {
+      "id": "7c38f6418ec1af0914752e7a264d587ba74a75fd",
+      "title": "Oil surge plus inflation pressure: Asian stocks and bonds sell off together, Japanese shares slump 3%, JGB yields keep climbing",
+      "summary": "Oil breaking above the 100-dollar mark and a larger-than-expected rise in US producer prices combined to push Asian markets into a dual sell-off in stocks and bonds",
+      "title_zh": "油价飙升叠加通胀压力，亚洲股债双杀、日股重挫3%、日债收益率持续走高",
+      "summary_zh": "油价突破百元关口、美国生产者价格指数超预期上涨，两股力量叠加，将亚洲市场推入股债双杀局面"
+    },
+    {
+      "id": "22f4eb77c2c599f09765dcfc7c35cc21a1601199",
+      "title": "Global markets: all three major US averages close lower, memory stocks slump, US crude jumps more than 8%",
+      "summary": "US market: all three major US averages closed lower on September 10",
+      "title_zh": "全球市场：美股三大指数收跌 存储板块下挫 美油大涨逾8%",
+      "summary_zh": "美股市场： 美股三大指数09月10日收盘全线下跌"
+    },
+    {
       "id": "b831b30f06ed55dad7081d3d4e60450c4c8905a1",
       "title": "Friday's CPI inflation report is even more important than usual. Here's what to expect",
       "summary": "The Bureau of Labor Statistics will release the August consumer price index report at 8:30 a.m.",
-      "title_zh": "周五的CPI通胀报告比往常更为重要，以下是可以期待的内容",
-      "summary_zh": "劳工统计局将于上午8:30发布8月消费者价格指数报告。"
+      "title_zh": "周五的 CPI 通胀报告比往常更为重要，以下是可以期待的内容",
+      "summary_zh": "美国劳工统计局将于上午 8:30 发布 8 月消费者价格指数报告。"
     },
     {
-      "id": "bc955425873bd00cdc28033128e8fe13e8c93a81",
-      "title": "The likelihood of a Fed interest rate hike next week just got a lot higher",
-      "summary": "Traders pushed chances for a rate increase to 70% in morning action.",
-      "title_zh": "下周美联储加息的可能性刚刚大幅上升",
-      "summary_zh": "交易员在早盘将加息概率推高至70%。"
+      "id": "6588288baf0c730179e5570906d9ab93b8bfb4f6",
+      "title": "Agencies reduce regulatory burden for community banks, increase eligibility for 18-month exam cycle",
+      "summary": "Agencies reduce regulatory burden for community banks, increase eligibility for 18-month exam cycle",
+      "title_zh": "监管机构减轻社区银行监管负担，扩大 18 个月检查周期的适用范围",
+      "summary_zh": "监管机构减轻社区银行监管负担，扩大 18 个月检查周期的适用范围。"
     },
     {
-      "id": "46a392b014fc4bdc7356fca629f9a1eb16a2d0c0",
-      "title": "CLS telegraph, September 11: OpenAI launched the public beta of its Agents API; the Agents API carries no extra charge, and developers only pay for token usage and tool-call fees",
-      "summary": "CLS telegraph, September 11: OpenAI launched the public beta of its Agents API; the Agents API carries no extra charge, and developers only pay for token usage and tool-call fees",
-      "title_zh": "财联社9月11日电，Openai推出Agents API公开测试版；Agents API 不收取额外费用，开发者仅需支付Token使用费用和工具调用费用。",
-      "summary_zh": "财联社9月11日电，Openai推出Agents API公开测试版；Agents API 不收取额外费用，开发者仅需支付Token使用费用和工具调用费用"
+      "id": "99dc4da230f92ef0ff72463549e5ad968ad830ff",
+      "title": "Dow futures jump more than 200 points as oil prices slide; consumer inflation data ahead: Live updates",
+      "summary": "The three major averages are heading for a losing week as higher oil prices and a surge in Treasury yields weigh on stocks.",
+      "title_zh": "油价回落推动道指期货涨超 200 点，消费者通胀数据即将公布：实时更新",
+      "summary_zh": "在油价上涨和美国国债收益率急升的压制下，美国三大股指预计将录得周线下跌。"
     },
     {
-      "id": "adbc88e8546b16fda1c843d184aad6b4d198cfea",
-      "title": "CLS telegraph, September 11: Investment Company Institute data showed US money market fund assets fell to 7.97 trillion dollars",
-      "summary": "CLS telegraph, September 11: Investment Company Institute data showed US money market fund assets fell to 7.97 trillion dollars",
-      "title_zh": "财联社9月11日电，美国投资公司协会数据显示，美国货币市场基金资产规模降至7.97万亿美元。",
-      "summary_zh": "财联社9月11日电，美国投资公司协会数据显示，美国货币市场基金资产规模降至7.97万亿美元"
+      "id": "86858223d16f0fd14ffeab69970d56bdbc54948b",
+      "title": "Three ministries: break through key core technologies including agricultural sensors and dedicated chips, core algorithms, robotics and intelligent breeding design tools",
+      "summary": "The Cyberspace Administration of China, the Ministry of Agriculture and Rural Affairs and the Ministry of Industry and Information Technology jointly issued the Digital Village High-Quality Development Action Plan (2026-2030)",
+      "title_zh": "三部门：攻坚突破农业传感器与专用芯片、核心算法、机器人、智能设计育种工具等关键核心技术",
+      "summary_zh": "近日，中央网信办、农业农村部、工业和信息化部联合印发《数字乡村高质量发展行动计划（2026—2030年）》"
     },
     {
-      "id": "401c87485a895b77380e475f0318770187f6f785",
-      "title": "CLS telegraph, September 11: the United States is reported to be expanding intelligence and targeting support for Saudi operations, backing Saudi military action against the Houthis",
-      "summary": "CLS telegraph, September 11: the United States is reported to be expanding intelligence and targeting support for Saudi operations, backing Saudi military action against the Houthis",
-      "title_zh": "财联社9月11日电，据报道，美国扩大对沙特行动的情报和目标锁定支持，支持沙特针对胡塞武装的军事行动。",
-      "summary_zh": "财联社9月11日电，据报道，美国扩大对沙特行动的情报和目标锁定支持，支持沙特针对胡塞武装的军事行动"
+      "id": "3dc2d3849caca5e69fa91c2d19931765da59da96",
+      "title": "Who can 'call a halt' to Anthropic?",
+      "summary": "On September 11, OpenAI CEO Sam Altman said at an all-hands meeting this week that the company may slow frontier AI development and is considering coordinating with other AI labs",
+      "title_zh": "谁能“叫停”Anthropic？",
+      "summary_zh": "9月11日，OpenAI CEO萨姆·奥特曼（Sam Altman）在本周的一场全员会上表示，公司可能放缓前沿AI开发，并考虑与其他AI实验室协调行动"
     },
     {
-      "id": "877c7cc4812a26e7223972be715c42bc628ec0f1",
-      "title": "Hike or hold? The Fed's September decision faces a dilemma",
-      "summary": "With the Fed's September 16 policy meeting approaching, the debate over whether to raise rates has reached a fever pitch.",
-      "title_zh": "加息还是按兵不动？美联储9月决策面临两难抉择",
-      "summary_zh": "美联储9月16日议息会议临近，围绕是否加息的争论已进入白热化阶段"
+      "id": "f4a85e15048e6a401f63938e3a12a53cb6c117c1",
+      "title": "Shopify has been under pressure this year. Bernstein says the decline is overblown",
+      "summary": "The bank initiated coverage of the e-commerce company with an outperform rating.",
+      "title_zh": "Shopify 今年持续承压，伯恩斯坦认为跌幅被过度放大",
+      "summary_zh": "该行首次覆盖这家电商公司，给予跑赢大盘评级。"
     },
     {
-      "id": "d31c2a52ab6a5314b5eabca65f6a23c3b5d8be5b",
-      "title": "CLS telegraph, September 11: Hang Seng index futures closed the night session down 0.8% at 24701, a 253-point discount",
-      "summary": "CLS telegraph, September 11: Hang Seng index futures closed the night session down 0.8% at 24701, a 253-point discount",
-      "title_zh": "财联社9月11日电，恒指期货夜盘收跌0.8%，报24701点，低水253点。",
-      "summary_zh": "财联社9月11日电，恒指期货夜盘收跌0.8%，报24701点，低水253点"
+      "id": "b96023fd160008439bd41b8eee79b9fd338f393d",
+      "title": "Bessent says 'a large bank' will be sanctioned on Monday as part of Iran strategy",
+      "summary": "U.S",
+      "title_zh": "贝森特称，作为伊朗战略的一部分，一家大型银行将于周一被制裁",
+      "summary_zh": "美国"
     },
     {
-      "id": "b2878c3ecf2fe787dd51f5f2987ba26c71ed9956",
-      "title": "CLS telegraph, September 11: Argentina's August consumer price index rose 33.5% year over year versus 33.6% expected, and 1.7% month over month against a prior expectation of 1.7%",
-      "summary": "CLS telegraph, September 11: Argentina's August consumer price index rose 33.5% year over year versus 33.6% expected, and 1.7% month over month against a prior expectation of 1.7%",
-      "title_zh": "财联社9月11日电，阿根廷8月消费者价格指数同比上涨33.5%，预计33.6%；8月消费者价格指数环比上涨1.7%，此前预期上涨1.7%。",
-      "summary_zh": "财联社9月11日电，阿根廷8月消费者价格指数同比上涨33.5%，预计33.6%；8月消费者价格指数环比上涨1.7%，此前预期上涨1.7%"
+      "id": "4deaf13b62037fd6e12438bc2214cf6ed5071082",
+      "title": "Oracle: AI props up the headline, but who covers the substance?",
+      "summary": "In the early hours of September 11 after the US close, Oracle, the leader among the new cloud players, reported fiscal 2027 first-quarter results for the period ending in late August",
+      "title_zh": "甲骨文：AI撑起了面子，但谁来兜底里子？",
+      "summary_zh": "9月11日早美股盘后，新云中的龙头Oracle（甲骨文）公布了截止8月底的27财年第一季业绩"
     },
     {
-      "id": "20431a35960bd0228145cea20e918e9576f4a7ea",
-      "title": "Algeria announces closure of its airspace to the United Arab Emirates",
-      "summary": "Algeria's defence ministry announced on the evening of September 10 local time that, from midnight on the 11th, civil and military aircraft registered in the UAE, including inbound and outbound flights, are barred from Algerian airspace.",
-      "title_zh": "阿尔及利亚宣布对阿联酋关闭领空",
-      "summary_zh": "【阿尔及利亚宣布对阿联酋关闭领空】财联社9月11日电，阿尔及利亚国防部当地时间9月10日晚宣布，自本月11日零时起，禁止在阿联酋注册的民用和军用飞机（含进出港航班）进入阿尔及利亚领空"
+      "id": "2371f15f242ba804f2da5386c27f5256b847b1f5",
+      "title": "The 10-year Treasury heads for 5%: is Bessent's buyback being underestimated?",
+      "summary": "With long-end Treasuries sold off hard again, the 10-year yield rose to 4.97%, closing in on the 5% mark and approaching its highest level since 2007; the 30-year yield touched 5.37%, a new high since 2007",
+      "title_zh": "10年美债冲向5%！贝森特回购是否被低估？",
+      "summary_zh": "随着长端美债再度遭遇大幅抛售，10年期美债收益率升至4.97%，逼近5%关口，并接近2007年以来高点；30年期收益率触及5.37%，创2007年以来新高"
     },
     {
-      "id": "45e47910fc7653a1ac4eb13765f0ee2bb32e6810",
-      "title": "CLS telegraph, September 11: Brent crude futures settled at 107.63 dollars a barrel, up 6.42 dollars or 6.34%",
-      "summary": "CLS telegraph, September 11: Brent crude futures settled at 107.63 dollars a barrel, up 6.42 dollars or 6.34%",
-      "title_zh": "财联社9月11日电，布伦特原油期货结算价为每桶107.63美元，上涨6.42美元，涨幅6.34%。",
-      "summary_zh": "财联社9月11日电，布伦特原油期货结算价为每桶107.63美元，上涨6.42美元，涨幅6.34%"
+      "id": "a1c88de51c1fc520ff611b95d5a8576afb372f23",
+      "title": "Behind the driverless urban delivery boom, the fight for cargo is on",
+      "summary": "By Zhou Zhiyu. Competition in driverless urban delivery is playing out beyond buying and selling vehicles",
+      "title_zh": "无人城配热潮背后，货源争夺战打响",
+      "summary_zh": "作者 | 周智宇 无人城配的竞争，正在车辆买卖之外展开"
     },
     {
-      "id": "4242c776c241949099332685e380179ecd5ad0f8",
-      "title": "China opposes certain countries forcing UN Security Council sanctions on Iran",
-      "summary": "On the morning of September 10 local time, certain UN Security Council members pushed to restore sanctions on Iran despite deep divisions on the issue, convening the council under a topic that had already been terminated.",
-      "title_zh": "中方反对个别国强推安理会制裁伊朗",
-      "summary_zh": "【中方反对个别国强推安理会制裁伊朗】财联社9月11日电，当地时间9月10日上午，联合国安理会个别成员国不顾安理会在相关问题上仍存在巨大分歧，执意强推安理会恢复对伊朗制裁，推动安理会在已被终止的议题下举行会议"
+      "id": "7b122365a05c04416cb6bbf1645d7a8f69e1d710",
+      "title": "Further European rate hikes 'very much dependent' on energy costs, Bundesbank chief tells CNBC",
+      "summary": "Joachim Nagel told CNBC that a potential move in rates into restrictive territory was \"very much dependent on how the energy prices evolve.\"",
+      "title_zh": "德国央行行长对 CNBC 表示，欧洲进一步加息“在很大程度上取决于”能源成本",
+      "summary_zh": "约阿希姆·纳格尔对 CNBC 表示，利率是否可能进入限制性区间，“在很大程度上取决于能源价格如何演变”。"
     },
     {
-      "id": "32dd86ee5e5153270fc0e249f0665b5b70ed9d9a",
-      "title": "CLS telegraph, September 11: US officials said Iran's oil offloading fell to 900,000 barrels per day from 1.4 million barrels per day before the war",
-      "summary": "CLS telegraph, September 11: US officials said Iran's oil offloading fell to 900,000 barrels per day from 1.4 million barrels per day before the war",
-      "title_zh": "财联社9月11日电，美国官员表示，伊朗石油卸货量降至每日90万桶，低于战争前的每日140万桶。",
-      "summary_zh": "财联社9月11日电，美国官员表示，伊朗石油卸货量降至每日90万桶，低于战争前的每日140万桶"
+      "id": "c7fc9e4101274c41243ea1121be1abaee00d3866",
+      "title": "Hongguo's closed loop: how high turnover swept the field",
+      "summary": "In July 2026, a landmark shift occurred in the mobile video market",
+      "title_zh": "红果的闭环：高周转如何碾压全场",
+      "summary_zh": "2026年7月，移动视频市场出现了一个标志性变化"
     },
     {
-      "id": "6a5c6193f39cedc416439c46d230b397b8297568",
-      "title": "CLS telegraph, September 11: US officials said Iran's oil loadings averaged about 200,000 barrels per day over the past 30 days, down from 1.8 million barrels per day in January and February",
-      "summary": "CLS telegraph, September 11: US officials said Iran's oil loadings averaged about 200,000 barrels per day over the past 30 days, down from 1.8 million barrels per day in January and February",
-      "title_zh": "财联社9月11日电，美国官员表示，过去30天，伊朗石油装载量约为每日20万桶，低于1月/2月的每日180万桶。",
-      "summary_zh": "财联社9月11日电，美国官员表示，过去30天，伊朗石油装载量约为每日20万桶，低于1月/2月的每日180万桶"
+      "id": "72b283081fdc17f33d24edbf9e8cd2ff306a9303",
+      "title": "Top VCs on how AI is changing investment logic: the 'midstream trap' and the flywheel effect",
+      "summary": "AI is pushing the power-law distribution of tech investing to its extreme: capital can for the first time convert directly into compute and reinforce an absolute moat, while traditional SaaS assets that fail to become AI-native face the severe risk of being left behind",
+      "title_zh": "顶尖风投谈“AI改变投资逻辑”：“中游陷阱”与飞轮效应",
+      "summary_zh": "AI正在将科技投资的“幂律（Power Law）分布”推向极致： 资本首次能够直接转化为算力并强化企业的绝对护城河，而那些无法实现AI原生的传统SaaS资产，正面临被时代抛弃的严峻风险 "
     },
     {
-      "id": "aa9351fa89ba2856c3a7a48f1b40868531bd15de",
-      "title": "CLS telegraph, September 11: the US Treasury website published a new round of Iran-related sanctions",
-      "summary": "CLS telegraph, September 11: the US Treasury website published a new round of Iran-related sanctions",
-      "title_zh": "财联社9月11日电，美国财政部网站发布新一轮伊朗相关制裁。",
-      "summary_zh": "财联社9月11日电，美国财政部网站发布新一轮伊朗相关制裁"
+      "id": "8e5bd0b964b0cbc92b70cb7be79b331f90801a5f",
+      "title": "Houthis capture more strategic positions in the Bab el-Mandeb Strait",
+      "summary": "Reuters reported on September 11, citing two Yemeni government sources, that the Houthis have entered the Yemeni town of Zubab, which sits next to the Bab el-Mandeb Strait and faces Perim Island across the water - controlling Zubab and Perim is key to controlling the strait",
+      "title_zh": "胡塞武装攻占曼德海峡更多战略要地",
+      "summary_zh": "据路透社今天（9月11日）援引两名也门政府消息人士报道，也门胡塞武装已进入也门祖巴卜镇，该镇紧邻曼德海峡，与海峡内的丕林岛隔海相望——控制祖巴卜镇和丕林岛是掌控曼德海峡的关键"
     },
     {
-      "id": "9781ec7df112e86760105566e1d84d14f896b0fa",
-      "title": "CLS telegraph, September 11: US crude futures settled at 102.48 dollars a barrel, up 6.43 dollars or 6.69%",
-      "summary": "CLS telegraph, September 11: US crude futures settled at 102.48 dollars a barrel, up 6.43 dollars or 6.69%",
-      "title_zh": "财联社9月11日电，美国原油期货结算价为每桶102.48美元，上涨6.43美元，涨幅6.69%。",
-      "summary_zh": "财联社9月11日电，美国原油期货结算价为每桶102.48美元，上涨6.43美元，涨幅6.69%"
+      "id": "aea7bec2f8d20a0eddafe6889e282495ed77bcfe",
+      "title": "Treasury yields steady as traders await consumer inflation data amid oil price pressure",
+      "summary": "Treasurys steadied Friday after surging to multiyear highs, as investors await more economic data.",
+      "title_zh": "油价压力之下交易员等待消费者通胀数据，美债收益率持稳",
+      "summary_zh": "美债周五企稳，此前收益率飙升至多年高位，投资者正在等待更多经济数据。"
     },
     {
-      "id": "0cfadeae6149882092dd319ef075cd005ddc0f84",
-      "title": "CLS telegraph, September 11: Cochilco data showed Codelco's July copper output fell 4.8% year over year to 112,800 tonnes, while Chile's Collahuasi mine raised output 12.3% year over year to 38,400 tonnes",
-      "summary": "CLS telegraph, September 11: Cochilco data showed Codelco's July copper output fell 4.8% year over year to 112,800 tonnes, while Chile's Collahuasi mine raised output 12.3% year over year to 38,400 tonnes",
-      "title_zh": "财联社9月11日电，智利铜业委员会（Cochilco）数据显示，智利国营铜业公司（Codelco）7月份铜产量同比下降4.8%，至112,800吨；智利科拉瓦西铜矿七月份铜产量同比...",
-      "summary_zh": "财联社9月11日电，智利铜业委员会（Cochilco）数据显示，智利国营铜业公司（Codelco）7月份铜产量同比下降4.8%，至112,800吨；智利科拉瓦西铜矿七月份铜产量同比增长12.3%，达到38,400吨"
+      "id": "1dbf9ea8eccc7049c542cdd1015ca8f87b6fdd93",
+      "title": "Why is Apple late with a foldable? Its new CEO says it will not chase first place and is redoing the crease and hinge",
+      "summary": "Apple's new CEO John Ternus said Apple has never been in a hurry to be first with a foldable display",
+      "title_zh": "苹果折叠屏为什么迟到？新CEO：不抢第一，折痕、铰链都要重新做",
+      "summary_zh": "：苹果新CEO John Ternus表示，苹果从来不急着抢折叠屏第一"
     },
     {
-      "id": "ea7f7314893fdcaf9d5fef544f39f43383fe5cd1",
-      "title": "CLS telegraph, September 11: Mexico's main stock index extended its decline, falling more than 1%",
-      "summary": "CLS telegraph, September 11: Mexico's main stock index extended its decline, falling more than 1%",
-      "title_zh": "财联社9月11日电，墨西哥主要股指扩大跌幅，下跌超过1%。",
-      "summary_zh": "财联社9月11日电，墨西哥主要股指扩大跌幅，下跌超过1%"
+      "id": "451a00eb9c3f42085540114e20d70410ae86d496",
+      "title": "Ten years, from 1 million dollars to 7 billion dollars of ARR: hot property Databricks on the core moat of enterprise AI",
+      "summary": "From under 1 million dollars to more than 7 billion dollars in annual recurring revenue, Databricks completed a rare enterprise software expansion in ten years",
+      "title_zh": "10年，1百万美元到70亿美元ARR！“当红炸子鸡”Databrick讲述“企业级AI的核心护城河”",
+      "summary_zh": "从不足100万美元到超过70亿美元年度经常性收入，Databricks用十年完成了一次罕见的企业软件扩张"
     },
     {
-      "id": "7c07451a34081158627b743c35b1d5619d3d6a89",
-      "title": "CLS telegraph, September 11: Flair Airlines signed a 15-year engine agreement with Lufthansa Technik",
-      "summary": "CLS telegraph, September 11: Flair Airlines signed a 15-year engine agreement with Lufthansa Technik",
-      "title_zh": "财联社9月11日电，弗莱尔航空与汉莎技术签署一份15年期发动机协议。",
-      "summary_zh": "财联社9月11日电，弗莱尔航空与汉莎技术签署一份15年期发动机协议"
+      "id": "b3861f81ff2d4354704474e28704cb7a74cafbf8",
+      "title": "Trump says he has no regrets about starting the Iran war as U.S. dials up economic pressure",
+      "summary": "Speaking to Fox News presenter Laura Ingraham, Trump said that he would have attacked Iran despite the impact on the midterm elections.",
+      "title_zh": "特朗普称对发动伊朗战争毫无悔意，美国加大经济施压力度",
+      "summary_zh": "特朗普对福克斯新闻主持人劳拉·英格拉汉姆表示，即便会影响中期选举，他也会打击伊朗。"
     },
     {
-      "id": "03fba261aa8593ce5e90bccc4af22e3f4f438ee9",
-      "title": "CLS telegraph, September 11: WTI crude broke above 103 dollars a barrel, up 7.25% on the day",
-      "summary": "CLS telegraph, September 11: WTI crude broke above 103 dollars a barrel, up 7.25% on the day",
-      "title_zh": "财联社9月11日电，WTI原油突破103美元/桶，日内涨7.25%。",
-      "summary_zh": "财联社9月11日电，WTI原油突破103美元/桶，日内涨7.25%"
+      "id": "3719f1093a6ca844d48396b14f2409032efc07fa",
+      "title": "Trump's poll numbers slide and the bond market runs loose - is Warsh's room for independence opening up?",
+      "summary": "The tension between Fed Chair Warsh and the White House is evolving in an unexpected way",
+      "title_zh": "特朗普民调下滑、债市失控——沃什的独立空间正在打开？",
+      "summary_zh": "美联储主席沃什与白宫之间的张力，正在以一种出人意料的方式演进"
     },
     {
-      "id": "fd1f6a0c3fe6c7a3b996f627da5358cde906d796",
-      "title": "CLS telegraph, September 11: US Treasury yields rose after a buyback operation fell short of its target",
-      "summary": "CLS telegraph, September 11: US Treasury yields rose after a buyback operation fell short of its target",
-      "title_zh": "财联社9月11日电，美国国债收益率上升，此前回购规模未达目标。",
-      "summary_zh": "财联社9月11日电，美国国债收益率上升，此前回购规模未达目标"
+      "id": "a64bcd108784958d021ae280a8752910743d6d7c",
+      "title": "Deutsche Bank reviews 70 years of AI: this time really is different, and everything is accelerating",
+      "summary": "AI turns 70 this year",
+      "title_zh": "德银复盘AI 70年：这轮真不一样，一切都在加速",
+      "summary_zh": "AI今年70岁了"
     },
     {
-      "id": "0685ab10ca19bd5c92542780bf62c34e23f1a3fc",
-      "title": "CLS telegraph, September 11: spot silver plunged 5% to 63.81 dollars an ounce",
-      "summary": "CLS telegraph, September 11: spot silver plunged 5% to 63.81 dollars an ounce",
-      "title_zh": "财联社9月11日电，现货白银大跌5%，现报63.81美元/盎司。",
-      "summary_zh": "财联社9月11日电，现货白银大跌5%，现报63.81美元/盎司"
+      "id": "cfc724c27a2cd2f38cf6192b80cb3be2b098e02f",
+      "title": "The outlook for molybdenum: a hard 26,400-tonne deficit, and why its elasticity is so striking",
+      "summary": "The reason molybdenum's price elasticity is striking is not scarcity - global reserves-to-production is 65 years and China's is 80, so it is not scarce at all - but that its supply curve is almost vertical: about 70% of global molybdenum comes as a by-product of copper-molybdenum ore, so output is set by copper mining plans and is unrelated to the molybdenum price itself",
+      "title_zh": "钼的未来展望：2.64万吨硬性缺口，为什么它的弹性如此惊人？",
+      "summary_zh": "钼的价格弹性之所以\"惊人\"，不是因为它稀缺——全球储采比 65 年、中国 80 年，它一点都不稀缺——而是因为它的供给曲线几乎是垂直的：全球 70% 的钼来自铜钼伴生矿的副产品，产量由铜的采选计划决定，与钼价本身无关"
     },
     {
-      "id": "e0c37ecd93c7285dbd9d51459aa052b00e1ca398",
-      "title": "CLS telegraph, September 11: the US 10-year Treasury yield touched its highest level since October 2023",
-      "summary": "CLS telegraph, September 11: the US 10-year Treasury yield touched its highest level since October 2023",
-      "title_zh": "财联社9月11日电，美国10年期国债收益率触及2023年10月以来最高水平。",
-      "summary_zh": "财联社9月11日电，美国10年期国债收益率触及2023年10月以来最高水平"
+      "id": "63cc4c30b54532f0b47522c8da3dec2ffa7f8501",
+      "title": "Report: Saudi Arabia's crown prince called twice urging the US to strike the Houthis, and Trump refused both times",
+      "summary": "With the Houthis closing in on the Red Sea chokepoint, Saudi Arabia's urgent appeal for help ran into a wall",
+      "title_zh": "报道：沙特首相两次致电敦促美方打击胡塞武装，均遭特朗普拒绝",
+      "summary_zh": "胡塞武装逼近红海咽喉要道，沙特紧急求援却碰壁"
     },
     {
-      "id": "57c4255968835e12c5c8d4e63c86114585c046b0",
-      "title": "CLS telegraph, September 11: the US Treasury said it conducted a 5.187 billion dollar liquidity buyback of 10- to 20-year Treasuries on September 10",
-      "summary": "CLS telegraph, September 11: the US Treasury said it conducted a 5.187 billion dollar liquidity buyback of 10- to 20-year Treasuries on September 10",
-      "title_zh": "财联社9月11日电，美国财政部表示，在9月10日进行了价值51.87亿美元的10至20年期美国国债流动性回购操作。",
-      "summary_zh": "财联社9月11日电，美国财政部表示，在9月10日进行了价值51.87亿美元的10至20年期美国国债流动性回购操作"
-    },
-    {
-      "id": "cd6bc9da014bcd79169f91641f38454251829c41",
-      "title": "Tesla stalls below $381 resistance as momentum fades: Live levels",
-      "summary": null,
-      "title_zh": "特斯拉在381美元阻力位下方停滞，动能减弱：实时点位",
-      "summary_zh": null
-    },
-    {
-      "id": "22c868a21c155269bca80ea1b2c014e13020099f",
-      "title": "Bitcoin dips to $77K with bearish Marubozu signal: Live levels",
-      "summary": null,
-      "title_zh": "比特币跌至77,000美元，出现看跌光头光脚信号：实时点位",
-      "summary_zh": null
-    },
-    {
-      "id": "9e4fd17baa0fc43be323528c8b1440a337fcec4b",
-      "title": "Global markets: the three main US indices closed lower, memory and optical communication sectors rose against the trend, and international oil prices climbed",
-      "summary": "US market: the three main US indices all closed lower on September 9.",
-      "title_zh": "Global markets: the three main US indices closed lower, memory and optical communication sectors rose against the trend, and international oil prices climbed",
-      "summary_zh": "US market: the three main US indices all closed lower on September 9."
-    },
-    {
-      "id": "7b464f798eaebc0dedf5e51b3da3343db32f6344",
-      "title": "Jim Cramer's least-favorite tech stock gets a new analyst endorsement — our take",
-      "summary": "Analysts at Piper called Broadcom the \"ASIC compute king\" in a new note to clients.",
-      "title_zh": "吉姆·克莱默最不青睐的科技股获得分析师新的背书——我们的看法",
-      "summary_zh": "派珀的分析师在最新致客户报告中称博通为“ASIC计算之王”。"
-    },
-    {
-      "id": "c054f359f51ade42c5980f0c37a75d7d862a9aa4",
-      "title": "10-year Treasury yield tops 4.9%, highest since 2023, as oil surge raises inflation fears",
-      "summary": "Treasury yields moved higher on Thursday as U.S",
-      "title_zh": "10年期美债收益率升破4.9%，创2023年以来最高，油价飙升加剧通胀担忧",
-      "summary_zh": "随着油价飙升，周四美国国债收益率走高。"
-    },
-    {
-      "id": "2247b60e0042e3a58c7672f88374afc7ce1c208e",
-      "title": "OpenAI: launches Agents API. The Agents API opens in public beta to all developers today. The Agents API carries no extra charge, and developers only pay for token usage and tool-call fees",
-      "summary": "OpenAI: launches Agents API.",
-      "title_zh": "OpenAI：推出Agents API。 Agents API今日面向所有开发者开放公测。 Agents API不收取额外费用，开发者仅需支付Token使用费用和工具调用费用",
-      "summary_zh": "OpenAI：推出Agents API"
-    },
-    {
-      "id": "4371fe8a38b01609d7254e86baee0f147e049c1d",
-      "title": "U.S. crude oil tops $100 again – last seen in May – as market braces for prolonged Iran war",
-      "summary": "Oil prices remain elevated amid worries that escalating tensions in the Middle East could further exacerbate supply disruptions",
-      "title_zh": "美国原油再度突破100美元——上次出现在5月——市场为旷日持久的伊朗战争做准备",
-      "summary_zh": "油价维持高位，因市场担忧中东紧张局势升级可能进一步加剧供应中断。"
-    },
-    {
-      "id": "89d419d55a9899be48c05cd0b233827aa3ca8b35",
-      "title": "Stocks retreat as U.S. oil prices top $100, threatening economy: Live updates",
-      "summary": "The first of two inflation reports due this week is in focus as oil prices rise.",
-      "title_zh": "美国油价突破100美元威胁经济，股市回落：实时更新",
-      "summary_zh": "随着油价上涨，本周将公布的两份通胀报告中的第一份成为焦点。"
-    },
-    {
-      "id": "0f868be7a5b9327a5d68bf1f17593eab01d795e1",
-      "title": "OpenAI targets work of Wall Street junior bankers with new ChatGPT for Financial Services",
-      "summary": "OpenAI launched ChatGPT for Financial Services, targeting the labor-intensive research, modeling and pitchbook tasks traditionally handled by junior bankers.",
-      "title_zh": "OpenAI推出面向金融服务的新版ChatGPT，瞄准华尔街初级银行家的工作",
-      "summary_zh": "OpenAI推出面向金融服务的ChatGPT，瞄准传统上由初级银行家承担的高强度研究、建模和推介材料任务。"
-    },
-    {
-      "id": "a8f2cd9841ce5485e42f228e1b46e34948d59c18",
-      "title": "Trump's $1 trillion-plus 'dividend' plan meets immediate bipartisan pushback",
-      "summary": "Such a payout could cost more than $1 trillion and is likely to face legal obstacles.",
-      "title_zh": "特朗普逾1万亿美元的“分红”计划立即遭遇两党反对",
-      "summary_zh": "此类发放可能耗资超过1万亿美元，且很可能面临法律障碍。"
-    },
-    {
-      "id": "fc2167ed1d97f3a0246f67917377f2fe233adcea",
-      "title": "Ford announces $1 billion investment at Kentucky plant following DOT criticism on China",
-      "summary": "Ford Motor on Thursday announced a $1 billion investment to build a new paint shop at its crucial truck plant in Kentucky.",
-      "title_zh": "在交通部就中国问题提出批评后，福特宣布向肯塔基工厂投资10亿美元",
-      "summary_zh": "福特汽车周四宣布投资10亿美元，在其位于肯塔基州的关键卡车工厂新建涂装车间。"
-    },
-    {
-      "id": "b9fe2588ff2e9590e8c34149cb9edd1a085d9ba4",
-      "title": "Warsh's mentor, legendary trader Druckenmiller at a closed-door meeting: US rates are too low, the dovish stance is absurd, and AI may have an earnings bubble",
-      "summary": "Stanley Druckenmiller criticized dovish Fed officials at a closed-door Wall Street meeting and warned about an AI valuation bubble.",
-      "title_zh": "沃什导师、传奇交易员Druckenmiller闭门会议：美国利率偏低，鸽派立场荒谬，AI或有盈利泡沫",
-      "summary_zh": "Stanley Druckenmiller在华尔街闭门会议上炮轰美联储鸽派委员，并对AI估值泡沫发出警示"
-    },
-    {
-      "id": "7bfdbb1c8a9a91af220fee7decb008f1e7143f11",
-      "title": "SpaceX overhauls its AI data-center buildout model: slower expansion, stronger reliability",
-      "summary": "SpaceX is systematically reforming its data-center construction approach, a strategic shift trading speed for reliability that marks an important inflection point in the infrastructure expansion path of Musk's AI business.",
-      "title_zh": "SpaceX全面调整AI数据中心建设模式：扩建放缓，强化可靠性",
-      "summary_zh": "SpaceX正对其数据中心建设方式进行系统性改革，以可靠性换取速度的战略转变，标志着马斯克旗下AI业务在基础设施扩张路径上的重要拐点"
-    },
-    {
-      "id": "c9403cd3e3c14bccde63e9f6c3ef8b9494607314",
-      "title": "Large options trade in the Treasury market: a 14 million dollar premium bets the 10-year yield breaks above 5%",
-      "summary": "The Treasury selloff is deepening, with large options trades clearly betting on further yield increases.",
-      "title_zh": "美债市场现大额期权交易，1400万美元权利金押注10年期收益率升破5%",
-      "summary_zh": "美债抛售持续深化，市场已出现明显押注收益率进一步走高的大额期权交易"
-    },
-    {
-      "id": "31f26dd97ad8f8f3d421e041f4b24f0135fed309",
-      "title": "30-year fixed mortgage rate tops 7% for the first time in over a year",
-      "summary": "The average rate on the 30-year fixed mortgage crossed over 7% for the first time in more than a year, as home prices continue to rise and sales drop.",
-      "title_zh": "30年期固定房贷利率一年多来首次突破7%",
-      "summary_zh": "随着房价持续上涨、销量下滑，30年期固定房贷平均利率一年多来首次升破7%。"
-    },
-    {
-      "id": "a868410f99d7d0daee368ab7d26df7b2b084ec63",
-      "title": "Here’s a rapid-fire update on our 33-stock portfolio, including Cramer’s 6 favorites to buy",
-      "summary": "Jim's current faves include three tech names and a bank stock.",
-      "title_zh": "以下是关于我们33只股票组合的快速更新，包括克莱默看好的6只买入标的",
-      "summary_zh": "吉姆目前的青睐标的包括三只科技股和一只银行股。"
-    },
-    {
-      "id": "d571235450a059c5405734f2068e0800ec1c93ca",
-      "title": "Elon Musk's Boring Co. turns to Middle East for expansion in reaching $23 billion valuation",
-      "summary": "The Boring Co.'s latest $3 billion financing round was led by the United Arab Emirates.",
-      "title_zh": "马斯克的Boring Co.转向中东扩张，估值达到230亿美元",
-      "summary_zh": "Boring Co.最新一轮30亿美元融资由阿联酋领投。"
-    },
-    {
-      "id": "51c22fd5aaf5024f0bda16c57a60a821c68f3005",
-      "title": "How to get a low auto loan and mortgage rate when bond yields increase borrowing costs",
-      "summary": "Inflation and geopolitical uncertainty pushed the 10-year Treasury Yield up this past week",
-      "title_zh": "债券收益率推高借贷成本之际，如何获得较低的汽车贷款和房贷利率",
-      "summary_zh": "通胀与地缘政治不确定性在过去一周推高了10年期美债收益率。"
-    },
-    {
-      "id": "570d099f437ed9ef5bcc7c5a143b15e83d3c7801",
-      "title": "Home sales fall in August despite the highest supply in over a decade",
-      "summary": "Home sales slowed again despite the highest supply of homes for sale in over a decade",
-      "title_zh": "尽管供应为十多年来最高，8月房屋销量仍下滑",
-      "summary_zh": "尽管待售房屋供应为十多年来最高，房屋销量再度放缓。"
-    },
-    {
-      "id": "c7dd41b574bf8ca5192059ed0b16348bf2434bd5",
-      "title": "Humans need to 'surf the wave' of AI rather than get swallowed by it, Chesky says at Communacopia",
-      "summary": "Nvidia CEO Jensen Huang, Uber CEO Dara Khosrowshahi, and SpaceX CFO Bret Johnsen are set to speak at the Goldman Sachs Communacopia + Technology Conference.",
-      "title_zh": "切斯基在Communacopia表示，人类需要“驾驭”AI浪潮而非被其吞没",
-      "summary_zh": "英伟达CEO黄仁勋、优步CEO达拉·科斯罗萨西和SpaceX CFO布雷特·约翰森将在高盛Communacopia + 科技大会上发言。"
-    },
-    {
-      "id": "d37724cdce84729114c7ff862d417161702d538c",
-      "title": "AI is losing its stranglehold on the U.S. stock market. Here's why",
-      "summary": "A key tech-stock volatility metric options traders have been watching all year is reversing.",
-      "title_zh": "AI正在失去对美国股市的主导地位，原因如下",
-      "summary_zh": "期权交易员全年关注的一项关键科技股波动率指标正在反转。"
-    },
-    {
-      "id": "a963eddd7eb56091e65b83027723d7f21315dc41",
-      "title": "OpenAI launches a data agent that turns enterprise data into analysis and dashboards in one sentence, but publishes no accuracy benchmark",
-      "summary": "OpenAI takes another step into the enterprise data analytics market.",
-      "title_zh": "OpenAI推出数据智能体，一句话把企业数据变成分析和Dashboard，但未公布准确率基准",
-      "summary_zh": "OpenAI又向企业数据分析市场迈出一步"
-    },
-    {
-      "id": "3b31de86db8acfaaf4a3a9b5618035e6304d70e5",
-      "title": "Investors gave up on this AI play, but charts suggest it's worth a look, Jay Woods says",
-      "summary": "This stock grabbed traders attention in early 2026 as momentum drove shares up over 75%",
-      "title_zh": "杰伊·伍兹表示，投资者已放弃这只AI标的，但图表显示其值得关注",
-      "summary_zh": "2026年初，随着动能推动股价上涨超过75%，这只股票曾吸引交易员关注。"
-    },
-    {
-      "id": "14fec75c647f252ba976b6ded4f6589d1ee7e940",
-      "title": "Starbucks CEO Brian Niccol says next stage of turnaround focuses on cafe makeovers, customer experience",
-      "summary": "Starbucks is now two years into its turnaround under CEO Brian Niccol.",
-      "title_zh": "星巴克CEO布莱恩·尼科尔称扭亏下一阶段聚焦门店改造与客户体验",
-      "summary_zh": "星巴克在CEO布莱恩·尼科尔领导下的扭亏为盈已进行两年。"
-    },
-    {
-      "id": "80cd8571ffc56e0e978d703fc52fd5eb3ea7030c",
-      "title": "Pilot pressed on with landing despite warnings in Miami cargo crash, NTSB says",
-      "summary": "The NTSB said pilots continued with the landing of an Amazon cargo plane despite pilot and cockpit warnings about approach speed ahead of its Miami crash.",
-      "title_zh": "NTSB称迈阿密货机坠毁事件中飞行员不顾警告仍继续降落",
-      "summary_zh": "NTSB表示，在迈阿密坠毁前，尽管飞行员和驾驶舱就进近速度发出警告，飞行员仍继续让这架亚马逊货机降落。"
-    },
-    {
-      "id": "f00866adee81c0a175caf4d2620dfcc01b91601f",
-      "title": "Are the banking sector's hardest days over? After the interim reports, the real divergence is only beginning",
-      "summary": "The 2026 interim reports show listed banks' revenue and pre-provision profit improving markedly, with net interest margin showing its first clear signs of stabilization; state-owned majors and quality city commercial banks stood out, while joint-stock banks continued to face retail credit risk pressure.",
-      "title_zh": "银行业最难的日子过去了吗？中报之后，真正的分化才刚开始",
-      "summary_zh": "2026年中报显示，上市银行营收与拨备前利润明显改善，净息差首次出现较清晰的企稳迹象，国有大行与优质城商行表现突出，股份行继续承受零售信用风险压力"
-    },
-    {
-      "id": "d221656336c3daa6bd51df421309e1000de413ca",
-      "title": "Did US stocks miss the good news in front of them? Earnings estimates were upgraded unusually, and strategists say fundamentals are 'too strong to be true'",
-      "summary": "Corporate earnings and US equity performance are diverging markedly: fundamentals keep improving while the market remains constrained by high rates and macro uncertainty, and earnings growth in some sectors is not yet fully reflected in prices.",
-      "title_zh": "美股错过了眼前的“好消息”？盈利预期罕见上调，策略师：基本面强得“不像真的”",
-      "summary_zh": "企业盈利与美股股价表现正出现明显背离：基本面持续改善，市场却仍被高利率和宏观不确定性牵制，部分板块的盈利增长尚未充分反映在股价中"
+      "id": "d6dd427c9a48ea19c3a3c36c9d0889be50d53ea6",
+      "title": "Fintechs conquered payments in India. Now they're eyeing credit",
+      "summary": "Fintech companies, the driving force behind the adoption of digital payments in India, are now focusing on offering credit to the underserved population.",
+      "title_zh": "金融科技公司征服了印度的支付市场，如今瞄准信贷",
+      "summary_zh": "作为印度数字支付普及的主要推动力，金融科技公司如今正专注于向金融服务不足的人群提供信贷。"
     }
   ],
-  "updated_at": "2026-09-10T19:37:28Z"
+  "updated_at": "2026-09-11T11:34:59Z"
 }
