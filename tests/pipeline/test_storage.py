@@ -353,6 +353,45 @@ def test_write_json_temp_file_shares_target_directory(tmp_path: Path, monkeypatc
     assert seen[0].parent == target.parent, f"temp file {seen[0]} is not in the target directory"
 
 
+def test_write_slices_rolls_back_the_complete_group_on_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A failed slice update must not publish only the first of four files."""
+    writer = StorageWriter(tmp_path / "data")
+    writer.write_slices("risk", [{"date": "2026-08-01", "value": 1}])
+    series_dir = writer.history_dir / "risk"
+    before = {path.name: path.read_bytes() for path in series_dir.iterdir()}
+
+    real_replace = os.replace
+    failed = False
+
+    def fail_once_on_slice(src: str | Path, dst: str | Path) -> None:
+        nonlocal failed
+        if Path(dst).name == "30d.json" and not failed:
+            failed = True
+            raise OSError("injected publish failure")
+        real_replace(src, dst)
+
+    monkeypatch.setattr("pipeline.storage.writer.os.replace", fail_once_on_slice)
+    with pytest.raises(OSError, match="injected publish failure"):
+        writer.write_slices("risk", [{"date": "2026-08-02", "value": 2}])
+
+    after = {path.name: path.read_bytes() for path in series_dir.iterdir()}
+    assert after == before
+
+
+def test_atomic_group_rolls_back_when_operation_returns_failure(tmp_path: Path) -> None:
+    """Callers that return a failure instead of raising can request the same rollback."""
+    writer = StorageWriter(tmp_path / "data")
+    target = writer.latest_dir / "macro.json"
+
+    with writer.atomic_group() as publication:
+        writer.write_json(target, {"generation": "failed"})
+        publication.rollback()
+
+    assert not target.exists()
+
+
 def test_write_json_fsyncs_before_replace(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """fsync is part of the atomic-write guarantee (#63): the payload must be durable
     before `os.replace` makes it visible, or a crash can surface a zero-length file.

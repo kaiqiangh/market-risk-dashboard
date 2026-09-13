@@ -14,7 +14,7 @@
  * non-target files unscanned and made the CI literal check a documented no-op), plus
  * artifacts/logs which are deliberately untracked. dist/ keeps its stricter pattern tier:
  * minified bundle code false-positives on ordinary property names. Binary or oversized
- * files are skipped with a note rather than crashing the gate.
+ * files fail the gate so a coverage gap cannot be reported as clean.
  *
  * Usage: node scripts/scan-secrets.mjs [--root <repo>]
  * Exit code: 0 = clean; 1 = a secret-shaped token was found.
@@ -70,8 +70,8 @@ const SOURCE_PATTERNS = [
 //: caught by the literal check, which scans every tier.
 const LITERAL_ONLY_PREFIXES = ["tests/", "test_"];
 
-//: Max bytes scanned per file; anything larger is build/vendor output where a hit would
-//: be noise anyway. Decode-failing files are binary, not a leak channel.
+//: Max bytes scanned per file. Oversized or decode-failing files are coverage gaps and make
+//: the gate fail closed rather than allowing an unscanned publish surface.
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
 
 function stripQuotes(value) {
@@ -149,7 +149,8 @@ function scanFile(file, tierPatterns, label) {
   try {
     stat = statSync(file);
   } catch {
-    return; // vanished mid-scan
+    filesSkipped += 1; // vanished mid-scan: coverage is incomplete
+    return;
   }
   if (!stat.isFile() || stat.size > MAX_FILE_BYTES) {
     filesSkipped += 1;
@@ -210,6 +211,10 @@ console.log(`[scan-secrets] scanned ${filesScanned} files (${filesSkipped} skipp
 for (const h of hits) console.log(`  [SECRET] ${h}`);
 if (hits.length > 0) {
   console.log("[scan-secrets] result: FAILED — fix before publish");
+  process.exit(1);
+}
+if (filesSkipped > 0) {
+  console.log("[scan-secrets] result: FAILED — scan coverage incomplete; inspect skipped files");
   process.exit(1);
 }
 console.log("[scan-secrets] result: PASSED");

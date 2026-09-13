@@ -17,6 +17,9 @@ on:
       # expected-red window: a red run on a schema-change PR is the system working, not
       # a mistake — do not add a bypass, continue-on-error, or a label-gated skip.
       - "pipeline/schemas/**"
+      # The analysis validator owns the language-isolation gate (architecture §3.4): a PR touching
+      # it must run the read-only data gate so the new rule is exercised against committed data.
+      - "pipeline/analysis/**"
       - "scripts/gen_ts_contracts.py"
       - "scripts/gen_contracts.sh"
       - "src/schemas/generated/**"

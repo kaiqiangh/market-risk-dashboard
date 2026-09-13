@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import copy
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -32,12 +33,56 @@ def _write_json(path: Path, obj: object) -> None:
 _FIXTURES = Path(__file__).resolve().parent.parent / "fixtures"
 
 
+# English prose for the en twin (ADR-0003 language isolation: en prose must be English;
+# number tokens stay identical to the zh fixture so compare_bilingual still passes).
+_EN_TWIN: dict[str, str] = {
+    "summary": "The market is in a cautious state; the total risk score is 52.3, up 1.4 from yesterday. Real rates at 1.9% in a high range are the main driver, and NVDA's single-day decline of 2.1% reinforced risk sentiment.",
+    "top_risk_drivers[0].claim": "Real rates rose to 1.9%, at the 72nd percentile over 5 years, pushing the macro risk score to 62.",
+    "supporting_signals[0].claim": "NVDA fell 2.1% in a day, pressuring the storage segment.",
+    "contradicting_signals[0].claim": "Risk confidence is 0.72 with complete data coverage.",
+    "what_changed_today[0]": "The total risk score rose 1.4 from yesterday.",
+    "watch_next[0]": "Watch tomorrow's CPI data for its impact on real rates.",
+    "bull_case.title": "Bull case: rates fall below 1.5%",
+    "bull_case.points[0]": "If inflation eases, real rates may move lower.",
+    "base_case.title": "Base case: stay cautious",
+    "base_case.points[0]": "The risk score oscillates between 45 and 60.",
+    "bear_case.title": "Bear case: risk score breaks above 70",
+    "bear_case.points[0]": "If NVDA keeps falling more than 5%, market breadth will deteriorate.",
+}
+
+
+_INDEX_RE = re.compile(r"^(.*)\[(\d+)\]$")
+
+
+def _apply_en_prose(en: dict) -> None:
+    def descend(node: object, seg: str) -> object:
+        m = _INDEX_RE.match(seg)
+        if m:
+            return node[m.group(1)][int(m.group(2))]
+        return node[seg]
+
+    for path, text in _EN_TWIN.items():
+        segs = [p for p in path.split(".") if p]
+        node: object = en
+        for seg in segs[:-1]:
+            node = descend(node, seg)
+        assert isinstance(node, dict), f"cannot navigate to {path}"
+        last = segs[-1]
+        m = _INDEX_RE.match(last)
+        if m:
+            node[m.group(1)][int(m.group(2))] = text
+        else:
+            node[last] = text
+
+
 def _build_analysis_pair(latest: Path) -> None:
-    """A valid bilingual pair: the zh fixture + an en twin (identical fields; only the
-    `language` field differs). Bilingual consistency requires identical market_state /
-    market_regime / confidence / evidence_refs / numbers — identical is a superset."""
+    """A valid bilingual pair: the zh fixture + an en twin (identical structure; only the
+    `language` and prose fields differ). Bilingual consistency requires identical
+    market_state / market_regime / confidence / evidence_refs / numbers — the en twin
+    keeps those identical while prose is English (ADR-0003 language isolation)."""
     zh = json.loads((_FIXTURES / "analysis.zh-CN.json").read_text(encoding="utf-8"))
     en = copy.deepcopy(zh)
+    _apply_en_prose(en)
     en["language"] = "en"
     current = now_utc()
     facts = make_facts(generated_at=current)

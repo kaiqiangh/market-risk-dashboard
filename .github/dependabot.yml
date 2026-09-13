@@ -1,29 +1,26 @@
 version: 2
+# Dependabot version updates are DISABLED (open-pull-requests-limit: 0):
+# group bumps (e.g. #245-#247) bundled whole-major upgrades behind our back and
+# the grouped PRs blocked each other on shared required checks. Dependency
+# bumps are now deliberate, manual work: run `uv pip compile` for Python,
+# `npm outdated` / `npm update` for npm, and open PRs by hand.
+#
+# NOTE: Dependabot security updates (the separate alerts-driven flow) are NOT
+# affected by this limit. To disable those too, turn off "Dependabot security
+# updates" in repo Settings > Advanced Security.
 updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
-    open-pull-requests-limit: 1
-    groups:
-      github-actions:
-        patterns:
-          - "*"
+    open-pull-requests-limit: 0
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
-    open-pull-requests-limit: 1
-    groups:
-      npm:
-        patterns:
-          - "*"
+    open-pull-requests-limit: 0
   - package-ecosystem: pip
     directory: /
     schedule:
       interval: weekly
-    open-pull-requests-limit: 1
-    groups:
-      pip:
-        patterns:
-          - "*"
+    open-pull-requests-limit: 0

@@ -28,6 +28,9 @@ from pipeline.lineage import fact_generation_id, is_valid_fact_generation_id
 from pipeline.schemas import AnalysisDataset, EvidenceRef, FactLayer
 
 _NUM_RE = re.compile(r"-?\d+(?:\.\d+)?")
+# Mirrors the frontend's CJK guard in src/lib/displayLanguage.ts (isDisplayTextSafe): any Chinese
+# character in English-locale prose is rejected by the UI as "Translation unavailable".
+_CJK_RE = re.compile(r"[\u3400-\u9fff]")
 
 
 def load_analysis(path: Path | str) -> AnalysisDataset:
@@ -54,6 +57,50 @@ def _ref_key(ref: EvidenceRef) -> tuple[str, str, str, str]:
     else:
         value = str(ref.value)
     return (ref.dataset, ref.path, ref.metric, value)
+
+
+def _iter_prose_fields(analysis: AnalysisDataset) -> Iterable[tuple[str, str]]:
+    """Yield (field_path, text) for every human-readable prose string in one analysis file.
+
+    The English file's prose is exactly what the English UI renders through ``safeDisplayText``;
+    any Chinese character there leaks to the "Translation unavailable" fallback. Enumerating every
+    field here keeps the language-isolation check exhaustive and the frontend contract explicit.
+    """
+    if analysis.summary:
+        yield ("summary", analysis.summary)
+    for i, claim in enumerate(analysis.top_risk_drivers):
+        yield (f"top_risk_drivers[{i}].claim", claim.claim)
+    for i, claim in enumerate(analysis.supporting_signals):
+        yield (f"supporting_signals[{i}].claim", claim.claim)
+    for i, claim in enumerate(analysis.contradicting_signals):
+        yield (f"contradicting_signals[{i}].claim", claim.claim)
+    for label, case in (
+        ("bull_case", analysis.bull_case),
+        ("base_case", analysis.base_case),
+        ("bear_case", analysis.bear_case),
+    ):
+        yield (f"{label}.title", case.title)
+        for i, point in enumerate(case.points):
+            yield (f"{label}.points[{i}]", point)
+    for i, item in enumerate(analysis.what_changed_today):
+        yield (f"what_changed_today[{i}]", item)
+    for i, item in enumerate(analysis.watch_next):
+        yield (f"watch_next[{i}]", item)
+
+
+def check_language_isolation(zh: AnalysisDataset, en: AnalysisDataset) -> list[str]:
+    """Language isolation (architecture §3.4): the English brief must contain NO Chinese characters.
+
+    The English UI refuses to render Chinese prose (``safeDisplayText`` → "Translation unavailable"),
+    so any CJK in the en file is a hard, user-visible failure. The zh file is not gated here — a
+    fully numeric zh field is valid — but a completely CJK-free zh brief is suspicious (en/zh may be
+    swapped) and is surfaced as a non-blocking note by the caller if needed.
+    """
+    issues: list[str] = []
+    for field, text in _iter_prose_fields(en):
+        if text and _CJK_RE.search(text):
+            issues.append(f"en prose contains Chinese (language isolation): {field} = {text[:60]!r}")
+    return issues
 
 
 def validate_evidence_refs(analysis: AnalysisDataset, facts: FactLayer) -> list[str]:
@@ -207,6 +254,7 @@ def validate_analysis_pair(
         issues.append("fact layer missing for lineage validation")
 
     issues.extend(compare_bilingual(zh, en))
+    issues.extend(check_language_isolation(zh, en))
     if require_lineage:
         if facts is not None:
             issues.extend(validate_analysis_lineage(zh, facts))

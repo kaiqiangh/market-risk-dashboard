@@ -151,6 +151,30 @@ class TestCollector:
         assert any(domain == "fedwatch" and method == "get_contract_prices" for domain, method, *_ in registry.calls)
         assert sum(1 for domain, _, _, _ in registry.calls if domain == "fedwatch") == 2
 
+    @pytest.mark.parametrize(
+        "meta",
+        [
+            {"degraded": True},
+            {"used_fallback": True},
+            {"from_cache": True},
+        ],
+    )
+    def test_fedwatch_degraded_metadata_lowers_quality(self, tmp_path: Path, meta: dict) -> None:
+        class _DegradedRegistry(_FakeRegistry):
+            def call(self, domain: str, method: str, key: str, args=(), kwargs=None):
+                result = super().call(domain, method, key, args=args, kwargs=kwargs)
+                if domain == "fedwatch":
+                    result["meta"].update(meta)
+                return result
+
+        collector = _collector(_DegradedRegistry(_all_series_rows()), tmp_path)
+        snapshot = collector._collect_fedwatch()
+
+        assert snapshot is not None
+        assert "fedwatch" in collector._degraded_sources
+        assert collector._quality() < 1.0
+        assert collector.provider_status["fedwatch"]["degraded"] is True
+
     def test_change_1m_is_frequency_aware(self, tmp_path: Path, monkeypatch) -> None:
         """#84 §6a: 21 rows is one month only for daily series; a monthly series must
         use a 1-row lookback or the "1m" label lies by 21×."""

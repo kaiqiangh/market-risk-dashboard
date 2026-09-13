@@ -186,16 +186,23 @@ class MacroCollector:
                 errors.append(f"{code}: {exc}")
         if outcomes:
             first = outcomes[0]
+            fedwatch_degraded = bool(errors) or any(
+                meta.get("degraded") or meta.get("used_fallback") or meta.get("from_cache")
+                for meta in outcomes
+            )
             self.provider_status["fedwatch"] = {
                 **first,
                 "used_fallback": any(meta.get("used_fallback") for meta in outcomes),
                 "from_cache": all(meta.get("from_cache") for meta in outcomes),
-                "degraded": bool(errors) or any(meta.get("degraded") for meta in outcomes),
+                "degraded": fedwatch_degraded,
                 "errors": errors,
             }
         if errors:
             self._degraded_sources.add("fedwatch")
             self.degraded.append("FedWatch: " + "; ".join(errors[:3]))
+        elif outcomes and fedwatch_degraded:
+            self._degraded_sources.add("fedwatch")
+            self.degraded.append("FedWatch: provider served degraded data")
         if not outcomes:
             self.provider_status["fedwatch"] = {"degraded": True, "errors": errors}
 

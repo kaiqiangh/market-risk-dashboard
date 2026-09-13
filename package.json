@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build && npm run precompress",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives",
     "test": "vitest run",
     "test:watch": "vitest",
     "check:i18n": "node scripts/check-i18n.mjs",

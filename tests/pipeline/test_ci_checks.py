@@ -25,6 +25,8 @@ from pipeline.validation.ci_checks import (
     CheckReport,
     _check_risk_ranges,
     _reject_constant,
+    check_news_language,
+    check_news_translation_coverage,
     load_json_strict,
     run_all,
 )
@@ -338,6 +340,13 @@ def test_nan_infinity_rejected(tmp_path: Path) -> None:
     (latest / "macro.json").write_text('{"value": NaN}', encoding="utf-8")
     with pytest.raises(ValueError, match="illegal constant"):
         load_json_strict(latest / "macro.json")
+
+
+def test_load_json_strict_preserves_array_root_types(tmp_path: Path) -> None:
+    path = tmp_path / "rows.json"
+    path.write_text('[{"value": 1}]', encoding="utf-8")
+
+    assert load_json_strict(path) == [{"value": 1}]
 
 
 def test_nan_in_published_file_is_an_error(
@@ -784,3 +793,182 @@ def test_suite_does_not_read_published_data(published_data_reads: list[str]) -> 
         + ", ".join(sorted(set(published_data_reads)))
         + " — build the data with tests/pipeline/factories.py instead"
     )
+
+
+# =====================================================================================
+# News language isolation (architecture §3.4 / safeDisplayText "Translation unavailable")
+# =====================================================================================
+
+
+def test_check_news_language_flags_chinese_canonical(tmp_path: Path) -> None:
+    """Canonical news title/summary must be English; Chinese leaks to the fallback in the UI."""
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    payload = make_news_payload(
+        items=[make_news_item(title="美联储释放利率路径耐心信号", summary="市场关注下一次 CPI 数据。")]
+    )
+    write_json(latest / "news.json", make_envelope("news", payload=payload))
+    report = CheckReport()
+    check_news_language(latest, report)
+    assert any("language isolation" in e for e in report.errors), report.errors
+
+
+def test_check_news_language_passes_for_english(tmp_path: Path) -> None:
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    payload = make_news_payload(
+        items=[make_news_item(title="Fed signals patience on rate path", summary="Markets watch the next CPI print.")]
+    )
+    write_json(latest / "news.json", make_envelope("news", payload=payload))
+    report = CheckReport()
+    check_news_language(latest, report)
+    assert not any("language isolation" in e for e in report.errors), report.errors
+
+
+def test_check_news_language_warns_on_english_zh_translation(tmp_path: Path) -> None:
+    """news.zh-translations.json zh fields should contain Chinese; an English one is suspicious."""
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    payload = make_news_payload(items=[make_news_item()])
+    write_json(latest / "news.json", make_envelope("news", payload=payload))
+    translations = make_news_translations(
+        items=[{"id": "9f86d081884c7d659a2feaa0c55ad015", "title_zh": "Fed patience signal", "summary_zh": "Markets watch CPI"}]
+    )
+    write_json(latest / "news.zh-translations.json", translations)
+    report = CheckReport()
+    check_news_language(latest, report)
+    assert any("zh field contains no Chinese" in w for w in report.warnings), report.warnings
+
+
+# =====================================================================================
+# News translation coverage (#225: the AI translation file must cover the current batch)
+# =====================================================================================
+
+
+def test_check_news_translation_coverage_flags_stale_translations(tmp_path: Path) -> None:
+    """A translation file for a different batch (no id/title overlap) must be an error."""
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    news_items = [
+        make_news_item(id=f"n{i}", lang="zh", title=f"中文新闻标题{i}", summary=f"中文摘要{i}") for i in range(10)
+    ]
+    write_json(latest / "news.json", make_envelope("news", payload=make_news_payload(items=news_items)))
+    stale = [
+        {
+            "id": f"x{i}",
+            "title": f"Unrelated story {i}",
+            "summary": f"Unrelated summary {i}",
+            "title_zh": f"无关新闻标题{i}",
+            "summary_zh": f"无关摘要{i}",
+        }
+        for i in range(10)
+    ]
+    write_json(latest / "news.zh-translations.json", make_news_translations(items=stale))
+    report = CheckReport()
+    check_news_translation_coverage(latest, report)
+    assert any("covers only" in e for e in report.errors), report.errors
+
+
+def test_check_news_translation_coverage_passes_when_aligned(tmp_path: Path) -> None:
+    """A translation file sharing ids with news.json must not raise coverage errors."""
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    news_items = [
+        make_news_item(id=f"n{i}", lang="zh", title=f"中文新闻标题{i}", summary=f"中文摘要{i}") for i in range(10)
+    ]
+    write_json(latest / "news.json", make_envelope("news", payload=make_news_payload(items=news_items)))
+    aligned = [
+        {
+            "id": f"n{i}",
+            "title": f"English title {i}",
+            "summary": f"English summary {i}",
+            "title_zh": f"中文新闻标题{i}",
+            "summary_zh": f"中文摘要{i}",
+        }
+        for i in range(10)
+    ]
+    write_json(latest / "news.zh-translations.json", make_news_translations(items=aligned))
+    report = CheckReport()
+    check_news_translation_coverage(latest, report)
+    assert not any("covers only" in e for e in report.errors), report.errors
+    assert not any("covers only" in w for w in report.warnings), report.warnings
+
+
+def test_check_news_translation_coverage_pre_brief_sidecar_older_is_warning_not_error(tmp_path: Path) -> None:
+    """Sidecar older than the news batch: zero coverage is the expected pre-brief state.
+
+    The 20:30 data run commits a fresh news.json before the 21:30 post-close brief has run,
+    so a committed news.zh-translations.json can legitimately cover none of the new ids. When
+    the sidecar's updated_at is strictly older than news.generated_at, the gate must warn
+    (never error), regardless of coverage ratio.
+    """
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    news_items = [
+        make_news_item(id=f"n{i}", lang="zh", title=f"中文新闻标题{i}", summary=f"中文摘要{i}") for i in range(10)
+    ]
+    write_json(
+        latest / "news.json",
+        make_envelope(
+            "news",
+            generated_at="2026-08-25T19:51:47Z",
+            payload=make_news_payload(items=news_items),
+        ),
+    )
+    stale = [
+        {
+            "id": f"x{i}",
+            "title": f"Unrelated story {i}",
+            "summary": f"Unrelated summary {i}",
+            "title_zh": f"无关新闻标题{i}",
+            "summary_zh": f"无关摘要{i}",
+        }
+        for i in range(10)
+    ]
+    write_json(
+        latest / "news.zh-translations.json",
+        make_news_translations(items=stale, updated_at="2026-08-25T11:37:45Z"),
+    )
+    report = CheckReport()
+    check_news_translation_coverage(latest, report)
+    assert not any("covers only" in e for e in report.errors), report.errors
+    assert any("covers only" in w for w in report.warnings), report.warnings
+
+
+def test_check_news_translation_coverage_new_sidecar_with_zero_coverage_is_error(tmp_path: Path) -> None:
+    """Sidecar as new as or newer than the news batch: zero coverage is the #225 regression.
+
+    A translation file produced for the current batch that still covers nothing is the silent
+    no-op merge_translations bug #225 exists to catch — the strict ratio gate must fire even
+    though the sidecar timestamp is not old.
+    """
+    latest = tmp_path / "latest"
+    latest.mkdir()
+    news_items = [
+        make_news_item(id=f"n{i}", lang="zh", title=f"中文新闻标题{i}", summary=f"中文摘要{i}") for i in range(10)
+    ]
+    write_json(
+        latest / "news.json",
+        make_envelope(
+            "news",
+            generated_at="2026-08-25T11:37:45Z",
+            payload=make_news_payload(items=news_items),
+        ),
+    )
+    stale = [
+        {
+            "id": f"x{i}",
+            "title": f"Unrelated story {i}",
+            "summary": f"Unrelated summary {i}",
+            "title_zh": f"无关新闻标题{i}",
+            "summary_zh": f"无关摘要{i}",
+        }
+        for i in range(10)
+    ]
+    write_json(
+        latest / "news.zh-translations.json",
+        make_news_translations(items=stale, updated_at="2026-08-25T19:51:47Z"),
+    )
+    report = CheckReport()
+    check_news_translation_coverage(latest, report)
+    assert any("covers only" in e for e in report.errors), report.errors

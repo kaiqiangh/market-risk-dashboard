@@ -35,7 +35,7 @@ export function useDataset<T>(
 
   return useQuery<unknown, Error, T>({
     queryKey,
-    queryFn: () => datasetClient.fetch<T>(key, opts, schema),
+    queryFn: ({ signal }) => datasetClient.fetch<T>(key, opts, schema, signal),
     staleTime: staleTimeFor(key),
     retry: 1,
   });

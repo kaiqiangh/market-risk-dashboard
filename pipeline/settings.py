@@ -56,13 +56,18 @@ class Settings(BaseSettings):
 
     def _load_yaml(self, name: str) -> dict[str, Any]:
         """Read config/{name}.yaml and return a dict; raises ConfigError when the file is missing or invalid."""
+        from pipeline.config.models import ConfigError
+
         path = self.config_dir / f"{name}.yaml"
-        if not path.exists():
-            raise FileNotFoundError(f"config file missing: {path}")
-        with path.open("r", encoding="utf-8") as fh:
-            data = yaml.safe_load(fh)
+        try:
+            with path.open("r", encoding="utf-8") as fh:
+                data = yaml.safe_load(fh)
+        except OSError as exc:
+            raise ConfigError(f"config file could not be read: {path}: {exc}") from exc
+        except (UnicodeError, yaml.YAMLError) as exc:
+            raise ConfigError(f"config file could not be parsed: {path}: {exc}") from exc
         if not isinstance(data, dict):
-            raise ValueError(f"config file must be a YAML mapping: {path}")
+            raise ConfigError(f"config file must be a YAML mapping: {path}")
         return data
 
     def load_universe(self) -> dict[str, Any]:

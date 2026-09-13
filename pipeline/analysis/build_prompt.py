@@ -59,6 +59,22 @@ _CITATION_RULES: dict[str, str] = {
     ),
 }
 
+_LANGUAGE_RULES: dict[str, str] = {
+    "zh-CN": (
+        "语言约束：本简报所有文案字段——summary、top_risk_drivers / supporting_signals / "
+        "contradicting_signals 中每条 claim、bull_case / base_case / bear_case 的 title 与 points、"
+        "what_changed_today、watch_next——必须全部使用中文，且不得混入英文句子（专有名词/代码/数字除外）。"
+    ),
+    "en": (
+        "Language constraint (HARD): EVERY prose field in this brief — summary, every claim in "
+        "top_risk_drivers / supporting_signals / contradicting_signals, every bull_case / base_case / "
+        "bear_case title and points, what_changed_today, and watch_next — MUST be written in English. "
+        "Do NOT leave any field in Chinese. Chinese characters anywhere in the English output are a "
+        "hard failure and will be rejected by validation. Proper nouns, tickers, and numbers may stay "
+        "as-is; prose must be English."
+    ),
+}
+
 
 _THEME_LABELS: dict[str, dict[str, str]] = {}
 
@@ -159,11 +175,13 @@ def build_prompt(facts: FactLayer, lang: str) -> str:
     system = _SYSTEM_TASKS[lang]
     output_contract = _output_contract(lang)
     citation = _CITATION_RULES[lang]
+    language_rule = _LANGUAGE_RULES[lang]
     return (
         f"# System\n{system}\n\n"
         f"# Input\n{_render_facts(facts, lang)}\n"
         f"# Output contract\n{output_contract}\n"
         f"# Rules\n{citation}\n"
+        f"# Language rule\n{language_rule}\n"
     )
 
 

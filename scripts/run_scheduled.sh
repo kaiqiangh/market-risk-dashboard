@@ -8,8 +8,8 @@
 # 23 = stage/commit; 24 = push or remote verification; 25 = another instance already running;
 # 2 = invalid arguments.
 #
-# Environment knobs (#190): SCHEDULED_BRANCH (default dev), SCHEDULED_TIMEOUT_PIPELINE (default
-# 3600s), SCHEDULED_TIMEOUT_VALIDATE (default 1800s), SCHEDULED_LOCK_STALE (default 7200s),
+# Environment knobs (#190): SCHEDULED_TIMEOUT_PIPELINE (default 3600s),
+# SCHEDULED_TIMEOUT_VALIDATE (default 1800s), SCHEDULED_LOCK_STALE (default 7200s),
 # SCHEDULED_LOCK_DIR (test override), SCHEDULED_LOCK_MODE (auto|flock|mkdir).
 set -euo pipefail
 
@@ -23,7 +23,8 @@ fi
 MODE="${1:---full}"
 PYTHON_BIN="${SCHEDULED_PYTHON:-$ROOT/.venv/bin/python}"
 VALIDATE_SCRIPT="${VALIDATE_DATA_SCRIPT:-$ROOT/scripts/validate_data.sh}"
-BRANCH="${SCHEDULED_BRANCH:-dev}"
+# Scheduled data is integrated on dev and reaches main only through the protected PR path.
+BRANCH="dev"
 
 #: Timeouts (#190): every network/bulk step gets a ceiling so a hung remote cannot wedge
 #: the cron slot forever - collection AND validation alike (a hung validator would hold
