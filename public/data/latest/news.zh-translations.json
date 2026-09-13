@@ -1,18 +1,158 @@
 {
   "items": [
     {
-      "id": "5e4cd7ab1b12c3cedea3cb4331df8e921ea7c4ed",
-      "title_zh": "市场不惧CPI和加息？因为伊朗抢了美联储的“风头”",
-      "summary_zh": "9月11日美国劳工部公布的8月CPI，怎么看都不像是个能让股市涨的报告",
-      "title": "Markets unfazed by CPI and rate hikes? Because Iran stole the Fed's spotlight",
-      "summary": "The August CPI report released by the U.S. Labor Department on September 11 hardly looks like a report that should lift stocks."
+      "id": "c988811341a188c00643dc11a216be37a2879007",
+      "title_zh": "美联储会“连续加息”？1980年代末“紧缩周期”会重演吗？",
+      "summary_zh": "市场对美联储重启加息的担忧正在升温，令历史上一段颇具警示意味的周期重回投资者视野",
+      "title": "Will the Fed Hike 'Consecutively'? Could the Late-1980s Tightening Cycle Repeat?",
+      "summary": "Rising market fears that the Federal Reserve will resume raising rates are bringing a historically cautionary cycle back into investors' view."
     },
     {
-      "id": "aceb87b2c0facf783e910dde6852ef71ecc44d59",
-      "title_zh": "华泰证券：美国CPI超预期 加息成为“必选项”",
-      "summary_zh": "【华泰证券：美国CPI超预期 加息成为“必选项”】财联社9月12日电，华泰证券研报表示，8月核心通胀环比超预期使得美联储9月加息成为“必选项”，9月不加息的公信力风险进一步上行",
-      "title": "Huatai Securities: U.S. CPI beats expectations, making a rate hike a 'must'",
-      "summary": "CLS, September 12 - Huatai Securities said in a research note that the larger-than-expected month-on-month rise in August core inflation makes a September Fed rate hike a 'must', with the credibility cost of holding rates steady in September rising further."
+      "id": "3cefc3c31f4928aa9c75d2435dfca068d1235f5c",
+      "title_zh": "“超级周”来袭：美联储会加息吗？霍尔木兹能达成协议吗？",
+      "summary_zh": "09月14日 - 09月20日当周重磅财经事件一览，以下均为北京时间： 见闻财经日历提醒下周重点关注： 超级央行周与中国8月经济数据： 美联储将公布FOMC利率决议，沃什随后举行新闻发布会，此次加息还是维持利率不变“预计是一场势均力敌的较量”",
+      "title": "'Super Week' Ahead: Will the Fed Hike? Can a Deal Be Reached on Hormuz?",
+      "summary": "A look at the major financial events in the week of Sept 14-20, all times Beijing time: a super central-bank week and China's August economic data. The Fed will release its FOMC rate decision, followed by a press conference by Warsh; whether it hikes or holds is 'expected to be a close call.'"
+    },
+    {
+      "id": "3ad0b84e10f6e800b61301dedc2a99b3256642cb",
+      "title_zh": "现代汽车与Waymo合作 将于今年第四季度交付IONIQ 5机器人出租车",
+      "summary_zh": "【现代汽车与Waymo合作 将于今年第四季度交付IONIQ 5机器人出租车】财联社9月13日电，据报道，现代汽车正在与美国自动驾驶公司Waymo合作，将现代的整车制造能力与Waymo的Level 4自动驾驶技术相结合",
+      "title": "Hyundai Partners with Waymo to Deliver IONIQ 5 Robotaxis in Q4 This Year",
+      "summary": "Hyundai is working with U.S. autonomous driving company Waymo, combining Hyundai's vehicle manufacturing capability with Waymo's Level 4 autonomous driving technology."
+    },
+    {
+      "id": "052b513aeaae4b8cceed051895ef1c284d0b389f",
+      "title_zh": "印尼一艘载有243人的客轮失联",
+      "summary_zh": "【印尼一艘载有243人的客轮失联】财联社9月13日电，据印尼搜救部门消息，当地时间13日凌晨，印度尼西亚一艘载有243人的客轮失联",
+      "title": "Passenger Ship Carrying 243 People Goes Missing in Indonesia",
+      "summary": "According to Indonesia's search and rescue agency, a passenger ship carrying 243 people went missing in the early hours of the 13th local time."
+    },
+    {
+      "id": "01546cf98a36f3748f1933950f12a68d833b4cb1",
+      "title_zh": "现代汽车将于2029年推出自研驾驶辅助系统",
+      "summary_zh": "【现代汽车将于2029年推出自研驾驶辅助系统】财联社9月13日电，现代汽车集团称其正在开发以Atria AI为核心的自研自动驾驶技术",
+      "title": "Hyundai to Launch Its Own Driver Assistance System in 2029",
+      "summary": "Hyundai Motor Group said it is developing its own autonomous driving technology centered on Atria AI."
+    },
+    {
+      "id": "e5d8e508b9b1fbc5f229d67ce22113f01f65f27a",
+      "title_zh": "伊朗总统：伊朗与沙特并不处于战争状态",
+      "summary_zh": "【伊朗总统：伊朗与沙特并不处于战争状态】财联社9月13日电，伊朗总统佩泽希齐扬12日在印度接受采访时表示，伊朗与沙特“并不处于战争状态”",
+      "title": "Iranian President: Iran and Saudi Arabia Are Not at War",
+      "summary": "Iranian President Pezeshkian said in an interview in India on the 12th that Iran and Saudi Arabia are 'not at war.'"
+    },
+    {
+      "id": "eb8d79db1f3c901387c9e1abaddb6b0e6239a8ed",
+      "title_zh": "警惕山洪灾害 海南升级发布暴雨二级预警",
+      "summary_zh": "【警惕山洪灾害 海南升级发布暴雨二级预警】财联社9月13日电，记者从海南省气象局获悉，9月13日10时30分，海南省气象局提升暴雨三级预警为暴雨二级预警：受南海热带低压和冷空气共同影响，过去24小时，海南岛东南部和中部普遍出现暴雨到大暴雨，局地特大暴雨",
+      "title": "Flash Flood Warning as Hainan Upgrades to Level-2 Rainstorm Alert",
+      "summary": "According to the Hainan Provincial Meteorological Bureau, at 10:30 on Sept 13 it upgraded the rainstorm warning from Level 3 to Level 2: due to the combined influence of a South China Sea tropical depression and cold air, the past 24 hours saw widespread heavy to torrential rain in southeastern and central Hainan Island, with extreme torrential rain in places."
+    },
+    {
+      "id": "de84a557f02c5c9c493576fab438cbcc8622074d",
+      "title_zh": "国家数据局：适时推动具身智能数据标准建设 积极支持企业加大数据投入",
+      "summary_zh": "【国家数据局：适时推动具身智能数据标准建设 积极支持企业加大数据投入】财联社9月13日电，国家数据局党组书记、局长刘烈宏9月10日主持召开具身智能座谈会",
+      "title": "National Data Administration: Will Advance Embodied AI Data Standards in Due Course, Actively Support Firms in Raising Data Investment",
+      "summary": "Liu Liehong, Party Secretary and Director of the National Data Administration, chaired a symposium on embodied AI on Sept 10."
+    },
+    {
+      "id": "9c4937281f50133e9fdfe463fe30d34eb5841c9f",
+      "title_zh": "山东未来集团发布算网云边一体化解决方案 破解区域算力不均与企业用算痛点",
+      "summary_zh": "【山东未来集团发布算网云边一体化解决方案 破解区域算力不均与企业用算痛点】财联社9月13日电，山东未来集团有限公司在2026算力中国展览会首发首秀活动发布“未来智能云-算网云边一体化解决方案”，瞄准三大具体的实体产业场景",
+      "title": "Shandong Future Group Releases Integrated Computing-Network-Cloud-Edge Solution",
+      "summary": "Shandong Future Group Co., Ltd. launched the 'Future Intelligent Cloud - Integrated Computing-Network-Cloud-Edge Solution' at the 2026 China Computing Power Expo's debut showcase, targeting three specific real-economy industrial scenarios."
+    },
+    {
+      "id": "46088a4c53e70c04ebd50680543a6eef0daba186",
+      "title_zh": "甘肃电力投资集团发布“紫金驭能”电力垂类大模型",
+      "summary_zh": "【甘肃电力投资集团发布“紫金驭能”电力垂类大模型】财联社9月13日电，甘肃电力投资集团在2026算力中国展览会首发首秀活动中，发布“紫金驭能”电力垂类大模型，系甘肃省属国企首款电力行业专用大模型",
+      "title": "Gansu Electric Power Investment Group Releases 'Zijin Yuneng' Power-Sector Large Model",
+      "summary": "At the 2026 China Computing Power Expo's debut showcase, Gansu Electric Power Investment Group released the 'Zijin Yuneng' power-sector vertical large model, the first power-industry-specific large model from a Gansu provincial state-owned enterprise."
+    },
+    {
+      "id": "944607a5562342278de6833b0b508788cda43ff6",
+      "title_zh": "造船巨头中远海运重工启动A股IPO辅导",
+      "summary_zh": "【造船巨头中远海运重工启动A股IPO辅导】财联社9月13日电，据证监会官网9月12日披露，中远海运重工股份有限公司（下称“中远海运重工”）获上市辅导备案登记，拟在A股IPO，由中金公司、招商证券联合辅导",
+      "title": "Shipbuilding Giant COSCO Shipping Heavy Industry Starts A-Share IPO Tutoring",
+      "summary": "According to a Sept 12 disclosure on the CSRC website, COSCO Shipping Heavy Industry Co., Ltd. has been registered for listing tutoring and plans an A-share IPO, jointly advised by CICC and China Merchants Securities."
+    },
+    {
+      "id": "54c3dfda600da3a105cb8f8a59af202f64f68afb",
+      "title_zh": "我国第二代智能封闭式海洋养殖网箱出口挪威",
+      "summary_zh": "【我国第二代智能封闭式海洋养殖网箱出口挪威】财联社9月13日电，日前，全球首创第二代高端智能封闭式海洋养殖网箱在广东揭阳惠来顺利装船启航，出口挪威",
+      "title": "China's Second-Generation Smart Closed Marine Aquaculture Cage Exported to Norway",
+      "summary": "The world's first second-generation high-end smart closed marine aquaculture cage was loaded and set sail in Huilai, Jieyang, Guangdong, bound for Norway."
+    },
+    {
+      "id": "65e720359c62ad308b85233d16e5aaebc1cac238",
+      "title_zh": "上海旅游节活动启幕 近一周上海文旅预订量同比增长15%",
+      "summary_zh": "【上海旅游节活动启幕 近一周上海文旅预订量同比增长15%】9月12日，第37届上海旅游节大巡游活动启幕，上海文旅消费持续升温",
+      "title": "Shanghai Tourism Festival Opens; Shanghai Cultural-Tourism Bookings Up 15% YoY in Past Week",
+      "summary": "On Sept 12, the 37th Shanghai Tourism Festival grand parade kicked off, with Shanghai's cultural and tourism consumption continuing to heat up."
+    },
+    {
+      "id": "f370e7ace9092201d1730e3a682527f79f959a2f",
+      "title_zh": "内蒙古阿拉善盟阿拉善左旗发生3.6级地震 震源深度8千米",
+      "summary_zh": "【内蒙古阿拉善盟阿拉善左旗发生3.6级地震 震源深度8千米】财联社9月13日电，中国地震台网正式测定：09月13日10时12分在内蒙古阿拉善盟阿拉善左旗（北纬40.12度，东经106.53度）发生3.6级地震，震源深度8千米",
+      "title": "Magnitude 3.6 Earthquake Hits Alxa Left Banner, Inner Mongolia; Focal Depth 8 km",
+      "summary": "According to the China Earthquake Networks Center, a magnitude 3.6 earthquake occurred at 10:12 on Sept 13 in Alxa Left Banner, Alxa League, Inner Mongolia (40.12N, 106.53E), with a focal depth of 8 km."
+    },
+    {
+      "id": "418a5c3f928d6a6bf993b18f8a309e3fc4e7b222",
+      "title_zh": "信通院人工智能所所长一行到亚信安全参观交流",
+      "summary_zh": "【信通院人工智能所所长一行到亚信安全参观交流】财联社9月13日电，据亚信安全消息，近日，中国信通院人工智能研究所所长魏凯一行到亚信安全参观交流",
+      "title": "Head of CAICT AI Institute Visits AsiaInfo Security for Exchange",
+      "summary": "According to AsiaInfo Security, Wei Kai, Director of the AI Research Institute of the China Academy of Information and Communications Technology (CAICT), and his delegation recently visited AsiaInfo Security for exchange."
+    },
+    {
+      "id": "21327e4096440a9c7d638d61af692e2228162987",
+      "title_zh": "中国电信总经理刘桂清：深化算电协同，加强算力与电力产业在规划、建设、运营方面深度融合",
+      "summary_zh": "【中国电信总经理刘桂清：深化算电协同，加强算力与电力产业在规划、建设、运营方面深度融合】9月11日至13日，2026中国算力大会在河北省廊坊市举行",
+      "title": "China Telecom GM Liu Guiqing: Deepen Computing-Power Coordination in Planning, Construction and Operations",
+      "summary": "From Sept 11 to 13, the 2026 China Computing Power Conference was held in Langfang, Hebei Province."
+    },
+    {
+      "id": "01b15132992b221b407086a7c5b8956c22e606f5",
+      "title_zh": "甬舟铁路全线桥梁主塔今天全部封顶",
+      "summary_zh": "【甬舟铁路全线桥梁主塔今天全部封顶】财联社9月13日电，甬舟铁路全线重点工程之一的富翅门公铁两用大桥主塔将封顶",
+      "title": "All Main Bridge Towers on the Ningbo-Zhoushan Railway Topped Out Today",
+      "summary": "The main tower of the Fuchimen road-rail dual-purpose bridge, a key project on the Ningbo-Zhoushan Railway, has topped out."
+    },
+    {
+      "id": "24c94b8e675adc9d8e3eb1775fad60cb1d228dfc",
+      "title_zh": "英国海上贸易行动办公室：一艘船只在霍尔木兹海峡遇袭",
+      "summary_zh": "【英国海上贸易行动办公室：一艘船只在霍尔木兹海峡遇袭】财联社9月13日电，英国海上贸易行动办公室（UKMTO）发布通报称，该机构收到一起发生在霍尔木兹海峡的事件报告",
+      "title": "UKMTO: A Vessel Attacked in the Strait of Hormuz",
+      "summary": "The United Kingdom Maritime Trade Operations (UKMTO) said it received a report of an incident in the Strait of Hormuz."
+    },
+    {
+      "id": "4a30a381a975d1433654b1844ca66180735ac174",
+      "title_zh": "福特召回超22万辆汽车",
+      "summary_zh": "【福特召回超22万辆汽车】财联社9月13日电，美国国家公路交通安全管理局（NHTSA）表示，福特汽车将在美国召回223472辆汽车，原因是相关车辆的油箱存在泄漏和固定不牢的问题，可能在行驶过程中脱落",
+      "title": "Ford Recalls More Than 220,000 Vehicles",
+      "summary": "The U.S. National Highway Traffic Safety Administration (NHTSA) said Ford will recall 223,472 vehicles in the U.S. because the relevant vehicles' fuel tanks may leak and be improperly secured, and could detach while driving."
+    },
+    {
+      "id": "a0b687e111181c5fe5a3cb3c7ff7e586d7c301e8",
+      "title_zh": "国家医保局公布医疗机构涉医药购销商业贿赂案",
+      "summary_zh": "【国家医保局公布医疗机构涉医药购销商业贿赂案】财联社9月13日电，国家医保局自2020年8月建立医药价格和招采信用评价制度，引导医药企业诚信合规经营，营造依法合规、公平正义的医药营商环境",
+      "title": "National Healthcare Security Administration Publishes Cases of Commercial Bribery in Medical Procurement",
+      "summary": "Since establishing the pharmaceutical price and procurement credit evaluation system in August 2020, the National Healthcare Security Administration has guided pharmaceutical companies toward honest and compliant operation, fostering a lawful, fair and just pharmaceutical business environment."
+    },
+    {
+      "id": "09f918aa1f2a99de12383f84b666772199152121",
+      "title_zh": "预告：国新办定于9月14日举行国务院政策例行吹风会 介绍加强中小企业回款难问题治理有关工作情况",
+      "summary_zh": "【预告：国新办定于9月14日举行国务院政策例行吹风会 介绍加强中小企业回款难问题治理有关工作情况】财联社9月13日电，国务院新闻办公室定于2026年9月14日（星期一）下午3时举行国务院政策例行吹风会，工业和信息化部副部长柯吉欣和中国人民银行、国务院国资委、市场监管总局、中国证监会有关负责人介绍加强中小企业回款难问题治",
+      "title": "Preview: State Council Information Office to Hold Policy Briefing on Sept 14 on Easing SME Payment Delays",
+      "summary": "The State Council Information Office will hold a State Council policy briefing at 3 p.m. on Monday, Sept 14, 2026. Vice Minister of Industry and Information Technology Ke Jixin and responsible officials from the People's Bank of China, SASAC, SAMR and the CSRC will present on strengthening governance of the difficulty SMEs face in collecting payments."
+    },
+    {
+      "id": "66fd77f0f8cad445b1d0f0071828b5eb8e2ecb81",
+      "title_zh": "暴雨红色预警 海南陵水发布校外培训机构停课通知",
+      "summary_zh": "【暴雨红色预警 海南陵水发布校外培训机构停课通知】财联社9月13日电，据“陵水发布”消息，陵水黎族自治县教育局发布关于全县校外培训机构停课的通知称，陵水县气象台2026年09月12日12时52分变更暴雨橙色预警信号为暴雨红色预警信号",
+      "title": "Red Rainstorm Alert: Hainan Lingshui Suspends Off-Campus Training Classes",
+      "summary": "According to 'Lingshui Release,' the Lingshui Li Autonomous County Education Bureau issued a notice suspending off-campus training institutions countywide, saying the Lingshui meteorological station upgraded the orange rainstorm warning signal to a red alert signal at 12:52 on Sept 12, 2026."
     },
     {
       "id": "77778c25c451e5fae9871756f3d812a4841ea53f",
@@ -22,334 +162,194 @@
       "summary": "Expectations of a Fed rate hike have suddenly intensified"
     },
     {
-      "id": "4dc7d8c8c76804a1f8b4fd8dbd0d168038a56803",
-      "title_zh": "美联储一旦开启加息周期，“连加3次”是合理预期？",
-      "summary_zh": "当前市场对美联储下周加息已基本形成共识，但真正牵动投资者神经的问题在于： 加息周期将走多远，以及持续收紧的货币政策会在哪些市场环节引发最大压力？ 9月11日，据MarketWatch报道，BMO资本市场美国利率策略主管Ian Lyngen预计，美联储本月加息25个基点后，将在10月和12月会议上继续各加息一次， 合计三",
-      "title": "Once the Fed starts hiking, is 'three in a row' a reasonable expectation?",
-      "summary": "The market has largely reached consensus that the Fed will hike next week, but the question really gripping investors is how far the hiking cycle will run and where continued tightening will create the most stress. On September 11, MarketWatch reported that Ian Lyngen, head of U.S. rates strategy at BMO Capital Markets, expects the Fed to raise rates by 25 basis points this month and then again at both the October and December meetings, three hikes in total."
+      "id": "35fe8589e5c9251507d2497c7c990b925cb8f08f",
+      "title_zh": "虽然加息“没用” 但美联储别无选择",
+      "summary_zh": "周四，美国劳工统计局公布8月生产者价格指数（PPI）同比上涨5.4%,2026年以来最高，高出预期0.1个百分点，较7月的4.7%陡然提速",
+      "title": "Hikes May Be 'Useless,' but the Fed Has No Choice",
+      "summary": "On Thursday, the U.S. Bureau of Labor Statistics reported that August PPI rose 5.4% year-on-year, the highest since the start of 2026, 0.1 percentage point above expectations and a sharp acceleration from July's 4.7%."
     },
     {
-      "id": "95ccd0acdd5f182cbcbb1878f6cf992b157e57f1",
-      "title_zh": "高盛也“改口”了：下周美联储会加息！",
-      "summary_zh": "高盛加入华尔街\"转鹰\"阵营，将美联储9月加息纳入基准预测，华尔街主要投行在8月CPI数据公布后已基本形成\"下周加息\"共识，但对后续路径的判断出现明显分歧",
-      "title": "Goldman also changes its tune: the Fed will hike next week",
-      "summary": "Goldman Sachs has joined Wall Street's hawkish turn, adding a September Fed rate hike to its base case. After the August CPI release, major Wall Street banks largely share a 'hike next week' consensus, but diverge sharply on the path beyond."
+      "id": "9bd0f9aca407abcc9c62284b78109ac3fb3855b2",
+      "title_zh": "华尔街撕报告，下周美联储必加息？",
+      "summary_zh": "华尔街，集体撕报告了！ 高盛、摩根大通、花旗、三菱日联，甚至此前认为全年不动的道明证券，都在一份CPI数据后集体转鹰，把9月加息25个基点放进了基准预测",
+      "title": "Wall Street Tears Up Its Reports: Is a Fed Hike Next Week a Certainty?",
+      "summary": "Wall Street is collectively tearing up its reports. After a single CPI print, Goldman Sachs, JPMorgan, Citi, MUFG and even TD Securities, which had expected no move all year, turned hawkish together, putting a 25bp September hike into their baseline forecasts."
     },
     {
-      "id": "deb488b5531d5ef3b9f56fc7fee1dddc1ea2b9c2",
-      "title_zh": "报道：英伟达洽谈在Anthropic IPO中投资高达100亿美元",
-      "summary_zh": "报道：英伟达洽谈在Anthropic IPO中投资高达100亿美元",
-      "title": "Report: Nvidia in talks to invest up to $10 billion in Anthropic's IPO",
-      "summary": "Report: Nvidia in talks to invest up to $10 billion in Anthropic's IPO"
+      "id": "cb96756c2384410f0363adaade8eff66d7aafdba",
+      "title_zh": "又见存储巨头“天量奖金”：美光最高发68个月奖金",
+      "summary_zh": "美光科技宣布向中国台湾员工发放创纪录奖励，但工会拒绝接受并维持罢工威胁，劳资博弈进入关键阶段",
+      "title": "Memory Giant's Massive Bonuses Again: Micron Pays Up to 68 Months' Bonus",
+      "summary": "Micron Technology announced record rewards for its employees in Taiwan, China, but the union refused to accept and maintained its strike threat, putting the labor dispute at a critical stage."
     },
     {
-      "id": "d075e3596ffed0ce401e2e224e34f4f6b044b872",
-      "title": "Cramer’s week ahead: Falling oil could help stocks but Fed is the next big test",
-      "summary": "CNBC’s Jim Cramer said falling oil prices helped fuel Friday’s rebound, but warned next week’s Federal Reserve meeting will be the next test for stocks.",
-      "title_zh": "克拉默展望下周：油价下跌或提振股市，但美联储是下一个大考",
-      "summary_zh": "CNBC的吉姆·克拉默表示，油价下跌助推了周五的反弹，但他警告称，下周的美联储会议将是股市面临的下一个考验。"
+      "id": "bbc7e433212380078b6f6a1ce3134150a479b222",
+      "title_zh": "死敌罕见联手！马斯克、Aaltman支持Dario Amodei“全球放缓AI”呼吁",
+      "summary_zh": "AI领域三大死敌，史上头一次站在了同一边——在一系列失控事件与末日预警接连冲击行业后，Anthropic、OpenAI与SpaceX的掌门人罕见联手，呼吁放缓人工智能开发步伐",
+      "title": "Rare Alliance of Rivals: Musk and Altman Back Dario Amodei's Call to 'Slow Down AI' Globally",
+      "summary": "Three arch-rivals in AI stood on the same side for the first time in history: after a series of runaway incidents and doomsday warnings hit the industry in succession, the heads of Anthropic, OpenAI and SpaceX made a rare joint call to slow the pace of AI development."
     },
     {
-      "id": "12d864d8b9c88cc6baf3227c1b76ae12f3c33073",
-      "title_zh": "波音向工程师工会提交最终方案：包含即刻10%加薪‌ 每年保底薪资涨幅不低于4%",
-      "summary_zh": "【波音向工程师工会提交最终方案：包含即刻10%加薪‌ 每年保底薪资涨幅不低于4%】财联社9月12日电，波音在其官网发布的更新公告中表示，已向工程师工会SPEEA提交最终合同方案：方案获批后将立即为工程师提供‌10%的保底薪资涨幅‌，2027年3月还将追加4%的加薪",
-      "title": "Boeing submits final offer to engineers' union: immediate 10% raise, at least 4% guaranteed annual increase",
-      "summary": "CLS, September 12 - Boeing said in an update on its website that it has submitted a final contract proposal to the SPEEA engineers' union: if approved, engineers would immediately receive a guaranteed 10% pay increase, with an additional 4% raise in March 2027."
+      "id": "c0cf1614a3f09605281addf9bdb3dc5f71df1926",
+      "title_zh": "硅谷都在聊些什么？AI下半场开始！高盛Communacopia + TMT大会现场解码巨头框架",
+      "summary_zh": "Broadcom CEO Hock Tan给出1GW Frontier算力的$300亿ARR vs $100亿成本的拆解框架——意味着剩余$200亿由模型层+应用层捕获、$100亿由Cloud+Chip+Memory+Power全产业链竞争；AMD CFO Jean Hu披露未来5年$1,050亿TAM以及Helios",
+      "title": "What Is Silicon Valley Talking About? The Second Half of AI Begins: Decoding Giants' Frameworks at Goldman's Communacopia + TMT Conference",
+      "summary": "Broadcom CEO Hock Tan laid out a framework of $30bn ARR versus $10bn cost for 1GW of Frontier compute, implying the remaining $20bn is captured by the model and application layers while $10bn is contested across the Cloud + Chip + Memory + Power supply chain; AMD CFO Jean Hu disclosed a $105bn TAM over the next five years as well as Helios."
     },
     {
-      "id": "ef0f46525aa6bdb6f7e5e166aaf5e1493858b059",
-      "title_zh": "中国算力平台实现全国一体化算力统筹监测",
-      "summary_zh": "【中国算力平台实现全国一体化算力统筹监测】财联社9月12日电，财联社记者在2026中国算力大会开幕式上获悉，中国算力平台实现全国一体化算力统筹监测，我国算力“一张网、一盘棋、一体化”发展格局基本形成",
-      "title": "China's computing power platform achieves nationwide integrated coordinated monitoring",
-      "summary": "CLS, September 12 - At the opening of the 2026 China Computing Power Conference, CLS learned that China's computing power platform has achieved nationwide integrated coordinated monitoring, with a 'one network, one board, one system' development framework for computing power largely in place."
+      "id": "f429471ff3c1b1e72461a50251558581f460bf31",
+      "title_zh": "OpenAI 排除今年 IPO 可能，Altman、Musk 与 Amodei 警告 AI 发展过快",
+      "summary_zh": "Altman 关于 IPO 的表态与 Amodei 公开呼吁更谨慎地推进 AI 发展，为一周以来密集的 AI 警告画上句号。",
+      "title": "OpenAI rules out IPO this year as Altman, Musk & Amodei warn AI is moving too fast",
+      "summary": "Altman's IPO comments and Amodei's public call for more careful pacing of AI development cap a week of loud AI warnings."
     },
     {
-      "id": "9b01c3913ee2f4e638c6d8f2c0f7d5822bcff84d",
-      "title_zh": "中国信通院总工程师何宝宏：构建差异化算力布局体系 推动算力建设由规模扩张转向质效提升",
-      "summary_zh": "【中国信通院总工程师何宝宏：构建差异化算力布局体系 推动算力建设由规模扩张转向质效提升】财联社9月12日电，中国信息通信研究院总工程师何宝宏在2026中国算力大会上表示，综合算力发展应围绕差异化布局、软硬件产业体系、低碳算力底座和全国一体化制度体系，推动算力建设由规模扩张转向质效提升",
-      "title": "CAICT chief engineer He Baohong: build a differentiated computing layout and shift from scale expansion to quality-and-efficiency gains",
-      "summary": "CLS, September 12 - He Baohong, chief engineer of the China Academy of Information and Communications Technology, said at the 2026 China Computing Power Conference that integrated computing development should focus on differentiated layout, a software-and-hardware industrial system, a low-carbon computing foundation and a nationwide coordinated framework, shifting computing buildout from scale expansion to quality-and-efficiency improvement."
-    },
-    {
-      "id": "05d0dfddf06defa78f24095a96f8be070c9283f0",
-      "title_zh": "中信证券：航运周期范式重塑 关注快递旺季价格",
-      "summary_zh": "【中信证券：航运周期范式重塑 关注快递旺季价格】财联社9月12日电，中信证券认为传统航运周期供需分析范式需要因势利导、相应优化调整",
-      "title": "CITIC Securities: the shipping cycle paradigm is being reshaped; watch express delivery peak-season pricing",
-      "summary": "CLS, September 12 - CITIC Securities argues that the traditional supply-and-demand framework for analyzing the shipping cycle needs to be adapted and optimized in light of changed conditions."
-    },
-    {
-      "id": "488e26bd950d2580200d0407772ecc2409cb0d37",
-      "title": "Treasury yields remain near multiyear highs as August CPI shows sticky inflation",
-      "summary": "Treasury yields remained near multiyear highs as investors weighed the impact of the latest consumer price report for August.",
-      "title_zh": "八月CPI显示通胀粘性，美债收益率维持多年高位附近",
-      "summary_zh": "在投资者权衡最新八月消费者价格报告的影响之际，美债收益率维持在多年高位附近"
-    },
-    {
-      "id": "dd1a3d4f8e80fa61bdd1ea5be5c8f6df6dde7cb2",
-      "title_zh": "CPI后投行纷纷“撕报告”：年内不加息阵营“投降”，鹰派押注到明年1月加三次",
-      "summary_zh": "美国8月CPI公布后，华尔街投行迅速调整美联储利率预测",
-      "title": "After CPI, banks tear up their reports: the 'no hike this year' camp surrenders, hawks bet on three hikes by January",
-      "summary": "After the August U.S. CPI release, Wall Street banks quickly revised their Fed rate forecasts."
-    },
-    {
-      "id": "52755b9db948243602ae21dfcb225e963b0dbc69",
-      "title_zh": "巴拿马和哥斯达黎加边境地区发生5.3级地震",
-      "summary_zh": "【巴拿马和哥斯达黎加边境地区发生5.3级地震】财联社9月12日电，根据欧洲地中海地震中心发布的初步消息，当地时间9月11日20时59分，巴拿马和哥斯达黎加边境地区发生5.3级地震，震源深度约23公里",
-      "title": "Magnitude 5.3 earthquake strikes Panama-Costa Rica border region",
-      "summary": "CLS, September 12 - According to preliminary information from the European-Mediterranean Seismological Centre, a magnitude 5.3 earthquake struck the border region between Panama and Costa Rica at 20:59 local time on September 11, at a depth of about 23 km."
-    },
-    {
-      "id": "d09e9d76a07b285a0c6ef4e824bac4fd31d2f645",
-      "title_zh": "67%暴跌后卷土重来！AI投资明星Aschenbrenner重回市场，押注SK海力士、AMD等",
-      "summary_zh": "曾在AI热潮中声名大噪的对冲基金Situational Awareness，今夏遭受对冲基金史上最大单笔亏损后，正通过拓展新经纪商关系重建投资组合，押注方向仍指向科技与AI赛道",
-      "title": "Back after a 67% plunge: AI investment star Aschenbrenner returns, betting on SK Hynix, AMD and more",
-      "summary": "Situational Awareness, the hedge fund that made its name in the AI boom, is rebuilding its portfolio through new prime-broker relationships after suffering the largest single loss in hedge fund history this summer, with its bets still aimed at technology and AI."
-    },
-    {
-      "id": "8cb430651ebf5d4e3c62a183783a7379c5ccb725",
-      "title_zh": "“新美联储通讯社”：美联储下周势将加息，但只加息一次无法解决问题",
-      "summary_zh": "“新美联储通讯社”Nick Timiraos最新撰文称，投资者已基本认定美联储下周将进行三年来首次加息，更难的问题是之后会怎样",
-      "title": "'New Fed news agency': the Fed is set to hike next week, but one hike alone will not solve the problem",
-      "summary": "Nick Timiraos, dubbed the 'new Fed news agency', wrote that investors have largely concluded the Fed will deliver its first rate hike in three years next week, but the harder question is what comes after."
-    },
-    {
-      "id": "1441fd8768221b16dbc2e881de1f78bad8b986d9",
-      "title_zh": "9月份拍牌下周六举行 警示价92900元",
-      "summary_zh": "【9月份拍牌下周六举行 警示价92900元】财联社9月12日电，上海国拍公司今天发布，9月份个人车牌拍卖将于9月19日（10:30-11:30）举行，本月个人客车额度合计拍卖总数4230个",
-      "title": "September license plate auction set for next Saturday, warning price 92,900 yuan",
-      "summary": "CLS, September 12 - Shanghai International Auction Co. announced that September's individual license plate auction will be held on September 19 (10:30-11:30), with a total of 4,230 individual passenger-car quotas up for auction this month."
-    },
-    {
-      "id": "9091ca05e52cc2f625c49b2e547926d5c535d3b3",
-      "title_zh": "工业和信息化部总工程师钟志红：加快算力标准体系建设指南编制",
-      "summary_zh": "【工业和信息化部总工程师钟志红：加快算力标准体系建设指南编制】财联社9月12日电，工业和信息化部总工程师钟志红在2026中国算力大会上表示，算力已成为数据时代不可或缺的新型信息基础设施",
-      "title": "MIIT chief engineer Zhong Zhihong: speed up drafting of the computing power standards system guideline",
-      "summary": "CLS, September 12 - Zhong Zhihong, chief engineer of the Ministry of Industry and Information Technology, said at the 2026 China Computing Power Conference that computing power has become an indispensable new type of information infrastructure in the data era."
-    },
-    {
-      "id": "11997f8d32122096b519816ce04b1ae230a34743",
-      "title_zh": "越南VinFast 8月电动车交付量达2.02万辆 环比增长12%",
-      "summary_zh": "【越南VinFast 8月电动车交付量达2.02万辆 环比增长12%】财联社9月12日电，越南电动汽车制造商VinFast宣布，2026年8月在越南市场初步交付电动车2.02万辆，环比增长12%",
-      "title": "Vietnam's VinFast delivered 20,200 EVs in August, up 12% month on month",
-      "summary": "CLS, September 12 - Vietnamese EV maker VinFast announced preliminary deliveries of 20,200 electric vehicles in the Vietnamese market in August 2026, up 12% from the previous month."
-    },
-    {
-      "id": "6c01e61087a73bde584afb07253e569f9087bc86",
-      "title": "Tesla eyes European freight market with long-delayed Semi truck",
-      "summary": "Tesla is set to deploy its Semi truck in Europe, releasing details about truck specifications and launch plans in a post on X, after years of delays.",
-      "title_zh": "特斯拉借迟到多年的Semi卡车瞄准欧洲货运市场",
-      "summary_zh": "特斯拉计划在欧洲投放其Semi卡车，并在X上公布了车辆规格与上市计划的细节，此前该项目已拖延多年。"
-    },
-    {
-      "id": "96f5433e51d3d10f7c104fa4819130530aee3c99",
-      "title_zh": "刚果（金）埃博拉确诊病例超7000例",
-      "summary_zh": "【刚果（金）埃博拉确诊病例超7000例】财联社9月12日电，刚果（金）卫生部11日发布的疫情报告显示，该国本轮埃博拉疫情累计确诊病例已达7022例，其中死亡3398例，另有1671人治愈",
-      "title": "DR Congo Ebola confirmed cases top 7,000",
-      "summary": "CLS, September 12 - An outbreak report released by DR Congo's health ministry on September 11 shows cumulative confirmed cases in the current Ebola outbreak have reached 7,022, including 3,398 deaths and 1,671 recoveries."
-    },
-    {
-      "id": "e465072683735c4ef8a20284b703c91030ca3db3",
-      "title_zh": "世界最大盐穴压缩空气储能项目机组启动",
-      "summary_zh": "【世界最大盐穴压缩空气储能项目机组启动】财联社9月12日电，世界最大盐穴压缩空气储能项目两台机组今天在江苏金坛完成整组启动，标志着我国在大容量盐穴压缩空气储能领域的关键核心技术和系统集成能力实现重要突破",
-      "title": "World's largest salt-cavern compressed-air energy storage units start up",
-      "summary": "CLS, September 12 - Two units of the world's largest salt-cavern compressed-air energy storage project completed full start-up today in Jintan, Jiangsu, marking an important breakthrough in China's core technologies and system integration capability for large-capacity salt-cavern compressed-air storage."
-    },
-    {
-      "id": "428b5ad390d738457ef70f706609ac947f624a5d",
-      "title_zh": "财联社9月12日电，越南电动汽车厂商VinFast表示，创始人长子范日全安（Pham Nhat Quan Anh）将出任全球首席执行官。",
-      "summary_zh": "财联社9月12日电，越南电动汽车厂商VinFast表示，创始人长子范日全安（Pham Nhat Quan Anh）将出任全球首席执行官",
-      "title": "Vietnam EV maker VinFast says founder's eldest son Pham Nhat Quan Anh will become global CEO",
-      "summary": "CLS, September 12 - Vietnamese EV maker VinFast said the founder's eldest son, Pham Nhat Quan Anh, will serve as global chief executive officer."
-    },
-    {
-      "id": "6f467cd0d139b88d88dd42e711238079cba5040e",
-      "title_zh": "熵旋芯智雷坤：MRAM存算一体芯片可使AI推理Token成本降低约10倍",
-      "summary_zh": "【熵旋芯智雷坤：MRAM存算一体芯片可使AI推理Token成本降低约10倍】财联社9月12日电，熵旋芯智创始人兼CEO雷坤在2026算力中国AI与算力产业展览会科创路演活动上表示，基于MRAM的存算一体架构能耗比SRAM低近10倍，可使AI推理Token成本降低约10倍",
-      "title": "Shangxuan Xinzhi's Lei Kun: MRAM compute-in-memory chips can cut AI inference token costs about tenfold",
-      "summary": "CLS, September 12 - Lei Kun, founder and CEO of Shangxuan Xinzhi, said at a tech roadshow during the 2026 China AI & Computing Power Industry Expo that an MRAM-based compute-in-memory architecture consumes nearly ten times less energy than SRAM and can cut AI inference token costs by roughly tenfold."
-    },
-    {
-      "id": "a0b1f64f101889c43d39427c14617366a555d1ec",
-      "title_zh": "芯科智能王冲：风液同源算力集装箱可将一兆瓦数据中心成本从1800万降至800万",
-      "summary_zh": "【芯科智能王冲：风液同源算力集装箱可将一兆瓦数据中心成本从1800万降至800万】财联社9月12日电，芯科智能CEO王冲在2026算力中国AI与算力产业展览会科创路演活动上表示，传统一兆瓦数据中心在海外建设成本约1700-1800万元，其风液同源算力集装箱可降至800万以内，PUE值1.2，WUE值为0，部署仅需一天，",
-      "title": "Xinke Intelligent's Wang Chong: air-and-liquid computing container can cut 1 MW data center cost from 18 million to 8 million yuan",
-      "summary": "CLS, September 12 - Wang Chong, CEO of Xinke Intelligent, said at a tech roadshow during the 2026 China AI & Computing Power Industry Expo that a conventional 1 MW data center costs about 17-18 million yuan to build overseas, while its air-and-liquid-source computing container can bring that below 8 million yuan, with a PUE of 1.2 and a WUE of 0, and takes only one day to deploy."
-    },
-    {
-      "id": "3e8ca25d53945192c7e99dc05bb9440a80190a13",
-      "title_zh": "中国贸促会副会长李庆霜率中国企业家代表团赴印度出席金砖国家工商论坛",
-      "summary_zh": "【中国贸促会副会长李庆霜率中国企业家代表团赴印度出席金砖国家工商论坛】财联社9月12日电，9月10日至12日，中国贸促会副会长李庆霜率中国企业家代表团赴印度出席金砖国家工商论坛，会见有关对口机构和企业负责人，推动多双边交流合作",
-      "title": "CCPIT vice chairman Li Qingshuang leads Chinese business delegation to BRICS Business Forum in India",
-      "summary": "CLS, September 12 - From September 10 to 12, Li Qingshuang, vice chairman of the China Council for the Promotion of International Trade, led a Chinese entrepreneurs' delegation to India for the BRICS Business Forum, meeting counterparts and corporate leaders to advance bilateral and multilateral exchanges and cooperation."
-    },
-    {
-      "id": "e60529ff35788472f07091fcb79cbe0162d18528",
-      "title_zh": "南海热带扰动将发展为热带低压 海南岛等地雨势较强",
-      "summary_zh": "【南海热带扰动将发展为热带低压 海南岛等地雨势较强】财联社9月12日电，据中国气象局消息，今天（9月12日）5时，南海热带扰动位于海南省三亚市东偏南方向约320公里的海面上，预计其将于今天上午发展为热带低压，并向西北方向移动，逐渐趋向越南中部沿海，但是进一步发展为编号台风的可能性不大",
-      "title": "South China Sea tropical disturbance to become tropical depression; heavy rain expected on Hainan",
-      "summary": "CLS, September 12 - According to the China Meteorological Administration, at 5 a.m. today (September 12) the tropical disturbance in the South China Sea was located about 320 km east-southeast of Sanya, Hainan. It is expected to develop into a tropical depression this morning and move northwest toward the central coast of Vietnam, though it is unlikely to strengthen into a numbered typhoon."
-    },
-    {
-      "id": "f9d608e1ed48233d3d39c8a6d2595965b9453684",
-      "title_zh": "航行警告：黄海北部部分海域执行军事任务",
-      "summary_zh": "【航行警告：黄海北部部分海域执行军事任务】财联社9月12日电，据中国海事局网站消息，盘锦海事局发布航行警告，9月15日10时30分至14时、9月16日12时至14时，黄海北部部分海域执行军事任务，禁止驶入",
-      "title": "Navigation warning: military mission in parts of the northern Yellow Sea",
-      "summary": "CLS, September 12 - Per the China Maritime Safety Administration website, the Panjin maritime authority issued a navigation warning that a military mission will be conducted in parts of the northern Yellow Sea from 10:30 to 14:00 on September 15 and from 12:00 to 14:00 on September 16, with entry prohibited."
-    },
-    {
-      "id": "43e759a0f3062126393494d856a134a46791fc90",
-      "title_zh": "习近平离京赴新德里出席金砖国家领导人第十八次会晤",
-      "summary_zh": "【习近平离京赴新德里出席金砖国家领导人第十八次会晤】9月12日上午，国家主席习近平乘专机赴新德里，应印度总理莫迪邀请，出席金砖国家领导人第十八次会晤",
-      "title": "Xi Jinping leaves Beijing for New Delhi to attend the 18th BRICS Summit",
-      "summary": "On the morning of September 12, President Xi Jinping flew to New Delhi at the invitation of Indian Prime Minister Modi to attend the 18th BRICS Leaders' Summit."
-    },
-    {
-      "id": "3936a03d3e1a171023e865aa9e32314498cbd8dd",
-      "title_zh": "近一个月逾千家上市公司获机构调研",
-      "summary_zh": "【近一个月逾千家上市公司获机构调研】财联社9月12日电，近期，机构调研活动保持较高热度",
-      "title": "Over 1,000 listed companies received institutional research visits in the past month",
-      "summary": "CLS, September 12 - Institutional research activity has remained brisk recently."
-    },
-    {
-      "id": "23ea66313b75eb0b76fe8b9c5af8f48197497334",
-      "title_zh": "南向资金7月以来净买入近千亿港元 科技与红利资产获显著加仓",
-      "summary_zh": "【南向资金7月以来净买入近千亿港元 科技与红利资产获显著加仓】财联社9月12日电，2026年下半年以来，恒生科技指数领跑全球股市，与此同时，南向资金持续加码港股市场",
-      "title": "Southbound inflows near HK$100 billion since July; tech and dividend assets notably added",
-      "summary": "CLS, September 12 - Since the second half of 2026, the Hang Seng Tech Index has led global equity markets, while southbound capital has kept adding to Hong Kong stocks."
-    },
-    {
-      "id": "f7fb4c2ed5c3c9949ca853a8baa0b8fd7e757832",
-      "title": "Sub-$100 smartphones becoming a rarity as AI memory prices soar",
-      "summary": "The days of the sub-$100 smartphone may be numbered, including in China.",
-      "title_zh": "随着AI存储价格上涨，售价低于100美元的智能手机正变得罕见",
-      "summary_zh": "售价低于100美元的智能手机时代可能所剩无几，中国也不例外"
-    },
-    {
-      "id": "26a2dcbbc92560f52564ebd1e8c256c27f34fefa",
-      "title": "Agencies seek comment on proposed third-party risk management guidance and issue statement on community bank engagement with core service providers",
-      "summary": "Agencies seek comment on proposed third-party risk management guidance and issue statement on community bank engagement with core service providers",
-      "title_zh": "监管机构就第三方风险管理指引征求意见，并发布社区银行参与声明",
-      "summary_zh": "监管机构就第三方风险管理指引征求意见，并发布社区银行参与声明"
-    },
-    {
-      "id": "c22d8944b87c976313e0f7a81a4ded33b63a364b",
-      "title": "The Fed could raise interest rates three times. Here’s where the market could face the stiffest test.",
-      "summary": "Economists note that the Fed historically has not been content to raise rates only once.",
-      "title_zh": "美联储可能加息三次，市场最严峻的考验在哪里",
-      "summary_zh": "经济学家指出，历史上美联储并不满足于只加息一次"
-    },
-    {
-      "id": "c2da3642602cd7503d2c0662d9314b51272d4fe2",
-      "title_zh": "付鹏：能源市场成品油的紧张终于传导到了上游，警惕上下游左脚踩右脚【付鹏说4】",
-      "summary_zh": "《付鹏说·第七季》全新升级上线！立即订阅 能源市场成品油的紧张终于传导到了上游，警惕上下游左脚踩右脚 交易桌前看天下，付鹏说来评财经",
-      "title": "Fu Peng: refined-product tightness in energy markets has finally reached upstream; watch for self-reinforcing feedback",
-      "summary": "'Fu Peng Speaks Season 7' is now live - subscribe today. Tightness in refined products has finally fed through to the upstream, and investors should watch for self-reinforcing feedback between upstream and downstream. Fu Peng comments on markets and the economy from the trading desk."
-    },
-    {
-      "id": "02781ffe8e5a679c0161922eabb4d097b4a1f7d7",
-      "title_zh": "OpenAI推出Agents API公测版，将Codex背后的harness与基础设施向开发者开放",
-      "summary_zh": "OpenAI正将支撑其旗舰编程助手Codex的底层代理框架向全体开发者开放，标志着该公司将内部积累的Agent工程化经验正式产品化输出",
-      "title": "OpenAI launches public beta of Agents API, opening the harness behind Codex to developers",
-      "summary": "OpenAI is opening the agent framework underpinning its flagship coding assistant Codex to all developers, marking the formal productization of the agent-engineering expertise it built internally."
-    },
-    {
-      "id": "a2fb28d2b97dc85cbb87785f4bf86d35d383f9bb",
-      "title_zh": "戴尔单日暴涨12%创新高！被甲骨文点名为千亿资本支出“核心供货商”",
-      "summary_zh": "甲骨文管理层在业绩说明会上点名戴尔为核心供货商，叠加RBC Capital首次覆盖给予\"跑赢大盘\"评级，戴尔科技股价创新高",
-      "title": "Dell surges 12% to a record high after being named Oracle's key supplier for its capex push",
-      "summary": "Oracle management named Dell a core supplier at its earnings briefing, and with RBC Capital initiating coverage at 'outperform', Dell Technologies shares hit a record high."
-    },
-    {
-      "id": "f650960783ce27311d2583c602ce278a3c99701b",
-      "title": "Tesla could transform the trucking business — and capitalize on high diesel prices",
-      "summary": "The EV maker aims to finally kick its long-awaited Semi truck into high gear — unlocking a potentially huge opportunity, according to Morgan Stanley.",
-      "title_zh": "特斯拉可能改变卡车运输业，并从高柴油价格中获益",
-      "summary_zh": "这家电动车企希望让其期待已久的Semi卡车真正提速，打开一个潜在巨大的市场"
-    },
-    {
-      "id": "2fa0b43e79261c8fa49adafc69087d6cb1bbbf05",
-      "title_zh": "油价是特朗普的“大麻烦”，而日元是所有人的",
-      "summary_zh": "两条截然不同的风险主线正在同步收紧：油价在政治压力下剧烈震荡，直接威胁特朗普的中期选举前景；而日元的结构性转向，则可能通过套息交易平仓、资本 回流 和全球收益率上行，将冲击波传导至每一个主要资产类别",
-      "title": "Oil is Trump's big trouble, while the yen is everyone's",
-      "summary": "Two distinct risk threads are tightening at once: oil prices are swinging sharply under political pressure, directly threatening Trump's midterm election prospects, while the yen's structural turn could transmit shocks to every major asset class through carry-trade unwinds, capital repatriation and rising global yields."
-    },
-    {
-      "id": "7c38f6418ec1af0914752e7a264d587ba74a75fd",
-      "title_zh": "油价飙升叠加通胀压力，亚洲股债双杀、日股重挫3%、日债收益率持续走高",
-      "summary_zh": "油价突破百元关口、美国生产者价格指数超预期上涨，两股力量叠加，将亚洲市场推入股债双杀局面",
-      "title": "Oil surge plus inflation pressure: Asian stocks and bonds sell off together, Japanese shares slump 3%, JGB yields keep climbing",
-      "summary": "Oil breaking above the 100-dollar mark and a larger-than-expected rise in US producer prices combined to push Asian markets into a joint stocks-and-bonds selloff"
-    },
-    {
-      "id": "442b943a6222d53c1dfcbe9ed710938a40a06019",
-      "title_zh": "本轮AI牛市两大“网红”合并！SemiAnalysis收购Citrini",
-      "summary_zh": "半导体与AI基础设施研究领域的两大独立研究机构正式走到一起",
-      "title": "Two stars of the AI bull market merge: SemiAnalysis acquires Citrini",
-      "summary": "Two leading independent research outfits in semiconductors and AI infrastructure have formally joined forces."
-    },
-    {
-      "id": "daf93d02a43d1dff3022687527fdc450b162592f",
-      "title_zh": "美国赤字逼近2万亿，利息账单首破1万亿，长端美债为债务螺旋定价",
-      "summary_zh": "美国财政赤字正以接近2万亿美元的速度膨胀，净利息支出首次突破1万亿美元、可交易国债平均利率升至3.48%，意味着即便不再新增赤字，存量债务的滚动再融资也在把利息负担持续推高，市场开始为一场自我强化的债务螺旋定价",
-      "title": "U.S. deficit nears $2 trillion and interest bill tops $1 trillion for the first time; long-end Treasuries price in a debt spiral",
-      "summary": "The U.S. fiscal deficit is expanding at close to $2 trillion, net interest costs have exceeded $1 trillion for the first time and the average yield on marketable Treasuries has risen to 3.48% - meaning that even with no new deficit spending, rolling over the existing debt keeps pushing the interest burden higher, and markets are beginning to price a self-reinforcing debt spiral."
-    },
-    {
-      "id": "35578c2cd3965df8bb922f3b5b7357ffa2f2d76c",
-      "title_zh": "伦巴德：GPIF超配日债或引发全球套息平仓，西班牙国际银行：GPIF或抛售620亿美元美债！",
-      "summary_zh": "日本全球最大养老基金GPIF的资产配置动向，正成为全球债券与外汇市场新的系统性风险来源",
-      "title": "Lombard: GPIF's JGB overweight may trigger global carry unwinds; Santander: GPIF could sell $62 billion of Treasuries",
-      "summary": "The asset-allocation moves of GPIF, Japan's and the world's largest pension fund, are becoming a new source of systemic risk for global bond and FX markets."
-    },
-    {
-      "id": "1a817d37583f3f1e7612e1ae9b0a45eca750a14c",
-      "title_zh": "胡塞武装被曝用Claude Code替代工程师开发导弹，Anthropic：已封相关账户",
-      "summary_zh": "Anthropic于美东时间9月10日周四发布威胁情报报告称，公司发现一个位于也门北部的“威胁行为者小组”利用Claude开展导弹和制导火箭研发",
-      "title": "Houthis reported to use Claude Code instead of engineers to develop missiles; Anthropic says it has banned the accounts",
-      "summary": "Anthropic said in a threat-intelligence report released Thursday, September 10 U.S. Eastern time, that it identified a 'threat actor group' in northern Yemen using Claude to develop missiles and guided rockets."
-    },
-    {
-      "id": "e72cc03539deeee01c423f1047cec144e121040c",
-      "title_zh": "华尔街见闻早餐FM-Radio | 2026年9月12日",
-      "summary_zh": "华见早安之声 请各位听众升级为见闻最新版APP，以便成功收听以下音频",
-      "title": "Wall Street CN Morning Briefing FM-Radio | September 12, 2026",
-      "summary": "Good morning from WSCN. Listeners are advised to upgrade to the latest version of the WSCN app to play the following audio."
-    },
-    {
-      "id": "dbb433a77af669fc2bedc36055919542ed1ae095",
-      "title": "In pictures: The U.S. commemorates the 25th anniversary of 9/11",
-      "summary": "On Sept",
-      "title_zh": "图片报道：美国纪念9·11事件25周年",
-      "summary_zh": "9月"
-    },
-    {
-      "id": "22f4eb77c2c599f09765dcfc7c35cc21a1601199",
-      "title_zh": "全球市场：美股三大指数收跌 存储板块下挫 美油大涨逾8%",
-      "summary_zh": "美股市场： 美股三大指数09月10日收盘全线下跌",
-      "title": "Global markets: all three major US averages close lower, memory stocks slump, US crude jumps more than 8%",
-      "summary": "US market: all three major US averages closed lower on September 10"
-    },
-    {
-      "id": "e1cea59d8529c946394d431943670fb6272ede75",
-      "title": "Saudi Arabia shut down East-West crude oil pipeline after multiple attacks by drones from Iraq",
-      "summary": "Iran-allied Houthi militants in Yemen have escalated strikes on Saudi Arabia this week.",
-      "title_zh": "沙特在遭伊拉克方向无人机多次袭击后关闭东西向原油管道",
-      "summary_zh": "本周，也门与伊朗结盟的胡塞武装加大了对沙特的打击力度。"
+      "id": "dc3640c67c712f8dd866364e88d9886edcdde595",
+      "title_zh": "OpenAI CEO：今年不会上市，不能冒哪怕10%杀死所有人的风险",
+      "summary_zh": "OpenAI首席执行官Sam Altman表示，公司专注于解决围绕AI技术的安全担忧，今年不会上市",
+      "title": "OpenAI CEO: No IPO This Year, Cannot Risk Even a 10% Chance of Killing Everyone",
+      "summary": "OpenAI CEO Sam Altman said the company is focused on addressing safety concerns around AI technology and will not go public this year."
     },
     {
       "id": "6043732ba61dde1a4aab881810e6098160e50457",
-      "title": "Federal Reserve Board announces termination of enforcement actions with United Texas Bank, Quontic Bank Acquisition Corp., and Quontic Bank Holdings Corp.",
-      "summary": "Federal Reserve Board announces termination of enforcement actions with United Texas Bank, Quontic Bank Acquisition Corp., and Quontic Bank Holdings Corp.",
       "title_zh": "美联储理事会宣布终止与United Texas Bank、Quontic Bank Acquisition Corp.及Quontic Bank Holdings Corp.的执法行动",
-      "summary_zh": "美联储理事会宣布终止与United Texas Bank、Quontic Bank Acquisition Corp.及Quontic Bank Holdings Corp.的执法行动。"
+      "summary_zh": "美联储理事会宣布终止与United Texas Bank、Quontic Bank Acquisition Corp.及Quontic Bank Holdings Corp.的执法行动。",
+      "title": "Federal Reserve Board announces termination of enforcement actions with United Texas Bank, Quontic Bank Acquisition Corp., and Quontic Bank Holdings Corp.",
+      "summary": "Federal Reserve Board announces termination of enforcement actions with United Texas Bank, Quontic Bank Acquisition Corp., and Quontic Bank Holdings Corp."
     },
     {
       "id": "806f606b4f2906bcd832ca731b6fabd5ea9f11ca",
-      "title": "Federal Reserve Board issues enforcement action with former employee of Banco Popular de Puerto Rico",
-      "summary": "Federal Reserve Board issues enforcement action with former employee of Banco Popular de Puerto Rico",
       "title_zh": "美联储理事会对Banco Popular de Puerto Rico一名前雇员采取执法行动",
-      "summary_zh": "美联储理事会对Banco Popular de Puerto Rico一名前雇员采取执法行动。"
+      "summary_zh": "美联储理事会对Banco Popular de Puerto Rico一名前雇员采取执法行动。",
+      "title": "Federal Reserve Board issues enforcement action with former employee of Banco Popular de Puerto Rico",
+      "summary": "Federal Reserve Board issues enforcement action with former employee of Banco Popular de Puerto Rico"
+    },
+    {
+      "id": "656e92a3367578b4186f1362e6da5af8f9c908d9",
+      "title_zh": "美联储理事会宣布批准英国国民西敏寺银行（National Westminster Bank Plc）的申请",
+      "summary_zh": "美联储理事会宣布批准英国国民西敏寺银行（National Westminster Bank Plc）的申请。",
+      "title": "Federal Reserve Board announces approval of application by National Westminster Bank Plc",
+      "summary": "Federal Reserve Board announces approval of application by National Westminster Bank Plc"
+    },
+    {
+      "id": "b6457e9352c2925bd07740221c13c6b685f51450",
+      "title_zh": "美联储理事会对 SouthPoint Bancshares, Inc. 采取执法行动，并宣布终止对德意志银行、DB USA Corporation 及德意志银行纽约分行的执法行动",
+      "summary_zh": "美联储理事会对 SouthPoint Bancshares, Inc. 采取执法行动。",
+      "title": "Federal Reserve Board issues enforcement action with SouthPoint Bancshares, Inc. and announces termination of enforcement action with Deutsche Bank AG, DB USA Corporation, and Deutsche Bank AG New York Branch",
+      "summary": "Federal Reserve Board issues enforcement action with SouthPoint Bancshares, Inc"
+    },
+    {
+      "id": "e9af4cd4ca9bfeff022797bb6e3dd475b82b5004",
+      "title_zh": "美联储理事会对 Regions Bank 前员工和 United Community Bank 前员工采取执法行动",
+      "summary_zh": "美联储理事会对 Regions Bank 前员工和 United Community Bank 前员工采取执法行动。",
+      "title": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of United Community Bank",
+      "summary": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of United Community Bank"
+    },
+    {
+      "id": "717d5c4efb2f4915465e13c6258ee593e1c92fa2",
+      "title_zh": "联邦公开市场委员会 2026 年 7 月 28 日至 29 日会议纪要",
+      "summary_zh": "联邦公开市场委员会 2026 年 7 月 28 日至 29 日会议纪要。",
+      "title": "Minutes of the Federal Open Market Committee, July 28–29, 2026",
+      "summary": "Minutes of the Federal Open Market Committee, July 28–29, 2026"
+    },
+    {
+      "id": "59982caf385a64d98c8e1111994ff077d391184f",
+      "title_zh": "美联储理事会对 Regions Bank 前员工采取执法行动",
+      "summary_zh": "美联储理事会对 Regions Bank 前员工采取执法行动。",
+      "title": "Federal Reserve Board issues enforcement action with former employee of Regions Bank",
+      "summary": "Federal Reserve Board issues enforcement action with former employee of Regions Bank"
+    },
+    {
+      "id": "492e11b1fbddc2b4f792e131efab3875e40f68f3",
+      "title_zh": "美联储理事会宣布批准 Coastal Bend Bancshares, Inc. 的申请",
+      "summary_zh": "美联储理事会宣布批准 Coastal Bend Bancshares, Inc. 的申请。",
+      "title": "Federal Reserve Board announces approval of the application by Coastal Bend Bancshares, Inc.",
+      "summary": "Federal Reserve Board announces approval of the application by Coastal Bend Bancshares, Inc."
+    },
+    {
+      "id": "c680c122cbba91812d956d822be1dbf67fe71a81",
+      "title_zh": "美联储理事会宣布批准 FS Bancorp, Inc. 的申请",
+      "summary_zh": "美联储理事会宣布批准 FS Bancorp, Inc. 的申请。",
+      "title": "Federal Reserve Board announces approval of the application by FS Bancorp, Inc.",
+      "summary": "Federal Reserve Board announces approval of the application by FS Bancorp, Inc."
+    },
+    {
+      "id": "a29277f3b5826c01e78f88ce3213a65aab627188",
+      "title_zh": "美联储理事会宣布批准西班牙桑坦德银行（Banco Santander, S.A.）及 Santander Holdings USA, Inc. 的申请",
+      "summary_zh": "美联储理事会宣布批准西班牙桑坦德银行（Banco Santander, S.A.）的申请。",
+      "title": "Federal Reserve Board announces approval of the application by Banco Santander, S.A. and Santander Holdings USA, Inc.",
+      "summary": "Federal Reserve Board announces approval of the application by Banco Santander, S.A"
+    },
+    {
+      "id": "56b81b6047915bd1f3036532e6f4e5afba5ad872",
+      "title_zh": "美联储理事会就现代化互助制银行机构规则的提案征求意见",
+      "summary_zh": "美联储理事会就现代化互助制银行机构规则的提案征求意见。",
+      "title": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations",
+      "summary": "Federal Reserve Board requests comment on a proposal to modernize rules for mutual banking organizations"
+    },
+    {
+      "id": "12b1a89f5980ba0253fa5d35fbb4d24ca457ce54",
+      "title_zh": "美联储理事会就现代化其银行“内部人士”信贷规则征求意见——内部人士指可能影响银行放贷决策的银行高管、董事会成员及大股东",
+      "summary_zh": "美联储理事会就现代化其银行“内部人士”信贷规则征求意见——内部人士指可能影响银行放贷决策的银行高管、董事会成员。",
+      "title": "Federal Reserve Board requests comment on a proposal to modernize its rule governing the extension of credit to bank \"insiders\"—bank executives, board members and major shareholders who could potentially influence a bank's lending decisions",
+      "summary": "Federal Reserve Board requests comment on a proposal to modernize its rule governing the extension of credit to bank &quot;insiders&quot;—bank executives, board"
+    },
+    {
+      "id": "d877d3916bea617dbdf1e67428e25470afc2c6a6",
+      "title_zh": "美联储理事会对 Iuka Bancshares, Inc. 及 The Iuka State Bank 采取执法行动",
+      "summary_zh": "美联储理事会对 Iuka Bancshares, Inc. 采取执法行动。",
+      "title": "Federal Reserve Board issues enforcement action with Iuka Bancshares, Inc. and The Iuka State Bank",
+      "summary": "Federal Reserve Board issues enforcement action with Iuka Bancshares, Inc"
+    },
+    {
+      "id": "1935945161d7d46d837e2245329ad1f8ee93c902",
+      "title_zh": "美联储理事会对 Regions Bank 前员工和 First Interstate Bank 前员工采取执法行动",
+      "summary_zh": "美联储理事会对 Regions Bank 前员工和 First Interstate Bank 前员工采取执法行动。",
+      "title": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank",
+      "summary": "Federal Reserve Board issues enforcement actions with former employee of Regions Bank and former employee of First Interstate Bank"
+    },
+    {
+      "id": "84553b0b5ba2a255e4602f6c3a9318c2557a1160",
+      "title_zh": "美联储发布 FOMC 声明",
+      "summary_zh": "美联储发布 FOMC 声明。",
+      "title": "Federal Reserve issues FOMC statement",
+      "summary": "Federal Reserve issues FOMC statement"
+    },
+    {
+      "id": "bd761959afffcb14b72576ca78ddc0fce548d7cb",
+      "title_zh": "美联储理事会对 Heritage State Bank 前首席信贷官采取执法行动",
+      "summary_zh": "美联储理事会对 Heritage State Bank 前首席信贷官采取执法行动。",
+      "title": "Federal Reserve Board issues enforcement action with former chief lending officer of Heritage State Bank",
+      "summary": "Federal Reserve Board issues enforcement action with former chief lending officer of Heritage State Bank"
+    },
+    {
+      "id": "807c7d3bd6e4389fb4ad74ce5f83b0f62de47e28",
+      "title_zh": "最新通胀数据后，下周美联储加息似已成定局，后续看点如下",
+      "summary_zh": "最新通胀数据未能缓解人们对物价压力短期内将回落的担忧。",
+      "title": "A Fed hike next week seems certain after the latest inflation data. Here's what's ahead",
+      "summary": "The latest inflation data failed to soothe fears that pricing pressures will be coming down anytime soon."
+    },
+    {
+      "id": "9b6138b8684167cd6b22faa74e5977353cb14bb4",
+      "title_zh": "美国法官裁定特朗普将 FEMA 人员减半的计划违法",
+      "summary_zh": "美国",
+      "title": "US judge rules that Trump plan to halve FEMA workforce violated law",
+      "summary": "U.S"
+    },
+    {
+      "id": "eeb3b12adb14780d7a75f934f7ea0bb092619b4c",
+      "title_zh": "AI 在办公室里进行的、可能影响你绩效评估与薪酬的对话",
+      "summary_zh": "AI 工具能帮助找到谈论绩效与薪酬等棘手职场话题的合适语气与措辞，而管理者已经在使用它们。",
+      "title": "Conversations that AIs are having in the office that may influence your performance review and pay",
+      "summary": "AI tools can help find the right tone and language for difficult workplace conversations about performance and pay, and managers are already using them."
+    },
+    {
+      "id": "4a4610cd451cae4f95cbe525d25fd5c5f8f57256",
+      "title_zh": "Larry Ellison 取消出售最多 75 亿美元甲骨文股票的计划",
+      "summary_zh": "甲骨文创始人 Larry Ellison 已取消出售该公司最多 75 亿美元股票的计划。",
+      "title": "Larry Ellison nixes plan to offload up to $7.5 billion worth of Oracle stock",
+      "summary": "Oracle founder Larry Ellison has canceled his plan to sell up to $7.5 billion worth of stock in the software company."
     }
   ],
-  "updated_at": "2026-09-12T03:32:42Z"
+  "updated_at": "2026-09-13T03:32:09Z"
 }
