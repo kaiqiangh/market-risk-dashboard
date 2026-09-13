@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import echarts from "./echarts";
+import type * as echarts from "echarts/core";
 import { chartTheme } from "./theme";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { formatNumber, formatUnitSuffix } from "@/lib/format";
@@ -43,52 +43,61 @@ export function MacroChart({ items, height = 260 }: MacroChartProps) {
       setMode("fallback");
       return;
     }
+    let active = true;
     let chart: echarts.ECharts | undefined;
-    try {
-      chart = echarts.init(ref.current);
-      const th = chartTheme();
-      chart.setOption({
-        grid: { left: 8, right: 16, top: 24, bottom: 8, containLabel: true },
-        tooltip: {
-          trigger: "axis",
-          axisPointer: { type: "shadow" },
-          formatter: (params: unknown) => {
-            const list = params as Array<{ axisValue: string; data: number }>;
-            if (!Array.isArray(list) || list.length === 0) return "";
-            const p = list[0];
-            const item = items.find((i) => i.label === p.axisValue);
-            return `${p.axisValue}<br/>${formatNumber(p.data, locale)}${item?.unit ? ` ${formatUnitSuffix(item.unit, locale)}` : ""}`;
+    const onResize = () => chart?.resize();
+    window.addEventListener("resize", onResize);
+    void import("./echarts")
+      .then(({ default: charting }) => {
+        if (!active || !ref.current) return;
+        chart = charting.init(ref.current);
+        const th = chartTheme();
+        chart.setOption({
+          grid: { left: 8, right: 16, top: 24, bottom: 8, containLabel: true },
+          tooltip: {
+            trigger: "axis",
+            axisPointer: { type: "shadow" },
+            formatter: (params: unknown) => {
+              const list = params as Array<{ axisValue: string; data: number }>;
+              if (!Array.isArray(list) || list.length === 0) return "";
+              const p = list[0];
+              const item = items.find((i) => i.label === p.axisValue);
+              return `${p.axisValue}<br/>${formatNumber(p.data, locale)}${item?.unit ? ` ${formatUnitSuffix(item.unit, locale)}` : ""}`;
+            },
           },
-        },
-        xAxis: {
-          type: "category",
-          data: items.map((i) => i.label),
-          axisLabel: { color: th.axis, fontSize: 10, interval: 0, rotate: items.length > 5 ? 30 : 0 },
-        },
-        yAxis: {
-          type: "value",
-          axisLabel: { color: th.axis, fontSize: 10 },
-          splitLine: { lineStyle: { color: th.grid } },
-        },
-        series: [
-          {
-            type: "bar",
-            data: items.map((i) => i.value),
-            itemStyle: { color: th.accent, borderRadius: [2, 2, 0, 0] },
-            barMaxWidth: 40,
+          xAxis: {
+            type: "category",
+            data: items.map((i) => i.label),
+            axisLabel: {
+              color: th.axis,
+              fontSize: 10,
+              interval: 0,
+              rotate: items.length > 5 ? 30 : 0,
+            },
           },
-        ],
+          yAxis: {
+            type: "value",
+            axisLabel: { color: th.axis, fontSize: 10 },
+            splitLine: { lineStyle: { color: th.grid } },
+          },
+          series: [
+            {
+              type: "bar",
+              data: items.map((i) => i.value),
+              itemStyle: { color: th.accent, borderRadius: [2, 2, 0, 0] },
+              barMaxWidth: 40,
+            },
+          ],
+        });
+      })
+      .catch(() => {
+        if (active) setMode("fallback");
       });
-      const onResize = () => chart?.resize();
-      window.addEventListener("resize", onResize);
-      return () => {
-        window.removeEventListener("resize", onResize);
-        chart?.dispose();
-      };
-    } catch {
-      setMode("fallback");
-      return;
-    }
+    return () => {
+      active = false;
+      window.removeEventListener("resize", onResize);
+      chart?.dispose();
+    };
   }, [items, locale, t]);
 
   if (items.length === 0) {
@@ -121,7 +130,9 @@ export function MacroChart({ items, height = 260 }: MacroChartProps) {
     <>
       <div ref={ref} style={{ height }} data-testid="macro-chart" className="w-full" />
       <details className="mt-2 rounded-md border border-border px-3 py-2 text-xs">
-        <summary className="cursor-pointer font-medium text-muted-foreground">{t("chart.details")}</summary>
+        <summary className="cursor-pointer font-medium text-muted-foreground">
+          {t("chart.details")}
+        </summary>
         <div className="mt-2 overflow-x-auto">
           <table className="w-full text-left">
             <thead>
@@ -135,7 +146,8 @@ export function MacroChart({ items, height = 260 }: MacroChartProps) {
                 <tr key={item.label} className="border-b border-border/50 last:border-0">
                   <td className="break-words py-1.5 pr-2">{item.label}</td>
                   <td className="py-1.5 text-right tabular-nums">
-                    {formatNumber(item.value, locale)}{item.unit ? ` ${formatUnitSuffix(item.unit, locale)}` : ""}
+                    {formatNumber(item.value, locale)}
+                    {item.unit ? ` ${formatUnitSuffix(item.unit, locale)}` : ""}
                   </td>
                 </tr>
               ))}

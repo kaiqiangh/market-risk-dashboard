@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import "@/i18n";
 import { EvidenceLink } from "@/components/ai/EvidenceLink";
@@ -22,13 +22,15 @@ describe("T10 frontend hardening", () => {
   it("EvidenceLink expands an adversarial path without selector errors", () => {
     render(
       <EvidenceLink
-        refs={[{
-          dataset: "risk",
-          path: 'payload[0]"\\\\bad',
-          metric: "total_score",
-          value: 52.3,
-          updated_at: null,
-        }]}
+        refs={[
+          {
+            dataset: "risk",
+            path: 'payload[0]"\\\\bad',
+            metric: "total_score",
+            value: 52.3,
+            updated_at: null,
+          },
+        ]}
       />,
     );
 
@@ -38,17 +40,29 @@ describe("T10 frontend hardening", () => {
     expect(screen.getByRole("button")).toHaveAttribute("aria-pressed", "false");
   });
 
-  it("reuses the ECharts instance when trend data changes in place", () => {
+  it("reuses the ECharts instance when trend data changes in place", async () => {
     vi.stubGlobal("navigator", { userAgent: "Chrome" });
-    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({} as CanvasRenderingContext2D);
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
+      {} as CanvasRenderingContext2D,
+    );
     const { rerender } = render(
-      <RiskTrendChart points={[{ date: "2026-08-01", total_score: 48.1 }, { date: "2026-08-02", total_score: 52.3 }]} />,
+      <RiskTrendChart
+        points={[
+          { date: "2026-08-01", total_score: 48.1 },
+          { date: "2026-08-02", total_score: 52.3 },
+        ]}
+      />,
     );
     rerender(
-      <RiskTrendChart points={[{ date: "2026-08-01", total_score: 49.1 }, { date: "2026-08-02", total_score: 53.3 }]} />,
+      <RiskTrendChart
+        points={[
+          { date: "2026-08-01", total_score: 49.1 },
+          { date: "2026-08-02", total_score: 53.3 },
+        ]}
+      />,
     );
 
-    expect(init).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(init).toHaveBeenCalledTimes(1));
     expect(chart.setOption).toHaveBeenCalledWith(expect.any(Object), { notMerge: true });
   });
 

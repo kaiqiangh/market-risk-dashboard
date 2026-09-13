@@ -12,6 +12,8 @@ Seam: the data contract + the merge step (pipeline/collectors/news.py merge_tran
 
 from __future__ import annotations
 
+import pytest
+
 from pipeline.collectors.news import NewsCollector
 from pipeline.schemas import NewsDataset, NewsItem, NewsTranslation, NewsTranslationsDataset
 
@@ -61,6 +63,12 @@ def test_news_item_accepts_summary_zh():
 def test_news_item_summary_zh_defaults_to_none_when_absent():
     item = _item()
     assert item.summary_zh is None
+
+
+@pytest.mark.parametrize("url", ["relative/news", "javascript:alert(1)", "https://user:pass@example.com/news", "https://example.com/news#part"])
+def test_news_item_rejects_unsafe_article_urls(url):
+    with pytest.raises(ValueError, match="news URL"):
+        _item(url=url)
 
 
 def test_news_item_lang_defaults_to_en_and_accepts_zh():
@@ -157,8 +165,55 @@ def test_merge_never_overwrites_canonical_english_when_record_diverges():
     assert item.summary_zh == "中文摘要"  # Chinese side still overlaid
 
 
+def test_merge_ignores_non_chinese_translation_fields():
+    news = _payload([_item(id="a")])
+    trans = _translations(
+        NewsTranslation(id="a", title_zh="English title", summary_zh="English summary")
+    )
+
+    merged = _collector().merge_translations(news, trans)
+
+    assert merged.items[0].title_zh is None
+    assert merged.items[0].summary_zh is None
+
+
 def test_merge_none_translations_is_noop():
     news = _payload([_item(id="a")])
     merged = _collector().merge_translations(news, None)
     assert merged is news
     assert merged.items[0].summary_zh is None
+
+def test_merge_falls_back_to_title_match_on_id_drift():
+    # #225: the AI step re-derives ids, so a translation with a different id must still land
+    # on its article when the normalized Chinese title matches (zh-source item).
+    news = _payload(
+        [_item(id="collector-1", lang="zh", source="东方财富", title="美联储决议：利率维持不变", summary="美联储维持利率不变。")]
+    )
+    trans = _translations(
+        NewsTranslation(
+            id="ai-1", title="Fed holds rates steady", summary="The Fed held rates unchanged.",
+            title_zh="美联储决议：利率维持不变", summary_zh="美联储维持利率不变。",
+        )
+    )
+    merged = _collector().merge_translations(news, trans)
+    item = merged.items[0]
+    assert item.title == "Fed holds rates steady"  # English canonical backfilled despite id drift
+    assert item.summary == "The Fed held rates unchanged."
+    assert item.title_zh == "美联储决议：利率维持不变"
+    assert item.summary_zh == "美联储维持利率不变。"
+
+
+def test_merge_title_fallback_en_source_overlays_chinese():
+    # #225: id drift on an en-source item still overlays the Chinese side via English title match.
+    news = _payload([_item(id="collector-2", title="Fed raises rates", summary="Fed raised rates by 25bp")])
+    trans = _translations(
+        NewsTranslation(
+            id="ai-2", title="Fed raises rates", summary="Fed raised rates by 25bp",
+            title_zh="美联储加息", summary_zh="美联储加息25个基点",
+        )
+    )
+    merged = _collector().merge_translations(news, trans)
+    item = merged.items[0]
+    assert item.title == "Fed raises rates"  # canonical English untouched
+    assert item.title_zh == "美联储加息"
+    assert item.summary_zh == "美联储加息25个基点"

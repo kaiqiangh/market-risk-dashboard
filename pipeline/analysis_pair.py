@@ -71,12 +71,18 @@ def restore_last_readable_analysis_pair(writer: StorageWriter) -> bool:
         return False
 
     try:
-        from pipeline.analysis.validate import compare_bilingual
+        from pipeline.analysis.validate import compare_bilingual, check_language_isolation
         from pipeline.schemas import AnalysisDataset
 
         zh = AnalysisDataset.model_validate(documents["last-good.zh-CN.json"])
         en = AnalysisDataset.model_validate(documents["last-good.en.json"])
         if zh.language != "zh-CN" or en.language != "en" or compare_bilingual(zh, en):
+            return False
+        # Language isolation: the English brief must contain no Chinese. A backup whose en prose
+        # is Chinese (e.g. a snapshot taken before the isolation gate existed) would silently
+        # corrupt the live analysis pair on the next restore — reject it so a bad backup can
+        # never be promoted over a valid candidate (#61 P1 regression).
+        if check_language_isolation(zh, en):
             return False
     except Exception:  # noqa: BLE001 — an unusable backup must not replace the candidate
         return False

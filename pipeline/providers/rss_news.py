@@ -41,9 +41,10 @@ class RssNewsProvider(BaseProvider):
         super().__init__(settings)
         # #102: sources come from the VALIDATED news_sources config (single shape,
         # extra="forbid"); per-source `enabled` is preserved by the model.
-        self.sources = [s for s in self.settings.load_news_sources_config().sources if s.enabled]
+        config = self.settings.load_news_sources_config()
+        self.sources = [s for s in config.sources if s.enabled]
         # S-3: outbound allowlist = the synthetic bucket + every configured source host;
-        # sources marked `trust: relay` (rsshub.app) vouch for their redirect targets.
+        # sources marked `trust: relay` vouch only for their explicit redirect targets.
         # #124: the allowlist covers the FULL fallback chain, not just the primary URL —
         # otherwise a legitimate fallback fetch would be blocked by our own guard.
         chain_hosts = {
@@ -57,8 +58,18 @@ class RssNewsProvider(BaseProvider):
             for u in s.chain_urls
             if urlparse(u).hostname
         }
+        relay_target_hosts = {
+            host.lower()
+            for s in self.sources
+            if s.trust == "relay"
+            for host in s.redirect_hosts
+        }
         self._client = guarded_client(
-            allowed, timeout=8.0, headers={"User-Agent": UA}, relay_hosts=relay_hosts
+            allowed,
+            timeout=8.0,
+            headers={"User-Agent": UA},
+            relay_hosts=relay_hosts,
+            relay_target_hosts=relay_target_hosts,
         )
         # #102 (M-5): the news cap and the copyright-boundary summary cap are operations
         # knobs from sources.yaml:operations, not magic literals.

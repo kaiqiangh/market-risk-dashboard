@@ -266,6 +266,39 @@ describe("language switch (keeps current page)", () => {
     await waitFor(() => expect(screen.getByTestId("page-title")).toHaveTextContent("总览"));
   });
 
+  it("switches language when localStorage is unavailable", async () => {
+    installFixtureFetch();
+    setHash("#/en/overview");
+    const setItem = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("storage blocked", "SecurityError");
+    });
+    renderApp();
+    await screen.findByTestId("page-title");
+
+    fireEvent.click(screen.getByTestId("lang-switch"));
+
+    await waitFor(() => expect(window.location.hash).toBe("#/zh/overview"));
+    expect(setItem).toHaveBeenCalled();
+    setItem.mockRestore();
+  });
+
+  it("keeps the news page usable when sessionStorage is unavailable", async () => {
+    installFixtureFetch();
+    setHash("#/en/news");
+    const getItem = vi.spyOn(window.sessionStorage, "getItem").mockImplementation(() => {
+      throw new DOMException("storage blocked", "SecurityError");
+    });
+    const setItem = vi.spyOn(window.sessionStorage, "setItem").mockImplementation(() => {
+      throw new DOMException("storage blocked", "SecurityError");
+    });
+
+    renderApp();
+
+    await expect(screen.findByTestId("news-filter")).resolves.toBeInTheDocument();
+    getItem.mockRestore();
+    setItem.mockRestore();
+  });
+
   it("language persists after refresh (URL segment + localStorage)", async () => {
     installFixtureFetch();
     window.localStorage.setItem(LOCALE_STORAGE_KEY, "en");

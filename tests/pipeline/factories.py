@@ -1011,14 +1011,23 @@ def make_news_translations(**overrides: Any) -> dict[str, Any]:
     """
     return _build(
         {
+            # #225: default ids must match the default make_news_payload() items, or the
+            # translation-coverage gate treats the synthetic tree as a stale batch.
             "items": [
                 {
-                    "id": "news-1",
-                    "title": "Fed holds rates steady",
-                    "summary": "The FOMC left the target range unchanged.",
-                    "title_zh": "美联储维持利率不变",
-                    "summary_zh": "联邦公开市场委员会维持目标区间不变。",
-                }
+                    "id": "e3b0c44298fc1c149afbf4c8996fb924",
+                    "title": "Treasury yields ease after softer payrolls print",
+                    "summary": "Ten year yields fell as the payrolls report came in below consensus.",
+                    "title_zh": "非农数据走软后美债收益率回落",
+                    "summary_zh": "非农就业数据低于预期，十年期美债收益率下行。",
+                },
+                {
+                    "id": "9f86d081884c7d659a2feaa0c55ad015",
+                    "title": "Fed officials signal patience on rate path",
+                    "summary": "Ten year yields fell as the payrolls report came in below consensus.",
+                    "title_zh": "美联储官员释放利率路径耐心信号",
+                    "summary_zh": "非农就业数据低于预期，十年期美债收益率下行。",
+                },
             ],
             "updated_at": NOW_ISO,
         },

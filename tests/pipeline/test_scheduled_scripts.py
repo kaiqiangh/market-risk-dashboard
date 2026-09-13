@@ -321,15 +321,16 @@ def test_stale_lock_is_reclaimed_and_run_proceeds(tmp_path: Path, stat_profile: 
     assert "commit" in log
 
 
-def test_branch_parameterization_reaches_git_calls(tmp_path: Path) -> None:
-    """SCHEDULED_BRANCH must thread through pull and push."""
+def test_branch_override_cannot_escape_dev(tmp_path: Path) -> None:
+    """The scheduler must ignore branch overrides and publish only to dev."""
     result, log = _run_scheduled(
         tmp_path, SCHEDULED_BRANCH="main", FAKE_GIT_STATUS="dirty", FAKE_GIT_REMOTE="abc123"
     )
 
     assert result.returncode == 0
-    assert "--rebase origin main" in log
-    assert "push origin main" in log
+    assert "--rebase origin dev" in log
+    assert "push origin dev" in log
+    assert "main" not in log
 
 
 def test_timeout_wrapper_wraps_network_steps(tmp_path: Path) -> None:

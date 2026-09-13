@@ -39,7 +39,11 @@ export function useLocale(): UseLocaleResult {
 
   const setLocale = (next: SupportedLocale): void => {
     if (next === currentLocale()) return;
-    window.localStorage.setItem(LOCALE_STORAGE_KEY, next);
+    try {
+      window.localStorage.setItem(LOCALE_STORAGE_KEY, next);
+    } catch {
+      // Some private-browser environments expose localStorage without storage access.
+    }
     // Language switching does not navigate home: read the current page from the hash (layout components like Navbar cannot access child route params.page)
     const page = params.page ?? pageFromHash(window.location.hash) ?? "overview";
     void i18n.changeLanguage(next);

@@ -236,9 +236,10 @@ def test_scheduled_runner_fails_closed_after_repository_errors() -> None:
     assert "nothing was pushed" in script
     assert "local verified commit $COMMIT_SHA" in script
     assert "git rev-parse HEAD" in script
-    # Branch is parameterized (#190): default dev via SCHEDULED_BRANCH, but never
-    # hardcoded, so a scheduled run can target another branch without edits.
-    assert 'BRANCH="${SCHEDULED_BRANCH:-dev}"' in script
+    # Scheduled publication is intentionally fixed to dev; main is reached only
+    # through the protected PR path.
+    assert 'BRANCH="dev"' in script
+    assert "SCHEDULED_BRANCH" not in script
     assert "git ls-remote origin \"refs/heads/$BRANCH\"" in script
     assert "|| true" not in script
     assert "git pull --rebase origin \"$BRANCH\"; then" in script
@@ -327,13 +328,13 @@ def test_ci_uses_checked_in_python_constraints() -> None:
 
 
 def test_frontend_ci_and_production_audit_gate_are_wired() -> None:
-    """Frontend checks and the moderate production audit must run before release."""
+    """Frontend checks and the high production audit must run before release."""
     test_pipeline = _read_workflow("test-pipeline.yml")
     deploy_pages = _read_workflow("deploy-pages.yml")
 
     for workflow in (test_pipeline, deploy_pages):
         assert "npm ci" in workflow
-        assert "npm audit --omit=dev --audit-level=moderate" in workflow
+        assert "npm audit --omit=dev --audit-level=high" in workflow
         for command in ("npm run lint", "npm run typecheck", "npm test", "npm run build"):
             assert command in workflow, f"missing frontend gate: {command}"
 
@@ -346,6 +347,23 @@ def test_frontend_ci_and_production_audit_gate_are_wired() -> None:
     assert re.search(r"^\s*id-token: write$", deploy_pages, re.MULTILINE), (
         "the deploy job must retain OIDC permission"
     )
+
+
+def test_dependency_audit_is_blocking() -> None:
+    """High-severity npm and Python findings must fail the scheduled security workflow."""
+    text = _read_workflow("dependency-audit.yml")
+
+    assert "npm audit --audit-level=high" in text
+    assert "pip-audit" in text
+    assert "continue-on-error" not in text
+
+
+def test_secret_scan_fails_closed_on_incomplete_coverage() -> None:
+    """A skipped file must not allow the publish scanner to report PASSED."""
+    script = (REPO_ROOT / "scripts" / "scan-secrets.mjs").read_text(encoding="utf-8")
+
+    assert "filesSkipped > 0" in script
+    assert "scan coverage incomplete" in script
 
 
 def test_pages_release_boundary_is_dev_and_main_and_fully_gated() -> None:
@@ -380,14 +398,18 @@ def test_pages_release_boundary_is_dev_and_main_and_fully_gated() -> None:
 
     for command in (
         "python -m pipeline.validation.ci_checks --data-dir public/data",
+        "python -m pytest tests/pipeline/ --cov=pipeline --cov-report=term-missing",
+        "ruff check . --select F821",
         "npm run check:contracts",
-        "npm audit --omit=dev --audit-level=moderate",
+        "npm audit --omit=dev --audit-level=high",
         "npm run build",
         "node scripts/scan-secrets.mjs --root .",
     ):
         assert command in build_job, f"release build is missing required gate: {command}"
 
     for gate in (
+        "run: python -m pytest tests/pipeline/ --cov=pipeline --cov-report=term-missing",
+        "run: ruff check . --select F821",
         "run: npm run build",
         "run: node scripts/scan-secrets.mjs --root .",
         "actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa",
@@ -396,3 +418,11 @@ def test_pages_release_boundary_is_dev_and_main_and_fully_gated() -> None:
     assert build_job.index("run: npm run build") < build_job.index(
         "run: node scripts/scan-secrets.mjs --root ."
     ) < build_job.index("actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa")
+    artifact = build_job.index(
+        "actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa"
+    )
+    for gate in (
+        "run: python -m pytest tests/pipeline/ --cov=pipeline --cov-report=term-missing",
+        "run: ruff check . --select F821",
+    ):
+        assert build_job.index(gate) < artifact

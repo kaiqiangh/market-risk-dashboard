@@ -19,6 +19,7 @@ from pipeline.config.models import (
     UniverseConfig,
     ValidationConfig,
     load_config,
+    theme_history_symbols,
 )
 
 __all__ = [
@@ -40,4 +41,5 @@ __all__ = [
     "UniverseConfig",
     "ValidationConfig",
     "load_config",
+    "theme_history_symbols",
 ]

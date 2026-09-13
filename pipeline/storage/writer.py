@@ -53,6 +53,35 @@ class UndatedRowError(StorageError):
         super().__init__(f"history row in {series!r} {reason}: {row!r}")
 
 
+class _AtomicGroup:
+    """Rollback-capable group for a sequence of independently atomic file writes."""
+
+    def __init__(self, writer: StorageWriter) -> None:
+        self.writer = writer
+        self.outermost = False
+        self._rollback_requested = False
+
+    def __enter__(self) -> _AtomicGroup:
+        if self.writer._atomic_originals is None:
+            self.writer._atomic_originals = {}
+            self.outermost = True
+        return self
+
+    def rollback(self) -> None:
+        """Restore the group when the operation reports failure without raising."""
+        self._rollback_requested = True
+
+    def __exit__(self, exc_type: Any, exc_value: Any, traceback: Any) -> bool:
+        if not self.outermost:
+            return False
+        try:
+            if exc_type is not None or self._rollback_requested:
+                self.writer._restore_atomic_group()
+        finally:
+            self.writer._atomic_originals = None
+        return False
+
+
 #: Self-describing contract version for metadata/translations.json (#191).
 #: Distinct from METADATA_SCHEMA_VERSION: this file has its own tiny shape and its
 #: own bump cadence. Single source — record_translations restated it twice before.
@@ -62,11 +91,24 @@ TRANSLATIONS_SCHEMA_VERSION = "1.0.0"
 class StorageWriter:
     def __init__(self, data_dir: Path) -> None:
         self.data_dir = data_dir
+        self._atomic_originals: dict[Path, tuple[bytes, int] | None] | None = None
         self.latest_dir = data_dir / "latest"
         self.history_dir = data_dir / "history"
         self.metadata_dir = data_dir / "metadata"
         for d in (self.latest_dir, self.history_dir, self.metadata_dir):
             d.mkdir(parents=True, exist_ok=True)
+
+    def atomic_group(self) -> _AtomicGroup:
+        """Group file writes and restore the prior set when the operation fails.
+
+        Each member still uses the existing temp-file + fsync + replace primitive. The
+        group closes the failure window where a later file fails after earlier files have
+        already become visible. A process killed during the final replacement sequence can
+        still expose a mixed generation; the tracked Git commit remains the durable snapshot.
+        # ponytail: rollback is the smallest safe fix; add a generation pointer if live readers
+        # ever need process-kill atomicity rather than Git-level publication atomicity.
+        """
+        return _AtomicGroup(self)
 
     # ---- Serialization ----
 
@@ -91,6 +133,7 @@ class StorageWriter:
         (`/tmp`, typically) degrades `os.replace` into a copy, which is interruptible, and
         the guarantee quietly disappears.
         """
+        self._record_atomic_target(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         payload = self._dump(obj)
         fd, tmp_name = tempfile.mkstemp(dir=str(path.parent), prefix=f".{path.name}.", suffix=".tmp")
@@ -143,17 +186,18 @@ class StorageWriter:
 
     def write_slices(self, series_name: str, daily: list[dict[str, Any]]) -> None:
         """history/{series_name}/daily.json full + 30d/90d pre-slices (architecture §1.7)."""
-        series_dir = self.history_dir / series_name
-        series_dir.mkdir(parents=True, exist_ok=True)
-        # Full append (dedupe by date)
-        existing = self._read_json(series_dir / "daily.json", default=[])
-        # Validate before the first write: a rejected batch must leave the series untouched.
-        merged = _merge_by_date(existing, daily, series=series_name)
-        self.write_json(series_dir / "daily.json", merged)
-        # Pre-slices (the first screen loads only 30d, never the full history)
-        self.write_json(series_dir / "30d.json", merged[-30:])
-        self.write_json(series_dir / "90d.json", merged[-90:])
-        self.write_json(series_dir / "index.json", {"series": series_name, "updated_at": now_utc(), "count": len(merged)})
+        with self.atomic_group():
+            series_dir = self.history_dir / series_name
+            series_dir.mkdir(parents=True, exist_ok=True)
+            # Full append (dedupe by date)
+            existing = self._read_json(series_dir / "daily.json", default=[])
+            # Validate before the first write: a rejected batch must leave the series untouched.
+            merged = _merge_by_date(existing, daily, series=series_name)
+            self.write_json(series_dir / "daily.json", merged)
+            # Pre-slices (the first screen loads only 30d, never the full history)
+            self.write_json(series_dir / "30d.json", merged[-30:])
+            self.write_json(series_dir / "90d.json", merged[-90:])
+            self.write_json(series_dir / "index.json", {"series": series_name, "updated_at": now_utc(), "count": len(merged)})
 
     # ---- Metadata ----
 
@@ -224,6 +268,37 @@ class StorageWriter:
         self.write_json(path, {"schema_version": version, "updated_at": now_utc()})
 
     # ---- Utilities ----
+
+    def _record_atomic_target(self, path: Path) -> None:
+        originals = getattr(self, "_atomic_originals", None)
+        if originals is None or path in originals:
+            return
+        if not path.exists():
+            originals[path] = None
+            return
+        originals[path] = (path.read_bytes(), path.stat().st_mode & 0o777)
+
+    def _restore_atomic_group(self) -> None:
+        if self._atomic_originals is None:
+            return
+        for path, original in reversed(list(self._atomic_originals.items())):
+            if original is None:
+                path.unlink(missing_ok=True)
+                continue
+            payload, mode = original
+            path.parent.mkdir(parents=True, exist_ok=True)
+            fd, tmp_name = tempfile.mkstemp(dir=str(path.parent), prefix=f".{path.name}.rollback.", suffix=".tmp")
+            tmp_path = Path(tmp_name)
+            try:
+                os.fchmod(fd, mode)
+                with os.fdopen(fd, "wb") as handle:
+                    handle.write(payload)
+                    handle.flush()
+                    os.fsync(handle.fileno())
+                os.replace(tmp_path, path)
+            except BaseException:
+                tmp_path.unlink(missing_ok=True)
+                raise
 
     def _read_json(self, path: Path, default: Any) -> Any:
         """Read JSON from `path`; `default` is returned only when the file is absent.

@@ -26,12 +26,19 @@ def manifest(root: Path) -> dict[str, str]:
     }
 
 
+# Freeze the pipeline's canonical UTC clock for the synthetic run. validation/freshness.py
+# evaluates the freshness ladder against now_utc(); without freezing it the published
+# freshness_status drifts with real time and the #192 byte-manifest lock can never reproduce
+# the golden. Both consumers below must resolve now_utc via their module attribute, which the
+# patches target, so the frozen timestamp is what the write path sees.
 @patch("pipeline.storage.outcomes.now_utc")
-def publish(writer, generated_at: str, frozen_now: Any) -> None:
+@patch("pipeline.validation.freshness.now_utc")
+def publish(writer, generated_at: str, frozen_freshness_now: Any, frozen_outcomes_now: Any) -> None:
     """The write sequence main() performs for the full command, narrowed to datasets that
     cover every assembly branch: risk (derived inputs), market fallback provenance, news
     default provider, calendar detail, dashboard aggregation."""
-    frozen_now.return_value = generated_at
+    frozen_outcomes_now.return_value = generated_at
+    frozen_freshness_now.return_value = generated_at
     from pipeline.run import (
         RunOutcomes,
         _build_dashboard,

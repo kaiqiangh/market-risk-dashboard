@@ -49,6 +49,29 @@ def test_crash_during_collection_still_writes_failure_report(
     assert "RuntimeError" in str(report.get("error", ""))
 
 
+def test_raw_config_loader_normalizes_yaml_errors(tmp_path: Path) -> None:
+    from pipeline.config.models import ConfigError
+    from pipeline.settings import Settings
+
+    bad = tmp_path / "sources.yaml"
+    bad.write_text("sources: [\n", encoding="utf-8")
+    settings = Settings(_env_file=None, config_dir=tmp_path)
+
+    with pytest.raises(ConfigError, match="could not be parsed") as excinfo:
+        settings.load_sources()
+
+    assert isinstance(excinfo.value.__cause__, Exception)
+
+
+def test_main_stops_before_collection_on_missing_config(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from pipeline.settings import Settings
+
+    monkeypatch.setattr(run_mod, "settings", Settings(_env_file=None, config_dir=tmp_path))
+    monkeypatch.setattr(run_mod, "_run_collection", lambda _command: pytest.fail("collection must not start"))
+
+    assert run_mod.main(["--full"]) == 1
+
+
 # ---- 2. is_schema_compatible fails closed on truncated versions ----
 
 

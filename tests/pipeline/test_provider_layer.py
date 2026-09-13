@@ -15,16 +15,22 @@ Pins the contracts the ticket installs (E-3, S-1, S-2, #91/#92):
 from __future__ import annotations
 
 import json
+import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import httpx
 import pytest
 
 from pipeline.providers.base import (
+    MAX_RESPONSE_BYTES,
     PERMANENT,
     RATE_LIMITED,
     TRANSIENT,
     GuardedClient,
+    CircuitBreaker,
+    HostRateLimiter,
+    NewsRow,
     ProviderError,
     ProviderHealth,
     ProviderRegistry,
@@ -80,6 +86,11 @@ def test_redact_masks_fmp_and_coingecko_key_shapes() -> None:
     # through provider error text, so nothing published loses its id.
     sha1 = "da39a3ee5e6b4b0d3255bfef95601890afd80709"
     assert sha1 not in redact("weird payload " + sha1)
+
+
+def test_news_replay_row_rejects_unsafe_article_url() -> None:
+    with pytest.raises(ValueError, match="news URL"):
+        NewsRow(title="headline", source="source", source_id="source", url="javascript:alert(1)", published_at="2026-08-03T00:00:00Z")
 
 
 def test_from_exception_classifies_and_redacts_http_errors() -> None:
@@ -138,6 +149,148 @@ def test_key_bearing_http_error_never_reaches_the_caller(tmp_path: Path) -> None
     assert "apikey" not in str(excinfo.value)
 
 
+def test_guarded_client_decodes_gzipped_response() -> None:
+    """Regression (2026-08-24, #103 carry-forward): GuardedClient.get must auto-decode a
+    gzipped body. The streaming ``iter_bytes`` path in httpx 0.28.x raised
+    ``DecodingError: incorrect header check`` on gzipped responses, which emptied every
+    HTTP-JSON dataset (fred/coingecko/calendar/news). The bounded streaming request decodes it."""
+    import gzip
+
+    payload = b'{"observations": [{"date": "2026-01-01", "value": "1.23"}]}'
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            content=gzip.compress(payload),
+            headers={"Content-Encoding": "gzip", "Content-Type": "application/json"},
+            request=request,
+        )
+
+    client = GuardedClient({"api.stlouisfed.org"}, transport=httpx.MockTransport(handler))
+    try:
+        resp = client.get("https://api.stlouisfed.org/fred/series/observations")
+        assert resp.status_code == 200
+        assert resp.json() == {"observations": [{"date": "2026-01-01", "value": "1.23"}]}
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize("encoding", ["deflate", "br"])
+def test_guarded_client_decodes_other_supported_content_encodings(encoding: str) -> None:
+    import zlib
+
+    import brotli
+
+    payload = b'{"value": "decoded"}'
+    compressed = zlib.compress(payload) if encoding == "deflate" else brotli.compress(payload)
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            content=compressed,
+            headers={"Content-Encoding": encoding, "Content-Type": "application/json"},
+            request=request,
+        )
+
+    client = GuardedClient({"api.example"}, transport=httpx.MockTransport(handler))
+    try:
+        assert client.get("https://api.example/data").json() == {"value": "decoded"}
+    finally:
+        client.close()
+
+
+class _TrackingStream(httpx.SyncByteStream):
+    def __init__(self, *chunks: bytes) -> None:
+        self.chunks = chunks
+        self.closed = False
+
+    def __iter__(self):
+        yield from self.chunks
+
+    def close(self) -> None:
+        self.closed = True
+
+
+def test_guarded_client_rejects_declared_oversize_and_closes_response() -> None:
+    stream = _TrackingStream(b"ok")
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            headers={"Content-Length": str(MAX_RESPONSE_BYTES + 1)},
+            stream=stream,
+            request=request,
+        )
+
+    client = GuardedClient({"api.example"}, transport=httpx.MockTransport(handler))
+    try:
+        with pytest.raises(ProviderError, match="response exceeds"):
+            client.get("https://api.example/data")
+        assert stream.closed
+    finally:
+        client.close()
+
+
+def test_guarded_client_rejects_unknown_length_oversize_and_closes_response() -> None:
+    stream = _TrackingStream(b"x" * (MAX_RESPONSE_BYTES + 1))
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, stream=stream, request=request)
+
+    client = GuardedClient({"api.example"}, transport=httpx.MockTransport(handler))
+    try:
+        with pytest.raises(ProviderError, match="response exceeds"):
+            client.get("https://api.example/data")
+        assert stream.closed
+    finally:
+        client.close()
+
+
+def test_guarded_client_rejects_decoded_gzip_oversize() -> None:
+    import gzip
+
+    compressed = gzip.compress(b"x" * (MAX_RESPONSE_BYTES + 1))
+    assert len(compressed) < MAX_RESPONSE_BYTES
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            content=compressed,
+            headers={"Content-Encoding": "gzip"},
+            request=request,
+        )
+
+    client = GuardedClient({"api.example"}, transport=httpx.MockTransport(handler))
+    try:
+        with pytest.raises(ProviderError, match="response exceeds"):
+            client.get("https://api.example/data")
+    finally:
+        client.close()
+
+
+def test_guarded_client_rejects_oversize_redirect_target() -> None:
+    stream = _TrackingStream(b"x" * (MAX_RESPONSE_BYTES + 1))
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.host == "relay.example":
+            return httpx.Response(
+                302,
+                headers={"location": "https://publisher.example/data"},
+                request=request,
+            )
+        return httpx.Response(200, stream=stream, request=request)
+
+    client = GuardedClient(
+        {"relay.example", "publisher.example"}, transport=httpx.MockTransport(handler)
+    )
+    try:
+        with pytest.raises(ProviderError, match="response exceeds"):
+            client.get("https://relay.example/data")
+        assert stream.closed
+    finally:
+        client.close()
+
+
 def test_redirect_relay_voucher_is_scoped_to_one_request() -> None:
     """A relay may vouch for its redirect target without leaking trust to another GET."""
     def handler(request: httpx.Request) -> httpx.Response:
@@ -146,7 +299,10 @@ def test_redirect_relay_voucher_is_scoped_to_one_request() -> None:
         return httpx.Response(200, content=b"ok", request=request)
 
     client = GuardedClient(
-        {"relay.example"}, relay_hosts={"relay.example"}, transport=httpx.MockTransport(handler)
+        {"relay.example"},
+        relay_hosts={"relay.example"},
+        relay_target_hosts={"publisher.example"},
+        transport=httpx.MockTransport(handler),
     )
     try:
         assert client.get("https://relay.example/feed").text == "ok"
@@ -154,6 +310,36 @@ def test_redirect_relay_voucher_is_scoped_to_one_request() -> None:
             client.get("https://blocked.example/feed")
         with pytest.raises(ProviderError, match="not in outbound allowlist"):
             client.get("https://blocked.example/feed", extensions={"relay_vouched": True})
+    finally:
+        client.close()
+
+
+def test_relay_voucher_rejects_unlisted_target() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            302,
+            headers={"location": "https://blocked.example/feed"},
+            request=request,
+        )
+
+    client = GuardedClient(
+        {"relay.example"},
+        relay_hosts={"relay.example"},
+        relay_target_hosts={"publisher.example"},
+        transport=httpx.MockTransport(handler),
+    )
+    try:
+        with pytest.raises(ProviderError, match="relay target"):
+            client.get("https://relay.example/feed")
+    finally:
+        client.close()
+
+
+def test_guarded_client_rejects_non_public_ip_even_when_allowlisted() -> None:
+    client = GuardedClient({"127.0.0.1"}, transport=httpx.MockTransport(lambda request: None))
+    try:
+        with pytest.raises(ProviderError, match="non-public outbound IP"):
+            client.get("https://127.0.0.1/feed")
     finally:
         client.close()
 
@@ -272,6 +458,24 @@ def test_circuit_breaker_success_resets_the_streak(tmp_path: Path) -> None:
     assert registry.breaker.is_open(provider, "fake.example") is False
 
 
+def test_circuit_breaker_counts_concurrent_failures_without_lost_updates() -> None:
+    provider = _FakeProvider()
+    breaker = CircuitBreaker(threshold=100)
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        list(
+            pool.map(
+                lambda _: breaker.record_failure(
+                    provider, "fake.example", ProviderError("transient", cls=TRANSIENT)
+                ),
+                range(100),
+            )
+        )
+
+    assert breaker._streak[(provider.name, "fake.example")] == 100
+    assert breaker.is_open(provider, "fake.example")
+
+
 # -------------------------------------------------------------------------------------
 # Rate-limited verdict trips the host limiter (rest of the run)
 # -------------------------------------------------------------------------------------
@@ -291,6 +495,22 @@ def test_rate_limited_trips_the_host_limiter(tmp_path: Path) -> None:
     with pytest.raises(ProviderError, match="rate-limited for the rest of the run"):
         registry.call("test", "get_quote", "q1", args=("SYM",))
     assert provider.calls == calls_before  # the limiter blocked before the provider ran
+
+
+def test_host_rate_limiter_serializes_concurrent_interval_reservations() -> None:
+    limiter = HostRateLimiter()
+    starts: list[float] = []
+
+    def call() -> None:
+        with limiter.acquire("fake.example", max_concurrency=8, min_interval_ms=5):
+            starts.append(time.monotonic())
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        list(pool.map(lambda _: call(), range(8)))
+
+    ordered = sorted(starts)
+    assert len(ordered) == 8
+    assert all(later - earlier >= 0.003 for earlier, later in zip(ordered, ordered[1:]))
 
 
 # -------------------------------------------------------------------------------------

@@ -29,6 +29,9 @@ export type DatasetOptions = {
 
 export type MetadataKey = "sources" | "freshness" | "schema-version" | "translations";
 
+/** Bound every static-data request so a broken Pages edge cannot hold a query forever. */
+export const DATA_REQUEST_TIMEOUT_MS = 10_000;
+
 /** History series key (architecture §1.7: history/risk/*, history/market/*).
  * "macro" is the per-GROUP 30d/90d bundle (history/macro/{group}.{slice}.json, #96/#84 §3). */
 export type HistoryKey = "market" | "risk" | "macro";
@@ -58,6 +61,32 @@ export class SchemaError extends Error {
  * a page that refetches every 5 minutes logs once, not 288 times a day.
  */
 const inspectedForUnknownFields = new Set<string>();
+
+async function fetchWithTimeout(url: string, externalSignal?: AbortSignal): Promise<Response> {
+  const controller = new AbortController();
+  let timedOut = false;
+  const timeoutId = globalThis.setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, DATA_REQUEST_TIMEOUT_MS);
+  const abortFromQuery = () => controller.abort(externalSignal?.reason);
+
+  if (externalSignal?.aborted) {
+    abortFromQuery();
+  } else {
+    externalSignal?.addEventListener("abort", abortFromQuery, { once: true });
+  }
+
+  try {
+    return await fetch(url, { signal: controller.signal });
+  } catch (error) {
+    if (timedOut) throw new Error(`Data request timed out: ${url}`);
+    throw error;
+  } finally {
+    globalThis.clearTimeout(timeoutId);
+    externalSignal?.removeEventListener("abort", abortFromQuery);
+  }
+}
 
 /** Reset the once-per-session unknown-field guard (tests only). */
 export function resetUnknownFieldReports(): void {
@@ -125,9 +154,10 @@ export class DatasetClient {
     key: DatasetKey | MetadataKey | HistoryKey,
     opts: DatasetOptions = {},
     schema?: z.ZodTypeAny,
+    signal?: AbortSignal,
   ): Promise<T> {
     const url = this.pathFor(key, opts);
-    const response = await fetch(url);
+    const response = await fetchWithTimeout(url, signal);
     if (!response.ok) {
       throw new Error(`Data file unreachable: ${url} (HTTP ${response.status})`);
     }

@@ -37,15 +37,17 @@ from collections.abc import Generator
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
 from datetime import UTC, datetime
+from ipaddress import ip_address
 from pathlib import Path
-from threading import Semaphore
+from threading import Lock, Semaphore
 from typing import Any
 
 import httpx
-from pydantic import BaseModel, Field, RootModel
+from pydantic import BaseModel, Field, RootModel, field_validator
 
 from pipeline.degrade import degrade_factor as resolve_degrade_factor
 from pipeline.schemas.envelope import SCHEMA_VERSION
+from pipeline.schemas.news import _validate_news_url
 from pipeline.settings import Settings
 from pipeline.utils import now_utc
 
@@ -156,6 +158,7 @@ class GuardedClient(httpx.Client):
         timeout: float = DEFAULT_TIMEOUT_SECONDS,
         headers: dict[str, str] | None = None,
         relay_hosts: set[str] | None = None,
+        relay_target_hosts: set[str] | None = None,
         transport: httpx.BaseTransport | None = None,
     ) -> None:
         super().__init__(
@@ -166,15 +169,30 @@ class GuardedClient(httpx.Client):
             event_hooks={"request": [self._check_request], "response": [self._check_response]},
         )
         self._allowed_hosts = set(allowed_hosts)
-        # S-3 trust:relay — a hop redirected *from* a relay host is vouched for by the relay
-        # and skips the allowlist check (rsshub.app's routes forward to arbitrary publishers).
+        # S-3 trust:relay — a hop redirected *from* a relay host is vouched for only when its
+        # target host is explicitly configured by the source.
         self._relay_hosts = set(relay_hosts or ())
+        self._relay_target_hosts = {host.lower() for host in (relay_target_hosts or ())}
 
     def _check_request(self, request: httpx.Request) -> None:
         if request.url.scheme != "https":
             raise ProviderError(f"blocked: non-https outbound {request.url}")
+        host = request.url.host or ""
+        if host == "localhost" or host.endswith((".localhost", ".local")):
+            raise ProviderError(f"blocked: local outbound host {host}")
+        try:
+            address = ip_address(host)
+        except ValueError:
+            pass
+        else:
+            if not address.is_global:
+                raise ProviderError(f"blocked: non-public outbound IP {host}")
         # A redirect source that is a relay vouches for the target host (S-3).
         if request.extensions.get("relay_vouched") is _RELAY_VOUCH:
+            if request.url.host not in self._relay_target_hosts:
+                raise ProviderError(
+                    f"blocked: relay target {request.url.host} not in relay target allowlist"
+                )
             return
         if request.url.host not in self._allowed_hosts:
             raise ProviderError(f"blocked: host {request.url.host} not in outbound allowlist")
@@ -182,45 +200,73 @@ class GuardedClient(httpx.Client):
     def _check_response(self, response: httpx.Response) -> None:
         length = response.headers.get("Content-Length")
         if length and length.isdigit() and int(length) > MAX_RESPONSE_BYTES:
+            response.close()
             raise ProviderError(f"blocked: response exceeds {MAX_RESPONSE_BYTES} bytes ({response.url})")
 
     def get(self, url: str, **kwargs: Any) -> httpx.Response:
         """GET with a bounded manual redirect walk (≤ MAX_REDIRECT_HOPS hops) and a hard
-        2 MB streaming cap — chunked bodies are bounded by reading, not by Content-Length."""
+        2 MB cap (S-3).
+
+        Uses a streaming request and ``iter_bytes`` so httpx decodes
+        ``Content-Encoding`` (gzip/deflate/br) while the decoded bytes are bounded. The
+        per-hop allowlist/https gate is preserved via the request hook; the 2 MB cap is
+        enforced on ``Content-Length`` (response hook) and, for chunked responses, before
+        each decoded chunk is retained.
+        """
         from urllib.parse import urljoin
 
         previous_host: str | None = None
-        base_extensions = dict(kwargs.pop("extensions", {}) or {})
+        request_kwargs = dict(kwargs)
+        has_auth = "auth" in request_kwargs
+        auth = request_kwargs.pop("auth", None)
+        # GuardedClient owns redirect policy; callers cannot opt into httpx's unbounded
+        # redirect handling for a request made through this client.
+        request_kwargs.pop("follow_redirects", None)
+        base_extensions = dict(request_kwargs.pop("extensions", {}) or {})
         base_extensions.pop("relay_vouched", None)
         for _ in range(MAX_REDIRECT_HOPS + 1):
             extensions = {
                 **base_extensions,
                 "relay_vouched": _RELAY_VOUCH if previous_host in self._relay_hosts else None,
             }
-            with super().stream("GET", url, extensions=extensions, **kwargs) as response:
-                if response.status_code >= 300 and response.headers.get("location"):
-                    previous_host = response.url.host
-                    url = urljoin(str(response.url), response.headers["location"])
-                    continue
-                return self._read_bounded(response)
+            request = self.build_request("GET", url, extensions=extensions, **request_kwargs)
+            send_kwargs: dict[str, Any] = {"stream": True, "follow_redirects": False}
+            if has_auth:
+                send_kwargs["auth"] = auth
+            response = super().send(request, **send_kwargs)
+            if response.status_code >= 300 and response.headers.get("location"):
+                previous_host = response.url.host
+                url = urljoin(str(response.url), response.headers["location"])
+                response.close()
+                continue
+            # S-3: refuse responses larger than 2 MB after decoding. Keeping only bounded
+            # chunks avoids the full buffering performed by a non-streaming Client.get().
+            body = bytearray()
+            try:
+                for chunk in response.iter_bytes(chunk_size=64 * 1024):
+                    if len(body) + len(chunk) > MAX_RESPONSE_BYTES:
+                        raise ProviderError(
+                            f"blocked: response exceeds {MAX_RESPONSE_BYTES} bytes ({response.url})"
+                        )
+                    body.extend(chunk)
+            finally:
+                response.close()
+            headers = httpx.Headers(response.headers)
+            content_encoding = headers.pop("content-encoding", None)
+            result = httpx.Response(
+                response.status_code,
+                headers=headers,
+                content=bytes(body),
+                request=response.request,
+                extensions=response.extensions,
+            )
+            # The body is already decoded, but retain the wire-level header for callers that
+            # inspect response metadata. The constructed response has _content set, so httpx
+            # will not attempt to decode it a second time.
+            if content_encoding is not None:
+                result.headers["content-encoding"] = content_encoding
+            return result
         raise ProviderError(f"blocked: more than {MAX_REDIRECT_HOPS} redirect hops")
-
-    def _read_bounded(self, response: httpx.Response) -> httpx.Response:
-        """Read the body with a 2 MB cap (S-3); raise ProviderError past the cap."""
-        chunks: list[bytes] = []
-        total = 0
-        for chunk in response.iter_bytes():
-            total += len(chunk)
-            if total > MAX_RESPONSE_BYTES:
-                raise ProviderError(f"blocked: response exceeds {MAX_RESPONSE_BYTES} bytes ({response.url})")
-            chunks.append(chunk)
-        return httpx.Response(
-            status_code=response.status_code,
-            headers=response.headers,
-            content=b"".join(chunks),
-            request=response.request,
-            extensions=response.extensions,
-        )
 
 
 def guarded_client(
@@ -229,9 +275,16 @@ def guarded_client(
     timeout: float = DEFAULT_TIMEOUT_SECONDS,
     headers: dict[str, str] | None = None,
     relay_hosts: set[str] | None = None,
+    relay_target_hosts: set[str] | None = None,
 ) -> "GuardedClient":
     """Factory for :class:`GuardedClient` (kept as a function so provider call sites stay terse)."""
-    return GuardedClient(allowed_hosts, timeout=timeout, headers=headers, relay_hosts=relay_hosts)
+    return GuardedClient(
+        allowed_hosts,
+        timeout=timeout,
+        headers=headers,
+        relay_hosts=relay_hosts,
+        relay_target_hosts=relay_target_hosts,
+    )
 
 
 class ProviderError(Exception):
@@ -352,6 +405,8 @@ class NewsRow(BaseModel):
     summary: str = ""
     category_hint: str | None = None
 
+    _url_is_absolute_http = field_validator("url")(_validate_news_url)
+
 
 class CryptoAssetRow(BaseModel):
     symbol: str = Field(min_length=1)
@@ -456,25 +511,39 @@ class HostRateLimiter:
         self._semaphores: dict[str, Semaphore] = {}
         self._next_at: dict[str, float] = {}
         self._tripped: set[str] = set()
+        self._lock = Lock()
 
     @contextmanager
     def acquire(self, host: str, max_concurrency: int, min_interval_ms: int) -> Generator[None, None, None]:
         """Hold the host's concurrency slot while waiting out the minimum interval."""
-        if host in self._tripped:
-            raise ProviderError(f"host {host} rate-limited for the rest of the run", cls=RATE_LIMITED)
-        semaphore = self._semaphores.setdefault(host, Semaphore(max_concurrency))
+        with self._lock:
+            if host in self._tripped:
+                raise ProviderError(f"host {host} rate-limited for the rest of the run", cls=RATE_LIMITED)
+            semaphore = self._semaphores.get(host)
+            if semaphore is None:
+                semaphore = self._semaphores.setdefault(host, Semaphore(max_concurrency))
         with semaphore:
-            wait = self._next_at.get(host, 0.0) - time.monotonic()
-            if wait > 0:
+            while True:
+                with self._lock:
+                    if host in self._tripped:
+                        raise ProviderError(
+                            f"host {host} rate-limited for the rest of the run", cls=RATE_LIMITED
+                        )
+                    now = time.monotonic()
+                    wait = self._next_at.get(host, 0.0) - now
+                    if wait <= 0:
+                        self._next_at[host] = now + min_interval_ms / 1000.0
+                        break
                 time.sleep(wait)
-            self._next_at[host] = time.monotonic() + min_interval_ms / 1000.0
             yield
 
     def trip(self, host: str) -> None:
-        self._tripped.add(host)
+        with self._lock:
+            self._tripped.add(host)
 
     def is_tripped(self, host: str) -> bool:
-        return host in self._tripped
+        with self._lock:
+            return host in self._tripped
 
 
 class CircuitBreaker:
@@ -491,6 +560,7 @@ class CircuitBreaker:
         self.threshold = threshold
         self._streak: dict[tuple[str, str], int] = {}
         self._open: set[tuple[str, str]] = set()
+        self._lock = Lock()
 
     @staticmethod
     def _key(provider: BaseProvider, host: str) -> tuple[str, str]:
@@ -498,21 +568,24 @@ class CircuitBreaker:
 
     def record_failure(self, provider: BaseProvider, host: str, error: ProviderError) -> None:
         key = self._key(provider, host)
-        if error.cls == PERMANENT:
-            self._streak.pop(key, None)  # permanent does not count toward the streak
-            return
-        streak = self._streak.get(key, 0) + 1
-        self._streak[key] = streak
-        if streak >= self.threshold:
-            self._open.add(key)
+        with self._lock:
+            if error.cls == PERMANENT:
+                self._streak.pop(key, None)  # permanent does not count toward the streak
+                return
+            streak = self._streak.get(key, 0) + 1
+            self._streak[key] = streak
+            if streak >= self.threshold:
+                self._open.add(key)
 
     def record_success(self, provider: BaseProvider, host: str) -> None:
         key = self._key(provider, host)
-        self._streak.pop(key, None)
-        self._open.discard(key)
+        with self._lock:
+            self._streak.pop(key, None)
+            self._open.discard(key)
 
     def is_open(self, provider: BaseProvider, host: str) -> bool:
-        return self._key(provider, host) in self._open
+        with self._lock:
+            return self._key(provider, host) in self._open
 
 
 class ProviderRegistry:
