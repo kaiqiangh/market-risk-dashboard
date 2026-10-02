@@ -1,186 +1,228 @@
 {
   "items": [
     {
-      "id": "22d40b489326b0d3c8983e2f74151c1cc9b2e6ad",
-      "title": "Robots are grabbing chips too: Tesla trims AI5/AI6 memory specs to clear the way for Optimus production",
-      "summary": "Tesla is adjusting the memory specifications of the next-generation AI chips used for both autonomous driving and Optimus, in order to meet the mass-production requirements of its humanoid robots.",
-      "title_zh": "机器人也来“抢”芯片！特斯拉下调 AI5/AI6 存储规格，为 Optimus 量产让路",
-      "summary_zh": "特斯拉正在调整同时用于自动驾驶和Optimus的下一代AI芯片存储规格，以满足人形机器人量产需求"
+      "id": "46617a003ad9a775aa6d4d6086505f08dcc8aa40",
+      "title": "Stocks rise after soft jobs data; Nasdaq hits record led by Nvidia: Live updates",
+      "summary": "The Dow was headed for a losing week.",
+      "title_zh": "就业数据疲软后股市上涨，纳斯达克在英伟达带动下创纪录：实时更新",
+      "summary_zh": "道指本周料将以累计下跌收场。"
     },
     {
-      "id": "43d3f9779de02e1730c5854e42146061f2510677",
-      "title": "Broadcom said to be raising $60 billion to fund the Anthropic chip project",
-      "summary": "[Broadcom said to be raising $60 billion to fund the Anthropic chip project] CLS, Oct 2: according to reports, people familiar with the matter said Broadcom's Wall Street bank syndicate has begun raising $60 billion of new AI chip financing, with beneficiaries including Anthropic and other companies",
-      "title_zh": "博通据悉筹措600亿美元 为Anthropic芯片项目提供资金",
-      "summary_zh": "【博通据悉筹措600亿美元 为Anthropic芯片项目提供资金】财联社10月2日电，据报道，知情人士称，博通的华尔街银行团开始筹集600亿美元新的AI芯片融资，受益者包括Anthropic等公司"
+      "id": "927c62ec8f415804c77f1e4df490f815a382d655",
+      "title": "Institutions say September payrolls kill October hike expectations; Fed watchers say the report leaves the stance unchanged and September CPI matters more",
+      "summary": "The US September employment report cooled markedly, and market expectations for a near-term Fed rate hike fell further",
+      "title_zh": "机构高呼9月非农“杀死”10月加息预期！“新美联储通讯社”：就业报告未改联储立场，9月CPI更重要",
+      "summary_zh": "美国9月非农就业报告明显降温，市场对美联储近期加息的预期进一步下滑"
     },
     {
-      "id": "ace638a6be893b55c6289881f9819073e184130b",
-      "title": "Core inflation sticky at 2.8% and exports at a record $120.9 billion lift expectations of a Bank of Korea hike in November",
-      "summary": "South Korea's headline inflation eased as expected in September, but core inflation excluding food and energy remains sticky; combined with a record monthly high in semiconductor-driven exports, this strengthened market expectations that the Bank of Korea will resume hiking in November.",
-      "title_zh": "核心通胀2.8%粘性未消、出口1209亿美元创纪录，韩国央行11月加息预期升温",
-      "summary_zh": "韩国9月整体通胀如期回落，但剔除食品与能源后的核心通胀仍显粘性，叠加半导体驱动的出口单月创下历史新高，强化了市场对韩国央行11月恢复加息的预期"
+      "id": "02b32d0cec069b05d46f8571e1b36f347f3f5ebb",
+      "title": "Stocks making the biggest moves midday: Tesla, Broadcom, Nike, ON Semiconductor & more",
+      "summary": "These are some of the stocks posting the largest moves midday.",
+      "title_zh": "盘中涨幅最大的个股：特斯拉、博通、耐克、安森美等",
+      "summary_zh": "以下是盘中涨幅最大的一些个股。"
     },
     {
-      "id": "940157eef1cd7113e8c9e567f3056d174682b733",
-      "title": "CLS, Oct 2: Ukraine's agriculture minister said winter wheat acreage for the 2027 harvest could fall 17%",
-      "summary": "CLS, Oct 2: Ukraine's agriculture minister said winter wheat acreage for the 2027 harvest could fall 17%",
-      "title_zh": "财联社10月2日电，乌克兰农业部长表示，2027年收获季的冬小麦播种面积可能下降17%。",
-      "summary_zh": "财联社10月2日电，乌克兰农业部长表示，2027年收获季的冬小麦播种面积可能下降17%"
+      "id": "66cbc2faf839950617b23f573f3c9aae7e195597",
+      "title": "Nvidia just hit a record high. Here’s why the stock still looks cheap to me",
+      "summary": "Nvidia looks historically cheap despite strong AI demand and expectations for continued revenue growth.",
+      "title_zh": "英伟达刚刚创下历史新高。以下是我认为该股依然便宜的原因",
+      "summary_zh": "尽管AI需求强劲且营收有望继续增长，英伟达的估值在历史上看依然便宜。"
     },
     {
-      "id": "4731f0afcf2f6d98a7bc880d99cda90d7db314fe",
-      "title": "CLS, Oct 2: JPMorgan cut its Nike price target to $33 from $40",
-      "summary": "CLS, Oct 2: JPMorgan cut its Nike price target to $33 from $40",
-      "title_zh": "财联社10月2日电，摩根大通将耐克目标价从40美元下调至33美元。",
-      "summary_zh": "财联社10月2日电，摩根大通将耐克目标价从40美元下调至33美元"
+      "id": "564b31e6f8292ee66d9e05508460b61f52e70179",
+      "title": "CLS news, October 3: US Attorney General Blanche said the Justice Department will not reopen the criminal investigation into former Fed Chair Powell.",
+      "summary": "CLS news, October 3: US Attorney General Blanche said the Justice Department will not reopen the criminal investigation into former Fed Chair Powell",
+      "title_zh": "财联社10月3日电，美国司法部长布兰奇表示，司法部不会重启对前任美联储主席鲍威尔的刑事调查。",
+      "summary_zh": "财联社10月3日电，美国司法部长布兰奇表示，司法部不会重启对前任美联储主席鲍威尔的刑事调查"
     },
     {
-      "id": "8fb7e76e21d135b010bef99b5c82c5906324ea87",
-      "title": "CLS, Oct 2: per a Friday filing, SK Group chairman Chey Tae-won will sell a 2.26% stake in SK Corp for about 944 billion won ($699.5 million), with the deal expected to close on Nov 2",
-      "summary": "CLS, Oct 2: per a Friday filing, SK Group chairman Chey Tae-won will sell a 2.26% stake in SK Corp for about 944 billion won ($699.5 million), with the deal expected to close on Nov 2",
-      "title_zh": "财联社10月2日电，据周五提交的文件，SK集团会长崔泰源将出售SKCorp的2.26%的股份，作价约9440亿韩元（约合6.995亿美元），交易预计于11月2日完成。",
-      "summary_zh": "财联社10月2日电，据周五提交的文件，SK集团会长崔泰源将出售SKCorp的2.26%的股份，作价约9440亿韩元（约合6.995亿美元），交易预计于11月2日完成"
+      "id": "e61a7b20a009ae7e9906d4856dc2b497a66980d0",
+      "title": "CLS news, October 3: on Friday (October 2) the Fed's overnight reverse repo (RRP) facility was used for USD 1.501 billion.",
+      "summary": "CLS news, October 3: on Friday (October 2) the Fed's overnight reverse repo (RRP) facility was used for USD 1.501 billion",
+      "title_zh": "财联社10月3日电，周五（10月2日），美联储隔夜逆回购协议（RRP）使用规模为15.01亿美元。",
+      "summary_zh": "财联社10月3日电，周五（10月2日），美联储隔夜逆回购协议（RRP）使用规模为15.01亿美元"
     },
     {
-      "id": "82d8802d5e480ceeeab52bbcc30f9fa77581718a",
-      "title": "CLS, Oct 2: IG Group shares extended their decline to 26% after the company updated its earnings outlook",
-      "summary": "CLS, Oct 2: IG Group shares extended their decline to 26% after the company updated its earnings outlook",
-      "title_zh": "财联社10月2日电，IG Group股价跌幅扩大至26%，此前公司更新业绩展望。",
-      "summary_zh": "财联社10月2日电，IG Group股价跌幅扩大至26%，此前公司更新业绩展望"
+      "id": "aa6f832497d2b3e93c999f19b311775bd4670c0f",
+      "title": "Fed's Goolsbee: there is ample room for any option, whether a hike or holding steady",
+      "summary": "[Fed's Goolsbee: there is ample room for any option, whether a hike or holding steady] CLS news, October 3: Fed's Goolsbee said there is ample room for any option, whether hiking or holding steady; the labor market remains stable, the inflation side of the Fed's mandate matters more, and the Fed will watch for evidence that inflation is returning to the 2% level",
+      "title_zh": "美联储古尔斯比：就加息或按兵不动而言 任何选项均有充分空间",
+      "summary_zh": "【美联储古尔斯比：就加息或按兵不动而言 任何选项均有充分空间】财联社10月3日电，美联储古尔斯比表示，就加息或按兵不动而言，任何选项均有充分空间；劳动力市场保持稳定，美联储职责中通胀方面更为重要；美联储会关注是否有证据表明通胀回到2%的水平"
     },
     {
-      "id": "09abf5c913c37c7c77bb9bb7412cf848af98bdfe",
-      "title": "CLS, Oct 2: Kering shares fell 4% after JPMorgan cut its earnings forecasts",
-      "summary": "CLS, Oct 2: Kering shares fell 4% after JPMorgan cut its earnings forecasts",
-      "title_zh": "财联社10月2日电，开云集团股价跌幅达4%，此前摩根大通下调其盈利预测。",
-      "summary_zh": "财联社10月2日电，开云集团股价跌幅达4%，此前摩根大通下调其盈利预测"
+      "id": "8f529679950607378503941e2d5ea057dd32c8f3",
+      "title": "Federal Reserve Board issues enforcement action with Ontario Bancorporation, Inc.",
+      "summary": "Federal Reserve Board issues enforcement action with Ontario Bancorporation, Inc.",
+      "title_zh": "美联储理事会宣布对 Ontario Bancorporation, Inc. 采取执法行动",
+      "summary_zh": "美联储理事会宣布对 Ontario Bancorporation, Inc. 采取执法行动"
     },
     {
-      "id": "b56f8faa31699581d0508955a4065d579cef1770",
-      "title": "CLS, Oct 2: Volvo Cars shares fell 4.2% after the company withdrew its 2026 sales and cash-flow outlook",
-      "summary": "CLS, Oct 2: Volvo Cars shares fell 4.2% after the company withdrew its 2026 sales and cash-flow outlook",
-      "title_zh": "财联社10月2日电，沃尔沃汽车股价下跌4.2%，此前公司撤销了2026年销量和现金流展望。",
-      "summary_zh": "财联社10月2日电，沃尔沃汽车股价下跌4.2%，此前公司撤销了2026年销量和现金流展望"
+      "id": "33f4ebe3b886f2751ba0379d2e158d92f0356af1",
+      "title": "Nvidia launches a 64GB DGX Spark with memory halved, from USD 4999, and raises the 128GB version to USD 6950",
+      "summary": "As AI models get ever lighter, VRAM keeps getting more expensive",
+      "title_zh": "英伟达推出64GB版DGX Spark，内存砍半，4999美元起售，128GB版涨价至6950美元",
+      "summary_zh": "在AI模型越来越“轻量化”的同时，显存却越来越贵"
     },
     {
-      "id": "5ae3ec5c512e12722cd383962dcd587e19a28301",
-      "title": "Major European indices open higher across the board",
-      "summary": "[Major European indices open higher across the board] CLS, Oct 2: major European indices opened higher across the board, with Germany's DAX30 up 0.24% at 24999.67, the UK's FTSE 100 up 0.18% at 10447.50, France's CAC40 up 0.13% at 7845.87 and the Euro Stoxx 50 up 0.33% at 6195.75",
-      "title_zh": "欧洲主要股指开盘集体走高",
-      "summary_zh": "【欧洲主要股指开盘集体走高】财联社10月2日电，欧洲主要股指开盘集体走高，德国DAX30指数开盘上涨涨幅0.24%，报24999.67点；英国富时100指数涨幅0.18%，报10447.50点；法国CAC40指数涨幅0.13%，报7845.87点；欧洲斯托克50指数涨幅0.33%，报6195.75点"
+      "id": "824159ce9e2c37a5d6fe3720792cf6c93089bd70",
+      "title": "Tesla surges as Q3 global deliveries beat expectations, with Europe up 53% year on year in August",
+      "summary": "Tesla's third-quarter global deliveries beat analyst expectations, offering a stabilization signal for the EV maker in a pressured market, though they were still down year on year",
+      "title_zh": "特斯拉大涨！三季度全球交付量超预期，欧洲8月同比增长53%",
+      "summary_zh": "特斯拉第三季度全球交付量超出分析师预期，为这家电动车制造商在市场承压时期提供了一个企稳信号，但同比仍录得下滑"
     },
     {
-      "id": "d599c2b15a21e03c0205644bd81986e595485de7",
-      "title": "CLS, Oct 2: the Nikkei 225 closed down 0.94% at 68309.46, while South Korea's KOSPI closed up 0.46% at 7003.74",
-      "summary": "CLS, Oct 2: the Nikkei 225 closed down 0.94% at 68309.46",
-      "title_zh": "财联社10月2日电，日经225指数收盘下跌0.94%，报68309.46点。韩国KOSPI指数收盘上涨0.46%，报7003.74点。",
-      "summary_zh": "财联社10月2日电，日经225指数收盘下跌0.94%，报68309.46点"
+      "id": "4b5287a909de70263164d4c6809fb6dc1883eed0",
+      "title": "Drone attack in central Sudan causes 12 casualties",
+      "summary": "[Drone attack in central Sudan causes 12 casualties] CLS news, October 3: Sudan's civilian body the Kordofan Observatory said in a statement on October 2 local time that a drone attack that day in the Mazrub area of North Kordofan state in central Sudan killed 5 civilians and wounded 7 others",
+      "title_zh": "苏丹中部遭无人机袭击 造成12人伤亡",
+      "summary_zh": "【苏丹中部遭无人机袭击 造成12人伤亡】财联社10月3日电，苏丹民间机构“科尔多凡观察站”当地时间10月2日发表声明称，苏丹中部北科尔多凡州马兹鲁布地区当天发生一起无人机袭击事件，造成5名平民死亡，另有7名平民受伤"
     },
     {
-      "id": "96809493ff3ea20dd36d3f1bc25c9b61acc24389",
-      "title": "More than 30% of China's autumn grain harvest is complete",
-      "summary": "[More than 30% of China's autumn grain harvest is complete] CLS, Oct 2: according to the Ministry of Agriculture and Rural Affairs, as of Oct 1 more than 30% of the national autumn grain harvest had been completed",
-      "title_zh": "全国秋粮收获过三成",
-      "summary_zh": "【全国秋粮收获过三成】财联社10月2日电，从农业农村部了解到，截至10月1日，全国秋粮收获过三成"
+      "id": "afadb5e11b50bca375d7ffabbb8ff1f5b7ac7dd9",
+      "title": "CLS news, October 3: ECB Governing Council member Nagel said the German economy may grow about 1% this year.",
+      "summary": "CLS news, October 3: ECB Governing Council member Nagel said the German economy may grow about 1% this year",
+      "title_zh": "财联社10月3日电，欧洲央行管委内格尔表示，德国经济今年可能增长约1%。",
+      "summary_zh": "财联社10月3日电，欧洲央行管委内格尔表示，德国经济今年可能增长约1%"
     },
     {
-      "id": "5abecb0d91285ddb9fc3171efeb3901c135e758c",
-      "title": "CLS, Oct 2: Japan's 2-year government bond yield fell 2.5 basis points to 1.910%; the 30-year yield rose 4.0 basis points to 4.210%; the 40-year yield rose 5.5 basis points to 4.275%",
-      "summary": "CLS, Oct 2: Japan's 2-year government bond yield fell 2.5 basis points to 1.910%; the 30-year yield rose 4.0 basis points to 4.210%; the 40-year yield rose 5.5 basis points to 4.275%",
-      "title_zh": "财联社10月2日电，日本2年期国债收益率下跌2.5个基点，至1.910%；30年期国债收益率上升4.0个基点，至4.210%；日本40年期国债收益率上升5.5个基点，至4.275%。",
-      "summary_zh": "财联社10月2日电，日本2年期国债收益率下跌2.5个基点，至1.910%；30年期国债收益率上升4.0个基点，至4.210%；日本40年期国债收益率上升5.5个基点，至4.275%"
+      "id": "2796172d17966283f054c2635a875896eaef6ac8",
+      "title": "CFTC: for the week to September 29, crude oil speculators cut net long WTI positions by 17,317 contracts",
+      "summary": "[CFTC: for the week to September 29, crude oil speculators cut net long WTI positions by 17,317 contracts] CLS news, October 3: per the US Commodity Futures Trading Commission, for the week to September 29 crude oil speculators cut net long WTI positions by 17,317 contracts to 131,150; natural gas speculators added 53,998 contracts of net shorts across the four main NYMEX and ICE markets, to 81,15",
+      "title_zh": "CFTC：截至9月29日当周 原油投机者削减WTI净多头头寸17,317份合约",
+      "summary_zh": "【CFTC：截至9月29日当周 原油投机者削减WTI净多头头寸17,317份合约】财联社10月3日电，据美国商品期货交易委员会（CFTC），截至9月29日当周，原油投机者削减WTI净多头头寸17,317份合约，至131,150份；天然气投机者在NYMEX、ICE四大主要市场增加净空头头寸53,998份合约，至81,15"
     },
     {
-      "id": "4940cf9ed12d75799d820eae46a6ac864a53d568",
-      "title": "Airfares plunge mid-holiday, from as little as 300 yuan",
-      "summary": "[Airfares plunge mid-holiday, from as little as 300 yuan] CLS, Oct 2: data from the Qunar platform show average ticket prices began falling markedly on Oct 2, 20% cheaper than Oct 1; prices kept declining on Oct 3 and Oct 4, reaching the mid-holiday trough",
-      "title_zh": "最低300块元起 国庆节中机票跳水",
-      "summary_zh": "【最低300块元起 国庆节中机票跳水】财联社10月2日电，去哪儿平台数据显示，平台机票10月2日平均价格开始显著走低，比1日便宜20%；3、4日机票价格继续下跌，到达节中低谷"
+      "id": "efbf8e9707168429dc572aa87469b8e1cf74dac8",
+      "title": "CFTC: for the week to September 29, speculators added 31,070 contracts of net shorts in CBOT US Treasury futures",
+      "summary": "[CFTC: for the week to September 29, speculators added 31,070 contracts of net shorts in CBOT US Treasury futures] CLS news, October 3: per the CFTC, for the week to September 29 speculators added 31,070 contracts of net shorts in CBOT US Treasury futures to 186,875; speculators cut 10,289 contracts of net shorts in CBOT ultra-long Treasury futures to 3",
+      "title_zh": "CFTC：截至9月29日当周 投机者增加CBOT美国国债期货净空头头寸31,070份合约",
+      "summary_zh": "【CFTC：截至9月29日当周 投机者增加CBOT美国国债期货净空头头寸31,070份合约】财联社10月3日电，据美国商品期货交易委员会（CFTC）：截至9月29日当周，投机者增加CBOT美国国债期货净空头头寸31,070份合约，至186,875份；投机者削减CBOT美国超长期国债期货净空头头寸10,289份合约，至3"
     },
     {
-      "id": "8f3fc2698ed4dbb3a8f8039ec0b05f1ca9bfba04",
-      "title": "159 stocks have doubled this year, clustered in two sectors",
-      "summary": "[159 stocks have doubled this year, clustered in two sectors] CLS, Oct 2: as of Sep 30, excluding the first-day gains of new listings during the period, 159 stocks had risen more than 100% this year; electronics and machinery led with 64 and 24 names, and the two sectors together accounted for more than half of all doublers; pharmaceuticals and basic chemicals ranked third and fourth with 12 and 9 names",
-      "title_zh": "今年以来159只翻倍股 扎堆两大行业",
-      "summary_zh": "【今年以来159只翻倍股 扎堆两大行业】财联社10月2日电，截至9月30日，今年以来，剔除期间上市新股的首日涨幅后，159只股票涨幅超过100%，来自电子、机械设备行业的股票数居前，分别为64只、24只，两个行业的翻倍股数占总数的比例超五成；来自医药生物、基础化工行业的股票数分居第三、第四位，分别有12只、9只"
+      "id": "8295c997c6328b0192f0e21649a13e3ccc67235a",
+      "title": "CFTC: for the week to September 29, COMEX silver speculators cut net long positions by 5,278 contracts",
+      "summary": "[CFTC: for the week to September 29, COMEX silver speculators cut net long positions by 5,278 contracts] CLS news, October 3: per the CFTC, for the week to September 29 COMEX silver speculators cut net long positions by 5,278 contracts to 7,738; COMEX gold speculators cut net long positions by 6,916 contracts to 124,418; COMEX copper speculators",
+      "title_zh": "CFTC：截至9月29日当周 COMEX白银投机者削减净多头头寸5,278份合约",
+      "summary_zh": "【CFTC：截至9月29日当周 COMEX白银投机者削减净多头头寸5,278份合约】财联社10月3日电，据美国商品期货交易委员会（CFTC），截至9月29日当周，COMEX白银投机者削减净多头头寸5,278份合约，至7,738份；COMEX黄金投机者削减净多头头寸6,916份合约，至124,418份；COMEX铜投机者"
     },
     {
-      "id": "0cede93e4a3ce1519956add69e11f6522498850e",
-      "title": "CLS, Oct 2: Morgan Stanley cut its Nike price target to $27 from $31",
-      "summary": "CLS, Oct 2: Morgan Stanley cut its Nike price target to $27 from $31",
-      "title_zh": "财联社10月2日电，摩根士丹利将耐克目标价从31美元下调至27美元。",
-      "summary_zh": "财联社10月2日电，摩根士丹利将耐克目标价从31美元下调至27美元"
+      "id": "0dc0f6baf750434097910b9eed4e1039365ec2a8",
+      "title": "Traders now see little chance of a Fed rate hike in October after weak jobs report",
+      "summary": "Odds tumbled after a jobs report showed a soft labor market, leading more traders to lower the the chances of a fed funds rate increase this month.",
+      "title_zh": "就业报告疲软后，交易员认为美联储10月加息的可能性很小",
+      "summary_zh": "一份显示劳动力市场疲软的就业报告公布后，加息概率大幅下滑，促使更多交易员下调本月联邦基金利率上调的可能性。"
     },
     {
-      "id": "a7a08999840c8c769f724391c746311195665ad8",
-      "title": "CLS, Oct 2: the weighted index of the Taiwan, China stock exchange closed up 0.3% at 48,475.74",
-      "summary": "CLS, Oct 2: the weighted index of the Taiwan, China stock exchange closed up 0.3% at 48,475.74",
-      "title_zh": "财联社10月2日电，台交所加权股价指数收高0.3%，报48,475.74点。",
-      "summary_zh": "财联社10月2日电，台交所加权股价指数收高0.3%，报48,475.74点"
+      "id": "873bb2a1e1005fef51ba2e6ea486c65ffd29f763",
+      "title": "Dominican Republic decides to withdraw its mission from Nicaragua",
+      "summary": "[Dominican Republic decides to withdraw its mission from Nicaragua] CLS news, October 3: per a statement issued by the Dominican foreign ministry on the 2nd, Foreign Minister Bisono announced the decision to withdraw the Dominican mission from Nicaragua",
+      "title_zh": "多米尼加决定撤离驻尼加拉瓜使团",
+      "summary_zh": "【多米尼加决定撤离驻尼加拉瓜使团】财联社10月3日电，据多米尼加外交部2日发布公告，多外长比索诺宣布，决定撤离多米尼加驻尼加拉瓜使团"
     },
     {
-      "id": "d82ad7111849a0f939223bf421b7087eef5a9dfc",
-      "title": "Highway charging volume up 60.4% year on year on the first day of the National Day holiday",
-      "summary": "[Highway charging volume up 60.4% year on year on the first day of the National Day holiday] CLS, Oct 2: the National Energy Administration said an analysis of 62,700 highway charging facilities (guns) in the national charging infrastructure monitoring platform showed nationwide highway charging volume reached 28.0469 million kWh on the first day of the National Day holiday, up 60.40% from the same day a year earlier and a record single-day high for any holiday",
-      "title_zh": "国庆假期首日高速公路充电量同比增长60.4%",
-      "summary_zh": "【国庆假期首日高速公路充电量同比增长60.4%】财联社10月2日电，据国家能源局消息，通过对纳入国家充电设施监测服务平台的6.27万个高速公路充电设施（枪）进行统计分析，“十一”国庆假期首日，全国高速公路充电量达到2804.69万千瓦时，较去年“十一”国庆假期首日增长60.40%，创历史节假日单日新高"
+      "id": "3ccc545d8d55e202bbf782d1d60a6eb75acb2f3a",
+      "title": "CLS news, October 3: reportedly, hackers breached the propulsion system of a tanker bound for the United States.",
+      "summary": "CLS news, October 3: reportedly, hackers breached the propulsion system of a tanker bound for the United States",
+      "title_zh": "财联社10月3日电，据报道，黑客入侵驶往美国的油轮的推进系统。",
+      "summary_zh": "财联社10月3日电，据报道，黑客入侵驶往美国的油轮的推进系统"
     },
     {
-      "id": "d41312bb6fa2bf23838cce1433a6db211934bd6a",
-      "title": "More than 25 million trips as rail passenger volume hits a record single-day high",
-      "summary": "[More than 25 million trips as rail passenger volume hits a record single-day high] CLS, Oct 2: China State Railway Group said the national railway carried 25.204 million passengers on Oct 1, a record single-day high, with safe and orderly operations",
-      "title_zh": "超2500万人次 铁路旅客发送量创单日新高",
-      "summary_zh": "【超2500万人次 铁路旅客发送量创单日新高】财联社10月2日电，从中国国家铁路集团有限公司获悉，10月1日全国铁路发送旅客2520.4万人次，创单日旅客发送量历史新高，运输安全平稳有序"
+      "id": "8836ec1580ccd04a51424423dc3ac261f1e79e3f",
+      "title": "CLS news, October 3: reportedly, the Federal Aviation Administration found the Boeing 737 MAX software fault was not a safety issue.",
+      "summary": "CLS news, October 3: reportedly, the Federal Aviation Administration found the Boeing 737 MAX software fault was not a safety issue",
+      "title_zh": "财联社10月3日电，据报道，联邦航空管理局认定波音737 MAX软件故障并非安全问题。",
+      "summary_zh": "财联社10月3日电，据报道，联邦航空管理局认定波音737 MAX软件故障并非安全问题"
     },
     {
-      "id": "b7379a08b8bd5404046c6a0044972b3d619651bc",
-      "title": "CLS, Oct 2: TD Cowen raised its CrowdStrike price target to $280 from $250",
-      "summary": "CLS, Oct 2: TD Cowen raised its CrowdStrike price target to $280 from $250",
-      "title_zh": "财联社10月2日电，TD Cowen将CrowdStrike目标价从250美元上调至280美元。",
-      "summary_zh": "财联社10月2日电，TD Cowen将CrowdStrike目标价从250美元上调至280美元"
+      "id": "3dbc796f9ee67254375482cbe930729b4d27303b",
+      "title": "International crude oil futures settled lower",
+      "summary": "[International crude oil futures settled lower] CLS news, October 3: international crude oil futures settled lower",
+      "title_zh": "国际原油期货结算价收跌",
+      "summary_zh": "【国际原油期货结算价收跌】财联社10月3日电，国际原油期货结算价收跌"
     },
     {
-      "id": "f3ace3e74649237314a365f35a1255518ce5c273",
-      "title": "Global commercial rocket rankings: SpaceX first, CAS Space second as China's leading tier takes shape",
-      "summary": "[Global commercial rocket rankings: SpaceX first, CAS Space second as China's leading tier takes shape] STAR Market Daily, Oct 2: the overseas space data platform Flight Atlas shows that, on a count as of Sep 28, global space launches have exceeded 170 this year, with total mass delivered to orbit approaching 1900 tonnes",
-      "title_zh": "全球民商火箭位次出炉：SpaceX第一、中科宇航第二 国内头部梯队成型",
-      "summary_zh": "【全球民商火箭位次出炉：SpaceX第一、中科宇航第二 国内头部梯队成型】《科创板日报》2日讯，海外航天数据平台Flight Atlas显示，截至9月28日统计，今年全球航天发射已超170次，入轨总质量接近1900吨"
+      "id": "9f4538e0709daa741cf41335db82c636d8b789da",
+      "title": "Yemen's Houthis say they were hit by 94 Saudi air strikes in 24 hours",
+      "summary": "[Yemen's Houthis say they were hit by 94 Saudi air strikes in 24 hours] CLS news, October 3: Yemen's Houthis said in a statement on the evening of the 2nd local time that over the past 24 hours Saudi Arabia carried out 94 air strikes on Houthi-controlled areas, targeting multiple locations across Sanaa, Saada, Taiz, Hajjah, Amran and Ibb provinces and causing casualties",
+      "title_zh": "也门胡塞武装称24小时内遭沙特空袭94次",
+      "summary_zh": "【也门胡塞武装称24小时内遭沙特空袭94次】财联社10月3日电，也门胡塞武装当地时间2日晚对外发布声明称，在过去24小时，沙特对胡塞武装控制区实施了94次空袭，目标覆盖萨那省、萨达省、塔伊兹省、哈杰省，阿姆朗省、伊卜省多地并造成人员伤亡"
     },
     {
-      "id": "7aec38203793596875309f4f8d9f4ec748bd3918",
-      "title": "CLS, Oct 2: Japan's 30-year government bond yield rose 2.0 basis points to 4.190%",
-      "summary": "CLS, Oct 2: Japan's 30-year government bond yield rose 2.0 basis points to 4.190%",
-      "title_zh": "财联社10月2日电，日本30年期国债收益率上升2.0个基点，至4.190%。",
-      "summary_zh": "财联社10月2日电，日本30年期国债收益率上升2.0个基点，至4.190%"
+      "id": "6a8056c5f0059803d20448b2dc8bf82cbb150377",
+      "title": "Russia says it has held no bilateral talks with any country on Black Sea security",
+      "summary": "[Russia says it has held no bilateral talks with any country on Black Sea security] CLS news, October 3: Kremlin spokesman Peskov said on the 2nd local time that Russia is open to dialogue with all countries on safeguarding Black Sea security, but has so far held no bilateral talks with any country on the issue",
+      "title_zh": "俄方称尚未就黑海安全与任何国家进行双边谈判",
+      "summary_zh": "【俄方称尚未就黑海安全与任何国家进行双边谈判】财联社10月3日电，俄罗斯总统新闻秘书佩斯科夫当地时间2日表示，俄罗斯对与所有国家就保障黑海安全进行对话持开放态度，但目前尚未与任何国家就这一问题进行双边谈判"
     },
     {
-      "id": "f08a4d5512c6ea0719c504a3179003424aab3bdd",
-      "title": "Trump could target three Fed governors. Removing them may be harder than it looks",
-      "summary": "Trump could seek to remove Jerome Powell, Lisa Cook and Michael Barr from the Federal Reserve, but court rulings and lengthy litigation could limit him.",
-      "title_zh": "特朗普或将把矛头对准三位美联储理事，但罢免难度远超想象",
-      "summary_zh": "特朗普可能试图将杰罗姆·鲍威尔、丽莎·库克和迈克尔·巴尔逐出美联储，但法院裁决和旷日持久的诉讼可能限制他的行动。"
+      "id": "052ac2501902fc8486cd7b432950ea6ca5af4e3e",
+      "title": "A tanker was hit by an unidentified projectile in the Strait of Hormuz",
+      "summary": "[A tanker was hit by an unidentified projectile in the Strait of Hormuz] CLS news, October 3: Britain's UK Maritime Trade Operations reported on the 2nd that it had received a report from the master of a tanker saying the vessel was hit by an unidentified projectile as it left the Strait of Hormuz, causing a small fire and a power outage on board",
+      "title_zh": "一艘油轮在霍尔木兹海峡被不明投射物击中",
+      "summary_zh": "【一艘油轮在霍尔木兹海峡被不明投射物击中】财联社10月3日电，英国海上贸易行动办公室2日通报说，接到一艘油轮船长的报告，该油轮在驶离霍尔木兹海峡时被不明投射物击中，船上发生小规模火灾并停电"
     },
     {
-      "id": "b302d0ff389935a513be019200afcb0c1e07a2ab",
-      "title": "Three reasons why bitcoin's recent bounce could be the start of a bigger bullish move",
-      "summary": "Frank Cappelleri takes you through multiple charts on the cryptocurrency's recent move.",
-      "title_zh": "比特币近期反弹可能是更大级别涨势起点的三个理由",
-      "summary_zh": "Frank Cappelleri 通过多张图表解析该加密货币近期的走势。"
+      "id": "851383c247f6a6301e550b054da915248ec0881a",
+      "title": "ICE: for the week to September 29, Brent crude speculators cut net long positions by 13,812 contracts",
+      "summary": "[ICE: for the week to September 29, Brent crude speculators cut net long positions by 13,812 contracts] CLS news, October 3: per ICE, for the week to September 29 Brent crude speculators cut net long positions by 13,812 contracts to 204,302; gasoline speculators cut net long positions by 16,978 contracts to 73,853",
+      "title_zh": "ICE：截至9月29日当周 布伦特原油投机者净多头头寸削减13,812份合约",
+      "summary_zh": "【ICE：截至9月29日当周 布伦特原油投机者净多头头寸削减13,812份合约】财联社10月3日电，据洲际交易所（ICE），截至9月29日当周，布伦特原油投机者净多头头寸削减13,812份合约，至204,302份；汽油投机者净多头头寸削减16,978份合约，至73,853份"
     },
     {
-      "id": "db92af1feb7f8f754dbcac9125bea9accbc80c77",
-      "title": "Fed Vice Chair Jefferson: it may take more time to decide the next step",
-      "summary": "Federal Reserve Vice Chair Philip Jefferson said policymakers may need more time to judge whether further rate hikes are needed to curb inflation.",
-      "title_zh": "美联储副主席杰斐逊：可能需要更多时间决定下一步行动",
-      "summary_zh": "美联储副主席菲利普·杰斐逊表示，政策制定者可能需要更多时间才能判断是否需要进一步加息以抑制通胀"
+      "id": "5d3533a08854c93b3f29b8aec89ca171f7dab92c",
+      "title": "CLS news, October 3: reportedly, Meta Platforms parted ways with Virtue AI and dismissed the Virtue AI staff hired in June.",
+      "summary": "CLS news, October 3: reportedly, Meta Platforms parted ways with Virtue AI and dismissed the Virtue AI staff hired in June",
+      "title_zh": "财联社10月3日电，据报道，Meta Platforms与Virtue AI分道扬镳，解雇了6月招聘的Virtue AI员工。",
+      "summary_zh": "财联社10月3日电，据报道，Meta Platforms与Virtue AI分道扬镳，解雇了6月招聘的Virtue AI员工"
     },
     {
-      "id": "4e3633dd0fc0e067ac299867631cb6d922ce23e3",
-      "title": "Bitcoin shooting star at $86K signals mean-reversion risk: Live",
-      "summary": null,
-      "title_zh": "比特币在 86K 形成射击之星，释放均值回归风险信号：实时",
-      "summary_zh": null
+      "id": "d82f03495f80c4459af6f2c28344cca242fa60df",
+      "title": "Shooting in southern Ethiopia kills nine police and security personnel",
+      "summary": "[Shooting in southern Ethiopia kills nine police and security personnel] CLS news, October 3: a shooting occurred in southern Ethiopia on October 1 local time, killing a total of 9 police and security personnel",
+      "title_zh": "埃塞俄比亚南部发生枪击事件 九名警察和安保人员死亡",
+      "summary_zh": "【埃塞俄比亚南部发生枪击事件 九名警察和安保人员死亡】财联社10月3日电，埃塞俄比亚南部当地时间10月1日发生枪击事件，共9名警察和安保人员死亡"
+    },
+    {
+      "id": "c4482a0af4806ee0a2b60f788bbc8e002635dfc9",
+      "title": "CLS news, October 3: Anthropic is said to plan to expand its frontier engineering team to 10,000 people by 2027.",
+      "summary": "CLS news, October 3: Anthropic is said to plan to expand its frontier engineering team to 10,000 people by 2027",
+      "title_zh": "财联社10月3日电，Anthropic据悉计划到2027年将前沿工程师团队扩大至1万人。",
+      "summary_zh": "财联社10月3日电，Anthropic据悉计划到2027年将前沿工程师团队扩大至1万人"
+    },
+    {
+      "id": "2d7d9450d11ccc84216a7290d9ed5872f8895cc4",
+      "title": "CLS news, October 3: the US oil rig count was 456 in the week to October 2, against 455 previously.",
+      "summary": "CLS news, October 3: the US oil rig count was 456 in the week to October 2, against 455 previously",
+      "title_zh": "财联社10月3日电，美国至10月2日当周石油钻井总数456口，前值455口。",
+      "summary_zh": "财联社10月3日电，美国至10月2日当周石油钻井总数456口，前值455口"
+    },
+    {
+      "id": "faabaa527d14c858abf3137330081d64964b238c",
+      "title": "McKinsey raises its 2030 semiconductor forecast by 44% to USD 2.3 trillion, with shipments barely changed and the expansion riding on DRAM rising 6-fold",
+      "summary": "The semiconductor industry is going through a structural shift driven by AI demand: McKinsey sharply raised its forecast for the 2030 global semiconductor market, but shipment growth was not lifted materially, with higher prices the main driver of the market expansion",
+      "title_zh": "麦肯锡上调2030年半导体预测44%至2.3万亿美元，出货量几乎没变、全靠DRAM涨6倍",
+      "summary_zh": "半导体行业正经历一轮由AI需求推动的结构性变化：麦肯锡大幅上调2030年全球半导体市场规模预测，但出货量增速并未明显上调，价格上涨成为市场扩张的主要推手"
+    },
+    {
+      "id": "e5f57fe72d6a7cd940630b95d370abf5798cf13b",
+      "title": "Broadcom teams up with Blackstone to raise USD 60 billion, paving the way for compute for AI companies such as Anthropic",
+      "summary": "Broadcom is leading the arrangement of a USD 60 billion debt financing aimed at funding chip purchases and data center construction for AI companies such as Anthropic, one of the largest debt financing deals in the AI chip sector",
+      "title_zh": "博通联手黑石筹资600亿美元，为Anthropic等AI公司铺路算力",
+      "summary_zh": "博通正牵头筹组一笔规模达600亿美元的债务融资，旨在为Anthropic等人工智能企业购买芯片及建设数据中心提供资金支持，规模跻身AI芯片领域最大债务融资交易之列"
+    },
+    {
+      "id": "6f395542269435c0747035dd089018d4a746ee8c",
+      "title": "‘I’m never selling’: I’m 47 and buy bitcoin with every dollar I earn. Am I crazy?",
+      "summary": "“When my paycheck lands, it takes a detour through bitcoin.”",
+      "title_zh": "“我永远不会卖”：我47岁，把挣到的每一美元都用来买比特币。我疯了吗？",
+      "summary_zh": "“工资一到账，就绕道去了比特币。”"
+    },
+    {
+      "id": "2ab3abc71f9b90c0a28843118fd3f6621ffc7cd0",
+      "title": "Oil prices lower as G7 nations to release diesel stocks, Saudis reportedly plan attack on Houthis",
+      "summary": "The G7 will deploy 100 million barrels of reserves over the next four months, the group's leaders said in a joint statement.",
+      "title_zh": "油价走低，因七国集团将释放柴油储备，沙特据报计划袭击胡塞武装",
+      "summary_zh": "七国集团领导人在联合声明中表示，该集团将在未来四个月释放1亿桶储备。"
     },
     {
       "id": "bb61c26049cb2269de3b2fe89cb10d0f876c9495",
@@ -190,166 +232,124 @@
       "summary_zh": "9 月 28 日晚间，兆易创新（603986）宣布将 2026 年与长鑫集团日常关联交易的预计上限由 57.11 亿元上调至 78.54 亿元，并预计 2027 年 1 月至 4 月 DRAM 采购与代工量为 44.11 亿元。"
     },
     {
-      "id": "22781389fe2a5f684ae7ab8df07d4b8aaa77b397",
-      "title": "S&P 500 futures edge higher as September jobs report looms: Live updates",
-      "summary": "The major averages are heading for a losing week as the latest leg higher in yields keeps stocks under pressure.",
-      "title_zh": "标普 500 期货小幅走高，9 月非农就业报告临近：实时更新",
-      "summary_zh": "随着收益率再度走高令股市承压，主要股指本周势将录得下跌。"
+      "id": "10a7537b84b8fb3c69159dab66b3b5e9bffddbe2",
+      "title": "Trump is said to be appointing a new AI czar: the Director of National Intelligence takes over from a Silicon Valley figure, shifting AI policy toward security controls",
+      "summary": "The Trump administration's AI governance structure is undergoing a significant personnel shift",
+      "title_zh": "特朗普据称将任命新“AI沙皇”：国家情报总监接棒硅谷大佬，AI政策重心转向安全管控",
+      "summary_zh": "特朗普政府的AI治理架构正经历一次重要的人事转向"
     },
     {
-      "id": "9c1da5b40dcba3f00aa988044bdc44ef7cd23d8b",
-      "title": "Federal Reserve Board finalizes changes to enhance the transparency and public accountability of its stress test and reduce volatility in its stress test-related capital requirements",
-      "summary": "Federal Reserve Board finalizes changes to enhance the transparency and public accountability of its stress test and reduce volatility in its stress test-relate",
-      "title_zh": "美联储理事会最终敲定调整方案，以提升压力测试的透明度与公众问责性，并降低压力测试相关资本要求的波动性",
-      "summary_zh": "美联储理事会最终敲定调整方案，以提升压力测试的透明度与公众问责性，并降低其压力测试相关资本要求的波动性。"
+      "id": "6c149e29d62209294c9aec7722335510b4dee02e",
+      "title": "US August factory orders edged up 0.1% month on month, with AI infrastructure supporting manufacturing and aircraft orders falling to offset part of the gain",
+      "summary": "New orders for US manufactured goods rose only slightly in August, with strong demand for electrical equipment, household appliances and components, but a decline in commercial aircraft orders offset part of the gain",
+      "title_zh": "美国8月工厂订单环比微增0.1%，AI基建支撑制造业，飞机订单下滑抵消部分增幅",
+      "summary_zh": "美国8月工厂商品新订单仅小幅增长，电气设备、家用电器及零部件需求强劲，但商用飞机订单下滑抵消了部分增幅"
     },
     {
-      "id": "ba2cfe292aaa310f2afa0364fd20ae8652c5e37c",
-      "title": "South Korean President Lee warns of 'measures' against Ukraine over prisoner row, demands apology",
-      "summary": "\"As this is a matter concerning the honor of the Republic of Korea's people and nation, we cannot overlook it,\" he said.",
-      "title_zh": "韩国总统 Lee 就战俘争端警告将对乌克兰采取“措施”，并要求道歉",
-      "summary_zh": "他表示：“此事关乎大韩民国国民与国家的尊严，我们不能置之不理。”"
+      "id": "0690f08e93950b9ee78e8b63d0af5376e581e502",
+      "title": "10-year Treasury yield ticks higher despite weaker-than-expected jobs report",
+      "summary": "U.S",
+      "title_zh": "10年期美国国债收益率在就业数据弱于预期的情况下仍小幅上行",
+      "summary_zh": null
     },
     {
-      "id": "6c2d5b8538116c328a3efa7c01afb5594287d86d",
-      "title": "Jewelry giant Pandora is getting in on lab-grown diamonds and hoping a new Vietnam plant helps growth in Asia",
-      "summary": "Pandora is expanding its manufacturing footprint beyond Thailand with a new $150 million Vietnam facility as the Danish jeweler eyes further growth across Asia.",
-      "title_zh": "珠宝巨头潘多拉进军培育钻石，寄望越南新工厂助力亚洲增长",
-      "summary_zh": "这家丹麦珠宝商正以 1.5 亿美元在越南新建工厂，将制造版图扩展至泰国以外，以期在亚洲实现进一步增长。"
+      "id": "f64b9d3fe077dc1a11469b65fec7b82bbb21df76",
+      "title": "G7 nations to release diesel stocks as wars in Europe and Middle East constrain fuel supplies",
+      "summary": "EU countries are set for crisis talks on soaring diesel prices, with officials warning a U.S",
+      "title_zh": "七国集团将释放柴油储备，因欧洲和中东的战争制约燃料供应",
+      "summary_zh": "欧盟国家准备就飙升的柴油价格举行危机磋商，官员警告美国…"
     },
     {
-      "id": "8841b7bb816ef3ba212d3ca82be8827e995851d6",
-      "title": "Washington’s big crypto bill is stuck. The SEC is pushing ahead anyway",
-      "summary": "The SEC has proposed new rules that would make it easier for investment advisers and regulated funds to hold cryptocurrencies on behalf of clients.",
-      "title_zh": "华盛顿的加密大法案陷入停滞，SEC 仍独自推进",
-      "summary_zh": "美国证券交易委员会提出新规，将使投资顾问和受监管基金更便于代客户持有加密货币。"
+      "id": "966af1f3e2690236d066a59b788656335231c1be",
+      "title": "FAA says Boeing 737 Max software glitch not a flight-safety issue",
+      "summary": "The FAA on Monday said it was reviewing the software glitch, which could affect procedures during certain landings.",
+      "title_zh": "美国联邦航空管理局称波音737 Max软件故障不构成飞行安全问题",
+      "summary_zh": "美国联邦航空管理局周一表示正在审查这一软件故障，它可能影响某些着陆过程中的操作程序。"
     },
     {
-      "id": "3ab8dfdd157e2be1bba2bc3f82ef2ece5be757e0",
-      "title": "Bitget 'not expecting to recover a lot' from $388 million hack, CEO tells CNBC",
-      "summary": "Bitget has frozen a tiny fraction of the $387.5 million stolen in last week’s hack, and restored much of its protection fund.",
-      "title_zh": "Bitget CEO 对 CNBC 表示：3.88 亿美元被盗事件“不指望能追回多少”",
-      "summary_zh": "Bitget 已冻结上周黑客事件中被盗 3.875 亿美元中的极小一部分，并已恢复其大部分保护基金。"
+      "id": "b30ea727d4a13006f53b28785be50f34d3a98942",
+      "title": "States, cities sue U.S. agencies over weaker vehicle fuel economy rules",
+      "summary": "The revised standards seek to reverse former President Joe Biden's push toward greater fuel efficiency and electric vehicles.",
+      "title_zh": "多个州和城市就削弱后的车辆燃油经济性规则起诉美国联邦机构",
+      "summary_zh": "修订后的标准试图推翻前总统乔·拜登推动更高燃油效率和电动汽车的努力。"
     },
     {
-      "id": "50aa73a1f8ab12c8b3c7c391378e9fc8275e0571",
-      "title": "Brazil votes in high-stakes election as U.S.-China rivalry and debt loom large",
-      "summary": "Brazil will hold a knife-edge vote as its presidential race kicks off — but the election's outcome is likely to be felt far beyond the country's borders.",
-      "title_zh": "巴西举行高风险大选，中美竞争与债务问题成为焦点",
-      "summary_zh": "巴西总统选战开启，将迎来一场胜负难料的投票，但选举结果的影响很可能远超其国界。"
+      "id": "67a0463660e14f481e251d5a2a4295957cc1ebec",
+      "title": "How AI is redefining Wall Street jobs — and boosting demand for this new 'hottest skill' by 1,721%",
+      "summary": "Banks are fueling a hiring surge for AI engineers who are good at \"agent orchestration\" — the ability to coordinate teams of specialized agents.",
+      "title_zh": "AI如何重新定义华尔街的工作——并将对这一“最热门技能”的需求推高1721%",
+      "summary_zh": "银行正推动对擅长“智能体编排”的AI工程师的招聘热潮——即协调专业智能体团队的能力。"
     },
     {
-      "id": "b6bc767664f4fd4ebb127c48afd5ed217224ea62",
-      "title": "From refusal to doubling down: how Musk turned SpaceX's AI compute into a multibillion-dollar-a-month cloud business",
-      "summary": "Renting out compute is now giving SpaceXAI an expected revenue run rate measured in billions of dollars per month.",
-      "title_zh": "从拒绝到加码：马斯克如何将SpaceX的AI算力变成每月数十亿美元的“云生意”",
-      "summary_zh": "对外出租算力，正为SpaceXAI带来每月数十亿美元规模的收入预期"
+      "id": "404c6092b0a99bfb95c343ff7011aa6dc8d78906",
+      "title": "UAE presidential adviser: the Dubai airline cockpit clash was a terrorist attack",
+      "summary": "On October 2, according to related reports, Anwar Gargash, adviser to the UAE president, said that day that the cockpit clash on the Dubai airline passenger plane was a terrorist act",
+      "title_zh": "阿联酋总统顾问：迪拜航空驾驶舱冲突系“恐袭”",
+      "summary_zh": "10月2日，据相关消息，阿联酋总统顾问安瓦尔·加尔贾什当天表示，迪拜航空公司客机驾驶舱冲突事件是一起“恐袭行为”"
     },
     {
-      "id": "bc07a0e986346ebefdc6265f7f73404edf6f007a",
-      "title": "Worst decline since the Lehman crisis: US municipal bonds were hammered in September",
-      "summary": "The US municipal bond market suffered its worst monthly decline in nearly two decades in September.",
-      "title_zh": "雷曼危机以来未见的跌幅！美国市政债9月遭重创",
-      "summary_zh": "美国市政债券市场9月遭遇近二十年来最严重的单月跌幅"
+      "id": "6b3dc17715fb4c52bf0cb9dfb6c72174955564a8",
+      "title": "David Ellison says combined Paramount and Warner Bros. Discovery will be named Skydance",
+      "summary": "It's a full-circle moment for a company that has undergone two major acquisitions within the last 18 months.",
+      "title_zh": "大卫·埃里森称合并后的派拉蒙与华纳兄弟探索将命名为 Skydance",
+      "summary_zh": "对于一家在过去18个月内经历了两笔重大收购的公司来说，这是一个圆满的时刻。"
     },
     {
-      "id": "1cd26e1a22a0a649a396e02c3183fc13ebccebcb",
-      "title": "Nike redraws its organisation, ending the era of a standalone Greater China region",
-      "summary": "From fiscal 2028 onwards, Nike's organisational chart will no longer include a separate Greater China region.",
-      "title_zh": "耐克挥刀组织架构，大中华区独立时代将成历史",
-      "summary_zh": "从2028财年起，耐克的组织架构图上，将不再有单独的大中华区"
+      "id": "57b5c79ff2578eeb1b427bc69aef761339309c6e",
+      "title": "Stocks remain under the thrall of higher yields and higher oil. Here's what's ahead",
+      "summary": "Wall Street got a taste this week of what a reprieve on both fronts could mean for the stock market.",
+      "title_zh": "股市仍受制于更高的收益率和更高的油价。以下是后市看点",
+      "summary_zh": "本周华尔街初步体会到，这两个方面同时缓和会对股市意味着什么。"
     },
     {
-      "id": "36162dce90a1c47ea14e6a71db590f6e88e85e46",
-      "title": "A Brexit reversal is on the table 10 years on from the vote that changed Britain. Here’s what’s at stake",
-      "summary": "Britain voted to leave the European Union in 2016.",
-      "title_zh": "改变英国的那场公投十年后，逆转脱欧被摆上台面：利害几何",
-      "summary_zh": "英国于 2016 年投票决定退出欧盟。"
+      "id": "1055d3fb775efb760dd4723aba1a5fcde1d2487e",
+      "title": "G20 trade ministers reach a joint statement only on food, with no outcome document on other topics",
+      "summary": "From September 30 to October 1, the G20 trade ministers meeting was held in Milwaukee, United States",
+      "title_zh": "G20贸易部长会议仅就粮食议题达成联合声明，未就其他议题形成成果文件",
+      "summary_zh": "9月30日至10月1日，二十国集团（G20）贸易部长会议在美国密尔沃基举行"
     },
     {
-      "id": "92a904904ad3689bae686ce0b99cdeeb9f18151c",
-      "title": "AI is making cyberattacks faster and harder to detect, Interpol warns. Here’s what companies should watch",
-      "summary": "An Interpol executive warns AI is making existing cyber threats faster and harder to detect, while companies face new risks from the rise of agentic AI.",
-      "title_zh": "国际刑警组织警告：AI 正让网络攻击更快、更难被发现，企业应关注这些风险",
-      "summary_zh": "国际刑警组织一位高管警告称，AI 正让既有的网络威胁变得更快、更难被发现，同时企业还面临智能体 AI 兴起带来的新风险。"
+      "id": "a635bd80f3037d8299497743b1b913111df6bf31",
+      "title": "Friday's rally in the S&P 500 might not be enough, but Linde is out of this world",
+      "summary": "Every weekday, the Investing Club releases the Homestretch; an actionable afternoon update just in time for the last hour of trading.",
+      "title_zh": "标普500周五的反弹可能还不够，但林德的表现堪称惊艳",
+      "summary_zh": "每个工作日，投资俱乐部都会发布 Homestretch；这是赶在交易最后一小时之前的一份可操作的午后更新。"
     },
     {
-      "id": "a18613a0cf742d6327cba2d38dcdfd171331fee2",
-      "title": "U.S. trade representative Greer says deal with India not 'imminent' after Modi-Trump call",
-      "summary": "Ties between the U.S",
-      "title_zh": "美国贸易代表格里尔称，莫迪与特朗普通话后，美印协议并不“迫在眉睫”",
-      "summary_zh": "美国之间的关系"
+      "id": "e64da5c1bd9dc0f8db2b9a09f017ee4f8f34287d",
+      "title": "Aimed at the throat of the Red Sea: Saudi Arabia is reported to be preparing to send 100,000 Yemeni troops against the Houthis, with US intelligence support",
+      "summary": "Recent reports indicate Saudi Arabia is preparing a military offensive against Yemen's Houthis, targeting the Mandeb Strait - the strategic choke point linking the Red Sea and the Gulf of Aden - in order to reopen the disrupted Red Sea shipping route",
+      "title_zh": "直指红海咽喉！沙特被曝或出动10万也门士兵攻打胡塞武装，美国情报支持",
+      "summary_zh": "新近消息显示，沙特正酝酿对也门胡塞武装发动军事攻势，目标直指连接红海与亚丁湾的战略咽喉——曼德海峡，以此重新打开受到冲击的红海航运通道"
     },
     {
-      "id": "b0bb658708f83746502127e45d00076c1adae856",
-      "title": "Yuyuantantian: what will the China-US AI dialogue in November cover?",
-      "summary": "Recently the host spoke with people involved in the China-US AI field, including a former OpenAI engineer, a California state senator, key participants in the China-US Track II dialogue, and a number of third-party institutions shuttling between the two countries.",
-      "title_zh": "玉渊谭天：中美11月人工智能对话谈什么",
-      "summary_zh": "最近，谭主和中美人工智能领域的相关人士聊了聊，包括OpenAI前工程师、美国加利福尼亚州参议员、中美二轨对话的核心参与人等，还有不少穿梭在中美之间的第三方机构"
+      "id": "270a6d33cff64972926056c4c22e1e22b309783d",
+      "title": "Why Lilly and Novo are betting on amylin to power a new wave of obesity drugs after GLP-1s",
+      "summary": "Eli Lilly and Novo are developing new amylin drugs that serve as another biological lever to pull in treating obesity and diabetes.",
+      "title_zh": "为什么礼来和诺和诺德押注胰淀素，以在GLP-1之后开启新一轮减肥药浪潮",
+      "summary_zh": "礼来和诺和诺德正在开发新的胰淀素药物，作为治疗肥胖和糖尿病的又一个生物学抓手。"
     },
     {
-      "id": "9806778640bbe553e33bdb88b27fdecf76c0a895",
-      "title": "Has gold capitulated?",
-      "summary": "Deutsche Bank warns that gold positioning is at its most bearish level in years, yet prices have failed to make new lows and reversal signals are building.",
-      "title_zh": "黄金“投降”了吗？",
-      "summary_zh": "德意志银行警告：黄金正处于多年来最悲观的持仓水平，但价格却未能创出新低， 反转信号正在积聚 "
+      "id": "b323f7381068e1d3feef187898cddc156a2a38ba",
+      "title": "Men are losing ground in the labor market. Here's why",
+      "summary": "Women outnumbered men in the workforce for eight straight months as of September, according to one analysis.",
+      "title_zh": "男性在劳动力市场正在失去优势。原因如下",
+      "summary_zh": "根据一项分析，截至9月，女性在劳动力中的人数已连续八个月超过男性。"
     },
     {
-      "id": "a7605eb9376421c56596358f8351843175b43410",
-      "title": "She is coming back: leading France through the last glow of the Fifth Republic",
-      "summary": "On Oct 1 the French government submitted its 2027 budget draft to parliament: 54 billion euros of austerity, cuts to pensions, cuts to health insurance, frozen wages and higher taxes.",
-      "title_zh": "她要回来了！带领法国走完第五共和国最后的余晖",
-      "summary_zh": "10月1日，法国政府向议会递交了2027年预算草案：540亿欧元紧缩，砍养老金，砍医保，冻工资，加税"
+      "id": "f728cd1a2c6de58279dbd62a8f9ba8461531b650",
+      "title": "Ford fends off Hyundai to retain No. 3 U.S. sales position in third quarter",
+      "summary": "Ford on Friday reported a year-over-year sales decline of 6.6% during the third quarter to 507,395 light-duty vehicles.",
+      "title_zh": "福特击退现代，在第三季度保住美国销量第三的位置",
+      "summary_zh": "福特周五公布，第三季度销量同比下降6.6%，至507395辆轻型车。"
     },
     {
-      "id": "d6979b49632cba4beccda725ce3d5695d2a9f8be",
-      "title": "Google's robotics strategy: software first, replicating the Android playbook for embodied AI",
-      "summary": "Google is entering the robotics race with an approach unlike Tesla and others: rather than rushing to build flagship hardware, it is prioritising the models and software behind the robots and using partners to broaden adoption.",
-      "title_zh": "谷歌机器人战略：软件优先，复制安卓打法布局具身智能",
-      "summary_zh": "谷歌正以一套不同于特斯拉等公司的思路切入机器人赛道：不急于打造旗舰硬件，而是优先发展机器人背后的模型和软件能力，并借助合作伙伴扩大应用范围"
-    },
-    {
-      "id": "b3e76398634679cd2a42f15fe937ae9a7f347462",
-      "title": "US mortgage rates post their biggest weekly jump in 4 years, deepening affordability pressure before the midterms",
-      "summary": "US mortgage rates climbed sharply this week, posting their biggest weekly gain in four years, as the bond-market selloff hits ordinary American households' homebuying plans in the most direct way and pushes housing affordability to the political forefront ahead of the pivotal midterm elections.",
-      "title_zh": "美国按揭贷款利率创4年来最大幅度周涨幅，加剧中选前美国人“可负担”压力",
-      "summary_zh": "美国按揭贷款利率本周急剧攀升，创下四年来最大单周涨幅，债券市场抛售浪潮正以最直接的方式冲击普通美国家庭的购房梦，并在关键中期选举前夕将住房可负担性问题推至政治风口浪尖"
-    },
-    {
-      "id": "5cb9192075bfb758bd2d0bddea0216f462386c30",
-      "title": "Earnings miss and no revenue recovery: Nike announces another round of layoffs, with this year's share performance near a halving",
-      "summary": "Nike's road to recovery is longer than anyone expected.",
-      "title_zh": "季报不及预期，收入未见起色！耐克宣布新一轮裁员，今年股价\"史上最惨\"接近腰斩｜财报见闻",
-      "summary_zh": "耐克的复苏之路比任何人预期的都要漫长"
-    },
-    {
-      "id": "63fdc938552848031e5ee6a9f3558ee62d256e8b",
-      "title": "Have Treasuries bottomed? Goldman's trading desk head says long bonds are still completely ignored",
-      "summary": "The US Treasury market is facing multiple overlapping pressures.",
-      "title_zh": "美债跌到位了吗？高盛交易台主管：长债“仍然完全无人问津”",
-      "summary_zh": "美国国债市场正面临多重压力叠加"
-    },
-    {
-      "id": "524a337cfbb1f6edf18cf92045866c0ca9fcf3f7",
-      "title": "The calm surface of US stocks: the index is a step away from a record high, yet almost every sector has been hammered",
-      "summary": "US equities are staging a rare two-faced market: the S&P 500 sits less than 2% below its all-time high, yet beneath the surface almost every rate-sensitive sector has been badly hit.",
-      "title_zh": "“表面平静”的美股：指数距离新高“一步之遥”，但几乎所有版块都遭重创",
-      "summary_zh": "美股正上演一场罕见的\"双面市场\"：标普500指数距历史高点不足2%，但水面之下，几乎所有对利率敏感的板块均已遭受重创"
-    },
-    {
-      "id": "bd95b7b383e2a2a427018917725f1a4e90f506de",
-      "title": "Federal Reserve Board announces approval of application by Peoples Bancorp Inc.",
-      "summary": "Federal Reserve Board announces approval of application by Peoples Bancorp Inc.",
-      "title_zh": "美联储理事会宣布批准 Peoples Bancorp Inc. 的申请",
-      "summary_zh": "美联储理事会宣布批准 Peoples Bancorp Inc. 的申请。"
-    },
-    {
-      "id": "cd038f72557edcd4461c0f94cbcf28525d03d94a",
-      "title": "Federal Reserve Board requests public comment on two proposals related to establishing a regulatory framework for Board-supervised payment stablecoin issuers under the GENIUS Act",
-      "summary": "Federal Reserve Board requests public comment on two proposals related to establishing a regulatory framework for Board-supervised payment stablecoin issuers un",
-      "title_zh": "美联储理事会就两项提案征求公众意见，涉及依据《GENIUS 法案》为理事会监管的支付型稳定币发行人建立监管框架",
-      "summary_zh": "美联储理事会就两项提案征求公众意见，涉及依据《GENIUS 法案》为理事会监管的支付型稳定币发行人建立监管框架"
+      "id": "91aa1b5cd0bfb18953601a797b98cf6b9e31f3f3",
+      "title": "American starts letting customers mix cash and miles for tickets",
+      "summary": "American is joining other carriers that allow customers to book with a combination of points and miles.",
+      "title_zh": "美国航空开始允许客户用现金和里程混合购票",
+      "summary_zh": "美国航空加入了其他航空公司的行列，允许客户用积分和里程组合预订。"
     }
   ],
-  "updated_at": "2026-10-02T07:31:21Z"
+  "updated_at": "2026-10-02T21:12:51Z"
 }
