@@ -22,7 +22,7 @@ from types import SimpleNamespace
 from typing import Any
 
 from pipeline.risk.scoring import heuristic_risk_score
-from pipeline.schemas import MacroDataset, MacroIndicator
+from pipeline.schemas import CommoditiesDataset, CommodityAsset, MacroDataset, MacroIndicator
 
 CALIBRATION_WINDOWS = {
     "2008": {"start": "2008-08-01", "end": "2009-03-31", "note": "2008 financial crisis"},
@@ -33,7 +33,13 @@ CALIBRATION_WINDOWS = {
 # These are calibration-only evaluation constants. They do not alter the live model's
 # weights, thresholds, or confidence policy.
 PRODUCTION_CALIBRATION_HORIZONS = (5, 10, 20, 30)
-CALIBRATION_MARKET_SYMBOLS = ("SPY", "IWM", "SOXX", "XLY", "XLP", "HYG", "IEF")
+# The market series the replay needs to observe every input it evaluates. GC=F/HG=F are here
+# because two of the eight production cross-asset signals are commodity-based (copper down,
+# gold up, PRD §14.7): without their closes the replay can only observe 5 of the 8 signals and
+# the calibration evidence for the 15%-weight cross_asset dimension is structurally incomplete.
+# A panel that lacks them simply yields an unobserved signal, exactly as before — the panel,
+# not this constant, decides what the replay can see.
+CALIBRATION_MARKET_SYMBOLS = ("SPY", "IWM", "SOXX", "XLY", "XLP", "HYG", "IEF", "GC=F", "HG=F")
 CALIBRATION_ALERT_SCORE = 60.0
 CALIBRATION_EVENT_HORIZON = 20
 CALIBRATION_EVENT_DRAWDOWN = -0.10
@@ -297,6 +303,39 @@ def _point_in_time_market_history(panel: dict[str, Any], index: int) -> dict[str
     }
 
 
+#: Commodity series whose closes feed the copper/gold confirmation signals (PRD §14.7).
+CALIBRATION_COMMODITY_SYMBOLS = {"GC=F": "Gold", "HG=F": "Copper"}
+
+
+def _point_in_time_commodities(histories: dict[str, list[dict[str, Any]]]) -> Any:
+    """Build the commodities dataset seam the live pipeline hands to ``build_risk_context``.
+
+    The live path reads ``commodities.payload.assets[].change_1d``; a replay has only closing
+    prices, so the 1d change is derived from the last two closes at or before the score date —
+    the same definition the live commodity cards publish. A symbol without two closes is
+    omitted rather than filled with a benign zero, so a missing series stays an unobserved
+    signal instead of a false "not triggered". The ``.payload`` seam matches the envelope the
+    live collector hands over (``build_risk_context`` reads ``commodities.payload``).
+    """
+    assets: list[CommodityAsset] = []
+    for symbol, name in sorted(CALIBRATION_COMMODITY_SYMBOLS.items()):
+        rows = histories.get(symbol) or []
+        closes = [float(row["close"]) for row in rows if isinstance(row.get("close"), (int, float))]
+        if len(closes) < 2 or not closes[-2]:
+            continue
+        assets.append(
+            CommodityAsset(
+                symbol=symbol,
+                name=name,
+                price=closes[-1],
+                change_1d=round((closes[-1] - closes[-2]) / closes[-2] * 100.0, 4),
+                source="calibration_panel",
+                updated_at=f"{rows[-1]['date']}T00:00:00Z",
+            )
+        )
+    return SimpleNamespace(payload=CommoditiesDataset(assets=assets))
+
+
 def _point_in_time_context(
     panel: dict[str, Any],
     index: int,
@@ -316,7 +355,12 @@ def _point_in_time_context(
         macro=macro,
         equities=empty_dataset,
         crypto=empty_dataset,
-        commodities=empty_dataset,
+        # Commodity closes decide two of the eight production confirmation signals (copper
+        # down, gold up). Before this seam existed the replay always passed an empty
+        # commodities dataset, so those two signals were permanently unobserved and the
+        # cross-asset evidence was measured on 5 of 8 inputs. A panel without the symbols
+        # still yields an empty dataset, so nothing changes for a panel that lacks them.
+        commodities=_point_in_time_commodities(histories),
         histories=histories,
         qualities=[1.0],
         prev_total_score=previous_score,

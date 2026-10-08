@@ -772,6 +772,16 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             "regime": risk_result.regime,
             "confidence": risk_result.confidence,
             "dim_scores": {d.key: d.score for d in risk_result.dimensions},
+            # Per-indicator scores: a dimension score is a weighted average, so the published
+            # history could only ever attribute a move to a *dimension*, never to the input
+            # that caused it — which makes any weight/contribution validation impossible after
+            # the fact (see pipeline/risk/weight_audit.py). One flat key→score map keeps the
+            # row narrow; keys appear as they are scored, so the shape grows with the model.
+            "indicator_scores": {
+                indicator.key: indicator.risk_score
+                for dimension in risk_result.dimensions
+                for indicator in dimension.indicators
+            },
         }
         writer.write_slices("risk", [risk_row])
         spy_rows = results.get("histories", {}).get("SPY", [])
