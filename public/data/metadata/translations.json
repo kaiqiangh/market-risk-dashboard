@@ -1,1 +1,1 @@
-{"schema_version":"1.0.0","last_merge":{"status":"merged","merged_items":5,"reason":"news.zh-translations.json merged 5 zh sides, but 24 zh-source items still lack English canonical (id/batch mismatch, #225)","source_file":"news.zh-translations.json","merged_at":"2026-10-08T20:27:12Z"},"updated_at":"2026-10-08T20:27:12Z"}
+{"schema_version":"1.0.0","last_merge":{"status":"merged","merged_items":50,"reason":"news.zh-translations.json merged into news.json","source_file":"news.zh-translations.json","merged_at":"2026-10-08T20:35:58Z"},"updated_at":"2026-10-08T20:35:58Z"}
