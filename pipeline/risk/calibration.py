@@ -341,13 +341,22 @@ def _point_in_time_context(
     index: int,
     previous_score: float | None,
     previous_dimensions: dict[str, float] | None,
+    derived_history_enabled: bool = False,
 ) -> dict[str, Any]:
     """Build the same context seam used by the live pipeline, using only rows through ``index``."""
+    from pipeline.indicators.derived_series import derive_report
     from pipeline.run import build_risk_context
 
     macro = SimpleNamespace(payload=_macro_payload(panel, index))
     empty_dataset = SimpleNamespace(payload=SimpleNamespace(assets=[]))
     histories = _point_in_time_market_history(panel, index)
+    series_history = _point_in_time_series_history(panel, index)
+    # #D3: the derived value histories read only rows dated at or before ``index``, so enabling
+    # the gate cannot leak a future close into an earlier score. With it off nothing is
+    # computed, which keeps the replay byte-identical to the pre-#D3 behaviour.
+    derived_series_report = (
+        derive_report(histories, series_history) if derived_history_enabled else None
+    )
     source_metadata = panel.get("source_metadata", {})
     market_source = source_metadata.get("sources", {}).get("market", "calibration_panel")
     provenance = {"provider": str(market_source)}
@@ -366,7 +375,8 @@ def _point_in_time_context(
         prev_total_score=previous_score,
         prev_dim_scores=previous_dimensions,
         risk_history=[],
-        series_history=_point_in_time_series_history(panel, index),
+        series_history=series_history,
+        derived_series_report=derived_series_report,
         market_provenance=provenance,
         macro_provenance={"provider": str(source_metadata.get("sources", {}).get("macro", "calibration_panel"))},
         crypto_provenance=provenance,
@@ -661,7 +671,15 @@ def replay_production_path(panel: dict[str, Any], settings: Any | None = None) -
     previous_score: float | None = None
     previous_dimensions: dict[str, float] | None = None
     for index, date_value in enumerate(dates):
-        result = model.score(_point_in_time_context(normalized, index, previous_score, previous_dimensions))
+        result = model.score(
+            _point_in_time_context(
+                normalized,
+                index,
+                previous_score,
+                previous_dimensions,
+                derived_history_enabled=model.derived_history_enabled,
+            )
+        )
         path = _path_identity(result)
         if normalized["evaluate"][index]:
             observations.append(

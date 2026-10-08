@@ -20,6 +20,7 @@ def build_risk_context(
     prev_dim_scores: dict[str, float] | None,
     risk_history: list[dict[str, Any]],
     series_history: dict[str, list[dict[str, Any]]],
+    derived_series_report: dict[str, Any] | None = None,
     market_provenance: dict[str, Any] | None = None,
     macro_provenance: dict[str, Any] | None = None,
     crypto_provenance: dict[str, Any] | None = None,
@@ -111,6 +112,12 @@ def build_risk_context(
         },
         "data_quality": round(data_quality, 4),
         "series_history": series_history,
+        # #D3: the value histories derived from the collected market histories
+        # (pipeline/indicators/derived_series.py). Both are empty when the caller did not opt
+        # in — nothing was computed, so nothing is published, and every derived key falls back
+        # to the heuristic table exactly as before.
+        "derived_series_report": derived_series_report,
+        "derived_indicator_series": (derived_series_report or {}).get("series", {}),
         "_prev_total_score": prev_total_score,
         "_prev_dim_scores": prev_dim_scores,
         "_risk_history": risk_history,

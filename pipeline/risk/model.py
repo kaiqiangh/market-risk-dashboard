@@ -65,6 +65,30 @@ INDICATOR_HISTORY_SERIES: dict[str, str | tuple[str, str]] = {
     "realized_vol": None,  # computed: no independent 5Y series (heuristic fallback)
 }
 
+# Keys whose history is *derived* from the collected market histories rather than read from a
+# FRED series (#D3, pipeline/indicators/derived_series.py). With
+# `scoring.derived_history.enabled` they take the same percentile primary path as the FRED
+# inputs; with it off they fall back to HEURISTIC_RULES exactly as before — and the three keys
+# missing from that table land on the constant fallback 50.0.
+DERIVED_HISTORY_KEYS: frozenset[str] = frozenset(
+    {
+        # volatility
+        "realized_vol",
+        # trend
+        "price_vs_ma200",
+        "drawdown_52w",
+        "momentum_3m",
+        # equity_structure
+        "breadth_above_ma200",
+        "new_highs_ratio",
+        "new_lows_ratio",
+        "small_cap_relative",
+        "semis_relative",
+        # cross_asset
+        "cross_asset_confirmation",
+    }
+)
+
 
 def _ind(
     key: str,
@@ -102,6 +126,13 @@ class RiskModel:
         scoring_cfg = raw.get("scoring", {})
         self.percentile_window_years = int(scoring_cfg.get("percentile_window_years", 5))
         self.fallback_percentile = float(scoring_cfg.get("fallback_percentile", 50.0))
+        derived_cfg = scoring_cfg.get("derived_history", {}) or {}
+        if not isinstance(derived_cfg, dict):
+            raise ValueError("risk scoring.derived_history must be a mapping")
+        # #D3. Off by default: moving a computed input off the hand-drawn table and onto a
+        # distribution changes published scores, which is a calibration decision (see
+        # `calibration_policy`), not something wiring up data may do on its own.
+        self.derived_history_enabled = bool(derived_cfg.get("enabled", False))
         evidence_cfg = raw.get("evidence", {})
         self.insufficient_evidence_threshold = float(
             evidence_cfg.get("insufficient_coverage_threshold", 0.5)
@@ -140,7 +171,19 @@ class RiskModel:
         return values[-self._max_history_samples:]
 
     def _indicator_history(self, ctx: dict[str, Any], key: str) -> list[float] | None:
-        """Indicator key → 5Y history values (composite series aligned by date and differenced; None when no source)."""
+        """Indicator key → 5Y history values (composite series aligned by date and differenced; None when no source).
+
+        Derived keys (``DERIVED_HISTORY_KEYS``) read the value history the pipeline computed
+        from the collected market histories (#D3). They are accepted only when the model opted
+        in, so a caller that publishes them while ``scoring.derived_history.enabled`` is false
+        cannot move a published score.
+        """
+        if key in DERIVED_HISTORY_KEYS:
+            if not self.derived_history_enabled:
+                return None
+            values = (ctx.get("derived_indicator_series") or {}).get(key) or []
+            return list(values) if values else None
+
         spec = INDICATOR_HISTORY_SERIES.get(key)
         if spec is None:
             return None
@@ -206,11 +249,21 @@ class RiskModel:
     def _equity_structure_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
         breadth = ctx.get("breadth", {})
         return [
-            _ind("breadth_above_ma200", "Breadth > MA200", breadth.get("breadth_above_ma200"), "lower_is_riskier", "computed", self._indicator_weight("equity_structure", "breadth_above_ma200"), is_proxy=True),
-            _ind("new_highs_ratio", "New Highs Ratio", breadth.get("new_highs_ratio"), "lower_is_riskier", "computed", self._indicator_weight("equity_structure", "new_highs_ratio"), is_proxy=True),
-            _ind("new_lows_ratio", "New Lows Ratio", breadth.get("new_lows_ratio"), "higher_is_riskier", "computed", self._indicator_weight("equity_structure", "new_lows_ratio"), is_proxy=True),
-            _ind("small_cap_relative", "Small Cap Rel", breadth.get("small_cap_relative"), "lower_is_riskier", "computed", self._indicator_weight("equity_structure", "small_cap_relative"), is_proxy=True),
-            _ind("semis_relative", "Semis Rel", breadth.get("semis_relative"), "lower_is_riskier", "computed", self._indicator_weight("equity_structure", "semis_relative"), is_proxy=True),
+            _ind("breadth_above_ma200", "Breadth > MA200", breadth.get("breadth_above_ma200"), "lower_is_riskier", "computed",
+                 self._indicator_weight("equity_structure", "breadth_above_ma200"),
+                 history=self._indicator_history(ctx, "breadth_above_ma200"), is_proxy=True),
+            _ind("new_highs_ratio", "New Highs Ratio", breadth.get("new_highs_ratio"), "lower_is_riskier", "computed",
+                 self._indicator_weight("equity_structure", "new_highs_ratio"),
+                 history=self._indicator_history(ctx, "new_highs_ratio"), is_proxy=True),
+            _ind("new_lows_ratio", "New Lows Ratio", breadth.get("new_lows_ratio"), "higher_is_riskier", "computed",
+                 self._indicator_weight("equity_structure", "new_lows_ratio"),
+                 history=self._indicator_history(ctx, "new_lows_ratio"), is_proxy=True),
+            _ind("small_cap_relative", "Small Cap Rel", breadth.get("small_cap_relative"), "lower_is_riskier", "computed",
+                 self._indicator_weight("equity_structure", "small_cap_relative"),
+                 history=self._indicator_history(ctx, "small_cap_relative"), is_proxy=True),
+            _ind("semis_relative", "Semis Rel", breadth.get("semis_relative"), "lower_is_riskier", "computed",
+                 self._indicator_weight("equity_structure", "semis_relative"),
+                 history=self._indicator_history(ctx, "semis_relative"), is_proxy=True),
         ]
 
     def _volatility_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
@@ -218,22 +271,32 @@ class RiskModel:
         return [
             _ind("vix", "VIX", vix, "higher_is_riskier", "FRED", self._indicator_weight("volatility", "vix"),
                  history=self._indicator_history(ctx, "vix")),
-            _ind("realized_vol", "Realized Vol", ctx.get("trend", {}).get("realized_vol"), "higher_is_riskier", "computed", self._indicator_weight("volatility", "realized_vol")),
+            _ind("realized_vol", "Realized Vol", ctx.get("trend", {}).get("realized_vol"), "higher_is_riskier", "computed",
+                 self._indicator_weight("volatility", "realized_vol"),
+                 history=self._indicator_history(ctx, "realized_vol")),
         ]
 
     def _cross_asset_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
         # 9-signal confirmation hit rate (MVP simplified): cross-asset risk confirmation
         cross = ctx.get("cross_asset", {})
         return [
-            _ind("cross_asset_confirmation", "Cross-asset Confirmation", cross.get("confirmation"), "higher_is_riskier", "computed", self._indicator_weight("cross_asset", "cross_asset_confirmation"), is_proxy=True),
+            _ind("cross_asset_confirmation", "Cross-asset Confirmation", cross.get("confirmation"), "higher_is_riskier", "computed",
+                 self._indicator_weight("cross_asset", "cross_asset_confirmation"),
+                 history=self._indicator_history(ctx, "cross_asset_confirmation"), is_proxy=True),
         ]
 
     def _trend_indicators(self, ctx: dict[str, Any]) -> list[RiskIndicator]:
         trend = ctx.get("trend", {})
         return [
-            _ind("price_vs_ma200", "Price vs MA200", trend.get("price_vs_ma200"), "lower_is_riskier", "computed", self._indicator_weight("trend", "price_vs_ma200")),
-            _ind("drawdown_52w", "52W Drawdown", trend.get("drawdown_52w"), "lower_is_riskier", "computed", self._indicator_weight("trend", "drawdown_52w")),
-            _ind("momentum_3m", "3M Momentum", trend.get("momentum_3m"), "lower_is_riskier", "computed", self._indicator_weight("trend", "momentum_3m")),
+            _ind("price_vs_ma200", "Price vs MA200", trend.get("price_vs_ma200"), "lower_is_riskier", "computed",
+                 self._indicator_weight("trend", "price_vs_ma200"),
+                 history=self._indicator_history(ctx, "price_vs_ma200")),
+            _ind("drawdown_52w", "52W Drawdown", trend.get("drawdown_52w"), "lower_is_riskier", "computed",
+                 self._indicator_weight("trend", "drawdown_52w"),
+                 history=self._indicator_history(ctx, "drawdown_52w")),
+            _ind("momentum_3m", "3M Momentum", trend.get("momentum_3m"), "lower_is_riskier", "computed",
+                 self._indicator_weight("trend", "momentum_3m"),
+                 history=self._indicator_history(ctx, "momentum_3m")),
         ]
 
     # ---- Main flow ----

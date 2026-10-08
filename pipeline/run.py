@@ -37,6 +37,7 @@ from pipeline.analysis_pair import (  # analysis-pair lifecycle (#192 extraction
 )
 from pipeline.collectors import CalendarCollector, MacroCollector, MarketCollector, NewsCollector
 from pipeline.factlayer import FactLayerBuilder
+from pipeline.indicators.derived_series import derive_report
 from pipeline.metadata import oldest_source_timestamp, row_count_for
 from pipeline.providers import build_registry
 from pipeline.report import write_run_report
@@ -607,6 +608,18 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
                              source_updated_at=calendar_meta.get("source_updated_at"))
 
         risk_model = RiskModel(settings)
+        market_histories = results.get("histories", {})
+        # #D3: the computed indicators (breadth / trend / realized vol) have no FRED series, so
+        # their value history is derived from the market histories the pipeline already
+        # collected. That derivation is only computed when the model opted in
+        # (scoring.derived_history.enabled): it walks every universe symbol for every date, and
+        # it moves published scores off the hand-drawn heuristic table — a calibration
+        # decision, not a run-time default. scripts/risk_series_impact.py measures the delta.
+        derived_series_report = (
+            derive_report(market_histories, results.get("series_history", {}))
+            if risk_model.derived_history_enabled
+            else None
+        )
         prev_score, prev_dims, risk_history = read_prev_risk(writer)
         # #99 (verified end to end): _assemble returns AssembledDataset (the #101 single
         # assembly path); the risk context and the fact layer operate on ENVELOPES.
@@ -615,12 +628,13 @@ def _run_risk_and_write(results: dict[str, Any], writer: StorageWriter, command:
             equities=equities.envelope,
             crypto=crypto.envelope,
             commodities=commodities.envelope,
-            histories=results.get("histories", {}),
+            histories=market_histories,
             qualities=results["qualities"],
             prev_total_score=prev_score,
             prev_dim_scores=prev_dims,
             risk_history=risk_history,
             series_history=results.get("series_history", {}),
+            derived_series_report=derived_series_report,
             market_provenance=market_meta.get("providers", {}).get("equities"),
             macro_provenance=macro_outcome,
             crypto_provenance=market_meta.get("providers", {}).get("crypto"),
