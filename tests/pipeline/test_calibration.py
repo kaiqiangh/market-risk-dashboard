@@ -154,6 +154,39 @@ def test_cross_asset_replay_publishes_diagnostics_without_weight_changes() -> No
     )
 
 
+def test_replay_observes_the_commodity_confirmation_signals_when_the_panel_carries_them() -> None:
+    """Copper/gold closes make two more production signals observable in the replay.
+
+    Before the commodity seam existed, ``_point_in_time_context`` always handed the risk
+    context an empty commodities dataset, so ``copper_down``/``gold_up`` were permanently
+    unobserved: the calibration evidence for the cross_asset dimension covered 5 of its 8
+    production signals, and the two missing ones could never be evaluated. The seam makes the
+    inputs measurable — it does not move the score (the dimension keeps its configured weight
+    and, on this panel, its constant fallback score).
+    """
+    panel = _production_panel()
+    baseline_row = replay_production_path(copy.deepcopy(panel))["observations"][-1]
+
+    spy = panel["market"]["SPY"]
+    panel["market"]["GC=F"] = [value * (1.0 + (index % 7) * 0.0005) for index, value in enumerate(spy)]
+    panel["market"]["HG=F"] = [value * (1.0 - (index % 5) * 0.0005) for index, value in enumerate(spy)]
+
+    row = replay_production_path(panel)["observations"][-1]
+    signals = {signal["key"]: signal for signal in row["cross_asset_signals"]}
+
+    def observed(observation: dict) -> int:
+        return sum(1 for signal in observation["cross_asset_signals"] if signal["triggered"] is not None)
+
+    assert signals["copper_down"]["triggered"] is not None
+    assert signals["gold_up"]["triggered"] is not None
+    assert observed(baseline_row) == 5
+    assert observed(row) == 7
+    # The confirmation input moved, the contribution did not: the dimension score is still the
+    # constant fallback, which is exactly the imbalance the weight review reports.
+    assert row["cross_asset_confirmation"] != baseline_row["cross_asset_confirmation"]
+    assert row["dimension_scores"]["cross_asset"] == baseline_row["dimension_scores"]["cross_asset"] == 50.0
+
+
 def test_production_replay_does_not_use_future_values() -> None:
     panel = _production_panel()
     baseline = replay_production_path(panel)

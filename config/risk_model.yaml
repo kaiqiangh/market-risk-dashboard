@@ -63,6 +63,18 @@ indicators:
 scoring:
   percentile_window_years: 5
   fallback_percentile: 50.0
+  # D3: the computed indicators (breadth / trend / realized vol) have no FRED series, so they
+  # could only ever be scored by the HEURISTIC_RULES table — and three of them
+  # (cross_asset_confirmation, small_cap_relative, semis_relative) have no rule at all, so they
+  # were scored at the constant fallback 50.0 on every run (21.96 of 100 points of dead weight).
+  # `derived_history` derives their value history from the market histories the pipeline already
+  # collects (SPY/IWM/SOXX + the breadth universe), which puts them on the same percentile
+  # primary path as the FRED inputs. See pipeline/indicators/derived_series.py.
+  # OFF by default: moving an input from a hand-drawn table to a distribution changes published
+  # scores, and that is a calibration decision (calibration_policy), not a side effect of wiring
+  # up data. scripts/risk_series_impact.py measures the on/off delta before the decision.
+  derived_history:
+    enabled: false
 
 # Evidence state is separate from provider freshness: it describes how much of the model's
 # configured indicator weight has usable evidence. Below this threshold, the point estimate
