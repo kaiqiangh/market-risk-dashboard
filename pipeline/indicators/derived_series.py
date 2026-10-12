@@ -6,8 +6,9 @@ Why this exists
 per-indicator value history, and a **heuristic** fallback against a hand-drawn mapping table.
 Only nine indicators have a history — the FRED series. The other ten are single point values
 recomputed each run from the collected market histories, so they can only ever be scored by the
-table; and three of them (`cross_asset_confirmation`, `small_cap_relative`, `semis_relative`)
-are not in the table at all, so they are scored at the constant fallback 50.0 every single day.
+table unless a derived history is enabled. Three of them (`cross_asset_confirmation`,
+`small_cap_relative`, `semis_relative`) previously had no heuristic mapping and fell back to a
+constant 50.0; they now have deterministic mappings, while percentile histories remain gated.
 
 This module derives the missing value histories from data the pipeline **already collects**:
 the daily closes of the benchmark proxies (SPY / IWM / SOXX, `INDEX_HISTORIES`) and the symbol

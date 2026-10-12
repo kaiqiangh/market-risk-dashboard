@@ -31,10 +31,7 @@ _TINY_MODEL = {
 def test_scoring_path_resolves_each_input_to_its_rule() -> None:
     assert scoring_path("vix") == "percentile"  # has a 5Y history series
     assert scoring_path("realized_vol") == "heuristic"  # rule only, no independent series
-    # No rule and no series: the key carries weight but is scored at the constant fallback on
-    # every run. Update this assertion when a mapping is added (see
-    # docs/global-risk-score-weight-review-2026-10-08.md).
-    assert scoring_path("cross_asset_confirmation") == "unmapped"
+    assert scoring_path("cross_asset_confirmation") == "heuristic"
 
 
 def test_configured_indicator_weights_normalize_within_each_dimension() -> None:

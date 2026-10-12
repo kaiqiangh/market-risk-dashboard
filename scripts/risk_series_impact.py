@@ -3,11 +3,12 @@
 
 ``scoring.derived_history.enabled`` decides whether the computed indicators (breadth / trend /
 realized vol) are scored from a derived value history — the same percentile primary path the
-FRED inputs use — instead of the hand-drawn ``HEURISTIC_RULES`` table. Three of them are in
-neither table, so switching the gate also removes real dead weight. That means flipping it
-*moves published scores*, which is why it ships OFF and why calibration owns the decision
-rather than the data wiring. This script produces the evidence that decision needs: it replays
-one point-in-time panel twice through the governed production replay
+FRED inputs use — instead of the hand-drawn ``HEURISTIC_RULES`` table. The 1.0.1 scoring update
+adds heuristic mappings for the three keys that previously had none, so this replay now measures
+percentile-versus-heuristic changes without unmapped fallback values. Flipping the gate still
+*moves published scores*, which is why it ships OFF and why calibration owns the decision rather
+than data wiring. This script produces the evidence that decision needs: it replays one
+point-in-time panel twice through the governed production replay
 (``pipeline.risk.calibration.replay_production_path``) — once with the gate off, once with it
 on — and reports exactly what moved.
 
@@ -23,9 +24,9 @@ Honest limits, reported rather than hidden:
 - A derived series needs ``MIN_SERIES_SAMPLES`` (60) observations *after* its lookback — 200
   benchmark sessions for ``price_vs_ma200`` / ``breadth_above_ma200``, 64 for the rest. A short
   panel therefore exercises few keys. The report names every key the panel could not exercise
-  and why, and says plainly when the panel is too short to measure the dead-weight keys at all.
+  and why, and says plainly when the panel is too short to measure the mapped scoring-path changes.
 - ``cross_asset_confirmation`` is never derived from a partial signal set (the live value is a
-  hit rate over eight signals), so it stays on the constant fallback in both runs.
+  hit rate over eight signals), so it stays on its explicit heuristic mapping in both runs.
 - ``projected_path_split`` applies the panel's derived coverage to the configured weights. It
   is a projection, not a measurement: production coverage depends on the live 1y benchmark
   window, which is longer than any deterministic CI panel.

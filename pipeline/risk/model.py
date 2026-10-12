@@ -68,8 +68,8 @@ INDICATOR_HISTORY_SERIES: dict[str, str | tuple[str, str]] = {
 # Keys whose history is *derived* from the collected market histories rather than read from a
 # FRED series (#D3, pipeline/indicators/derived_series.py). With
 # `scoring.derived_history.enabled` they take the same percentile primary path as the FRED
-# inputs; with it off they fall back to HEURISTIC_RULES exactly as before — and the three keys
-# missing from that table land on the constant fallback 50.0.
+# inputs; with it off they use HEURISTIC_RULES. The heuristic table now also covers the three
+# keys that previously landed on the constant fallback 50.0.
 DERIVED_HISTORY_KEYS: frozenset[str] = frozenset(
     {
         # volatility
