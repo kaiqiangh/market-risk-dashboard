@@ -1,11 +1,200 @@
 {
  "items": [
   {
-   "id": "24828dfad60a3cfe472c60c9760d2ffa1fbc3b9e",
-   "title": "S&P 500 futures are mixed ahead of bank earnings; memory stocks fall after sell-off in Korea: Live updates",
-   "summary": "Big banks JPMorgan, Goldman Sachs, Citigroup and Wells Fargo are slated to release their results before the open on Tuesday.",
-   "title_zh": "标普 500 期货在银行财报前涨跌互现；韩国抛售后存储股下跌：实时更新",
-   "summary_zh": "摩根大通、高盛、花旗与富国银行等大型银行将于周二开盘前公布业绩。"
+   "id": "586d43d19ec78444a564e41c71c4ff368fd81ba4",
+   "title": "Micron sinks, other memory-linked names dip for a second day",
+   "summary": "The sell-off in U.S",
+   "title_zh": "美光续跌，其他存储相关个股连续第二日走低",
+   "summary_zh": "美国市场的抛售"
+  },
+  {
+   "id": "f32ceadad758134fd0cd2fc193d663aa30aaa97c",
+   "title": "Fed's Collins: expects the Fed to raise rates 'further' before year-end",
+   "summary": "【Fed's Collins: expects the Fed to raise rates 'further' before year-end】CLS, October 14 — Fed's Collins said the future path of monetary policy in the new year will depend on data, expects the Fed to raise rates 'further' before year-end, expects inflation to gradually fall to 2 percent, and said data centre construction is putting pressure on inflation data",
+   "title_zh": "美联储柯林斯：预计美联储将在年底前“进一步”上调利率",
+   "summary_zh": "【美联储柯林斯：预计美联储将在年底前“进一步”上调利率】财联社10月14日电，美联储柯林斯表示，新一年货币政策的未来路径将取决于数据，预计美联储将在年底前“进一步”上调利率；预计通胀将逐渐降至2%；数据中心建设正在对通胀数据施加压力"
+  },
+  {
+   "id": "bb9d6afea5f2e39004716054bf7d2da98e4ecff4",
+   "title": "All three major U.S. indexes close lower; semiconductor and memory stocks decline",
+   "summary": "【All three major U.S. indexes close lower; semiconductor and memory stocks decline】CLS, October 14 — all three major U.S. indexes closed lower, with the Dow down 0.35 percent, the Nasdaq down 0.15 percent and the S&P 500 down 0.02 percent; most popular tech names fell, semiconductor equipment and materials, memory stocks and precious metals declined, Applied Materials dropped more than 6 percent, SpaceX more than 4 percent, Cohu and KLA more than 3 percent, and Micron and SK Hynix more than 3 percent, while Meta rose more than 2 percent",
+   "title_zh": "美股三大指数集体收跌 半导体、存储股走低",
+   "summary_zh": "【美股三大指数集体收跌 半导体、存储股走低】财联社10月14日电，美股三大指数集体收跌，道指跌0.35%，纳指跌0.15%，标普500指数跌0.02%，热门科技股多数下跌，半导体设备与材料、存储股、贵金属走低，应用材料跌超6%，SpaceX跌超4%，科休半导体、科磊跌超3%、美光科技、SK海力士跌超3%，Meta涨超2"
+  },
+  {
+   "id": "9b8c7a867173067ed8ceec05101faf507a7e9ec7",
+   "title": "Fed's Williams: one more rate hike this year is appropriate; no hike seen as necessary in 2027",
+   "summary": "【Fed's Williams: one more rate hike this year is appropriate; no hike seen as necessary in 2027】CLS, October 14 — Fed's Williams said one more rate hike this year is appropriate and that, as things stand, no rate hike is necessary in 2027",
+   "title_zh": "美联储威廉姆斯：今年再加息一次是合适的 目前认为2027年没有必要加息",
+   "summary_zh": "【美联储威廉姆斯：今年再加息一次是合适的 目前认为2027年没有必要加息】财联社10月14日电，美联储威廉姆斯表示，今年再加息一次是合适的；目前认为2027年没有必要加息"
+  },
+  {
+   "id": "acb7efdc44ac5cd26d2aa8db83da8934636d90a7",
+   "title": "S&P 500 closes near flat after big banks post earnings and memory chip stocks decline",
+   "summary": "Traders digested a slew of corporate earnings reports from major banks along with a steep overnight decline in South Korea that put pressure on memory names.",
+   "title_zh": "大型银行发布财报、存储芯片股下跌后，标普 500 收盘基本持平",
+   "summary_zh": "交易员消化了大型银行的一系列企业财报，以及韩国市场隔夜大幅下跌对存储类个股构成的压力。"
+  },
+  {
+   "id": "52a2c7af3a9217bb96988187e1dc98493667270c",
+   "title": "Nvidia's Jensen Huang tours Europe: to announce USD 2 billion of investment within the coming week, pushing open source to help Europe 'get in the game'",
+   "summary": "Nvidia CEO Jensen Huang is on a dense itinerary of visits across Europe and will announce more than USD 2 billion of European investment plans within the coming week",
+   "title_zh": "英伟达黄仁勋欧洲行：未来一周将宣布20亿美元投资，力推开源模式助欧洲\"入局\"",
+   "summary_zh": "英伟达首席执行官黄仁勋正在欧洲展开高密度访问行程，并将在未来一周内宣布逾20亿美元的欧洲投资计划"
+  },
+  {
+   "id": "dc992ef6431d752dbea5e52cb0e4245498c1ea5a",
+   "title": "All three major U.S. indexes close lower; semiconductor and memory stocks slip, Applied Materials down more than 6 percent",
+   "summary": "U.S. Eastern Time Tuesday, all three major U.S. indexes closed lower; at the close the Dow was down 0.35 percent, the Nasdaq down 0.15 percent and the S&P 500 down 0.02 percent",
+   "title_zh": "美股三大指数集体收跌 半导体、存储股走低 应用材料跌超6%",
+   "summary_zh": "美东时间周二，美股三大指数集体收跌，截止收盘，道指跌0.35%，纳指跌0.15%，标普500指数跌0.02%"
+  },
+  {
+   "id": "7a840b31f41be4c2e240a1de6ec17839d6918dee",
+   "title": "Williams says Fed may not have to hike rates in 2027, at odds with traders",
+   "summary": "New York Fed President John Williams sees one more rate hike in 2026 but no additional increase in 2027 as inflation pressures ease.",
+   "title_zh": "威廉姆斯称美联储 2027 年可能无需加息，与交易员预期相左",
+   "summary_zh": "纽约联储主席约翰·威廉姆斯认为 2026 年还会再加息一次，但随着通胀压力缓解，2027 年无需进一步加息。"
+  },
+  {
+   "id": "e3ca1400b2ce217df83233a5681b9a543ca3710f",
+   "title": "Fed's No. 3 Williams: as things stand, the Fed does not need to hike rates in 2027",
+   "summary": "Fed's No. 3 Williams: as things stand, the Fed does not need to hike rates in 2027",
+   "title_zh": "美联储三把手威廉姆斯：现在看来，美联储无需在2027年加息",
+   "summary_zh": "美联储三把手威廉姆斯：现在看来，美联储无需在2027年加息"
+  },
+  {
+   "id": "f2bbc348397d2d11d5b344449d28b79cb63b1dcb",
+   "title": "CLS, October 14 — Brazil's national grain exporters association (ANEC) expects Brazil's October soybean exports at 6.55 million tonnes, up from 6.18 million estimated a week earlier",
+   "summary": "CLS, October 14 — Brazil's national grain exporters association (ANEC) expects Brazil's October soybean exports at 6.55 million tonnes, up from 6.18 million estimated a week earlier",
+   "title_zh": "财联社10月14日电，巴西全国谷物出口商协会（ANEC）预计巴西10月大豆出口量为655万吨，此前一周预估为618万吨。",
+   "summary_zh": "财联社10月14日电，巴西全国谷物出口商协会（ANEC）预计巴西10月大豆出口量为655万吨，此前一周预估为618万吨"
+  },
+  {
+   "id": "ae557e08298ab4cdfe556a5f65c5b8308927e77a",
+   "title": "CLS, October 14 — Bank of America (BAC.N) reportedly fined USD 1.2 billion over deficiencies in anti-money-laundering work",
+   "summary": "CLS, October 14 — Bank of America (BAC.N) reportedly fined USD 1.2 billion over deficiencies in anti-money-laundering work",
+   "title_zh": "财联社10月14日电，美国银行(BAC.N)据称因反洗钱工作存在缺陷，被罚款12亿美元。",
+   "summary_zh": "财联社10月14日电，美国银行(BAC.N)据称因反洗钱工作存在缺陷，被罚款12亿美元"
+  },
+  {
+   "id": "2b907e87677687d030be0e331b5f5b5a61039609",
+   "title": "Dollar index falls on October 13",
+   "summary": "【Dollar index falls on October 13】CLS, October 14 — the dollar index, which measures the greenback against six major currencies, fell 0.4 percent on the day and ended the foreign-exchange session at 102.180",
+   "title_zh": "美元指数13日下跌",
+   "summary_zh": "【美元指数13日下跌】财联社10月14日电，衡量美元对六种主要货币的美元指数当天下跌0.4%，在汇市尾市收于102.180"
+  },
+  {
+   "id": "cc9e1ecb04928df390eacba6bba5ba5edc0911df",
+   "title": "Livermore China concept-stock leaders index closes up 0.21 percent",
+   "summary": "【Livermore China concept-stock leaders index closes up 0.21 percent】CLS, October 14 — the Livermore China concept-stock leaders index closed up 0.21 percent, with popular China concept stocks mixed: Chagee up more than 4 percent, NIO more than 2 percent, MINISO nearly 2 percent, Zhihu and PDD more than 1 percent, while Bilibili fell more than 1 percent and iQIYI more than 2 percent",
+   "title_zh": "利弗莫尔中概股龙头指数收涨0.21%",
+   "summary_zh": "【利弗莫尔中概股龙头指数收涨0.21%】财联社10月14日电，利弗莫尔中概股龙头指数收涨0.21%，热门中概股涨跌不一，霸王茶姬涨超4%，蔚来涨超2%，名创优品涨近2%，知乎、拼多多涨超1%，哔哩哔哩跌超1%，爱奇艺跌超2%"
+  },
+  {
+   "id": "863870af9a90c59cb896cd5b88d80c8c920d6748",
+   "title": "Series of explosions heard in Kyiv, Ukraine",
+   "summary": "【Series of explosions heard in Kyiv, Ukraine】CLS, October 14 — a series of explosions was heard in the Ukrainian capital Kyiv, followed by air-raid sirens",
+   "title_zh": "乌克兰基辅响起连续爆炸声",
+   "summary_zh": "【乌克兰基辅响起连续爆炸声】财联社10月14日电，乌克兰首都基辅响起连续爆炸声，随后拉响防空警报"
+  },
+  {
+   "id": "a55f5888cd40295aeb9268e4310635ff7b9e628c",
+   "title": "CLS, October 14 — Citigroup falls to an intraday low, now down more than 5 percent, its biggest drop since July",
+   "summary": "CLS, October 14 — Citigroup falls to an intraday low, now down more than 5 percent, its biggest drop since July",
+   "title_zh": "财联社10月14日电，花旗集团跌至盘中低点，现跌超5%，创7月以来最大跌幅。",
+   "summary_zh": "财联社10月14日电，花旗集团跌至盘中低点，现跌超5%，创7月以来最大跌幅"
+  },
+  {
+   "id": "1c5ab595fb79cf3c5d86db3f90a27fe581894cd9",
+   "title": "Iran's Revolutionary Guard naval commander: waiting for the U.S. warship to approach so it can be sunk",
+   "summary": "【Iran's Revolutionary Guard naval commander: waiting for the U.S. warship to approach so it can be sunk】CLS, October 14 — Azmaei, naval commander of Iran's Islamic Revolutionary Guard Corps, said a highly valuable U.S. warship has already lost its purpose and is 700 km from the Strait of Hormuz because it does not dare approach",
+   "title_zh": "伊朗革命卫队海军司令：正在等待美军舰靠近并将其击沉",
+   "summary_zh": "【伊朗革命卫队海军司令：正在等待美军舰靠近并将其击沉】财联社10月14日电，伊朗伊斯兰革命卫队海军司令阿兹玛伊表示，“价值高昂的美军战舰已经失去作用，它距离霍尔木兹海峡700公里，因为它不敢靠近"
+  },
+  {
+   "id": "7b5fd0e9f8d188daefc4ecfea037f314d92a2db0",
+   "title": "Rosenberg says U.S. stocks look increasingly like a bubble, with several indicators at extremes unseen in his 40-year career",
+   "summary": "【Rosenberg says U.S. stocks look increasingly like a bubble, with several indicators at extremes unseen in his 40-year career】CLS, October 14 — David Rosenberg said the U.S. stock market looks increasingly like a bubble, with valuations, leverage and investor positioning all at extreme levels unprecedented in his 40 years in the industry",
+   "title_zh": "Rosenberg称美股越来越像泡沫 多项指标极端程度从业40年来未见",
+   "summary_zh": "【Rosenberg称美股越来越像泡沫 多项指标极端程度从业40年来未见】财联社10月14日电，David Rosenberg表示，美国股市越来越像一个泡沫，估值、杠杆和投资者仓位均处于其从业40年来前所未见的极端水平"
+  },
+  {
+   "id": "1c7c931d0a3abf64f56dea5d7b90ba4a290370d2",
+   "title": "Magnitude 6.0 earthquake strikes Papua New Guinea",
+   "summary": "【Magnitude 6.0 earthquake strikes Papua New Guinea】CLS, October 14 — according to the U.S. Geological Survey earthquake information network, at 18:45 GMT on the 13th (02:45 Beijing time on the 14th) a magnitude 6.0 earthquake struck 126 km south of Kokopo, Papua New Guinea, with the epicentre at 5.48 degrees south and 152.14 degrees east and a focal depth of 20.8 km",
+   "title_zh": "巴布亚新几内亚发生6.0级地震",
+   "summary_zh": "【巴布亚新几内亚发生6.0级地震】财联社10月14日电，据美国地质调查局地震信息网消息，格林尼治时间13日18时45分（北京时间14日2时45分），巴布亚新几内亚科科波以南126公里处发生6.0级地震，震中位于南纬5.48度、东经152.14度，震源深度20.8公里"
+  },
+  {
+   "id": "9f534c2c3e1a421a821ddc45d07b5e3d5ca450bd",
+   "title": "Trump accuses the Houthis of deliberately driving up oil prices",
+   "summary": "【Trump accuses the Houthis of deliberately driving up oil prices】CLS, October 14 — U.S. President Trump posted on social media on October 13, accusing Yemen's Houthis of striking Saudi Arabia by very nasty means and very likely deliberately driving up oil prices ahead of the U.S. midterm elections",
+   "title_zh": "特朗普指责胡塞武装蓄意推高油价",
+   "summary_zh": "【特朗普指责胡塞武装蓄意推高油价】财联社10月14日电，美国总统特朗普10月13日在社交媒体发文，指责也门胡塞武装以“非常恶劣”的手段打击沙特阿拉伯，并很可能“蓄意在美国中期选举前推高油价”"
+  },
+  {
+   "id": "605ea00b6ae6255861fe631bf5e180a5e3bd6210",
+   "title": "CLS, October 14 — Hang Seng Index futures closed down 0.07 percent in the night session at 24,340 points, a 5-point discount",
+   "summary": "CLS, October 14 — Hang Seng Index futures closed down 0.07 percent in the night session at 24,340 points, a 5-point discount",
+   "title_zh": "财联社10月14日电，恒指期货夜盘收跌0.07%，报24340点，低水5点。",
+   "summary_zh": "财联社10月14日电，恒指期货夜盘收跌0.07%，报24340点，低水5点"
+  },
+  {
+   "id": "39e1b111ca29adb4bae2664830dc83c8763bcc4e",
+   "title": "U.S. and Israeli leaders reported to be discussing a joint strike on Iran",
+   "summary": "【U.S. and Israeli leaders reported to be discussing a joint strike on Iran】CLS, October 14 — according to Israel's Channel 12 television, Israeli Prime Minister Netanyahu has spoken with U.S. President Trump several times recently to discuss the possibility of a large-scale joint military strike on Iran before Israel's Knesset election on October 27 and the U.S. midterm elections on November 3",
+   "title_zh": "美以领导人被曝磋商联手再袭伊朗",
+   "summary_zh": "【美以领导人被曝磋商联手再袭伊朗】财联社10月14日电，据以色列第12频道电视台报道，以色列总理内塔尼亚胡近期与美国总统特朗普多次通话，商讨在10月27日以色列议会选举和11月3日美国中期选举前，对伊朗发动大规模联合军事打击的可能性"
+  },
+  {
+   "id": "c46253b74d4aa89c9084237c891ce1c33fc3614f",
+   "title": "Air-raid sirens sounded in Riyadh, the Saudi capital",
+   "summary": "【Air-raid sirens sounded in Riyadh, the Saudi capital】CLS, October 14 — on the evening of the 13th local time, air-raid sirens were sounded in Riyadh, the Saudi capital",
+   "title_zh": "沙特首都利雅得发布防空警报",
+   "summary_zh": "【沙特首都利雅得发布防空警报】财联社10月14日电，当地时间13日晚，沙特首都利雅得发布防空警报"
+  },
+  {
+   "id": "c79c497bb8d42ac522aec9f2f4a53a4ee7d85003",
+   "title": "CLS, October 14 — WTI crude futures settled at USD 94.14 a barrel, up 40 cents or 0.43 percent; Brent crude futures settled at USD 105.69 a barrel, down 96 cents or 0.9 percent",
+   "summary": "CLS, October 14 — WTI crude futures settled at USD 94.14 a barrel, up 40 cents or 0.43 percent",
+   "title_zh": "财联社10月14日电，WTI原油期货结算价为94.14美元/桶，上涨40美分，涨幅0.43%。布伦特原油期货结算价为105.69美元/桶，下跌96美分，跌幅0.9%。",
+   "summary_zh": "财联社10月14日电，WTI原油期货结算价为94.14美元/桶，上涨40美分，涨幅0.43%"
+  },
+  {
+   "id": "53af06e19673ffe3744a9ca923c4f3fb4a16cad5",
+   "title": "CLS, October 14 — SHFE crude oil futures closed flat in the night session at CNY 753.3 a barrel; the front-month Shanghai gold contract fell 0.33 percent to CNY 900 a gram and the front-month Shanghai silver contract fell 1.51 percent to CNY 14,466 a kilogram",
+   "summary": "CLS, October 14 — SHFE crude oil futures closed flat in the night session at CNY 753.3 a barrel",
+   "title_zh": "财联社10月14日电，上期所原油期货夜盘收平，报753.3元/桶。沪金主力合约收跌0.33%，报900元/克，沪银主力合约收跌1.51%，报14466元/千克。",
+   "summary_zh": "财联社10月14日电，上期所原油期货夜盘收平，报753.3元/桶"
+  },
+  {
+   "id": "60b328a07c0cbf343eaae0f98cfed3fe4d7a358d",
+   "title": "Explosions reported in Dammam, a city in eastern Saudi Arabia",
+   "summary": "【Explosions reported in Dammam, a city in eastern Saudi Arabia】CLS, October 14 — according to witnesses, explosions were heard on the evening of the 13th in Dammam, a city in eastern Saudi Arabia",
+   "title_zh": "沙特东部城市达曼传出爆炸声",
+   "summary_zh": "【沙特东部城市达曼传出爆炸声】财联社10月14日电，据目击者称，沙特阿拉伯东部城市达曼13日晚传出爆炸声"
+  },
+  {
+   "id": "0e554a5dec894bedfd668e5d85d4a9888fc7db5f",
+   "title": "Minutes of the Board's discount rate meetings on August 17, September 9, and September 16, 2026",
+   "summary": "Minutes of the Board's discount rate meetings on August 17, September 9, and September 16, 2026",
+   "title_zh": "董事会 2026 年 8 月 17 日、9 月 9 日与 9 月 16 日贴现率会议纪要",
+   "summary_zh": "董事会 2026 年 8 月 17 日、9 月 9 日与 9 月 16 日贴现率会议纪要"
+  },
+  {
+   "id": "c4a0c3e9bb06b9559310c1d5f4b37af53e303352",
+   "title": "Zelensky submits a new round of meeting proposals to the U.S., proposing talks in the coming days",
+   "summary": "【Zelensky submits a new round of meeting proposals to the U.S., proposing talks in the coming days】CLS, October 14 — Ukrainian President Zelensky said in a video address that the Ukrainian and U.S. working teams are in continuous communication and actively consulting on matters related to the peace process in the Russia-Ukraine conflict",
+   "title_zh": "泽连斯基向美方提交新一轮会晤方案 提议近日开展会谈",
+   "summary_zh": "【泽连斯基向美方提交新一轮会晤方案 提议近日开展会谈】财联社10月14日电，乌克兰总统泽连斯基通过视频讲话表示，乌美双方工作团队持续沟通，积极磋商俄乌冲突和平进程相关事宜"
+  },
+  {
+   "id": "b867519542ad2c837e38cf3b30fd112881cc5c22",
+   "title": "Memory 'crashes'; Korean retail investors plunge back into 'liquidation fear'",
+   "summary": "On October 12 the Korean stock market pulled back sharply",
+   "title_zh": "存储“崩了”，韩国散户再陷“爆仓恐惧”",
+   "summary_zh": "10月12日，韩国股市大幅回调"
   },
   {
    "id": "f9db252e0e0f3cc743d57e89003e13e293ffd2c1",
@@ -15,172 +204,18 @@
    "summary_zh": "加密货币市场迎来新一波行情"
   },
   {
-   "id": "754a9b45127b5abb3ce061e1d5e5229701b7c936",
-   "title": "Fed Governor Waller: rising yields are helping the Fed restrain demand",
-   "summary": "Long-dated US Treasury yields keep climbing, tightening financial conditions and curbing economic demand",
-   "title_zh": "美联储理事沃勒：收益率上升帮助美联储抑制需求",
-   "summary_zh": "美国长期国债收益率持续走高，正在通过收紧金融条件抑制经济需求"
+   "id": "2f66d70d34318b3055679629e865306629f32404",
+   "title": "Was Broadcom CEO bullish or bearish on AI? ‘Gamblers’ comment creates storm.",
+   "summary": "The comments made by Broadcom’s CEO at a conference in Singapore have been cited as a reason for microchip stocks’ slumps on both Monday and Tuesday.",
+   "title_zh": "博通 CEO 对 AI 是看多还是看空？“赌徒”言论引发轩然大波",
+   "summary_zh": "博通 CEO 在新加坡一场会议上的发言，被列为芯片股周一与周二连续下跌的原因之一。"
   },
   {
-   "id": "4fb76bd229c1f807a1a58b62d28e5452aa81d4fc",
-   "title": "Lisa Su calls 2026 the 'year of inference' as AMD sees the CPU market doubling to USD 200 billion by 2030",
-   "summary": "AMD chief executive Lisa Su voiced strong confidence in the CPU market outlook and framed 2026 as the 'year of inference'",
-   "title_zh": "苏姿丰将2026年称为“推理之年”，AMD预测2030年CPU市场空间翻倍至2000亿美元",
-   "summary_zh": "AMD首席执行官苏姿丰（Lisa Su）对CPU市场前景表达了强烈信心，并将2026年定性为\"推理之年\""
-  },
-  {
-   "id": "ef8e920d4d98d580bb6d7705c9172c086e597a3a",
-   "title": "Micron, SoftBank and ASML slide as Wall Street chip rout spreads",
-   "summary": "Technology stocks tumbled Tuesday as a sell-off in U.S",
-   "title_zh": "美光、软银与阿斯麦下挫，华尔街芯片抛售蔓延",
-   "summary_zh": "周二科技股大幅下挫，美国市场的抛售进一步传导。"
-  },
-  {
-   "id": "42d3f68023af5df97b9448c79d6c421874218e14",
-   "title": "Morgan Stanley: memory stocks often look cheapest at the cycle top, but that is when they are dangerous",
-   "summary": "The AI-driven memory-chip super-cycle is still running, but the investment logic for memory stocks is changing",
-   "title_zh": "大摩：存储股在周期顶部往往看起来最便宜，但实际非常危险",
-   "summary_zh": "AI驱动的存储芯片超级周期仍在延续，但存储股的投资逻辑正在发生变化"
-  },
-  {
-   "id": "64825f2f6ffcbdcfdcc8359a06d9da055455460f",
-   "title": "JPMorgan third-quarter adjusted revenue of USD 50.91 billion misses expectations",
-   "summary": "【JPMorgan third-quarter adjusted revenue of USD 50.91 billion misses expectations】CLS, October 13 — JPMorgan's third-quarter adjusted revenue was USD 50.91 billion against an expected USD 51.37 billion; third-quarter fixed income, currencies and commodities sales and trading revenue was USD 5.37 billion against an expected USD 6 billion; third-quarter equities sales and trading revenue was USD 4.95 billion against an expected USD 4.47 billion",
-   "title_zh": "摩根大通第三季度调整后营收509.1亿美元 低于预期",
-   "summary_zh": "【摩根大通第三季度调整后营收509.1亿美元 低于预期】财联社10月13日电，摩根大通第三季度调整后营收509.1亿美元，预期513.7亿美元；第三季度固定收益、外汇及大宗商品销售与交易收入53.7亿美元，预期60亿美元；第三季度股票销售与交易收入49.5亿美元，预期44.7亿美元"
-  },
-  {
-   "id": "4b874839c2d2ebf46a1bde5292d115aa32199e5a",
-   "title": "Japan's education minister apologises over an improperly held political fundraising party",
-   "summary": "【Japan's education minister apologises over an improperly held political fundraising party】CLS, October 13 — Japan's Minister of Education, Culture, Sports, Science and Technology Yoshihiro Seki admitted at a press conference on the 13th local time that a Liberal Democratic Party branch for which he served as representative had breached the rules by holding a political fundraising party in the House of Representatives members' office building, and apologised for it",
-   "title_zh": "日本文部科学大臣就违规举办政治资金筹款派对道歉",
-   "summary_zh": "【日本文部科学大臣就违规举办政治资金筹款派对道歉】财联社10月13日电，日本文部科学大臣关芳弘当地时间13日在记者会上承认，其担任代表的自民党支部曾违反相关规定，在众议院议员会馆内举办政治资金筹款派对，他就此道歉"
-  },
-  {
-   "id": "56d1f3d3dea0c21c294211b8e78aca2f1bb5fc80",
-   "title": "Wells Fargo third-quarter net interest income of USD 12.52 billion falls short of market expectations",
-   "summary": "【Wells Fargo third-quarter net interest income of USD 12.52 billion falls short of market expectations】CLS, October 13 — Wells Fargo's third-quarter net interest income was USD 12.52 billion, below the market expectation of USD 12.59 billion; revenue was USD 21.87 billion, below the market expectation of USD 22.31 billion",
-   "title_zh": "富国银行第三季度净利息收入为125.2亿美元 低于市场预期",
-   "summary_zh": "【富国银行第三季度净利息收入为125.2亿美元 低于市场预期】财联社10月13日电，富国银行第三季度净利息收入为125.2亿美元，低于市场预期的125.9亿美元；营收为218.7亿美元，低于市场预期的223.1亿美元"
-  },
-  {
-   "id": "c89fd60479281a71205c5d4aa6a5595345a539da",
-   "title": "CATL: plans to contribute RMB 400 million to the Shanghai Shidai Chenyuan venture fund",
-   "summary": "【CATL: plans to contribute RMB 400 million to the Shanghai Shidai Chenyuan venture fund】CLS, October 13 — CATL (300750.SZ) announced that, as one of the limited partners, it is investing in Shanghai Shidai Chenyuan Venture Capital Partnership (LP) with a subscribed contribution of RMB 400 million, holding a 26.64% subscribed share of the fund",
-   "title_zh": "宁德时代：拟出资4亿元参与投资上海时代宸远创投基金",
-   "summary_zh": "【宁德时代：拟出资4亿元参与投资上海时代宸远创投基金】财联社10月13日电，宁德时代(300750.SZ)公告称，公司作为有限合伙人之一参与投资上海时代宸远创业投资合伙企业(有限合伙)，认缴出资4亿元，持有基金26.64%的认缴比例"
-  },
-  {
-   "id": "69750bdea9c4505d096088eb1f88bfa8149663f3",
-   "title": "CLS, October 13 — Air India cancels flights to Riyadh, Dammam and Jeddah through October 17",
-   "summary": "CLS, October 13 — Air India cancels flights to Riyadh, Dammam and Jeddah until October 17",
-   "title_zh": "财联社10月13日电，印度航空取消至利雅得、达曼和吉达的航班，直至10月17日。",
-   "summary_zh": "财联社10月13日电，印度航空取消至利雅得、达曼和吉达的航班，直至10月17日"
-  },
-  {
-   "id": "53bee5d9f6622beb65000be7582916b56365b448",
-   "title": "South Korea unveils a large-scale relocation plan for core government ministries",
-   "summary": "【South Korea unveils a large-scale relocation plan for core government ministries】CLS, October 13 — South Korea's Ministry of the Interior and Safety announced on the 13th that core government bodies including the Ministry of Foreign Affairs, the Ministry of Unification and the Ministry of National Defense will move from Seoul to the Sejong Special Self-Governing City no later than 2031",
-   "title_zh": "韩国公布政府核心部门大规模搬迁计划",
-   "summary_zh": "【韩国公布政府核心部门大规模搬迁计划】财联社10月13日电，韩国行政安全部13日宣布，韩国外交部、统一部、国防部等政府核心部门将不晚于2031年从首都首尔迁往世宗特别自治市"
-  },
-  {
-   "id": "545aa1ca7762734d21138aa8c3ddb8ad156be55a",
-   "title": "J&J guides full-year sales to USD 101.0-101.4 billion against a market estimate of USD 101.24 billion",
-   "summary": "【J&J guides full-year sales to USD 101.0-101.4 billion against a market estimate of USD 101.24 billion】CLS, October 13 — Johnson & Johnson's third-quarter sales were USD 25.40 billion against an estimate of USD 25.4 billion; third-quarter adjusted earnings per share were USD 2.59 against an estimate of USD 2.52",
-   "title_zh": "强生预计全年销售额1,010亿美元至1,014亿美元 市场预估1,012.4亿美元",
-   "summary_zh": "【强生预计全年销售额1,010亿美元至1,014亿美元 市场预估1,012.4亿美元】财联社10月13日电，强生第三季度销售额254.0亿美元，预估254亿美元；第三季度调整后每股收益2.59美元，预估2.52美元"
-  },
-  {
-   "id": "07bf36fd0c01f2845df9b460cf93b99124887809",
-   "title": "Chinese Consulate General in Sapporo warns citizens in its district over a new type of telecom fraud",
-   "summary": "【Chinese Consulate General in Sapporo warns citizens in its district over a new type of telecom fraud】CLS, October 13 — recently a number of Chinese citizens in the district have run into telecom fraud while shopping online",
-   "title_zh": "中国驻札幌总领馆提醒领区中国公民谨防新型电信诈骗",
-   "summary_zh": "【中国驻札幌总领馆提醒领区中国公民谨防新型电信诈骗】财联社10月13日电，近期，多名领区中国公民网购过程中遭遇电信诈骗"
-  },
-  {
-   "id": "caf5f66e2727db41327d4dcc85ed7fa73db8296c",
-   "title": "IMF calls for action against three major financial stability risks",
-   "summary": "【IMF calls for action against three major financial stability risks】CLS, October 13 — the International Monetary Fund released its Global Financial Stability Report on October 13, saying that as global financial market vulnerabilities keep intensifying, policymakers should act, including by curbing leverage, improving debt sustainability and strengthening cyber defences",
-   "title_zh": "IMF呼吁采取行动防范三大金融稳定风险",
-   "summary_zh": "【IMF呼吁采取行动防范三大金融稳定风险】财联社10月13日电，国际货币基金组织（IMF）10月13日发布《全球金融稳定报告》说，针对全球金融市场脆弱性持续加剧，政策制定者应采取行动，包括遏制杠杆、增强债务可持续性以及加强网络防御能力等"
-  },
-  {
-   "id": "613c431c26a973785cea55da29daea99ce2ce654",
-   "title": "Chuantou Energy: first three quarters of 2026 net profit up 4.36% year on year",
-   "summary": "【Chuantou Energy: first three quarters of 2026 net profit up 4.36% year on year】CLS, October 13 — Chuantou Energy (600674.SH) announced that for the first three quarters it recorded revenue of RMB 1.124 billion, down 1.43% year on year, and attributable net profit of RMB 4.405 billion, up 4.36% year on year",
-   "title_zh": "川投能源：2026年前三季度净利润同比增长4.36%",
-   "summary_zh": "【川投能源：2026年前三季度净利润同比增长4.36%】财联社10月13日电，川投能源(600674.SH)公告称，前三季度实现营业收入11.24亿元，同比下降1.43%；归属于上市公司股东的净利润44.05亿元，同比增长4.36%"
-  },
-  {
-   "id": "30ff210d0a4dbc6b4a2790988906bf5fac39e439",
-   "title": "Inspur Electronic Information: first three quarters net profit seen up 156%-177% on strong server demand",
-   "summary": "【Inspur Electronic Information: first three quarters net profit seen up 156%-177% on strong server demand】CLS, October 13 — Inspur Electronic Information (000977.SZ) announced that it expects attributable net profit of RMB 3.8 billion to RMB 4.1 billion for the first three quarters of 2026, up 156.40%-176.64% year on year",
-   "title_zh": "浪潮信息：前三季度净利润同比预增156%-177% 服务器市场需求旺盛",
-   "summary_zh": "【浪潮信息：前三季度净利润同比预增156%-177% 服务器市场需求旺盛】财联社10月13日电，浪潮信息(000977.SZ)公告称，预计2026年前三季度归属于上市公司股东的净利润为38.00亿元-41.00亿元，同比增长156.40%-176.64%"
-  },
-  {
-   "id": "f6faa80a50f2d042555122abde2b2f4a3812e254",
-   "title": "【Institutional dragon-tiger board read】PCB plus 800G optical modules; in-house 800G optical-module PCB process technology using ultra low loss high-speed laminates, 1.6T optical-module PCB products in sampling; this company saw net...",
-   "summary": null,
-   "title_zh": "【机构龙虎榜解读】PCB+800G光模块，已自主研发掌握800G光模块PCB生产工艺技术，采用ultra Low Loss等级高速板材，1.6T光模块PCB产品处于试样阶段，这家公司获净...",
-   "summary_zh": null
-  },
-  {
-   "id": "d7c95f958bb46843d835776cfb9ff1421a3fa9e3",
-   "title": "Hong Kong air quality health index risk level reaches serious",
-   "summary": "【Hong Kong air quality health index risk level reaches serious】CLS, October 13 — the Hong Kong SAR government's Environmental Protection Department has recorded higher-than-usual air pollution levels since the afternoon of today (October 13), with the air quality health index health risk level at some monitoring stations reaching the serious level",
-   "title_zh": "香港空气质素健康指数风险级别已达严重",
-   "summary_zh": "【香港空气质素健康指数风险级别已达严重】财联社10月13日电，香港特区政府环境保护署自今日（10月13日）下午起录得较平常为高的空气污染水平，部分空气质素监测站的空气质素健康指数健康风险级别已达至严重水平"
-  },
-  {
-   "id": "5b794e96737684a32dac564ec7ac7474e20548db",
-   "title": "Accenture acquires UK customer data analytics firm Sagacity, adding over 140 professionals",
-   "summary": "【Accenture acquires UK customer data analytics firm Sagacity, adding over 140 professionals】CLS, October 13 — Accenture announced the acquisition of UK data and customer insight firm Sagacity to strengthen Accenture Song's ability to deliver AI-driven customer services in the UK and Ireland",
-   "title_zh": "埃森哲收购英国客户数据分析公司Sagacity 新增逾140名专业人员",
-   "summary_zh": "【埃森哲收购英国客户数据分析公司Sagacity 新增逾140名专业人员】财联社10月13日电，埃森哲宣布收购英国数据与客户洞察公司Sagacity，以增强埃森哲Song在英国和爱尔兰地区提供人工智能驱动客户服务的能力"
-  },
-  {
-   "id": "68c4e0c0fc110956272e209c7ea98da9e749bab8",
-   "title": "CLS, October 13 — Domino's Pizza third-quarter revenue USD 1.19 billion versus an estimate of USD 1.17 billion",
-   "summary": "CLS, October 13 — Domino's Pizza third-quarter revenue USD 1.19 billion versus an estimate of USD 1.17 billion",
-   "title_zh": "财联社10月13日电，达美乐比萨第三季度营收11.9亿美元，预估11.7亿美元。",
-   "summary_zh": "财联社10月13日电，达美乐比萨第三季度营收11.9亿美元，预估11.7亿美元"
-  },
-  {
-   "id": "2c9f452e8e4d3ace84f6ff02d44db81c78cdba3d",
-   "title": "CLS, October 13 — Brent crude futures extend losses to 2%, at USD 104.476 a barrel",
-   "summary": "CLS, October 13 — Brent crude futures extend losses to 2%, at USD 104.476 a barrel",
-   "title_zh": "财联社10月13日电，布伦特原油期货跌幅扩大至2%，报104.476美元/桶。",
-   "summary_zh": "财联社10月13日电，布伦特原油期货跌幅扩大至2%，报104.476美元/桶"
-  },
-  {
-   "id": "3b77f837a01aba5c2143a1ed1768c504054ad585",
-   "title": "CLS, October 13 — US small business optimism index for September at 97.9 versus an expected 98.2",
-   "summary": "CLS, October 13 — US small business optimism index for September at 97.9 versus an expected 98.2",
-   "title_zh": "财联社10月13日电，美国9月小企业乐观指数为97.9，预期98.2。",
-   "summary_zh": "财联社10月13日电，美国9月小企业乐观指数为97.9，预期98.2"
-  },
-  {
-   "id": "d7610e0a1cc86def36736a1e71c1666436e516ff",
-   "title": "Former Chongqing deputy party secretary and mayor Huang Qifan under investigation",
-   "summary": "【Former Chongqing deputy party secretary and mayor Huang Qifan under investigation】CLS, October 13 — Huang Qifan, former deputy secretary of the Chongqing Municipal Party Committee and former mayor of the Chongqing municipal government, is suspected of serious violations of discipline and law and is currently under disciplinary review and supervisory investigation by the Central Commission for Discipline Inspection and the National Supervisory Commission",
-   "title_zh": "重庆市委原副书记、市政府原市长黄奇帆被查",
-   "summary_zh": "【重庆市委原副书记、市政府原市长黄奇帆被查】财联社10月13日电，重庆市委原副书记、市政府原市长黄奇帆涉嫌严重违纪违法，目前正接受中央纪委国家监委纪律审查和监察调查"
-  },
-  {
-   "id": "b3282e95ad6ebbf82165ad80eed60a69ee6d1f91",
-   "title": "CLS, October 13 — US health insurers firmer pre-market: Humana up 1.7%, UnitedHealth up 2.5%, CVS Health up 2%",
-   "summary": "CLS, October 13 — US health insurers firmer pre-market: Humana up 1.7%, UnitedHealth up 2.5%, CVS Health up 2%",
-   "title_zh": "财联社10月13日电，美国健康保险公司股盘前走强，Humana涨1.7%，联合健康涨2.5%，西维斯健康涨2%。",
-   "summary_zh": "财联社10月13日电，美国健康保险公司股盘前走强，Humana涨1.7%，联合健康涨2.5%，西维斯健康涨2%"
-  },
-  {
-   "id": "e602f768f5ea6ab97a74caf7c7dc7cf3caba4762",
-   "title": "UnitedHealth Group third-quarter adjusted EPS USD 4.69; raises full-year profit outlook",
-   "summary": "【UnitedHealth Group third-quarter adjusted EPS USD 4.69; raises full-year profit outlook】CLS, October 13 — UnitedHealth Group reported its 2026 third-quarter results: quarterly revenue of USD 112.7 billion and operating profit of USD 6.6 billion; earnings per share of USD 4.56 and adjusted earnings per share of USD 4.69",
-   "title_zh": "联合健康集团三季度调整后每股收益4.69美元 上调全年盈利指引",
-   "summary_zh": "【联合健康集团三季度调整后每股收益4.69美元 上调全年盈利指引】财联社10月13日电，联合健康集团公布2026年第三季度业绩，季度营收1127亿美元，运营利润66亿美元；每股收益4.56美元，调整后每股收益4.69美元"
+   "id": "5442628c90c169df7aeda12d3814bcbd082434de",
+   "title": "Micron’s stock extends declines as China competition heats up",
+   "summary": "Even Elon Musk says Chinese memory-chip makers are catching up.",
+   "title_zh": "随着中国竞争升温，美光股价延续跌势",
+   "summary_zh": "连埃隆·马斯克也表示，中国的存储芯片制造商正在追赶。"
   },
   {
    "id": "c39b380712743c7e64d7e3a6fca1011a9e920596",
@@ -190,166 +225,131 @@
    "summary_zh": "亚太股市周二大幅下挫，AI交易热情消退与存储芯片竞争压力双重夹击，韩国和日本科技股首当其冲，MSCI亚太指数创逾两个月新低"
   },
   {
-   "id": "035bd85dfc76f2d26a1b481105b5a9dcdc33013f",
-   "title": "Rep. Ilhan Omar blasts federal criminal raid on home: 'I will not be silenced'",
-   "summary": "The Minnesota Democrat, a Muslim who was born in Somalia, has been targeted for criticism in the past by President Donald Trump.",
-   "title_zh": "众议员伊尔汗·奥马尔抨击联邦刑事搜查其住所：“我不会被噤声”",
-   "summary_zh": "这位来自明尼苏达州的民主党人是一名出生于索马里的穆斯林，此前曾多次成为特朗普总统的批评对象。"
+   "id": "3caa722bb69f70f766d964b3412a6efb0113076a",
+   "title": "Bank of America fined $1.2 billion over money-laundering violations",
+   "summary": null,
+   "title_zh": "美国银行因反洗钱违规被罚款 12 亿美元",
+   "summary_zh": null
   },
   {
-   "id": "52a772d2dd98115a697a80dd99b53a0915fb0c7e",
-   "title": "Blind-mate liquid cooling, 800V power and next-generation pluggable optical modules: NVIDIA pushes new standards",
-   "summary": "NVIDIA, about to cross USD 100 billion in quarterly revenue this fiscal quarter, is making a key move to keep revenue growing 70% next year: opening up the rack design built around its next-generation flagship computing platform Vera Rubin and pushing common specifications for power, liquid cooling, interconnect and operations",
-   "title_zh": "盲插液冷、800V供电、下一代可插拔光模块：英伟达推进新标准",
-   "summary_zh": "即将在本财季迈入“单季度营收千亿美元”的 英伟达 ，正在为“明年营收继续涨70%”展开一项关键部署——开放围绕着下一代旗舰算力平台Vera Rubin的机柜设计，并 推动供电、液冷、 通信 和运维环节采用共同规格 "
+   "id": "d9f7f0cd61f7266b5d842dec00e97bab41922887",
+   "title": "Judge says Musk engaged in intimidation of ex-FEMA CFO Mary Comans, clears her name",
+   "summary": "Ex-FEMA CFO Mary Comans' name was cleared by a federal judge after Elon Musk and other government officials falsely accused her of criminal actions in 2025.",
+   "title_zh": "法官认定马斯克对前 FEMA 首席财务官玛丽·科曼斯构成恐吓，并为其洗清名誉",
+   "summary_zh": "在埃隆·马斯克及其他政府官员于 2025 年错误指控其存在犯罪行为后，联邦法官为前 FEMA 首席财务官玛丽·科曼斯洗清了名誉。"
   },
   {
-   "id": "90b4b66c4d39664245610eacd2067e0b145eff33",
-   "title": "Was Broadcom CEO bullish or bearish on AI? ‘Gamblers’ comment creates storm",
-   "summary": "The comments made by Broadcom’s CEO at a conference in Singapore have been cited as a reason for microchip stocks’ slumps on both Monday and Tuesday.",
-   "title_zh": "博通 CEO 对 AI 是看多还是看空？“赌徒”言论引发轩然大波",
-   "summary_zh": "博通 CEO 在新加坡一场会议上的发言，被列为芯片股周一与周二连续下跌的原因之一。"
+   "id": "1c80a96704e39039835e010b2d117c9078459731",
+   "title": "Walmart to cover some GLP-1s, inhalers and insulin for employees at no cost as it expands benefits",
+   "summary": "Walmart will offer Novo's Ozempic and Lilly's Mounjaro without charge for people with Type 2 diabetes after a new prior authorization.",
+   "title_zh": "沃尔玛扩大员工福利：将免费覆盖部分 GLP-1 药物、吸入剂与胰岛素",
+   "summary_zh": "在新增事前授权后，沃尔玛将为 2 型糖尿病患者免费提供诺和诺德的 Ozempic 与礼来的 Mounjaro。"
   },
   {
-   "id": "d77542697747c6b2cc32f61231b89b0f52c1583a",
-   "title": "Bank earnings live updates: JPMorgan and Wells Fargo report results",
-   "summary": "Follow live bank earnings coverage for JPMorgan, Wells Fargo, Goldman Sachs and Citigroup, with third-quarter results, calls and stock moves.",
-   "title_zh": "银行财报实时更新：摩根大通与富国银行发布业绩",
-   "summary_zh": "实时跟踪摩根大通、富国银行、高盛与花旗的财报，包括第三季度业绩、电话会议与股价变动。"
+   "id": "6a6ee1da61dfa5f23dcacbff12db17265914fa9f",
+   "title": "Siri AI integration, Apple bets on a new smart-home entry point: first display 'brain' HomeView debuts, with a full accessory line-up",
+   "summary": "Apple is stepping up its smart-home push, launching for the first time a home device combining music playback, video calls, home monitoring and smart-home control, seeking to lever AI to open up new growth space",
+   "title_zh": "Siri AI联动，苹果押注智能家居新入口！首款显示屏“大脑”HomeView登场，家居配件出“全家桶”",
+   "summary_zh": "苹果加码智能家居布局，首次推出集音乐播放、视频通话、家庭监控及智能家居控制等功能于一体的家居设备，试图以AI技术加持撬动新的增长空间"
   },
   {
-   "id": "e1e36b0f3b8cb97c01ac13f36650b1fcdd633a5f",
-   "title": "JPMorgan Q3 adjusted revenue USD 50.9 billion misses the market's USD 51.37 billion | Earnings",
-   "summary": "JPMorgan's third-quarter adjusted revenue was USD 50.91 billion against a market expectation of USD 51.37 billion",
-   "title_zh": "摩根大通Q3调整后营收509亿美元，不及市场预期513.7亿美元｜财报见闻",
-   "summary_zh": "摩根大通第三季度调整后营收为509.1亿美元，市场预期为513.7亿美元"
+   "id": "f73c67157ed6b3b65c5753966a822af0beb2926f",
+   "title": "Mastercard is up 8 days in a row. The charts indicate the run isn't over",
+   "summary": "Mastercard shares have been on a tear",
+   "title_zh": "万事达连续 8 个交易日上涨，技术图形显示涨势尚未结束",
+   "summary_zh": "万事达股价一路大涨。"
   },
   {
-   "id": "30f3b83a6a49fb2a10bcb3de05aa1d249b0056e9",
-   "title": "PCs are a hard sell, but Lenovo and its peers are making more money",
-   "summary": "PCs are getting even harder to sell",
-   "title_zh": "电脑卖不动，但联想们更赚钱了",
-   "summary_zh": "电脑更难卖了"
+   "id": "51ba01e1d55e305ef8b032fac9ab33db9e673ba3",
+   "title": "We're upgrading our rating on Wells Fargo as the stock's pullback offers a nice entry point",
+   "summary": "Wells Fargo's third-quarter results were not perfect, but CEO Charlie Scharf's turnaround should bear more fruit ahead.",
+   "title_zh": "我们上调富国银行评级，因股价回调提供了不错的入场点",
+   "summary_zh": "富国银行第三季度业绩并不完美，但首席执行官查理·沙夫的转型应在未来结出更多果实。"
   },
   {
-   "id": "72218922244bc3963958c5fa97075d417f7b4280",
-   "title": "Report: Bank of Japan set to hold in October, with a December hike still under consideration",
-   "summary": "The Bank of Japan may pause its rate hikes this month, with the next move of the year still seen as likely in December",
-   "title_zh": "报道：日本央行拟在10月“按兵不动”，12月加息仍在考虑之中",
-   "summary_zh": "日本央行本月或暂歇加息步伐，年内下一次行动仍有望落在12月"
+   "id": "8df65932e5f4dd0e6c126dbb6a583f0e147e8ee5",
+   "title": "Apple releases HomeView smart home hub with screen as showcase for Siri AI",
+   "summary": "The iPhone maker also announced the new Apple TV 4K and HomePod Mini.",
+   "title_zh": "苹果发布带屏幕的 HomeView 智能家居中枢，作为 Siri AI 的展示载体",
+   "summary_zh": "这家 iPhone 制造商还发布了新一代 Apple TV 4K 与 HomePod Mini。"
   },
   {
-   "id": "1bdb555d97ea8e9247b8580f1a1dccd988d560c3",
-   "title": "The A-share 'king of stocks' changes hands again: mapping the optical-module pick-and-shovel plays",
-   "summary": "CPO-related names rallied on Tuesday: Jinbaize hit its 20% limit-up, Benchuan Intelligent rose more than 10%, and names including Taichenguang and T&S Communications followed strongly",
-   "title_zh": "A股“股王”再易主！光模块“卖铲人”梳理",
-   "summary_zh": "周二 CPO概念 大涨， 金百泽 20CM涨停， 本川智能 涨超10%， 太辰光 、 天孚通信 等多股强势跟涨"
+   "id": "675332e17f1f57f52f9f4e723fc5461b8b285f1b",
+   "title": "Paul Tudor Jones says 2027 could be a really challenging year for the stock market",
+   "summary": "The billionaire investor said that corporate buybacks, along with mergers and acquisitions, that have been a tail wind for the bull market are about to turn.",
+   "title_zh": "保罗·都铎·琼斯称 2027 年可能是股市极具挑战的一年",
+   "summary_zh": "这位亿万富翁投资者表示，一直作为牛市顺风的企业回购以及并购活动即将转向。"
   },
   {
-   "id": "aed55da24986ab66105a61c198bef9ea94c05577",
-   "title": "AITO and Li Auto head to Europe, this time as the newcomers",
-   "summary": "By Zhou Zhiyu — AITO and Li Auto are preparing to take their premium SUV business to Europe",
-   "title_zh": "问界、理想要去欧洲，轮到它们当后来者了",
-   "summary_zh": "作者 | 周智宇 问界和理想准备把高端SUV生意做到欧洲"
+   "id": "0a8ca324d645a524c73a6ed12f642e2e4852baf4",
+   "title": "Bank earnings takeaways: Here's how JPMorgan, Goldman, Wells Fargo and Citi performed in Q3",
+   "summary": "JPMorgan, Wells Fargo, Goldman Sachs and Citigroup reported third-quarter earnings on Tuesday, with mixed results.",
+   "title_zh": "银行财报要点：摩根大通、高盛、富国银行与花旗第三季度表现一览",
+   "summary_zh": "摩根大通、富国银行、高盛与花旗于周二公布第三季度业绩，结果好坏参半。"
   },
   {
-   "id": "629e6465f9af1c58da1bab760328e2a4991f932c",
-   "title": "Former Chongqing deputy party secretary and mayor Huang Qifan under investigation",
-   "summary": "【Former Chongqing deputy party secretary and mayor Huang Qifan under investigation】CLS, October 13 — Huang Qifan, former deputy secretary of the Chongqing Municipal Party Committee and former mayor of the Chongqing municipal government, is suspected of serious violations of discipline and law and is currently under disciplinary review and supervisory investigation by the Central Commission for Discipline Inspection and the National Supervisory Commission",
-   "title_zh": "重庆市委原副书记、市政府原市长黄奇帆被查",
-   "summary_zh": "重庆市委原副书记、市政府原市长黄奇帆涉嫌严重违纪违法，目前正接受中央纪委国家监委纪律审查和监察调查"
+   "id": "fe59902814e8c4cf890803c04ad169fad725e6fc",
+   "title": "Michael Dell says AI needs safeguards and controls, and government has a role to play",
+   "summary": "Dell CEO Michael Dell says AI models need safeguards and controls, with companies and government both playing a role in safety.",
+   "title_zh": "迈克尔·戴尔称 AI 需要防护与控制，政府应发挥作用",
+   "summary_zh": "戴尔首席执行官迈克尔·戴尔表示，AI 模型需要防护与控制，企业与政府都应在安全方面发挥作用。"
   },
   {
-   "id": "e88a45566adc616de4f09ea3b69d4a54a0724fd7",
-   "title": "Stocks where Ge Weidong, Wei Wei and others built positions indirectly; the judicial-auction 'super-retail' bet on 6 names, one down nearly 52% (list attached)",
-   "summary": "A ranking of recent private-placement paper losses has just been released",
-   "title_zh": "葛卫东、魏巍等曲线建仓股 “法拍牛散”押注6股 有人浮亏近52%（附名单）",
-   "summary_zh": "近期定增浮亏排行榜出炉"
+   "id": "4ed46d8b3d770f315ad7ba0633d287bfd9148562",
+   "title": "The AI trade's logic is shifting: from Japan and Korea to the U.S., global chip stocks slump as a stalled star IPO and ChangXin's technology breakthrough sound successive alarms",
+   "summary": "On Tuesday, October 13, the sell-off in AI chip stocks continued to spread",
+   "title_zh": "AI交易逻辑生变！从日韩到美国，全球芯片股惨跌，明星IPO搁浅、长鑫技术突破接连敲警钟",
+   "summary_zh": "10月13日周二，AI芯片股抛售潮继续蔓延"
   },
   {
-   "id": "ce95aeac5be034199726d3efed14187961ab504d",
-   "title": "UnitedHealth Group tops estimates, hikes profit outlook as insurer manages high medical costs",
-   "summary": "UnitedHealth Group said it expects 2026 adjusted earnings of at least $20.50 per share, up from a previous outlook of $19.50 to $20.00 per share.",
-   "title_zh": "联合健康集团业绩超预期并上调盈利展望，正应对高企的医疗成本",
-   "summary_zh": "联合健康集团表示，预计 2026 年调整后每股收益至少为 20.50 美元，高于此前 19.50 美元至 20.00 美元的指引。"
+   "id": "ac36cacfbbd6198aaa3e45e5d32a8ab83b593fef",
+   "title": "Trump says he will decide on Iran soon, calls the Houthis' conduct appalling, may ask Turkey to help Saudi Arabia; China responds to claims of Chinese and Russian aid to Iran",
+   "summary": "On Tuesday the 13th, U.S. Eastern Time, U.S. President Trump said he would decide on the Iran issue soon, while criticising Yemen's Houthis for appalling conduct and saying he might ask Turkish President Erdogan to help safeguard Saudi interests",
+   "title_zh": "特朗普称将很快决定伊朗问题，批胡塞武装“行为恶劣”，或请土耳其助沙特；中国回应中俄援伊说法",
+   "summary_zh": "美东时间13日周二，美国总统特朗普表示，将很快就伊朗问题作出决定，同时批评也门胡塞武装“行为恶劣”，并称可能请土耳其总统埃尔多安协助维护沙特利益"
   },
   {
-   "id": "1c2b9faee48829f3847cd545b28c57d3a2207bc9",
-   "title": "October 13 dragon-tiger board review: CanSemi tops net buying",
-   "summary": "On October 13 a total of 62 stocks (including 1 convertible bond) appeared on the dragon-tiger board, with combined turnover of RMB 16.288 billion",
-   "title_zh": "10月13日龙虎榜复盘：粤芯半导体净买额居首",
-   "summary_zh": "10月13日共有62只个股（含1只可转债）上榜龙虎榜，总上榜成交额162.88亿元"
+   "id": "b3a3319e14647f93703e34194d42abe3623402e1",
+   "title": "Social Security cost-of-living adjustment for 2027 may be above average. Some say it's not enough",
+   "summary": "The Social Security Administration is expected to announce the cost-of-living adjustment for 2027",
+   "title_zh": "2027 年社保生活成本调整幅度可能高于平均水平，但有人认为仍然不够",
+   "summary_zh": "美国社会保障局预计将公布 2027 年的生活成本调整幅度。"
   },
   {
-   "id": "7e93d008b2e06cdef85cf341edf3d6374144daf3",
-   "title": "Trump census plan to cut noncitizens from 2030 count spurs critics toward legal fight",
-   "summary": "The Trump administration's proposal to exclude some noncitizens from the 2030 census prompts alarm for voting rights groups.",
-   "title_zh": "特朗普人口普查计划拟将非公民排除在 2030 年统计之外，批评者酝酿法律诉讼",
-   "summary_zh": "特朗普政府提出将部分非公民排除在 2030 年人口普查之外，引发投票权组织的警惕。"
+   "id": "aba06854f08341c5ea0cd8b5eaadcf103803e8a1",
+   "title": "JPMorgan Chase blocks outside AI agents like Muse, Instinct from directly accessing accounts",
+   "summary": "JPMorgan Chase CEO Jamie Dimon warned of rogue agents operating at scale and said the bank is building defensive tools.",
+   "title_zh": "摩根大通阻止 Muse、Instinct 等外部 AI 智能体直接访问账户",
+   "summary_zh": "摩根大通首席执行官杰米·戴蒙警告存在大规模失控智能体的风险，并表示该行正在构建防御工具。"
   },
   {
-   "id": "500f05b7b474c12d29b3512d5f5c991a6e646e85",
-   "title": "Former Chongqing deputy party secretary and mayor Huang Qifan under investigation",
-   "summary": "【Former Chongqing deputy party secretary and mayor Huang Qifan under investigation】CLS, October 13 — Huang Qifan, former deputy secretary of the Chongqing Municipal Party Committee and former mayor of the Chongqing municipal government, is suspected of serious violations of discipline and law and is currently under disciplinary review and supervisory investigation by the Central Commission for Discipline Inspection and the National Supervisory Commission",
-   "title_zh": "重庆市委原副书记、市政府原市长黄奇帆被查",
-   "summary_zh": "重庆市委原副书记、市政府原市长黄奇帆涉嫌严重违纪违法，目前正接受中央纪委国家监委纪律审查和监察调查"
+   "id": "1474efa46b750912ff25907d83de9fd8238e9775",
+   "title": "Delaware jury awards Qualcomm $2 in damages, finds Arm breached license agreement",
+   "summary": "A Delaware jury awarded Qualcomm $2 in nominal damages after finding Arm Holdings breached its architectural license agreement.",
+   "title_zh": "特拉华州陪审团认定 Arm 违反许可协议，判给高通 2 美元赔偿",
+   "summary_zh": "在认定 Arm Holdings 违反其架构许可协议后，特拉华州陪审团判给高通 2 美元的象征性赔偿。"
   },
   {
-   "id": "ec54aacdb2334a3f5e48f676679c6319cf84f5eb",
-   "title": "Apple's new smart-home products arrive tonight: HomeView leads, with Siri AI the main draw",
-   "summary": "At 21:00 Beijing time on October 13, Apple will hold its 'Welcome Home' launch event, with three smart-home products unveiled at once",
-   "title_zh": "苹果智能家居新品今晚登场：HomeView领衔，Siri AI成最大看点",
-   "summary_zh": "北京时间10月13日21时，苹果将举行“Welcome Home”发布活动，三款智能家居产品将一次登场"
+   "id": "0ea571dfb5d28a3d4c66d24ca32a6cac237ce9e3",
+   "title": "I was one of the biggest shareholders in this tech stock in the 1990s. I'm bullish again because of AI",
+   "summary": "Flex plans to spin off Axiom, its AI infrastructure business, in 2027",
+   "title_zh": "我在 20 世纪 90 年代曾是这只科技股最大的股东之一，如今因 AI 再次看多",
+   "summary_zh": "Flex 计划在 2027 年分拆其 AI 基础设施业务 Axiom。"
   },
   {
-   "id": "e5e7d8deaa4ab29f3c9ca483bf05ca403e359b7b",
-   "title": "BofA fund manager survey: tech overweight hits a six-year high as semiconductors become the most crowded trade",
-   "summary": "Global fund managers' appetite for technology stocks has risen to its highest since the post-pandemic rebound of 2020; at the same time consensus on the AI trade is quietly fragmenting and semiconductor stocks have taken over as the most crowded trade",
-   "title_zh": "美银基金经理调查：科技股超配比例创六年新高，半导体成最拥挤交易",
-   "summary_zh": "全球基金经理对科技股的配置热情已升至2020年新冠疫情反弹以来最高水平，与此同时，市场对AI交易的共识正在悄然分化，半导体股票取而代之成为最拥挤的交易标的"
+   "id": "bf64601dd9fc2e0c39322c6a35f54a299be7fa73",
+   "title": "Airport attacks put aviation in crosshairs of geopolitical conflicts",
+   "summary": "Deadly attacks at Riyadh’s main airport are disrupting airlines, closing airspace and raising new security questions for commercial aviation.",
+   "title_zh": "机场袭击使航空业成为地缘政治冲突的靶心",
+   "summary_zh": "利雅得主要机场的致命袭击正在扰乱航空公司运营、导致空域关闭，并为商用航空提出新的安全问题。"
   },
   {
-   "id": "34a60cbef9efbc9cce902bb0da10e954d4e7f87b",
-   "title": "In charts: How one of the world's biggest economies got trapped by debt",
-   "summary": "France opens debate on its 2027 budget as high deficits, rising debt and student protests intensify pressure on lawmakers.",
-   "title_zh": "图表解读：全球最大经济体之一如何陷入债务陷阱",
-   "summary_zh": "法国启动 2027 年预算辩论，高赤字、债务上升与学生抗议加大议员压力。"
-  },
-  {
-   "id": "aceeb1a9bdbd37e2be40c52032a77b1e0802018f",
-   "title": "Who is selling as tech stocks pull back? Insurers surveyed reaffirm 'long money, long investment' and decline to comment on short-term moves",
-   "summary": "The continued pullback in A-share technology shares has stirred widespread market discussion",
-   "title_zh": "科技股回调谁在卖出？受访险资重申“长钱长投” 不对短期市场波动作评价",
-   "summary_zh": "近期A股科技板块持续回调引发市场热议"
-  },
-  {
-   "id": "f30ef0a428b7c72fcbc5c3604d3296f781d822dd",
-   "title": "October 13 northbound flow update (top 10 traded stocks attached)",
-   "summary": "The latest exchange data show northbound turnover on October 13 totalled RMB 261.883 billion, or 15.63% of combined turnover across the two markets",
-   "title_zh": "10月13日北向资金最新动向（附十大成交股）",
-   "summary_zh": "交易所最新数据显示，10月13日北向资金共成交2618.83亿元，占两市总成交额的15.63%"
-  },
-  {
-   "id": "b38182ffa69893abd1024987940d74862c898ff3",
-   "title": "Third-quarter results season is under way: several profit-warning-beating names hit limit-up, so who reports first?",
-   "summary": "With mid-October arriving, the third-quarter results season that had been warming up has now formally begun",
-   "title_zh": "三季报行情正式打响！多只预喜股封板涨停 哪些个股将率先“交卷”？",
-   "summary_zh": "时间进入10月中旬，原先预热的三季报行情也于近日正式铺开"
-  },
-  {
-   "id": "2bb53f03a681c1aa2ad87b7a58c5a150bbb502e9",
-   "title": "ChaPanda suspension points to possible IPO manipulation, with CICC as former sole sponsor",
-   "summary": "ChaPanda was suddenly suspended by regulators, and the reasons behind it have surfaced",
-   "title_zh": "茶百道停牌牵出IPO人为操纵可能，中金曾任独家保荐人",
-   "summary_zh": "茶百道突然遭遇监管停牌，背后的原因浮出水面"
-  },
-  {
-   "id": "4bfc5f540a82b60f7629af2d5e1b67126cce39ca",
-   "title": "Liang Wenfeng backs Winverse AI, a startup founded by a former Tencent scientist?",
-   "summary": "Two months after spending RMB 141 million for a stake in Unitree Robotics, DeepSeek may be making another move in the robotics sector",
-   "title_zh": "梁文锋出手投资腾讯前科学家初创企业Winverse AI？",
-   "summary_zh": "继两个月前斥资1.41亿元入股宇树科技后，DeepSeek或再次出手 机器人 赛道"
+   "id": "23e94cb285173f2a77e5fa68fd8883e476d95a54",
+   "title": "More Republicans come out against Trump's diesel deal with Putin",
+   "summary": "Senators told Trump, the deal with Russian President Vladimir Putin \"will not achieve just ends, nor will it benefit Americans.\"",
+   "title_zh": "更多共和党人公开反对特朗普与普京的柴油协议",
+   "summary_zh": "参议员们对特朗普表示，与俄罗斯总统普京达成的这项协议“既不会实现公正的目标，也不会让美国人受益”。"
   }
  ],
- "updated_at": "2026-10-13T11:39:13Z"
+ "updated_at": "2026-10-13T20:51:27Z"
 }
