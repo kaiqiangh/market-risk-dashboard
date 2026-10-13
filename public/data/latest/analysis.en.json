@@ -1,10 +1,10 @@
 {
  "schema_version": "1.1.0",
- "generated_at": "2026-10-13T11:38:00Z",
+ "generated_at": "2026-10-13T11:41:23Z",
  "language": "en",
  "market_state": "caution",
  "market_regime": "goldilocks",
- "summary": "Pre-market view, 2026-10-13. The composite score is 56.71, inside the caution band, the goldilocks regime is unchanged, trend_1d is 2.02 and model confidence is 0.8909. Attribution first: this layer's US leg is the settled 2026-10-12 close, while the previous row in the risk history is an earlier generation of that same 2026-10-12 date, so the 2.02 daily change contains a settlement re-scoring component and must not be read as a new session's move. The overnight story is a second leg down in Asian technology: Korean memory names led the decline, the mainland memory complex weakened with them, and ChangXin Memory closed at 46.99, GigaDevice at 306.22 and Longsys at 271.20. Large US AI names kept falling at the 2026-10-12 close, with Micron -3.8834, AMD -2.2792, Broadcom -1.8836, NVIDIA -1.291 and Tesla -1.2203; all 22 tracked sectors and themes closed lower, the weakest being networking -4.8175, memory -4.7775 and quantum computing -4.2397. Macro remains the hard constraint, with the macro dimension at 72.57: the 10-year real rate of 2.87 and the 10-year nominal yield of 5.22 both sit at the 99.36 percentile, yet the available rate vintage is 2026-10-08 and is easing. Cross-asset confirmation has risen to 0.75, with 6 of 8 production signals triggered, a contribution of 11.25 that is the model's single largest. The session focus is the opening of third-quarter earnings and the banks, with CPI on 2026-10-14 and PPI plus retail sales on 2026-10-15 as the week's main event risk. Two data reservations apply: the FX input is still frozen at 2026-10-02, and the source daily series is missing its 2026-10-12 bar, which makes the mainland leg's change_1d a two-session move.",
+ "summary": "Pre-market view, 2026-10-13. The composite score is 56.71, inside the caution band, the goldilocks regime is unchanged, trend_1d is 2.02 and model confidence is 0.8909. Attribution first: this layer's US leg is the settled 2026-10-12 close, while the previous row in the risk history is an earlier generation of that same 2026-10-12 date, so the 2.02 daily change contains a settlement re-scoring component and must not be read as a new session's move. The overnight story is a second leg down in Asian technology: Korean memory names led the decline, the mainland memory complex weakened with them, and ChangXin Memory closed at 46.99, GigaDevice at 306.22 and Longsys at 271.20. Large US AI names kept falling at the 2026-10-12 close, with Micron -3.8834, AMD -2.2792, Broadcom -1.8836, NVIDIA -1.291 and Tesla -1.2203; 21 of the 22 tracked sectors and themes closed lower, the weakest being networking -4.8175, memory -4.7775 and quantum computing -4.2397, while gaming at +0.2397 was the only gainer. Macro remains the hard constraint, with the macro dimension at 72.57: the 10-year real rate of 2.87 and the 10-year nominal yield of 5.22 both sit at the 99.36 percentile, yet the available rate vintage is 2026-10-08 and is easing. Cross-asset confirmation has risen to 0.75, with 6 of 8 production signals triggered, a contribution of 11.25 that is the model's single largest. The session focus is the opening of third-quarter earnings and the banks, with CPI on 2026-10-14 and PPI plus retail sales on 2026-10-15 as the week's main event risk. Two data reservations apply: the FX input is still frozen at 2026-10-02, and the source daily series is missing its 2026-10-12 bar, which makes the mainland leg's change_1d a two-session move.",
  "top_risk_drivers": [
   {
    "claim": "Cross-asset confirmation reads 0.75, with 6 of 8 production signals triggered (equity index lower, dollar strength, elevated real rates, bitcoin lower, small-cap underperformance), a single contribution of 11.25 that is the largest in the model and the main mechanical support under the composite score.",
@@ -120,7 +120,7 @@
  ],
  "supporting_signals": [
   {
-   "claim": "All 22 tracked sectors and themes closed lower on 2026-10-12: networking -4.8175, memory -4.7775, quantum computing -4.2397 and semiconductor equipment -3.5576 led the decline, while industrial automation -0.0136 and digital advertising -0.0919 held up best.",
+   "claim": "21 of the 22 tracked sectors and themes closed lower on 2026-10-12: networking -4.8175, memory -4.7775, quantum computing -4.2397 and semiconductor equipment -3.5576 led the decline; gaming at +0.2397 was the only gainer, followed on resilience by industrial automation -0.0136 and digital advertising -0.0919.",
    "evidence_refs": [
     {
      "dataset": "sectors",
@@ -148,6 +148,13 @@
      "path": "payload.themes[6].change_1d",
      "metric": "change_1d",
      "value": -3.5576,
+     "updated_at": "2025-12-22T00:00:00Z"
+    },
+    {
+     "dataset": "sectors",
+     "path": "payload.themes[17].change_1d",
+     "metric": "change_1d",
+     "value": 0.2397,
      "updated_at": "2025-12-22T00:00:00Z"
     }
    ]
@@ -188,7 +195,7 @@
    ]
   },
   {
-   "claim": "The mainland memory complex kept weakening into the 2026-10-13 close: ChangXin Memory 46.99, GigaDevice 306.22, Longsys 271.20 and Biwin Storage 171.72.",
+   "claim": "The mainland memory complex closed weaker on 2026-10-13: ChangXin Memory 46.99, GigaDevice 306.22, Longsys 271.20 and Biwin Storage 171.72.",
    "evidence_refs": [
     {
      "dataset": "equities",
@@ -314,7 +321,7 @@
    ]
   },
   {
-   "claim": "Today the sector and theme baskets reflect only the 2026-10-12 US session: the source daily series carries no 2026-10-12 bar for the Asian constituents, so the memory basket at -4.7775 is set by its 6 US members alone and its Korean and mainland members are dropped entirely; that reading is not today's Asian memory tape.",
+   "claim": "Today the sector and theme baskets reflect only the 2026-10-12 US session: the source daily series carries no 2026-10-12 bar for the Korean constituents, so the memory basket at -4.7775 is set by its 6 US members alone (mainland constituents are excluded from baskets by design); that reading is not today's Asian memory tape.",
    "evidence_refs": [
     {
      "dataset": "sectors",
@@ -399,7 +406,7 @@
   "This layer's US leg is the settled 2026-10-12 close, whereas the last published brief (the post-market layer) used a pre-close snapshot of the same session, so the differences between them are snapshot-to-settle, not market revisions.",
   "The composite score is 56.71, with trend_1d at 2.02, trend_1w at 3.35 and trend_1m at 6.28; the previous row in the risk history is an earlier generation of that same 2026-10-12 date, so the 2.02 includes a same-day settlement re-scoring component.",
   "Cross-asset confirmation reads 0.75, with 6 of 8 production signals triggered, contributing 11.25, the largest single contribution in this layer.",
-  "All 22 tracked sectors and themes closed lower, the weakest being networking -4.8175, memory -4.7775 and quantum computing -4.2397, and the most resilient industrial automation -0.0136 and digital advertising -0.0919.",
+  "21 of the 22 tracked sectors and themes closed lower, the weakest being networking -4.8175, memory -4.7775 and quantum computing -4.2397, with gaming at +0.2397 the only gainer.",
   "Credit widened: high-yield OAS moved from 3.09 to 3.15 while investment-grade OAS held at 0.82.",
   "Neither the rate nor the volatility vintage advanced: rates are still 2026-10-08 (10-year nominal yield 5.22, real rate 2.87, 2-year 4.75) and the VIX vintage is 2026-10-09, reading 14.84.",
   "The mainland leg settled at its 2026-10-13 close (ChangXin Memory 46.99, GigaDevice 306.22, Longsys 271.20), but the source daily series is missing its 2026-10-12 bar, so that leg's change_1d is a two-session move measured from 2026-10-09.",
@@ -418,7 +425,7 @@
  "bull_case": {
   "title": "Bull case: the drawdown stays inside high-valuation AI beta",
   "points": [
-   "Index-level and breadth measures are not broken: 0.5548 of names sit above the 200-day average, price versus the 200-day average is 7.5646 and 3-month momentum is 3.4941, so the goldilocks regime holds.",
+   "Breadth and trend measures are not broken: 0.5548 of names sit above the 200-day average, price versus the 200-day average is 7.5646 and 3-month momentum is 3.4941, so the goldilocks regime holds.",
    "Volatility eased on the latest vintage: VIX 14.84 and realized volatility 9.797.",
    "Credit has not confirmed diffusion: investment-grade OAS is unchanged at 0.82 and high-yield OAS at 3.15 is still some way from the trigger level of 4."
   ],
@@ -661,6 +668,13 @@
    "path": "payload.themes[6].change_1d",
    "metric": "change_1d",
    "value": -3.5576,
+   "updated_at": "2025-12-22T00:00:00Z"
+  },
+  {
+   "dataset": "sectors",
+   "path": "payload.themes[17].change_1d",
+   "metric": "change_1d",
+   "value": 0.2397,
    "updated_at": "2025-12-22T00:00:00Z"
   },
   {
