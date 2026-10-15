@@ -161,8 +161,11 @@ def test_replay_observes_the_commodity_confirmation_signals_when_the_panel_carri
     context an empty commodities dataset, so ``copper_down``/``gold_up`` were permanently
     unobserved: the calibration evidence for the cross_asset dimension covered 5 of its 8
     production signals, and the two missing ones could never be evaluated. The seam makes the
-    inputs measurable — it does not move the score (the dimension keeps its configured weight
-    and, on this panel, its constant fallback score).
+    inputs measurable, which now moves the score. model_version 1.0.1 removed the constant
+    50.0 fallback and made ``cross_asset_confirmation`` a real scored indicator, so the
+    cross_asset dimension tracks the confirmation proportion (risk_score = proportion × 100)
+    rather than a frozen constant. Adding commodity closes changes that proportion, so the two
+    replays legitimately differ.
     """
     panel = _production_panel()
     baseline_row = replay_production_path(copy.deepcopy(panel))["observations"][-1]
@@ -181,10 +184,16 @@ def test_replay_observes_the_commodity_confirmation_signals_when_the_panel_carri
     assert signals["gold_up"]["triggered"] is not None
     assert observed(baseline_row) == 5
     assert observed(row) == 7
-    # The confirmation input moved, the contribution did not: the dimension score is still the
-    # constant fallback, which is exactly the imbalance the weight review reports.
+    # The confirmation input moved, and so does the dimension score: the real 1.0.1 mapping is
+    # risk_score = confirmation_proportion × 100, not the old frozen 50.0. Adding commodity closes
+    # changes the observable signal set (and therefore the proportion), so the two replays differ
+    # and neither equals the former constant fallback.
     assert row["cross_asset_confirmation"] != baseline_row["cross_asset_confirmation"]
-    assert row["dimension_scores"]["cross_asset"] == baseline_row["dimension_scores"]["cross_asset"] == 50.0
+    assert row["dimension_scores"]["cross_asset"] == pytest.approx(row["cross_asset_confirmation"] * 100)
+    assert baseline_row["dimension_scores"]["cross_asset"] == pytest.approx(baseline_row["cross_asset_confirmation"] * 100)
+    assert row["dimension_scores"]["cross_asset"] != 50.0
+    assert baseline_row["dimension_scores"]["cross_asset"] != 50.0
+    assert row["dimension_scores"]["cross_asset"] != baseline_row["dimension_scores"]["cross_asset"]
 
 
 def test_production_replay_does_not_use_future_values() -> None:
