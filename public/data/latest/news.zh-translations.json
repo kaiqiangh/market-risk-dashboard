@@ -1,355 +1,341 @@
 {
- "items": [
-  {
-   "id": "0ee58148ba8171bceae1c2bf471a5423a949f72d",
-   "title": "I watched Nvidia's Jensen Huang work the room in London. He brought big checks — and a blunt message",
-   "summary": "Nvidia has a near monopoly over the most powerful AI chips and Huang courts tech execs and world leaders with ease.",
-   "title_zh": "我在伦敦看黄仁勋如何周旋全场：他带着大额支票，也带来一句直白警告",
-   "summary_zh": "英伟达在最强大的 AI 芯片上近乎垄断，黄仁勋游走于科技高管与各国政要之间游刃有余。"
-  },
-  {
-   "id": "a61fcd389658c48cba9cb418675e60134bef3522",
-   "title": "Bank of America still expects an October hike and raises its forecast for the Fed's favourite inflation gauge",
-   "summary": "US inflation stickiness has been confirmed by the data once again.",
-   "title_zh": "美银：仍预计10月加息，上调“美联储最爱”通胀指标预测",
-   "summary_zh": "美国通胀顽固性再度得到数据印证"
-  },
-  {
-   "id": "764ab9a8f6f555b6aebac2d33ccecf3eb771ac41",
-   "title": "BofA strategists expect risk aversion to build with the Fed and the midterms in focus",
-   "summary": "CLS, October 16: Bank of America strategist Michael Hartnett said that as investors seek to avoid rising rates along with the volatility from the US midterm elections and the artificial-intelligence thematic trade, risk aversion is expected to dominate markets in the coming weeks.",
-   "title_zh": "美银策略师料避险情绪升温 美联储和中期选举成焦点",
-   "summary_zh": "【美银策略师料避险情绪升温 美联储和中期选举成焦点】财联社10月16日电， 美国银行策略师Michael Hartnett表示，随着投资者寻求规避利率上升以及美国中期选举和人工智能主题交易带来的波动，预计未来数周风险厌恶情绪将主导市场"
-  },
-  {
-   "id": "d2c3d069b20112a70fc4b0fa53d1b363b125dcec",
-   "title": "Nvidia and Cisco confirm multimillion-dollar donations to Trump's White House ballroom",
-   "summary": "Big Tech gave millions to Trump's White House ballroom, documents show",
-   "title_zh": "英伟达与思科确认向特朗普白宫宴会厅捐款数百万美元",
-   "summary_zh": "文件显示，大型科技公司为特朗普的白宫宴会厅捐出数百万美元。"
-  },
-  {
-   "id": "7ba2a71f843cc12f6778740a36be0005db0d969f",
-   "title": "Stocks making the biggest moves premarket: Tesla, SpaceX, Alcoa, CoreWeave & more",
-   "summary": "These are the stocks posting the largest moves premarket.",
-   "title_zh": "盘前异动最大的股票：特斯拉、SpaceX、美国铝业、CoreWeave 等",
-   "summary_zh": "以下是盘前涨跌幅最大的个股。"
-  },
-  {
-   "id": "0138c15c3337fc842d5d286a3f7a68500ccea97b",
-   "title": "Fed's Warsh withholds rate signal, praises recent global tightening with 'no free riders'",
-   "summary": "Warsh refrained from signaling another interest rate hike this month, pointed to a \"synchronous tightening\" by central banks in the fight against inflation.",
-   "title_zh": "美联储沃什不给出利率信号，赞赏近期全球同步紧缩“没有搭便车者”",
-   "summary_zh": "沃什未释放本月再度加息的信号，并指出各国央行在抗击通胀中形成了“同步紧缩”。"
-  },
-  {
-   "id": "5dc65a2eca1d5c91bb2d4e703d02119fa570a0a7",
-   "title": "Tesla reveals next-generation Roadster after almost a decade of delays",
-   "summary": "Elon Musk first debuted the Roadster refresh concept in 2017 but Tesla has since missed every targeted delivery date.",
-   "title_zh": "特斯拉推迟近十年后发布新一代 Roadster",
-   "summary_zh": "马斯克最早在 2017 年公布 Roadster 换代概念，此后特斯拉错过了每一个目标交付日期。"
-  },
-  {
-   "id": "11fbb91aa37a2b01db58ec8ff24f40cc908e568d",
-   "title": "Major rate news: the Fed chairman speaks out",
-   "summary": "On October 16, Fed Chairman Warsh said during the IMF and World Bank Group 2026 annual meetings in Bangkok that global conditions have been broadly in line with expectations since the September FOMC meeting.",
-   "title_zh": "加息大消息！美联储主席重磅发声！",
-   "summary_zh": "10月16日，美联储主席沃什在曼谷出席国际货币基金组织(IMF)和世界 银行 集团2026年年会期间表示，自9月联邦公开市场委员会（FOMC）会议以来，全球形势基本符合预期"
-  },
-  {
-   "id": "75030b3189211034b2dc800f107b84b9691fe91a",
-   "title": "Upside potential above the memory duo: a top Korean fund manager favours these parts of the AI value chain",
-   "summary": "A top fund manager focused on the Korean market said that as the market rebounds, Korean AI hardware component makers with improving earnings potential may outperform the memory chip giants.",
-   "title_zh": "上涨潜力超越“存储双雄”！韩国顶级基金经理：看好AI价值链中这些环节",
-   "summary_zh": "一位专注于韩国市场的顶级基金经理表示，在市场反弹之际， 那些盈利潜力向好的韩国AI硬件零部件股，表现可能会优于 存储芯片 巨头 "
-  },
-  {
-   "id": "52108bfede177a4b19e052163aad2dd40e96cd4b",
-   "title": "Institutions expect HBM prices to rise 80%-100% in the first quarter of next year, with long-term memory contracts possibly locked to 2035",
-   "summary": "Surging AI data centre demand is fundamentally reshaping the supply-demand balance and pricing mechanism of the global memory chip market.",
-   "title_zh": "机构：预计HBM明年Q1涨价80%–100%，存储长协有望锁定至2035年",
-   "summary_zh": "AI数据中心需求持续升温，正在从根本上重塑全球存储芯片市场的供需格局与定价机制"
-  },
-  {
-   "id": "485ea5dc58aa2dcf5ddff62b8c7fd1b9148892d7",
-   "title": "The Roadster flies: what Tesla has opened up may be a technology market bigger than flying cars",
-   "summary": "The Roadster has finally taken flight.",
-   "title_zh": "Roadster飞起来了：特斯拉打开的，可能是一个比飞行汽车更大的技术市场",
-   "summary_zh": "Roadster终于飞起来了"
-  },
-  {
-   "id": "56ac53815533cf2aca3847dd4c6462cd04dff1a5",
-   "title": "Fed Chairman Warsh: the AI dividend will inevitably come with pain, and price stability will be defended without pre-judging",
-   "summary": "Fed Chairman Kevin Warsh said on Friday that artificial intelligence is very likely the most consequential change he has seen in his lifetime for the United States and even the global economy.",
-   "title_zh": "美联储主席沃什：“AI红利”势必伴随阵痛 坚守价格稳定但不“预判”！",
-   "summary_zh": "美联储主席凯文·沃什周五表示， 人工智能 （AI）很可能是他有生之年所经历的、对美国乃至全球经济影响最大的变革"
-  },
-  {
-   "id": "7b30fb2f399d2283ec1122456ccfd001e2467d8e",
-   "title": "Tesla and SpaceX slump as Musk's fortune shrinks by RMB 528.6bn in four days",
-   "summary": "US equities saw a sharp correction this week, with technology shares heavily sold off.",
-   "title_zh": "特斯拉、SpaceX大跌 马斯克身家四天缩水5286亿元",
-   "summary_zh": "本周，美股市场迎来剧烈调整，科技股遭大幅抛售"
-  },
-  {
-   "id": "493d9a05a07e943ce57a65c6409437ae39d650da",
-   "title": "Thematic research: Tesla's flying car makes a surprise debut as Hong Kong, China drafts a low-altitude framework, opening fresh opportunities for the industry",
-   "summary": "The three main A-share indices closed mixed today: the Shanghai Composite rose 0.24 percent to 3716.28, the Shenzhen Component fell 0.12 percent to 11802.46 and the ChiNext fell 0.39 percent to 2772.38.",
-   "title_zh": "【风口研报】特斯拉“飞行汽车”惊喜亮相!香港起草低空纲领 产业有望迎新发展机遇",
-   "summary_zh": "A股三大指数今日涨跌不一，截止收盘，沪指涨0.24%，收报3716.28点；深证成指跌0.12%，收报11802.46点；创业板指跌0.39%，收报2772.38点"
-  },
-  {
-   "id": "dc77b32d38756d916f1b0f1ad5abbd18a6f654be",
-   "title": "Fed Chairman Warsh: several more policy meetings remain this year and they will be the key moment for reaching clear conclusions; policy judgements will be made at the October and December meetings",
-   "summary": "Fed Chairman Warsh: several more policy meetings remain this year and they will be the key moment for reaching clear conclusions.",
-   "title_zh": "美联储主席沃什：今年我们还将举行几次议息会议，届时将是形成明确结论的关键时刻。将在10月和12月的议息会议上做出政策判断",
-   "summary_zh": "美联储主席沃什：今年我们还将举行几次议息会议，届时将是形成明确结论的关键时刻"
-  },
-  {
-   "id": "d9fc4afd07df21306fd25b0dc5b459c5ac8a188e",
-   "title": "Ten Nanjing residential plots sell at the reserve price for a total of RMB 5.607bn",
-   "summary": "CLS, October 16: ten residential land parcels were sold in Nanjing, with a total site area of 457703.2 square metres, total planned floor area of 751038.11 square metres and a total starting price of RMB 5.607bn.",
-   "title_zh": "南京10宗宅地56.07亿元底价成交",
-   "summary_zh": "【南京10宗宅地56.07亿元底价成交】财联社10月16日电，南京有10宗住宅用地出让，总土地出让面积457703.2㎡，总规划建筑面积751038.11㎡，总起始价56.07亿元"
-  },
-  {
-   "id": "942dc934e9250637cd226e3268f98db662ae4bd2",
-   "title": "Four ministries convene more than 30 automakers to strengthen R&D and test validation of vehicle products",
-   "summary": "CLS, October 16: according to the Ministry of Industry and Information Technology, the ministry together with the Ministry of Public Security, the Ministry of Ecology and Environment and the State Administration for Market Regulation organised a discussion with more than 30 major vehicle manufacturers to strengthen innovative design and R&D test validation of vehicle products.",
-   "title_zh": "四部门：组织30余家车企座谈 加强汽车产品研发测试验证管理",
-   "summary_zh": "【四部门：组织30余家车企座谈 加强汽车产品研发测试验证管理】财联社10月16日电，今天从工业和信息化部获悉，工业和信息化部、公安部、生态环境部、市场监管总局四部门组织30余家重点汽车生产企业开展座谈，加强汽车产品创新设计和研发测试验证管理"
-  },
-  {
-   "id": "f6c111c4a089cdc5b1de1a662438e1a9b667d563",
-   "title": "Iran says new weapons systems have entered service",
-   "summary": "CLS, October 16: Iranian army spokesman Akraminia said today, October 16, that Iran has put new weapons systems into service, saying Iran's defences are stronger than they were during the US-Israel-Iran war.",
-   "title_zh": "伊朗称新型武器装备投入使用",
-   "summary_zh": "【伊朗称新型武器装备投入使用】财联社10月16日电，伊朗军队发言人阿克里米尼亚今天（10月16日）表示，伊朗已将新型武器装备投入使用，“伊朗的防御能力比美以伊战争时期更强大”"
-  },
-  {
-   "id": "6890f0d29fab2edb2372dc088ae23a9ae1cb7261",
-   "title": "Satellite Chemical: first three quarters net profit up 141.24 percent year on year",
-   "summary": "CLS, October 16: Satellite Chemical (002648.SZ) said its first three quarters delivered revenue of RMB 46.414bn, up 33.49 percent year on year, with net profit attributable to shareholders of RMB 9.059bn, up 141.24 percent.",
-   "title_zh": "卫星化学：前三季度净利润同比增长141.24%",
-   "summary_zh": "【卫星化学：前三季度净利润同比增长141.24%】财联社10月16日电，卫星化学(002648.SZ)公告称，前三季度实现营业收入464.14亿元，同比增长33.49%；归属于上市公司股东的净利润90.59亿元，同比增长141.24%"
-  },
-  {
-   "id": "f8d6befc897b48b1500ca3d26e142512ea4a56a8",
-   "title": "Iranian navy: a non-compliant tanker caught fire in the eastern Strait of Hormuz",
-   "summary": "CLS, October 16: the Iranian navy said local time on the 16th that hours earlier its surveillance team, while monitoring the eastern waters of the Strait of Hormuz, identified a non-compliant tanker on fire inside a restricted navigation zone.",
-   "title_zh": "伊朗海军：一艘违规油轮在霍尔木兹海峡东部起火",
-   "summary_zh": "【伊朗海军：一艘违规油轮在霍尔木兹海峡东部起火】财联社10月16日电，伊朗海军当地时间16日表示，数小时前，海军监视小组在持续监控霍尔木兹海峡东部海域时，发现并确认了一艘在禁航区内起火的违规油轮"
-  },
-  {
-   "id": "37045918c16ab0d666c518e654125fff23ba9ea2",
-   "title": "Shenhao Technology: subsidiary signs an RMB 881m computing equipment purchase contract",
-   "summary": "CLS, October 16: Shenhao Technology (300853.SZ) said its wholly owned subsidiary Shenhao Intelligent Computing signed a sales contract with Company B for a tax-inclusive total of RMB 881m, more than 100 percent of the company's audited main business revenue for the most recent fiscal year.",
-   "title_zh": "申昊科技：子公司签订8.81亿元算力设备采购合同",
-   "summary_zh": "【申昊科技：子公司签订8.81亿元算力设备采购合同】财联社10月16日电，申昊科技(300853.SZ)公告称，公司全资子公司申昊智算与B公司签订《销售合同》，含税总金额8.81亿元，占公司最近一个会计年度经审计主营业务收入100%以上"
-  },
-  {
-   "id": "5abf584316e44628d53c9e796b0041a0fa9d5eaa",
-   "title": "CLS, October 16: Ukraine proposes that the EU store up to 10 billion cubic metres of European strategic gas reserves in Ukrainian underground storage",
-   "summary": "CLS, October 16: Ukraine proposed that the EU store up to 10 billion cubic metres of European strategic natural gas reserves in Ukrainian underground storage facilities.",
-   "title_zh": "财联社10月16日电，乌克兰提议欧盟将最多100亿立方米的欧洲战略天然气储备储存在乌克兰地下储气设施中。",
-   "summary_zh": "财联社10月16日电，乌克兰提议欧盟将最多100亿立方米的欧洲战略天然气储备储存在乌克兰地下储气设施中"
-  },
-  {
-   "id": "343b9f1f77a5921a4d6f9d4ab95f52451dd1b3da",
-   "title": "More than 500 million people in China took part in outdoor sports by the end of 2025",
-   "summary": "CLS, October 16: the General Administration of Sport today released the China Outdoor Sports Industry Development Report for 2025-2026. By the end of 2025 more than 500 million people in China participated in outdoor sports, and the related industry reached a total scale of about RMB 3.17 trillion.",
-   "title_zh": "截至2025年底 我国户外运动参与人数超5亿",
-   "summary_zh": "【截至2025年底 我国户外运动参与人数超5亿】财联社10月16日电，国家体育总局今天发布《中国户外运动产业发展报告》(2025—2026年)，截至2025年底，我国户外运动参与人数超过5亿，户外运动相关产业总规模约3.17万亿元"
-  },
-  {
-   "id": "392e70792bbb650c9f669694565752c65e5de658",
-   "title": "Sihui Fuji: third-quarter net profit up 217 percent as orders grow in industrial control, automotive electronics and communications",
-   "summary": "CLS, October 16: Sihui Fuji (300852.SZ) said third-quarter revenue was RMB 857m, up 59.78 percent year on year, with net profit of RMB 176m, up 217.22 percent.",
-   "title_zh": "四会富仕：第三季度净利润同比增长217% 工业控制、汽车电子、以及通讯领域订单增长",
-   "summary_zh": "【四会富仕：第三季度净利润同比增长217% 工业控制、汽车电子、以及通讯领域订单增长】财联社10月16日电，四会富仕(300852.SZ)公告称，第三季度营收为8.57亿元，同比增长59.78%；净利润为1.76亿元，同比增长217.22%"
-  },
-  {
-   "id": "bc878225d26c4ff903d52f2d81da627d523ca065",
-   "title": "CLS, October 16: the Nasdaq ETF (513300) will be suspended from the open on October 19, 2026 until 10:30 that day",
-   "summary": "CLS, October 16: the Nasdaq ETF (513300) will be suspended from the open on October 19, 2026 until 10:30 that day.",
-   "title_zh": "财联社10月16日电，纳斯达克ETF华夏(513300)将于2026年10月19日开市起至当日10:30停牌。",
-   "summary_zh": "财联社10月16日电，纳斯达克ETF华夏(513300)将于2026年10月19日开市起至当日10:30停牌"
-  },
-  {
-   "id": "d44eec458a5413e8ffd67b32b5329b4823e030ec",
-   "title": "JLC: planning an H-share issue and a listing on the Hong Kong, China stock exchange",
-   "summary": "CLS, October 16: JLC (001232.SZ) said that to advance its globalisation strategy and broaden offshore financing channels it is planning an H-share issue and a main board listing on the Hong Kong, China stock exchange.",
-   "title_zh": "嘉立创：筹划发行H股并在香港联交所上市",
-   "summary_zh": "【嘉立创：筹划发行H股并在香港联交所上市】财联社10月16日电，嘉立创(001232.SZ)公告称，公司为推进全球化战略、拓宽境外融资渠道，正筹划发行H股并在香港联交所主板上市"
-  },
-  {
-   "id": "fb1197dc15e90daeb6a7ec96df9995f3dbb21ba2",
-   "title": "State Council executive meeting: disordered low-price competition must be governed in accordance with the law, with supporting rules on industry cost investigations and stopping below-cost dumping",
-   "summary": "CLS, October 16: Premier Li Qiang chaired a State Council executive meeting.",
-   "title_zh": "国务院常务会议：要依法依规治理低价无序竞争 健全行业成本调查、制止低价倾销等配套规则",
-   "summary_zh": "【国务院常务会议：要依法依规治理低价无序竞争 健全行业成本调查、制止低价倾销等配套规则】李强主持召开国务院常务会议"
-  },
-  {
-   "id": "1ea97c8ac5319d8872e6cca2af5a9464147bf8a1",
-   "title": "Li Qiang chairs a State Council executive meeting, which discussed and in principle approved the draft amendment to the Teachers Law and decided to submit the draft to the NPC Standing Committee for review",
-   "summary": "Li Qiang chaired a State Council executive meeting.",
-   "title_zh": "李强主持召开国务院常务会议。会议讨论并原则通过《中华人民共和国教师法(修订草案)》，决定将草案提请全国人大常委会审议。 (央视新闻)",
-   "summary_zh": "李强主持召开国务院常务会议"
-  },
-  {
-   "id": "0071ea46d3ccd3a96e9a49a9b32a0981186c5454",
-   "title": "JLC: first three quarters net profit seen up 79 percent to 118 percent as AI accelerates hardware innovation and global hardware R&D demand keeps growing",
-   "summary": "CLS, October 16: JLC (001232.SZ) said it expects net profit attributable to shareholders of RMB 1.679bn to RMB 2.052bn for the first three quarters of 2026, up 78.76 percent to 118.48 percent year on year.",
-   "title_zh": "嘉立创：前三季度净利润同比预增79%-118% AI加速硬件创新全球硬件研发需求持续增长",
-   "summary_zh": "【嘉立创：前三季度净利润同比预增79%-118% AI加速硬件创新全球硬件研发需求持续增长】财联社10月16日电，嘉立创(001232.SZ)公告称，预计2026年前三季度归属于上市公司股东的净利润为16.79亿元-20.52亿元，同比增长78.76%-118.48%"
-  },
-  {
-   "id": "31509c1eb670ba531813862f65998457cf8a3394",
-   "title": "Li Qiang chairs a State Council executive meeting, which noted that artificial intelligence is a key variable shaping future development and that practical deployment should drive technological innovation",
-   "summary": "Li Qiang chaired a State Council executive meeting.",
-   "title_zh": "李强主持召开国务院常务会议。会议指出，人工智能是影响未来发展的关键变量，要从我国产业体系完备、应用场景丰富、工程化能力强等实际出发，注重以落地应用牵引...",
-   "summary_zh": "李强主持召开国务院常务会议"
-  },
-  {
-   "id": "7fe6b42910ca8ccfc105f6cd16312a144dd1b077",
-   "title": "Wellgao: third-quarter net profit up 462 percent as orders for AI server power AC-DC products grow rapidly",
-   "summary": "CLS, October 16: Wellgao (301251.SZ) said third-quarter revenue was RMB 877m, up 115.24 percent year on year, with net profit of RMB 138m, up 461.86 percent.",
-   "title_zh": "威尔高：第三季度净利润同比增长462% AI服务器电源AC-DC产品订单迅速增长",
-   "summary_zh": "【威尔高：第三季度净利润同比增长462% AI服务器电源AC-DC产品订单迅速增长】财联社10月16日电，威尔高(301251.SZ)公告称，第三季度营业收入为8.77亿元，同比增长115.24%；净利润为1.38亿元，同比增长461.86%"
-  },
-  {
-   "id": "483526ac3a050210d6eca69433593d3dd913bd21",
-   "title": "Victory Giant: controlling shareholder proposes a buyback of RMB 150m to RMB 300m of A-shares",
-   "summary": "CLS, October 16: Victory Giant (300476.SZ) said its controlling shareholder and chairman Chen Tao proposed repurchasing part of its A-shares through centralised competitive bidding for a total of no less than RMB 150m and no more than RMB 300m, to be used for an employee share ownership plan or equity incentive.",
-   "title_zh": "胜宏科技：实控人提议公司回购1.5亿至3亿元A股股份",
-   "summary_zh": "【胜宏科技：实控人提议公司回购1.5亿至3亿元A股股份】财联社10月16日电，胜宏科技(300476.SZ)公告称，公司实控人兼董事长陈涛提议公司以集中竞价方式回购部分A股股票，回购资金总额不低于1.5亿元且不超过3亿元，回购股份将用于员工持股计划或股权激励"
-  },
-  {
-   "id": "ab3e60f63e65c1e1b75f5683eee26befed5ffc2c",
-   "title": "Nanjing pushes the smart grid industry, targeting a RMB 1 trillion scale by 2030",
-   "summary": "CLS, October 16: the 2026 National Power Industry Digital-Intelligent Transformation and Smart Grid Industry Ecosystem Release Conference was held at the Nanjing Jiangning Convention and Exhibition Centre.",
-   "title_zh": "南京发力智能电网产业 力争2030年规模达万亿元",
-   "summary_zh": "【南京发力智能电网产业 力争2030年规模达万亿元】财联社10月16日电，2026年全国电力行业数智化转型暨智能电网产业生态发布(南京)大会在南京江宁会展中心举行"
-  },
-  {
-   "id": "d139ebb8a50982707c5c6c26f781635549fc7f60",
-   "title": "Zangge Mining: first three quarters net profit up 122 percent on higher lithium carbonate revenue and investment income",
-   "summary": "CLS, October 16: Zangge Mining (000408.SZ) said third-quarter revenue was RMB 1.255bn, up 73.46 percent year on year, with net profit of RMB 2.471bn, up 159.97 percent.",
-   "title_zh": "藏格矿业：前三季度净利润同比增长122% 碳酸锂收入增加及投资收益同比增加",
-   "summary_zh": "【藏格矿业：前三季度净利润同比增长122% 碳酸锂收入增加及投资收益同比增加】财联社10月16日电，藏格矿业(000408.SZ)公告称，第三季度营收为12.55亿元，同比增长73.46%；净利润为24.71亿元，同比增长159.97%"
-  },
-  {
-   "id": "5dd0f9ef5f30e7d46240334aac777c9d21f16dd6",
-   "title": "A flying car: Tesla's Roadster appears, with on-site footage showing it spinning in the air and landing like a rocket",
-   "summary": "The Performance version can be reserved on the China website with a RMB 332,000 deposit, though it cannot fly; after nearly nine years, Tesla's second-generation Roadster has finally appeared again.",
-   "title_zh": "会飞的汽车！特斯拉Roadster跑车亮相 现场视频：空中旋转 像火箭一样降落",
-   "summary_zh": "中国官网可预订Performance版，意向金33.2万元，但不能飞 时隔近9年， 特斯拉 第二代Roadster跑车终于再次亮相"
-  },
-  {
-   "id": "50d743e5ee6ca3f09176ed1cab32c88d29c761c6",
-   "title": "Here are the key things Fed Chairman Kevin Warsh said — and didn’t say — while Americans were sleeping Thursday night",
-   "summary": "Federal Reserve Chairman Kevin Warsh had the opportunity Thursday night to shape expectations before the central bank’s interest-rate-setting meeting in two wee",
-   "title_zh": "美国人周四夜间熟睡时，美联储主席沃什说了什么、又没说什么",
-   "summary_zh": "美联储主席凯文·沃什周四夜间有机会在两周后的议息会议之前引导市场预期。"
-  },
-  {
-   "id": "f184941b0aaf693363df1943cdbfb298e340baec",
-   "title": "Four ministries convene more than 30 automakers to strengthen R&D and test validation of vehicle products",
-   "summary": "Reporters learned today from the Ministry of Industry and Information Technology that the ministry, together with the Ministry of Public Security, the Ministry of Ecology and Environment and the State Administration for Market Regulation, organised a discussion with more than 30 major vehicle manufacturers to strengthen innovative design and R&D test validation of vehicle products.",
-   "title_zh": "四部门组织30余家车企座谈 加强汽车产品研发测试验证管理",
-   "summary_zh": "记者今天从工业和信息化部获悉，工业和信息化部、公安部、生态环境部、市场监管总局四部门组织 30余家重点 汽车 生产企业 开展座谈， 加强 汽车 产品创新设计和研发测试验证管理"
-  },
-  {
-   "id": "86db133d47cb36928c290c23dbe2736ccf4a8ccf",
-   "title": "Four ministries: more than 30 automakers convened to strengthen R&D and test validation of vehicle products",
-   "summary": "Reporters learned today from the Ministry of Industry and Information Technology that the Ministry of Industry and Information Technology, the Ministry of Public Security, the Ministry of Ecology and Environment and the State Administration for Market Regulation organised a discussion with more than 30 major vehicle manufacturers to strengthen innovative design and R&D test validation of vehicle products.",
-   "title_zh": "四部门：组织30余家车企座谈 加强汽车产品研发测试验证管理",
-   "summary_zh": "记者今天从工业和信息化部获悉，工业和信息化部、公安部、生态环境部、市场监管总局四部门组织30余家重点汽车生产企业开展座谈，加强汽车产品创新设计和研发测试验证管理"
-  },
-  {
-   "id": "43531018e2c4e21531e43aa57a0251dc62ee1b85",
-   "title": "The 10-year Treasury rallies against the trend: could the US economy fall into recession overnight?",
-   "summary": "With only two weeks to go before the US midterm elections on November 3, data centres have become a core variable in American political contest, economic growth and financial market pricing.",
-   "title_zh": "10年期美债逆势上涨：美国经济是否会一夜衰退？",
-   "summary_zh": "目前距离美国11月3日中期选举仅剩两周时间，数据中心已成为影响美国政治博弈、经济增长与金融市场定价的核心变量"
-  },
-  {
-   "id": "84475477ecd92f0555138d799ba8066832adceb0",
-   "title": "Banking tax raid fears hit London lenders' shares ahead of crucial budget",
-   "summary": "Shares in some U.K",
-   "title_zh": "关键预算案前，银行税开征担忧打击伦敦银行股",
-   "summary_zh": null
-  },
-  {
-   "id": "cea08d57a965c9718b77fd40d2f8f05e7f66d52a",
-   "title": "Li Qiang chairs a State Council executive meeting, which noted that artificial intelligence is a key variable shaping future development and that the AI Plus initiative must be deepened and expanded",
-   "summary": "Li Qiang chaired a State Council executive meeting, which noted that artificial intelligence is a key variable shaping future development; starting from China's complete industrial system, rich application scenarios and strong engineering capability, the focus should be on practical deployment driving technological innovation and on steadily deepening and expanding the AI Plus initiative.",
-   "title_zh": "李强主持召开国务院常务会议，会议指出，人工智能是影响未来发展的关键变量，要从我国产业体系完备、应用场景丰富、工程化能力强等实际出发，注重以落地应用牵引...",
-   "summary_zh": "李强主持召开国务院常务会议，会议指出，人工智能是影响未来发展的关键变量，要从我国产业体系完备、应用场景丰富、工程化能力强等实际出发，注重以落地应用牵引技术创新，不断深化拓展“人工智能+”行动"
-  },
-  {
-   "id": "7f10c8f2c94a862e3add7e9eadbec09fd9e911f9",
-   "title": "AI capex hides a leasing bill: Morgan Stanley raises its 2027 investment estimate to USD 1.5 trillion",
-   "summary": "With the traditional capex measure no longer complete, lease financing is quietly reshaping the whole picture of AI infrastructure investment.",
-   "title_zh": "AI资本开支暗藏“租赁账单”！摩根士丹利将2027年投资额上调至1.5万亿美元",
-   "summary_zh": "当传统资本开支口径不再完整，租赁融资正悄然重塑AI基础设施投资的全貌"
-  },
-  {
-   "id": "5c25a31380fb8eb08b15620b9dc67f59dbb8ab02",
-   "title": "State Council executive meeting: keep deepening and expanding the AI Plus initiative so that AI technology translates better into real productivity",
-   "summary": "Li Qiang chaired a State Council executive meeting, which noted that artificial intelligence is a key variable shaping future development; starting from China's complete industrial system, rich application scenarios and strong engineering capability, the focus should be on practical deployment driving technological innovation and on steadily deepening and expanding the AI Plus initiative.",
-   "title_zh": "国常会：不断深化拓展“人工智能+”行动 让人工智能技术更好转化为现实生产力",
-   "summary_zh": "李强主持召开国务院常务会议，会议指出， 人工智能 是影响未来发展的关键变量，要从我国产业体系完备、应用场景丰富、工程化能力强等实际出发，注重以落地应用牵引技术创新，不断深化拓展“ 人工智能 +”行动"
-  },
-  {
-   "id": "e334c36978617b47731e76e220c35f7c0f49a168",
-   "title": "180 trillion won evaporates as Korean pensions shrink",
-   "summary": "South Korea's National Pension Service fund recently disclosed end-July asset data: the fund shrank to 1684 trillion won, about RMB 8.5 trillion, a single-month decline of 181 trillion won, or RMB 908.6bn, a drop of roughly 9.7 percent.",
-   "title_zh": "180万亿蒸发！韩国人的养老金“缩水”",
-   "summary_zh": "近期，韩国国民年金基金披露7月末资产数据，基金规模降至1684万亿韩元（约合8.5万亿元），单月缩水181万亿韩元（9086亿元），降幅约9.7%"
-  },
-  {
-   "id": "1f9f07165a638d4c8ed6c380c71ce487cc31606d",
-   "title": "CSRC issues two large fines as three individuals are penalised more than RMB 500m in total",
-   "summary": "Administrative penalty decisions published by the CSRC today show that three individuals were heavily penalised for market manipulation and insider trading.",
-   "title_zh": "证监会开出2张巨额罚单 3名自然人被合计罚没逾5亿元",
-   "summary_zh": "证监会今日发布行政处罚决定书显示，3名自然人因操纵市场及内幕交易被重罚"
-  },
-  {
-   "id": "a3ea54e9e6e89705030a35905c83e9c25a1cfa84",
-   "title": "KFC to switch to Coca-Cola beverages in U.S. restaurants for the first time in decades",
-   "summary": "KFC is switching from PepsiCo to Coca-Cola as its beverage supplier for U.S",
-   "title_zh": "肯德基美国门店数十年来首次改用可口可乐饮料",
-   "summary_zh": "肯德基将把美国门店的饮料供应商由百事换成可口可乐。"
-  },
-  {
-   "id": "d9bb3ab4ca856e75aa30d601354d325e7f3e023d",
-   "title": "HKEX confirms T+1 settlement in the second half of 2028",
-   "summary": "Big news from the Hong Kong, China stock exchange.",
-   "title_zh": "港交所官宣：T+1 2028年下半年见！",
-   "summary_zh": "港交所大消息"
-  },
-  {
-   "id": "7f4358702af15cbea7436f1a0a3e90990000d3b9",
-   "title": "Nike's India campus is a long-term growth bet amid turnaround",
-   "summary": "Nike announced earlier this month that it's expanding into India",
-   "title_zh": "耐克印度园区是转型期的长期增长押注",
-   "summary_zh": "耐克本月早些时候宣布将拓展印度市场。"
-  },
-  {
-   "id": "1381f149bd9e6ea56747042e4b8a68ae696a924b",
-   "title": "Norway's $2 trillion wealth fund was frozen out of major defense companies. That may be about to change",
-   "summary": "Existing ethical rules mean the fund is not permitted to invest in companies like Lockheed Martin and Boeing.",
-   "title_zh": "挪威 2 万亿美元主权财富基金被挡在主要防务公司之外，这一局面或将改变",
-   "summary_zh": "现行伦理规则意味着该基金不得投资洛克希德·马丁和波音等公司。"
-  },
-  {
-   "id": "699aaaf82c24a8475c4f6a6f07a45ddf3a1d5a6b",
-   "title": "Valued at up to RMB 17.1bn, Li Auto's chip business accelerates its move to external markets",
-   "summary": "More and more automakers are trying to turn technology into a new revenue curve.",
-   "title_zh": "估值最高171亿元，理想芯片加速走向外部市场",
-   "summary_zh": "越来越多车企尝试将技术作为新的营收曲线"
-  }
- ],
- "updated_at": "2026-10-16T11:45:00Z"
+  "items": [
+    {
+      "id": "380acf25368dcd736d4c7066e96d696a26e7795d",
+      "title": "Federal Reserve Board announces termination of enforcement actions with Gardner Bancshares, Inc. and Small Business Bank",
+      "summary": "Federal Reserve Board announces termination of enforcement actions with Gardner Bancshares, Inc",
+      "title_zh": "美联储理事会宣布终止对 Gardner Bancshares 公司与 Small Business Bank 的执法行动",
+      "summary_zh": "美联储理事会宣布终止对 Gardner Bancshares 公司的执法行动"
+    },
+    {
+      "id": "230e093a67a3f2ae15845067aa63b350762e42a6",
+      "title": "Prediction market odds on Tesla-SpaceX merger are above 50% for early 2027",
+      "summary": "Kalshi odds for a Tesla-SpaceX merger rose above 50% for early 2027 as Barclays outlined how a deal could work.",
+      "title_zh": "预测市场对特斯拉—SpaceX 合并的押注概率在 2027 年初已突破 50%",
+      "summary_zh": "随着巴克莱(Barclays)勾勒出交易可能的运作方式，Kalshi 上特斯拉与 SpaceX 合并的押注概率在 2027 年初升至 50% 以上。"
+    },
+    {
+      "id": "ecc69f8444c25218d72ce2990ea2e9d10e8d82d9",
+      "title": "Tesla unveils long-delayed Roadster developed with SpaceX, fueling merger speculation",
+      "summary": "Elon Musk first debuted the Roadster refresh concept in 2017 but Tesla has since missed every targeted delivery date.",
+      "title_zh": "特斯拉发布与 SpaceX 联合研发、迟迟未面的 Roadster，再燃合并猜测",
+      "summary_zh": "埃隆·马斯克最早于 2017 年展示 Roadster 改款概念，但此后特斯拉每次承诺的交付时间都未兑现。"
+    },
+    {
+      "id": "f455043e9e10042ca72e60c907b5ffa99ff42941",
+      "title": "Bitcoin stuck below 200 SMA at $81,621: Live levels",
+      "summary": null,
+      "title_zh": "比特币受阻于 200 日均线下方，报 81,621 美元：实时价位",
+      "summary_zh": null
+    },
+    {
+      "id": "17fbb1f978a9930b955e674bff51381ca6960529",
+      "title": "Trump's Russia diesel deal may offer Putin more than money — and spell trouble for Ukraine",
+      "summary": "Trump's diesel deal may do little for Russia's finances, but it raises bigger questions about Ukraine's leverage, U.S",
+      "title_zh": "特朗普的俄罗斯柴油交易给普京的或远超金钱，也给乌克兰带来麻烦",
+      "summary_zh": "特朗普的柴油交易对俄罗斯财政帮助有限，但却引发更大疑问：乌克兰的筹码、美国……"
+    },
+    {
+      "id": "5ae8849436d08078bbadb95f667ff96d31f3116a",
+      "title": "Longsys forecasts nearly 30-fold jump in Q1–Q3 net profit ex-items; warns memory price gains narrowing",
+      "summary": "Amid the boom in the memory sector, memory-module leader Longsys (301308.SZ) delivered an explosive preliminary earnings report, but the company also sounded a cautionary note for the market.",
+      "title_zh": "江波龙前三季度扣非净利预增近30倍 公司提醒存储价格涨幅收窄",
+      "summary_zh": "存储行业高景气背景之下，存储模组龙头 江波龙 （301308.SZ）交出了一份爆发式业绩预告，但公司同时给市场打了一剂“预防针”"
+    },
+    {
+      "id": "971184435b62d345d7a4868cb0d813cc28f2ba01",
+      "title": "ECB President Lagarde: should take measured policy action to contain inflation",
+      "summary": "ECB President Christine Lagarde said the war poses upside risks to inflation. (Cailian Press, Oct 17)",
+      "title_zh": "欧洲央行行长拉加德：应采取适度政策举措遏制通胀",
+      "summary_zh": "【欧洲央行行长拉加德：应采取适度政策举措遏制通胀】财联社10月17日电，欧洲央行行长拉加德表示，战争带来通胀上行风险"
+    },
+    {
+      "id": "f73f563926580391bed2c1c024e7e28711e6a575",
+      "title": "ECB Governing Council member Rehn warns of second-round inflation from energy price rises",
+      "summary": "On Saturday, ECB Governing Council member Olli Rehn said policymakers will remain vigilant against the risk of a second-round inflation effect from rising energy prices, as it can emerge gradually and unnoticed. (Cailian Press, Oct 17)",
+      "title_zh": "欧洲央行管委雷恩：警惕能源涨价引发二轮通胀效应",
+      "summary_zh": "【欧洲央行管委雷恩：警惕能源涨价引发二轮通胀效应】财联社10月17日电，欧洲央行管委雷恩周六表示，政策制定者将继续警惕能源价格上涨引发第二轮通胀效应的风险，因为这种效应可能在不知不觉中逐渐显现"
+    },
+    {
+      "id": "a8d233202d022dbdf4732f91c084c79b1dcfdf70",
+      "title": "US tech stocks sold off: of the trillion-dollar names, only Apple rose this week; optical communications and memory hit hardest",
+      "summary": "This week, AI-related US tech stocks were sold off again; the Philadelphia Semiconductor Index fell more than 11% on the week, its biggest weekly drop since April 2025. (Cailian Press, Oct 17)",
+      "title_zh": "美科技股遭抛售：本周市值万亿美元以上的科技股仅苹果一家收涨 光通信、存储板块成重灾区",
+      "summary_zh": "【美科技股遭抛售：本周市值万亿美元以上的科技股仅苹果一家收涨 光通信、存储板块成重灾区】财联社10月17日电，本周美股人工智能相关科技股再次遭到抛售，费城半导体指数周跌超11%，创下2025年4月以来最大单周跌幅"
+    },
+    {
+      "id": "58f4f9407d992a6285369b72aa66503874806dd9",
+      "title": "Tesla drops AWD on the Roadster! Two rear motors, yet more power than its own tri-motor flagship",
+      "summary": null,
+      "title_zh": "特斯拉Roadster放弃四驱！两台后轮电机，动力竟超自家三电机旗舰",
+      "summary_zh": null
+    },
+    {
+      "id": "a7822a5178080146328b999a415cc3561ffd0fc1",
+      "title": "Why does the Tesla Roadster have four fans? Inspiration from a James Bond car!",
+      "summary": "Tesla VP of vehicle engineering Lars Moravy said the car was inspired by a spy-movie vehicle and is equipped with four 20 kW high-voltage fans.",
+      "title_zh": "特斯拉Roadster为啥装四台风扇？灵感来自007！",
+      "summary_zh": "特斯拉车辆工程副总裁Lars Moravy该车灵感源自电影间谍车，配备四个20千瓦高压风扇"
+    },
+    {
+      "id": "2316b1a3ff12296d3b6a48819094442b29daf078",
+      "title": "The Tesla Roadster is wild! Goal: 10-minute charge, 30 minutes of flat-out track driving",
+      "summary": "Tesla engineers broke down the Roadster powertrain: an aluminum-housed custom 4680 cell with dual-side cooling on an 800V architecture; 15%→80% charge in just 10 minutes, claimed range over 480 km, supporting about 30 minutes of track driving.",
+      "title_zh": "特斯拉Roadster太疯狂！目标充电十分钟，狂飙半小时",
+      "summary_zh": "特斯拉工程师拆解Roadster的动力总成，采用铝壳4680特制电芯与双面冷却系统，系统运行于800V高压平台，电量从15%充到80%只要10分钟，续航号称超480公里，可支持约30分钟赛道狂飙"
+    },
+    {
+      "id": "a343b1071f5dc8944743e5b43a41677c62b8c793",
+      "title": "Russia says it downed multiple Ukrainian drones; Ukraine says energy sites across the country were attacked",
+      "summary": "On the 17th, Russia's Defense Ministry said its air defenses intercepted and destroyed 610 Ukrainian fixed-wing drones over the Moscow region, Leningrad Oblast, the Black Sea and other areas between 20:00 on the 16th and 08:00 on the 17th. (Cailian Press, Oct 17)",
+      "title_zh": "俄称击落多架乌无人机 乌称多地能源设施遭袭",
+      "summary_zh": "【俄称击落多架乌无人机 乌称多地能源设施遭袭】财联社10月17日电，俄罗斯国防部当地时间17日通报称，16日20时至17日8时，俄军防空系统在莫斯科地区、列宁格勒州及黑海等多个地区和海域上空共拦截并摧毁610架乌克兰固定翼无人机"
+    },
+    {
+      "id": "e04f4d87fcab263462e4afbfc3d2667846ac937a",
+      "title": "Tesla execs detail the new Roadster: drops AWD, bespoke 4680 battery, target weight under 1.7 tonnes",
+      "summary": "Tesla's new Roadster has been unveiled, and its technical approach far exceeds what the market had expected.",
+      "title_zh": "特斯拉高管详解新Roadster：放弃四驱、专用4680电池，目标车重不到1.7吨",
+      "summary_zh": "特斯拉新款Roadster正式揭开面纱，其技术方案远超市场此前预期"
+    },
+    {
+      "id": "2669ebc262bb8d3f97aa978a60374856763fa853",
+      "title": "Maritime gale orange alert persists; multiple Shandong ports enact sailing restrictions",
+      "summary": "At 11:00 on Oct 17, Shandong's meteorological observatory renewed an offshore gale orange alert; from afternoon to night, southerly winds in the Bohai Sea, Bohai Strait, and northern/central Yellow Sea will strengthen to force 7–8 with gusts 9–10, and locally 10–11. (Cailian Press, Oct 17)",
+      "title_zh": "海上大风橙色预警持续 山东多港口实施禁限航",
+      "summary_zh": "【海上大风橙色预警持续 山东多港口实施禁限航】财联社10月17日电，山东省气象台于10月17日11时继续发布海上大风橙色预警，气象预报显示，17日下午到夜间，渤海、渤海海峡、黄海北部和中部南风将增强到7到8级、阵风9到10级，部分区域将达到阵风10到11级"
+    },
+    {
+      "id": "a801a3af6b21baac2a1612b45b66815571cb67a5",
+      "title": "IMF managing director: three core consensuses reached at autumn meetings",
+      "summary": "On Oct 17, IMF Managing Director Kristalina Georgieva said in her closing remarks at the 2026 autumn meetings in Bangkok that the session held in-depth discussions on global economic resilience, AI development and its risks, and global economic fragmentation, reaching three core consensuses. (Cailian Press, Oct 17)",
+      "title_zh": "国际货币基金组织总裁：秋季年会达成三项核心共识",
+      "summary_zh": "【国际货币基金组织总裁：秋季年会达成三项核心共识】财联社10月17日电，当地时间10月17日，国际货币基金组织（IMF）总裁克里斯塔利娜·格奥尔基耶娃在泰国曼谷举行的2026年秋季年会总结发言中表示，本次会议围绕全球经济韧性、人工智能发展及其风险、全球经济分化等议题展开深入讨论，并达成三项核心共识"
+    },
+    {
+      "id": "85500fd4f8c5d6ace065634cbebdb876ef54aa38",
+      "title": "Hawkish inflation but long-end Treasuries rally: breather in the AI sell-off or negative feedback?",
+      "summary": "Ahead of the September US CPI release, long-end Treasury yields have already pulled back on a phased basis.",
+      "title_zh": "通胀鹰派但长端美债反涨：AI抛售潮的喘息还是负反馈？",
+      "summary_zh": "在美国9月份CPI数据公布前，美债长端利率已现阶段性回落"
+    },
+    {
+      "id": "1f7ca30ed3746242c74fd13839ea46723ad66b50",
+      "title": "Gansu–Zhejiang UHV project's DC system enters commissioning, spanning six provinces",
+      "summary": "Recently the Gansu-to-Zhejiang UHV project reached a key milestone as the grounding electrode of its Yuezhou converter station (receiving end) passed acceptance in Lin'an, Zhejiang. (Cailian Press, Oct 17)",
+      "title_zh": "横跨六省区 甘浙特高压工程直流系统进入调试阶段",
+      "summary_zh": "【横跨六省区 甘浙特高压工程直流系统进入调试阶段】财联社10月17日电，近日，甘肃至浙江特高压工程迎来关键节点，该工程受端的越州换流站接地极在浙江临安完成验收"
+    },
+    {
+      "id": "b1df7217d6dee83856635826e553487c2d2b3abf",
+      "title": "Beijing's \"first-store economy\" hits new high in innovation content in Q1–Q3 2026",
+      "summary": "According to Beijing Municipal Government, since 2026 the city has leveraged \"three-new\" pilot funds to attract domestic and foreign brands to open first stores and launch debut products in the capital. (Cailian Press, Oct 17)",
+      "title_zh": "北京2026前三季度首发经济“含新量”再创新高",
+      "summary_zh": "【北京2026前三季度首发经济“含新量”再创新高】财联社10月17日电，据北京发布，2026年以来，北京市锚定首发经济关键引领作用，坚持市区联动、精准发力，用好“三新”试点建设资金，持续吸引国内外知名品牌来京开设首店、举办首发活动"
+    },
+    {
+      "id": "fbb1ea7b07bc7ec2fa67957c67e5261915f86420",
+      "title": "China, South Korea coast guards complete joint patrol of provisional-measures waters under fisheries agreement",
+      "summary": "From Oct 8 to 17, China Coast Guard vessel Changshan and South Korea's Mugunghwa No. 42 fisheries guidance ship conducted the 2026 China–ROK joint law-enforcement patrol in the provisional-measures waters. (Cailian Press, Oct 17)",
+      "title_zh": "中韩海上执法部门圆满完成中韩渔业协定暂定措施水域联合巡航",
+      "summary_zh": "【中韩海上执法部门圆满完成中韩渔业协定暂定措施水域联合巡航】财联社10月17日电，为维护中韩渔业协定暂定措施水域渔业生产秩序，深化中韩两国海上执法机构合作交流，10月8日至17日，中国海警长山舰与韩无穷花42渔业指导船在中韩渔业协定暂定措施水域开展了2026年中韩海上执法机构联合执法巡航"
+    },
+    {
+      "id": "6ee0c1c02ead75da8dc6636697419db54f2ffa42",
+      "title": "Trump signs executive order waiving multiple sanctions on Russia",
+      "summary": "A White House statement on the 16th said President Trump signed an executive order that day waiving several sanctions measures against Russia. (Cailian Press, Oct 17)",
+      "title_zh": "特朗普签署行政令豁免对俄多项制裁",
+      "summary_zh": "【特朗普签署行政令豁免对俄多项制裁】财联社10月17日电，美国白宫16日发布的消息显示，美国总统特朗普当日签署一份行政令，豁免对俄罗斯实施多项制裁措施"
+    },
+    {
+      "id": "f87269fcf261e35c548f3480c1ba58e539c04e9c",
+      "title": "ZTE CTO Wang Xiyu: new-generation data-center NPO networking offers a better solution for AI Fabric",
+      "summary": "The 10th Future Network Development Conference was held in Nanjing, Jiangsu, from Oct 15 to 17. (Cailian Press, Oct 17)",
+      "title_zh": "中兴通讯CTO王喜瑜：新一代数据中心网络NPO方案正在为AI Fabric提供更优解",
+      "summary_zh": "【中兴通讯CTO王喜瑜：新一代数据中心网络NPO方案正在为AI Fabric提供更优解】财联社10月17日电，10月15至17日，第十届未来网络发展大会在江苏南京举办"
+    },
+    {
+      "id": "b2053094b191fdaf02fda6b7f2c09c915eb8a27b",
+      "title": "White House limiting Ukraine's use of \"Starshield\"? Trump denies",
+      "summary": "On the 16th, President Trump said he had not asked SpaceX to restrict Ukraine's use of the \"Starshield\" satellite communications system. (Cailian Press, Oct 17)",
+      "title_zh": "白宫限制乌克兰使用“星盾”？特朗普否认",
+      "summary_zh": "【白宫限制乌克兰使用“星盾”？特朗普否认】财联社10月17日电，美国总统特朗普16日说，他并未要求美国太空探索技术公司限制乌克兰使用“星盾”卫星通信系统"
+    },
+    {
+      "id": "032ad1ca88c4438b7705044cba70c9d932e92b2a",
+      "title": "An oil tanker hit by \"unidentified projectile\" off Saudi Arabia",
+      "summary": "On the 17th, the UK Marine Trade Operations office said a tanker was struck by an \"unidentified projectile\" northeast of Jubail, Saudi Arabia. (Cailian Press, Oct 17)",
+      "title_zh": "一艘油轮在沙特附近海域被“不明投射物”击中",
+      "summary_zh": "【一艘油轮在沙特附近海域被“不明投射物”击中】财联社10月17日电，英国海上贸易行动办公室当地时间17日发布通报称，在沙特阿拉伯朱拜勒东北海域，一艘油轮遭“不明投射物”击中"
+    },
+    {
+      "id": "021ea2ca4de876fc229ba90a8f9804df62376c88",
+      "title": "PBOC Governor Pan Gongsheng meets central-bank governors of relevant countries",
+      "summary": "Per the PBOC website, during the IMF/World Bank annual meetings on Oct 14–16, 2026, Governor Pan Gongsheng met separately with the central-bank governors of Thailand, Indonesia, Malaysia, India, Australia, Turkey and others. (Cailian Press, Oct 17)",
+      "title_zh": "中国人民银行行长潘功胜会见相关国家央行行长",
+      "summary_zh": "【中国人民银行行长潘功胜会见相关国家央行行长】财联社10月17日电，据央行官网，2026年10月14日至16日，中国人民银行行长潘功胜在出席国际货币基金组织/世界银行年会期间，分别会见了泰国央行行长威泰、印尼央行行长德斯特里、马来西亚央行行长拉希德、印度央行行长马尔霍特拉、澳大利亚央行行长布洛克、土耳其央行行长卡拉汉、"
+    },
+    {
+      "id": "06559ff6aeadf21ae4590ba39d8cb6b4ee8106a5",
+      "title": "IMF chief Georgieva says annual meetings mix optimism and concern; risks include AI, inflation, high debt, climate change",
+      "summary": "IMF Managing Director Georgieva said the annual meetings blended optimism and concern; discussed risks include artificial intelligence, inflation, high debt levels, and worsening climate change. (Cailian Press, Oct 17)",
+      "title_zh": "财联社10月17日电，IMF总裁格奥尔基耶娃称，年度会议充满了乐观与担忧；讨论的风险包括人工智能、通货膨胀、高债务水平和日益恶化的气候变化。各国对人工智能充...",
+      "summary_zh": "财联社10月17日电，IMF总裁格奥尔基耶娃称，年度会议充满了乐观与担忧；讨论的风险包括人工智能、通货膨胀、高债务水平和日益恶化的气候变化"
+    },
+    {
+      "id": "1f508b8809e806afa002d32362ae4a1409f636f5",
+      "title": "5.9-magnitude earthquake strikes Pakistan",
+      "summary": "China Earthquake Networks Center: a 5.9-magnitude quake hit Pakistan (27.90°N, 66.25°E) at 13:06 on Oct 17, at a depth of 10 km. (Cailian Press, Oct 17)",
+      "title_zh": "巴基斯坦发生5.9级地震",
+      "summary_zh": "【巴基斯坦发生5.9级地震】财联社10月17日电，中国地震台网正式测定：10月17日13时06分在巴基斯坦（北纬27.90度，东经66.25度）发生5.9级地震，震源深度10千米"
+    },
+    {
+      "id": "985cec0e77c7ba5352eb1de7c0b169821deebe33",
+      "title": "India orders state fuel retailers to stop buying sugar-based ethanol, may curb sugar prices",
+      "summary": "India has ordered state-owned fuel retailers to stop purchasing ethanol made from sugar and major sugarcane feedstocks, a move that may help restrain sugar prices. (Cailian Press, Oct 17)",
+      "title_zh": "财联社10月17日电，据报道，印度已下令国有燃料零售商停止采购以食糖及主要甘蔗原料生产的乙醇，此举可能有助于抑制糖价上涨。",
+      "summary_zh": "财联社10月17日电，据报道，印度已下令国有燃料零售商停止采购以食糖及主要甘蔗原料生产的乙醇，此举可能有助于抑制糖价上涨"
+    },
+    {
+      "id": "2c441a980a32a567e22a40232d3a10d47677bd35",
+      "title": "Major RISC-V summit to be held; industry opportunity seen exceeding 200 billion yuan",
+      "summary": "The 6th RISC-V China Summit is scheduled for Oct 18–20 at the Shenzhen Convention & Exhibition Center (Futian). (Cailian Press, Oct 17)",
+      "title_zh": "RISC-V重磅峰会将举办 产业空间有望超2000亿元",
+      "summary_zh": "【RISC-V重磅峰会将举办 产业空间有望超2000亿元】财联社10月17日电，第六届RISC-V中国峰会已定档10月18日至20日，在深圳会展中心（福田）举行"
+    },
+    {
+      "id": "37b751bbd4ce1a5c79eee5342699193b117ece38",
+      "title": "Deforestation in Brazil's Amazon falls to 38-year low",
+      "summary": "Data released by the Brazilian government on the 16th show deforestation in the country's Amazon rainforest has dropped to its lowest level in 38 years. (Cailian Press, Oct 17)",
+      "title_zh": "巴西亚马孙地区毁林面积降至38年最低",
+      "summary_zh": "【巴西亚马孙地区毁林面积降至38年最低】财联社10月17日电，巴西政府16日公布的数据显示，巴西境内亚马孙雨林砍伐面积降至38年来最低水平"
+    },
+    {
+      "id": "6c9e38cfa0bfb823c04838eecf2f147ae891be96",
+      "title": "US September import prices rise more than expected; core imports and capital goods climb, confirming inflation spread",
+      "summary": "US September import prices rose more than expected, with the year-on-year gain at a more-than-four-year high, corroborating earlier CPI and PPI data that inflation pressure is spreading broadly.",
+      "title_zh": "美国9月进口价格涨幅超预期，核心进口与资本品齐升印证通胀扩散",
+      "summary_zh": "美国9月进口价格涨幅超预期，同比升幅创四年多来最高，与本周早些时候公布的消费者及生产者价格数据共同印证通胀压力正全面扩散"
+    },
+    {
+      "id": "4a5b5a56a1fbffb250b3c31b19cdf5ee890b3a75",
+      "title": "Indonesia's Semeru volcano erupts, ash column about 1,000 meters high",
+      "summary": "Indonesia's PVMBG said Semeru volcano in East Java erupted at 10:42 local time on Oct 17, with an ash column about 1,000 m high lasting roughly 137 seconds. (Cailian Press, Oct 17)",
+      "title_zh": "印尼塞梅鲁火山喷发 火山灰柱高约1000米",
+      "summary_zh": "【印尼塞梅鲁火山喷发 火山灰柱高约1000米】财联社10月17日电，据印尼火山地质减灾中心消息，当地时间10月17日10时42分，位于印尼东爪哇省的塞梅鲁火山发生喷发，火山灰柱高约1000米，喷发持续时间约为137秒"
+    },
+    {
+      "id": "9d1956acc9f53639edb3c3e8f2bcc30c01753f3f",
+      "title": "Analysts react to the \"flying Tesla\": engineering impresses the world, but commercial value may be limited",
+      "summary": "On Thursday evening in Texas, Tesla unveiled the new-generation Roadster, performing stunning \"levitating flip\" stunts and demonstrating flight capability.",
+      "title_zh": "分析师热评“会飞的特斯拉”：工程技术实力惊艳世界 但商业价值可能有限",
+      "summary_zh": "特斯拉 当地时间周四晚间在得克萨斯州发布了新一代Roadster跑车，上演了令人惊叹的“腾空翻转”等高难度动作，并展示了飞行能力"
+    },
+    {
+      "id": "7d519606b9ea7b2c25822b0379342a46bb59e848",
+      "title": "ChangXin Technology: chairman proposes share buyback of 1–2 billion yuan",
+      "summary": "On Oct 16, ChangXin Technology announced that Chairman Zhu Yiming proposed using own or raised funds to repurchase some of the company's outstanding RMB ordinary shares (A-shares) via centralized bidding on the SSE.",
+      "title_zh": "长鑫科技：董事长提议回购10亿元-20亿元公司股份",
+      "summary_zh": "长鑫科技 10月16日公告，公司董事长朱一明提议公司使用自有或自筹资金通过上海证券交易所股票交易系统以集中竞价交易方式回购公司已发行的部分人民币普通股（A股）股份"
+    },
+    {
+      "id": "40d3bba58b8c4e2d4d675b1ec85f178a504db059",
+      "title": "ChangXin Technology: expects Q1–Q3 net profit of 131.0–132.5 billion yuan, swinging to profit YoY",
+      "summary": "ChangXin Technology (688825.SH) expects attributable net profit of 131.0–132.5 billion yuan for the first three quarters of 2026, turning profitable year-on-year.",
+      "title_zh": "长鑫科技：预计前三季度净利润1310亿元-1325亿元 同比扭亏为盈",
+      "summary_zh": "长鑫科技 (688825.SH)公告称，预计2026年前三季度归属于上市公司股东的净利润为1310.00亿元-1325.00亿元，同比扭亏为盈"
+    },
+    {
+      "id": "bd42d44835d5dc93e140ed1e7b28dcc57afa2200",
+      "title": "\"AI funding crunch\" sweeps the market! Meta earnings lead the test of confidence in the sector's huge investments",
+      "summary": "Talk of an \"AI funding crunch\" has grown loud, dragging down a host of US tech stocks and even hitting energy suppliers' shares.",
+      "title_zh": "“AI缺钱”风暴席卷市场！Meta财报打头阵 产业巨额投资迎“信心大考”",
+      "summary_zh": "“AI缺钱”的声浪甚嚣尘上，带垮美股一众科技股，甚至连能源厂商股价都遭受波及"
+    },
+    {
+      "id": "ceae3c0201d36ba215f6b6adc3a7171f86d5c59d",
+      "title": "Kweichow Moutai reclaims the crown! Baijiu sector at its cheapest in a decade as bottoming signals build",
+      "summary": "In the current low-rate environment, the high-dividend appeal of baijiu sector leaders is being re-rated by the secondary market.",
+      "title_zh": "贵州茅台重回股王！白酒板块近10年最便宜 筑底信号持续显现",
+      "summary_zh": "在当前低利率环境下， 白酒 板块龙头股们的高股息属性正被二级市场重新定价"
+    },
+    {
+      "id": "ac5c6d0c405d5057717cf54ee61a4ab1566514af",
+      "title": "2027 Wallstreetcn calendar pre-sale opens! The 9th consecutive year of the \"legendary\" finance calendar",
+      "summary": "Risk disclaimer: markets carry risk; invest with caution.",
+      "title_zh": "2027见闻历预售开启！连续第9年的财经“神”历，也是你第九年的陪伴",
+      "summary_zh": "风险提示及免责条款 市场有风险，投资需谨慎"
+    },
+    {
+      "id": "00043aba204edbc5968a157ba7562715c6381d53",
+      "title": "AI helps savers earn more, but banks panic: Citi, BofA, JPMorgan collectively guard against AI agents",
+      "summary": "Citi, Bank of America, and JPMorgan have announced restrictions on AI agents accessing customer accounts — behind the collective guardrail lies banks' deep anxiety that trillions of dollars in low-cost deposits could be \"swept away\" by AI.",
+      "title_zh": "AI帮储户多赚钱，银行却慌了：花旗、美银、摩根大通集体对AI Agent设防",
+      "summary_zh": "花旗、美国银行和摩根大通相继宣布限制AI智能代理访问客户账户，这场集体设防的背后，是银行业对数万亿美元低成本存款可能被AI\"扫走\"的深层焦虑"
+    },
+    {
+      "id": "e9cafde590a90b58f38dd4dfc28266677457dd25",
+      "title": "No rebates, collusive manipulation, etc.! PBOC acts as bond issuance pricing faces tighter scrutiny",
+      "summary": "Interbank bond issuance pricing is getting new rules.",
+      "title_zh": "禁止返费、串通操纵等！央行出手 债券发行定价迎严监管",
+      "summary_zh": "银行 间债券发行定价迎来新规"
+    },
+    {
+      "id": "b22c27edae5f5ee0a48bdda7f7b22d6105024db6",
+      "title": "Another 10 billion yuan poured in! Will A-shares steady next week?",
+      "summary": "On Oct 16, the last trading day of the week, indices repeatedly rallied and fell back — \"wanting to rise but unable\" — yet some oversold recovery emerged; though weak, many sectors and stocks staged solid rebounds.",
+      "title_zh": "又砸入100个亿！下周A股该稳了？",
+      "summary_zh": "10月16日，本周最后一个交易日，指数屡次冲高回落，“想涨却涨不动”，但也一度走出了一定的超跌修复，虽然强度较弱，但很多板块与个股都启动了力度十足的修复"
+    },
+    {
+      "id": "90b4147a9c2968a751f7d36068cf35c3320c3a0e",
+      "title": "Just plunged across the board! Big news from the Strait of Hormuz!",
+      "summary": "The tech-stock sell-off continues! On the afternoon of the 17th Beijing time, US tech stocks kept sliding in pre-market trading.",
+      "title_zh": "刚刚集体跳水！霍尔木兹海峡大消息！",
+      "summary_zh": "科技股的跌势还在持续！ 北京时间17日下午，美股科技股在暗盘交易中继续跳水"
+    },
+    {
+      "id": "94487b14a87dbcf780da9232c822793506a0582a",
+      "title": "IMF official warns global economy faces urgent fiscal challenges",
+      "summary": "IMF Fiscal Affairs Department Director Rodrigo Valdés said in an interview that against high debt, higher rates, and rising public-spending needs, nearly every economy faces pressing fiscal challenges.",
+      "title_zh": "IMF官员警告全球经济面临紧迫财政挑战",
+      "summary_zh": "国际货币基金组织（IMF）财政事务部主任罗德里戈·巴尔德斯日前在接受新华社记者专访时表示，在高债务水平、更高利率以及不断增长的公共支出需求背景下，几乎所有经济体都面临紧迫的财政挑战"
+    },
+    {
+      "id": "7d20967693c9ad92d1a39395a0142fc0435cfdad",
+      "title": "Q1–Q3 net profit surges 195-fold! Ganfeng Lithium's results explode, but Q3 investment loss nears 57 million yuan",
+      "summary": "The lithium giant's results exploded! On the evening of Oct 15, Ganfeng Lithium (002460.SZ) released its 2026 third-quarter report.",
+      "title_zh": "前三季度净利暴增195倍！赣锋锂业业绩炸裂 但Q3投资亏近5700万元",
+      "summary_zh": "锂 矿巨头业绩炸裂！ 10月15日晚间， 赣锋锂业 （002460.SZ）公布2026年三季报"
+    },
+    {
+      "id": "bf9768a4ac7dedf56b771f01fcb6552e34a07274",
+      "title": "Macron: US–Russia \"diesel deal\" signals a US–Europe split",
+      "summary": "On the 16th, French President Macron commented on the US move to ease sanctions on Russian diesel trade, arguing it signals a transatlantic split.",
+      "title_zh": "马克龙：美俄“柴油协议”释放美欧分裂信号",
+      "summary_zh": "法国总统马克龙16日就美国近日宣布放松对俄罗斯柴油贸易的制裁发表评论，认为美方做法释放了美欧分裂的信号"
+    },
+    {
+      "id": "439f7305f335e3e0b87d4e44b1aa7f241cf44239",
+      "title": "Fiscal deficit nearing $2 trillion — how heavy is US fiscal pressure?",
+      "summary": "On Oct 16, the US Treasury reported the FY2026 federal deficit reached $1.99 trillion, up $217 billion from the prior year and the highest in five years.",
+      "title_zh": "财政赤字逼近2万亿美元 美国财政压力有多大",
+      "summary_zh": "当地时间10月16日，美国财政部公布最新数据，2026财年联邦财政赤字达到1.99万亿美元，比上一财年增加2170亿美元，创五年来最高水平"
+    },
+    {
+      "id": "c42d450aefba9681e6840bbc792b57146fd6df9f",
+      "title": "White House limiting Ukraine's use of \"Starshield\"? Trump denies",
+      "summary": "On the 16th, President Trump said he had not asked SpaceX to restrict Ukraine's use of the \"Starshield\" satellite communications system.",
+      "title_zh": "白宫限制乌克兰使用“星盾”？特朗普否认",
+      "summary_zh": "美国总统特朗普16日说，他并未要求美国太空探索技术公司限制乌克兰使用“星盾”卫星 通信 系统"
+    },
+    {
+      "id": "6c09f521ca4134e75711d128f2f1a9e9dcc26d5d",
+      "title": "Trump signs executive order waiving multiple sanctions on Russia",
+      "summary": "A White House statement on the 16th said President Trump signed an executive order that day waiving several sanctions measures against Russia.",
+      "title_zh": "特朗普签署行政令豁免对俄多项制裁",
+      "summary_zh": "美国白宫16日发布的消息显示，美国总统特朗普当日签署一份行政令，豁免对俄罗斯实施多项制裁措施"
+    }
+  ],
+  "updated_at": "2026-10-17T08:25:48Z"
 }
