@@ -1,355 +1,355 @@
 {
   "items": [
     {
-      "id": "aeefda7c4838fb942b4e96a06fdd6f25e1231679",
-      "title": "CLS, October 21: Bank of England Monetary Policy Committee member Greene says 3% wage growth is consistent with 2% inflation, and wage increases need to slow further to hit the CPI target.",
-      "summary": "CLS, October 21: Bank of England Monetary Policy Committee member Greene says 3% wage growth is consistent with 2% inflation, and wage increases need to slow further to hit the CPI target",
-      "title_zh": "财联社10月21日电，英国央行货币政策委员格林表示，3%的工资增长与2%的通胀率相符，需进一步降低工资涨幅，才能实现CPI目标。",
-      "summary_zh": "财联社10月21日电，英国央行货币政策委员格林表示，3%的工资增长与2%的通胀率相符，需进一步降低工资涨幅，才能实现CPI目标"
+      "id": "ab3e491d0af2eb08cfc4df38fc46279767b9a628",
+      "title": "Nvidia accelerates industrial simulation, with semiconductor modelling up to 40 times faster",
+      "summary": "[Nvidia accelerates industrial simulation, with semiconductor modelling up to 40 times faster] CLS, 21 October: Nvidia said imec's S-Litho benchmark, run on its models, shows semiconductor simulation up to 40 times faster; Infineon used Synopsys software and Nvidia CUDA libraries to simulate next-generation power devices, with 3D breakdown modelling 12 times faster.",
+      "title_zh": "英伟达加速工业仿真 半导体模拟最高提速40倍",
+      "summary_zh": "【英伟达加速工业仿真 半导体模拟最高提速40倍】财联社10月21日电，英伟达表示，imec基于其模型开展的S-Litho基准测试显示，相关半导体仿真速度最高提升40倍；英飞凌使用Synopsys软件及英伟达CUDA库进行下一代功率器件仿真，三维击穿模拟速度提升12倍"
     },
     {
-      "id": "840a2b0c66f7cbd40d9f27ebae572517c87cdb22",
-      "title": "CLS, October 21: Amazon Web Services (AWS) is expected to receive Nvidia GB300 racks worth $5 billion.",
-      "summary": "CLS, October 21: Amazon Web Services (AWS) is expected to receive Nvidia GB300 racks worth $5 billion",
-      "title_zh": "财联社10月21日电，亚马逊云服务(AWS)预计将获得价值50亿美元的英伟达GB300机架。",
-      "summary_zh": "财联社10月21日电，亚马逊云服务(AWS)预计将获得价值50亿美元的英伟达GB300机架"
+      "id": "4f26d1cbf8176599e48f31d550d0c52a3130fb85",
+      "title": "Mercedes-Benz, Audi and other European automakers accelerate adoption of Nvidia industrial AI and digital twins",
+      "summary": "[Mercedes-Benz, Audi and other European automakers accelerate adoption of Nvidia industrial AI and digital twins] CLS, 21 October: Nvidia said Mercedes-Benz is using Siemens Simcenter STAR-CCM+ running on Nvidia GPUs to accelerate vehicle aerodynamics simulation, and is building agents for vehicle inspection and windshield assembly verification with Cosmos 3 and the Metropolis VSS blueprint.",
+      "title_zh": "奔驰、奥迪等欧洲车企加速引入英伟达工业AI与数字孪生",
+      "summary_zh": "【奔驰、奥迪等欧洲车企加速引入英伟达工业AI与数字孪生】财联社10月21日电，英伟达表示，梅赛德斯-奔驰正使用基于英伟达GPU运行的西门子Simcenter STAR-CCM+加速车辆空气动力学仿真，并利用Cosmos 3及Metropolis VSS蓝图开发车辆检测和挡风玻璃装配验证智能体"
+    },
+    {
+      "id": "ee5411f600b88b7156c79a7c2eec3f600cf9117b",
+      "title": "Nvidia launches a 64GB DGX Spark; two clustered units support models up to 200 billion parameters",
+      "summary": "[Nvidia launches a 64GB DGX Spark; two clustered units support models up to 200 billion parameters] CLS, 21 October: Nvidia announced the 64GB DGX Spark, to be sold from 23 October by Acer, Asus, Dell, Gigabyte, HP and MSI, starting at 4,999 US dollars.",
+      "title_zh": "英伟达推出DGX Spark 64GB版本 两台集群可支持最高2000亿参数模型",
+      "summary_zh": "【英伟达推出DGX Spark 64GB版本 两台集群可支持最高2000亿参数模型】财联社10月21日电，英伟达宣布推出DGX Spark 64GB版本，将于10月23日起由宏碁、华硕、戴尔、技嘉、惠普和微星等厂商发售，起售价4999美元"
+    },
+    {
+      "id": "3c6d88f14db4f4b862dd37543316e98ae011251b",
+      "title": "Google Cloud and Nvidia declare Vera Rubin infrastructure commercially available",
+      "summary": "[Google Cloud and Nvidia declare Vera Rubin infrastructure commercially available] CLS, 21 October: Google Cloud and Nvidia announced that A5X cloud instances built on Nvidia's Vera Rubin NVL72 system are about to enter commercial service, scheduled to open next month and to extend further into the European market.",
+      "title_zh": "谷歌云与英伟达宣布Vera Rubin基础设施正式商用",
+      "summary_zh": "【谷歌云与英伟达宣布Vera Rubin基础设施正式商用】财联社10月21日电，谷歌云与英伟达宣布，基于英伟达Vera Rubin NVL72系统的A5X云实例即将正式商用，计划于下月开放，并进一步拓展至欧洲市场"
+    },
+    {
+      "id": "bcb46ef44aa4b9333c7072e33a72912afb834a6d",
+      "title": "Samsung Electro-Mechanics joins Nvidia's substrate supply chain and will expand Korean production",
+      "summary": "[Samsung Electro-Mechanics joins Nvidia's substrate supply chain and will expand Korean production] CLS, 21 October: Nvidia announced that Samsung Electro-Mechanics will join its substrate supply chain, initially supplying from existing Korean capacity while upgrading its Sejong and Busan plants and building new ones.",
+      "title_zh": "三星电机加入英伟达基板供应链 将扩建韩国生产设施",
+      "summary_zh": "【三星电机加入英伟达基板供应链 将扩建韩国生产设施】财联社10月21日电，英伟达宣布，三星电机将加入其基板供应链，初期利用韩国现有产能供货，并推进韩国世宗、釜山工厂升级及新建项目"
+    },
+    {
+      "id": "f71d910a8b203e21cda9edea9a09d2b549a4e7c7",
+      "title": "SpaceX up over 8% in premarket after earnings beat and Musk hints at Tesla tie-up",
+      "summary": "SpaceX shares jumped after the company reported surging revenue growth in its third quarter, and owner Elon Musk floated a potential SpaceX-Tesla merger.",
+      "title_zh": "SpaceX 财报超预期、马斯克暗示与特斯拉合并，盘前涨超 8%",
+      "summary_zh": "SpaceX 股价跳涨，此前公司公布第三季度营收大幅增长，其所有者马斯克提出 SpaceX 与特斯拉潜在合并的可能。"
+    },
+    {
+      "id": "40ba094a08a743f4b18a6fe0a65a0c4d90f45f24",
+      "title": "Nvidia and supply-chain partners expand capacity, targeting 2.5 times substrate output within three years",
+      "summary": "Nvidia announced cooperation with supply-chain partners including Amkor, IBIDEN, King Yuan Electronics, Samsung Electro-Mechanics, SPIL and Unimicron to expand substrate, advanced packaging, chip testing and optical engine capacity in order to meet growing AI infrastructure demand.",
+      "title_zh": "英伟达与供应链伙伴扩大产能，未来三年基板产能计划提升至2.5倍",
+      "summary_zh": "英伟达宣布与Amkor、IBIDEN、京元电子、三星电机、矽品精密工业（SPIL）及欣兴电子等供应链伙伴合作，扩大基板、先进封装、芯片测试和光引擎产能，以满足AI基础设施需求增长"
+    },
+    {
+      "id": "4eb286942a12bcdcb8e2b7009834de110c4e29af",
+      "title": "Nvidia upgrades the Isaac robotics platform with a humanoid reference framework and simulation tools",
+      "summary": "Nvidia announced an upgrade to its Isaac general-purpose robotics development platform, introducing a new humanoid reference framework, simulation workflows and data tools aimed at accelerating general-purpose robot development.",
+      "title_zh": "英伟达升级Isaac机器人平台 推出人形机器人参考框架与仿真工具",
+      "summary_zh": "英伟达 宣布升级Isaac通用 机器人 开发平台，推出新的人形 机器人 参考框架、仿真工作流及数据工具，旨在加速通用 机器人 开发"
+    },
+    {
+      "id": "a4a4280bb0f78471ad5a8c1d848df9091a6c384e",
+      "title": "Gaming phones run into the memory price surge",
+      "summary": "Sustained growth in the esports gaming market is drawing a growing number of handset makers to step up.",
+      "title_zh": "电竞手机撞上存储涨价潮",
+      "summary_zh": "电竞游戏市场的持续增长，正在吸引越来越多手机厂商加码"
+    },
+    {
+      "id": "0c771949705845d39bf537d8f81c27d0677f3661",
+      "title": "A SpaceX-Tesla merger: how large a game is Musk playing?",
+      "summary": "SpaceX delivered results that can no longer be summed up as a rocket company: third-quarter revenue of 14.6 billion US dollars, up 161 percent year on year, and net profit of 4.4 billion US dollars, more than double the analysts' average estimate.",
+      "title_zh": "SpaceX与特斯拉合并，马斯克在下一盘多大的棋？",
+      "summary_zh": "SpaceX交出一份很难再用\"火箭公司\"概括的成绩单：第三季度，SpaceX营收146亿美元，同比增长161%，净利润44亿美元，超出分析师平均预期逾一倍"
+    },
+    {
+      "id": "c7d0783f19d3c999add7161afa73e19b854940af",
+      "title": "Behind the SpaceX-Tesla merger idea: which opportunities and which obstacles?",
+      "summary": "Musk said on Tuesday that he thinks a merger of Tesla and SpaceX is a good idea.",
+      "title_zh": "SpaceX和特斯拉合并构想背后：有哪些机遇和阻力？",
+      "summary_zh": "马斯克周二表示，他认为 特斯拉 与 SpaceX 合并是个好主意"
+    },
+    {
+      "id": "4ab8601c9851dc73feea5bd1ed23167f01796b40",
+      "title": "Nvidia launches a clinical surgical AI simulator trained on real operation footage",
+      "summary": "Nvidia is bringing generative AI into the operating theatre with the world's first real-time interactive surgical simulator trained on footage of real cholecystectomies, moving surgical robotics simulation research into clinical-grade visual environments.",
+      "title_zh": "英伟达推出临床手术AI模拟器，基于真实手术录像训练而成",
+      "summary_zh": "英伟达将生成式AI引入手术室场景，推出全球首款基于真实胆囊切除术录像训练的实时交互手术模拟器，标志着外科机器人仿真研究迈入临床级视觉环境"
+    },
+    {
+      "id": "0d9c044bcb55a967f9eee30044920e7c0f26ece0",
+      "title": "Reading SpaceX's third quarter: an all-out AI pitch, and a Tesla merger to raise a hundred billion next year?",
+      "summary": "SpaceX posted its best quarter since the transformation: third-quarter revenue of 14.6 billion US dollars, up 161 percent year on year; adjusted EBITDA of 8.8 billion US dollars, up 306 percent; and nominal compute rising from 0.6 gigawatts a year earlier to 1.7 gigawatts.",
+      "title_zh": "SpaceXQ3业绩解读：AI全力画饼冲刺，合并特斯拉只为明年千亿融资？",
+      "summary_zh": "SpaceX交出了转型以来最漂亮的一份财报：2026Q3营收146亿美元，同比+161%；调整后EBITDA 88亿美元，同比+306%；名义算力从一年前的0.6GW增至1.7GW"
+    },
+    {
+      "id": "dfa1619a44a22611e10514cb1a22068feabb1438",
+      "title": "SpaceX-Tesla merger expectations ignite Wall Street as analysts ask whether one plus one beats two",
+      "summary": "After the close on Tuesday US Eastern time, on SpaceX's earnings call, chief executive Musk made public remarks on the outlook for a potential merger of SpaceX and Tesla.",
+      "title_zh": "SpaceX特斯拉“合体”预期引爆华尔街！分析师热议：1+1能否大于2？",
+      "summary_zh": "美东时间周二盘后，在 SpaceX 财报电话会上，公司CEO马斯克就 SpaceX 和 特斯拉 的潜在合并前景作出了公开表态"
+    },
+    {
+      "id": "c2d83e9648128e580ec1983c5e78ddf9eec42d7d",
+      "title": "Sunsea AIoT, up the limit for a second session: high-compute module products were about 1 percent of first-half revenue",
+      "summary": "[Sunsea AIoT, up the limit for a second session: high-compute module products were about 1 percent of first-half revenue] CLS, 21 October: Sunsea AIoT (002313.SZ) issued an abnormal-trading announcement, saying it had noticed heightened market interest in edge AI and robotics and, to avoid misleading investors, described its main products as follows: the mix of its wireless communication modules and other core products is broadly stable versus earlier periods, built on 4G and 5G,",
+      "title_zh": "2连板日海智能：上半年高算力模组创新产品的收入占公司总营收的比重约1%",
+      "summary_zh": "【2连板日海智能：上半年高算力模组创新产品的收入占公司总营收的比重约1%】财联社10月21日电，日海智能(002313.SZ)发布股票交易异常波动公告，公司关注到近期市场对端侧AI、机器人等领域关注度较高，为避免对投资者产生误导，现就主营产品情况说明如下：目前公司无线通信模组等主营产品结构较前期保持稳定，以4G、5G、"
+    },
+    {
+      "id": "d2712c0ca49df143ab8a19778023f9319af7c7ad",
+      "title": "Henghuang: plans up to 110 million yuan for a 10,000-tonne nano-silica materials project",
+      "summary": "[Henghuang: plans up to 110 million yuan for a 10,000-tonne nano-silica materials project] CLS, 21 October: Henghuang (301118.SZ) said its controlled subsidiary Hunan Hengyao New Materials will build a project with annual output of 10,000 tonnes of nano-silica materials, the product being fumed silica, for total investment of no more than 110 million yuan.",
+      "title_zh": "恒光股份：拟投资不超1.1亿元建设年产1万吨纳米硅材料项目",
+      "summary_zh": "【恒光股份：拟投资不超1.1亿元建设年产1万吨纳米硅材料项目】财联社10月21日电，恒光股份(301118.SZ)公告称，公司控股子公司湖南恒曜新材料有限公司作为项目建设主体，投资建设年产1万吨纳米硅材料项目，项目产品为气相二氧化硅，总投资额不超过1.1亿元"
+    },
+    {
+      "id": "0c535535836fe3b2000ce8b5da61f96816d2cc9d",
+      "title": "CLS, 21 October: the Huatai-PineBridge Nasdaq ETF (513110) will be suspended from the open on 22 October 2026 until 10:30 that day.",
+      "summary": "CLS, 21 October: the Huatai-PineBridge Nasdaq ETF (513110) will be suspended from the open on 22 October 2026 until 10:30 that day.",
+      "title_zh": "财联社10月21日电，纳指ETF华泰柏瑞(513110)将于2026年10月22日开市起至当日10:30停牌。",
+      "summary_zh": "财联社10月21日电，纳指ETF华泰柏瑞(513110)将于2026年10月22日开市起至当日10:30停牌"
+    },
+    {
+      "id": "3ecf0fad1ee6f299af1f527c13e9a7f99944795e",
+      "title": "[Institutional trading-record read] Edge AI plus robotics plus communication modules, building an integrated AIoT offering from modules, large models, algorithms and an IoT platform, already commercialised in AI toys and AI glasses, with robotics solutions hav",
+      "summary": null,
+      "title_zh": "【机构龙虎榜解读】端侧AI+机器人+通信模组，以模组、AI大模型、算法和物联网平台构建一体化AIoT方案，已在AI玩具、AI眼镜等场景商业化落地，机器人解决方案已应...",
+      "summary_zh": null
+    },
+    {
+      "id": "24ad2a3558d644bac09818a4aa0d72519049d6a6",
+      "title": "CLS, 21 October: the US MBA mortgage applications index fell 5.3 percent last week.",
+      "summary": "CLS, 21 October: the US MBA mortgage applications index fell 5.3 percent last week.",
+      "title_zh": "财联社10月21日电，美国MBA抵押贷款申请指数上周下降5.3%。",
+      "summary_zh": "财联社10月21日电，美国MBA抵押贷款申请指数上周下降5.3%"
+    },
+    {
+      "id": "e5941dc7f357e14b15af0a23fe6f8edbe6c09389",
+      "title": "Baofeng Energy: first three quarters net profit up 59.97 percent year on year",
+      "summary": "[Baofeng Energy: first three quarters net profit up 59.97 percent year on year] CLS, 21 October: Baofeng Energy (600989.SH) said third-quarter revenue was 16.89 billion yuan, up 32.73 percent year on year, and net profit attributable to shareholders was 4.589 billion yuan, up 41.97 percent.",
+      "title_zh": "宝丰能源：前三季度净利润同比增长59.97%",
+      "summary_zh": "【宝丰能源：前三季度净利润同比增长59.97%】财联社10月21日电，宝丰能源(600989.SH)公告称，第三季度营业收入为168.90亿元，同比增长32.73%；归属于上市公司股东的净利润为45.89亿元，同比增长41.97%"
+    },
+    {
+      "id": "a94e861583017287c37709cc8e294e7972c2ee1f",
+      "title": "CLS, 21 October: JPMorgan raised its SpaceX target price to 500 US dollars from 240, implying a market value of about 6.8 trillion US dollars.",
+      "summary": "CLS, 21 October: JPMorgan raised its SpaceX target price to 500 US dollars from 240, implying a market value of about 6.8 trillion US dollars.",
+      "title_zh": "财联社10月21日电，摩根大通将SPACEX目标价从240美元上调至500美元，对应约6.8万亿美元市值。",
+      "summary_zh": "财联社10月21日电，摩根大通将SPACEX目标价从240美元上调至500美元，对应约6.8万亿美元市值"
+    },
+    {
+      "id": "9bdac7ae7cd8686f929cdecc4953945f1c17a875",
+      "title": "CLS, 21 October: Philip Morris third-quarter adjusted earnings per share were 2.36 US dollars against an estimate of 2.30.",
+      "summary": "CLS, 21 October: Philip Morris third-quarter adjusted earnings per share were 2.36 US dollars against an estimate of 2.30.",
+      "title_zh": "财联社10月21日电，Philip Morris第三季度调整后每股收益2.36美元，预估2.30美元。",
+      "summary_zh": "财联社10月21日电，Philip Morris第三季度调整后每股收益2.36美元，预估2.30美元"
+    },
+    {
+      "id": "17e64984a544a8318dbb229de5eecb76bf4aa245",
+      "title": "Nantian Information: first three quarters net profit up 472.08 percent year on year",
+      "summary": "[Nantian Information: first three quarters net profit up 472.08 percent year on year] CLS, 21 October: Nantian Information (000948.SZ) said third-quarter revenue was 2.767 billion yuan, up 10.19 percent year on year, and net profit was 27.4351 million yuan, up 565.24 percent.",
+      "title_zh": "南天信息：前三季度净利润同比增长472.08%",
+      "summary_zh": "【南天信息：前三季度净利润同比增长472.08%】财联社10月21日电，南天信息(000948.SZ)公告称，第三季度营业收入为27.67亿元，同比增长10.19%；净利润为2743.51万元，同比增长565.24%"
+    },
+    {
+      "id": "a3cb3f7de0d40ea3c9461545cae20a0ebc8c3237",
+      "title": "CLS, 21 October: Wedbush cut its Netflix target price to 80 US dollars from 90.",
+      "summary": "CLS, 21 October: Wedbush cut its Netflix target price to 80 US dollars from 90.",
+      "title_zh": "财联社10月21日电，韦德布什将奈飞目标价从90美元下调至80美元。",
+      "summary_zh": "财联社10月21日电，韦德布什将奈飞目标价从90美元下调至80美元"
+    },
+    {
+      "id": "ab28562eb9c7582c5ec520dc273cb7e5cfbeb6d4",
+      "title": "CLS, 21 October: Zelensky said US Secretary of State Rubio told him he would work on resolving the Starlink issue.",
+      "summary": "CLS, 21 October: Zelensky said US Secretary of State Rubio told him he would work on resolving the Starlink issue.",
+      "title_zh": "财联社10月21日电，泽连斯基称，美国务卿卢比奥告诉他会着手解决星链问题。",
+      "summary_zh": "财联社10月21日电，泽连斯基称，美国务卿卢比奥告诉他会着手解决星链问题"
+    },
+    {
+      "id": "f444877ed4d7c8f4172a2d9c7538067768776543",
+      "title": "CLS, 21 October: BMO cut its Blackstone target price to 130 US dollars from 150.",
+      "summary": "CLS, 21 October: BMO cut its Blackstone target price to 130 US dollars from 150.",
+      "title_zh": "财联社10月21日电，蒙特利尔银行将黑石集团目标价从150美元下调至130美元。",
+      "summary_zh": "财联社10月21日电，蒙特利尔银行将黑石集团目标价从150美元下调至130美元"
+    },
+    {
+      "id": "9f468f29b43d5e68383f62f469b9c293f621b03f",
+      "title": "Peskov: Putin will study the new US proposal on Ukraine",
+      "summary": "[Peskov: Putin will study the new US proposal on Ukraine] CLS, 21 October: Kremlin spokesman Peskov said on the 21st that US President Trump and his negotiating team are actively pushing a peaceful settlement of the Ukraine crisis and that the current talks could make significant progress.",
+      "title_zh": "佩斯科夫：普京将研究美方新提出的乌克兰问题解决方案",
+      "summary_zh": "【佩斯科夫：普京将研究美方新提出的乌克兰问题解决方案】财联社10月21日电，俄罗斯总统新闻秘书佩斯科夫21日表示，美国总统特朗普及其谈判团队正在积极推动乌克兰危机的和平解决，当前有关谈判存在取得重要进展的可能性"
+    },
+    {
+      "id": "c37bfdf4d33dbc90980476efeb762f025b851b0c",
+      "title": "Google Cloud's Vera Rubin infrastructure to extend to multiple sites and 960,000 GPUs",
+      "summary": "[Google Cloud's Vera Rubin infrastructure to extend to multiple sites and 960,000 GPUs] CLS, 21 October: Google Cloud plans to extend its Nvidia Vera Rubin-based infrastructure to multi-site deployments of up to 960,000 Rubin GPUs.",
+      "title_zh": "谷歌云Vera Rubin基础设施计划扩展至多站点96万颗GPU",
+      "summary_zh": "【谷歌云Vera Rubin基础设施计划扩展至多站点96万颗GPU】财联社10月21日电，谷歌云计划将基于英伟达Vera Rubin的基础设施扩展至多站点部署、最多96万颗Rubin GPU"
+    },
+    {
+      "id": "f11f8099be0f3476895b65c9fd1cdb544f224dc6",
+      "title": "Runjian, up the limit for a third session: a 200 million US dollar cross-border token service order has been signed",
+      "summary": "[Runjian, up the limit for a third session: a 200 million US dollar cross-border token service order has been signed] CLS, 21 October: Runjian (002929.SZ) said in an investor-relations filing that the 200 million US dollar cross-border token service order was signed with a client by its wholly owned subsidiary Wuxiang Yungu, marking major commercial progress for the cross-border AI service model built on the Wuxiang Yungu token factory and paving the way for further business.",
+      "title_zh": "3连板润建股份：2亿美元词元跨境服务订单已完成合同签署",
+      "summary_zh": "【3连板润建股份：2亿美元词元跨境服务订单已完成合同签署】财联社10月21日电，润建股份(002929.SZ)发布投资者关系活动记录表公告，本次2亿美元词元跨境服务订单，由公司全资子公司五象云谷与客户签订，订单已完成合同签署，标志着润建股份依托五象云谷词元工厂构建的跨境AI服务模式迎来重大商业化进展，为后续更多业务落地"
     },
     {
       "id": "1a84cb0488ffe7f42cec84d220225fa01d0c65a4",
       "title": "Housing is flashing warning signs just as the Fed weighs more interest rate hikes",
       "summary": "Housing data deteriorated further in September, according to separate reports Tuesday.",
-      "title_zh": "就在美联储权衡进一步加息之际，房地产正亮起警示信号",
-      "summary_zh": "周二公布的多份报告显示，9 月房地产数据进一步恶化。"
+      "title_zh": "美联储权衡进一步加息之际，楼市正亮出警示信号",
+      "summary_zh": "周二发布的多份报告显示，9 月住房数据进一步恶化。"
     },
     {
       "id": "8797ecba90e2fb22202b5512e75ccdb6bd5db66c",
       "title": "Traders are betting Netflix's stock drama may be coming to an end",
       "summary": "Current options prices are implying a 9% post-earnings move for Netflix, which is the highest since its Q3 2022 report, when it was priced for an 11% move.",
-      "title_zh": "交易员押注奈飞的股价风波可能即将结束",
-      "summary_zh": "当前期权价格隐含奈飞财报后 9% 的波动，为 2022 年三季度财报以来最高，当时隐含波动为 11%。"
+      "title_zh": "交易员押注奈飞的股价大戏或将落幕",
+      "summary_zh": "当前期权价格隐含奈飞财报后 9% 的波动幅度，为 2022 年第三季度财报以来最高，当时定价隐含 11% 的波动。"
     },
     {
-      "id": "625f26096c344fa58d2285d936e160b2f63d0121",
-      "title": "CLS, October 21: SpaceX shares rose more than 2% after hours after third-quarter net profit and sales both came in above expectations.",
-      "summary": "CLS, October 21: SpaceX shares rose more than 2% after hours after third-quarter net profit and sales both came in above expectations",
-      "title_zh": "财联社10月21日电，SpaceX股价盘后涨超2%，此前公布三季度净利润和销售额均超预期。",
-      "summary_zh": "财联社10月21日电，SpaceX股价盘后涨超2%，此前公布三季度净利润和销售额均超预期"
+      "id": "268c087def24eb6909aa7ce71e1dc8a0cc619191",
+      "title": "House committee says Webull messages point to China access to U.S. customer data",
+      "summary": "The House Select Committee on China earlier this month said online investing platform Webull is quietly \"tied in structural ways\" to China's government.",
+      "title_zh": "美国众议院委员会称 Webull 的消息记录显示中方或可获取美国客户数据",
+      "summary_zh": "美国众议院中国问题特别委员会本月早些时候表示，在线投资平台 Webull 正以\"结构性方式\"悄然与中国政府绑定。"
     },
     {
-      "id": "93a065353a1ff6d2fb74f2ddebc238f2dbdf96d7",
-      "title": "CLS, October 21: Netflix third-quarter revenue was $12.87 billion against an estimate of $12.87 billion, with third-quarter EPS of $0.87 against an estimate of $0.82. The company guides fourth-quarter revenue of $13.44 billion versus analyst expectations of $13.51 billion...",
-      "summary": "CLS, October 21: Netflix third-quarter revenue was $12.87 billion against an estimate of $12.87 billion, with third-quarter EPS of $0.87 against an estimate of $0.82",
-      "title_zh": "财联社10月21日电，奈飞三季度营收128.7亿美元，预估128.7亿美元，三季度每股收益0.87美元，预估0.82美元。公司预计四季度营收134.4亿美元，分析师预期135.1亿美...",
-      "summary_zh": "财联社10月21日电，奈飞三季度营收128.7亿美元，预估128.7亿美元，三季度每股收益0.87美元，预估0.82美元"
+      "id": "42db090d46dcb6e2a75038184b190877efa41c70",
+      "title": "Mortgage rates drop for the first time in 2 months, but demand still falls further",
+      "summary": "Mortgage rates finally came down a little, but borrowers are still having trouble getting into the housing market.",
+      "title_zh": "抵押贷款利率两个月来首次下降，但需求仍在进一步走弱",
+      "summary_zh": "抵押贷款利率终于小幅回落，但借款人仍难以进入住房市场。"
     },
     {
-      "id": "703fef056a6012814d6cacdb3a2a697eef3f485b",
-      "title": "SpaceX third-quarter revenue of $14.58 billion beats market expectations",
-      "summary": "[SpaceX third-quarter revenue of $14.58 billion beats market expectations] CLS, October 21: SpaceX third-quarter revenue was $14.58 billion, up 161% year on year, against analyst expectations of $12.8 billion, of which space business revenue was $1.77 billion versus market expectations of $1.43 billion and AI revenue was $7.56 billion versus market estimates of $6.3 billion",
-      "title_zh": "SpaceX三季度营收145.8亿美元 高于市场预期",
-      "summary_zh": "【SpaceX三季度营收145.8亿美元 高于市场预期】财联社10月21日电，SpaceX三季度营收145.8亿美元，同比增长161%，分析师预期128亿美元，其中太空业务营收17.7亿美元，市场预期14.3亿美元，AI收入75.6亿美元，市场预估63亿美元"
+      "id": "ef1a9bbb8569b2f4564923a432bd1819082a02de",
+      "title": "Guanghui Energy profit up more than 160 percent as the gas chain finds a catalyst; institutions visit 8 stocks",
+      "summary": "Overseas natural gas prices have kept rising recently.",
+      "title_zh": "广汇能源业绩大增超160%！天然气产业链迎催化 8股获机构调研",
+      "summary_zh": "近期，海外 天然气 价格持续上涨"
     },
     {
-      "id": "41133c1dc70c660225ba273c362c40daf3d78fc6",
-      "title": "Livermore China ADR Leaders Index closes up 0.59%; most popular China ADRs rise",
-      "summary": "[Livermore China ADR Leaders Index closes up 0.59%; most popular China ADRs rise] CLS, October 21: the Livermore China ADR Leaders Index closed up 0.59% with most popular China ADRs higher: XPeng up more than 7%, Li Auto up more than 5%, Zhihu up more than 2% and NIO up more than 1%, while iQIYI and Bilibili fell less than 1%",
-      "title_zh": "利弗莫尔中概股龙头指数收涨0.59% 热门中概股多数上涨",
-      "summary_zh": "【利弗莫尔中概股龙头指数收涨0.59% 热门中概股多数上涨】财联社10月21日电，利弗莫尔中概股龙头指数收涨0.59%，热门中概股多数上涨，小鹏集团涨超7%，理想汽车涨超5%，知乎涨超2%，蔚来涨超1%，爱奇艺、哔哩哔哩跌幅不足1%"
+      "id": "c32584cd18d2abdf435b49966f5971a9402ec1e1",
+      "title": "Stock futures rise as traders evaluate latest raft of earnings; SpaceX shares surge: Live updates",
+      "summary": "U.S",
+      "title_zh": "交易员评估最新一批财报，美股期货上涨；SpaceX 股价飙升：实时更新",
+      "summary_zh": "美国"
     },
     {
-      "id": "2c6d671be8f98490ee83f366dc8cb9ce7094d0ef",
-      "title": "The three major US indices close mixed; most large-cap technology stocks fall",
-      "summary": "[The three major US indices close mixed; most large-cap technology stocks fall] CLS, October 21: the three major US indices closed mixed, with the Dow up 1.02%, the Nasdaq down 0.02% and the S&P 500 up 0.29%. Most large-cap technology stocks fell, with Apple, Alphabet and Meta down more than 1% and SK Hynix down more than 2%, while Tesla rose more than 1%",
-      "title_zh": "美股三大指数收盘涨跌不一 大型科技股多数下跌",
-      "summary_zh": "【美股三大指数收盘涨跌不一 大型科技股多数下跌】财联社10月21日电，美股三大指数收盘涨跌不一，道指涨1.02%，纳指跌0.02%，标普500指数涨0.29%，大型科技股多数下跌，苹果、谷歌、Meta跌超1%，SK海力士跌超2%，特斯拉涨超1%"
+      "id": "9a706caa1328f8d657c564c145b6360bf5e22e1d",
+      "title": "French 10-year bond yield hits 5% for first time since 2002 amid unrest",
+      "summary": "France is grappling with intense pressure to slash spending, while trying to quell violent protests demanding the government spends more.",
+      "title_zh": "法国 10 年期国债收益率自 2002 年以来首次触及 5%，社会动荡持续",
+      "summary_zh": "法国正面临削减支出的巨大压力，同时试图平息要求政府增加支出的暴力抗议。"
     },
     {
-      "id": "bbe0d31a950c84b465f2cf52130d8ca18ea1f637",
-      "title": "Iranian president: the precondition for talks is that the United States lifts pressure, threats and sanctions",
-      "summary": "[Iranian president: the precondition for talks is that the United States lifts pressure, threats and sanctions] CLS, October 21: Iranian President Pezeshkian said during a meeting with Pakistani army chief of staff Munir that every problem in the region, from rising tensions and conflict escalation to the chaos in the Strait of Hormuz, is caused by US aggression",
-      "title_zh": "伊朗总统：谈判前提是美方解除施压、威胁和制裁",
-      "summary_zh": "【伊朗总统：谈判前提是美方解除施压、威胁和制裁】财联社10月21日电，伊朗总统佩泽希齐扬在与巴基斯坦陆军总参谋长穆尼尔会晤时表示，该地区所有问题，从紧张局势和冲突升级到霍尔木兹海峡的混乱，都是由于美国的侵略造成的"
+      "id": "e16edcfc8f9bba6f77757a1cb851047f8dd1064b",
+      "title": "'MAKE DEALS': Trump says data centers should pay communities a 'dividend' to win support",
+      "summary": "Trump says data centers should consider community \"dividends\" as AI financing worries grow.",
+      "title_zh": "\"做交易\"：特朗普称数据中心应向社区支付\"红利\"以换取支持",
+      "summary_zh": "随着市场对 AI 融资的担忧加剧，特朗普称数据中心应考虑向社区支付\"红利\"。"
     },
     {
-      "id": "cef15d18afcd5d9127e4c61ea0923ac08c0545dc",
-      "title": "CLS, October 21: the US Federal Aviation Administration (FAA) has certified the Boeing 737-10, the largest model in the 737 MAX family.",
-      "summary": "CLS, October 21: the US Federal Aviation Administration (FAA) has certified the Boeing 737-10, the largest model in the 737 MAX family",
-      "title_zh": "财联社10月21日电，美国联邦航空局（FAA）认证波音737-10，这是737MAX系列中最大的机型。",
-      "summary_zh": "财联社10月21日电，美国联邦航空局（FAA）认证波音737-10，这是737MAX系列中最大的机型"
+      "id": "485971dd8d85ba3094361b716e0aaf492340507c",
+      "title": "Witkoff heads to Russia for Putin talks as Zelenskyy insists 'nothing about Ukraine without Ukraine'",
+      "summary": "Speaking in Oslo on Tuesday, Zelenskyy said Washington had reaffirmed its commitment to providing Ukraine with security guarantees.",
+      "title_zh": "威特科夫赴俄与普京会谈，泽连斯基强调\"没有乌克兰参与的乌克兰问题不可谈\"",
+      "summary_zh": "泽连斯基周二在奥斯陆表示，华盛顿已重申向乌克兰提供安全保障的承诺。"
     },
     {
-      "id": "93730bf79a86758daee74b9d5325531df2d599d9",
-      "title": "CLS, October 21: Anthropic spent close to $9 billion on computing power and infrastructure in the first half, up from $2.3 billion in the same period last year. The IPO draft shows that if Anthropic's future infrastructure spending commitments, including deals under negotiation, are counted...",
-      "summary": "CLS, October 21: Anthropic spent close to $9 billion on computing power and infrastructure in the first half, up from $2.3 billion in the same period last year",
-      "title_zh": "财联社10月21日电，Anthropic上半年在算力和基础设施上花费近90亿美元，高于去年同期的23亿美元。IPO草案显示，Anthropic未来基础设施支出承诺若计入正在洽谈的...",
-      "summary_zh": "财联社10月21日电，Anthropic上半年在算力和基础设施上花费近90亿美元，高于去年同期的23亿美元"
+      "id": "16e9c563d15cc3bfeebede2b53ef61bc1d112f83",
+      "title": "The hundred-billion ETF club expands again as money adds to broad-based and credit bond funds",
+      "summary": "With the market choppy, ETF size and flows are shifting structurally: as of the 21 October close the number of hundred-billion-yuan ETFs in the market rose to 5, and broad-based and credit bond ETFs have recently drawn inflows.",
+      "title_zh": "千亿级ETF阵营再扩容 宽基与信用债获资金加仓",
+      "summary_zh": "市场震荡调整之际，ETF规模与资金流向呈现结构性变化：截至10月21日收盘，全市场千亿级ETF增至5只，宽基与信用债ETF近期获资金加仓"
     },
     {
-      "id": "5c00de54a0f449ea5574fa6cc4b56f8ee447e810",
-      "title": "Houthis say Yemen was hit by 93 Saudi air strikes in the past 24 hours",
-      "summary": "[Houthis say Yemen was hit by 93 Saudi air strikes in the past 24 hours] CLS, October 21: Houthi spokesman Yahya said that in the past 24 hours Saudi warplanes carried out 93 air strikes and missile attacks on civilian targets in the Yemeni governorates of Al Jawf, Taiz, Saada, Marib, Hajjah, Lahj, Amran and Ibb",
-      "title_zh": "胡塞武装称过去24小时也门遭沙特空袭93次",
-      "summary_zh": "【胡塞武装称过去24小时也门遭沙特空袭93次】财联社10月21日电，也门胡塞武装发言人叶海亚称，过去24小时内，沙特战机对也门焦夫省、塔伊兹省、萨达省、马里卜省、哈杰省、拉赫季省、阿姆兰省和伊卜省的民用目标发动93次空袭及导弹袭击"
+      "id": "1d64bcbdd35248a9af70c74f2cc9dc8d045d29ca",
+      "title": "Jensen Huang: telecom base stations could evolve into distributed AI networks",
+      "summary": "Speaking at the GTC conference in Berlin on 21 October, Nvidia chief executive Jensen Huang said every telecom operator will supply AI compute in future and that base stations could evolve into distributed AI networks.",
+      "title_zh": "黄仁勋：未来电信基站有望发展为分布式AI网络",
+      "summary_zh": "10月21日，英伟达首席执行官黄仁勋在柏林举行的GTC大会上表示，未来所有电信运营商都将提供AI算力，电信基站有望发展为分布式AI网络"
     },
     {
-      "id": "e2bcd893d7eb2cf910e98a04e873483f48016f98",
-      "title": "The dollar index fell on the 20th",
-      "summary": "[The dollar index fell on the 20th] CLS, October 21: the dollar index, which tracks the dollar against six major currencies, fell 0.27% on the day and closed at 101.701 at the end of the foreign exchange session",
-      "title_zh": "美元指数20日下跌",
-      "summary_zh": "【美元指数20日下跌】财联社10月21日电，衡量美元对六种主要货币的美元指数当天下跌0.27%，在汇市尾市收于101.701"
+      "id": "8d457b6ac2d6a24cb214e7dfaa041d6920cbc471",
+      "title": "The 2027 Wallstreetcn almanac is on pre-sale: the ninth consecutive year of the financial calendar",
+      "summary": "Risk disclosure and disclaimer: markets carry risk and investment requires caution.",
+      "title_zh": "2027见闻历预售开启！连续第9年的财经“神”历，也是你第九年的陪伴",
+      "summary_zh": "风险提示及免责条款 市场有风险，投资需谨慎"
     },
     {
-      "id": "67da4946318a9ed64f27b3c11b03c70b9db642ee",
-      "title": "CLS, October 21: Google announced that Claude Opus 5.5 and Claude Sonnet 5.5 are now available on Google's Antigravity platform.",
-      "summary": "CLS, October 21: Google announced that Claude Opus 5.5 and Claude Sonnet 5.5 are now available on Google's Antigravity platform",
-      "title_zh": "财联社10月21日电，谷歌宣布Claude Opus 5.5与Claude Sonnet 5.5现已接入谷歌Antigravity平台。",
-      "summary_zh": "财联社10月21日电，谷歌宣布Claude Opus 5.5与Claude Sonnet 5.5现已接入谷歌Antigravity平台"
+      "id": "d8685a27d88b2f36c6aca627136adcf66510d2a3",
+      "title": "China's central offices issue guidance on deepening the integration of technological and industrial innovation",
+      "summary": "On 21 October the General Offices of the CPC Central Committee and the State Council released the guidance, which takes developing new quality productive forces and building a modern industrial system as its goals, focuses on an enterprise-led innovation system with coordinated participants across industry, academia and research, and calls for end-to-end, full-domain, all-factor and all-round support so that technological and industrial innovation reinforce each other.",
+      "title_zh": "中共中央办公厅、国务院办公厅发布关于推动科技创新和产业创新深度融合的意见",
+      "summary_zh": "10月21日，中共中央办公厅、国务院办公厅对外发布《关于推动科技创新和产业创新深度融合的意见》，要求以发展新质生产力、建设现代化产业体系为目标，以构建企业主导、各主体协同的产学研融通创新体系为重点，推动全链条贯通、全领域覆盖、全要素融通、全方位保障，形成科技创新和产业创新互融共促新格局"
     },
     {
-      "id": "dab187dbe34746d8ae351c3764962d0e134acbaa",
-      "title": "CLS, October 21: Hang Seng Index futures night session closed up 0.51% at 24,001 points, a premium of 133 points.",
-      "summary": "CLS, October 21: Hang Seng Index futures night session closed up 0.51% at 24,001 points, a premium of 133 points",
-      "title_zh": "财联社10月21日电，恒指期货夜盘收涨0.51%，报24001点，高水133点。",
-      "summary_zh": "财联社10月21日电，恒指期货夜盘收涨0.51%，报24001点，高水133点"
+      "id": "74dc56b329c0b654638fb827baf81852d905c3a2",
+      "title": "Most Americans spend too much on housing. Here are 3 ways to save on your rent or mortgage",
+      "summary": "High costs make it difficult for renters and homeowners to follow the 30% guidance on housing bills.",
+      "title_zh": "多数美国人在住房上花得太多，这里有三种节省租金或月供的方法",
+      "summary_zh": "高昂的成本使租客和房主难以遵循住房支出不超过收入 30% 的建议。"
     },
     {
-      "id": "0bd489bd3ce965aa9c711dc7d0f7be7bb46dd5f0",
-      "title": "Israeli military says it killed a senior member of Hamas's security apparatus",
-      "summary": "[Israeli military says it killed a senior member of Hamas's security apparatus] CLS, October 21: the Israel Defense Forces and the Israel Security Agency (Shin Bet) issued a joint statement saying that a precise air strike on the Gaza City area earlier in the day killed Yassin, a senior member of Hamas's security apparatus",
-      "title_zh": "以军称打死哈马斯安全机构高级成员",
-      "summary_zh": "【以军称打死哈马斯安全机构高级成员】财联社10月21日电，以色列国防军与以色列国家安全局（辛贝特）发表联合声明，称当天早些时候对加沙城地区发动精准空袭，打死了哈马斯安全机构高级成员亚辛"
+      "id": "1336947cfa2dd4ed92811d6e452a35ab4c662db6",
+      "title": "The data national team steps up: mapping nine sub-sectors",
+      "summary": "The data-elements theme was strong on 21 October: Sunway World, HCR, Vastdata, Linewell Software, Zhongguang Tianze and Taiji Computer hit the limit, while Haitian Ruisheng and Fantuo Shuchuang gained more than 10 percent.",
+      "title_zh": "数据“国家队”登场！九大细分领域梳理",
+      "summary_zh": "数据要素 概念10月21日表现强势，板块中 三维天地 、 慧辰股份 、 海量数据 、 南威软件 、 中广天择 、 太极股份 涨停； 海天瑞声 、 凡拓数创 涨超10%"
     },
     {
-      "id": "70c98821e1beb4b37506eb910ac135c844f486b9",
-      "title": "Talks on Ukraine held in Norway; US envoy to travel to Russia to convey the substance",
-      "summary": "[Talks on Ukraine held in Norway; US envoy to travel to Russia to convey the substance] CLS, October 21: US President Trump's envoy Witkoff met Ukrainian President Zelensky in Oslo, Norway, with leaders from Norway, Finland and other European countries also taking part; Trump's son-in-law Kushner joined by video",
-      "title_zh": "乌克兰问题会谈在挪威举行 美特使将赴俄转达相关内容",
-      "summary_zh": "【乌克兰问题会谈在挪威举行 美特使将赴俄转达相关内容】财联社10月21日电，美国总统特朗普的特使威特科夫和乌克兰总统泽连斯基在挪威奥斯陆举行会晤，参会者还包括来自挪威、芬兰等其他欧洲国家的领导人，特朗普女婿库什纳以视频方式参会"
+      "id": "3d043b17a9e6567393183e686b853f73904a5bd6",
+      "title": "Long-dated large certificates of deposit keep coming since October, with one bank back a second time; why the flood?",
+      "summary": "With talk of a revival in large certificates of deposit repeatedly trending, another joint-stock bank has been openly promoting 5-year products.",
+      "title_zh": "10月来长期限大额存单发行继续加力 有银行隔月“梅开二度” 为何如此汹涌？",
+      "summary_zh": "在“大额存单重启潮”反复冲上热搜之际，又有股份行大张旗鼓对外“推销”5年期产品"
     },
     {
-      "id": "bec9735f2a8a7573ba4a0e14c9893d424a402c5d",
-      "title": "CLS, October 21: WTI crude futures settled at $101.79 per barrel, down $1.87 or 1.80%. Brent crude futures settled at $108.79 per barrel, down $0.76 or 0.69%.",
-      "summary": "CLS, October 21: WTI crude futures settled at $101.79 per barrel, down $1.87 or 1.80%",
-      "title_zh": "财联社10月21日电，WTI原油期货结算价为101.79美元/每桶，下跌1.87美元，跌幅1.80%。布伦特原油期货结算价为108.79美元/桶，下跌0.76美元，跌幅0.69%。",
-      "summary_zh": "财联社10月21日电，WTI原油期货结算价为101.79美元/每桶，下跌1.87美元，跌幅1.80%"
+      "id": "c75e65120dc6216d7517cb23920b5183bf73e507",
+      "title": "Central offices: explore multiple technology routes, typical use cases and viable business models in frontier fields including quantum technology, biomanufacturing, hydrogen and fusion energy, brain-computer interfaces, embodied intelligence and 6G",
+      "summary": "The guidance on deepening the integration of technological and industrial innovation from the General Offices of the CPC Central Committee and the State Council was released.",
+      "title_zh": "中办、国办：在量子科技、生物制造、氢能和核聚变能、脑机接口、具身智能、第六代移动通信等前沿领域 探索多元技术路线、典型应用场景、可行商业模式",
+      "summary_zh": "中共中央办公厅、国务院办公厅《关于推动科技创新和产业创新深度融合的意见》对外发布"
     },
     {
-      "id": "f77cb623ddf57f3fc02ee7293b0cd0ac205a53d1",
-      "title": "CLS, October 21: SHFE crude futures night session closed down 4.47% at 694.8 yuan per barrel. The main Shanghai gold contract closed down 0.31% at 890 yuan per gram, and the main Shanghai silver contract closed up 1.54% at 14,075 yuan per kilogram.",
-      "summary": "CLS, October 21: SHFE crude futures night session closed down 4.47% at 694.8 yuan per barrel",
-      "title_zh": "财联社10月21日电，上期所原油期货夜盘收跌4.47%，报694.8元/桶。沪金主力合约收跌0.31%，报890元/克，沪银主力合约收涨1.54%，报14075元/千克。",
-      "summary_zh": "财联社10月21日电，上期所原油期货夜盘收跌4.47%，报694.8元/桶"
+      "id": "7fc75ac01a5e0d9d97505815831eea97146aa730",
+      "title": "Central offices: fully implement the AI-plus initiative and enable AI across every industry",
+      "summary": "The central offices issued the guidance on deepening the integration of technological and industrial innovation.",
+      "title_zh": "中办、国办：全面实施“人工智能+”行动 推动人工智能全方位赋能千行百业",
+      "summary_zh": "中办、国办发布关于推动科技创新和产业创新深度融合的意见"
     },
     {
-      "id": "2cbe80f2834e4e12e2cbc38490658f3bb6f04241",
-      "title": "CoreWeave bond slump rings alarm bells; the Fed may need to re-examine the pace of rate hikes",
-      "summary": "The long-dormant corporate credit market is waking up, and the signal it sends leaves the Federal Reserve facing a dilemma",
-      "title_zh": "CoreWeave债券暴跌敲响警钟，美联储或需重新审视加息节奏",
-      "summary_zh": "沉睡多年的企业信贷市场正在苏醒，其释放的信号令美联储面临两难处境"
+      "id": "0d267d828804f65f69bd4fc38e8b530eeb386a7c",
+      "title": "Central offices: secure decisive breakthroughs in core technologies in integrated circuits, machine tools, high-end instruments, advanced materials and biomanufacturing",
+      "summary": "The guidance on deepening the integration of technological and industrial innovation from the General Offices of the CPC Central Committee and the State Council was released.",
+      "title_zh": "中办、国办：推动集成电路、工业母机、高端仪器、先进材料、生物制造等重点领域关键核心技术攻关取得决定性突破",
+      "summary_zh": "中共中央办公厅、国务院办公厅《关于推动科技创新和产业创新深度融合的意见》对外发布"
     },
     {
-      "id": "3a961d206405a79cde83d2c8020ecdc3bbc0c0f3",
-      "title": "A passenger ferry catches fire in Indonesia; all 460 people on board evacuated",
-      "summary": "[A passenger ferry catches fire in Indonesia; all 460 people on board evacuated] CLS, October 21: the search and rescue agency of Indonesia's Banten province reported on the evening of the 20th that all 460 people on board had been safely evacuated from the ferry fire off the western tip of Java that afternoon",
-      "title_zh": "印尼一客轮起火 船上460人全部撤离",
-      "summary_zh": "【印尼一客轮起火 船上460人全部撤离】财联社10月21日电，印度尼西亚万丹省搜救部门20日晚通报，当天下午在爪哇岛西端附近海域发生的客轮火灾事故中，船上460人已全部安全撤离"
+      "id": "a45a84571e5443d2878e362b50ba22f78f489241",
+      "title": "Central offices release guidance on deepening the integration of technological and industrial innovation",
+      "summary": "On 21 October the General Offices of the CPC Central Committee and the State Council released the guidance.",
+      "title_zh": "中办、国办发布《关于推动科技创新和产业创新深度融合的意见》",
+      "summary_zh": "10月21日，中共中央办公厅、国务院办公厅《关于推动科技创新和产业创新深度融合的意见》对外发布"
     },
     {
-      "id": "b13d40af861156e8932f8c1a434f0a46f0c40818",
-      "title": "OpenAI acquires biomedical R&D platform Orchestra Bio",
-      "summary": "[OpenAI acquires biomedical R&D platform Orchestra Bio] CLS, October 21: OpenAI has completed its acquisition of the biomedical R&D collaboration platform Orchestra Bio and will deeply integrate it with its existing life-science AI R&D platform Rosalind",
-      "title_zh": "OpenAI收购生物医药研发平台Orchestra Bio‌",
-      "summary_zh": "【OpenAI收购生物医药研发平台Orchestra Bio‌】财联社10月21日电，OpenAI已完成对生物医药研发协作平台Orchestra Bio的收购，将把其与自身现有的生命科学AI研发平台Rosalind进行深度整合"
-    },
-    {
-      "id": "c565ebb12c301aa87c733474d302e9fe3de70ac7",
-      "title": "Montage Technology: third-quarter net profit expected to rise 154%-175% year on year",
-      "summary": "Montage Technology (688008.SH) announced that it expects net profit attributable to shareholders for the third quarter of 2026 of 1.200 billion to 1.300 billion yuan, up 153.6%-174.7% year on year",
-      "title_zh": "澜起科技：预计第三季度净利润同比增长154%-175%",
-      "summary_zh": "澜起科技 (688008.SH)公告称，预计2026年第三季度归属于上市公司股东的净利润为12.00亿元-13.00亿元，同比增长153.6%-174.7%"
-    },
-    {
-      "id": "24f35edc4aa2477ec3e82e2f5e9ae33b340c992e",
-      "title": "[Focus Research] Chinese and foreign giants target world models; Nvidia GTC focuses on physical AI as the industry accelerates toward commercial deployment",
-      "summary": "The three major A-share indices consolidated today; at the close the Shanghai Composite was up 0.12%, the Shenzhen Component down 0.14% and the ChiNext down 0.26%",
-      "title_zh": "【风口研报】中外巨头瞄准世界模型!英伟达GTC聚焦物理AI 行业加速走向商业化落地",
-      "summary_zh": "A股三大指数今日震荡整理，截止收盘，沪指涨0.12%，深证成指跌0.14%，创业板指跌0.26%"
-    },
-    {
-      "id": "eeebcc232d966de4360c22a479a43a82f9c3f0ec",
-      "title": "Nvidia breakthrough: 8,192 GPUs mark a milestone in fault-tolerant quantum computing simulation",
-      "summary": "On October 19 local time, Nvidia announced that it completed a record-breaking fault-tolerant quantum computing simulation at the Juelich supercomputing centre in Germany. Using the JUPITER supercomputer, researchers successfully simulated a 104-qubit fault-tolerant quantum computing system and validated a technique known as magic state cultivation",
-      "title_zh": "英伟达新突破：用8192块GPU 刻下容错量子计算模拟里程碑",
-      "summary_zh": "当地时间10月19日， 英伟达 宣布，在德国于利希（Jülich）超级计算中心完成了一项创纪录的容错量子计算模拟，研究人员利用超级 计算机 JUPITER，成功模拟104量子比特的容错量子计算系统，并验证了一种名为“魔态培育”的技术"
-    },
-    {
-      "id": "0c001b3c6a65a351be0b6c9fb0691f15fc3e6908",
-      "title": "Here’s what matters most to Tesla investors heading into earnings",
-      "summary": "Financial results are somewhat of a sideshow for an investor base eagerly awaiting updates on robotaxis, robots — and the cost of all that.",
-      "title_zh": "财报前夕，特斯拉投资者最关心的是什么",
-      "summary_zh": "对一个急切等待自动驾驶出租车、机器人进展——以及这一切成本——更新的投资者群体而言，财务业绩多少只是配角。"
-    },
-    {
-      "id": "09dc3805d4ad10a3ff1a0a9d67f12874b60db0ca",
-      "title": "United Airlines slashes 2026 profit outlook on fuel prices, but travelers keep booking despite higher fares",
-      "summary": "United Airlines cut its profit outlook for the year as fuel prices continued to climb.",
-      "title_zh": "联合航空因燃油价格下调 2026 年利润展望，但票价上涨下旅客预订依旧",
-      "summary_zh": "由于燃油价格持续攀升，联合航空下调了全年利润展望。"
-    },
-    {
-      "id": "71afff2c76f7277c4b0e2b1b48a931c9fdb1dec5",
-      "title": "SpaceX revenue jumps 161% driven by Starlink and AI: Live updates",
-      "summary": "Follow SpaceX’s Q3 2026 earnings live, with updates on revenue, Starlink, AI spending, Starship, guidance and SPCX stock.",
-      "title_zh": "星链与 AI 推动 SpaceX 营收大涨 161%：实时更新",
-      "summary_zh": "实时跟踪 SpaceX 2026 年三季度财报，更新营收、星链、AI 支出、星舰、业绩指引与 SPCX 股价。"
-    },
-    {
-      "id": "4f3dee2934f644becf1539d473de72a6c27dad76",
-      "title": "Netflix posts third-quarter earnings beat, says viewer engagement remains 'healthy'",
-      "summary": "Wall Street and investors will be looking for Netflix to provide additional details about the company's strategy following recent organizational changes",
-      "title_zh": "奈飞三季度盈利超预期，称用户观看参与度保持「健康」",
-      "summary_zh": "在近期组织架构调整之后，华尔街与投资者将期待奈飞就公司战略提供更多细节。"
-    },
-    {
-      "id": "af2f94dc9b983aa43d83ad5c8ca46fdb6997ea4e",
-      "title": "Dow jumps 500 points as earnings optimism steadies market: Live updates",
-      "summary": "A number of upbeat earnings reports and a drop in oil prices overshadowed recent pressure seen among artificial intelligence-related stocks.",
-      "title_zh": "道指跳涨 500 点，财报乐观情绪稳定市场：实时更新",
-      "summary_zh": "多份乐观的财报以及油价回落，盖过了近期人工智能相关股票承受的压力。"
-    },
-    {
-      "id": "5360c7db367568e82641e7bf1670da0ff5305be1",
-      "title": "Salesforce announces $5.66 billion deal for Braze, sending BRZE stock soaring 51%",
-      "summary": "The company's latest acquisition is expected to close in fiscal 2028, and will see Braze shareholders receive $47.50 in cash per share.",
-      "title_zh": "Salesforce 宣布以 56.6 亿美元收购 Braze，BRZE 股价应暴涨 51%",
-      "summary_zh": "该公司最新一笔收购预计在 2028 财年完成，Braze 股东将获得每股 47.50 美元现金。"
-    },
-    {
-      "id": "dde3c8c490bda8a22f5fddd991a24a967a61f9eb",
-      "title": "Boeing wins FAA approval for 737 Max 10 after years of delays",
-      "summary": "The 737 Max 10, the largest model in the family, was set to start flying in 2020, but increased scrutiny and other safety issues delayed its certification.",
-      "title_zh": "波音 737 Max 10 在多年延迟后获美国联邦航空局认证",
-      "summary_zh": "737 Max 10 是该系列中最大的机型，原定 2020 年投入运营，但更严格的审查与其他安全问题推迟了它的认证。"
-    },
-    {
-      "id": "670a6e922f402921e928c84d7aeb98cd7167a8a8",
-      "title": "SpaceX third-quarter revenue was $14.58 billion against analyst expectations of $12.8 billion. Third-quarter capital expenditure was $19.59 billion against expectations of $19.6 billion",
-      "summary": "SpaceX third-quarter revenue was $14.58 billion against analyst expectations of $12.8 billion",
-      "title_zh": "SpaceX三季度营收145.8亿美元，分析师预期128.亿美元。 三季度资本开支195.9亿美元，预期196亿美元",
-      "summary_zh": "SpaceX三季度营收145.8亿美元，分析师预期128.亿美元"
-    },
-    {
-      "id": "324eb4250013ed52be728a276672e707022163cf",
-      "title": "We're booking big profits in an AI stock and trimming a credit-exposed bank",
-      "summary": "We making two trades Tuesday afternoon.",
-      "title_zh": "我们在一只 AI 股上兑现大额收益，并减持一家信贷敞口较高的银行",
-      "summary_zh": "我们周二下午进行两笔交易。"
-    },
-    {
-      "id": "3f265589c2a00ba512ce53665116fd86f40cd879",
-      "title": "Oil prices fall as traders hope for diplomatic progress in Middle East",
-      "summary": "Developments in the Middle East remain in focus, with attacks on commercial ships transiting the Strait of Hormuz escalating in recent weeks.",
-      "title_zh": "交易员寄望中东外交取得进展，油价下跌",
-      "summary_zh": "中东局势仍是市场焦点，近几周穿越霍尔木兹海峡的商船遇袭事件持续升级。"
-    },
-    {
-      "id": "7889e90bb13cfc473526f8f698e0c50bb8055e5e",
-      "title": "Report: Anthropic will spend more than $600 billion on computing power. The company's first-half revenue was $16.3 billion, with roughly $9 billion spent on computing",
-      "summary": "Report: Anthropic will spend more than $600 billion on computing power",
-      "title_zh": "报道：Anthropic将斥资逾6000亿美元用于算力。 该公司上半年营收163亿美元，在算力问题上开支大约90亿美元",
-      "summary_zh": "报道：Anthropic将斥资逾6000亿美元用于算力"
-    },
-    {
-      "id": "29009d4f2cbb3693f41a345f481f68095f31559a",
-      "title": "Earn up to $4,300 in travel with the latest Capital One Venture X Business card offer",
-      "summary": "This Capital One Venture X Business card welcome bonus is more valuable than any previous offer for this card.",
-      "title_zh": "通过 Capital One Venture X Business 卡最新优惠，最高可获 4,300 美元旅行奖励",
-      "summary_zh": "这张 Capital One Venture X Business 卡的开卡奖励比该卡此前任何一次优惠都更有价值。"
-    },
-    {
-      "id": "6dcb3d0d90edf58143c9368f8bf82392ddbc9cda",
-      "title": "The three major US indices rise together with the Dow up close to 1%, as international oil prices spike and retreat",
-      "summary": "On Tuesday US Eastern time the three major US indices rose together; as of writing the Dow was up 0.91%, the Nasdaq up 0.09% and the S&P 500 up 0.31%",
-      "title_zh": "美股三大指数集体上涨 道指涨近1% 国际油价冲高回落",
-      "summary_zh": "美东时间周二，美股三大指数集体上涨，截至发稿，道指涨0.91%，纳指涨0.09%，标普500指数涨0.31%"
-    },
-    {
-      "id": "a44f723d15ec178d27da7e841119a13b83548f10",
-      "title": "Mike Bloomberg spent $80M to boost Democrats in midterms: NYT",
-      "summary": "Democrats are hopeful that they will regain majority control of the House of Representatives and the Senate in November's elections.",
-      "title_zh": "《纽约时报》：迈克·布隆伯格为中期选举投入 8,000 万美元助选民主党",
-      "summary_zh": "民主党人希望在 11 月的选举中重新夺回众议院与参议院的多数控制权。"
-    },
-    {
-      "id": "bf77cf4617b2819da828e06ba7efe516a9409864",
-      "title": "The healthcare sector is getting a safe haven boost. This one stock is headed for a long-term breakout",
-      "summary": "The healthcare sector has been one of the hottest areas over the last three months.",
-      "title_zh": "医疗保健板块获得避险资金推动，这只股票有望实现长期突破",
-      "summary_zh": "医疗保健板块是过去三个月最热门的领域之一。"
-    },
-    {
-      "id": "d747c42efc0f01ebe97ffc9e8e82dc7d1a4a1f1e",
-      "title": "Trump sued over 50% tariffs on Canada in latest trade challenge",
-      "summary": "A new lawsuit challenges President Donald Trump's tariffs on a range of Canadian goods using Section 338 of the Tariff Act of 1930.",
-      "title_zh": "特朗普因对加拿大加征 50% 关税再遭起诉，为最新一起贸易诉讼",
-      "summary_zh": "一项新的诉讼依据 1930 年《关税法》第 338 条，对特朗普总统针对一系列加拿大商品加征的关税提出挑战。"
-    },
-    {
-      "id": "e1d19487ca1ada79e9bc2a021a6b1cbe3c9aeecf",
-      "title": "US Treasury Secretary comments on French bond market turmoil for the first time, expects no spillover but confirms safe-haven flows back into Treasuries",
-      "summary": "US Treasury Secretary Bessent publicly addressed the French bond market turmoil for the first time, stressing that he expects no spillover while confirming that funds are flowing into US Treasuries as a safe haven from France and other risk countries",
-      "title_zh": "美财长首谈法国债市动荡、预计不会外溢，但确认资金避险回流美债",
-      "summary_zh": "美国财政部长贝森特首次就法国债市动荡公开表态，一面强调预期不会外溢，一面确认资金正从法国等风险国家避险涌入美国国债"
-    },
-    {
-      "id": "4f3114b7f764ac3f0871382828dd46714c050bda",
-      "title": "Commerce Ministry spokesperson answers press questions on US sanctions against Chinese companies over alleged trade-secret theft",
-      "summary": "Question: on October 19 local time, the United States imposed sanctions on 5 Chinese companies under the Protecting American Intellectual Property Act on grounds of trade-secret theft",
-      "title_zh": "商务部新闻发言人就美以窃取商业秘密为由制裁中国企业答记者问",
-      "summary_zh": "问：当地时间10月19日，美方依据《保护美国知识产权法》，以窃取商业秘密为由，对中国5家企业实施制裁"
-    },
-    {
-      "id": "e0476ce9311803c94cffc68bb07f55a40c27eaef",
-      "title": "US pending home sales fall to a record low as mortgage rates rise",
-      "summary": "US September existing-home pending sales fell to the lowest level on record, with elevated mortgage rates continuing to suppress purchase demand",
-      "title_zh": "美国待售房屋销量降至历史低点，抵押贷款利率上升",
-      "summary_zh": "美国9月现有住房待售销量跌至历史最低水平，高企的抵押贷款利率持续压制购房需求"
-    },
-    {
-      "id": "2be8a6815f3aab3ac92a837cb46defdca7baa54e",
-      "title": "Novo's next-generation obesity drug shows 25% weight loss in women in late-stage analysis",
-      "summary": "Novo released new evidence that its experimental CagriSema injection can improve upon the weight loss with its blockbuster GLP-1 obesity injection, Wegovy.",
-      "title_zh": "诺和诺德下一代减重药在后期分析中显示女性减重 25%",
-      "summary_zh": "诺和诺德发布新证据，显示其试验性注射药物 CagriSema 的减重效果可优于其重磅 GLP-1 减重注射剂 Wegovy。"
-    },
-    {
-      "id": "200a3064ab289855dfaee09a445ec362a62cce44",
-      "title": "Joint communique of the 25th meeting of the Council of Heads of Government (Prime Ministers) of Shanghai Cooperation Organisation member states",
-      "summary": "From October 19 to 20, 2026, the 25th meeting of the Council of Heads of Government (Prime Ministers) of the Shanghai Cooperation Organisation (hereinafter the SCO or the Organisation) member states was held in Dushanbe",
-      "title_zh": "上海合作组织成员国政府首脑（总理）理事会第二十五次会议联合公报",
-      "summary_zh": "2026年10月19日至20日，上海合作组织（以下简称“上合组织”或“组织”）成员国政府首脑（总理）理事会第二十五次会议在杜尚别举行"
-    },
-    {
-      "id": "16eae180061625b177078c6b5ad89aad23c0f869",
-      "title": "Pre-sales open for the 2027 Jianwen calendar: a ninth consecutive year of the financial calendar, and a ninth year of companionship",
-      "summary": "Risk warning and disclaimer: markets carry risk; invest with caution",
-      "title_zh": "Pre-sales open for the 2027 Jianwen calendar: a ninth consecutive year of the financial calendar, and a ninth year of companionship",
-      "summary_zh": "Risk warning and disclaimer: markets carry risk; invest with caution"
-    },
-    {
-      "id": "8b5b241af7cf0b82f9d0ad1182d42e7ffb9846f5",
-      "title": "'Risk appetite' for stocks is the worst since March, Goldman Sachs says",
-      "summary": "Recent bearish sentiment may prove a contrarian signal to add back to equities.",
-      "title_zh": "高盛称，股票「风险偏好」为 3 月以来最差",
-      "summary_zh": "近期的看空情绪可能反而成为回补股票的逆向信号。"
-    },
-    {
-      "id": "bf4de17f7b1b3f373ef9728702ca4d098ce7fe3f",
-      "title": "Salesforce buys Braze for $5.7 billion: behind the 58% premium, a key move to close the gap in its marketing cloud",
-      "summary": "Salesforce restarts large-scale M&A, acquiring AI marketing platform Braze at an enterprise value of nearly $5.7 billion, seeking to close a competitive gap in its marketing cloud business and accelerate the commercial deployment of AI agents in customer engagement",
-      "title_zh": "Salesforce 57亿美元买下Braze：58%溢价背后，营销云补短板的关键一役",
-      "summary_zh": "Salesforce重启大规模并购，以近57亿美元企业价值收购人工智能营销平台Braze，试图补齐营销云业务的竞争短板，并加速AI智能体在客户互动领域的商业化落地"
+      "id": "ddf2f240ccaa581c22472e76611d04848ccc56e5",
+      "title": "21 October trading-record review: Everwin Precision tops net buying",
+      "summary": "On 21 October, 62 stocks including 1 convertible bond appeared on the trading record, with total turnover of 12.902 billion yuan.",
+      "title_zh": "10月21日龙虎榜复盘：长盈精密净买额居首",
+      "summary_zh": "10月21日共有62只个股（含1只可转债）上榜龙虎榜，总上榜成交额129.02亿元"
     }
   ],
-  "updated_at": "2026-10-20T20:45:20Z"
+  "updated_at": "2026-10-21T11:33:09Z"
 }
