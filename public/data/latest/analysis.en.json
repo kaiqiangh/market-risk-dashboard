@@ -1,1 +1,405 @@
-{"schema_version":"1.1.0","generated_at":"2026-10-21T20:44:57Z","language":"en","market_state":"caution","market_regime":"risk_on","summary":"Brief built on the 19:37Z fact layer. Session attribution first: the layer was cut at 2026-10-21T19:37:46Z, which is 15:37 ET, about 23 minutes before the 16:00 ET close; the US daily bars are dated 2026-10-21 and the quotes equal those bar closes character for character, so the US leg is a late-session reading of the 2026-10-21 session and not a settled close. The A-share leg is a genuine 2026-10-21 close: 9 of 11 names up and 2 down, mean 2.0922 percent, led by 001309.SZ up 6.4951 percent and 688008.SH up 5.3583 percent, with 002156.SZ down 0.9146 percent and 600584.SH down 0.0349 percent at the back. Crypto is a 24-hour reading at 19:37Z and commodities are the current quote against the prior settle. Composite risk is 58.59 at level caution with regime risk_on, model version 1.0.1 with provisional calibration, confidence 0.8742 on data quality 0.9, coverage 0.93 and consistency 0.7112. The headline number needs one correction before it is read: trend_1d at -2.56 is an intra-day move, because this run overwrote the 2026-10-21 history row of 61.15 written earlier today; against 57.44 on 2026-10-20 the true cross-session change is up 1.15. trend_1w is -0.72 and trend_1m is 15.26. Of the six dimensions, macro at 73.52 and liquidity_credit at 70.33 carry the level, volatility at 34.46 is the lowest, and cross_asset at 50.00, trend at 42.96 and equity_structure at 64.27 sit in between; the five largest drivers are cross_asset_confirmation at 7.5, hy_oas at 6.4384, real_rate_dfii10 at 4.944, dgs10 at 4.8875 and vix at 4.4696. The most important structural note on this layer is that macro did not update. FRED returned a non-JSON response, the provider fell back to cache, and 27 FRED series plus the economic calendar are flagged degraded. Rates, credit and SOFR still carry the 2026-10-19 print, breakevens and the reverse repo the 2026-10-20 print, FX the 2026-10-16 print and the Federal Reserve balance sheet the 2026-10-14 print. So the 10-year at 5.15 against 5.09, VIX at 18.44 against 19.99 and HY OAS at 3.29 against 3.31 are print-to-print moves that stop at 2026-10-19; not one of them is a 2026-10-21 observation, and the whole macro block is identical to the 2026-10-20 layer. The tape itself was broad: 18 of the 22 sector and theme rows rose and 4 fell, mean 1.5937 percent and median 1.9221 percent. Leaders are memory at 3.6108 percent, auto at 3.3689 percent, ai_infrastructure at 3.3335 percent, data_centers at 3.0091 percent and quantum_computing at 2.883 percent; the 4 decliners are ev_supply_chain down 1.2843 percent, autonomous_driving down 0.9232 percent, gaming down 0.793 percent and digital_advertising down 0.4616 percent. The semiconductor chain moved together for a second session: semiconductors 2.298 percent, semiconductor_equipment 2.098 percent, semis 2.4216 percent. At the single-name level NVDA is 221.169998, up 2.1712 percent, AMD 555.840027 up 3.9458 percent, MU 919.090027 up 2.569 percent, AVGO 337.714996 up 1.0004 percent and TSLA 386.299988 up 3.3689 percent. All three mixed-timezone baskets reconcile cleanly this session: every constituent of memory, consumer_electronics and robotics carries both a 2026-10-20 and a 2026-10-21 bar, so each last step ran on its full member set and none of the four known degradation forms fired. The 3.6108 percent print for memory is the equal-weight move of 8 non-A-share constituents; its 5 Shanghai and Shenzhen names are excluded from the basket by design and are not inside that number. Risk appetite was not confined to equities. BTC is 84491, up 2.51141 percent over 24 hours, ETH 2495.96 up 2.68207 percent and SOL 108.21 up 2.42511 percent. cross_asset_confirmation fell from 0.625 in the pre-market layer to 0.5, meaning 4 of the 8 production signals are triggered: dollar_strength at 121.4048, real_rate_pressure at 2.8, small_cap_underperformance at 10.0254 percent and copper_down at 0.0609 percent. What did not confirm matters just as much: gold at 4139.700195 is down 0.07 percent and silver at 57.59 is down 0.201 percent, so the safe-haven bid faded while equities rose; WTI at 97.470001 is down 4.244 percent, the largest one-way move in this commodity reading. The news flow was company-specific rather than macro: Nvidia's DSX Pod AI Factory puts 7 Vera Rubin racks into a shipping container and compresses time to first AI token to 14 days; SpaceX jumped 10 percent after an earnings beat and Musk floated a possible tie-up with Tesla; both Meta and Tesla earnings are scheduled at 2026-10-21T12:00:00Z. A 20-year Treasury reopening tailed at a record 5.469 percent for that tenor, while SpaceX bonds fell on concern about further borrowing. Chinese-sourced items arrive through an RSSHub relay and are second-hand aggregation, not first-party statements. Net: risk is up 1.15 across sessions even though volatility, the lowest of the six dimensions, is only 34.46, and the two highest dimensions are exactly macro and liquidity_credit, the two whose inputs are frozen. The honest reading is that what actually moved today is equity-structure and trend risk, while the macro and credit legs are simply still carrying 2026-10-19 and 2026-10-20 prints.","top_risk_drivers":[{"claim":"cross_asset_confirmation remains the largest single contributor at 7.5 points with a 0.64 discount and is_proxy true; its value of 0.5 means 4 of the 8 production signals are triggered, 1 fewer than the 0.625 pre-market reading but still above the 0.375 of the 2026-10-20 post-market layer.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.5,"updated_at":null}]},{"claim":"The macro dimension at 73.52 is the highest of the six, driven by the 10-year real rate at 2.8, the 10-year nominal at 5.15 and the dollar index at 121.4048, with a 10-year minus 2-year spread of only 0.38; but all three readings behind it stop at 2026-10-19 or earlier.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.8,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":5.15,"updated_at":"2026-10-19T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[0].indicators[2].value","metric":"dollar_index","value":121.4048,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[0].indicators[1].value","metric":"yield_curve_10y2y","value":0.3800000000000008,"updated_at":null}]},{"claim":"liquidity_credit at 70.33 is second, with HY OAS at 3.29 contributing 6.4384 on its own and IG OAS at 0.87, the reverse repo at 0.227 and the Fed balance sheet at 6755639 pointing the same way; HY OAS is frozen at 2026-10-19 and the reverse repo at 2026-10-20.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[1].indicators[2].value","metric":"hy_oas","value":3.29,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[1].indicators[3].value","metric":"ig_oas","value":0.87,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[1].indicators[1].value","metric":"reverse_repo","value":0.227,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[1].indicators[0].value","metric":"fed_balance_sheet","value":6755639.0,"updated_at":null}]},{"claim":"equity_structure at 64.27 is still a breadth story: only 69 of the 155 names considered sit above their 200-day average, a ratio of 0.4452; 52-week highs are 0.0385 and lows 0.0513, so lows outnumber highs; small-cap relative at 10.0254 percent and semis relative at 11.9194 percent are both negative. That breadth is itself an index-proxy estimate with is_proxy true, approximated from SPY, IWM and SOXX rather than a full-market constituent count.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[2].indicators[0].value","metric":"breadth_above_ma200","value":0.4452,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.0385,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[2].value","metric":"new_lows_ratio","value":0.0513,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[3].value","metric":"small_cap_relative","value":-10.0254,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[4].value","metric":"semis_relative","value":-11.9194,"updated_at":null}]},{"claim":"VIX at 18.44 and realized volatility at 8.8206 leave the volatility dimension at just 34.46, the lowest of the six; but that reading stops at 2026-10-19, evidence coverage is only 0.93 and the consistency factor inside the 0.8742 confidence is just 0.7112.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":18.44,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[3].indicators[1].value","metric":"realized_vol","value":8.8206,"updated_at":null},{"dataset":"risk","path":"payload.confidence","metric":"confidence","value":0.8742,"updated_at":null}]}],"supporting_signals":[{"claim":"Breadth and trend are both improving: price versus the 200-day average is 6.424 percent, the 52-week drawdown is only 0.7881 percent and 3-month momentum is 4.7102 percent, leaving the trend dimension at 42.96, below neutral.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[5].indicators[0].value","metric":"price_vs_ma200","value":6.424,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[5].indicators[1].value","metric":"drawdown_52w","value":-0.7881,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[5].indicators[2].value","metric":"momentum_3m","value":4.7102,"updated_at":null}]},{"claim":"The theme layer rose broadly rather than rotating: 18 of 22 rows are up, with the advance covering semiconductors, AI infrastructure, data centres and cloud, at memory 3.6108 percent, ai_infrastructure 3.3335 percent, data_centers 3.0091 percent and cloud_computing 2.0387 percent.","evidence_refs":[{"dataset":"sectors","path":"payload.themes[7].change_1d","metric":"change_1d","value":3.6108,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[0].change_1d","metric":"change_1d","value":3.3335,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[15].change_1d","metric":"change_1d","value":3.0091,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[2].change_1d","metric":"change_1d","value":2.0387,"updated_at":"2025-12-22T00:00:00Z"}]},{"claim":"Crypto strengthened in step, with BTC up 2.51141 percent, ETH up 2.68207 percent and SOL up 2.42511 percent, so the bitcoin_down signal did not trigger and the risk-asset tape is consistent.","evidence_refs":[{"dataset":"crypto","path":"payload.assets[0].price","metric":"price","value":84491.0,"updated_at":null},{"dataset":"crypto","path":"payload.assets[1].price","metric":"price","value":2495.96,"updated_at":null},{"dataset":"crypto","path":"payload.assets[2].price","metric":"price","value":108.21,"updated_at":null}]},{"claim":"The A-share close confirms the same direction: 9 of 11 names up at a mean of 2.0922 percent, with 688008.SH up 5.3583 percent, 688525.SH up 3.3243 percent and 001309.SZ up 6.4951 percent, in line with the US semiconductor chain.","evidence_refs":[{"dataset":"equities","path":"payload.assets[13].change_1d","metric":"change_1d","value":5.3583,"updated_at":null},{"dataset":"equities","path":"payload.assets[8].change_1d","metric":"change_1d","value":3.3243,"updated_at":null},{"dataset":"equities","path":"payload.assets[11].change_1d","metric":"change_1d","value":6.4951,"updated_at":null}]},{"claim":"HY OAS at 3.29 is still low and does not trip the 4.0 threshold, and IG OAS at 0.87 is equally tame, so the credit side is sending no stress signal.","evidence_refs":[{"dataset":"macro","path":"payload.credit[0].value","metric":"bamlh0a0hym2","value":3.29,"updated_at":"2026-10-19T00:00:00Z"},{"dataset":"macro","path":"payload.credit[1].value","metric":"bamlc0a0cm","value":0.87,"updated_at":"2026-10-19T00:00:00Z"}]}],"contradicting_signals":[{"claim":"The whole macro block is frozen: after FRED returned a non-JSON response the provider fell back to cache and 27 series plus the economic calendar are degraded, with rates, credit and SOFR at 2026-10-19 and FX at 2026-10-16, 3 sessions behind rates.","evidence_refs":[{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":5.15,"updated_at":"2026-10-19T00:00:00Z"},{"dataset":"macro","path":"payload.fx[0].value","metric":"dtwexbgs","value":121.4048,"updated_at":"2026-10-16T00:00:00Z"},{"dataset":"macro","path":"payload.liquidity[4].value","metric":"sofr","value":3.87,"updated_at":"2026-10-19T00:00:00Z"}]},{"claim":"The dollar index at 121.4048 still triggers dollar_strength and the 10-year real rate at 2.8 still triggers real_rate_pressure, but the readings behind both triggers are 2026-10-19 observations, not today's.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[0].indicators[2].value","metric":"dollar_index","value":121.4048,"updated_at":null},{"dataset":"macro","path":"payload.rates[2].value","metric":"dfii10","value":2.8,"updated_at":"2026-10-19T00:00:00Z"}]},{"claim":"Breadth is not keeping up with the index: only 69 of 155 names are above their 200-day average, a ratio of 0.4452, and the 52-week low ratio of 0.0513 exceeds the high ratio of 0.0385.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[2].indicators[0].value","metric":"breadth_above_ma200","value":0.4452,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.0385,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[2].value","metric":"new_lows_ratio","value":0.0513,"updated_at":null}]},{"claim":"Small-cap and semis relative performance sit at negative gaps of 10.0254 percent and 11.9194 percent, leaving small_cap_underperformance triggered and contrasting with the broad theme rally.","evidence_refs":[{"dataset":"risk","path":"payload.dimensions[2].indicators[3].value","metric":"small_cap_relative","value":-10.0254,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[4].value","metric":"semis_relative","value":-11.9194,"updated_at":null}]},{"claim":"Safe havens did not confirm: gold is down 0.07 percent and silver down 0.201 percent, so gold_up did not trigger; copper is down 0.0609 percent and triggers copper_down, which is a mildly weak cyclical signal rather than a risk-on one.","evidence_refs":[]},{"claim":"WTI is down 4.244 percent at the same time as reports that Kuwaiti crude exports are back to pre-war levels and that the US plans to lend out heating-oil reserves, but this is the current quote against the prior settle rather than a settled close, so the direction can still change.","evidence_refs":[]},{"claim":"The 3.6108 percent print for memory is built from only 8 non-A-share constituents, with the basket excluding 5 Shanghai and Shenzhen names by design; consumer_electronics and robotics have complete last steps, but those steps mix Hong Kong, Taiwan and Japan sessions into one number.","evidence_refs":[{"dataset":"sectors","path":"payload.themes[7].change_1d","metric":"change_1d","value":3.6108,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[8].change_1d","metric":"change_1d","value":1.3981,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[11].change_1d","metric":"change_1d","value":1.4505,"updated_at":"2025-12-22T00:00:00Z"}]}],"what_changed_today":["Composite risk rose to 58.59 from 57.44 on 2026-10-20, up 1.15 across sessions, with the level held at caution and the regime held at risk_on.","trend_1d shows -2.56, but that is this run overwriting the 61.15 row written earlier today, an intra-day change and not a cross-session one.","cross_asset_confirmation fell to 0.5 from 0.625 in the pre-market layer, with the triggered count among the 8 production signals down to 4 from 5, driven by the flip in gold_up and copper_down.","US late-session tape was broadly higher: 18 of the 22 sector and theme rows rose and 4 fell, mean 1.5937 percent, led by memory at 3.6108 percent, auto at 3.3689 percent and ai_infrastructure at 3.3335 percent.","The semiconductor chain strengthened in the same direction for a second session, with NVDA up 2.1712 percent, AMD up 3.9458 percent, MU up 2.569 percent and AVGO up 1.0004 percent, and the semis sector up 2.4216 percent.","A-shares closed 2026-10-21 with 9 of 11 up and 2 down at a mean of 2.0922 percent, led by 001309.SZ up 6.4951 percent and 688008.SH up 5.3583 percent.","Macro did not update at all: the FRED provider failed wholesale and fell back to cache, leaving rates, credit and SOFR at 2026-10-19, FX at 2026-10-16 and the Fed balance sheet at 2026-10-14.","Crypto is higher across the board on the 24-hour basis, with BTC up 2.51141 percent, ETH up 2.68207 percent and SOL up 2.42511 percent, leaving bitcoin_down untriggered.","Commodities diverged: WTI is down 4.244 percent, gold down 0.07 percent, silver down 0.201 percent and copper down 0.0609 percent, all as the current quote against the prior settle.","News flow concentrated on company events: Nvidia unveiled a truck-shippable Vera Rubin rack design, SpaceX jumped 10 percent after an earnings beat with a possible Tesla tie-up floated, and a 20-year Treasury reopening tailed at a record 5.469 percent."],"watch_next":["Both Meta and Tesla earnings are scheduled at 2026-10-21T12:00:00Z, the only events now in both the calendar and the news headlines, and the results feed straight into the mega-cap and auto legs.","Whether FRED recovers: if the next layer shows the same JSONDecodeError, rates and credit keep silently freezing and the two highest dimensions, macro and liquidity_credit, keep carrying old prints.","FX is stuck at 2026-10-16, 3 sessions behind rates; once dtwexbgs at 121.4048 is backfilled the trigger state of dollar_strength can be rewritten.","AAL, LMT and NOK report on 2026-10-22 and appear in the calendar; the first two carry citable evidence keys, while the rest of the 2026-10-22 cluster and everything after it can only be described as context.","Whether breadth catches up: the share above the 200-day average is 0.4452 and the 52-week low ratio of 0.0513 still exceeds the high ratio of 0.0385, so equity_structure at 64.27 is unlikely to fall unless both improve together.","The negative gaps in small-cap relative at 10.0254 percent and semis relative at 11.9194 percent: if both relative curves keep weakening, equity_structure stays elevated even while the index rises.","WTI at 97.470001 and the 4.244 percent intraday drop both need confirmation from the next settle; if crude keeps weakening it drags both the commodity and the inflation-expectation readings lower.","VIX at 18.44 is frozen at 2026-10-19 and the volatility dimension at 34.46 is the lowest of the six; once it is backfilled to 2026-10-21 that dimension can reprice and move the composite with it."],"bull_case":{"title":"Risk appetite extends and breadth catches up (bull case)","points":["The broad theme rally continues with advancers holding above 18 of 22 rows, memory and ai_infrastructure staying above 3 percent, and the semiconductor chain extending in the same direction for a third session.","Breadth repairs: the share above the 200-day average recovers from 0.4452, the 52-week high ratio of 0.0385 overtakes the low ratio of 0.0513, and equity_structure falls back from 64.27.","Once FRED backfills, rates and credit confirm as benign: the 10-year holds near 5.15 and HY OAS near 3.29, the freeze premium in macro and liquidity_credit is removed and the composite falls back on its own."],"evidence_refs":[{"dataset":"sectors","path":"payload.themes[0].change_1d","metric":"change_1d","value":3.3335,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[2].indicators[0].value","metric":"breadth_above_ma200","value":0.4452,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":5.15,"updated_at":"2026-10-19T00:00:00Z"},{"dataset":"macro","path":"payload.credit[0].value","metric":"bamlh0a0hym2","value":3.29,"updated_at":"2026-10-19T00:00:00Z"}]},"base_case":{"title":"Score chops sideways and vintage effects dominate (base case)","points":["The composite oscillates inside the 57.44 to 58.59 band with the level at caution and the regime at risk_on; the combination of trend_1w at -0.72 and trend_1m at 15.26 is itself the shape of a sideways drift with a slow upward tilt.","macro and liquidity_credit keep carrying 2026-10-19 and 2026-10-20 prints while equity_structure at 64.27 and volatility at 34.46 offset each other, leaving the score without a one-way driver.","Event risk concentrates in the Meta and Tesla reports at 2026-10-21T12:00:00Z, and the results are more likely to move the single-name and theme legs than the frozen macro leg."],"evidence_refs":[{"dataset":"risk","path":"payload.total_score","metric":"total_score","value":58.59,"updated_at":null},{"dataset":"risk","path":"payload.regime","metric":"regime","value":"risk_on","updated_at":null},{"dataset":"calendar","path":"payload.events[0].datetime","metric":"event_datetime","value":"2026-10-21T12:00:00Z","updated_at":null},{"dataset":"calendar","path":"payload.events[2].datetime","metric":"event_datetime","value":"2026-10-21T12:00:00Z","updated_at":null}]},"bear_case":{"title":"Breadth deteriorates and macro backfills higher (bear case)","points":["Breadth keeps weakening: the share above the 200-day average breaks below 0.4452, the 52-week low ratio of 0.0513 keeps exceeding the high ratio of 0.0385, and the negative gaps in small-cap relative at 10.0254 percent and semis relative at 11.9194 percent widen.","Once FRED backfills, rates and credit jump: the 10-year moves up from 5.15 and HY OAS widens from 3.29, so macro at 73.52 and liquidity_credit at 70.33 reprice higher the moment the freeze lifts.","VIX backfills higher from 18.44 and the volatility dimension at 34.46 rises quickly, while cross_asset_confirmation returns above 0.625 from 0.5 and the triggered count rises to 5 or more."],"evidence_refs":[{"dataset":"risk","path":"payload.dimensions[2].indicators[3].value","metric":"small_cap_relative","value":-10.0254,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[4].value","metric":"semis_relative","value":-11.9194,"updated_at":null},{"dataset":"macro","path":"payload.credit[0].value","metric":"bamlh0a0hym2","value":3.29,"updated_at":"2026-10-19T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":18.44,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.5,"updated_at":null}]},"confidence":0.8742,"evidence_refs":[{"dataset":"risk","path":"payload.total_score","metric":"total_score","value":58.59,"updated_at":null},{"dataset":"risk","path":"payload.confidence","metric":"confidence","value":0.8742,"updated_at":null},{"dataset":"risk","path":"payload.regime","metric":"regime","value":"risk_on","updated_at":null},{"dataset":"risk","path":"payload.dimensions[0].indicators[0].value","metric":"real_rate_dfii10","value":2.8,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[0].indicators[1].value","metric":"yield_curve_10y2y","value":0.3800000000000008,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[0].indicators[2].value","metric":"dollar_index","value":121.4048,"updated_at":null},{"dataset":"macro","path":"payload.rates[0].value","metric":"dgs10","value":5.15,"updated_at":"2026-10-19T00:00:00Z"},{"dataset":"macro","path":"payload.rates[1].value","metric":"dgs2","value":4.77,"updated_at":"2026-10-19T00:00:00Z"},{"dataset":"macro","path":"payload.rates[2].value","metric":"dfii10","value":2.8,"updated_at":"2026-10-19T00:00:00Z"},{"dataset":"macro","path":"payload.credit[0].value","metric":"bamlh0a0hym2","value":3.29,"updated_at":"2026-10-19T00:00:00Z"},{"dataset":"macro","path":"payload.credit[1].value","metric":"bamlc0a0cm","value":0.87,"updated_at":"2026-10-19T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[1].indicators[0].value","metric":"fed_balance_sheet","value":6755639.0,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[1].indicators[1].value","metric":"reverse_repo","value":0.227,"updated_at":null},{"dataset":"macro","path":"payload.liquidity[3].value","metric":"rrpontsyd","value":0.227,"updated_at":"2026-10-20T00:00:00Z"},{"dataset":"risk","path":"payload.dimensions[2].indicators[0].value","metric":"breadth_above_ma200","value":0.4452,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[1].value","metric":"new_highs_ratio","value":0.0385,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[2].value","metric":"new_lows_ratio","value":0.0513,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[3].value","metric":"small_cap_relative","value":-10.0254,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[2].indicators[4].value","metric":"semis_relative","value":-11.9194,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[3].indicators[0].value","metric":"vix","value":18.44,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[3].indicators[1].value","metric":"realized_vol","value":8.8206,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[4].indicators[0].value","metric":"cross_asset_confirmation","value":0.5,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[5].indicators[0].value","metric":"price_vs_ma200","value":6.424,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[5].indicators[1].value","metric":"drawdown_52w","value":-0.7881,"updated_at":null},{"dataset":"risk","path":"payload.dimensions[5].indicators[2].value","metric":"momentum_3m","value":4.7102,"updated_at":null},{"dataset":"equities","path":"payload.assets[0].change_1d","metric":"change_1d","value":2.1712,"updated_at":null},{"dataset":"equities","path":"payload.assets[3].change_1d","metric":"change_1d","value":3.9458,"updated_at":null},{"dataset":"equities","path":"payload.assets[2].change_1d","metric":"change_1d","value":2.569,"updated_at":null},{"dataset":"equities","path":"payload.assets[1].change_1d","metric":"change_1d","value":1.0004,"updated_at":null},{"dataset":"equities","path":"payload.assets[4].change_1d","metric":"change_1d","value":3.3689,"updated_at":null},{"dataset":"equities","path":"payload.assets[11].change_1d","metric":"change_1d","value":6.4951,"updated_at":null},{"dataset":"equities","path":"payload.assets[13].change_1d","metric":"change_1d","value":5.3583,"updated_at":null},{"dataset":"equities","path":"payload.assets[8].change_1d","metric":"change_1d","value":3.3243,"updated_at":null},{"dataset":"equities","path":"payload.assets[15].change_1d","metric":"change_1d","value":-0.9146,"updated_at":null},{"dataset":"equities","path":"payload.assets[14].change_1d","metric":"change_1d","value":-0.0349,"updated_at":null},{"dataset":"sectors","path":"payload.sectors[0].change_1d","metric":"change_1d","value":2.4216,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.sectors[1].change_1d","metric":"change_1d","value":3.3689,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[7].change_1d","metric":"change_1d","value":3.6108,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[0].change_1d","metric":"change_1d","value":3.3335,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[15].change_1d","metric":"change_1d","value":3.0091,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[2].change_1d","metric":"change_1d","value":2.0387,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[14].change_1d","metric":"change_1d","value":2.883,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[5].change_1d","metric":"change_1d","value":2.298,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[6].change_1d","metric":"change_1d","value":2.098,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[13].change_1d","metric":"change_1d","value":-1.2843,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[12].change_1d","metric":"change_1d","value":-0.9232,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[17].change_1d","metric":"change_1d","value":-0.793,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[18].change_1d","metric":"change_1d","value":-0.4616,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[8].change_1d","metric":"change_1d","value":1.3981,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"sectors","path":"payload.themes[11].change_1d","metric":"change_1d","value":1.4505,"updated_at":"2025-12-22T00:00:00Z"},{"dataset":"crypto","path":"payload.assets[0].price","metric":"price","value":84491.0,"updated_at":null},{"dataset":"crypto","path":"payload.assets[1].price","metric":"price","value":2495.96,"updated_at":null},{"dataset":"crypto","path":"payload.assets[2].price","metric":"price","value":108.21,"updated_at":null},{"dataset":"calendar","path":"payload.events[0].datetime","metric":"event_datetime","value":"2026-10-21T12:00:00Z","updated_at":null},{"dataset":"calendar","path":"payload.events[1].datetime","metric":"event_datetime","value":"2026-10-21T12:00:00Z","updated_at":null},{"dataset":"calendar","path":"payload.events[2].datetime","metric":"event_datetime","value":"2026-10-21T12:00:00Z","updated_at":null},{"dataset":"calendar","path":"payload.events[3].datetime","metric":"event_datetime","value":"2026-10-22T12:00:00Z","updated_at":null},{"dataset":"calendar","path":"payload.events[4].datetime","metric":"event_datetime","value":"2026-10-22T12:00:00Z","updated_at":null},{"dataset":"news","path":"payload.items[0].importance","metric":"importance","value":59.63,"updated_at":"2026-10-21T12:43:49Z"},{"dataset":"news","path":"payload.items[1].importance","metric":"importance","value":59.03,"updated_at":"2026-10-21T17:17:43Z"},{"dataset":"news","path":"payload.items[2].importance","metric":"importance","value":52.47,"updated_at":"2026-10-21T19:32:51Z"},{"dataset":"news","path":"payload.items[3].importance","metric":"importance","value":52.36,"updated_at":"2026-10-21T19:17:26Z"},{"dataset":"news","path":"payload.items[4].importance","metric":"importance","value":51.24,"updated_at":"2026-10-21T16:35:48Z"}],"lineage":{"fact_generation_id":"sha256:e3cb900052f7ec08a69992433f235edeae409ee1d48e47be3b31cdbe1dbc10b1","fact_generated_at":"2026-10-21T19:37:46Z","input_freshness":{"macro":"degraded","equities":"fresh","crypto":"fresh","news":"fresh","calendar":"degraded","sectors":"fresh","risk":"degraded"},"pair_id":"postmarket-2026-10-21T19:37Z"},"data_freshness":"degraded"}
+{
+  "schema_version": "1.1.0",
+  "generated_at": "2026-10-22T19:09:49Z",
+  "language": "en",
+  "market_state": "high_risk",
+  "market_regime": "risk_on",
+  "summary": "The fact layer was cut at 2026-10-22T10:37:01Z, and the pre-market view is built session by session: the US leg is the 2026-10-21 settled close, the A-share and Japan/Hong Kong/Taiwan/Korea legs are the 2026-10-22 close, and crypto is a 24-hour reading. The composite score is 60.03, up 1.57 from 58.46 on the previous session, crossing the 60 threshold into high_risk. Almost the entire increase comes from cross-asset confirmation, which rose from 50 to 62.5 and contributed 1.875 points at a 15 percent weight, because bitcoin's 24-hour return turned negative, down 1.50661 percent, lifting the triggered count from 4 to 5 of 8 signals. The offsetting force is equally clear: the volatility dimension fell to 29.98 as VIX eased from 18.44 to 17.31, removing 0.672 points. US equities closed higher overnight, with NVDA up 2.5408 percent and AMD up 3.3624 percent, while Asia turned weaker today: the two Korean memory names fell 5.487 percent and 4.027 percent, 3 of 11 A-share names rose against 8 decliners, and Nasdaq futures are down 1.8 percent pre-market. The pre-market tone: AI hardware and compute remain elevated, but cracks in cross-asset confirmation and the Asian memory chain are widening together, and whether the 60 band holds depends on the US 10-year at 5.12 percent and the real rate at 2.77 percent.",
+  "top_risk_drivers": [
+    {
+      "claim": "Cross-asset confirmation at 62.5, with 5 of 8 scored signals triggered, is the single largest contributor at 9.375 points and is also the source of today's 1.57-point increase; it is booked at a 0.8 discount and remains the highest-leverage risk amplifier.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[4].indicators[0].value",
+          "metric": "cross_asset_confirmation",
+          "value": 0.625,
+          "updated_at": null
+        },
+        {
+          "dataset": "crypto",
+          "path": "payload.assets[0].price",
+          "metric": "price",
+          "value": 82021.0,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "High-yield OAS at 3.33 percent, from 3.29 percent, contributes 6.5632 points; the spread is widening at the margin but sits below the 4 percent trigger, so credit has not confirmed the equity bid.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[1].indicators[2].value",
+          "metric": "hy_oas",
+          "value": 3.33,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "The 10-year real rate at 2.77 percent, from 2.8 percent, contributes 4.936 points and is the heaviest single macro drag, a standing constraint on long-duration growth valuations.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[0].indicators[0].value",
+          "metric": "real_rate_dfii10",
+          "value": 2.77,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "The 10-year nominal yield is 5.12 percent, from 5.15 percent, with a 10-year minus 2-year spread of 0.33 percentage points, contributing 4.8795 points; a flat curve on top of a high real rate is the defining macro combination.",
+      "evidence_refs": [
+        {
+          "dataset": "macro",
+          "path": "payload.rates[0].value",
+          "metric": "dgs10",
+          "value": 5.12,
+          "updated_at": "2026-10-20T00:00:00Z"
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[0].indicators[1].value",
+          "metric": "yield_curve_10y2y",
+          "value": 0.33000000000000007,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "Share of constituents above the 200-day average is 44.52 percent (69 of 155), contributing 4.1525 points; more than half the market sits below its average, so index strength rests on a narrow set of names.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[0].value",
+          "metric": "breadth_above_ma200",
+          "value": 0.4452,
+          "updated_at": null
+        }
+      ]
+    }
+  ],
+  "supporting_signals": [
+    {
+      "claim": "Bitcoin is down 1.50661 percent over 24 hours to 82021 dollars with dominance at 60.01 percent, which flipped the bitcoin_down signal into trigger and is the only newly triggered leg taking the cross-asset count from 4 to 5.",
+      "evidence_refs": [
+        {
+          "dataset": "crypto",
+          "path": "payload.assets[0].price",
+          "metric": "price",
+          "value": 82021.0,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[4].indicators[0].value",
+          "metric": "cross_asset_confirmation",
+          "value": 0.625,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "Small-cap relative performance is -10.0734 percentage points, with IWM persistently lagging SPY; risk appetite has not broadened beyond the index.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[3].value",
+          "metric": "small_cap_relative",
+          "value": -10.0734,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "Semis relative performance is -12.1452 percentage points; SOXX weakness against the benchmark points the same way as today's A-share semiconductor decline.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[4].value",
+          "metric": "semis_relative",
+          "value": -12.1452,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[6].change_1d",
+          "metric": "change_1d",
+          "value": -3.9129,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "The dollar index is 121.405, from 121.569, still above the 105 trigger line and a weight on emerging markets and commodities.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[0].indicators[2].value",
+          "metric": "dollar_index",
+          "value": 121.4048,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "The 52-week new-low ratio at 5.77 percent (9 names) has edged above the new-high ratio at 5.13 percent (8 names), the weakest cell inside breadth.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[2].value",
+          "metric": "new_lows_ratio",
+          "value": 0.0577,
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[2].indicators[1].value",
+          "metric": "new_highs_ratio",
+          "value": 0.0513,
+          "updated_at": null
+        }
+      ]
+    }
+  ],
+  "contradicting_signals": [
+    {
+      "claim": "VIX at 17.31, well below the prior 18.44, pushed the volatility dimension down to 29.98 from 34.46 and removed 0.672 points on its own; on volatility alone, risk is falling.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[3].indicators[0].value",
+          "metric": "vix",
+          "value": 17.31,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "spy_down did not trigger: US equities closed higher on 2026-10-21, with NVDA up 2.5408 percent, AMD up 3.3624 percent and TSLA up 3.4144 percent; AI hardware and autos were the strongest blocks overnight.",
+      "evidence_refs": [
+        {
+          "dataset": "equities",
+          "path": "payload.assets[0].change_1d",
+          "metric": "change_1d",
+          "value": 2.5408,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[3].change_1d",
+          "metric": "change_1d",
+          "value": 3.3624,
+          "updated_at": null
+        },
+        {
+          "dataset": "equities",
+          "path": "payload.assets[4].change_1d",
+          "metric": "change_1d",
+          "value": 3.4144,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "Gold also fell 1.0241 percent, leaving gold_up untriggered, so 2 of 8 signals point the benign way; cross-asset is 5 against 3, not one-sided.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.dimensions[4].indicators[0].value",
+          "metric": "cross_asset_confirmation",
+          "value": 0.625,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "The regime remains risk_on on low volatility or strong momentum; that does not contradict the high_risk score, because the score is lifted by the cross-asset gate while the regime is judged on volatility and momentum, and the 0.91 confidence carries that divergence into the conclusion as it stands.",
+      "evidence_refs": [
+        {
+          "dataset": "risk",
+          "path": "payload.regime",
+          "metric": "regime",
+          "value": "risk_on",
+          "updated_at": null
+        },
+        {
+          "dataset": "risk",
+          "path": "payload.confidence",
+          "metric": "confidence",
+          "value": 0.9087,
+          "updated_at": null
+        }
+      ]
+    }
+  ],
+  "what_changed_today": [
+    "The composite rose from 58.46 to 60.03, up 1.57, crossing the 60 threshold into high_risk, the first band change since 2026-10-21.",
+    "Cross-asset confirmation rose from 50 to 62.5, a dimension gain of 12.5 points, worth 1.875 points at the 15 percent weight, with bitcoin_down the newly triggered leg.",
+    "The volatility dimension fell from 34.46 to 29.98, down 4.48 dimension points, worth -0.672 points and pulling against cross-asset.",
+    "The other three dimensions edged higher: macro 73.52 to 74.31, liquidity and credit 70.33 to 70.93, equity structure 63.66 to 64.11, together worth 0.368 points; trend was flat at 42.92.",
+    "The A-share close on 2026-10-22 was 3 up against 8 down, a mean decline of 1.52 percent, led lower by the semiconductor and memory chain (603986 down 3.9129 percent, 688825 down 3.0998 percent)."
+  ],
+  "watch_next": [
+    "Direction at the US open: Nasdaq futures are down 1.8 percent pre-market; if the gap is bought, the cross-asset count holds at 5 of 8 and the score chops around 60, while a widening decline would add spy_down to the trigger set.",
+    "FOMC on 2026-10-28 alongside GOOGL and MSFT results, then AMZN on 2026-10-29: repricing risk in a dense event window is concentrated in mega-cap technology.",
+    "Treasuries: the 10-year at 5.12 percent is only 0.03 points below its prior level, with the real rate at 2.77 percent; at least one sell-side view expects a breakout around the Fed meeting, which would lift both the macro and cross-asset dimensions.",
+    "Whether the Korean memory names, down 5.487 percent and 4.027 percent, transmit to US memory: MU rose 1.9641 percent overnight and is the most direct read on that link.",
+    "Optical modules and CPO keep sliding in A-shares, with firms including Eoptolink and Yuanjie responding today that operations and deliveries are normal; further contagion would extend semiconductor weakness from memory into compute interconnect."
+  ],
+  "bull_case": {
+    "title": "Bull case: volatility keeps easing and cross-asset gives back",
+    "points": [
+      "VIX keeps falling from 17.31, holding the volatility dimension near 29.98, a steady negative contribution on its own.",
+      "If the US open absorbs the futures decline, spy_down stays untriggered, cross-asset falls back to 50 and the score retreats to the 58 band.",
+      "A 10-year yield back below 5.15 percent would let both the real and nominal legs give way together."
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[3].indicators[0].value",
+        "metric": "vix",
+        "value": 17.31,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[4].indicators[0].value",
+        "metric": "cross_asset_confirmation",
+        "value": 0.625,
+        "updated_at": null
+      }
+    ]
+  },
+  "base_case": {
+    "title": "Base case: choppy at the top, hovering at the 60 band",
+    "points": [
+      "Small gains across five dimensions net against the volatility decline, leaving the score chopping between 59 and 62 and the band flipping at the edge of high_risk.",
+      "Cross-asset holds at 5 of 8, adding no new trigger and giving back none.",
+      "High-yield OAS stays flat near 3.33 percent, short of the 4 percent trigger, so hy_oas_widening remains untriggered."
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "risk",
+        "path": "payload.total_score",
+        "metric": "total_score",
+        "value": 60.03,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[1].indicators[2].value",
+        "metric": "hy_oas",
+        "value": 3.33,
+        "updated_at": null
+      }
+    ]
+  },
+  "bear_case": {
+    "title": "Bear case: geopolitics and oil lift inflation expectations and real rates step higher",
+    "points": [
+      "If high-yield OAS breaks 4 percent, or small-cap underperformance widens further, the cross-asset count would rise to 7 and lift the score into the 70 band.",
+      "Escalation in the Middle East, with reported talk of a new US-Israeli strike and an intraday oil spike, would push inflation expectations and real rates up together if it feeds through.",
+      "If the A-share semiconductor and optical-module decline transmits to US equities, the semis_relative lag already at 12.1452 percentage points would deteriorate further."
+    ],
+    "evidence_refs": [
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[1].indicators[2].value",
+        "metric": "hy_oas",
+        "value": 3.33,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[3].value",
+        "metric": "small_cap_relative",
+        "value": -10.0734,
+        "updated_at": null
+      },
+      {
+        "dataset": "risk",
+        "path": "payload.dimensions[2].indicators[4].value",
+        "metric": "semis_relative",
+        "value": -12.1452,
+        "updated_at": null
+      }
+    ]
+  },
+  "confidence": 0.9087,
+  "evidence_refs": [
+    {
+      "dataset": "risk",
+      "path": "payload.total_score",
+      "metric": "total_score",
+      "value": 60.03,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.confidence",
+      "metric": "confidence",
+      "value": 0.9087,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.regime",
+      "metric": "regime",
+      "value": "risk_on",
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[4].indicators[0].value",
+      "metric": "cross_asset_confirmation",
+      "value": 0.625,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[3].indicators[0].value",
+      "metric": "vix",
+      "value": 17.31,
+      "updated_at": null
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[1].indicators[2].value",
+      "metric": "hy_oas",
+      "value": 3.33,
+      "updated_at": null
+    },
+    {
+      "dataset": "macro",
+      "path": "payload.rates[0].value",
+      "metric": "dgs10",
+      "value": 5.12,
+      "updated_at": "2026-10-20T00:00:00Z"
+    },
+    {
+      "dataset": "risk",
+      "path": "payload.dimensions[0].indicators[0].value",
+      "metric": "real_rate_dfii10",
+      "value": 2.77,
+      "updated_at": null
+    }
+  ],
+  "lineage": {
+    "fact_generation_id": "sha256:6907dc6ba006c0dc1167fd4c4d974888099b9e6fc93aae8ea40d944447dcda4d",
+    "fact_generated_at": "2026-10-22T10:37:01Z",
+    "input_freshness": {
+      "macro": "fresh",
+      "equities": "fresh",
+      "crypto": "fresh",
+      "news": "fresh",
+      "calendar": "fresh",
+      "sectors": "fresh",
+      "risk": "fresh"
+    },
+    "pair_id": "premarket-2026-10-22T10:37Z"
+  },
+  "data_freshness": "fresh"
+}
