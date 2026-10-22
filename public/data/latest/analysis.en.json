@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1.0",
-  "generated_at": "2026-10-22T19:09:49Z",
+  "generated_at": "2026-10-22T19:11:48Z",
   "language": "en",
   "market_state": "high_risk",
   "market_regime": "risk_on",
@@ -160,6 +160,39 @@
           "metric": "new_highs_ratio",
           "value": 0.0513,
           "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "The sector table splits cleanly: ai_infrastructure up 3.2277 percent and auto up 3.4144 percent against memory down 4.7569 percent and consumer_electronics down 2.8657 percent; the first two rows are US readings from the 2026-10-21 close, the last two are Asia tail readings from 2026-10-22, so the two groups are not directly comparable.",
+      "evidence_refs": [
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[0].change_1d",
+          "metric": "change_1d",
+          "value": 3.2277,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.sectors[1].change_1d",
+          "metric": "change_1d",
+          "value": 3.4144,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[7].change_1d",
+          "metric": "change_1d",
+          "value": -4.7569,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[8].change_1d",
+          "metric": "change_1d",
+          "value": -2.8657,
+          "updated_at": "2025-12-22T00:00:00Z"
         }
       ]
     }

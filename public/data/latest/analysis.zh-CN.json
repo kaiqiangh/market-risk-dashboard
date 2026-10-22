@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1.0",
-  "generated_at": "2026-10-22T19:09:49Z",
+  "generated_at": "2026-10-22T19:11:48Z",
   "language": "zh-CN",
   "market_state": "high_risk",
   "market_regime": "risk_on",
@@ -160,6 +160,39 @@
           "metric": "new_highs_ratio",
           "value": 0.0513,
           "updated_at": null
+        }
+      ]
+    },
+    {
+      "claim": "板块表分裂得很干净：ai_infrastructure 涨 3.2277%、auto 涨 3.4144%，对面是 memory 跌 4.7569%、consumer_electronics 跌 2.8657%；前两行是美股 2026-10-21 的收盘读数，后两行是亚洲 2026-10-22 的尾部读数，口径不同不可直接对比。",
+      "evidence_refs": [
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[0].change_1d",
+          "metric": "change_1d",
+          "value": 3.2277,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.sectors[1].change_1d",
+          "metric": "change_1d",
+          "value": 3.4144,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[7].change_1d",
+          "metric": "change_1d",
+          "value": -4.7569,
+          "updated_at": "2025-12-22T00:00:00Z"
+        },
+        {
+          "dataset": "sectors",
+          "path": "payload.themes[8].change_1d",
+          "metric": "change_1d",
+          "value": -2.8657,
+          "updated_at": "2025-12-22T00:00:00Z"
         }
       ]
     }
