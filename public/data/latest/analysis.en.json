@@ -444,7 +444,7 @@
  ],
  "what_changed_today": [
   "The regime flipped from risk_on to late_cycle on cross-asset 0.625 at or above 0.55 together with VIX 19.03 at or above 18.",
-  "The cross-asset trigger count fell from 6 to 5 and confirmation from 0.75 to 0.625: gold turning down -1.2314 switched gold_up off.",
+  "The cross-asset trigger count fell from 6 to 5 and confirmation from 0.75 to 0.625: copper swung from -2.2161 to 2.1297, switching copper_down off; gold was negative on both days, so gold_up never lit.",
   "VIX rose from 16.68 to 19.03 and lifted the volatility dimension from 26.53 in the previous session to 36.97 with a rising trend.",
   "Sector leadership rotated from AI hardware into software: cybersecurity 3.2876 and cloud computing 1.8926 led, while data centers -0.8518 and AI infrastructure -0.6573 kept falling.",
   "The 22 rows closed 15 up and 7 down, mean 0.4070 and median 0.2561, the mirror image of the previous session's one-way decline.",
