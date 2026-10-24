@@ -141,7 +141,7 @@ def test_risk_model_produces_valid_result() -> None:
 
 def test_golden_score_preserves_current_outputs() -> None:
     result = RiskModel().score(_synthetic_context())
-    assert result.total_score == 54.7
+    assert result.total_score == 56.52
     assert result.risk_level == "caution"
     assert [driver.indicator_key for driver in result.top_drivers] == [
         "hy_oas", "cross_asset_confirmation", "real_rate_dfii10", "vix", "yield_curve_10y2y"

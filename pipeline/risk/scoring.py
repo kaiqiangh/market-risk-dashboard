@@ -12,6 +12,11 @@ from __future__ import annotations
 import math
 from typing import Any, Sequence
 
+# Shared curve for relative-strength measurements.
+_RELATIVE_STRENGTH_RULE: list[tuple[float, float]] = [
+    (-25, 95), (-10, 75), (0, 55), (10, 40), (20, 25), (35, 15)
+]
+
 # Heuristic mapping table: key → [(threshold, score)], interpolated by value ascending
 HEURISTIC_RULES: dict[str, list[tuple[float, float]]] = {
     "vix": [(10, 5), (15, 20), (20, 40), (25, 60), (30, 75), (40, 90), (50, 98)],
@@ -24,10 +29,17 @@ HEURISTIC_RULES: dict[str, list[tuple[float, float]]] = {
     "breadth_above_ma200": [(0.2, 95), (0.4, 75), (0.5, 60), (0.6, 45), (0.7, 30), (0.85, 15)],
     "new_highs_ratio": [(0.0, 90), (0.1, 70), (0.3, 50), (0.5, 35), (0.7, 20), (0.9, 10)],
     "new_lows_ratio": [(0.0, 5), (0.1, 25), (0.3, 50), (0.5, 70), (0.7, 85), (0.9, 95)],
-    "price_vs_ma200": [(-25, 95), (-10, 75), (0, 55), (10, 40), (20, 25), (35, 15)],
+    "price_vs_ma200": _RELATIVE_STRENGTH_RULE,
     "drawdown_52w": [(-40, 98), (-25, 88), (-15, 75), (-8, 60), (-3, 45), (0, 30), (5, 20)],
     "momentum_3m": [(-30, 95), (-15, 80), (-5, 65), (0, 55), (10, 40), (20, 25), (40, 10)],
     "realized_vol": [(10, 10), (15, 30), (20, 50), (30, 70), (40, 85), (60, 95)],
+    # Cross-asset confirmation is already a proportion of triggered signals. Convert that
+    # 0–1 share directly to the model's 0–100 risk-score scale.
+    "cross_asset_confirmation": [(0.0, 0.0), (1.0, 100.0)],
+    # Relative performance is measured in percentage points. Reuse the established
+    # price-vs-MA200 response curve so underperformance raises risk and outperformance lowers it.
+    "small_cap_relative": _RELATIVE_STRENGTH_RULE,
+    "semis_relative": _RELATIVE_STRENGTH_RULE,
     "mfi": [(20, 90), (30, 70), (50, 50), (70, 30), (80, 15)],
     "rsi14": [(20, 80), (30, 65), (45, 50), (60, 35), (75, 25), (90, 15)],
 }
