@@ -1,10 +1,10 @@
 {
   "schema_version": "1.1.0",
-  "generated_at": "2026-10-26T12:35:20Z",
+  "generated_at": "2026-10-26T12:38:30Z",
   "language": "en",
   "market_state": "high_risk",
   "market_regime": "late_cycle",
-  "summary": "Pre-market brief for 2026-10-26; the fact layer was generated at 2026-10-26T11:37:13Z (07:37 ET), about 1 hour and 20 minutes before the US open. The risk score is 65.39, high_risk, up 2.21 on the day, with the regime at late_cycle. The rise is not a price-deterioration reading: 1.88 points of the 2.21-point move, roughly 84.9%, come from one cross-asset leg flipping — gold turning from down 1.2314 to up 0.4641, which lifted cross_asset from 62.50 to 75.00 (6 of 8 production signals triggered). Friday's settled US session was soft but orderly: the S&P proxy fell 0.5223 with money rotating into software (cybersecurity 3.2195, cloud 1.85, enterprise software 1.72), while fintech fell 1.7367 and gaming fell 1.5401; breadth did not improve, with 0.3831 of names above the 200-day and a new-low ratio of 0.2258 against 0.0194 on the new-high side. The overnight session that matters is China: the 11 A-share names closed down today, 4.9382% on average, with the memory and packaging chain taking the worst of it (600584 down 7.8287, 002156 down 7.7815, 688008 down 6.9556), after the same basket averaged a 3.3027% gain on Friday. Note that the rates, credit and volatility inputs in the score still carry the 2026-10-22 vintage (10-year 4.96, HY OAS 3.40, VIX 19.03); Friday's session is not in the composite.",
+  "summary": "Pre-market brief for 2026-10-26; the fact layer was generated at 2026-10-26T11:37:13Z (07:37 ET), about 1 hour and 20 minutes before the US open. The risk score is 65.39, high_risk, up 2.21 on the day, with the regime at late_cycle. The rise is not a price-deterioration reading: 1.88 points of the 2.21-point move, roughly 85%, come from one cross-asset leg flipping — gold turning from down 1.2314 to up 0.4641, which lifted cross_asset from 62.50 to 75.00 (6 of 8 production signals triggered). Friday's settled US session was soft but orderly: the S&P proxy fell 0.5223 with money rotating into software (cybersecurity 3.2195, cloud 1.85, enterprise software 1.72), while fintech fell 1.7367 and gaming fell 1.5401; breadth did not improve, with 0.3831 of names above the 200-day and a new-low ratio of 0.2258 against 0.0194 on the new-high side. The overnight session that matters is China: the 11 A-share names closed down today, 4.9382% on average, with the memory and packaging chain taking the worst of it (600584 down 7.8287, 002156 down 7.7815, 688008 down 6.9556), after the same basket averaged a 3.3027% gain on Friday. Note that the rates, credit and volatility inputs in the score still carry the 2026-10-22 vintage (10-year 4.96, HY OAS 3.40, VIX 19.03); Friday's session is not in the composite.",
   "top_risk_drivers": [
     {
       "claim": "Cross-asset confirmation reads 75.00, with 6 production signals triggered and 11.25 points contributed after the 0.8 proxy discount — still the model's largest single source. The newly lit leg is gold at 0.4641; the other 5 are level and trend legs: the dollar index at 121.4048 above 105 and the 10-year real rate at 2.64 above 1.5, plus the S&P proxy down 0.5223, Bitcoin down 0.0761, and small caps 8.6835 percentage points behind. Copper is up 0.6177, so copper_down stays untriggered.",
@@ -357,7 +357,7 @@
   "base_case": {
     "title": "Base case: the score grinds between 60 and 70 with high_risk intact",
     "points": [
-      "The binary cross-asset legs keep producing day-to-day swings of about 1.8750 points, directed by single-day gold and copper moves rather than by equity pricing.",
+      "The binary cross-asset legs keep producing day-to-day swings of about 1.875 points, directed by single-day gold and copper moves rather than by equity pricing.",
       "The Chinese memory and packaging chain is this week's swing factor: it averaged a 4.9382% decline today while the Shanghai Composite closed up 0.19%, so the pressure is intra-sector.",
       "The 2026-10-28 FOMC and the MSFT and GOOGL reports land in the same week, so risk appetite is unlikely to expand before those events."
     ],
