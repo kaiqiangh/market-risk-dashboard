@@ -1,15 +1,33 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { DATA_REQUEST_TIMEOUT_MS, DatasetClient } from "@/lib/api";
+import { z } from "zod";
+import { DATA_REQUEST_TIMEOUT_MS, DatasetClient, resetUnknownFieldReports } from "@/lib/api";
 import { macroFixture } from "./helpers/fixtureData";
 
 const client = new DatasetClient("/");
 
 afterEach(() => {
+  resetUnknownFieldReports();
+  vi.restoreAllMocks();
   vi.useRealTimers();
   vi.unstubAllGlobals();
 });
 
 describe("DatasetClient request lifecycle", () => {
+  it("accepts records and reports nested drift through wrapped arrays after parsing", async () => {
+    const row = z.object({ value: z.number() }).passthrough();
+    const schema = z.record(
+      z.string(),
+      z.array(row).nullable().default([]).transform((rows) => rows ?? []),
+    );
+    const payload = { rates: [{ value: 1, new_field: true }] };
+    const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify(payload))));
+
+    await expect(client.fetch("macro", {}, schema)).resolves.toEqual(payload);
+    expect(warning).toHaveBeenCalledWith(expect.stringContaining("rates[].new_field"));
+    expect(schema.safeParse({ rates: [{ value: "invalid" }] }).success).toBe(false);
+  });
+
   it("passes the React Query abort signal to fetch", async () => {
     const fetchMock = vi.fn(async (_url: string, init?: RequestInit) => {
       expect(init?.signal).toBeInstanceOf(AbortSignal);
