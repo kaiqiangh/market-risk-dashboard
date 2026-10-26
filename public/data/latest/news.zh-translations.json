@@ -1,26 +1,355 @@
 {
   "items": [
     {
+      "id": "db997e249f01bc49a55e26420698c9518dd8beb9",
+      "title": "Cailianshe, Oct 26: Brazil's 12-month inflation forecast is 4.53%, previous 4.51%",
+      "summary": "Cailianshe, Oct 26: Brazil's 12-month inflation forecast is 4.53%, previous 4.51%",
+      "title_zh": "财联社10月26日电，巴西未来12个月通胀率预计为4.53%，前值为4.51%。",
+      "summary_zh": "财联社10月26日电，巴西未来12个月通胀率预计为4.53%，前值为4.51%"
+    },
+    {
+      "id": "ab7293861961c4d00bc4a9a30034b88fc18bc09a",
+      "title": "Buy Tesla ahead of potential SpaceX merger, says Barclays",
+      "summary": "A potential merger with SpaceX makes Tesla a buy, according to Barclays.",
+      "title_zh": "巴克莱：若与 SpaceX 合并，特斯拉值得买入",
+      "summary_zh": "巴克莱认为，与 SpaceX 的潜在合并使特斯拉构成买入机会。"
+    },
+    {
+      "id": "52724a60eefc90bb0e94007fa7a862b9d3b6ed88",
+      "title": "Eastmoney research note: overseas institutions speak up en masse as earnings confirm sector momentum; memory chips may face a valuation-repair window",
+      "summary": "The three main A-share indices closed mixed: the Shanghai Composite rose 0.19% to 3697.52, the Shenzhen Component fell 1.19% to 11534.38 and ChiNext fell 1.71% to 2638.23",
+      "title_zh": "【风口研报】海外机构密集发声！业绩端验证行业景气 存储芯片或迎估值修复窗口",
+      "summary_zh": "A股三大指数今日涨跌不一，截止收盘，沪指涨0.19%，收报3697.52点；深证成指跌1.19%，收报11534.38点；创业板指跌1.71%，收报2638.23点"
+    },
+    {
+      "id": "5ea6efc246b648b2135c2933d8ed5db26d137bd9",
+      "title": "Cailianshe, Oct 26: Morgan Stanley says USD/BRL will test 5.60 and could reach 6.00 if Brazil's fiscal concerns intensify",
+      "summary": "Cailianshe, Oct 26: Morgan Stanley says USD/BRL will test 5.60 and could reach 6.00 if Brazil's fiscal concerns intensify",
+      "title_zh": "财联社10月26日电，摩根士丹利表示，美元兑巴西雷亚尔汇率将测试5.60，如果巴西财政担忧加剧，可能达到6.00。",
+      "summary_zh": "财联社10月26日电，摩根士丹利表示，美元兑巴西雷亚尔汇率将测试5.60，如果巴西财政担忧加剧，可能达到6.00"
+    },
+    {
+      "id": "8da465fad25bbbdcf6d11d656d18dd0fb244d48f",
+      "title": "Cailianshe, Oct 26: Morgan Stanley expects Brazilian equities to fall 20% to 30%, with wide dispersion across names",
+      "summary": "Cailianshe, Oct 26: Morgan Stanley expects Brazilian equities to fall 20% to 30%, with wide dispersion across names",
+      "title_zh": "财联社10月26日电，摩根士丹利表示，预计巴西股市将下跌20%-30%，且跌幅差异较大。",
+      "summary_zh": "财联社10月26日电，摩根士丹利表示，预计巴西股市将下跌20%-30%，且跌幅差异较大"
+    },
+    {
+      "id": "888e342176d9661f361da7494c3d4d4afa8a7dfb",
+      "title": "*ST Yingfei: plans to list 100% stakes in two subsidiaries at a 1 yuan floor price, expected to constitute a major asset restructuring",
+      "summary": "Cailianshe, Oct 26: *ST Yingfei (002528.SZ) said it plans to publicly list 100% equity of wholly owned subsidiaries Yingfeituo Systems and Xinpu Hulian on Taobao's asset disposal auction platform, with a floor price of 1 yuan",
+      "title_zh": "*ST英飞：拟1元底价挂牌转让两家子公司100%股权 预计构成重大资产重组",
+      "summary_zh": "【*ST英飞：拟1元底价挂牌转让两家子公司100%股权 预计构成重大资产重组】财联社10月26日电，*ST英飞(002528.SZ)公告称，公司拟在淘宝网资产处置竞价网络平台公开挂牌转让全资子公司英飞拓系统及新普互联100%股权，挂牌底价为1元"
+    },
+    {
+      "id": "5a867c6a3fd48c39234f970a12b093c9b2a1dcc0",
+      "title": "Special equipment academic conference held in Beijing",
+      "summary": "Cailianshe, Oct 26: the special equipment academic conference was held in Beijing from Oct 21 to 22",
+      "title_zh": "特种设备学术大会在京召开",
+      "summary_zh": "【特种设备学术大会在京召开】财联社10月26日电，特种设备学术大会10月21日至22日在北京召开"
+    },
+    {
+      "id": "ac861f0eb169ab2086af5a0f846c2b3f5b819760",
+      "title": "Tianjin Pulin: third-quarter net profit up 634% year on year and 88% quarter on quarter",
+      "summary": "Cailianshe, Oct 26: Tianjin Pulin (002134.SZ) reported third-quarter revenue of 615 million yuan, up 67.50% year on year, and net profit of 61.628 million yuan, up 633.98%",
+      "title_zh": "天津普林：第三季度净利润同比增长634% 环比增长88%",
+      "summary_zh": "【天津普林：第三季度净利润同比增长634% 环比增长88%】财联社10月26日电，天津普林(002134.SZ)公告称，第三季度营业收入为6.15亿元，同比增长67.50%；净利润为6162.80万元，同比增长633.98%"
+    },
+    {
+      "id": "bee06098518fe4d9dedccfe9a3b32f6346bcdfc3",
+      "title": "Sulfur prices under pressure as weak demand fails to absorb supply",
+      "summary": "Cailianshe, Oct 26: major refineries halted price quotes in most regions today",
+      "title_zh": "需求弱势承接不足 硫磺价格承压下行",
+      "summary_zh": "【需求弱势承接不足 硫磺价格承压下行】财联社10月26日电，今日主营炼厂方面，各地区多停止报价"
+    },
+    {
+      "id": "ee708924377ccaf3e05c5eb67df54c105553e0bf",
+      "title": "BNP Paribas: a SpaceX-built nationwide US mobile network would need $105 billion over five years",
+      "summary": "Cailianshe, Oct 26: BNP Paribas said on Oct 26 that if SpaceX chose to build its own nationwide US mobile network it would need about $105 billion over five years, comprising $75 billion of capital expenditure and $30 billion of cumulative operating costs, excluding spectrum purchases and financing costs",
+      "title_zh": "法巴银行：若SpaceX自建全美移动通信网络 预计5年内需投入1050亿美元",
+      "summary_zh": "【法巴银行：若SpaceX自建全美移动通信网络 预计5年内需投入1050亿美元】财联社10月26日电，法国巴黎银行10月26日表示，SpaceX若选择自建覆盖美国全国的移动通信网络，预计五年内需投入约1050亿美元，其中资本开支750亿美元、累计运营成本300亿美元，尚未包括频谱采购及融资费用"
+    },
+    {
+      "id": "6cad340bc0d9add922caaaec4ca4bef790ff1217",
+      "title": "Hanyu Pharmaceutical: third-quarter net profit up 369.76% year on year and 83% quarter on quarter",
+      "summary": "Cailianshe, Oct 26: Hanyu Pharmaceutical (300199.SZ) reported third-quarter revenue of 554 million yuan, up 314.48% year on year, and net profit attributable to shareholders of 200 million yuan, up 369.76%",
+      "title_zh": "翰宇药业：第三季度净利润同比增长369.76% 环比增长83%",
+      "summary_zh": "【翰宇药业：第三季度净利润同比增长369.76% 环比增长83%】财联社10月26日电，翰宇药业(300199.SZ)公告称，第三季度营业收入为5.54亿元，同比增长314.48%；归属于上市公司股东的净利润为2.00亿元，同比增长369.76%"
+    },
+    {
+      "id": "b9ac1e907d07fe05d1ae3e27c01065454c0c93d2",
+      "title": "Cailianshe, Oct 26: Anthropic will file its S-1 at 9am ET, 21:00 Beijing time, according to reports",
+      "summary": "Cailianshe, Oct 26: Anthropic will file its S-1 at 9am ET, 21:00 Beijing time, according to reports",
+      "title_zh": "财联社10月26日电，据报道，Anthropic将于美东时间上午9点（北京时间21:00）发布S-1文件。",
+      "summary_zh": "财联社10月26日电，据报道，Anthropic将于美东时间上午9点（北京时间21:00）发布S-1文件"
+    },
+    {
+      "id": "ee8e139f2b0083b97af5d388606f52ab4a5a0300",
+      "title": "JPMorgan: French equity valuations at historic lows, a short-term rebound is possible",
+      "summary": "Cailianshe, Oct 26: JPMorgan said on Oct 26 that French equities have underperformed other markets for three years and the CAC 40's relative price-earnings ratio has fallen to a record low; pessimism may be excessive and some stocks offer short-term rebound potential",
+      "title_zh": "摩根大通：法国股市估值跌至历史低位 短期或反弹",
+      "summary_zh": "【摩根大通：法国股市估值跌至历史低位 短期或反弹】财联社10月26日电，摩根大通10月26日表示，法国股市持续三年跑输其他市场，CAC 40指数相对市盈率已降至历史最低水平，市场悲观情绪可能过度，部分股票存在短期反弹空间"
+    },
+    {
+      "id": "67be7ac48559e2201598184d3dd954a07c0960ca",
+      "title": "Taiji: plans 300 million yuan investment in a high-power semiconductor device R&D and industrialisation base",
+      "summary": "Cailianshe, Oct 26: Taiji (300046.SZ) said it signed an investment agreement with the Wuhan Airport Economic and Technological Development Zone to build a high-power semiconductor device R&D and industrialisation base with total planned investment of about 300 million yuan, in order to expand advanced packaging and testing capacity",
+      "title_zh": "台基股份：拟3亿元投建新型高功率半导体器件研发及产业化基地",
+      "summary_zh": "【台基股份：拟3亿元投建新型高功率半导体器件研发及产业化基地】财联社10月26日电，台基股份(300046.SZ)公告称，为扩充高端封测产能，公司与武汉临空港经济技术开发区管委会签署项目投资协议，投资建设新型高功率半导体器件研发及产业化基地项目，计划总投资约3亿元"
+    },
+    {
+      "id": "a8dda7e27d6e8bfbdb3ff1b0d7f31e300295f19e",
+      "title": "Meta up more than 2% in US pre-market after falling more than 4% earlier",
+      "summary": "Cailianshe, Oct 26: Meta rose more than 2% in US pre-market trading, having fallen more than 4% earlier",
+      "title_zh": "Meta美股盘前涨超2% 此前一度跌超4%",
+      "summary_zh": "【Meta美股盘前涨超2% 此前一度跌超4%】财联社10月26日电，Meta美股盘前涨超2%，此前一度跌超4%"
+    },
+    {
+      "id": "f34739548a2b020f846582f6c67df8c83426e2d0",
+      "title": "Hanyu Pharmaceutical: preclinical study shows its lead drug HY3003 tablet outperforms semaglutide on weight loss",
+      "summary": "Cailianshe, Oct 26: Hanyu Pharmaceutical (300199.SZ) said it completed a preclinical pharmacodynamic comparison study of the HY3003 tablet for weight-loss indications",
+      "title_zh": "翰宇药业：公司重磅创新药品种HY3003片剂临床前研究显示减重效果优于司美格鲁肽",
+      "summary_zh": "【翰宇药业：公司重磅创新药品种HY3003片剂临床前研究显示减重效果优于司美格鲁肽】财联社10月26日电，翰宇药业(300199.SZ)公告称，公司完成HY3003片剂减重适应症临床前药效学比较研究"
+    },
+    {
+      "id": "bb2b60d4ac04c235a14326efd83602ead03e6981",
+      "title": "Goke Micro: first three quarters net profit up 5640.94% year on year",
+      "summary": "Cailianshe, Oct 26: Goke Micro (300672.SZ) reported third-quarter revenue of 998 million yuan, up 131.81% year on year, and net profit attributable to shareholders of 229 million yuan, up 1903.77%",
+      "title_zh": "国科微：前三季度净利润同比增长5640.94%",
+      "summary_zh": "【国科微：前三季度净利润同比增长5640.94%】财联社10月26日电，国科微(300672.SZ)公告称，第三季度营业收入为9.98亿元，同比增长131.81%；归属于上市公司股东的净利润为2.29亿元，同比增长1903.77%"
+    },
+    {
+      "id": "ad34c1e191b086a9f3882b68734a032424a497c2",
+      "title": "Hanyu Pharmaceutical: plans up to 380 million yuan to expand peptide drug production lines",
+      "summary": "Cailianshe, Oct 26: Hanyu Pharmaceutical (300199.SZ) said its wholly owned subsidiary Wuhan Hanyu plans to invest no more than 380 million yuan in a green and intelligent expansion of peptide drug production lines in workshops B04 and B06",
+      "title_zh": "翰宇药业：拟投资不超3.8亿元建设多肽药物产线扩建项目",
+      "summary_zh": "【翰宇药业：拟投资不超3.8亿元建设多肽药物产线扩建项目】财联社10月26日电，翰宇药业(300199.SZ)公告称，公司全资子公司武汉翰宇拟投资建设“B04与B06车间多肽药物产线绿色化智能化扩建项目”，投资规模不超过3.8亿元"
+    },
+    {
+      "id": "09062b969387853287e3cf82ba19932c6d73de50",
+      "title": "Xiechuang Data: third-quarter net profit up 360% year on year and 12% quarter on quarter as computing-power business grows sharply",
+      "summary": "Cailianshe, Oct 26: Xiechuang Data (300857.SZ) reported third-quarter revenue of 7.087 billion yuan, up 109.27% year on year, and net profit attributable to shareholders of 1.224 billion yuan, up 360.33%",
+      "title_zh": "协创数据：第三季度净利润同比增长360%环比增长12% 算力相关业务大幅增长",
+      "summary_zh": "【协创数据：第三季度净利润同比增长360%环比增长12% 算力相关业务大幅增长】财联社10月26日电，协创数据(300857.SZ)公告称，第三季度营业收入为70.87亿元，同比增长109.27%；归属于上市公司股东的净利润为12.24亿元，同比增长360.33%"
+    },
+    {
+      "id": "d471ef1ecdfecde885cf3ec736dd5d70b47987d7",
+      "title": "SG Micro: plans 833 million yuan acquisition of 58.29% of analogue chipmaker Shenxiling Microelectronics",
+      "summary": "Cailianshe, Oct 26: SG Micro (300661.SZ) said it plans to use own funds, self-raised funds and/or H-share listing proceeds to acquire 58.2878% of Shanghai Shenxiling Microelectronics Technology for a total of 833 million yuan",
+      "title_zh": "圣邦股份：拟8.33亿元收购模拟芯片公司申矽凌微电子58.29%股份",
+      "summary_zh": "【圣邦股份：拟8.33亿元收购模拟芯片公司申矽凌微电子58.29%股份】财联社10月26日电，圣邦股份(300661.SZ)公告称，公司拟使用自有资金、自筹资金及/或H股上市募集资金，以合计8.33亿元收购上海申矽凌微电子科技股份有限公司58.2878%的股份"
+    },
+    {
+      "id": "2a8221f1ffed66009b3e9b80bc9979b848a64231",
+      "title": "Ping An Fund closes early; seven fund houses have now completed fundraising ahead of schedule",
+      "summary": "Cailianshe, Oct 26: four more fund companies announced early closing of their active ETFs today",
+      "title_zh": "平安基金提前结募 率先完成募集已7家",
+      "summary_zh": "【平安基金提前结募 率先完成募集已7家】财联社10月26日电，今日，再多4家基金公司旗下主动ETF宣布提前结募"
+    },
+    {
+      "id": "4c2142fc58e968b7f11d5a89dc4b751d30b0a82a",
+      "title": "Dajin Heavy Industry: first three quarters net profit down 19.97% year on year",
+      "summary": "Cailianshe, Oct 26: Dajin Heavy Industry (002487.SZ) reported third-quarter revenue of 1.111 billion yuan, down 36.68% year on year, and net profit of 110 million yuan, down 67.85%",
+      "title_zh": "大金重工：前三季度净利润同比下降19.97%",
+      "summary_zh": "【大金重工：前三季度净利润同比下降19.97%】财联社10月26日电，大金重工(002487.SZ)公告称，第三季度营业收入为11.11亿元，同比下降36.68%；净利润为1.10亿元，同比下降67.85%"
+    },
+    {
       "id": "0512879c1fbd32f0b39550b00245c575b326e362",
       "title": "Nvidia's role as AI financier faces first big test as neoclouds take market hit",
       "summary": "As Nvidia has gone from chipmaker to industry financier, some investors see the company taking on outsized risk tied to the AI buildout.",
-      "title_zh": "英伟达扮演“AI 金主”角色迎首次大考，新云服务商遭市场重挫",
-      "summary_zh": "随着英伟达从芯片制造商转变为行业出资方，一些投资者认为该公司正承担与 AI 基础设施建设相关的过高风险。"
+      "title_zh": "英伟达作为 AI 融资方的角色面临首次重大考验，neocloud 板块遭遇抛压",
+      "summary_zh": "随着英伟达从芯片制造商转变为行业融资方，部分投资者认为该公司正承担与 AI 建设相关的过度风险。"
     },
     {
-      "id": "1f6fc466af7714dfbeae7a311715dcc220833870",
-      "title": "Bitcoin price today: BTC recovers to $80,800 ahead of Fed meeting",
-      "summary": null,
-      "title_zh": "今日比特币价格：美联储会议前夕，BTC 回升至 80,800 美元",
-      "summary_zh": null
+      "id": "c7136f2266344128bb0ea5f24bada2239e8c8295",
+      "title": "Meta announces $95 billion stock offering to fund AI expansion",
+      "summary": "Meta said Monday it is planning to raise a total of $95 billion to support itsi nvestments in AI infrastructure and super intelligence.",
+      "title_zh": "Meta 宣布 950 亿美元股票发行，为 AI 扩张融资",
+      "summary_zh": "Meta 周一表示，计划合计募集 950 亿美元，用于支持其在 AI 基础设施与超级智能方面的投资。"
     },
     {
-      "id": "93da3a1e9050ff9d9098d6e471df6124e96d491c",
-      "title": "Bitcoin tests $80K support in descending triangle: Live levels",
-      "summary": null,
-      "title_zh": "比特币在下降三角形中测试 8 万美元支撑位：实时价位",
-      "summary_zh": null
+      "id": "e5c9d6afe20031b26f0df0fa2036de50e64b35fa",
+      "title": "Blanche defends Trump-ordered lawsuit over Alaska Senate election certification",
+      "summary": "Democrats have maintained they have no connection to Daniel J",
+      "title_zh": "布兰奇为特朗普指示、就阿拉斯加参议院选举认证提起的诉讼辩护",
+      "summary_zh": "民主党人一直坚称，他们与 Daniel J 没有任何关联"
+    },
+    {
+      "id": "1455545432710a0ef3d848e0c5af4ee95ee7f7ef",
+      "title": "Apollo to buy nearly 10% stake in Abu Dhabi-backed alternative asset manager Mubadala Capital",
+      "summary": "The deal further advances Apollo Global's ambitions in Abu Dhabi, often called the \"capital of capital.\"",
+      "title_zh": "阿波罗将收购阿布扎比支持的另类资产管理公司 Mubadala Capital 近 10% 股权",
+      "summary_zh": "该交易进一步推进阿波罗全球管理在阿布扎比的布局，该地常被称为「资本之都」。"
+    },
+    {
+      "id": "534f5b603de0b1876c4756651fb6ee83786a45a3",
+      "title": "Musk: humans are chimpanzees next to ASI, and all money and jobs will go to zero",
+      "summary": "In a recent long-form interview Musk put the conclusion bluntly: superintelligent AI has no interest in ruling us, and humans do not deserve to be ruled by AI",
+      "title_zh": "马斯克：人类在ASI面前是黑猩猩，未来所有钱和工作都将清零！",
+      "summary_zh": "就在最近，马斯克在一场深度访谈里，直接给出这个结论—— 超级AI根本不屑于统治我们！人类根本不配被AI统治"
+    },
+    {
+      "id": "e0233a2aa4e59d1887d05b17ddc7a608dfa85241",
+      "title": "Meta expects 2026 capital expenditure of up to $145 billion and plans equity financing to support AI investment",
+      "summary": "Meta said it expects 2026 capital expenditure of $135 billion to $145 billion",
+      "title_zh": "Meta预计2026年资本开支最高1450亿美元 计划通过股权融资等方式支持AI投资",
+      "summary_zh": "Meta表示，预计2026年资本开支为1350亿至1450亿美元"
+    },
+    {
+      "id": "31d98c25af937ded61d9e0dbd973ae0a1577552d",
+      "title": "Deng Xiaofeng and Middle East capital cut holdings in mining majors as top private funds reposition",
+      "summary": "Third-quarter position changes by multi-billion-yuan private funds are being disclosed",
+      "title_zh": "邓晓峰、中东资本同步减持矿业巨头！头部私募调仓换股",
+      "summary_zh": "百亿级私募三季度调仓动作陆续出炉"
+    },
+    {
+      "id": "bab507eb9c2a37454e4caeb4c8098a673e7b6f6c",
+      "title": "Verizon lifts annual forecasts, signs more than $2 billion AI infrastructure deal with AWS",
+      "summary": "Verizon now expects ⁠to add between 1.1 million and 1.2 million postpaid phone subscribers this year compared with earlier projections of 750,000 to 1 million",
+      "title_zh": "Verizon 上调全年指引，并与 AWS 签署逾 20 亿美元 AI 基础设施协议",
+      "summary_zh": "Verizon 目前预计今年将新增 110 万至 120 万后付费电话用户，此前预测为 75 万至 100 万。"
+    },
+    {
+      "id": "590d6b24ac9fb382b572e722b1c710b5570418d4",
+      "title": "Huayi Group: first three quarters net profit up 74% on higher product margins and a low base",
+      "summary": "Huayi Group's third-quarter net profit grew sharply, though profit for the quarter remains slim after excluding non-recurring items",
+      "title_zh": "华谊集团前三季度净利增长74%，产品毛利增加叠加低基数效应",
+      "summary_zh": "华谊集团三季度净利润大幅增长，但扣除非经常性损益后，当季盈利仍然微薄"
+    },
+    {
+      "id": "4daeea6f70819bdf1404117770058ddd4ee45d6b",
+      "title": "Meta reportedly plans a $22.5 billion Class A common stock offering",
+      "summary": "The report also said Meta may sell up to $60 billion of Class C stock. Risk disclosure: markets carry risk; invest prudently",
+      "title_zh": "据报道，Meta拟发行225亿美元A类普通股",
+      "summary_zh": "报道还称，Meta可能出售最多600亿美元C类股票 风险提示及免责条款 市场有风险，投资需谨慎"
+    },
+    {
+      "id": "138b19ba661fd77e04840890b755b5754ab8c57b",
+      "title": "Amazon cloud capacity orders surge; a look across cloud-computing concept stocks",
+      "summary": "On Monday Oct 26 cloud-computing concept stocks were active: Shengtian Network rose nearly 15%, Massive Data hit the daily limit, and Shunwang Technology, Yusys Technologies and Bingo Software followed higher",
+      "title_zh": "亚马逊云算力“爆单”！云计算概念梳理",
+      "summary_zh": "周一(10月26日) 云计算 概念股活跃， 盛天网络 涨近15%， 海量数据 涨停， 顺网科技 、 宇信科技 、 品高股份 等跟涨"
+    },
+    {
+      "id": "cfe68b6f4db2cd5e3d660ed7524dd6bfae6ee7f9",
+      "title": "Private equity pours billions into defense tech as investors debate a bubble",
+      "summary": "Private equity growth investments in defense reached $4 billion in the first nine months of 2026, up from $500 million in 2024.",
+      "title_zh": "私募股权大举涌入国防科技，投资者争论是否存在泡沫",
+      "summary_zh": "2026 年前九个月私募股权对国防领域的成长型投资达到 40 亿美元，高于 2024 年的 5 亿美元。"
+    },
+    {
+      "id": "82e2f88cd9b72b01cf3097009ec33602b549212a",
+      "title": "Pensions across China: Tibet tops 12,000 yuan a month by a wide margin",
+      "summary": "Based on urban employee basic pension data in the China Statistical Yearbook 2026, average monthly pensions across 31 provinces ranged from 2,991 yuan to 12,611 yuan in 2025, with a median of about 3,933 yuan",
+      "title_zh": "全国各地退休金出炉 西藏超1.2万元断层第一",
+      "summary_zh": "据《中国统计年鉴2026》城镇职工基本养老保险相关数据测算，2025年，全国31省份月均 养老金 在 2991元至12611元 之间，中位数约3933元"
+    },
+    {
+      "id": "f221b04c5667d08b7f9fa424a5ae5431f1bf681d",
+      "title": "‘Ticking time bomb’: The world's pension funds face an ageing crisis",
+      "summary": "The world's pension systems are confronting a demographic crisis as longer lifespans and dwindling birth rates threaten to stretch retirement finances.",
+      "title_zh": "「定时炸弹」：全球养老基金面临老龄化危机",
+      "summary_zh": "随着寿命延长与出生率下降威胁到退休财务的可持续性，全球养老金体系正面临人口结构危机。"
+    },
+    {
+      "id": "8c8385bec02c98589390b140312d3eda4f1e7e87",
+      "title": "From four-person households to two and a half: how family size is changing across China",
+      "summary": "Data published in the China Statistical Yearbook 2026 shows household size continuing to shrink, with average household members falling to 2.52 in 2025 as the traditional four-person household gives way to two and a half",
+      "title_zh": "四口之家变两口半 一图了解各地家庭规模变化",
+      "summary_zh": "国家统计局编著 出版 的《中国统计年鉴2026》近日公布，数据显示，我国家庭规模持续缩小，2025年平均家庭户人口已降至 2.52人 ，传统“四口之家”的主流格局已被“两口半”取代"
+    },
+    {
+      "id": "cceee9ba5175f3b23c2d5344a6e52c5061b98e37",
+      "title": "Surprise: 79% of enterprises run their GPUs at less than half utilisation",
+      "summary": "Research collected by VentureBeat Intelligence for the third quarter of 2026 shows 79% of enterprise respondents saying their GPU capacity sits completely idle at least half the time",
+      "title_zh": "意外！79%企业GPU利用率竟不足一半",
+      "summary_zh": "AI 军备竞赛打到现在，场面似乎开始变得魔幻…… 近日，科技媒体 VentureBeat 旗下研究机构 VentureBeat Intelligence 汇集的 2026 年第三季度连续调研数据显示， 79% 的企业受访者表示，其 GPU 算力至少有一半时间处于完全闲置状态"
+    },
+    {
+      "id": "3aabef4b2f2bfdee0a32a2426687da452d8b3ca8",
+      "title": "7,900 Korean high-net-worth investors net sold 148.3 billion won of Samsung and SK Hynix, rotating into leveraged chip ETFs",
+      "summary": "Korean high-net-worth investors are rebuilding their semiconductor exposure, shifting from direct holdings of leading names to leveraged ETF products, a structural switch that reflects caution on near-term chip volatility and a targeted bet on a broader market rebound",
+      "title_zh": "韩国7900名富豪净卖三星海力士1483亿韩元，转买杠杆芯片ETF",
+      "summary_zh": "韩国高净值投资者正在重构其半导体仓位——从直接持有龙头个股转向杠杆化ETF产品，这一结构性切换折射出该群体对芯片板块短期波动的审慎态度，以及对更广泛市场反弹的定向押注"
+    },
+    {
+      "id": "0dbb828add13518461b33ac2a723a44585bd637d",
+      "title": "Musk warns more than 200 AI cloud providers face a shakeout; Nebius and CoreWeave fall more than 4% pre-market",
+      "summary": "Musk's industry-shakeout warning hit the already pressured neocloud sector again",
+      "title_zh": "马斯克预警：200多家AI云厂商面临清洗，Nebius、CoreWeave盘前跌超4%",
+      "summary_zh": "马斯克一番\"行业洗牌\"警告，令本已承压的Neocloud板块再遭重挫"
+    },
+    {
+      "id": "5e0c6de85abd26f1f5773087e5d4a9114125e756",
+      "title": "Ninebot: first three quarters revenue up nearly 20% as higher costs and expenses weigh on profit",
+      "summary": "Ninebot's revenue base kept expanding, while rising costs and expenses raised the bar for profitability",
+      "title_zh": "九号公司前三季度营收增长近两成，成本与费用上升冲击盈利",
+      "summary_zh": "九号公司的收入规模继续扩大，成本与费用的上升也对盈利提出了更高要求"
+    },
+    {
+      "id": "cba9d580ec94c8c1be26c3a938ae4b0adffa0afa",
+      "title": "Imported car sales halve year on year in September as luxury brands add China-made models",
+      "summary": "The contraction in China's imported car market carried into the September peak season",
+      "title_zh": "进口车9月同比腰斩，豪华品牌加码中国制造",
+      "summary_zh": "中国进口车市场的收缩，延续到了“金九”"
+    },
+    {
+      "id": "fe27223567b4b6ff0878721853c35a0e48d0e396",
+      "title": "A pivotal week for the AI trade: Microsoft, Amazon and Google earnings test capex returns",
+      "summary": "Anxiety over AI financing costs continues to weigh on sentiment and defensive rotation is accelerating, making hyperscaler results the key test of AI investment returns",
+      "title_zh": "AI交易迎来关键一周：微软、亚马逊、谷歌财报检验资本开支回报",
+      "summary_zh": "AI融资成本焦虑持续压制市场情绪，防御性轮动加速，超大规模科技公司财报成为检验AI投资回报的关键时刻"
+    },
+    {
+      "id": "c03932d2feb07957d4d85f35502e4df1d89a98eb",
+      "title": "Neocloud stocks fall as Elon Musk says more than 200 of them face 'guppy-level death'",
+      "summary": "Investors are already questioning the debt-fueled expansion of neoclouds and whether the large AI infrastructure build-out will generate long-term returns.",
+      "title_zh": "马斯克称 200 多家 neocloud 将面临「孔雀鱼级死亡」，相关个股下跌",
+      "summary_zh": "投资者本已在质疑 neocloud 由债务驱动的扩张，以及大规模 AI 基础设施建设能否产生长期回报。"
+    },
+    {
+      "id": "6f363d3ef7c8b9377ebda336efd8544f8e596965",
+      "title": "Unitree: the humanoid robot industry is still in early commercialisation, and physical AI faces multiple hurdles from lab demos to scaled real-world deployment",
+      "summary": "Unitree Robotics shares jumped in afternoon trading on Oct 26, with market value briefly approaching 300 billion yuan",
+      "title_zh": "宇树科技：人形机器人行业尚处商业化早期 物理AI技术从实验室演示走向真实场景规模化落地仍面临多重挑战",
+      "summary_zh": "10月26日，宇树科技股价午后快速拉升，市值一度逼近3000亿元关口"
+    },
+    {
+      "id": "60ff0c5c42e8d06e36689d2d3bc18984b071a7a2",
+      "title": "Fiscal dominance drives non-US outperformance divergence; French unrest hits equities, bonds and the currency; China's bond market may return to range trading - Oct 26 macro digest",
+      "summary": "The 2026 non-US improvement narrative hit a snag: non-US economies are not worse than expected, but the fiscal-dominated pricing environment has deteriorated",
+      "title_zh": "欧日财政主导非美超额分化，法国骚乱引发股债汇三杀，中国债市短期或重回震荡---1026宏观脱水",
+      "summary_zh": "2026年非美改善叙事出现波折，非美经济本身未比预期差，真正变差的是财政主导的定价环境"
+    },
+    {
+      "id": "21a46cb2573d71864f101491a7cccedad74cbf4a",
+      "title": "Oct 26 Dragon-Tiger list recap: Wanxiang Qianchao tops net buying",
+      "summary": "Seventy-three stocks, including two convertible bonds, appeared on the Oct 26 Dragon-Tiger list, with total turnover of 26.339 billion yuan",
+      "title_zh": "10月26日龙虎榜复盘：万向钱潮净买额居首",
+      "summary_zh": "10月26日共有73只个股（含2只可转债）上榜龙虎榜，总上榜成交额263.39亿元"
+    },
+    {
+      "id": "24433ffd5d2cd1dba301e1326d4c73833c9c7ac0",
+      "title": "Can GOP Rep. Brian Fitzpatrick, a moderate who's bucked Trump, keep his Pennsylvania swing seat?",
+      "summary": "GOP Rep",
+      "title_zh": "曾与特朗普唱反调的中派共和党众议员 Brian Fitzpatrick 能否保住宾夕法尼亚的摇摆席位？",
+      "summary_zh": "共和党众议员"
+    },
+    {
+      "id": "e51618e6da0349b9cef2cdb439a7f40f73770c01",
+      "title": "Cambricon chairman denies rumour of more than one million chips shipping next year",
+      "summary": "At Cambricon's third-quarter 2026 results briefing today, chairman and general manager Chen Tianshi said the company has never communicated any figure for next year's chip shipments in response to market discussion of more than one million units, that company announcements are the effective channel through which all investors obtain information equally, and that any matter requiring disclosure will be handled in accordance with the rules",
+      "title_zh": "寒武纪董事长辟谣“明年芯片出货超100万颗”传闻",
+      "summary_zh": "在今日举行的 寒武纪 2026年第三季度业绩说明会上，针对市场有关“公司明年芯片出货量超过100万颗”的讨论， 寒武纪 董事长、总经理陈天石回应表示，公司从未进行过相关沟通，公司公告是所有投资者平等获取公司信息的有效途径，如涉及法规要求披露的重大事项，公司将依法履行信息披露义务，并提醒投资者以公司在上交所官网或公司官方"
+    },
+    {
+      "id": "b19a88eed9e7859984ea6f7ff8c8c08796e97917",
+      "title": "Report: Apple is testing its first foldable iPad, possibly for a 2028 launch",
+      "summary": "After the iPhone Duo, Apple's next foldable product may already be in the works",
+      "title_zh": "重磅！据传苹果正测试首款折叠屏iPad 或于2028年推出",
+      "summary_zh": "继iPhone Duo之后， 苹果 的下一款可折叠新品可能已在路上"
     }
   ],
-  "updated_at": "2026-10-25T07:54:46Z"
+  "updated_at": "2026-10-26T12:36:46Z"
 }
