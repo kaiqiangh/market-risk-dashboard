@@ -1,32 +1,214 @@
 {
   "items": [
     {
-      "id": "f0b9b654257918ca7fd8935867614b098b112e24",
-      "title": "Nvidia, AMD and Broadcom could buy Meta shares as part of $35 billion stock offering",
-      "summary": "Meta is looking to raise a total of $95 billion through stock-related deals that stretch into early next year.",
-      "title_zh": "英伟达、AMD 与博通或认购 Meta 350 亿美元股票发行的股份",
-      "summary_zh": "Meta 计划通过一系列股权相关交易合计融资 950 亿美元，交易将持续到明年初。"
+      "id": "ff411932ea33ac8d9b7011b64c65ffff475fee32",
+      "title": "Nvidia to invest $3 billion in Meta as tech giants deepen AI partnership",
+      "summary": "Meta on Monday announced plans to raise a total of $95 billion to support its investments in artificial intelligence infrastructure.",
+      "title_zh": "英伟达拟向 Meta 投资 30 亿美元，科技巨头深化 AI 合作",
+      "summary_zh": "Meta 周一宣布计划融资总计 950 亿美元，以支撑其在人工智能基础设施方面的投资。"
     },
     {
-      "id": "d92a5b167b9a3a20137ae5dee972b69a83fa5776",
-      "title": "Cailianshe, Oct 27: Broadcom partners with banks on $63 billion AI financing",
-      "summary": "Cailianshe, Oct 27: Bank of America, Blackstone, Citigroup and Morgan Stanley are working with Broadcom on a $63 billion AI financing arrangement to fund AI compute.",
-      "title_zh": "博通与多家银行合作进行630亿美元AI融资",
-      "summary_zh": "【博通与多家银行合作进行630亿美元AI融资】财联社10月27日电，美国银行、黑石、花旗和摩根士丹利等机构正与博通合作，共同设立一项总额达630亿美元的AI融资安排，为AI算力提供资金"
+      "id": "222eb7d8487f7003ed17be70ddb2a49bba40872e",
+      "title": "With inflation grim and midterms near, Fed may hold this Thursday; hike in December?",
+      "summary": "The outcome of the Fed's October meeting will be announced early Thursday Beijing time (October 29).",
+      "title_zh": "通胀形势不乐观、中期选举临近 美联储本周四或按兵不动：12月再加息？",
+      "summary_zh": "北京时间10月29日（本周四）凌晨将迎来美联储10月议息会议结果"
     },
     {
-      "id": "fb8dc11246ac0d0c6f4e5e83c2686f3b6c04ab58",
-      "title": "Nasdaq closes up 0.8% as memory and optical networking names strengthen",
-      "summary": "Cailianshe, Oct 27: All three major US indices closed higher, with the Nasdaq up 0.82%, the Dow up 0.29% and the S&P 500 up 0.7%.",
-      "title_zh": "纳指收涨0.8% 存储、光通信板块走强",
-      "summary_zh": "【纳指收涨0.8% 存储、光通信板块走强】财联社10月27日电，美股三大指数集体收涨，纳指涨0.82%，道指涨0.29%，标普500指数涨0.7%"
+      "id": "669f87ba672b49acabb8d7530bcd6a31fd101357",
+      "title": "Institutional research: this PCB supplier's orders and revenue from application-processor and memory substrate packages are ramping quickly",
+      "summary": null,
+      "title_zh": "【机构调研】这家PCB供应商应用处理器类及存储类封装基板订单收入快速释放",
+      "summary_zh": null
     },
     {
-      "id": "363231dcb0b4d6de669fd0ddb1b35561986329d0",
-      "title": "Fed October preview: a hold is expected this week, with Warsh's communication the real test",
-      "summary": "The Fed is likely to hold this week, but the challenge is how Chair Warsh explains the decision while keeping December hike expectations intact.",
-      "title_zh": "美联储10月会议前瞻：本周料按兵不动，沃什沟通迎大考，市场聚焦12月",
-      "summary_zh": "美联储本周大概率按兵不动，但真正的挑战在于主席沃什如何向市场解释这一决定，同时确保12月加息预期不被动摇"
+      "id": "c0f361c970c0aa89deb154e8ab41f702d4554736",
+      "title": "Fed rate hikes are coming, but not this week: CNBC survey",
+      "summary": "The CNBC Fed Survey shows that 93% of respondent expect a pause at the Federal Reserve meeting taking place this week.",
+      "title_zh": "加息将至但不在本周：CNBC 调查",
+      "summary_zh": "CNBC 美联储调查显示，93% 的受访者预计本周美联储会议将按兵不动。"
+    },
+    {
+      "id": "e083cd67f93f7ece81f83928c49349bb5178082b",
+      "title": "Fed expected to hold rates steady, but Warsh may point way to more hikes",
+      "summary": "Markets overwhelmingly expect no change in benchmark interest rates following September's increase.",
+      "title_zh": "美联储料按兵不动，但 Warsh 或指明更多加息路径",
+      "summary_zh": "在 9 月加息之后，市场压倒性地预期基准利率将维持不变。"
+    },
+    {
+      "id": "14805848a744f865bb4858d9ce85f5ab2cff2782",
+      "title": "Nvidia plans to invest $3 billion in new Meta shares as the two deepen AI-agent collaboration",
+      "summary": "Nvidia announced on Tuesday that it will further deepen its collaboration with Meta in the AI assistant Muse and related AI model areas.",
+      "title_zh": "英伟达拟出资30亿美元认购Meta新股 双方深化AI智能体合作",
+      "summary_zh": "英伟达 周二宣布，将进一步深化与Meta在 人工智能 助手Muse及相关AI模型领域的合作"
+    },
+    {
+      "id": "576e60ad1eea6b822a97ac81cb112e2b75c96de6",
+      "title": "The Fed's hawkish pause in October: where is the market's expectation gap?",
+      "summary": "Early on the 29th Beijing time, the Fed will announce its October rate decision.",
+      "title_zh": "美联储10月鹰派暂停：市场的交易预期差在哪里？",
+      "summary_zh": "北京时间29日凌晨，美联储将公布10月份利率决议"
+    },
+    {
+      "id": "de54e8d1cac34efdfec5b403c4b386d7a85b8a42",
+      "title": "BoJ core inflation gauge tops 3%; hold this week but December hike window near certain?",
+      "summary": "The BoJ's core gauge of underlying inflation jumped to 3.2% in September, a three-year high well above the 2% policy target.",
+      "title_zh": "日本央行核心通胀指标突破3%，本周按兵不动但12月加息窗口几成定局？",
+      "summary_zh": "日本央行衡量潜在通胀的核心指标9月跃升至3.2%，创三年新高，显著高于2%的政策目标"
+    },
+    {
+      "id": "fde5df8a1c8574c23a4dab0864f35d37e08950a0",
+      "title": "Nvidia to invest $3 billion in Meta equity as the two deepen AI-assistant Muse collaboration",
+      "summary": "Nvidia and Meta announced a major strategic partnership: Nvidia plans to invest $3 billion in Meta's equity issuance, and both will deepen cooperation across the AI assistant Muse and related large-model areas.",
+      "title_zh": "英伟达拟投资30亿美元入股Meta，双方深化AI助手Muse合作",
+      "summary_zh": "英伟达与Meta宣布达成一项重大战略合作， 英伟达计划向Meta的股权发行投资30亿美元，同时双方将全面深化在人工智能（AI）助手Muse及相关大模型领域的合作"
+    },
+    {
+      "id": "57554e15101c45411c799d1e5dbed1275a078086",
+      "title": "CATL: capacity utilization to stay high and healthy",
+      "summary": "CATL said on its interactive platform that it has accelerated capacity build-out to meet demand; as this year's capacity comes online, supply tightness has eased.",
+      "title_zh": "宁德时代：产能利用率仍将处于较高水平 保持较健康状态",
+      "summary_zh": "【宁德时代：产能利用率仍将处于较高水平 保持较健康状态】财联社10月27日电，宁德时代在互动平台表示，近年来公司根据市场需求加快产能建设进度，随着今年产能的陆续投产，产能紧张程度有所缓解"
+    },
+    {
+      "id": "5f0c8a041f72d20d3d623f344060977e2f45f72b",
+      "title": "Dunhuang Seed: Q3 net loss of 25.8773 million yuan",
+      "summary": "Dunhuang Seed (600354.SH) reported Q3 revenue of 124 million yuan, up 71.12% year on year, with net profit attributable to shareholders of -25.8773 million yuan.",
+      "title_zh": "敦煌种业：第三季度净亏损2587.73万元",
+      "summary_zh": "【敦煌种业：第三季度净亏损2587.73万元】财联社10月27日电，敦煌种业(600354.SH)公告称，第三季度营业收入为1.24亿元，同比增长71.12%；归属于上市公司股东的净利润为-2587.73万元"
+    },
+    {
+      "id": "29aa89aa97935748050da8f078ab2ac08304432e",
+      "title": "Two loud blasts heard over Riyadh, Saudi capital",
+      "summary": "After residents received an air-raid alert on the morning of the 27th local time, two loud blasts were heard over Riyadh, the Saudi capital.",
+      "title_zh": "沙特首都利雅得传出两声巨响",
+      "summary_zh": "【沙特首都利雅得传出两声巨响】财联社10月27日电，在居民当地时间27日上午收到防空警报后，沙特首都利雅得上空传来两声巨响"
+    },
+    {
+      "id": "f39831b22be76ee341714e81644344d490ababa6",
+      "title": "Ukrainian official says Oleshky ceasefire to last until November 1",
+      "summary": "A Ukrainian lawmaker said on the 27th that the Oleshky ceasefire will continue until November 1.",
+      "title_zh": "乌官员称阿列什基停火将持续至11月1日",
+      "summary_zh": "【乌官员称阿列什基停火将持续至11月1日】财联社10月27日电，乌克兰最高拉达人民公仆党议会党团领导人阿拉哈米亚当地时间10月27日在其官方社交平台发文表示，阿列什基停火将持续至11月1日"
+    },
+    {
+      "id": "88cd4897afdf61a0f84fb625a03518e75cece47b",
+      "title": "RoboTechnik plans 50 million to 100 million yuan buyback for cancellation",
+      "summary": "RoboTechnik (300757.SZ) plans to repurchase A-shares via centralized bidding using up to 100 million yuan of its own or raised funds, at a price no higher than 803.46 yuan per share.",
+      "title_zh": "罗博特科：拟5000万元至1亿元回购股份用于注销",
+      "summary_zh": "【罗博特科：拟5000万元至1亿元回购股份用于注销】财联社10月27日电，罗博特科(300757.SZ)公告称，公司拟使用自有资金或自筹资金以集中竞价方式回购A股股份，回购资金总额不低于5000万元且不超过1亿元，回购价格不超过803.46元/股"
+    },
+    {
+      "id": "cc394018bf4822d97bba13566845617ed5f44ebd",
+      "title": "RoboTechnik: 9M net profit 61.48 million yuan turns profitable; optoelectronics and semiconductor demand improving",
+      "summary": "RoboTechnik (300757.SZ) reported Q3 revenue of 393 million yuan, up 134.13% year on year, with net profit of 54.9286 million yuan, swinging to a profit.",
+      "title_zh": "罗博特科：前三季度净利润6148万元同比扭亏 光电子及半导体业务市场景气度向好",
+      "summary_zh": "【罗博特科：前三季度净利润6148万元同比扭亏 光电子及半导体业务市场景气度向好】财联社10月27日电，罗博特科(300757.SZ)公告称，第三季度营收为3.93亿元，同比增长134.13%；净利润为5492.86万元，同比扭亏为盈"
+    },
+    {
+      "id": "66681931dfee85025a2248af88ec1a6717581faa",
+      "title": "Coca-Cola shares erase earlier gains, down 1% premarket",
+      "summary": "Coca-Cola shares erased earlier gains and fell 1% in premarket trading.",
+      "title_zh": "财联社10月27日电，可口可乐股价抹去早前涨幅，盘前下跌1%。",
+      "summary_zh": "财联社10月27日电，可口可乐股价抹去早前涨幅，盘前下跌1%"
+    },
+    {
+      "id": "103e66fd2996a3a488af1066eca6b2b8f9052c80",
+      "title": "First batch of commercial real-estate REITs disclose Q3 reports; average annualized cash-flow distribution yield 6.5%",
+      "summary": "The first four Shanghai-listed commercial real-estate REITs recently published their first periodic report after listing.",
+      "title_zh": "首批商业不动产REITs三季报披露 平均年化现金流分派率6.5%",
+      "summary_zh": "【首批商业不动产REITs三季报披露 平均年化现金流分派率6.5%】财联社10月27日电，首批4单沪市商业不动产REITs近期完成上市后首份定期报告披露"
+    },
+    {
+      "id": "0c5434868a1145bf19fa61fabcdf0de11f287e52",
+      "title": "Boeing says 777X still on track for first delivery in 2027; 737 progressing toward steady 47-per-month output",
+      "summary": "Boeing said the 777X remains on track for its first delivery in 2027, and the 737 continues toward a stable production target of 47 aircraft per month.",
+      "title_zh": "财联社10月27日电，波音表示，777X仍有望在2027年首次交付，737持续朝着每月稳定生产47架的目标推进。",
+      "summary_zh": "财联社10月27日电，波音表示，777X仍有望在2027年首次交付，737持续朝着每月稳定生产47架的目标推进"
+    },
+    {
+      "id": "ef9cf43dbba0d14892986bbd8b9034e64775bb4e",
+      "title": "Chengxing shares: Q3 net profit up 1472% YoY and 63% QoQ; yellow phosphorus and phosphoric acid output strong",
+      "summary": "Chengxing (600078.SH) reported Q3 revenue of 1.452 billion yuan, up 65.00% YoY, with net profit of 147 million yuan, up 1471.96% YoY.",
+      "title_zh": "澄星股份：第三季度净利润同比增长1472%环比增长63% 黄磷及磷酸等产销态势良好",
+      "summary_zh": "【澄星股份：第三季度净利润同比增长1472%环比增长63% 黄磷及磷酸等产销态势良好】财联社10月27日电，澄星股份(600078.SH)公告称，第三季度营收为14.52亿元，同比增长65.00%；净利润为1.47亿元，同比增长1471.96%"
+    },
+    {
+      "id": "b32d97be5ee4b81d33d612e4a42faf56094c1348",
+      "title": "Boeing Q3 adjusted free cash flow $464 million, above market expectations",
+      "summary": "Boeing's Q3 adjusted free cash flow was $464 million versus an expected $325.1 million; core loss per share was 34 cents versus an expected 21 cents.",
+      "title_zh": "波音第三季度调整后自由现金流为4.64亿美元 高于市场预期",
+      "summary_zh": "【波音第三季度调整后自由现金流为4.64亿美元 高于市场预期】财联社10月27日电，波音第三季度调整后自由现金流为4.64亿美元，预期为3.251亿美元；每股核心亏损34美分，预期每股亏损21美分"
+    },
+    {
+      "id": "387600517d25a0da70948b1116e88e09a8b146db",
+      "title": "Egypt aims for 20% rise in local wheat procurement next season, targets self-sufficiency by 2030",
+      "summary": "Egypt's supply minister said the goal is a 20% increase in local wheat procurement next season as the country strives for wheat self-sufficiency by 2030.",
+      "title_zh": "财联社10月27日电，埃及供应部长表示，目标是下一季本地采购小麦增长20%。埃及力争到2030年实现小麦自给自足。",
+      "summary_zh": "财联社10月27日电，埃及供应部长表示，目标是下一季本地采购小麦增长20%"
+    },
+    {
+      "id": "dba5cbad86bf7f43562f0fc044cbe72aedaa3440",
+      "title": "Surge in Indian diesel exports expected to ease global diesel shortage next year",
+      "summary": "With new refining capacity coming online, India's diesel exports are surging and will hit global markets next year, bringing much-needed supply to fuel-short markets.",
+      "title_zh": "印度柴油出口激增有望在明年缓解全球柴油短缺",
+      "summary_zh": "【印度柴油出口激增有望在明年缓解全球柴油短缺】财联社10月27日电，据报道，随着新的炼油产能投入运营，印度柴油出口激增，明年将冲击全球市场，为燃料短缺的市场带来急需的供应"
+    },
+    {
+      "id": "e59d8f52560f7d344948e251d393142cb7d6b4a2",
+      "title": "Hubei unveils three-year action plan for the smart construction industry",
+      "summary": "The 2026 International (Wuhan) Smart Construction Industry Expo opened on October 27, where Hubei formally released its three-year action plan for the smart construction industry.",
+      "title_zh": "湖北发布智能建造产业发展三年行动计划",
+      "summary_zh": "【湖北发布智能建造产业发展三年行动计划】财联社10月27日电，2026国际（武汉）智能建造产业博览会10月27日在武汉光谷科技会展中心开幕，会上正式发布《湖北省智能建造产业发展三年行动计划》，为湖北省智能建造产业发展建立量化观测标尺"
+    },
+    {
+      "id": "628b3916971b6724f1bba5476ee941e7e0a8f21e",
+      "title": "QatarEnergy extends force majeure on Edison LNG to December",
+      "summary": "QatarEnergy has extended the force majeure on Edison's LNG to December.",
+      "title_zh": "财联社10月27日电，卡塔尔能源将爱迪生公司液化天然气不可抗力延长至12月。",
+      "summary_zh": "财联社10月27日电，卡塔尔能源将爱迪生公司液化天然气不可抗力延长至12月"
+    },
+    {
+      "id": "3b399c25d872bbb7ff80dc0eaaf698cba5e810b0",
+      "title": "S&P Global reviewing options for Capital IQ and some data businesses",
+      "summary": "S&P Global is evaluating options for its Capital IQ and some data businesses.",
+      "title_zh": "财联社10月27日电，标普全球正在评估Capital IQ及部分数据业务的选项。",
+      "summary_zh": "财联社10月27日电，标普全球正在评估Capital IQ及部分数据业务的选项"
+    },
+    {
+      "id": "d54653af46e79c670d648fc9ce26feea2b2d84ec",
+      "title": "Raymond James raises Microsoft target price to $630 from $540",
+      "summary": "Raymond James raised its Microsoft target price to $630 from $540.",
+      "title_zh": "财联社10月27日电，瑞杰金融将微软目标价从540美元上调至630美元。",
+      "summary_zh": "财联社10月27日电，瑞杰金融将微软目标价从540美元上调至630美元"
+    },
+    {
+      "id": "57f1b24aa3d7aaea694c01e90f78228b49973ebc",
+      "title": "India's 10-year bond yield falls 5 bps to 7.43%",
+      "summary": "India's 10-year government bond yield fell 5 basis points to 7.43%.",
+      "title_zh": "财联社10月27日电，印度10年期国债收益率下跌5个基点至7.43%。",
+      "summary_zh": "财联社10月27日电，印度10年期国债收益率下跌5个基点至7.43%"
+    },
+    {
+      "id": "11d4937d05bce82f0c494783fc731290e1e967d3",
+      "title": "Multiple blasts heard in Baghdad, Iraq's capital",
+      "summary": "Multiple blasts were heard on the 27th local time in the Dora district south of Baghdad and the Rusafa district east of the capital; the cause is unclear.",
+      "title_zh": "伊拉克首都巴格达传出多次爆炸声",
+      "summary_zh": "【伊拉克首都巴格达传出多次爆炸声】财联社10月27日电，位于伊拉克首都巴格达南部的多拉区和巴格达东部的鲁萨法区当地时间27日传出多次爆炸声，爆炸原因尚不明确"
+    },
+    {
+      "id": "153987bc7d22038ede8f6164b0fe9f5737882382",
+      "title": "Memory-chip giants' earnings week arrives: Morgan Stanley, Citi, Nomura turn bullish; 'memory shortage' persists, HBM prices may double",
+      "summary": "As chip giants enter a dense earnings-disclosure period this week, the memory-chip sector is seeing a wave of bullish calls.",
+      "title_zh": "存储芯片巨头财报周来袭！大摩、花旗、野村密集看多：“存储荒”持续 HBM价格或翻倍",
+      "summary_zh": "10月27日报道，本周，随着芯片巨头密集迎来财报披露期， 存储芯片 行业迎密集看多"
+    },
+    {
+      "id": "e7d7a731dea31d94b7662053da9b060fc8b228ec",
+      "title": "As AI becomes more fractured, one names stands out: AMD",
+      "summary": "As Anthropic rushes to takes its shares public, the AI trade is showing cracks, and they are not confined to fringe players.",
+      "title_zh": "随着 AI 行情分化加剧，有一只股票脱颖而出：AMD",
+      "summary_zh": "随着 Anthropic 急于推进上市，AI 交易出现裂痕，且裂痕并不局限于边缘玩家。"
     },
     {
       "id": "8e6d52aeb0bf9345a8a56f1176ddc12a75b4493f",
@@ -36,320 +218,138 @@
       "summary_zh": "市场预期美联储将在本周 10 月会议结束时维持隔夜利率不变。"
     },
     {
-      "id": "0960ac5549a8e7ec469fdb80e3a14e307ebb6dfc",
-      "title": "Cailianshe, Oct 27: Cuba's UN envoy says the General Assembly will review a draft resolution demanding an end to the US embargo",
-      "summary": "Cailianshe, Oct 27: Cuba's permanent representative Ernesto Soberon Guzman said the General Assembly will review the draft resolution on ending the US economic, commercial and financial embargo against Cuba on Oct 27-28.",
-      "title_zh": "古巴常驻联合国代表：联大将审议要求美结束对古封锁的决议草案",
-      "summary_zh": "【古巴常驻联合国代表：联大将审议要求美结束对古封锁的决议草案】财联社10月27日电，古巴常驻联合国代表埃内斯托·索韦龙·古斯曼表示，联合国大会将于27日至28日审议“必须终止美国对古巴的经济、商业和金融封锁”决议草案"
+      "id": "68308573e9e08eca8714622715d3c676fdcb5013",
+      "title": "AI debt trouble could help Fed’s Warsh get his way with fewer rate hikes",
+      "summary": "AI financing has been harder and more expensive to come by as the capital-spending boom comes under more scrutiny.",
+      "title_zh": "AI 债务困境或助 Warsh 以更少加息达成目标",
+      "summary_zh": "随着资本开支热潮受到更多审视，AI 融资变得愈发困难且昂贵。"
     },
     {
-      "id": "a315067895a7ad121ace1a3ca8f0d3b43e633635",
-      "title": "Cailianshe, Oct 27: Applied Materials to raise its stake in Dutch packaging equipment maker BE Semiconductor to about 20%",
-      "summary": "Cailianshe, Oct 27: Applied Materials announced it will increase its strategic investment in BE Semiconductor Industries (Besi), lifting its holding to roughly 20%.",
-      "title_zh": "财联社10月27日电，应用材料宣布将增加对荷兰半导体封装设备商BE Semiconductor Industries（Besi）的战略投资，将其持股比例提升至约20%。",
-      "summary_zh": "财联社10月27日电，应用材料宣布将增加对荷兰半导体封装设备商BE Semiconductor Industries（Besi）的战略投资，将其持股比例提升至约20%"
+      "id": "4046442bdd261d93f83ad857c52e0af2d159992e",
+      "title": "Boeing narrows third-quarter loss as defense sales rise, but focus remains on 737 Max production",
+      "summary": "Boeing is set to brief investors on its aircraft production outlook when it reports quarterly results before the market opens Tuesday.",
+      "title_zh": "波音三季度亏损收窄，国防销售增长，但焦点仍在 737 Max 生产",
+      "summary_zh": "波音将在周二盘前公布季度业绩时，向投资者介绍其飞机制造前景。"
     },
     {
-      "id": "0e9ac0b2ca7f9abcea54886c6a18e4d5932b52f3",
-      "title": "Cailianshe, Oct 27: Intel said to be taking over Israeli quantum software company Classiq",
-      "summary": "Cailianshe, Oct 27: Intel is reported to be acquiring Israeli quantum software company Classiq.",
-      "title_zh": "财联社10月27日电，英特尔据悉将以色列量子软件公司Classiq。",
-      "summary_zh": "财联社10月27日电，英特尔据悉将以色列量子软件公司Classiq"
+      "id": "7bb286d353d631db9d104418697715aad7b7231a",
+      "title": "Stock futures rise as earnings season continues: Live updates",
+      "summary": "The major U.S",
+      "title_zh": "美股期货随财报季延续而走高（实时更新）",
+      "summary_zh": "美国主要股指期货走高。"
     },
     {
-      "id": "8d229f2907acc951920993ee65b2360a62951fa4",
-      "title": "Cailianshe, Oct 27: Mexico's president says she repeatedly rejected US requests to enter the country for anti-drug operations",
-      "summary": "Cailianshe, Oct 27: President Sheinbaum said Washington has repeatedly asked to send personnel into Mexico to join operations against drug cartels since Trump took office, and Mexico has always refused.",
-      "title_zh": "墨西哥总统称多次拒绝美方入境开展缉毒行动的要求",
-      "summary_zh": "【墨西哥总统称多次拒绝美方入境开展缉毒行动的要求】财联社10月27日电，墨西哥总统辛鲍姆表示，自美国总统特朗普上任以来，美方曾多次要求派遣人员进入墨西哥境内，参与打击贩毒集团的行动，但墨方始终予以拒绝"
+      "id": "d17166d12042cd99fdbec59cbd6733125cf6af56",
+      "title": "Shanghai and Shenzhen listed companies' major after-hours announcements (October 27)",
+      "summary": "Several Shanghai- and Shenzhen-listed companies released announcements on the evening of October 27; key items are summarized below.",
+      "title_zh": "10月27日晚间沪深上市公司重大事项公告最新快递",
+      "summary_zh": "沪深两市多家上市公司10月27日晚间发布公司公告，以下为重要公告汇总"
     },
     {
-      "id": "90e4917715295fad6f34be6dd94f0add00c231f7",
-      "title": "Cailianshe, Oct 27: Brazil's benchmark stock index closes down 13.9%, its worst day since 2020",
-      "summary": "Cailianshe, Oct 27: Brazil's main stock index closed 13.9% lower, the worst single-day performance since 2020.",
-      "title_zh": "财联社10月27日电，巴西主要股指收跌13.9%，创下自2020年以来最差单日表现。",
-      "summary_zh": "财联社10月27日电，巴西主要股指收跌13.9%，创下自2020年以来最差单日表现"
+      "id": "7c5ccd00dc28441b57a572c0a142cad4ef2db3d2",
+      "title": "Pop Mart COO: full-year revenue expected to grow year on year",
+      "summary": "At Pop Mart's Q3 results meeting, COO Si De said the China market remains steady and healthy and full-year revenue is still expected to grow year on year.",
+      "title_zh": "泡泡玛特首席运营官：全年预计可实现同比正增长",
+      "summary_zh": "据界面新闻，泡泡玛特首席运营官司德在泡泡玛特第三季度业绩会上表示，全年来看，中国市场表现依然比较稳健和健康，全年预计依然可以实现同比正增长，在接下来的四季度传统销售旺季，努力把握销售机会，也为明年做好准备"
     },
     {
-      "id": "55d405cdd29976d921546e0e61ec5938b32aa1ed",
-      "title": "Cailianshe, Oct 27: JetBlue posts Q3 adjusted loss of 60 cents a share versus 55 cents expected",
-      "summary": "Cailianshe, Oct 27: JetBlue reported a third-quarter adjusted loss per share of 60 cents against a market expectation of 55 cents.",
-      "title_zh": "财联社10月27日电，捷蓝航空第三季度调整后每股亏损60美分，市场预期每股亏损55美分。",
-      "summary_zh": "财联社10月27日电，捷蓝航空第三季度调整后每股亏损60美分，市场预期每股亏损55美分"
+      "id": "e8a7088cde7a1c427bfb32e1132c9895ef6031c2",
+      "title": "'We've seen this pattern': big-short traders explain why they are shorting AI upstart CoreWeave",
+      "summary": "Traders made famous by 'The Big Short' are turning their attention to AI compute-leasing company CoreWeave.",
+      "title_zh": "“这种模式我们见过！”大空头交易员详解：为何做空AI新贵CoreWeave",
+      "summary_zh": "因《大空头》一书和电影而声名大噪的交易员们，正将目光瞄准AI算力租赁公司CoreWeave"
     },
     {
-      "id": "1a30f9c392a68bc17f8e3b2ba89cb17039cd841f",
-      "title": "Cailianshe, Oct 27: Whirlpool falls more than 8% after hours as Q3 revenue misses",
-      "summary": "Cailianshe, Oct 27: Whirlpool dropped more than 8% in after-hours trading after third-quarter revenue came in below expectations.",
-      "title_zh": "财联社10月27日电，惠而浦盘后跌超8%，公司第三季度营收不及预期。",
-      "summary_zh": "财联社10月27日电，惠而浦盘后跌超8%，公司第三季度营收不及预期"
+      "id": "d1086369819d3ef3343407df6b698278e8cd8516",
+      "title": "Corning Q3 core sales $5.08 billion versus $5.02 billion estimate",
+      "summary": "Corning's Q3 core EPS was 91 cents versus an 89-cent estimate.",
+      "title_zh": "康宁第三季度核心销售额50.8亿美元，市场预估50.2亿美元",
+      "summary_zh": "康宁第三季度核心每股收益91美分，市场预估89美分"
     },
     {
-      "id": "7cb4dbfa175d551c1cb7b679555efd5ffd21bc78",
-      "title": "Cailianshe, Oct 27: Whirlpool Q3 net sales $3.68 billion versus $3.91 billion expected",
-      "summary": "Cailianshe, Oct 27: Whirlpool reported third-quarter net sales of $3.68 billion against $3.91 billion expected, and continuing-operations EBIT of $97 million against $176.2 million expected.",
-      "title_zh": "财联社10月27日电，惠而浦第三季度净销售额36.8亿美元，预期39.1亿美元；第三季度持续经营息税前利润9700万美元，预期1.762亿美元。",
-      "summary_zh": "财联社10月27日电，惠而浦第三季度净销售额36.8亿美元，预期39.1亿美元；第三季度持续经营息税前利润9700万美元，预期1.762亿美元"
+      "id": "6d54f226fa23303f625834cca4bcdb3a68b2f6b6",
+      "title": "Man charged with assisting ‘foreign intelligence service’ after incident at UK base used for Iran strikes",
+      "summary": "Two men face U.K",
+      "title_zh": "英国一处曾用于打击伊朗的基地发生事件后，一人被控协助“外国情报机构”",
+      "summary_zh": "两名男子面临英国相关指控。"
     },
     {
-      "id": "4d8edd4beffc6d2f1938c1600f98fdd7ea000f81",
-      "title": "Cadence Q3 adjusted EPS of $2.11 beats expectations",
-      "summary": "Cailianshe, Oct 27: The EDA company reported adjusted earnings per share of $2.11 against $2.05 expected, with revenue of $1.63 billion against $1.61 billion expected.",
-      "title_zh": "铿腾电子第三季度调整后每股收益为2.11美元 高于预期",
-      "summary_zh": "【铿腾电子第三季度调整后每股收益为2.11美元 高于预期】财联社10月27日电，EDA公司铿腾电子第三季度调整后每股收益为2.11美元，高于市场预期的2.05美元；营收为16.3亿美元，高于预期的16.1亿美元"
+      "id": "ad4cc24c8c20a1f8bd01317d2c48a98427b04a58",
+      "title": "Coca-Cola hikes earnings outlook, even as it sees lackluster demand in North America",
+      "summary": "Coca-Cola stock has climbed about 32% so far this year, raising the beverage company's market cap to roughly $398 billion.",
+      "title_zh": "可口可乐上调盈利展望，尽管北美需求疲软",
+      "summary_zh": "可口可乐股价今年迄今上涨约 32%，使公司市值升至约 3980 亿美元。"
     },
     {
-      "id": "0637efbdf92fb11123169d6d7575d93045e521e8",
-      "title": "Cailianshe, Oct 27: Livermore China ADR leaders index closes up 0.68%",
-      "summary": "Cailianshe, Oct 27: The Livermore China ADR leaders index closed 0.68% higher.",
-      "title_zh": "利弗莫尔中概股龙头指数收涨0.68%",
-      "summary_zh": "【利弗莫尔中概股龙头指数收涨0.68%】财联社10月27日电，利弗莫尔中概股龙头指数收涨0.68%"
+      "id": "6df029cbd08208ae4096034ea3ec4229a7750de0",
+      "title": "Buy Palantir ahead of earnings, says Rosenblatt",
+      "summary": "The investment firm has a buy rating on the software stock and raised its price target on PLTR.",
+      "title_zh": "Rosenblatt 建议在财报前买入 Palantir",
+      "summary_zh": "该投资机构对这只软件股给予买入评级，并上调了 PLTR 的目标价。"
     },
     {
-      "id": "d78d1fd6272ba2b9e8ac54a8705b3aefc85d85fd",
-      "title": "Whoever controls scarce compute becomes the next Nvidia",
-      "summary": null,
-      "title_zh": "谁掌握了稀缺算力，谁就是下一个英伟达！",
-      "summary_zh": null
+      "id": "ad4f0803ce328f0bc1ef5172f8325250ed880b97",
+      "title": "Melania Trump-brokered local ceasefire begins as Russia continues attacks on Ukraine",
+      "summary": "An Oleshky ceasefire brokered by Melania Trump began Tuesday as Russia launched missiles and drones at cities across Ukraine.",
+      "title_zh": "由梅拉尼娅·特朗普斡旋的局部停火启动，俄继续袭击乌克兰",
+      "summary_zh": "由梅拉尼娅·特朗普斡旋的阿列什基停火于周二启动，与此同时俄对乌克兰多座城市发射导弹与无人机。"
     },
     {
-      "id": "4e56df5f714deb9d270216b7fa4105ed52f72f1a",
-      "title": "Cailianshe, Oct 27: Dollar index rises on Oct 26",
-      "summary": "Cailianshe, Oct 27: The dollar index, which measures the greenback against six major currencies, rose 0.15% and closed at 101.959 at the end of FX trading.",
-      "title_zh": "美元指数26日上涨",
-      "summary_zh": "【美元指数26日上涨】财联社10月27日电，衡量美元对六种主要货币的美元指数当天上涨0.15%，在汇市尾市收于101.959"
+      "id": "aa4d88d60f418cd0a218074c4f7ea7d83bce3af1",
+      "title": "Ten PCB-concept stocks report Q3 results; Nanya New Materials and Jin'an Guoji Q3 profit up over 10x",
+      "summary": "Ten PCB supply-chain listed companies released Q3 reports today; Nanya New Materials and Jin'an Guoji saw Q3 net profit growth above 10x.",
+      "title_zh": "10只PCB概念股齐发三季报 南亚新材、金安国纪Q3净利增超10倍",
+      "summary_zh": "今日，10只 PCB 产业链上市公司集体发布三季报， 南亚新材 、 金安国纪 第三季度净利增长超10倍"
     },
     {
-      "id": "79fcc448fb599fb7abe96affa06059df5982d5ba",
-      "title": "Cailianshe, Oct 27: International oil prices fall on Oct 26",
-      "summary": "Cailianshe, Oct 27: International oil prices declined on Oct 26.",
-      "title_zh": "国际油价26日下跌",
-      "summary_zh": "【国际油价26日下跌】财联社10月27日电，国际油价26日下跌"
+      "id": "8e24dee4199e8f68706bd5de910b1fad16d28bdb",
+      "title": "Private fund AUM hits record 25.83 trillion yuan",
+      "summary": "The Asset Management Association of China reported private fund AUM rose to 25.83 trillion yuan at end-September, a record high.",
+      "title_zh": "25.83万亿元，私募基金规模又创历史新高！",
+      "summary_zh": "中国证券投资基金业协会（后简称中基协）发布最新数据显示，截至 9 月末，私募基金管理规模升至 25.83 万亿元，较 8 月末继续扩张， 这不仅是年内又一次创下新高，也意味着私募证券投资基金继续成为中国资本市场的增量资金来源之一"
     },
     {
-      "id": "20a48c23c5ba660edf140014d7a894d4dd4102a8",
-      "title": "Cailianshe, Oct 27: US and Canada said to be working on a deal to ease US tariffs on Canadian steel and auto imports",
-      "summary": "Cailianshe, Oct 27: Washington and Ottawa are reportedly working toward an agreement that would relax US tariffs on Canadian steel and automotive imports.",
-      "title_zh": "财联社10月27日电，美国、加拿大据悉正致力于达成一项放宽美国对加拿大钢铁和汽车进口关税的协议。",
-      "summary_zh": "财联社10月27日电，美国、加拿大据悉正致力于达成一项放宽美国对加拿大钢铁和汽车进口关税的协议"
+      "id": "0ec8be3550002e76e00503369217cb8927d0fe20",
+      "title": "Hurun Rich List released: Zhang Yiming leads by a wide margin, wealth over 600 billion yuan",
+      "summary": "On October 27, the Hurun Research Institute released the 2026 Hurun Rich List.",
+      "title_zh": "超6000亿！胡润百富榜出炉 张一鸣断层领先",
+      "summary_zh": "10月27日，胡润研究院发布《2026胡润百富榜》"
     },
     {
-      "id": "aa79a828e76d198d2bab33319e73548fb5276236",
-      "title": "Cailianshe, Oct 27: DoorDash said to be in advanced talks to buy Instacart",
-      "summary": "Cailianshe, Oct 27: US delivery group DoorDash is reportedly in advanced negotiations to acquire grocery delivery platform Instacart.",
-      "title_zh": "财联社10月27日电，美国外卖配送巨头DoorDash据悉正就收购杂货配送平台Instacart进行深入谈判。",
-      "summary_zh": "财联社10月27日电，美国外卖配送巨头DoorDash据悉正就收购杂货配送平台Instacart进行深入谈判"
+      "id": "c2a591846db9afe651821492c44286175de0e0d3",
+      "title": "Shanghai issues plan to accelerate next-generation smart manufacturing; develop physical-AI equipment",
+      "summary": "Shanghai has issued a new document on accelerating next-generation smart manufacturing.",
+      "title_zh": "事关加快发展新一代智能制造 上海最新发文！研制推广物理AI装备",
+      "summary_zh": "事关加快发展新一代智能制造，上海最新发文"
     },
     {
-      "id": "57c970da07c9c859e916c56f507b2ac3fa4a05f5",
-      "title": "Cailianshe, Oct 27: All seven Anthropic founders are worth more than $13 billion each",
-      "summary": "Cailianshe, Oct 27: Anthropic's IPO filing on Monday showed each of its seven founders holds about 1.4% of the company, putting each fortune above $13 billion.",
-      "title_zh": "Anthropic七位创始人身家均超130亿美元",
-      "summary_zh": "【Anthropic七位创始人身家均超130亿美元】财联社10月27日电，Anthropic周一提交的IPO文件显示，该公司七位创始人各持有约1.4%的股份，每人的财富超过130亿美元"
+      "id": "5fcbcf668c54ed8cd452a914b136363884cc5307",
+      "title": "Anthropic's IPO is risky business",
+      "summary": "Anthropic's much-anticipated IPO is giving potential investors some perspective on the risky business of artificial intelligence.",
+      "title_zh": "Anthropic 的 IPO 是门风险生意",
+      "summary_zh": "Anthropic 备受期待的 IPO 让潜在投资者看清人工智能这门风险生意。"
     },
     {
-      "id": "515dbe98e7571a6ac4c54f12054d54d289717f9d",
-      "title": "Cailianshe, Oct 27: Brazil's Treasury says it bought back 2030, 2035 and 2050 notes",
-      "summary": "Cailianshe, Oct 27: Brazil's Finance Ministry said it repurchased 271,000 of its 2030 notes, 1 million of its 2035 notes and 486,850 of its 2050 notes.",
-      "title_zh": "财联社10月27日电，巴西财政部发布声明称，已回购27.1万份2030年到期的债券、100万份2035年到期的债券，以及48.685万份2050年到期的债券。",
-      "summary_zh": "财联社10月27日电，巴西财政部发布声明称，已回购27.1万份2030年到期的债券、100万份2035年到期的债券，以及48.685万份2050年到期的债券"
+      "id": "929a41b03b526f965274363b4b98433673526f3b",
+      "title": "A 'canary in the coal mine': Measles resurgence exposes weaknesses in U.S. public health, experts say",
+      "summary": "The measles resurgence exposes the U.S.' public health weaknesses, such as declining vaccination rates and waning trust in health institutions, experts say.",
+      "title_zh": "专家：麻疹卷土重来暴露美国公共卫生短板，堪称“煤矿里的金丝雀”",
+      "summary_zh": "专家称，麻疹复燃暴露了美国在疫苗接种率下降、对卫生机构信任减弱等方面的公共卫生弱点。"
     },
     {
-      "id": "f785d980f5e8b5e3feed0fb22195cf4ab3d6d83b",
-      "title": "Citadel Securities says the AI trade has reached a point with no margin for error",
-      "summary": "Cailianshe, Oct 27: Citadel Securities argues the market has committed so much to the AI trade that there is almost no room for error if the spending fails to generate returns.",
-      "title_zh": "人工智能交易规模惊人 城堡证券称到了“没有容错空间”的地步",
-      "summary_zh": "【人工智能交易规模惊人 城堡证券称到了“没有容错空间”的地步】财联社10月27日电，城堡证券认为，市场对人工智能交易的投入如此之大，到了一旦巨额投入产生不了回报就几乎没有犯错空间的地步"
+      "id": "d761029271d1a36c816d1b2f4198c8eb458169f4",
+      "title": "Zhang Kun still bets on tech: half of his sole fund's top-10 holdings in global AI semiconductors",
+      "summary": "Per the latest Q3 disclosure, Zhang Kun's sole fund, E Fund Asian Selection, has AUM of 3.69 billion yuan, with half its top-10 holdings in global AI semiconductors.",
+      "title_zh": "张坤还是笃信科技：独管产品十大重仓半数押注全球AI半导体",
+      "summary_zh": "据三季报最新披露，张坤的唯一独管产品易方达亚洲精选的资管规模为36.9亿元，虽仅占在管总规模的八分之一，却是解读他最新调仓思路的关键，最能“表达”张坤"
     },
     {
-      "id": "64c1c0ed7e21a4ac4ad62c610a25c1953cb61b6a",
-      "title": "Cailianshe, Oct 27: Hang Seng futures close down 0.01% at 23,233, Hang Seng Tech up 0.08%",
-      "summary": "Cailianshe, Oct 27: Hang Seng Index futures closed down 0.01% at 23,233 points in overnight trading, while Hang Seng Tech futures rose 0.08% to 3,865 points.",
-      "title_zh": "财联社10月27日电，恒生指数主连夜盘收跌0.01%，报23233点。恒生科技指数主连夜盘收涨0.08%，报3865点。",
-      "summary_zh": "财联社10月27日电，恒生指数主连夜盘收跌0.01%，报23233点"
-    },
-    {
-      "id": "7931b042c1f5a743e4bd29d22b7929ff2a214471",
-      "title": "SpaceX signs a $40 billion AI compute lease, betting on Nvidia's next-generation chips",
-      "summary": "The lease, led by Apollo Global Management, will bring Nvidia's latest Vera Rubin chips to the commercial space group, underlining its push into artificial intelligence.",
-      "title_zh": "SpaceX签下400亿美元AI算力融资租赁协议，押注英伟达下一代芯片",
-      "summary_zh": "SpaceX豪掷400亿美元押注AI算力基础设施建设，这笔由阿波罗全球管理牵头的融资租赁交易将为其引入英伟达最新Vera Rubin芯片，彰显商业航天巨头向人工智能领域大举扩张的战略雄心"
-    },
-    {
-      "id": "1132aa4e4cfe60123e8881a9d752ebf432118242",
-      "title": "Anthropic IPO recap: How Wall Street is responding to the AI lab's filing",
-      "summary": "All the details from Anthropic's IPO prospectus with the Securities and Exchange Commission.",
-      "title_zh": "Anthropic IPO 复盘：华尔街如何回应这家 AI 实验室的申报",
-      "summary_zh": "Anthropic 提交给美国证券交易委员会的 IPO 招股书细节汇总。"
-    },
-    {
-      "id": "14ca9f410ca547655946d8c036d23ce4842c6b5b",
-      "title": "Stocks close higher as excitement over Anthropic IPO filing propels tech sector: Live updates",
-      "summary": "Traders looked ahead to the busiest week of earnings and the Federal Reserve's policy decision due on Wednesday.",
-      "title_zh": "Anthropic IPO 申报点燃科技板块，美股收高",
-      "summary_zh": "交易员已把目光投向最繁忙的财报周以及周三的联储决议。"
-    },
-    {
-      "id": "a3f2381b9bbf55471e0cac8957f6ce99f911b72e",
-      "title": "Prediction market traders say an Anthropic IPO is near-certain this year after company filed with SEC",
-      "summary": "Anthropic on Monday filed its Form S-1 with the Securities and Exchange Commission.",
-      "title_zh": "预测市场交易员称，Anthropic 提交 SEC 文件后今年 IPO 已近乎确定",
-      "summary_zh": "Anthropic 于周一向美国证券交易委员会提交了 S-1 文件。"
-    },
-    {
-      "id": "ac3dc25e628d73ae8e8534537a09f9a523725f97",
-      "title": "Why investors are bullish on Anthropic — despite some big risks",
-      "summary": "Investors sounded positive about Anthropic's IPO filing, despite some large risks",
-      "title_zh": "为什么投资者看好 Anthropic——尽管存在一些重大风险",
-      "summary_zh": "尽管存在若干重大风险，投资者对 Anthropic 的 IPO 申报反应积极。"
-    },
-    {
-      "id": "7ffe9420ecd4f5eac4249bdee054a759cb9f1003",
-      "title": "US parcel fees set to hit a record this holiday season as surging diesel lifts fuel surcharges",
-      "summary": "Surging diesel prices have pushed fuel surcharges close to 30% at major carriers including UPS and FedEx, taking fourth-quarter parcel delivery prices to record highs.",
-      "title_zh": "圣诞旺季美国快递费将创新高！柴油暴涨引发燃油附加费飙升",
-      "summary_zh": "柴油价格飙升带动燃油附加费大幅上涨，UPS和联邦快递等主要承运商的附加费率已接近30%，令今年第四季度的包裹配送价格创历史新高"
-    },
-    {
-      "id": "ed1772a9e9708a083cbbcbaffaf41c9a2a1f4b47",
-      "title": "Ukraine extends martial law by 90 days to end-January; Russia says renewed trilateral talks do not limit military operations",
-      "summary": "Even as partial ceasefire and renewed-negotiation signals emerge, military confrontation continues.",
-      "title_zh": "乌克兰战时状态再延90天至明年1月底，俄方称恢复三方谈判不意味着限制军事行动",
-      "summary_zh": "俄乌局势在释放局部停火与重启谈判信号的同时，军事对抗仍在持续"
-    },
-    {
-      "id": "6d5f0e1155bc0d7b98d1b5aee09bc3f2390e9b2b",
-      "title": "Trump DOJ unlawfully fired Epstein prosecutor Maurene Comey, judge rules",
-      "summary": "The judge ordered that Maurene Comey, the daughter of ex-FBI director James Comey, be retroactively reinstated to her job as an assistant U.S",
-      "title_zh": "法官裁定：特朗普政府司法部非法解雇爱泼斯坦案检察官 Maurene Comey",
-      "summary_zh": "法官下令让前 FBI 局长 James Comey 的女儿恢复担任美国助理检察官的职务。"
-    },
-    {
-      "id": "b3069f24ff8ad14cd81f78289b87130f5f0de2cd",
-      "title": "All three major US indices rise as tech recovers; Brazilian ADRs slump",
-      "summary": "As of publication the Dow was up 0.22%, the Nasdaq up 0.96% and the S&P 500 up 0.74%.",
-      "title_zh": "美股三大指数集体上涨 科技股多数回暖 巴西在美股上市的公司股价重挫",
-      "summary_zh": "美东时间周一，美股三大指数集体上涨，截至发稿，道指涨0.22%，纳指涨0.96%，标普500指数涨0.74%"
-    },
-    {
-      "id": "e9f45e28717d34ce2a344d4c93041caed0d1d647",
-      "title": "J&J's potential 'game-changer' drug — plus, what Microsoft's mass buyouts mean",
-      "summary": "Every weekday, the Investing Club releases the Homestretch; an actionable afternoon update just in time for the last hour of trading.",
-      "title_zh": "强生的潜在「改变游戏规则」药物，以及微软大规模买断意味着什么",
-      "summary_zh": "每个工作日，投资俱乐部都会在收盘前一小时发布 Homestretch 更新。"
-    },
-    {
-      "id": "f8e6c52086fd9a3883243f2752fd059e30350ed6",
-      "title": "Apple responds to user reports of broken iPhone Duo screens on new foldable phone",
-      "summary": "Apple on Monday said it was aware of the issue and that it would replace the devices under its AppleCare warranty.",
-      "title_zh": "苹果回应新款折叠屏 iPhone Duo 屏幕损坏的用户反馈",
-      "summary_zh": "苹果周一表示已知悉该问题，并将通过 AppleCare 保修更换相关设备。"
-    },
-    {
-      "id": "39c1c6b3c9234226439284ea1bc2d635964480df",
-      "title": "FTC and 20 states sue Dollar General, alleging retailer overcharged shoppers",
-      "summary": "The Federal Trade Commission and 20 states have filed a lawsuit against Dollar General, claiming the retailer has charged customers more than advertised prices.",
-      "title_zh": "FTC 与 20 个州起诉 Dollar General，指其向消费者多收钱",
-      "summary_zh": "美国联邦贸易委员会与 20 个州对 Dollar General 提起诉讼，称该零售商向顾客收取的价格高于广告标价。"
-    },
-    {
-      "id": "798ad4c623904c1ffc02fd83ce2c94c06e5d6d98",
-      "title": "Buying America at a discount: This timberland REIT is on sale",
-      "summary": "This timberland REIT is trading far below the value of its land assets even as it has stands to benefit from several different growth oppportunities.",
-      "title_zh": "折价买入美国：这家林地 REIT 正在打折",
-      "summary_zh": "这家林地 REIT 的成交价远低于其土地资产价值，同时有望受益于多项不同的增长机会。"
-    },
-    {
-      "id": "19388185cc435044ee3222ee80ca2a5dd0d59e45",
-      "title": "German president arrives in Anhui at the start of a state visit to China",
-      "summary": "At the invitation of President Xi Jinping, German President Frank-Walter Steinmeier is paying a state visit to China from Oct 27 to 31.",
-      "title_zh": "德国总统抵达安徽开启访华行程",
-      "summary_zh": "应国家主席习近平邀请，德国总统施泰因迈尔于10月27日至31日对中国进行国事访问"
-    },
-    {
-      "id": "62aef9d13e45c21760157ea0e6b3030b051d9f15",
-      "title": "OpenAI releases GPT-6.1 Terra",
-      "summary": "OpenAI released GPT-6.1 Terra.",
-      "title_zh": "OpenAI发布GPT-6.1 Terra",
-      "summary_zh": "OpenAI发布GPT-6.1 Terra"
-    },
-    {
-      "id": "e17d9fb873bb178454462a64d4de0fa1cb068724",
-      "title": "Under AI spending pressure, Microsoft offers buyouts to 60,000 staff including Xbox and Windows",
-      "summary": "Microsoft is reshaping its workforce with an unusually large voluntary exit programme aimed at controlling costs to help fund its AI investment.",
-      "title_zh": "AI烧钱压力下，微软向6万名员工提供自愿离职补偿，覆盖Xbox、Windows等部门",
-      "summary_zh": "微软正在以罕见的大规模的自愿离职计划重塑劳动力结构，此举旨在控制成本，为其大规模的AI投资筹集资金"
-    },
-    {
-      "id": "df57eeb73c7dd5c28637a10a370617485b937243",
-      "title": "iPad mini gets OLED and IP67 for the first time, with China pricing from 5,499 yuan",
-      "summary": "Apple has comprehensively upgraded its smallest tablet, using a new display generation and first-time water resistance to lift the entry price and press directly on the mid-range tablet market.",
-      "title_zh": "iPad mini首配OLED并支持IP67，国行5499元起售上探中端平板定价",
-      "summary_zh": "苹果将旗下最小尺寸平板电脑彻底升级，以屏幕技术换代和防水能力首发为由，将iPad mini的入门价格推至新高，对中端平板市场形成直接压力"
-    },
-    {
-      "id": "eac926982888e494a5f7ead3bffeb216e119dd2e",
-      "title": "Microsoft offers voluntary buyouts to 60,000 employees as AI leads to efficiency push",
-      "summary": "Microsoft is trying to balance a rapid AI infrastructure build-out with capital efficiency.",
-      "title_zh": "微软在 AI 驱动的效率提升下向 6 万名员工提供自愿离职",
-      "summary_zh": "微软正试图在快速的 AI 基建扩张与资本效率之间取得平衡。"
-    },
-    {
-      "id": "b2da40053716a032420a835449ad0905f96ad7e6",
-      "title": "The arc of Trump: How the president lost the coalition that put him in the White House",
-      "summary": "President Trump forged an extraordinary coalition to win office in 2024",
-      "title_zh": "特朗普的轨迹：这位总统如何失去把他送进白宫的政治联盟",
-      "summary_zh": "特朗普在 2024 年组建了一个非同寻常的联盟以赢得大选。"
-    },
-    {
-      "id": "195e9d10dea4f2341ce07b501ca7f53339308165",
-      "title": "Lula wins Brazil runoff after prediction markets favored Bolsonaro",
-      "summary": "While prediction market odds pointed to a clear Bolsonaro victory, Lula emerged the winner in a tight race.",
-      "title_zh": "卢拉赢得巴西第二轮选举，此前预测市场更看好博索纳罗",
-      "summary_zh": "尽管预测市场赔率显示博索纳罗将明确胜出，卢拉最终在这场胶着的选战中获胜。"
-    },
-    {
-      "id": "9f92085e149458982494cde3944df5761ac7b9c7",
-      "title": "Elon Musk says more than 200 neoclouds face 'guppy-level death'",
-      "summary": "Investors are already questioning the debt-fueled expansion of neoclouds and whether the large AI infrastructure build-out will generate long-term returns.",
-      "title_zh": "马斯克称 200 多家 neocloud 面临「孔雀鱼级别的死亡」",
-      "summary_zh": "投资者已在质疑 neocloud 以债务驱动的扩张，以及大规模 AI 基建投入能否产生长期回报。"
-    },
-    {
-      "id": "d971681227f4fef92684f787ea0fedcd21ea46a9",
-      "title": "NBA enters prediction markets with Kalshi, Polymarket partnerships",
-      "summary": "The league also inked a memorandum of understanding with the CFTC, the federal regulator of prediction markets.",
-      "title_zh": "NBA 通过与 Kalshi、Polymarket 合作进入预测市场",
-      "summary_zh": "联盟还与预测市场监管机构 CFTC 签署了谅解备忘录。"
-    },
-    {
-      "id": "709a0a6ca9921b93d61a0c49c16a483d296a8fdf",
-      "title": "Alaska Senate: Peltola seeks quick dismissal of DOJ election lawsuit before midterm",
-      "summary": "The winner of the Alaska Senate election could determine whether Republicans or Democrats have a majority in the Senate in the next Congress.",
-      "title_zh": "阿拉斯加参议院：Peltola 寻求在中期选举前快速驳回司法部的选举诉讼",
-      "summary_zh": "阿拉斯加参议院选举的胜者可能决定下届国会参议院由共和党还是民主党占多数。"
-    },
-    {
-      "id": "b33bef2d6fcbd873ae718df815dd2c4fef534473",
-      "title": "Trump-era gasoline prices top the Biden level, adding to pre-midterm pressure",
-      "summary": "AAA data showed the national average gasoline price at $4.286 a gallon as of last Sunday.",
-      "title_zh": "特朗普任内汽油均价超过拜登时期，中期选举前油价压力加大",
-      "summary_zh": "美国汽车协会数据显示，截至上周日，美国全国汽油平均价格为每加仑4.286 美元"
-    },
-    {
-      "id": "53d80e300a14e8279bb76320d8f1acec0fbf8bcd",
-      "title": "HUTCHMED's savolitinib succeeds in global phase III trial, extending median survival in resistant lung cancer by nearly 5 months",
-      "summary": "On Oct 26 HUTCHMED released the results of the global phase III clinical study of savolitinib.",
-      "title_zh": "和黄医药赛沃替尼全球Ⅲ期研究告捷，肺癌耐药患者中位生存期延长近5个月",
-      "summary_zh": "10月26日，和黄医药公布赛沃替尼全球Ⅲ期临床研究结果"
-    },
-    {
-      "id": "0ddd011a911f08246e280e629dc9e5a7fc838e39",
-      "title": "Investors are doing just as well this year by shunning AI. How to invest if the tech trade keeps fizzling",
-      "summary": "An S&amp;P 500 index without AI stocks is beating the traditional index",
-      "title_zh": "投资者今年避开 AI 同样取得不错收益；若科技交易继续熄火该如何配置",
-      "summary_zh": "剔除 AI 股票的标普 500 指数正跑赢传统指数。"
+      "id": "6fef912661bbc75d76f24b227a931da9e0f07ce7",
+      "title": "GM will switch to Nasdaq from the NYSE on Nov. 17",
+      "summary": "GM expects to keep its “GM” ticker symbol, and the company says shareholders do not need to take action because of the transfer.",
+      "title_zh": "通用汽车将于 11 月 17 日从纽交所转至纳斯达克上市",
+      "summary_zh": "通用汽车预计保留 “GM” 股票代码，并表示因转板股东无需采取任何行动。"
     }
   ],
-  "updated_at": "2026-10-26T21:36:24Z"
+  "updated_at": "2026-10-27T12:50:28Z"
 }
