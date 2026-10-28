@@ -1,32 +1,305 @@
 {
   "items": [
     {
-      "id": "661f23b32201dc338f0007710aa9e3ef32f3012a",
-      "title": "Treasury yields tick higher ahead of Federal Reserve interest rate decision",
+      "id": "4ffc09dfe1f4f5594f18d2220a79954d7e141920",
+      "title": "Nvidia's $12.9 billion Hugging Face deal draws DOJ scrutiny",
+      "summary": "Nvidia faces DOJ inquiry over its $12.9 billion purchase of Hugging Face.",
+      "title_zh": "英伟达 129 亿美元收购 Hugging Face 交易遭美国司法部审查",
+      "summary_zh": "英伟达因 129 亿美元收购 Hugging Face 面临美国司法部问询。"
+    },
+    {
+      "id": "fbcdd221640d29d307bcc29a6b3938668f1904b1",
+      "title": "Fed holds benchmark rate as expected; all three major US indexes close higher, led by AI cloud services and memory",
+      "summary": "On Wednesday US Eastern time, the Fed announced it would keep the federal funds target range at 3.75% to 4%, in line with broad market expectations.",
+      "title_zh": "美联储如期维持基准利率不变 美股三大指数集体收涨 AI云服务、存储板块涨幅居前",
+      "summary_zh": "美东时间周三，美联储宣布将联邦基金利率目标区间维持在3.75%至4%之间不变，符合市场普遍预期"
+    },
+    {
+      "id": "3fa8a52796185525b3968ada764b60230760745a",
+      "title": "Fed chairman talks tough on inflation — plus, what's behind Micron's big rally",
+      "summary": "Every weekday, the Investing Club releases the Homestretch; an actionable afternoon update just in time for the last hour of trading.",
+      "title_zh": "美联储主席对通胀放硬话——以及美光大涨背后的原因",
+      "summary_zh": "每个工作日，投资俱乐部都会发布《Homestretch》，在收盘前一小时提供可操作的午后更新。"
+    },
+    {
+      "id": "3f404cfe5cbb6d69c69a78b7283afb110d56f397",
+      "title": "Fed October statement comparison: economic assessment upgraded to 'strong', wording on policy steering inflation back to target removed",
+      "summary": "New Fed Chair Kevin Warsh has kept to an official, minimalist communication style.",
+      "title_zh": "美联储10月声明全文对比：经济评价上调至“强劲”，删除政策有助于及时回归通胀目标的表述",
+      "summary_zh": "美联储新任主席凯文·沃什继续延续官方式、极简化的沟通风格"
+    },
+    {
+      "id": "6aa5c240e04ed61fec520f9aa0ea62cf2caa0e2f",
+      "title": "Biwin Storage: first three quarters net profit attributable to shareholders 8.768 billion yuan, up 28728.12% year on year",
+      "summary": "Biwin Storage said revenue for the first three quarters of 2026 was 21.717 billion yuan, up 230.30% year on year; net profit attributable to shareholders was 8.768 billion yuan, up 28728.12%; non-recurring net profit was 8.467 billion yuan against a loss a year earlier.",
+      "title_zh": "佰维存储：前三季度归母净利润87.68亿元，同比增长28728.12%",
+      "summary_zh": "佰维存储公告，2026年前三季度营业收入217.17亿元，同比增长230.30%；归母净利润87.68亿元，同比增长28728.12%；扣非净利润84.67亿元，上年同期为亏损"
+    },
+    {
+      "id": "d624d5764aaa5c0aeb3204fc9317c883123c80c1",
+      "title": "Biwin Storage: Q3 net profit up 525.34% year on year, down 62% quarter on quarter",
+      "summary": "Biwin Storage (688525.SH) said Q3 revenue was 6.142 billion yuan, up 130.67% year on year; net profit attributable to shareholders was 1.602 billion yuan, up 525.34%.",
+      "title_zh": "佰维存储：第三季度净利润同比增长525.34% 环比下降62%",
+      "summary_zh": "佰维存储 (688525.SH)公告称，第三季度营业收入为61.42亿元，同比增长130.67%；归属于上市公司股东的净利润为16.02亿元，同比增长525.34%"
+    },
+    {
+      "id": "f6bffb5cf4ec1badb49383ddcb81f80546a62c31",
+      "title": "Federal Reserve issues FOMC statement",
+      "summary": "Federal Reserve issues FOMC statement",
+      "title_zh": "美联储发布FOMC声明",
+      "summary_zh": "美联储发布FOMC声明"
+    },
+    {
+      "id": "04bfcc1dd8ca98b23450c3be94d6078f2d66a76d",
+      "title": "Bessent says 'not necessarily' a mistake if the Fed hikes again",
+      "summary": "Treasury Secretary Scott Bessent joined CNBC for an interview on Oct",
+      "title_zh": "贝森特：若美联储再次加息，“未必”是错误",
+      "summary_zh": "美国财政部长斯科特·贝森特于 10 月接受 CNBC 采访。"
+    },
+    {
+      "id": "fff4766cad8ea9d2ee1b435c7440b2653f0240a5",
+      "title": "10-year Treasury yield creeps higher even as Fed keeps rates the same",
       "summary": "Treasury yields edged higher as traders await the Federal Reserve's latest monetary policy decision.",
-      "title_zh": "国债收益率在美联储利率决议前小幅走高",
-      "summary_zh": "交易员等待美联储最新货币政策决定之际，国债收益率小幅走高。"
+      "title_zh": "美联储维持利率不变，10 年期美债收益率仍小幅上行",
+      "summary_zh": "交易员等待美联储最新货币政策决议之际，美债收益率小幅走高。"
     },
     {
-      "id": "68d60d9c877b553e204ca5e74654fb9139dc2a69",
-      "title": "Indian investors rush to Nvidia, SpaceX, Apple as local trading apps roll out access to U.S. stocks",
-      "summary": "Major Indian brokerages are providing retail investors access to U.S",
-      "title_zh": "印度投资者涌入英伟达、SpaceX、苹果，本地交易App开通美股通道",
-      "summary_zh": "印度主要券商正在为散户投资者提供美股交易通道。"
+      "id": "1d394128d022946f5212020d115efa62f2acf107",
+      "title": "October 29 member briefing: Fed holds; Bank of Canada raises rates to 2.5%, first hike in more than three years",
+      "summary": "1. [Fed holds] On Wednesday (October 28) the Fed announced it would keep the federal funds target range at 3.75% to 4%.",
+      "title_zh": "10月29日会员早报：美联储按兵不动 加拿大央行三年多来首次加息至2.5%",
+      "summary_zh": "1、【美联储按兵不动】美联储周三（10月28日）宣布，将联邦基金利率目标区间维持在3.75%至4%不变"
     },
     {
-      "id": "4f60095c23d0198ebb9a249026ca6c810ff5631a",
-      "title": "Fed's October hawkish pause: where is the market's pricing mismatch?",
-      "summary": "In the early hours of Beijing time on the 29th, the Federal Reserve will announce its October rate decision.",
-      "title_zh": "美联储10月鹰派暂停：市场的交易预期差在哪里？",
-      "summary_zh": "北京时间29日凌晨，美联储将公布10月份利率决议"
+      "id": "a20b7990351d4d5f10dd1793d69770f62fd47528",
+      "title": "Market reaction: Fed holds at 3.75%-4%; two-year Treasury yield drops sharply, 10-year stays higher, gold down 0.5%",
+      "summary": "Market reaction: Fed holds at 3.75%-4%; two-year Treasury yield drops sharply, 10-year stays higher, gold down 0.5%.",
+      "title_zh": "市场反应：美联储维持利率政策在3.75%-4%不变，两年期美债收益率短线跳水、10年期美债收益率维持上涨，金价维持下跌0.5%",
+      "summary_zh": "市场反应：美联储维持利率政策在3.75%-4%不变，两年期美债收益率短线跳水、10年期美债收益率维持上涨，金价维持下跌0.5%"
     },
     {
-      "id": "9c56372c341aeeadde5056844536fb42601efaa9",
-      "title": "Tonight's Fed 'hold' is a foregone conclusion; the market is 'buying everything' (except crude)",
-      "summary": "The Fed's pause at this meeting is all but certain, but across-the-board upside surprises in macro data are repricing the December policy path; against a hardening 'higher for longer' expectation, markets staged a rare simultaneous rally in risk and safe-haven assets - with crude the lone faller, reflecting underlying demand concerns.",
-      "title_zh": "今夜美联储“按兵不动”无悬念，市场选择\"买入一切\"（除了原油）",
-      "summary_zh": "美联储本次会议暂停加息几成定局，但宏观数据的全线超预期正在重新定价12月政策路径，市场在\"higher for longer\"预期强化下上演了一场罕见的风险资产与避险资产同涨行情——唯有原油逆势下跌，折射出需求端的潜在隐忧"
+      "id": "dec8c9283c36b465239a6d268d41b3783e758db9",
+      "title": "Fed meeting recap: Warsh says central bank will host fewer rate-setting meetings in future years",
+      "summary": "The Federal Reserve held steady on rates at the conclusion of its October meeting, maintaining its target range of 3.75% to 4%.",
+      "title_zh": "美联储会议回顾：沃什称未来数年将减少议息会议次数",
+      "summary_zh": "美联储在 10 月会议结束时维持利率不变，目标区间保持在 3.75% 至 4%。"
+    },
+    {
+      "id": "f690419a9311deb9a23cb5ead353cadb9569bad0",
+      "title": "Bond investor Jeff Gundlach on Fed's rate pause: 'What are you waiting for?'",
+      "summary": "The DoubleLine founder spoke with CNBC's \"Closing Bell\" on Wednesday after the Fed held interest rates steady.",
+      "title_zh": "债券投资人冈拉克评美联储按兵不动：“你们还在等什么？”",
+      "summary_zh": "美联储维持利率不变后，DoubleLine 创始人周三接受 CNBC《收盘钟声》采访。"
+    },
+    {
+      "id": "3152ee86117f2f88abae90b32baa9a4329a68601",
+      "title": "Fed holds rates steady despite concerns over inflation",
+      "summary": "Two of the 12 Federal Open Market Committee voters dissented from the decision",
+      "title_zh": "美联储不顾通胀担忧维持利率不变",
+      "summary_zh": "12 位联邦公开市场委员会票委中有两位投出反对票。"
+    },
+    {
+      "id": "2ea095866de54b7708544d884fecac8478d16352",
+      "title": "Report: US Justice Department questions Nvidia's Hugging Face acquisition",
+      "summary": "Report: US Justice Department questions Nvidia's Hugging Face acquisition.",
+      "title_zh": "报道：美国司法部质询英伟达收购Hugging Face一事",
+      "summary_zh": "报道：美国司法部质询英伟达收购Hugging Face一事"
+    },
+    {
+      "id": "50193c8608eb6f795653f100c8de02ddbd6cdcc4",
+      "title": "Fed Chair Warsh: FOMC arrangements will change next autumn; 6 policy meetings expected in 2028; 8 meetings a year is the appropriate number",
+      "summary": "Fed Chair Warsh: the FOMC's arrangements will change next autumn.",
+      "title_zh": "美联储主席沃什：下个秋季，FOMC的安排将发生变化。 预计2028年将举行6次政策制定会议。 一年召开8次会议是合适的次数",
+      "summary_zh": "美联储主席沃什：下个秋季，FOMC的安排将发生变化"
+    },
+    {
+      "id": "3f23a0bc2605c19e92bb77782f4247b0a1ddb4d2",
+      "title": "Fed holds; statement says Cook and Hammack favoured a hike",
+      "summary": "Fed holds; statement says Cook and Hammack favoured a hike.",
+      "title_zh": "美联储按兵不动，决议声明称：库克、Hammack倾向于加息",
+      "summary_zh": "美联储按兵不动，决议声明称：库克、Hammack倾向于加息"
+    },
+    {
+      "id": "9033caa1faf3eff8ce8d1becf40865081de98331",
+      "title": "Warsh: Fed schedule changes from next autumn; one 2027 meeting will not hold a rate vote",
+      "summary": "Fed Chair Warsh said the FOMC's schedule will change starting next autumn.",
+      "title_zh": "沃什：美联储日程安排将从明年秋季开始变化 2027年将有一次会议不进行利率投票",
+      "summary_zh": "美联储主席沃什表示，联邦公开市场委员会的日程安排将从明年秋季开始变化"
+    },
+    {
+      "id": "3f6e9e3a366c2e22b1b4f0ce1b3e2fc7185178f5",
+      "title": "Here is what changed in the new Fed statement",
+      "summary": "This is a comparison of Wednesday's Federal Open Market Committee statement with the one issued after the Fed's previous policymaking meeting in September.",
+      "title_zh": "美联储新声明有哪些变化",
+      "summary_zh": "以下将周三的联邦公开市场委员会声明与美联储 9 月上次议息会议后发布的声明进行对比。"
+    },
+    {
+      "id": "6b505049fdf867d8a974c01c394daa938a72821b",
+      "title": "Where to put your money no matter what the Fed does",
+      "summary": "Just because the Fed didn't adjust its benchmark rate doesn't mean there's nothing you can do to improve your finances.",
+      "title_zh": "无论美联储怎么做，钱该放在哪里",
+      "summary_zh": "美联储没有调整基准利率，并不意味着你无法改善自身财务状况。"
+    },
+    {
+      "id": "c882f08f93c451c87bf385a3f2150854f339a7a8",
+      "title": "Fed leaves rates unchanged: What it means for credit cards, mortgages, auto loans and savings accounts",
+      "summary": "The Fed's benchmark affects many consumer borrowing costs, including the rates tied to mortgages, credit cards, auto loans and savings accounts.",
+      "title_zh": "美联储维持利率不变：对信用卡、房贷、车贷与储蓄账户意味着什么",
+      "summary_zh": "美联储基准利率影响诸多消费借贷成本，包括与房贷、信用卡、车贷和储蓄账户挂钩的利率。"
+    },
+    {
+      "id": "614aef5012801f67fbe66a1533f365161c0237fd",
+      "title": "Fed holds benchmark rate as expected; two voters favoured a 25 basis point hike",
+      "summary": "In the early hours of Thursday (October 29) Beijing time, the Fed announced it would keep the federal funds target range at 3.75% to 4%, in line with broad market expectations.",
+      "title_zh": "美联储如期维持基准利率不变 两名票委主张加息25个基点",
+      "summary_zh": "北京时间周四（10月29日）凌晨，美联储宣布将联邦基金利率目标区间维持在3.75%至4%之间不变，符合市场普遍预期"
+    },
+    {
+      "id": "34fd6bea0a90645e0df9c18c4955313ffd04c79b",
+      "title": "Microsoft Azure cloud revenue grows 48%, beating expectations",
+      "summary": "Microsoft Azure cloud revenue grows 48%, beating expectations. CLS, Oct 29: Microsoft reported cloud revenue above expectations, showing it continues to benefit from its heavy investment in artificial intelligence.",
+      "title_zh": "微软Azure云业务营收增长48%超预期",
+      "summary_zh": "【微软Azure云业务营收增长48%超预期】财联社10月29日电，微软公司公布云业务营收超出预期，显示其继续从人工智能领域的巨额投资中获益"
+    },
+    {
+      "id": "5dc9b6060e4234f1ea814245003932eb904dae8e",
+      "title": "CLS, Oct 29: Microsoft disclosed a negative $0.03 per-share impact from its OpenAI investment.",
+      "summary": "CLS, Oct 29: Microsoft disclosed a negative $0.03 per-share impact from its OpenAI investment.",
+      "title_zh": "财联社10月29日电，微软披露，来自OpenAI投资的每股收益影响为负0.03美元。",
+      "summary_zh": "财联社10月29日电，微软披露，来自OpenAI投资的每股收益影响为负0.03美元"
+    },
+    {
+      "id": "002e6294e130454f07e56d2de80974c77d70869b",
+      "title": "CLS, Oct 29: ServiceNow falls 16% after hours; Q3 adjusted EPS of $1 misses the $1.03 estimate.",
+      "summary": "CLS, Oct 29: ServiceNow falls 16% after hours.",
+      "title_zh": "财联社10月29日电，ServiceNow盘后大跌16%。公司第三季度调整后每股收益为1美元，低于预估的1.03美元。",
+      "summary_zh": "财联社10月29日电，ServiceNow盘后大跌16%"
+    },
+    {
+      "id": "6bcb7234ad37abb46546e3634ec6d1fb1238b017",
+      "title": "CLS, Oct 29: Ford expects a $2 billion headwind in 2027 from commodities, chips and shipping.",
+      "summary": "CLS, Oct 29: Ford expects a $2 billion headwind in 2027 from commodities, chips and shipping.",
+      "title_zh": "财联社10月29日电，福特汽车预计，2027年将因大宗商品、芯片和航运因素面临20亿美元的逆风。",
+      "summary_zh": "财联社10月29日电，福特汽车预计，2027年将因大宗商品、芯片和航运因素面临20亿美元的逆风"
+    },
+    {
+      "id": "a809bccedacba0a23a08d23f0260e67599b58a34",
+      "title": "CLS, Oct 29: Alphabet says AI investment is driving overall search query growth, with year-on-year growth the highest in five years. Trailing 12-month free cash flow in fiscal Q3 2026 was $19.75 billion, year on year...",
+      "summary": "CLS, Oct 29: Alphabet says AI investment is driving overall search query growth, with year-on-year query growth the highest in five years.",
+      "title_zh": "财联社10月29日电，Alphabet表示，AI投资正推动整体搜索查询增长，搜索查询同比增速为五年来最高。公司2026年第三财季过去12个月自由现金流为197.5亿美元，同比...",
+      "summary_zh": "财联社10月29日电，Alphabet表示，AI投资正推动整体搜索查询增长，搜索查询同比增速为五年来最高"
+    },
+    {
+      "id": "c3b54f9b5747a7c589818785099b7b26254ff8af",
+      "title": "KLA guides fiscal Q2 revenue to $4.5-4.9 billion against a $4.52 billion estimate",
+      "summary": "KLA guides fiscal Q2 revenue to $4.5-4.9 billion against a $4.52 billion estimate. CLS, Oct 29: KLA's fiscal Q1 revenue was $4.14 billion, above the $4.04 billion estimate; capex was $194.8 million, above the $101.4 million estimate; adjusted EPS was $1.22.",
+      "title_zh": "科磊预计第二财季营收为45亿至49亿美元 市场预估为45.2亿美元",
+      "summary_zh": "【科磊预计第二财季营收为45亿至49亿美元 市场预估为45.2亿美元】财联社10月29日电，科磊第一财季营收为41.4亿美元，高于预估的40.4亿美元；资本开支为1.948亿美元，高于预估的1.014亿美元；调整后每股收益为1.22美元"
+    },
+    {
+      "id": "ad3fbb34ca3d82f6f4790ae21d51b60ce749f0cb",
+      "title": "CLS, Oct 29: US Vice President Vance is said to have written to Iran's Supreme National Security Council secretary Rezaei in a bid to restart peace talks.",
+      "summary": "CLS, Oct 29: US Vice President Vance is said to have written to Iran's Supreme National Security Council secretary Rezaei in a bid to restart peace talks.",
+      "title_zh": "财联社10月29日电，美国副总统万斯据悉已致信伊朗最高国家安全委员会秘书雷扎伊，试图重启和平谈判。",
+      "summary_zh": "财联社10月29日电，美国副总统万斯据悉已致信伊朗最高国家安全委员会秘书雷扎伊，试图重启和平谈判"
+    },
+    {
+      "id": "f147242c18c4b571d8f2e8a8a3e8eccd6b3c8edf",
+      "title": "CLS, Oct 29: Raymond James Q4 net revenue was $4.27 billion, above the $4.22 billion estimate; adjusted EPS was $3.59, above the $3.28 estimate.",
+      "summary": "CLS, Oct 29: Raymond James Q4 net revenue was $4.27 billion, above the $4.22 billion estimate; adjusted EPS was $3.59, above the $3.28 estimate.",
+      "title_zh": "财联社10月29日电，Raymond James第四季度净营收为42.7亿美元，高于预估的42.2亿美元；调整后每股收益为3.59美元，高于预估的3.28美元。",
+      "summary_zh": "财联社10月29日电，Raymond James第四季度净营收为42.7亿美元，高于预估的42.2亿美元；调整后每股收益为3.59美元，高于预估的3.28美元"
+    },
+    {
+      "id": "5e5ac5b693011a1fdd275cebb76de51ad5824c95",
+      "title": "CLS, Oct 29: global bond issuance has reached an annual record of $6.61 trillion.",
+      "summary": "CLS, Oct 29: global bond issuance has reached an annual record of $6.61 trillion.",
+      "title_zh": "财联社10月29日电，全球债券发行规模达到6.61万亿美元的年度纪录。",
+      "summary_zh": "财联社10月29日电，全球债券发行规模达到6.61万亿美元的年度纪录"
+    },
+    {
+      "id": "ff71d46173be82956a5e29fc9d868cb6d215b523",
+      "title": "CLS, Oct 29: MGM Resorts Q3 net revenue was $4.21 billion against a $4.23 billion estimate; Q3 adjusted loss per share was $0.11.",
+      "summary": "CLS, Oct 29: MGM Resorts Q3 net revenue was $4.21 billion against a $4.23 billion estimate; Q3 adjusted loss per share was $0.11.",
+      "title_zh": "财联社10月29日电，美高梅国际酒店第三季度净营收42.1亿美元，预估42.3亿美元；第三季度调整后每股亏损0.11美元。",
+      "summary_zh": "财联社10月29日电，美高梅国际酒店第三季度净营收42.1亿美元，预估42.3亿美元；第三季度调整后每股亏损0.11美元"
+    },
+    {
+      "id": "8686bebf1791c17e0a38db11c0b2c6cbbe2b80d9",
+      "title": "CLS, Oct 29: Honeywell Aerospace Q3 adjusted EBIT was $1.16 billion, above the $1.07 billion estimate; revenue was $4.64 billion, above the $4.56 billion estimate.",
+      "summary": "CLS, Oct 29: Honeywell Aerospace Q3 adjusted EBIT was $1.16 billion, above the $1.07 billion estimate; revenue was $4.64 billion, above the $4.56 billion estimate.",
+      "title_zh": "财联社10月29日电，霍尼韦尔航空航天第三季度调整后息税前利润为11.6亿美元，高于预估的10.7亿美元；营收为46.4亿美元，高于预估的45.6亿美元。",
+      "summary_zh": "财联社10月29日电，霍尼韦尔航空航天第三季度调整后息税前利润为11.6亿美元，高于预估的10.7亿美元；营收为46.4亿美元，高于预估的45.6亿美元"
+    },
+    {
+      "id": "8c9f20abb740795e72736b371f9651238d451de4",
+      "title": "CLS, Oct 29: T-Mobile Q3 EPS was $3.22, above the $2.93 estimate; core adjusted EBITDA was $9.62 billion, above the $9.42 billion estimate.",
+      "summary": "CLS, Oct 29: T-Mobile Q3 EPS was $3.22, above the $2.93 estimate; core adjusted EBITDA was $9.62 billion, above the $9.42 billion estimate.",
+      "title_zh": "财联社10月29日电，T-Mobile第三季度每股收益为3.22美元，高于预估的2.93美元；核心调整后EBITDA为96.2亿美元，高于预估的94.2亿美元。",
+      "summary_zh": "财联社10月29日电，T-Mobile第三季度每股收益为3.22美元，高于预估的2.93美元；核心调整后EBITDA为96.2亿美元，高于预估的94.2亿美元"
+    },
+    {
+      "id": "5a04eae4b3411373112654340618bb7718668c74",
+      "title": "CLS, Oct 29: ServiceNow Q3 revenue was $4.11 billion, above the $4.1 billion estimate; adjusted EPS was $1, below the $1.03 estimate.",
+      "summary": "CLS, Oct 29: ServiceNow Q3 revenue was $4.11 billion, above the $4.1 billion estimate; adjusted EPS was $1, below the $1.03 estimate.",
+      "title_zh": "财联社10月29日电，ServiceNow第三季度营收为41.1亿美元，高于预估的41亿美元；调整后每股收益为1美元，低于预估的1.03美元。",
+      "summary_zh": "财联社10月29日电，ServiceNow第三季度营收为41.1亿美元，高于预估的41亿美元；调整后每股收益为1美元，低于预估的1.03美元"
+    },
+    {
+      "id": "479faba4314f1da61accae45bfa17fbf0d80f965",
+      "title": "CLS, Oct 29: Chipotle Q3 adjusted EPS was 27 cents, below the 29 cent estimate; revenue was $3.3 billion, slightly above the $3.29 billion estimate.",
+      "summary": "CLS, Oct 29: Chipotle Q3 adjusted EPS was 27 cents, below the 29 cent estimate; revenue was $3.3 billion, slightly above the $3.29 billion estimate.",
+      "title_zh": "财联社10月29日电，墨式烧烤第三季度调整后每股收益为27美分，低于预估的29美分；营收为33亿美元，略高于预估的32.9亿美元。",
+      "summary_zh": "财联社10月29日电，墨式烧烤第三季度调整后每股收益为27美分，低于预估的29美分；营收为33亿美元，略高于预估的32.9亿美元"
+    },
+    {
+      "id": "5abf8bf3f782379c7ea601ca66032e23738a6940",
+      "title": "CLS, Oct 29: US Treasury Secretary Bessent says Trump is 'fully confident' in Warsh's handling of the mandate.",
+      "summary": "CLS, Oct 29: US Treasury Secretary Bessent says Trump is 'fully confident' in Warsh's handling of the mandate.",
+      "title_zh": "财联社10月29日电，美国财长贝森特表示，特朗普对沃什应对使命“充满信心”。",
+      "summary_zh": "财联社10月29日电，美国财长贝森特表示，特朗普对沃什应对使命“充满信心”"
+    },
+    {
+      "id": "4858aadc6628e8d9a29fdd54430a6279b4c3da33",
+      "title": "CLS, Oct 29: FedEx Q3 revenue was $22.9 billion. The company guides full-year adjusted EPS to $18 to $18.60, up from a prior $16.90 to $18.10.",
+      "summary": "CLS, Oct 29: FedEx Q3 revenue was $22.9 billion.",
+      "title_zh": "财联社10月29日电，联邦快递第三季度营收为229亿美元。公司预计全年调整后每股收益为18至18.60美元，此前预期为16.90至18.10美元。",
+      "summary_zh": "财联社10月29日电，联邦快递第三季度营收为229亿美元"
+    },
+    {
+      "id": "58ab409bb6caf672a62dd9bed14a90419abcee5d",
+      "title": "CLS, Oct 29: Alphabet falls 7.9% after hours as fiscal Q3 revenue excluding traffic acquisition costs misses estimates.",
+      "summary": "CLS, Oct 29: Alphabet falls 7.9% after hours as fiscal Q3 revenue excluding traffic acquisition costs misses estimates.",
+      "title_zh": "财联社10月29日电，谷歌盘后跌7.9%，公司第三财季不含流量获取成本的营收不及预期。",
+      "summary_zh": "财联社10月29日电，谷歌盘后跌7.9%，公司第三财季不含流量获取成本的营收不及预期"
+    },
+    {
+      "id": "3e91d174fb3a136f11e342afbdae05216a9433d8",
+      "title": "CLS, Oct 29: eBay Q3 net revenue was $3.21 billion, above the $3.12 billion estimate; adjusted EPS from continuing operations was $1.51, above the $1.42 estimate.",
+      "summary": "CLS, Oct 29: eBay Q3 net revenue was $3.21 billion, above the $3.12 billion estimate; adjusted EPS from continuing operations was $1.51, above the $1.42 estimate.",
+      "title_zh": "财联社10月29日电，eBay第三季度净营收为32.1亿美元，高于市场预估的31.2亿美元；持续经营业务调整后每股收益为1.51美元，高于预估的1.42美元。",
+      "summary_zh": "财联社10月29日电，eBay第三季度净营收为32.1亿美元，高于市场预估的31.2亿美元；持续经营业务调整后每股收益为1.51美元，高于预估的1.42美元"
+    },
+    {
+      "id": "d3a944129227ff465e91e45515cfacf4b245290f",
+      "title": "Ford Q3 total revenue $49.53 billion, down 1.9% year on year",
+      "summary": "Ford Q3 total revenue $49.53 billion, down 1.9% year on year. CLS, Oct 29: Ford's Q3 total revenue was $49.53 billion, down 1.9% year on year; adjusted EPS was $0.49 against $0.45 a year earlier and a $0.41 estimate; adjusted EBIT was $2.7 billion, up 3.8% year on year against a $2.38 billion estimate.",
+      "title_zh": "福特汽车第三季度总营收495.3亿美元 同比减少1.9%",
+      "summary_zh": "【福特汽车第三季度总营收495.3亿美元 同比减少1.9%】财联社10月29日电，福特汽车第三季度总营收495.3亿美元，同比减少1.9%；调整后每股收益0.49美元，上年同期0.45美元，预估0.41美元；调整后息税前利润27亿美元，同比+3.8%，预估23.8亿美元"
+    },
+    {
+      "id": "240c348428c3567b55b24397cbceeea40d921c6e",
+      "title": "CLS, Oct 29: Microsoft rises 6.4% after hours after fiscal Q1 cloud revenue beat expectations.",
+      "summary": "CLS, Oct 29: Microsoft rises 6.4% after hours after fiscal Q1 cloud revenue beat expectations.",
+      "title_zh": "财联社10月29日电，微软盘后股价上涨6.4%，此前该公司公布的第一财季云收入超预期。",
+      "summary_zh": "财联社10月29日电，微软盘后股价上涨6.4%，此前该公司公布的第一财季云收入超预期"
+    },
+    {
+      "id": "41f022b56a4703da0a61cda21ed9360c5be0f456",
+      "title": "Fed's 'financial conditions' debate goes public: Hammack pushes for a hike while Williams prefers to wait",
+      "summary": "Whether financial conditions are tight enough has become the central split inside the Fed and directly shapes the direction of this week's rate decision.",
+      "title_zh": "美联储\"金融条件之争\"公开化：哈马克要求加息，威廉姆斯则倾向等待",
+      "summary_zh": "金融条件是否足够紧缩，正成为美联储内部的核心分歧，并直接左右本周利率决议的走向"
     },
     {
       "id": "f3c13c7c725f3456b2e5e7e784227eaf41ca8080",
@@ -36,320 +309,47 @@
       "summary_zh": "北京时间周四凌晨，美联储即将公布10月货币政策决议"
     },
     {
-      "id": "5f0e30f307abc077d025b7a5dafc7763d1834b04",
-      "title": "A sleepless night! Fed decision due before dawn: a pause is becoming consensus, the real battle is in December",
-      "summary": "At 2:00 a.m. Beijing time on October 29, the Federal Reserve will announce its October monetary policy decision.",
-      "title_zh": "今夜无眠！美联储决议凌晨揭晓：暂停加息渐成共识 真正的博弈在12月",
-      "summary_zh": "北京时间10月29日凌晨2点， 美联储将公布10月货币政策决议 "
+      "id": "f231771c5d14cef4a846d6a87fd7d68d74529890",
+      "title": "Why did the Fed hold off on raising interest rates? Warsh says it’s because an ‘information rich’ period is coming.",
+      "summary": "Federal Reserve Chairman Kevin Warsh addressed why the central bank didn’t raise interest rates on Wednesday.",
+      "title_zh": "美联储为何暂不加息？沃什称因为即将进入“信息密集”期。",
+      "summary_zh": "美联储主席凯文·沃什周三解释了央行未加息的原因。"
     },
     {
-      "id": "fa984bee4ec6b757b615856edccc5156eb3e7283",
-      "title": "Sources: ChangXin Memory to launch advanced AI memory chip production; pricing may exceed overseas rivals",
-      "summary": "According to Reuters on the 28th, two sources said ChangXin Memory plans to begin small-batch production of HBM3E.",
-      "title_zh": "知情人士：长鑫科技将启动先进AI内存芯片生产 售价或高于海外竞品",
-      "summary_zh": "据路透社28日报道，两位知情人士透露， 长鑫科技 计划启动HBM3E小批量生产"
+      "id": "144ba38299c3ecf658a434ccf8890196943b49d2",
+      "title": "Alphabet's free cash flow sinks further, Q3 capex expectations miss in worrying sign for AI trade",
+      "summary": "Alphabet faces a skeptical Wall Street as it prepares to report quarterly results.",
+      "title_zh": "Alphabet自由现金流进一步下滑，第三季度资本开支预期落空，为AI交易敲响警钟",
+      "summary_zh": "Alphabet在发布季报前面临华尔街的质疑。"
     },
     {
-      "id": "dfe74ccca30dc544f11da608908f3a43829189f4",
-      "title": "CLS, Oct 28: brokerage Monness Crespi Hardt raised Apple's target price from $335 to $355.",
-      "summary": "CLS, Oct 28: brokerage Monness Crespi Hardt raised Apple's target price from $335 to $355.",
-      "title_zh": "财联社10月28日电，投行Monness Crespi Hardt将苹果公司目标价从335美元上调至355美元。",
-      "summary_zh": "财联社10月28日电，投行Monness Crespi Hardt将苹果公司目标价从335美元上调至355美元"
+      "id": "5a3749f1bd15ebff460f8dda8e42005c74798e23",
+      "title": "Microsoft stock jumps 4% as cloud growth drives earnings and revenue beat",
+      "summary": "Microsoft reported better-than-expected results driven by 48% growth in Azure revenue.",
+      "title_zh": "云业务增长推动业绩超预期，微软股价大涨4%",
+      "summary_zh": "在 Azure 营收增长 48% 的推动下，微软业绩超出预期。"
     },
     {
-      "id": "b3b153131863cd1347085df8bbf74bdb033dd882",
-      "title": "Houthi says Saudi-led coalition airstrike on Yemen killed and wounded several people",
-      "summary": "[Houthi says Saudi-led coalition airstrike on Yemen killed and wounded several] CLS, Oct 28: per information released by Yemen's Houthi movement on the afternoon of the 28th local time, earlier that day a Saudi-led multinational coalition airstruck a market and a gas station in Yemen's Al Jawf province.",
-      "title_zh": "胡塞武装称沙特主导联军空袭也门 致多人伤亡",
-      "summary_zh": "【胡塞武装称沙特主导联军空袭也门 致多人伤亡】财联社10月28日电，据也门胡塞武装当地时间28日下午发布的信息，当天早些时候，沙特主导的多国联军空袭也门焦夫省的一处市场和一座加油站"
+      "id": "340a24fc7e617962a7ac95c283dae62d0b9395f6",
+      "title": "Apple brings touch to the Mac, reversing years-old stance on touchscreen laptop",
+      "summary": "Apple announces a new touchscreen laptop, the company's third major launch under new CEO John Ternus.",
+      "title_zh": "苹果为Mac引入触控，逆转多年来的触屏笔记本立场",
+      "summary_zh": "苹果发布新款触屏笔记本，这是新任 CEO 约翰·特努斯任内的第三次重大发布。"
     },
     {
-      "id": "ff7516ca5b76a12ee0a1dc99bcc2cc89e651c0b4",
-      "title": "PetroChina's fourth-largest shareholder Guoxin Hongsheng increased its stake by 373 million shares in Q3",
-      "summary": "[PetroChina's fourth-largest shareholder Guoxin Hongsheng increased its Q3 stake by 373 million shares] CLS, Oct 28: PetroChina (601857.SH) posted its 2026 Q3 report; versus its 2026 H1 report, fourth-largest shareholder Guoxin Hongsheng raised its holding by 373 million shares to 1.386 billion shares, or 0.76% of total share capital.",
-      "title_zh": "中国石油第四大股东国新宏盛投资(北京)有限公司三季度增仓3.73亿股",
-      "summary_zh": "【中国石油第四大股东国新宏盛投资(北京)有限公司三季度增仓3.73亿股】财联社10月28日电，中国石油(601857.SH)发布2026年三季报显示，与2026年半年报相比，第四大股东国新宏盛持仓增加3.73亿股至13.86亿股，占总股本比例0.76%"
+      "id": "5eacf52ef4b3857ee313137d5b023826dc71d2ba",
+      "title": "Three media outlets seek full White House access in amended lawsuit",
+      "summary": "President Donald Trump banned MS NOW, CNN and Politico from the White House in September, only to have a judge he appointed order their return.",
+      "title_zh": "三家媒体在修订诉讼中寻求白宫全面采访权限",
+      "summary_zh": "美国总统唐纳德·特朗普 9 月禁止 MS NOW、CNN 和 Politico 进入白宫，但其任命的法官随后下令允许其返回。"
     },
     {
-      "id": "e8d199f9f6a1557aab093da81e11e800f6b023ab",
-      "title": "CLS, Oct 28: Bernstein raised Coca-Cola's target price from $93 to $95.",
-      "summary": "CLS, Oct 28: Bernstein raised Coca-Cola's target price from $93 to $95.",
-      "title_zh": "财联社10月28日电，伯恩斯坦将可口可乐目标价从93美元上调至95美元。",
-      "summary_zh": "财联社10月28日电，伯恩斯坦将可口可乐目标价从93美元上调至95美元"
-    },
-    {
-      "id": "e97a3941b7fb6e4bd4a0767f99207b3f84c2fa79",
-      "title": "Suzhou Party secretary Fan Bo meets AbbVie global EVP Nicholas Donohue and delegation",
-      "summary": "[Suzhou Party secretary Fan Bo meets AbbVie global EVP Nicholas Donohue and delegation] CLS, Oct 28: per Suzhou Daily, on Oct 27 Suzhou Party secretary Fan Bo met with AbbVie global executive vice president Nicholas Donohue and his party.",
-      "title_zh": "苏州市委书记范波会见艾伯维全球执行副总裁尼古拉斯·多诺霍一行",
-      "summary_zh": "【苏州市委书记范波会见艾伯维全球执行副总裁尼古拉斯·多诺霍一行】财联社10月28日电，据苏州日报，10月27日，苏州市委书记范波会见了艾伯维全球执行副总裁尼古拉斯·多诺霍一行"
-    },
-    {
-      "id": "6cf5452e619544750b474954d15d3a447f5a0001",
-      "title": "Qatar reportedly submitted a new draft agreement to Iran aimed at ending hostilities",
-      "summary": "[Qatar reportedly submitted a new draft agreement to Iran aimed at ending hostilities] CLS, Oct 28: Reuters reported on the 28th, citing 'people familiar with the matter,' that Qatari mediators submitted a new draft agreement in Tehran on the 25th aimed at ending the conflict between Iran and the U.S. and Israel; Iran is studying it and is expected to respond this week.",
-      "title_zh": "卡塔尔据称向伊朗提交旨在结束战事的新协议草案",
-      "summary_zh": "【卡塔尔据称向伊朗提交旨在结束战事的新协议草案】财联社10月28日电，路透社28日援引“知情人士”的话报道，卡塔尔调解人员25日在德黑兰向伊朗提交了一份旨在结束伊朗与美国、以色列之间战事的新协议草案，伊朗方面正在研究这一草案，预计本周作出回应"
-    },
-    {
-      "id": "aba7ce769837a5a9fd48ab744305357b15bc7583",
-      "title": "Shenwan Hongyuan: net profit down 10.92% YoY in first three quarters; Q3 net profit down 58% QoQ",
-      "summary": "[Shenwan Hongyuan: first-three-quarter net profit down 10.92% YoY; Q3 net profit down 58% QoQ] CLS, Oct 28: Shenwan Hongyuan (000166.SZ) announced Q3 operating revenue of 4.023 billion yuan, down 48.45% YoY; net profit attributable to shareholders of 1.410 billion yuan, down 62.21% YoY.",
-      "title_zh": "申万宏源：前三季度净利润同比下降10.92% Q3净利润环比下降58%",
-      "summary_zh": "【申万宏源：前三季度净利润同比下降10.92% Q3净利润环比下降58%】财联社10月28日电，申万宏源(000166.SZ)公告称，第三季度营业收入为40.23亿元，同比下降48.45%；归属于上市公司股东的净利润为14.10亿元，同比下降62.21%"
-    },
-    {
-      "id": "0f48184f1ae7c09fa0438777f29bcbeae142b842",
-      "title": "CLS, Oct 28: Nasdaq 100 ETF Bosera (513390) will be suspended from market open on Oct 29, 2026 until 10:30 that day.",
-      "summary": "CLS, Oct 28: Nasdaq 100 ETF Bosera (513390) will be suspended from market open on Oct 29, 2026 until 10:30 that day.",
-      "title_zh": "财联社10月28日电，纳指100ETF博时(513390)将于2026年10月29日开市起至当日10:30停牌。",
-      "summary_zh": "财联社10月28日电，纳指100ETF博时(513390)将于2026年10月29日开市起至当日10:30停牌"
-    },
-    {
-      "id": "6b39695cb91ff2d0b08a27315053fd417720fd8a",
-      "title": "CLS, Oct 28: Nasdaq ETF Huatai-PineBridge (513110) will be suspended from market open on Oct 29, 2026 until 10:30 that day.",
-      "summary": "CLS, Oct 28: Nasdaq ETF Huatai-PineBridge (513110) will be suspended from market open on Oct 29, 2026 until 10:30 that day.",
-      "title_zh": "财联社10月28日电，纳指ETF华泰柏瑞(513110)将于2026年10月29日开市起至当日10:30停牌。",
-      "summary_zh": "财联社10月28日电，纳指ETF华泰柏瑞(513110)将于2026年10月29日开市起至当日10:30停牌"
-    },
-    {
-      "id": "c86f8a0d24f48201d35ef97d9bf37daa5103e68e",
-      "title": "CLS, Oct 28: Nasdaq ETF ChinaAMC (513300) will be suspended from market open on Oct 29, 2026 until 10:30 that day.",
-      "summary": "CLS, Oct 28: Nasdaq ETF ChinaAMC (513300) will be suspended from market open on Oct 29, 2026 until 10:30 that day.",
-      "title_zh": "财联社10月28日电，纳斯达克ETF华夏(513300)将于2026年10月29日开市起至当日10:30停牌。",
-      "summary_zh": "财联社10月28日电，纳斯达克ETF华夏(513300)将于2026年10月29日开市起至当日10:30停牌"
-    },
-    {
-      "id": "c9baf5fcc9cf18ebc41b3a542f60f0ebbba24c9c",
-      "title": "CLS, Oct 28: Global Chip LOF (501225) will be suspended from market open on Oct 29, 2026 until 10:30 that day.",
-      "summary": "CLS, Oct 28: Global Chip LOF (501225) will be suspended from market open on Oct 29, 2026 until 10:30 that day.",
-      "title_zh": "财联社10月28日电，全球芯片LOF(501225)将于2026年10月29日开市起至当日10:30停牌。",
-      "summary_zh": "财联社10月28日电，全球芯片LOF(501225)将于2026年10月29日开市起至当日10:30停牌"
-    },
-    {
-      "id": "f77eb771e6a0643689dc1b37c5ec3603ead09961",
-      "title": "CLS, Oct 28: Nasdaq ETF Guotai (513100) will be suspended from market open on Oct 29, 2026 until 10:30 that day.",
-      "summary": "CLS, Oct 28: Nasdaq ETF Guotai (513100) will be suspended from market open on Oct 29, 2026 until 10:30 that day.",
-      "title_zh": "财联社10月28日电，纳指ETF国泰(513100)将于2026年10月29日开市起至当日10:30停牌。",
-      "summary_zh": "财联社10月28日电，纳指ETF国泰(513100)将于2026年10月29日开市起至当日10:30停牌"
-    },
-    {
-      "id": "ee23c390084c906acec82e66c7a29d78a4a76f66",
-      "title": "CLS, Oct 28: S&P 500 ETF Bosera (513500) will be suspended from market open on Oct 29, 2026 until 10:30 that day.",
-      "summary": "CLS, Oct 28: S&P 500 ETF Bosera (513500) will be suspended from market open on Oct 29, 2026 until 10:30 that day.",
-      "title_zh": "财联社10月28日电，标普500ETF博时(513500)将于2026年10月29日开市起至当日10:30停牌。",
-      "summary_zh": "财联社10月28日电，标普500ETF博时(513500)将于2026年10月29日开市起至当日10:30停牌"
-    },
-    {
-      "id": "ebc15e68b5f7602880d1bbbb177c1870425281a3",
-      "title": "CLS, Oct 28: Nasdaq 100 ETF China Merchants (159659) will be suspended from market open on Oct 29, 2026 and resume at 10:30 that day; redemptions proceed normally during the halt.",
-      "summary": "CLS, Oct 28: Nasdaq 100 ETF China Merchants (159659) will be suspended from market open on Oct 29, 2026 and resume at 10:30 that day; redemptions proceed normally during the halt.",
-      "title_zh": "财联社10月28日电，纳斯达克100ETF招商(159659)将于2026年10月29日开市起停牌，自2026年10 月29日10:30起复牌，停牌期间赎回业务照常办理。",
-      "summary_zh": "财联社10月28日电，纳斯达克100ETF招商(159659)将于2026年10月29日开市起停牌，自2026年10 月29日10:30起复牌，停牌期间赎回业务照常办理"
-    },
-    {
-      "id": "7f81371ebb7a3c04e4bada40d9c4a4025eec55d1",
-      "title": "Fannie Mae Q3 net revenue $7.65 billion, above market expectations",
-      "summary": "[Fannie Mae Q3 net revenue $7.65 billion, above market expectations] CLS, Oct 28: Fannie Mae's Q3 net revenue was $7.65 billion versus the $7.32 billion consensus; Q3 net profit was $4.2 billion versus the $3.94 billion consensus.",
-      "title_zh": "房利美第三季度净营收76.5亿美元 高于市场预期",
-      "summary_zh": "【房利美第三季度净营收76.5亿美元 高于市场预期】财联社10月28日电，房利美第三季度净营收76.5亿美元，市场预期73.2亿美元；第三季度净利润42亿美元，市场预期39.4亿美元"
-    },
-    {
-      "id": "eb96304132419e37c28366c8688163b14102196d",
-      "title": "CLS, Oct 28: Nasdaq ETF HuaAn (159632) will be suspended from market open on Oct 29, 2026 and resume at 10:30 that day; redemptions proceed normally during the halt.",
-      "summary": "CLS, Oct 28: Nasdaq ETF HuaAn (159632) will be suspended from market open on Oct 29, 2026 and resume at 10:30 that day; redemptions proceed normally during the halt.",
-      "title_zh": "财联社10月28日电，纳斯达克ETF华安(159632)将于2026年10月29日开市起停牌，自2026年10 月29日10:30起复牌，停牌期间赎回业务照常办理。",
-      "summary_zh": "财联社10月28日电，纳斯达克ETF华安(159632)将于2026年10月29日开市起停牌，自2026年10 月29日10:30起复牌，停牌期间赎回业务照常办理"
-    },
-    {
-      "id": "1eac954d4cd6521d9297f3548e192b10939ebd6a",
-      "title": "CLS, Oct 28: Nasdaq 100 ETF Dacheng (159513) will be suspended from market open on Oct 29, 2026 and resume at 10:30 that day; redemptions proceed normally during the halt.",
-      "summary": "CLS, Oct 28: Nasdaq 100 ETF Dacheng (159513) will be suspended from market open on Oct 29, 2026 and resume at 10:30 that day; redemptions proceed normally during the halt.",
-      "title_zh": "财联社10月28日电，纳斯达克100ETF大成(159513)将于2026年10月29日开市起停牌，自2026年10月29日10:30起复牌，停牌期间赎回业务照常办理。",
-      "summary_zh": "财联社10月28日电，纳斯达克100ETF大成(159513)将于2026年10月29日开市起停牌，自2026年10月29日10:30起复牌，停牌期间赎回业务照常办理"
-    },
-    {
-      "id": "9c0ed03e254962be28f9c786f42e8ec189e7f06a",
-      "title": "CLS, Oct 28: Nasdaq ETF Huitianfu (159660) will be suspended from market open on Oct 29, 2026 and resume at 10:30 that day; redemptions proceed normally during the halt.",
-      "summary": "CLS, Oct 28: Nasdaq ETF Huitianfu (159660) will be suspended from market open on Oct 29, 2026 and resume at 10:30 that day; redemptions proceed normally during the halt.",
-      "title_zh": "财联社10月28日电，纳指ETF汇添富(159660)将于2026年10月29日开市起停牌，自2026年10月29日10:30起复牌，停牌期间赎回业务照常办理。",
-      "summary_zh": "财联社10月28日电，纳指ETF汇添富(159660)将于2026年10月29日开市起停牌，自2026年10月29日10:30起复牌，停牌期间赎回业务照常办理"
-    },
-    {
-      "id": "9465485079ac1d211c6348ba1b5c5fcdc207b319",
-      "title": "CLS, Oct 28: Nasdaq ETF E Fund (159696) will be suspended from market open on Oct 29, 2026 and resume at 10:30 that day; redemptions proceed normally during the halt.",
-      "summary": "CLS, Oct 28: Nasdaq ETF E Fund (159696) will be suspended from market open on Oct 29, 2026 and resume at 10:30 that day; redemptions proceed normally during the halt.",
-      "title_zh": "财联社10月28日电，纳指ETF易方达(159696)将于2026年10月29日开市起停牌，自2026年10月29日10:30起复牌，停牌期间赎回业务照常办理。",
-      "summary_zh": "财联社10月28日电，纳指ETF易方达(159696)将于2026年10月29日开市起停牌，自2026年10月29日10:30起复牌，停牌期间赎回业务照常办理"
-    },
-    {
-      "id": "fa8b11acb4c82e469995011ea9a73cc8399c398f",
-      "title": "Guolian Minsheng: Q3 net profit up 8.98% YoY, down 24% QoQ",
-      "summary": "[Guolian Minsheng: Q3 net profit up 8.98% YoY, down 24% QoQ] CLS, Oct 28: Guolian Minsheng (601456.SH) announced first-three-quarter operating revenue of 6.739 billion yuan, up 11.61% YoY; net profit attributable to shareholders of 2.108 billion yuan, up 19.59% YoY.",
-      "title_zh": "国联民生：第三季度净利润同比增长8.98% 环比下降24%",
-      "summary_zh": "【国联民生：第三季度净利润同比增长8.98% 环比下降24%】财联社10月28日电，国联民生(601456.SH)公告称，前三季度实现营业收入67.39亿元，同比增长11.61%；归属于上市公司股东的净利润21.08亿元，同比增长19.59%"
-    },
-    {
-      "id": "33227460d00041422e44dcefeb798af2e2ae450b",
-      "title": "How investors can position ahead of the Fed's next policy decision",
-      "summary": "The Federal Reserve's October rate decision has been a focus for investors and economists as Chairman Kevin Warsh has rejected traditional forward guidance.",
-      "title_zh": "投资者如何在美联储下次会议前布局",
-      "summary_zh": "在主席凯文·沃什摒弃传统前瞻指引之际，美联储10月利率决议一直是投资者与经济学家的关注焦点。"
-    },
-    {
-      "id": "99a143a8db7957d5d01fc1dfd6ec3a9feb7935c5",
-      "title": "Stellantis reports $4.5 billion cash drain as massive turnaround plan continues",
-      "summary": "European car giant Stellantis said Wednesday that it recorded a 4 billion euro ($4.5 billion) cash shortfall in the third quarter.",
-      "title_zh": "大规模重组持续，Stellantis报告45亿美元现金流出",
-      "summary_zh": "欧洲汽车巨头Stellantis周三表示，第三季度录得40亿欧元（45亿美元）现金缺口。"
-    },
-    {
-      "id": "533b403c0f1d9db66c69ecf57e22ebee326ee348",
-      "title": "$130 billion in wealth wiped out in a day; prediction market's 80% win rate fails; Brazil's election is a warning for the U.S. midterms",
-      "summary": "Prediction markets suffered a major misstep in Brazil's election, raising deep questions about the reliability of this emerging tool.",
-      "title_zh": "1300亿美元财富一日蒸发，预测市场80%胜率翻车，巴西大选为美国中期选举敲响警钟",
-      "summary_zh": "预测市场在巴西大选中遭遇重大失准，引发了市场对这一新兴工具可靠性的深刻质疑"
-    },
-    {
-      "id": "84a4dab73e567353738816dd3979ddb8ef1ec10a",
-      "title": "Mortgage rates fell for the second straight week, but more borrowers still sought savings in riskier loans",
-      "summary": "Mortgage rates have fallen over the past two weeks, but demand is only slightly higher, and more borrowers are looking for savings in riskier loans.",
-      "title_zh": "抵押贷款利率连续第二周下行，但更多借款人仍在高风险贷款中寻求节省",
-      "summary_zh": "过去两周抵押贷款利率回落，但需求仅小幅走高，更多借款人正转向风险更高的贷款以节省成本。"
-    },
-    {
-      "id": "c9dbbf0e017d9f5597ab01a7a14b8a44c548f3c2",
-      "title": "PetroChina's fourth-largest shareholder Guoxin Hongsheng increased its Q3 stake by 373 million shares",
-      "summary": "PetroChina (601857.SH) posted its 2026 Q3 report; versus its 2026 H1 report, fourth-largest shareholder Guoxin Hongsheng raised its holding by 373 million shares to 1.386 billion shares, or 0.76% of total share capital.",
-      "title_zh": "中国石油第四大股东国新宏盛投资(北京)有限公司三季度增仓3.73亿股",
-      "summary_zh": "中国石油 (601857.SH)发布2026年三季报显示，与2026年半年报相比，第四大股东国新宏盛持仓增加3.73亿股至13.86亿股，占总股本比例0.76%"
-    },
-    {
-      "id": "ca7a630243bf3f1caa7d0ab6cab4605fb4de32d4",
-      "title": "At least 30 people reported dead in high-speed Spain train crash",
-      "summary": "It is the second deadly high-speed train collision in Spain this year.",
-      "title_zh": "西班牙高铁事故据报至少30人死亡",
-      "summary_zh": "这是西班牙今年第二起致命的高铁相撞事故。"
-    },
-    {
-      "id": "6c5b93c8dbf9d951ff7709dafb0338b678b30877",
-      "title": "All 31 provinces' GDP out: Guangdong and Jiangsu each exceed 10 trillion yuan; 11 regions grow above 5%",
-      "summary": "With Guizhou province publishing its first-three-quarter economic data on Oct 27, the first-three-quarter economic scorecards of all 31 provincial-level regions are now complete.",
-      "title_zh": "31省市GDP出炉！粤苏均超10万亿 11地增速超5%",
-      "summary_zh": "随着贵州省10月27日公布前三季度经济数据，全国31省市前三季度经济成绩单全部出炉"
-    },
-    {
-      "id": "67c33cf9ed44e863c3bb27f566c656231039dfdf",
-      "title": "A Democratic win in midterms could put prediction markets and the CFTC in the hot seat",
-      "summary": "A Democratic House could increase scrutiny of prediction markets, the CFTC and the industry’s ties to the Trump family after the midterms.",
-      "title_zh": "中期选举若民主党获胜，预测市场与CFTC将面临审查",
-      "summary_zh": "中期选举后，若众议院由民主党掌控，可能加强对预测市场、CFTC以及该行业与特朗普家族关联的审查。"
-    },
-    {
-      "id": "785dd9eb93bd01dc67290f33c92315d5b0842fca",
-      "title": "Domestic GPU giant declares turnaround to profit; revenue surges over 1,700%",
-      "summary": "On Oct 28, domestic GPU maker Moore Threads released its 2026 Q3 report.",
-      "title_zh": "国产GPU巨头宣布：扭亏！营收暴增超1700%",
-      "summary_zh": "10月28日，国产GPU厂商摩尔线程发布2026年三季报"
-    },
-    {
-      "id": "8b190dc7670f79a176b376447a57a66d4c7733e4",
-      "title": "Tech stages a big comeback! Top 20 rebounding stocks all feature 'optics' in the top three",
-      "summary": "Tech stocks rallied across the board today; both the ChiNext index and the STAR Composite index rose more than 3%.",
-      "title_zh": "科技大反攻！热门股反弹TOP20 前三都含“光”",
-      "summary_zh": "科技股今日集体大涨， 创业板指、科创综指涨幅双双突破3% "
-    },
-    {
-      "id": "5e0b8a78ad8da720e629d104d50273818cf96fd7",
-      "title": "Unitree: first-three-quarter net profit attributable to parent 387 million yuan, up 270.54% YoY",
-      "summary": "Unitree announced its first three quarters of 2026: operating revenue 1.817 billion yuan, up 55.71% YoY; net profit attributable to parent 387 million yuan, up 270.54% YoY; non-recurring net profit 349 million yuan, down 18.78% YoY.",
-      "title_zh": "宇树科技：前三季度归母净利润3.87亿元，同比增长270.54%",
-      "summary_zh": "宇树科技公告，2026年前三季度营业收入18.17亿元，同比增长55.71%；归母净利润3.87亿元，同比增长270.54%；扣非净利润3.49亿元，同比下降18.78%"
-    },
-    {
-      "id": "efb22eb0168b4c93701fae64df10f7b77e29b345",
-      "title": "Google alters its cloud playbook, enlisting partners to sell more AI chips",
-      "summary": "Google is opening its TPU business beyond its own cloud as custom chips become a bigger engine for growth.",
-      "title_zh": "谷歌调整云业务打法，联手合作伙伴销售更多AI芯片",
-      "summary_zh": "随着定制芯片成为更大的增长引擎，谷歌正将其TPU业务向自有云之外开放。"
-    },
-    {
-      "id": "e21eec30b9c2d302911e2bd455ed2ad3405cd7b7",
-      "title": "PetroChina: Q3 net profit attributable to parent 51.8 billion yuan, up 21.6% YoY",
-      "summary": "PetroChina announced on Oct 28 that in Q3 2026 it posted operating revenue of 793.573 billion yuan, up 10.4% YoY; net profit attributable to parent 51.839 billion yuan, up 21.6% YoY; basic EPS 0.28 yuan.",
-      "title_zh": "中国石油：第三季度归母净利润518亿元 同比增长21.6%",
-      "summary_zh": "中国石油 10月28日公告，2026年第三季度实现营业收入7935.73亿元，同比增长10.4%；归母净利润518.39亿元，同比增长21.6%；基本每股收益0.28元"
-    },
-    {
-      "id": "c4d2e0b5184c6946a49819e25e77f0b4b53d567f",
-      "title": "800 billion yuan of new policy-based financial instruments fully deployed",
-      "summary": "Per reporters from the three policy banks - CDB, Exim Bank, and ADBC - as of Oct 28, the 2026 new policy-based financial instruments have been fully deployed, totaling 800 billion yuan.",
-      "title_zh": "8000亿元新型政策性金融工具投放完成",
-      "summary_zh": "记者从国开行、进出口 银行 、农发行三家政策性 银行 获悉，截至10月28日，2026年新型政策性金融工具全部完成投放，共计8000亿元"
-    },
-    {
-      "id": "9195ebd12a00578c195022b77a90cddaef445c3b",
-      "title": "This hospice services stock is outperforming the S&P 500. Jefferies sees more gains ahead",
-      "summary": "The investment bank upgraded the medical and plumbing services stock to buy from hold.",
-      "title_zh": "这家临终关怀服务股跑赢标普500，杰富瑞看好进一步上涨",
-      "summary_zh": "该投行将这只医疗与管道服务股评级从'持有'上调至'买入'。"
-    },
-    {
-      "id": "1838eaeb1332c9062be99bf89aa140c809c695dc",
-      "title": "Domestic hog price falls below 9 yuan/kg; will the cycle turn?",
-      "summary": "Since October, the hog market has stayed weak in what is normally a peak season, and domestic hog prices keep falling.",
-      "title_zh": "国内生猪价跌破9元/公斤，周期反转还会来吗？",
-      "summary_zh": "10月以来，生猪市场延续旺季不旺态势，国内生猪价格继续下行"
-    },
-    {
-      "id": "3f7c6e1c68fd8793a4effb27088b004d544af3fc",
-      "title": "Physical AI ignites! Robots spark another limit-up wave",
-      "summary": "On Wednesday (Oct 28), robotics concept stocks erupted in a limit-up wave; all sub-sectors rose across the board, with Haowen Auto-Electric, Henggong Precision, Rujing Tech and others hitting 20CM limit-ups, Weichuang Electric and Shangwei New Materials up over 10%, and Bojie, Fulaixin, and Wuzhou Xinchun among multiple stocks hitting limit-up.",
-      "title_zh": "物理AI引爆！机器人再掀涨停潮",
-      "summary_zh": "周三(10月28日) 机器人 概念股爆发涨停潮 ，各细分全线上涨， 豪恩汽电 、 恒工精密 、 儒竞科技 等20CM涨停， 伟创电气 、 上纬新材 等涨超10%， 博杰股份 、 福莱新材 、 五洲新春 等多股涨停"
-    },
-    {
-      "id": "476bcc3cb223bad66926bd4199f4994e9b58f3fd",
-      "title": "AI + manufacturing gets a major boost; several quality concept stocks offer valuation appeal",
-      "summary": "'AI + manufacturing' has moved from single-point pilots into a new stage of scaled rollout and industrial results.",
-      "title_zh": "AI+制造迎来重磅利好 多只绩优概念股具备估值优势",
-      "summary_zh": "“AI+制造”已从单点示范，迈入规模化落地、产业化见效的新阶段"
-    },
-    {
-      "id": "fb305557a2f00cf5bff13b2aff9e1b006db26245",
-      "title": "$7 controls 50.1% of voting power: the real face of Anthropic",
-      "summary": "On Oct 26, Anthropic formally filed its IPO prospectus publicly with the U.S. SEC under ticker ANT, targeting a valuation of $1.5 trillion to $2 trillion.",
-      "title_zh": "7美元控住50.1%投票权：Anthropic的真实面目",
-      "summary_zh": "10月26日，Anthropic正式向美国证券交易委员会公开提交IPO申请，股票代码ANT，目标估值1.5万亿美元至2万亿美元"
-    },
-    {
-      "id": "c5de0a5ed368fc2da3a4c4eff71b76cd28d74538",
-      "title": "The best credit cards for the hottest holiday toys of 2026",
-      "summary": "Starting your holiday shopping? See which credit cards earn rewards or add purchase protections for some of the most popular gifts of the season.",
-      "title_zh": "2026年最热门节日玩具对应的优质信用卡",
-      "summary_zh": "开始节日购物了吗？看看哪些信用卡能为本季最热门的礼物提供返现或消费保障。"
-    },
-    {
-      "id": "f171fe171e6f562a1a6df1b234ad45e95e2c961c",
-      "title": "The most reliable warning light for U.S. stocks is flashing! Both prior signals were followed by major bear markets",
-      "summary": "A key indicator tracking the U.S. stock market for nearly 70 years is sending a rare alarm.",
-      "title_zh": "美股最可靠的警报灯亮了！历史两次闪烁后，都迎来大熊市",
-      "summary_zh": "一个追踪美股市场近70年的关键指标正在发出罕见警报"
-    },
-    {
-      "id": "7cedc63bebd8a428e3eaab7b74e0bd63557c9363",
-      "title": "The U.S.-Iran war unexpectedly benefits Europe's chemical industry! BASF raises profit guidance for the second time this year",
-      "summary": "Supply-chain disruptions triggered by the U.S.-Iran war are unexpectedly giving European chemical firms a breathing space.",
-      "title_zh": "美伊战争意外利好欧洲化工行业！巴斯夫年内第二次上调盈利预期",
-      "summary_zh": "美伊战争引发的供应链扰动，正意外为欧洲化工企业带来喘息之机"
-    },
-    {
-      "id": "2d433741e77547795a156a298623ff6f501676a2",
-      "title": "Physical AI's next stop: who is the biggest winner?",
-      "summary": "Expectations of Physical AI's technological breakthroughs are compressing, and the industry-chain investment logic is being reshaped accordingly.",
-      "title_zh": "物理AI下一站，谁是最大赢家？",
-      "summary_zh": "物理AI的技术突破预期正在压缩，产业链投资逻辑随之重构"
+      "id": "8465979b1ae302b462f420f3b8e7bb5365c78e4d",
+      "title": "Options traders break down a massive Alphabet trade into earnings",
+      "summary": "The market's mini rally faces a key test after the bell when tech giants Alphabet and Microsoft report.",
+      "title_zh": "期权交易员在财报前拆解一笔巨额Alphabet交易",
+      "summary_zh": "科技巨头 Alphabet 与微软盘后发布财报，市场的小幅反弹面临关键考验。"
     }
   ],
-  "updated_at": "2026-10-28T11:40:30Z"
+  "updated_at": "2026-10-28T22:09:23Z"
 }
