@@ -1,20 +1,6 @@
 {
   "items": [
     {
-      "id": "851ee699935f14c61a80bcad48cc0ba38d1ad60f",
-      "title": "Nvidia responds to report Jensen Huang was target of Chinese asset, says diversion allegations were 'investigated and debunked'",
-      "summary": "Nvidia disputed a New York Times report that U.S",
-      "title_zh": "英伟达回应有关黄仁勋被中国情报机构招募的报道，称相关指控“已经过调查并被推翻”",
-      "summary_zh": "英伟达反驳《纽约时报》一篇关于美国的报道"
-    },
-    {
-      "id": "510a17cfb39d930fc4764919a0340d2457f024bc",
-      "title": "White House adviser Hassett: if October US inflation data comes in really high, the Fed may act",
-      "summary": "White House adviser Hassett: if October US inflation data comes in really high, the Fed may act",
-      "title_zh": "白宫顾问哈塞特：如果美国10月通胀数据真的很高，美联储可能会采取行动",
-      "summary_zh": "白宫顾问哈塞特：如果美国10月通胀数据真的很高，美联储可能会采取行动"
-    },
-    {
       "id": "4945305648f8ab25860464935e2516e9e334b646",
       "title": "Federal Reserve Board announces approval of application by The Bank of Nova Scotia",
       "summary": "Federal Reserve Board announces approval of application by The Bank of Nova Scotia",
@@ -22,334 +8,348 @@
       "summary_zh": "美联储理事会宣布批准加拿大丰业银行的申请"
     },
     {
-      "id": "cd13f7eb039e403628913eea2132ba1bc917c8f2",
-      "title": "Eli Lilly hikes sales outlook, as CEO says there's room for 'dramatic' obesity market expansion",
-      "summary": "Eli Lilly reported that sales of obesity drug Zepbound and diabetes treatment Mounjaro surged again in the third quarter.",
-      "title_zh": "礼来上调销售指引，CEO 称减肥药市场仍有“剧烈”扩张空间",
-      "summary_zh": "礼来公布，减肥药 Zepbound 与糖尿病药物 Mounjaro 第三季度销售额再次大幅增长。"
+      "id": "3cdad670fdcf47ff37b7cd753b24ce119b047c39",
+      "title": "ChangXin Technology: first-three-quarter 2026 net profit 132.04 billion yuan, back in the black year on year",
+      "summary": "ChangXin Technology said first-three-quarter revenue reached 269.024 billion yuan, up 738.51% year on year, with net profit attributable to shareholders of 132.04 billion yuan, turning profitable from a year-earlier loss.",
+      "title_zh": "长鑫科技：2026年前三季度净利润1320.4亿元 同比扭亏为盈",
+      "summary_zh": "长鑫科技公告称，前三季度实现营业收入2690.24亿元，同比增长738.51%；归属于上市公司股东的净利润1320.4亿元，同比扭亏为盈"
     },
     {
-      "id": "ed8324f702376d2bcd325490445fe40eb6059db0",
-      "title": "ECB President Lagarde: inflation faces upside risks, no second-round effects seen",
-      "summary": "ECB President Lagarde: data show the euro-area economy kept expanding in the third quarter",
-      "title_zh": "欧洲央行行长拉加德：通胀面临上行风险，没有看到第二轮效应",
-      "summary_zh": "欧洲央行行长拉加德：数据表明（欧元区）经济在三季度继续扩张"
+      "id": "b351dfd02470f4377c2d91c185bb1ca35c16d0f2",
+      "title": "ChangXin Technology: first-three-quarter net profit 132.04 billion yuan; plans a 1 billion to 2 billion yuan buyback",
+      "summary": "ChangXin Technology (688825.SH) said first-three-quarter revenue reached 269.024 billion yuan, up 738.51% year on year, with net profit attributable to shareholders of 132.04 billion yuan, turning profitable from a year-earlier loss.",
+      "title_zh": "长鑫科技：前三季度净利润1320.4亿元 拟10亿元至20亿元回购股份",
+      "summary_zh": "长鑫科技 (688825.SH)公告称，前三季度实现营业收入2690.24亿元，同比增长738.51%；归属于上市公司股东的净利润1320.4亿元，同比扭亏为盈"
     },
     {
-      "id": "9ed68cd149e8f08028685b9d22647d577be65484",
-      "title": "CLS, Oct 30: Amazon's after-hours decline narrows to less than 5 percent, after falling more than 12 percent earlier",
-      "summary": "CLS, Oct 30: Amazon's after-hours decline narrows to less than 5 percent, after falling more than 12 percent earlier",
-      "title_zh": "财联社10月30日电，亚马逊盘后跌幅收窄至不足5%，此前一度跌超12%。",
-      "summary_zh": "财联社10月30日电，亚马逊盘后跌幅收窄至不足5%，此前一度跌超12%"
+      "id": "dbf2816cd4a488dbeae6e326d1fb206d4337979a",
+      "title": "DeepSeek's 100 billion yuan funding round detailed: CXMT, Tencent and nearly 30 institutions took part, with state capital at 27%",
+      "summary": "On 30 October, The Information reported the details of DeepSeek's second funding round.",
+      "title_zh": "DeepSeek千亿融资细节曝光：长鑫存储、腾讯等近30家机构参投 国资占比27%",
+      "summary_zh": "10月30日，据The Information报道，DeepSeek第二轮融资的具体细节曝光"
     },
     {
-      "id": "20a7feda04fa093f66260f975a4450b432f2755d",
-      "title": "CLS, Oct 30: First Solar third-quarter earnings per share of 5.30 dollars against 4.60 dollars expected",
-      "summary": "CLS, Oct 30: First Solar third-quarter earnings per share of 5.30 dollars against 4.60 dollars expected",
-      "title_zh": "财联社10月30日电，第一太阳能第三季度每股收益5.30美元，市场预计4.60美元。",
-      "summary_zh": "财联社10月30日电，第一太阳能第三季度每股收益5.30美元，市场预计4.60美元"
+      "id": "b6e1ff37dc39540b9ed2ec04d1e9ab5eca95efd5",
+      "title": "CLS, 30 October: the commander of US Central Command said it has helped Gulf partners export 1.5 billion barrels of crude through the Strait of Hormuz since the summer, while a tight blockade of Iranian ports has",
+      "summary": "CLS, 30 October: the commander of US Central Command said it has helped Gulf partners export 1.5 billion barrels of crude through the Strait of Hormuz since the summer.",
+      "title_zh": "财联社10月30日电，美国中央司令部司令称，自夏季以来，已协助海湾伙伴通过霍尔木兹海峡出口了15亿桶原油。与此同时，由于对伊朗港口实施了严密的封锁，美国已阻...",
+      "summary_zh": "财联社10月30日电，美国中央司令部司令称，自夏季以来，已协助海湾伙伴通过霍尔木兹海峡出口了15亿桶原油"
     },
     {
-      "id": "67dfa03d58f656ec7ac612e392fe2fbffceed4a7",
-      "title": "CLS, Oct 30: Gilead third-quarter adjusted earnings per share of 2.55 dollars against 2.22 dollars expected",
-      "summary": "CLS, Oct 30: Gilead third-quarter adjusted earnings per share of 2.55 dollars against 2.22 dollars expected",
-      "title_zh": "财联社10月30日电，吉利德第三季度调整后每股收益为2.55美元，市场预期为2.22美元。",
-      "summary_zh": "财联社10月30日电，吉利德第三季度调整后每股收益为2.55美元，市场预期为2.22美元"
+      "id": "4aad3d24bb85cce5585fbd25d4a16cec311a1649",
+      "title": "CLS, 30 October: US server makers extended their pre-market declines, with Dell down 11.8%, HP down 8% and Super Micro down 6%",
+      "summary": "CLS, 30 October: US server makers extended their pre-market declines, with Dell down 11.8%, HP down 8% and Super Micro down 6%.",
+      "title_zh": "财联社10月30日电，美国服务器制造商股价盘前继续下跌，戴尔下跌11.8%，惠普下跌8%，超微电脑下跌6%。",
+      "summary_zh": "财联社10月30日电，美国服务器制造商股价盘前继续下跌，戴尔下跌11.8%，惠普下跌8%，超微电脑下跌6%"
     },
     {
-      "id": "45aedbcf37a754b7687c55ce87f365141f57173c",
-      "title": "CLS, Oct 30: Rivian third-quarter revenue of 2.16 billion dollars against 2.02 billion dollars expected",
-      "summary": "CLS, Oct 30: Rivian third-quarter revenue of 2.16 billion dollars against 2.02 billion dollars expected",
-      "title_zh": "财联社10月30日电，Rivian第三季度营收为21.6亿美元，市场预计为20.2亿美元。",
-      "summary_zh": "财联社10月30日电，Rivian第三季度营收为21.6亿美元，市场预计为20.2亿美元"
+      "id": "0561f241383312f9ebf4031bf6eed5e009ef43f5",
+      "title": "BOE Technology: third-quarter net loss of 996 million yuan as small and mid-size display shipments come under clear pressure",
+      "summary": "BOE Technology (000725.SZ) reported first-three-quarter revenue of 151.809 billion yuan, down 1.77% year on year, and net profit attributable to shareholders of 4.251 billion yuan, down 7.61%.",
+      "title_zh": "京东方A：第三季度净亏损9.96亿元 中小尺寸显示产品出货明显承压",
+      "summary_zh": "【京东方A：第三季度净亏损9.96亿元 中小尺寸显示产品出货明显承压】财联社10月30日电，京东方A(000725.SZ)公告称，前三季度实现营业收入1518.09亿元，同比下降1.77%；归属于上市公司股东的净利润42.51亿元，同比下降7.61%"
     },
     {
-      "id": "11395d483367060c2695392800a60b0ddd610613",
-      "title": "CLS, Oct 30: Roblox guides fourth-quarter bookings to 1.89 to 2 billion dollars against 1.99 billion dollars expected",
-      "summary": "CLS, Oct 30: Roblox guides fourth-quarter bookings to 1.89 to 2 billion dollars against 1.99 billion dollars expected",
-      "title_zh": "财联社10月30日电，ROBLOX第四季度预订量为18.9亿至20亿美元，预计为19.9亿美元。",
-      "summary_zh": "财联社10月30日电，ROBLOX第四季度预订量为18.9亿至20亿美元，预计为19.9亿美元"
+      "id": "fc8b322edd286a9ea69b96af3d55a41c53a99b4f",
+      "title": "China Railway Construction: third-quarter net profit down 83.98% year on year and 84% quarter on quarter",
+      "summary": "China Railway Construction (601186.SH) reported first-three-quarter revenue of 639.447 billion yuan, down 12.21%, and net profit attributable to shareholders of 9.348 billion yuan, down 36.88%.",
+      "title_zh": "中国铁建：Q3净利润同比下降83.98% 环比下降84%",
+      "summary_zh": "【中国铁建：Q3净利润同比下降83.98% 环比下降84%】财联社10月30日电，中国铁建(601186.SH)公告称，前三季度实现营业收入6394.47亿元，同比下降12.21%；归属于上市公司股东的净利润93.48亿元，同比下降36.88%"
     },
     {
-      "id": "6edde24097d5288fac2ca9d4237782ab3ecca690",
-      "title": "Starbucks fourth-quarter comparable sales beat estimates",
-      "summary": "[Starbucks fourth-quarter comparable sales beat estimates] CLS, Oct 30: Starbucks comparable sales rose 7.2 percent against 6.23 percent expected; US comparable sales rose 7.7 percent against 6.51 percent expected; adjusted earnings per share 0.80 dollars against 0.71 dollars expected; net revenue 9.1 billion dollars against 9.23 billion dollars expected; operating profit 991.8 million dollars against 1.12 billion dollars expected; adjusted operating margin 14 percent against 12.7",
-      "title_zh": "星巴克第四财季同店销售超过预估",
-      "summary_zh": "【星巴克第四财季同店销售超过预估】财联社10月30日电，星巴克公司第四季度同店销售+7.2％，预估+6.23％；美国同店销售+7.7％，预估+6.51％；调整后每股收益0.80美元，预估0.71美元；净营收91亿美元，预估92.3亿美元；经营利润9.918亿美元，预估11.2亿美元；调整后运营利润率14％，预估12.7"
+      "id": "dd7770fc08b6478943a2db4dd64a64f550d859e0",
+      "title": "CLS, 30 October: the VIX rose 1.22 points to 18.42",
+      "summary": "CLS, 30 October: the VIX rose 1.22 points to 18.42.",
+      "title_zh": "财联社10月30日电，恐慌指数VIX上涨1.22点，至18.42。",
+      "summary_zh": "财联社10月30日电，恐慌指数VIX上涨1.22点，至18.42"
     },
     {
-      "id": "becfec1b8949bbf5ff8cdaf1c40ae3bbbd5187d5",
-      "title": "CLS, Oct 30: Reddit third-quarter revenue of 895 million dollars against 869.6 million dollars expected",
-      "summary": "CLS, Oct 30: Reddit third-quarter revenue of 895 million dollars against 869.6 million dollars expected",
-      "title_zh": "财联社10月30日电，Reddit第三季度收入为8.95亿美元，市场预计为8.696亿美元。",
-      "summary_zh": "财联社10月30日电，Reddit第三季度收入为8.95亿美元，市场预计为8.696亿美元"
+      "id": "40c67f95602a05263d4793878df78a3b858782a7",
+      "title": "Two non-compliant tankers intercepted in the Strait of Hormuz",
+      "summary": "Iran's Revolutionary Guard Navy released video saying two non-compliant tankers, east and west of the Strait of Hormuz, tried to transit on unauthorised routes after switching off their navigation systems and ignoring radio warnings.",
+      "title_zh": "2艘违规油轮在霍尔木兹海峡被拦",
+      "summary_zh": "【2艘违规油轮在霍尔木兹海峡被拦】财联社10月30日电，伊朗伊斯兰革命卫队海军今天（10月30日）发布视频并表示，两艘分别位于霍尔木兹海峡东部和西部的“违规油轮”，“在关闭导航系统并无视无线电警告后试图通过未经授权的航线”"
     },
     {
-      "id": "a9ae2a771ba2bb5007cafdeade7dadf5e5fde2da",
-      "title": "CLS, Oct 30: Coinbase third-quarter total revenue of 1.22 billion dollars against 1.22 billion dollars expected",
-      "summary": "CLS, Oct 30: Coinbase third-quarter total revenue of 1.22 billion dollars against 1.22 billion dollars expected",
-      "title_zh": "财联社10月30日电，Coinbase第三季度总收入为12.2亿美元，市场预计为12.2亿美元。",
-      "summary_zh": "财联社10月30日电，Coinbase第三季度总收入为12.2亿美元，市场预计为12.2亿美元"
+      "id": "b7a44ae83f1a9b328d7f0da16f9b46cfd4f47ac5",
+      "title": "China State Construction: first-three-quarter net profit down 24.8% year on year",
+      "summary": "China State Construction (601668.SH) reported revenue of 1.34 trillion yuan, down 14.3%, and net profit attributable to shareholders of 28.714 billion yuan, down 24.8%.",
+      "title_zh": "中国建筑：前三季度净利润同比下降24.8%",
+      "summary_zh": "【中国建筑：前三季度净利润同比下降24.8%】财联社10月30日电，中国建筑(601668.SH)公告称，前三季度实现营业收入1.34万亿元，同比下降14.3%；归属于上市公司股东的净利润287.14亿元，同比下降24.8%"
     },
     {
-      "id": "9a68987bbc08f26938dedb815a7ca6a48eff506a",
-      "title": "Sandisk guides second-quarter revenue to 12.2 billion to 12.6 billion dollars against 12.1 billion dollars expected",
-      "summary": "[Sandisk guides second-quarter revenue to 12.2 billion to 12.6 billion dollars against 12.1 billion dollars expected] CLS, Oct 30: Sandisk guided second-quarter revenue to 12.2 billion to 12.6 billion dollars against 12.1 billion dollars expected; adjusted gross margin of 84.5 to 85.5 percent against 84.8 percent expected; adjusted earnings per share of 55 to 57 dollars against 52.72 dollars expected; adjusted operating expenses of 540 to 560 million dollars",
-      "title_zh": "闪迪预计第二财季营收为122亿至126亿美元 市场预估为121亿美元",
-      "summary_zh": "【闪迪预计第二财季营收为122亿至126亿美元 市场预估为121亿美元】财联社10月30日电，闪迪预计第二财季营收122亿至126亿美元，预估121亿美元；预计调整后毛利率84.5%至85.5%，预估84.8%；预计调整后每股收益55至57美元，预估52.72美元；预计调整后运营费用5.4亿至5.6亿美元"
+      "id": "6644fffac3bbe866e5f3cd1ff00eb2cd2cf2893b",
+      "title": "Coking coal drifts lower as mine restarts proceed in an orderly way",
+      "summary": "The domestic coking coal market is adjusting lower.",
+      "title_zh": "主产地复产进程仍有序推进 炼焦煤弱势调整运行",
+      "summary_zh": "【主产地复产进程仍有序推进 炼焦煤弱势调整运行】财联社10月30日电，国内市场炼焦煤弱势调整运行"
     },
     {
-      "id": "03724d7b33aabe2ff6ccb4467b5abffdcc876ac8",
-      "title": "Intel plunges more than 20 percent after hours as its revenue forecast falls short of analyst estimates",
-      "summary": "[Intel plunges more than 20 percent after hours as its revenue forecast falls short of analyst estimates] CLS, Oct 30: Intel fell more than 20 percent after hours because its revenue forecast came in below analyst estimates, weighed down by soft PC processor demand and supply-chain problems in high-margin data center components",
-      "title_zh": "英特尔盘后暴跌超20% 因其营收预测不及分析师预估",
-      "summary_zh": "【英特尔盘后暴跌超20% 因其营收预测不及分析师预估】财联社10月30日电，英特尔盘后暴跌超20%，因其营收预测不及分析师预估，受PC处理器需求疲软与高利润数据中心零部件供应链问题拖累"
+      "id": "fbad4f485f4fb473526c35822f4e93082bd26967",
+      "title": "CLS, 30 October: Mizuho cut its SanDisk price target to 1,900 dollars from 2,050 dollars",
+      "summary": "CLS, 30 October: Mizuho cut its SanDisk price target to 1,900 dollars from 2,050 dollars.",
+      "title_zh": "财联社10月30日电，瑞穗将闪迪目标价从2050美元下调至1900美元。",
+      "summary_zh": "财联社10月30日电，瑞穗将闪迪目标价从2050美元下调至1900美元"
     },
     {
-      "id": "8450555955f502261a96c2be5c7dd1854b83ce5f",
-      "title": "Amazon third-quarter property and equipment spending far above expectations; shares fall 12 percent after hours",
-      "summary": "[Amazon third-quarter property and equipment spending far above expectations; shares fall 12 percent after hours] CLS, Oct 30: Amazon fell 12 percent after hours",
-      "title_zh": "亚马逊第三财季物业及设备支出远超预期 盘后大跌12%",
-      "summary_zh": "【亚马逊第三财季物业及设备支出远超预期 盘后大跌12%】财联社10月30日电，亚马逊盘后大跌12%"
+      "id": "eb542ba7a4ab8bbffeb75e938dd63c6c3840610e",
+      "title": "China Tourism Group Duty Free: first-three-quarter net profit up 20.25%, plans a 0.40 yuan per share cash dividend",
+      "summary": "China Tourism Group Duty Free (601888.SH) reported first-three-quarter revenue of 38.821 billion yuan, down 2.61%, and net profit attributable to shareholders of 3.67 billion yuan, up 20.25%.",
+      "title_zh": "中国中免：前三季度净利润同比增长20.25% 拟每股派发现金红利0.40元",
+      "summary_zh": "【中国中免：前三季度净利润同比增长20.25% 拟每股派发现金红利0.40元】财联社10月30日电，中国中免(601888.SH)公告称，前三季度实现营业收入388.21亿元，同比下降2.61%；归属于上市公司股东的净利润36.7亿元，同比增长20.25%"
     },
     {
-      "id": "3fcc347992d11ada6feb099f53cd00f70b7c2fac",
-      "title": "Intel's fourth-quarter revenue guidance below market expectations",
-      "summary": "[Intel's fourth-quarter revenue guidance below market expectations] Intel guided fourth-quarter revenue to 15 billion to 16 billion dollars against 17.05 billion dollars expected; adjusted earnings per share of 0.25 dollars against 0.43 dollars expected; adjusted gross margin of 38 percent against 42.8 percent expected",
-      "title_zh": "英特尔公司第四季度营收预期低于市场预期",
-      "summary_zh": "【英特尔公司第四季度营收预期低于市场预期】英特尔预计第四季度营收150亿美元至160亿美元，市场预估170.5亿美元；预计调整后每股收益0.25美元，市场预估0.43美元；预计经调整毛利率38％，市场预估42.8％"
+      "id": "a3a318eb738efa09bde1657976fe6cd773d82eb8",
+      "title": "NDRC: perform the macro-management role better and implement the 15th Five-Year Plan in an orderly way",
+      "summary": "CLS, 30 October: the NDRC party group held an enlarged meeting to study and implement the spirit of the 20th Central Committee's fifth plenum and the General Secretary's remarks, and to set out implementation work.",
+      "title_zh": "国家发改委：更好发挥宏观管理和经济综合部门职责 推进“十五五”规划有序实施",
+      "summary_zh": "【国家发改委：更好发挥宏观管理和经济综合部门职责 推进“十五五”规划有序实施】财联社10月30日电，国家发展改革委党组召开扩大会议，传达学习贯彻党的二十届五中全会精神和习近平总书记重要讲话精神，研究部署全委学习宣传贯彻工作"
     },
     {
-      "id": "801a6d68bb3b81e8ddbe2dca6397eacee6a0d4ef",
-      "title": "Amazon third-quarter AWS net sales of 45.98 billion dollars, above expectations",
-      "summary": "[Amazon third-quarter AWS net sales of 45.98 billion dollars, above expectations] CLS, Oct 30: Amazon third-quarter net sales of 201.94 billion dollars against 202.26 billion dollars expected; AWS net sales of 45.98 billion dollars against 45.68 billion dollars expected; earnings per share of 1.89 dollars against 1.97 dollars expected; operating income of 28.08 billion dollars against 26.06 billion dollars expected; operating margin 13.9 percent against 1",
-      "title_zh": "亚马逊第三季度AWS净销售额459.8亿美元 高于预期",
-      "summary_zh": "【亚马逊第三季度AWS净销售额459.8亿美元 高于预期】财联社10月30日电，亚马逊第三季度销售净额2,019.4亿美元，预估2,022.6亿美元；AWS净销售额459.8亿美元，预估456.8亿美元；每股收益1.89美元，预估1.97美元；经营利润280.8亿美元，预估260.6亿美元；营业利益率13.9％，预估1"
+      "id": "77927078808dae77e70f08ad4b5d09afe9f756fe",
+      "title": "Ministry of Finance: January-September state-owned enterprise revenue down 3.2%, total profit up 3.0%",
+      "summary": "CLS, 30 October: Ministry of Finance data show that in January-September, nationwide state-owned and state-controlled enterprises saw total revenue fall 3.2% year on year while total profit rose 3.0%.",
+      "title_zh": "财政部：1-9月国有企业营业总收入同比下降3.2% 利润总额同比增长3.0%",
+      "summary_zh": "【财政部：1-9月国有企业营业总收入同比下降3.2% 利润总额同比增长3.0%】财联社10月30日电，财政部数据显示，1-9月，全国国有及国有控股企业（以下称国有企业）营业总收入同比下降3.2%，利润总额同比增长3.0%"
     },
     {
-      "id": "fec0590d6d38e379dabdd404939a459add6d017c",
-      "title": "Livermore China ADR Leaders Index closes down 0.45 percent",
-      "summary": "[Livermore China ADR Leaders Index closes down 0.45 percent] CLS, Oct 30: the Livermore China ADR Leaders Index closed down 0.45 percent",
-      "title_zh": "利弗莫尔中概股龙头指数收跌0.45%",
-      "summary_zh": "【利弗莫尔中概股龙头指数收跌0.45%】财联社10月30日电，利弗莫尔中概股龙头指数收跌0.45%"
+      "id": "56cad4cac87571b2130f02fb709beccaeef8514b",
+      "title": "China Minsheng Bank: first-three-quarter 2026 net profit down 14.78% year on year",
+      "summary": "China Minsheng Bank (600016.SH) reported first-three-quarter revenue of 110.554 billion yuan, up 1.88%, and net profit attributable to shareholders of 24.323 billion yuan, down 14.78%.",
+      "title_zh": "民生银行：2026年前三季度净利润同比下降14.78%",
+      "summary_zh": "【民生银行：2026年前三季度净利润同比下降14.78%】财联社10月30日电，民生银行(600016.SH)公告称，前三季度实现营业收入1105.54亿元，同比增长1.88%；归属于本行股东的净利润243.23亿元，同比下降14.78%"
     },
     {
-      "id": "04269fb79fa8bc792798a011e5d4d22c603cba66",
-      "title": "Nasdaq closes down 1.4 percent; Google plunges 12 percent",
-      "summary": "[Nasdaq closes down 1.4 percent; Google plunges 12 percent] All three major US indexes closed lower: the Nasdaq fell 1.38 percent, the Dow 0.25 percent and the S&P 500 0.31 percent",
-      "title_zh": "纳指收跌1.4% 谷歌大跌12%",
-      "summary_zh": "【纳指收跌1.4% 谷歌大跌12%】美股三大指数集体收跌，纳指跌1.38%，道指跌0.25%，标普500指数跌0.31%"
+      "id": "ee6a37f778262af4c7117f67421a2694c43a0610",
+      "title": "CLS, 30 October: Stifel cut its Intel price target to 90 dollars from 110 dollars",
+      "summary": "CLS, 30 October: Stifel cut its Intel price target to 90 dollars from 110 dollars.",
+      "title_zh": "财联社10月30日电，投行Stifel将英特尔目标价从110美元下调至90美元。",
+      "summary_zh": "财联社10月30日电，投行Stifel将英特尔目标价从110美元下调至90美元"
     },
     {
-      "id": "0997f124f1011715a81e92ee1b74abff4e2883cb",
-      "title": "Dollar index falls on Oct 29",
-      "summary": "[Dollar index falls on Oct 29] CLS, Oct 30: the dollar index fell on Oct 29",
-      "title_zh": "美元指数29日下跌",
-      "summary_zh": "【美元指数29日下跌】财联社10月30日电，美元指数29日下跌"
+      "id": "e6365648eb67e8007ecb98da6a51fbda2d83f5b8",
+      "title": "Huatai Securities: third-quarter net profit down 51% quarter on quarter",
+      "summary": "Huatai Securities (601688.SH) reported first-three-quarter revenue of 31.748 billion yuan, up 17.03%, and net profit attributable to shareholders of 15.041 billion yuan, up 18.13%.",
+      "title_zh": "华泰证券：Q3净利润环比下降51%",
+      "summary_zh": "【华泰证券：Q3净利润环比下降51%】财联社10月30日电，华泰证券(601688.SH)公告称，前三季度实现营业收入317.48亿元，同比增长17.03%；归属于上市公司股东的净利润150.41亿元，同比增长18.13%"
     },
     {
-      "id": "561f219ae27c78c9cbdac9fc6fe6486b1df76d11",
-      "title": "International oil prices edge lower on Oct 29",
-      "summary": "[International oil prices edge lower on Oct 29] CLS, Oct 30: international oil prices edged lower on Oct 29",
-      "title_zh": "国际油价29日微跌",
-      "summary_zh": "【国际油价29日微跌】财联社10月30日电，国际油价29日微跌"
+      "id": "0553795cf9d75569cb01fa22e8becd68d800c95a",
+      "title": "CLS, 30 October: Mizuho cut its Intel price target to 88 dollars from 114 dollars",
+      "summary": "CLS, 30 October: Mizuho cut its Intel price target to 88 dollars from 114 dollars.",
+      "title_zh": "财联社10月30日电，瑞穗将英特尔目标价从114美元下调至88美元。",
+      "summary_zh": "财联社10月30日电，瑞穗将英特尔目标价从114美元下调至88美元"
     },
     {
-      "id": "2a6449fa39f2d6b96cdb145b9b0b7efbba2b6ab7",
-      "title": "CLS, Oct 30: Citi cuts Mango Excellent Media to sell with a target price of 16 yuan",
-      "summary": "CLS, Oct 30: Citi cuts Mango Excellent Media to sell with a target price of 16 yuan",
-      "title_zh": "财联社10月30日电，花旗将芒果超媒评级下调至卖出，目标价16元。",
-      "summary_zh": "财联社10月30日电，花旗将芒果超媒评级下调至卖出，目标价16元"
+      "id": "7ec15f21f19acd28f3e5bdee4da30a941af821ae",
+      "title": "Baili Tianheng: third-quarter net profit up 49.54% year on year",
+      "summary": "Baili Tianheng (688506.SH) reported first-three-quarter revenue of 2.094 billion yuan, up 1.35%, with a net loss attributable to shareholders of 705 million yuan.",
+      "title_zh": "百利天恒：第三季度净利润同比增长49.54%",
+      "summary_zh": "【百利天恒：第三季度净利润同比增长49.54%】财联社10月30日电，百利天恒(688506.SH)公告称，前三季度实现营业收入20.94亿元，同比增长1.35%；归属于上市公司股东的净利润为亏损7.05亿元"
     },
     {
-      "id": "89d2cf4e023eecf876dcb050aac44138a561f318",
-      "title": "CLS, Oct 30: euro-area leaders will meet on Nov 26 and 27 to discuss the next ECB president",
-      "summary": "CLS, Oct 30: euro-area leaders will meet on Nov 26 and 27 to discuss the next ECB president",
-      "title_zh": "财联社10月30日电，欧元区领导人将于11月26日至27日开会讨论欧洲央行行长人选。",
-      "summary_zh": "财联社10月30日电，欧元区领导人将于11月26日至27日开会讨论欧洲央行行长人选"
+      "id": "e6ac301376078fbbce35774c6ed521b46e7c13c2",
+      "title": "Securities Association of China publishes 34 AI case studies, covering seven areas from operational efficiency to decision support",
+      "summary": "CLS, 30 October: the Securities Association of China published a collection of 34 securities-industry AI case studies on 30 October, spanning seven directions including operational efficiency, experience upgrades and decision support.",
+      "title_zh": "中证协发布34篇证券业AI应用典型案例，覆盖运营提效、体验升级、决策支持等七大方向",
+      "summary_zh": "【中证协发布34篇证券业AI应用典型案例，覆盖运营提效、体验升级、决策支持等七大方向】财联社10月30日电，记者从业内独家获悉，10月30日，中国证券业协会在业内发布“智汇证券·共创未来”证券行业人工智能应用案例集，34篇入选案例集中亮相"
     },
     {
-      "id": "869d8b88da17cd89f0831680f3e401a142548773",
-      "title": "A senior US general has been relieved of duty",
-      "summary": "[A senior US general has been relieved of duty] CLS, Oct 30: Brett Sylvia, the senior general in charge of strategic planning at the US Department of Defense, has been relieved of duty, according to US reports on Oct 29; no reason has been disclosed",
-      "title_zh": "美国一名高级将领遭解职",
-      "summary_zh": "【美国一名高级将领遭解职】财联社10月30日电，据美国方面29日消息，美国防部负责战略规划的高级将领布雷特·西尔维亚已被解职，解职原因尚未公布"
+      "id": "ecf677156a7c3e33510869732e3e7b247d920e96",
+      "title": "CLS, 30 October: EU officials estimate the levy on low-value e-commerce parcels will add about 5.9 billion euros a year to the EU budget between 2028 and 2034",
+      "summary": "CLS, 30 October: EU officials estimate the levy on low-value e-commerce parcels will add about 5.9 billion euros a year to the EU budget between 2028 and 2034.",
+      "title_zh": "财联社10月30日电，据欧盟官方估算，欧盟对低价值电商包裹征收的费用，预计在2028至2034年间每年为欧盟预算带来59亿欧元收入。",
+      "summary_zh": "财联社10月30日电，据欧盟官方估算，欧盟对低价值电商包裹征收的费用，预计在2028至2034年间每年为欧盟预算带来59亿欧元收入"
     },
     {
-      "id": "5c94d2946d4f8909e664142d827438864c0bb0d7",
-      "title": "After two decades of price pressure, memory makers use AI to exact revenge on Apple",
-      "summary": "The two-decade asymmetric contest between flash memory suppliers and Apple is being quietly upended by the artificial intelligence wave",
-      "title_zh": "被压价二十年的存储厂，借AI向苹果“复仇”",
-      "summary_zh": "闪存供应商与苹果之间长达二十年的不对等博弈，正在被人工智能浪潮悄然颠覆"
+      "id": "7dfa6f0a9cab177e9c69dcc3dfa4720f8d7f8b17",
+      "title": "MIIT Vice Minister Xie Yuansheng meets Helene Budliger Artieda, State Secretary of Switzerland's State Secretariat for Economic Affairs",
+      "summary": "CLS, 30 October: MIIT Vice Minister Xie Yuansheng met Helene Budliger Artieda, State Secretary of Switzerland's State Secretariat for Economic Affairs, in Beijing on 30 October to discuss watchmaking and pharmaceuticals cooperation and a new memorandum on the watch cooperation working group.",
+      "title_zh": "工信部副部长谢远生会见瑞士联邦经济总局局长、国务秘书海伦娜·布德里格·阿蒂达",
+      "summary_zh": "【工信部副部长谢远生会见瑞士联邦经济总局局长、国务秘书海伦娜·布德里格·阿蒂达】财联社10月30日电，工业和信息化部副部长谢远生10月30日在北京会见瑞士联邦经济总局局长、国务秘书海伦娜·布德里格·阿蒂达，双方就深化中瑞钟表、医药产业合作以及签署新版《关于在中瑞经贸联委会框架下加强钟表合作工作组合作的谅解备忘录》等议题"
     },
     {
-      "id": "1e16626b48817ba0ef2174533f4fa1ed5bf51dca",
-      "title": "US September core PCE up 3.1 percent year on year; the Fed may raise rates 25 basis points in December",
-      "summary": "Data published by the US Commerce Department on Oct 29 showed the personal consumption expenditures price index rose 3.6 percent year on year in September, and the core index excluding food and energy rose 3.1 percent",
-      "title_zh": "美国9月核心PCE同比上涨3.1% 美联储12月或加息25个基点",
-      "summary_zh": "当地时间29日，美国商务部公布的数据显示，9月美国个人消费支出价格指数同比上涨3.6%，剔除食品和能源价格后的核心个人消费支出价格指数同比上涨3.1%"
+      "id": "03201a7fa19bbf940055edcaa1b386596aeb9658",
+      "title": "Coinbase net income surges 66% in third quarter, benefiting from bitcoin investment gains",
+      "summary": "Coinbase posted better-than-expected earnings in the third quarter, largely due to a recovery in the cryptocurrency market.",
+      "title_zh": "Coinbase 第三季度净利润激增 66%，受益于比特币投资收益",
+      "summary_zh": "Coinbase 第三季度业绩好于预期，主要受加密货币市场回暖推动。"
     },
     {
       "id": "f6bffb5cf4ec1badb49383ddcb81f80546a62c31",
       "title": "Federal Reserve issues FOMC statement",
       "summary": "Federal Reserve issues FOMC statement",
-      "title_zh": "美联储发布FOMC声明",
-      "summary_zh": "美联储发布FOMC声明"
+      "title_zh": "美联储发布 FOMC 声明",
+      "summary_zh": "美联储发布 FOMC 声明"
     },
     {
-      "id": "a662854c51d7edf2092a28891f3dbf6e1b85ea77",
-      "title": "GigaDevice earnings blow past expectations; Zhu Yiming and Ge Weidong did not sell",
-      "summary": "GigaDevice released its 2026 third-quarter report on the evening of Oct 29",
-      "title_zh": "兆易创新业绩炸裂！朱一明、葛卫东没卖",
-      "summary_zh": "10月29日晚， 兆易创新 披露2026年第三季度报告"
+      "id": "1d1b8cee3b14c6b34a1f824b89d3a2dd25ba7de7",
+      "title": "Chevron and Exxon beat earnings expectations as refining profits soar on high diesel fuel prices",
+      "summary": "Diesel prices have surged globally as Ukraine and Iran have bombed refineries in Russia and the Middle East.",
+      "title_zh": "雪佛龙与埃克森美孚业绩超预期，柴油价格高企推动炼油利润飙升",
+      "summary_zh": "随着乌克兰和伊朗袭击俄罗斯与中东的炼厂，全球柴油价格大幅上涨。"
     },
     {
-      "id": "a3ffff8440a71a60030507fab46b96a5646f4f78",
-      "title": "Longsys: third-quarter net profit up 437 percent year on year, down 44 percent quarter on quarter",
-      "summary": "Longsys (301308.SZ) said third-quarter revenue was 14.63 billion yuan, up 123.74 percent year on year, and net profit attributable to shareholders was 3.745 billion yuan, up 436.60 percent",
-      "title_zh": "江波龙：第三季度净利润同比增长437% 环比下降44%",
-      "summary_zh": "江波龙 (301308.SZ)公告称，第三季度营业收入为146.30亿元，同比增长123.74%；归属于上市公司股东的净利润为37.45亿元，同比增长436.60%"
-    },
-    {
-      "id": "b871fe0f530e2de9d209e55570fc95177c0d243e",
-      "title": "GigaDevice: Q3 net profit up 729% year on year, down 21% quarter on quarter",
-      "summary": "GigaDevice (603986.SH) said third-quarter revenue was 8.732 billion yuan, up 225.65% year on year, and net profit 4.209 billion yuan, up 728.93%.",
-      "title_zh": "兆易创新：第三季度净利润同比增长729% 环比下降21%",
-      "summary_zh": "兆易创新 (603986.SH)公告称，第三季度营收为87.32亿元，同比增长225.65%；净利润为42.09亿元，同比增长728.93%"
-    },
-    {
-      "id": "e04bc0bef62934cfcd33575471103c1e67f56ed3",
-      "title": "Amazon misses on earnings and holds capex steady, adding to AI spending jitters",
-      "summary": "Amazon reported third-quarter earnings on Thursday after the bell.",
-      "title_zh": "亚马逊业绩不及预期、资本开支维持不变，加剧 AI 支出担忧",
-      "summary_zh": "亚马逊周四盘后公布第三季度业绩。"
-    },
-    {
-      "id": "a2aaebcc9f79dc5ee7eff2b6835c37f1ca125938",
-      "title": "Rivian third-quarter earnings beat estimates as software revenue, R2 deliveries rise",
-      "summary": "Rivian also revised its 2026 guidance to mark expected improvements in its vehicle deliveries, pre-tax adjusted earnings and capital expenditures.",
-      "title_zh": "Rivian 第三季度业绩超预期，软件收入与 R2 交付量上升",
-      "summary_zh": "Rivian 同时修订 2026 年指引，以反映其汽车交付量、税前调整后收益与资本开支的预期改善。"
-    },
-    {
-      "id": "f7015fd531c1c37edca9d4cf3f02c0ab83c18412",
-      "title": "Reddit shares sink on weak sales guidance and plans login requirement test as Google search traffic shrinks",
-      "summary": "Reddit posts third-quarter earnings and reveals plans to require all users to create official accounts as Google search traffic shrinks",
-      "title_zh": "Reddit 股价下挫：销售指引疲弱，并计划测试强制登录，因谷歌搜索流量萎缩",
-      "summary_zh": "Reddit 公布第三季度业绩，并披露在谷歌搜索流量萎缩之际要求所有用户注册正式账户的计划"
-    },
-    {
-      "id": "f6546d9a29d08ba3a5f032e11b2929dd39f5d490",
-      "title": "Big Short investor Eisman questions Anthropic's \"very deliberate\" withholding of its latest results, as the AI safety narrative hits a trust crisis",
-      "summary": "Steve Eisman, the investor portrayed in The Big Short, publicly questioned Anthropic, saying the company seeking a valuation of about 2 trillion dollars very deliberately withheld its latest quarterly financial data",
-      "title_zh": "大空头Eisman质疑Anthropic\"非常刻意\"隐瞒最新财报，AI安全叙事遭遇信任危机",
-      "summary_zh": "《大空头》原型人物Steve Eisman公开质疑Anthropic，他称这家寻求约2万亿美元估值的企业，\"非常刻意\"地隐瞒了最新季度财务数据"
-    },
-    {
-      "id": "2c0f8a949e881695bcb3a07c13158da52c458875",
-      "title": "Starbucks sales fall short of expectations, but its U.S. turnaround continues to gain steam",
-      "summary": "Starbucks' U.S",
-      "title_zh": "星巴克销售不及预期，但其美国业务转型仍在加速",
-      "summary_zh": "星巴克的美国业务"
-    },
-    {
-      "id": "bd310cfd3ef9a8946a5a680b54f78cf0018e39c9",
+      "id": "5a9e4d658b49506d940d3f932a62d1d5267f7799",
       "title": "Some Polymarket user funds stolen by hackers; exchange referring matter to U.K. authorities",
       "summary": "The outage comes just days before the platform is expected to experience heightened trading during the U.S",
-      "title_zh": "Polymarket 部分用户资金遭黑客窃取，交易所已将事件移交英国当局",
-      "summary_zh": "此次中断距该平台预计在美国……迎来交易高峰仅数日"
+      "title_zh": "Polymarket 部分用户资金遭黑客窃取，平台已将事件移交英国当局",
+      "summary_zh": "此次中断距该平台预计在美国迎来交易高峰仅数日。"
     },
     {
-      "id": "2e3a8ea6a5374e1962fe32a44d4823422b868bf3",
-      "title": "Oct 30 member briefing: Alphabet's worst day since listing; AI investment lifts US third-quarter growth to 3.4 percent",
-      "summary": "1. [Alphabet's worst day since listing] Alphabet reported results after the US close on Oct 28",
-      "title_zh": "10月30日会员早报：Alphabet遭遇上市以来最惨一日 AI投资推动美国三季度经济增速升至3.4%",
-      "summary_zh": "1、【Alphabet遭遇上市以来最惨一日】Alphabet于10月28日美股收盘后发布财报"
+      "id": "75c9f344648aaddb995f15197866f36bd21f05bd",
+      "title": "Musk and Zuckerberg echo Trump's push to rebrand AI as 'super intelligence' on earnings calls. Others did not",
+      "summary": "Meta's Mark Zuckerberg and Elon Musk of Tesla and SpaceX adopted President Trump's preferred \"super intelligence\" term on their third-quarter earnings calls.",
+      "title_zh": "马斯克与扎克伯格在财报电话会上呼应特朗普，将 AI 改称“超级智能”，其他公司并未跟进",
+      "summary_zh": "Meta 的马克·扎克伯格以及特斯拉与 SpaceX 的埃隆·马斯克在第三季度财报电话会上采用了特朗普偏好的“超级智能”说法。"
     },
     {
-      "id": "148b6b1d88ed545f2449ddc5a8aba09c02891186",
-      "title": "Dow loses 100 points, S&P 500 snaps 3-day advance as Alphabet and Caterpillar tank: Live updates",
-      "summary": "Alphabet reported a disappointing third quarter, and shares tumbled.",
-      "title_zh": "道指下跌 100 点，标普 500 终结三连涨，Alphabet 与卡特彼勒重挫：实时更新",
-      "summary_zh": "Alphabet 公布令人失望的第三季度业绩，股价大跌。"
+      "id": "13820d4a22a7308bc5ac43096b40490bfcaf3cf0",
+      "title": "Russian strikes plunge Ukrainian city into blackout as Zelenskyy warns of more missile attacks",
+      "summary": "Russian strikes caused major power outages in Dnipro as a reported Ukrainian drone attack sparked a fire at a Russian oil refinery.",
+      "title_zh": "俄军袭击致乌克兰一城市停电，泽连斯基警告将有更多导弹袭击",
+      "summary_zh": "俄军袭击导致第聂伯罗大面积停电，同时据报道乌克兰无人机袭击引发俄罗斯一处炼油厂火灾。"
     },
     {
-      "id": "f906e736af0decb7818fc16f24d6638010478d18",
-      "title": "Alphabet tanks nearly 13% for worst day ever, losing $500 billion in value",
-      "summary": "Alphabet reported a larger negative free cash flow than analysts had expected while maintaining its spending gudiance for the year.",
-      "title_zh": "Alphabet 暴跌近 13%，创上市以来最差单日，市值蒸发 5000 亿美元",
-      "summary_zh": "Alphabet 公布的自由现金流负值大于分析师预期，同时维持全年支出指引。"
+      "id": "3038432f3ac2e17df4b435c621c9adc9709c8c5b",
+      "title": "Biggest-ever crypto hack impacts $6.3 billion as Binance works to contain fallout",
+      "summary": "Binance estimated the impact of a security incident at $6.3 billion, with around $3 billion in crypto assets frozen, and pledged to cover all losses.",
+      "title_zh": "史上最大规模加密黑客事件涉及 63 亿美元，币安正努力控制影响",
+      "summary_zh": "币安估算一起安全事件的影响约为 63 亿美元，约 30 亿美元加密资产被冻结，并承诺承担全部损失。"
     },
     {
-      "id": "021e318307c37f35c642ece2123fce56965fdca0",
-      "title": "Intel guides fourth-quarter revenue to 15 billion to 16 billion dollars against 17.05 billion dollars expected",
-      "summary": "Intel guides fourth-quarter revenue to 15 billion to 16 billion dollars against 17.05 billion dollars expected",
-      "title_zh": "英特预计四季度营收150亿-160亿美元，分析师预期170.5亿美元",
-      "summary_zh": "英特预计四季度营收150亿-160亿美元，分析师预期170.5亿美元"
+      "id": "586797ee10673510ddadb54aa47a33a0615ca391",
+      "title": "Euro zone economy slows to 0.4% growth in Q3 as crisis-hit France contracts",
+      "summary": "The euro zone showed surprising resilience, but weak productivity, industrial competitiveness challenges and demographic pressures remain, analysts said.",
+      "title_zh": "欧元区第三季度增速放缓至 0.4%，受危机冲击的法国出现萎缩",
+      "summary_zh": "分析师表示，欧元区展现出意外的韧性，但生产率疲弱、工业竞争力挑战与人口压力依然存在。"
     },
     {
-      "id": "a2194f5599269b87ed590dd9d8193b0ffa4fc793",
-      "title": "Norwegian shares surge 13% on earnings beat, guidance raise",
-      "summary": "Norwegian said the company's bookings had \"improved modestly\" but remain below its optimal range.",
-      "title_zh": "Norwegian 业绩超预期并上调指引，股价大涨 13%",
-      "summary_zh": "Norwegian 表示，公司预订量“温和改善”，但仍低于其最优区间。"
+      "id": "6fbc20217012ca123d6aec0833a866f97fec6bd8",
+      "title": "Wall Street braces for Democratic gains as 2026 midterm election nears",
+      "summary": "Investors are preparing for a blue wave in the midterm election on Tuesday that will determine who controls Congress for the remainder of President Trump's term",
+      "title_zh": "2026 年中期选举临近，华尔街准备迎接民主党斩获",
+      "summary_zh": "投资者正在为周二中期选举的“蓝色浪潮”做准备，选举结果将决定特朗普总统余下任期内国会的控制权。"
     },
     {
-      "id": "361f7280b1e781841706a06962b08cf912dc41b7",
-      "title": "Aon CEO warns AI data center insurance risks could threaten financing",
-      "summary": "Aon CEO Greg Case said concentration risk at AI data centers could constrain insurance capacity and alter financing for new projects.",
-      "title_zh": "怡安 CEO 警告：AI 数据中心保险风险可能威胁融资",
-      "summary_zh": "怡安 CEO Greg Case 表示，AI 数据中心的集中度风险可能限制承保能力，并改变新项目的融资。"
+      "id": "859792f242f168733daad78564891779b1efba59",
+      "title": "PBoC: will continue the moderately loose monetary policy and keep liquidity ample",
+      "summary": "On 30 October 2026, Pan Gongsheng, Party Secretary and Governor of the People's Bank of China, chaired a party committee meeting.",
+      "title_zh": "中国央行：续实施适度宽松的货币政策，保持流动性充裕",
+      "summary_zh": "2026年10月30日，中国人民银行党委书记、行长潘功胜主持召开党委会议"
     },
     {
-      "id": "2eea35adaf790761f15d3dfab52df8b68cc3ebcc",
-      "title": "Alaska Gov. orders probe of Peltola Senate campaign's alleged recruitment of 2nd Sullivan",
-      "summary": "Alaska's election could determine which party has a majority in the Senate",
-      "title_zh": "阿拉斯加州长下令调查佩尔托拉参议院竞选团队涉嫌招募“第二个沙利文”一事",
-      "summary_zh": "阿拉斯加的选举可能决定参议院的多数党归属"
+      "id": "b3cf99cb7817e556d86aee99507380d1d8d936b6",
+      "title": "PBoC: continue the moderately loose monetary policy and keep liquidity ample",
+      "summary": "On 30 October 2026, Pan Gongsheng, Party Secretary and Governor of the People's Bank of China, chaired a party committee meeting to study the General Secretary's remarks at the 20th Central Committee's fifth plenum and to set out implementation measures.",
+      "title_zh": "央行：继续实施适度宽松的货币政策 保持流动性充裕",
+      "summary_zh": "2026年10月30日，中国人民 银行 党委书记、行长潘功胜主持召开党委会议，传达学习习近平总书记在党的二十届五中全会上的重要讲话和全会精神，研究部署贯彻落实举措"
     },
     {
-      "id": "2544e7099ec0408b98d482f58a1dbfe4a75d42e7",
-      "title": "Rio Tinto ADR falls more than 4 percent at one point: rock collapse at Mongolia's Oyu Tolgoi copper mine halts underground operations",
-      "summary": "Rio Tinto shares fell on Thursday after a rock collapse at its Oyu Tolgoi copper mine in southern Mongolia injured 15 workers",
-      "title_zh": "力拓ADR一度跌超4%：蒙古奥尤陶勒盖铜矿发生岩崩事故，地下运营暂停",
-      "summary_zh": "力拓股价周四下跌，旗下位于蒙古国南部的奥尤陶勒盖铜矿发生岩崩事故，造成15名工人受伤"
+      "id": "49a57a5d6fad0ccbd948e1139eac198ad27e0fd4",
+      "title": "Kweichow Moutai: first-three-quarter net profit attributable to shareholders 64.467 billion yuan, down 0.25%",
+      "summary": "Kweichow Moutai reported 2026 first-three-quarter revenue of 130.971 billion yuan, up 1.96%, net profit attributable to shareholders of 64.467 billion yuan, down 0.25%, and recurring net profit of 64.325 billion yuan, down 0.55%.",
+      "title_zh": "贵州茅台：前三季度归母净利润644.67亿元，同比下降0.25%",
+      "summary_zh": "贵州茅台公告，2026年前三季度营业收入1309.71亿元，同比增1.96%；归母净利润644.67亿元，同比降0.25%；扣非净利润643.25亿元，同比降0.55%"
     },
     {
-      "id": "b85f83e0130ac3c870593a505e9eb69d857afe66",
-      "title": "US debt passes 100 percent of GDP: even rapid growth cannot keep pace with borrowing, and net interest becomes the least movable line in the budget",
-      "summary": "The US fiscal position is standing at a historic threshold",
-      "title_zh": "美国债务占GDP破100%：经济高增仍追不上举债，净利息成预算\"最不可撼动\"支出",
-      "summary_zh": "美国财政状况正站在一个历史性的临界点上"
+      "id": "08ff89b2bf56244826b802dfc8b45c1602447eea",
+      "title": "Bond market shock: concentrated selling hits credit bonds; institutions say the correction does not change the easing bias",
+      "summary": "On 30 October the domestic bond market saw a sudden, concentrated correction, with yields on city-investment bonds and liquid bank perpetual and tier-2 capital bonds rising fast on significantly heavier volume.",
+      "title_zh": "债市巨震！信用债抛压集中释放 机构：调整不改宽松基调",
+      "summary_zh": "10月30日，国内债券市场突发集中调整，城投债以及流动性较好的 银行 二永债等多品种收益率快速上行，成交显著放量"
     },
     {
-      "id": "6c90579afff71b4270204b5a553c175a5cbff390",
-      "title": "Intel stock plunges 20% as chipmaker blames PC slowdown for weak guidance",
-      "summary": "Intel has been a Wall Street darling this year due to its emergence as a player in AI, but the company is being weighed down by a struggling PC market.",
-      "title_zh": "英特尔股价暴跌 20%，公司将疲弱指引归因于 PC 市场放缓",
-      "summary_zh": "凭借在 AI 领域的布局，英特尔今年一度是华尔街的宠儿，但疲弱的 PC 市场正拖累该公司。"
+      "id": "9fa056b88dec0bae2ad38519e2f94a1f44509e6c",
+      "title": "Fourth batch of mutual fund benchmark changes lands, giving more products a clear reference",
+      "summary": "A thousand-plus mutual funds published benchmark adjustment notices this evening, formally landing the fourth batch of performance-benchmark changes.",
+      "title_zh": "第四批公募产品基准调整落地 更多产品有了清晰“参照系”",
+      "summary_zh": "今日晚间，千余只公募基金集中发布业绩比较基准调整公告，公募基金第四批业绩比较基准调整正式落地"
     },
     {
-      "id": "2e58d6ba20a32599e73f2b93286dc580be262336",
-      "title": "Sandisk guides second-quarter revenue to 12.2 billion to 12.6 billion dollars against 12.1 billion dollars expected; first-quarter EDGE revenue 5.83 billion dollars",
-      "summary": "Sandisk guides second-quarter revenue to 12.2 billion to 12.6 billion dollars against 12.1 billion dollars expected",
-      "title_zh": "闪迪预计第二财季营收122亿-126亿美元，分析师预期121亿美元。 第一财季EDGE营收58.3亿美元。",
-      "summary_zh": "闪迪预计第二财季营收122亿-126亿美元，分析师预期121亿美元"
+      "id": "6255e60543b111dfbb8abe03983ac889d3ef4c51",
+      "title": "Tech giants need legacy businesses to keep growing as they pour trillions into the AI buildout",
+      "summary": "Hyperscalers continue spending big on artificial intelligence, putting pressure on their legacy businesses and impacting their free cash flow.",
+      "title_zh": "科技巨头向 AI 基建投入数万亿美元，却仍需传统业务维持增长",
+      "summary_zh": "超大规模云厂商持续在人工智能上大举投入，给传统业务带来压力并影响自由现金流。"
     },
     {
-      "id": "11a407c29df4fff1dfeb57ed24e2f342c0c8c35b",
-      "title": "Amazon third-quarter revenue below expectations, but AWS sales grew 39 percent, beating forecasts; revenue is expected to grow more than 40 percent in each of the next two years",
-      "summary": "Amazon third-quarter net sales of 201.9 billion dollars against 202.26 billion dollars expected",
-      "title_zh": "亚马逊Q3营收低于预期，但ASW销售超预期增长39%，料明后年收入均增超40%",
-      "summary_zh": "亚马逊三季度净销售2019亿美元，预期2022.6亿美元"
+      "id": "736f1b8555d8c1021f821f579b08724b55c11a13",
+      "title": "A decade of data: the Shanghai Composite rose in November 60% of the time, with micro and small caps outperforming; where do valuations stand now?",
+      "summary": "With October trading over, the market is about to enter November.",
+      "title_zh": "近10年数据复盘：沪指11月上涨比例60% 小微盘股相对占优 当下指数估值如何？",
+      "summary_zh": "随着10月行情落下帷幕，市场即将迈入11月"
     },
     {
-      "id": "2926d49afe235c0a0747d04fb6d95fb7fd14aeb1",
-      "title": "Firm that correctly called the AI rally slowdown says here's where to hide out",
-      "summary": "Whether or not the artificial intelligence trade is in a bubble, there are defensive parts of the market to hide in if it bursts, according to Capital Economics",
-      "title_zh": "准确预判 AI 行情放缓的机构给出避险方向",
-      "summary_zh": "凯投宏观认为，无论人工智能交易是否存在泡沫，一旦破裂，市场中仍有防御性板块可供避险"
+      "id": "6560ad383baab1f4f59e62dc3f640f21cb788b44",
+      "title": "Sudden wave of target cuts, a 26% plunge: what happened at the US chip giant?",
+      "summary": "After Google, Intel also delivered results the market found unsatisfactory.",
+      "title_zh": "突然集体下调！暴跌26%！美国芯片巨头发生了啥？",
+      "summary_zh": "继谷歌之后， 英特尔 也交出了一份令市场不满意的“答卷”"
+    },
+    {
+      "id": "1672f3448199356a470a5ef905a643123b02d9e8",
+      "title": "Fourth batch of mutual fund benchmark changes completes, with more than 4,000 products adjusted",
+      "summary": "On 30 October, as the fourth batch of a thousand-plus existing funds published benchmark notices, the number of products requiring unified adjustment in the transition period passed 4,000.",
+      "title_zh": "公募基金第四批业绩比较基准调整落地 超4000只产品完成调整安排",
+      "summary_zh": "10月30日，随着第四批千余只存量公募基金集中发布业绩比较基准调整公告，过渡期内需统一调整的产品已超4000只"
+    },
+    {
+      "id": "adf1e7ba48d1e0311b2ef175972330d4d63e9166",
+      "title": "Japan's 'national team' to accelerate ETF sales, having offloaded 244 billion yen this year",
+      "summary": "The Bank of Japan said today that from January it will raise annual ETF sales to about 860 billion yen at book value, from about 330 billion yen, shortening the time needed to complete the unwind from roughly 112 years to about 43 years.",
+      "title_zh": "日本“国家队”将加速抛售ETF 年内已卖2440亿日元",
+      "summary_zh": "日本央行今日宣布，从明年1月起，按账面价值计算， 每年出售ETF的规模提高至约8600亿日元 （约363亿元），此前为每年约3300亿日元（约139亿元），完成全部出售的时间预计由约112年缩短至约43年"
+    },
+    {
+      "id": "0efd1643192a05204a597952084dfc4503084ea3",
+      "title": "Interview with SGX group managing director Chen Qing: regional allocation to renminbi assets is turning longer-term",
+      "summary": "Overseas investors now have one more option for allocating to renminbi bonds.",
+      "title_zh": "对话新交所集团董事总经理陈庆：区域投资者配置人民币资产渐趋长期",
+      "summary_zh": "海外投资者配置人民币债券，又多了一种选择"
+    },
+    {
+      "id": "77e632858b1931977719ab6ce1676b86b8da2705",
+      "title": "At 4.9 yuan per thousand calls, Baidu wants to push search API pricing to the floor",
+      "summary": "On 30 October Baidu held a product upgrade briefing in Beijing, launching a new round of upgrades around its Ernie assistant, AI camera, GUI interaction and AI interactive content, and upgrading its search AI API for developers.",
+      "title_zh": "千次4.9元，百度这回想把搜索API打到地板价",
+      "summary_zh": "10月30日，百度App在北京举办产品升级沟通会，围绕文心助手、AI镜头、GUI交互和AI互动内容推出新一轮升级，同时升级搜索AI API，面向开发者提供搜索服务"
+    },
+    {
+      "id": "08318fc87e9775abdf06381b1254f092c8d56d5a",
+      "title": "MetaX: first-three-quarter net profit attributable to shareholders 639 million yuan, turning profitable",
+      "summary": "MetaX reported 2026 first-three-quarter revenue of 2.824 billion yuan, up 128.45%, and net profit attributable to shareholders of 639 million yuan versus a 346 million yuan loss a year earlier; recurring net profit was 259 million yuan, also turning profitable.",
+      "title_zh": "沐曦股份：前三季度归母净利润6.39亿元，扭亏为盈",
+      "summary_zh": "沐曦股份公告，2026年前三季度营业收入28.24亿元，同比增长128.45%；归母净利润6.39亿元，上年同期亏损3.46亿元，扭亏为盈；扣非净利润2.59亿元，扭亏为盈"
+    },
+    {
+      "id": "e8fdc364e41a6eec6b7122e4a7baf0f511cc3e93",
+      "title": "Kweichow Moutai: third-quarter net profit 19.951 billion yuan, up 3.78% year on year and 15% quarter on quarter",
+      "summary": "Kweichow Moutai (600519.SH) reported first-three-quarter revenue of 130.971 billion yuan, up 1.96%, and net profit attributable to shareholders of 64.467 billion yuan, down 0.25%.",
+      "title_zh": "贵州茅台：第三季度净利润199.51亿元 同比增长3.78%环比增长15%",
+      "summary_zh": "贵州茅台 (600519.SH)公告称，前三季度实现营业收入1309.71亿元，同比增长1.96%；归属于上市公司股东的净利润644.67亿元，同比下降0.25%"
+    },
+    {
+      "id": "65aaa40beb1e248d97371c1eadbabe2f88695324",
+      "title": "Gen Z is ditching bars for run clubs — and finding more than friends along the way",
+      "summary": "As young adults denote less wallet share to bars, run clubs, races and recreational leagues become increasingly popular places to build community.",
+      "title_zh": "Z 世代抛弃酒吧转向跑步俱乐部，顺带收获的不只是朋友",
+      "summary_zh": "随着年轻人把更少的支出投向酒吧，跑步俱乐部、赛事和休闲联赛正成为越来越受欢迎的社群场所。"
+    },
+    {
+      "id": "7ae6a3ca57e1c0dd0315a02374e7275f4aad03a8",
+      "title": "China's live hog price falls below 9 yuan per kilogram; will the cycle turn?",
+      "summary": "Since October the hog market has stayed weak through the peak season, with domestic prices continuing to slide.",
+      "title_zh": "国内生猪价跌破9元/公斤，周期反转还会来吗？",
+      "summary_zh": "10月以来，生猪市场延续旺季不旺态势，国内生猪价格继续下行"
+    },
+    {
+      "id": "1e57fbe11d7624acda065e0c390b33d9c5e9c8ce",
+      "title": "YOFC: first-three-quarter net profit attributable to shareholders 6.128 billion yuan, up 1,204.63%",
+      "summary": "YOFC reported 2026 first-three-quarter revenue of 19.124 billion yuan, up 86.12%, net profit attributable to shareholders of 6.128 billion yuan, up 1,204.63%, and recurring net profit of 5.505 billion yuan, up 1,846.32%.",
+      "title_zh": "长飞光纤：前三季度归母净利润61.28亿元，同比增长1204.63%",
+      "summary_zh": "长飞光纤公告，2026年前三季度营业收入191.24亿元，同比增长86.12%；归母净利润61.28亿元，同比增长1204.63%；扣非净利润55.05亿元，同比增长1846.32%"
     }
   ],
-  "updated_at": "2026-10-29T21:38:18Z"
+  "updated_at": "2026-10-30T12:41:09Z"
 }
