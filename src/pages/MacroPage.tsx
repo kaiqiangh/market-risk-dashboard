@@ -18,7 +18,7 @@ const SECTIONS = ["rates", "credit", "volatility", "inflation", "labor", "liquid
 type MacroGroup = (typeof SECTIONS)[number];
 
 /** history/macro/{group}.{slice}.json — sparse column-oriented per-series history (#84 §3). */
-const MacroBundleSchema = z.record(z.object({ d: z.array(z.string()), v: z.array(z.number()) }));
+const MacroBundleSchema = z.record(z.string(), z.object({ d: z.array(z.string()), v: z.array(z.number()) }));
 
 /**
  * MacroPage: macro page (rates / credit / volatility / inflation / labor / liquidity / fx

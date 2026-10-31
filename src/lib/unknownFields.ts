@@ -39,9 +39,9 @@ function unwrap(schema: z.ZodTypeAny): z.ZodTypeAny {
       current instanceof z.ZodNullable ||
       current instanceof z.ZodDefault
     ) {
-      current = current._def.innerType as z.ZodTypeAny;
-    } else if (current instanceof z.ZodEffects) {
-      current = current._def.schema as z.ZodTypeAny;
+      current = current.unwrap() as z.ZodTypeAny;
+    } else if (current instanceof z.ZodPipe) {
+      current = current.in as z.ZodTypeAny;
     } else if (current instanceof z.ZodLazy) {
       current = current._def.getter() as z.ZodTypeAny;
     } else {
@@ -84,7 +84,7 @@ function walk(schema: z.ZodTypeAny, value: unknown, path: string, state: Walk, d
 
   if (node instanceof z.ZodArray) {
     if (!Array.isArray(value)) return;
-    const element = node._def.type as z.ZodTypeAny;
+    const element = node.element as z.ZodTypeAny;
     for (const item of value) {
       // Collapse the index: 400 assets carrying the same stray field is one drift, not 400.
       walk(element, item, `${path}[]`, state, depth + 1);
@@ -96,7 +96,7 @@ function walk(schema: z.ZodTypeAny, value: unknown, path: string, state: Walk, d
   if (node instanceof z.ZodRecord) {
     // A record accepts any key by definition; only its values can carry unknown fields.
     if (!isPlainObject(value)) return;
-    const valueType = node._def.valueType as z.ZodTypeAny;
+    const valueType = node.valueType as z.ZodTypeAny;
     for (const [key, child] of Object.entries(value)) {
       walk(valueType, child, join(path, key), state, depth + 1);
       if (state.found.size >= MAX_FIELDS || state.budget <= 0) return;
@@ -108,7 +108,7 @@ function walk(schema: z.ZodTypeAny, value: unknown, path: string, state: Walk, d
     // A value that satisfies one branch cleanly has nothing unknown about it; only report
     // when every branch disagrees, and then report the least-surprised branch.
     let best: Set<string> | null = null;
-    for (const option of node._def.options as z.ZodTypeAny[]) {
+    for (const option of node.options as z.ZodTypeAny[]) {
       const branch: Walk = { found: new Set<string>(), budget: state.budget };
       walk(option, value, path, branch, depth + 1);
       if (branch.found.size === 0) return;

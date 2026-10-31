@@ -77,7 +77,7 @@ export const AnalysisLineage = z
   .object({
     fact_generation_id: z.string().min(71).regex(new RegExp("^sha256:[0-9a-f]{64}$")),
     fact_generated_at: utcDateTime,
-    input_freshness: z.record(FreshnessStatus).default({}),
+    input_freshness: z.record(z.string(), FreshnessStatus).default({}),
     pair_id: z.string().min(1).max(128),
   })
   .passthrough();
@@ -159,7 +159,7 @@ export const BaseEnvelope = z
     freshness_status: FreshnessStatus,
     data_quality: z.number().finite().min(0).max(1),
     provenance: ProviderProvenance,
-    payload: z.record(z.unknown()),
+    payload: z.record(z.string(), z.unknown()),
   })
   .passthrough();
 export type BaseEnvelope = z.infer<typeof BaseEnvelope>;
@@ -410,7 +410,7 @@ export const RiskModelResult = z
     regime: MarketRegime,
     regime_evidence: z.array(z.string()).default([]),
     confidence: z.number().finite().min(0).max(1),
-    confidence_factors: z.record(z.number().finite()).default({}),
+    confidence_factors: z.record(z.string(), z.number().finite()).default({}),
     disclaimer: z.string().default("This indicator is a modeled estimate of market stress based on historical data and current market signals. Data trust is not statistical confidence, a calibrated probability, or investment advice."),
     evidence_state: RiskEvidenceState.nullable().default(null),
     evidence_coverage: z.number().finite().min(0).max(1).nullable().default(null),
@@ -550,13 +550,13 @@ export const FactLayer = z
     generated_at: utcDateTime,
     schema_version: z.string().min(1),
     generation_id: z.string().min(71).regex(new RegExp("^sha256:[0-9a-f]{64}$")).nullable().default(null),
-    data_freshness: z.record(FreshnessStatus).default({}),
+    data_freshness: z.record(z.string(), FreshnessStatus).default({}),
     risk: RiskModelResult,
-    macro_summary: z.record(z.unknown()).default({}),
-    market_summary: z.record(z.unknown()).default({}),
-    news_top: z.array(z.record(z.unknown())).default([]),
-    calendar_next7d: z.array(z.record(z.unknown())).default([]),
-    evidence_index: z.record(EvidenceRef).default({}),
+    macro_summary: z.record(z.string(), z.unknown()).default({}),
+    market_summary: z.record(z.string(), z.unknown()).default({}),
+    news_top: z.array(z.record(z.string(), z.unknown())).default([]),
+    calendar_next7d: z.array(z.record(z.string(), z.unknown())).default([]),
+    evidence_index: z.record(z.string(), EvidenceRef).default({}),
   })
   .passthrough();
 export type FactLayer = z.infer<typeof FactLayer>;
@@ -579,7 +579,7 @@ export const FedWatchSnapshot = z
     implied_rate: z.number().finite(),
     probabilities: z.array(FedWatchRateProb).default([]),
     inferred_action: z.enum(["hold", "hike", "cut", "insufficient_data"]).nullable().default(null),
-    change_1d: z.record(z.number().finite()).nullable().default(null),
+    change_1d: z.record(z.string(), z.number().finite()).nullable().default(null),
     status: z.enum(["accumulating", "ready"]).default("accumulating"),
   })
   .passthrough();
@@ -590,7 +590,7 @@ export const FreshnessDocument = z
   .object({
     schema_version: z.string().min(1),
     updated_at: utcDateTime,
-    datasets: z.record(DatasetFreshness).default({}),
+    datasets: z.record(z.string(), DatasetFreshness).default({}),
   })
   .passthrough();
 export type FreshnessDocument = z.infer<typeof FreshnessDocument>;
@@ -778,7 +778,7 @@ export const SourcesDocument = z
   .object({
     schema_version: z.string().min(1),
     updated_at: utcDateTime,
-    domains: z.record(DomainStatus).default({}),
+    domains: z.record(z.string(), DomainStatus).default({}),
   })
   .passthrough();
 export type SourcesDocument = z.infer<typeof SourcesDocument>;

@@ -243,10 +243,10 @@ class Emitter:
                 raise UnsupportedSchema(where, node)
             extra = node.get("additionalProperties")
             if extra is True or extra is None:
-                return "z.record(z.unknown())"
+                return "z.record(z.string(), z.unknown())"
             if extra is False:
                 raise UnsupportedSchema(where, node)
-            return f"z.record({self.emit(extra, f'{where}{{}}')})"
+            return f"z.record(z.string(), {self.emit(extra, f'{where}{{}}')})"
 
         raise UnsupportedSchema(where, node)
 

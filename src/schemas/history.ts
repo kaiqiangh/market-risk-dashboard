@@ -21,7 +21,7 @@ export const RiskTrendPoint = z
     risk_level: RiskLevel.optional(),
     regime: MarketRegime.optional(),
     confidence: z.number().finite().min(0).max(1).optional(),
-    dim_scores: z.record(z.number().finite()).optional(),
+    dim_scores: z.record(z.string(), z.number().finite()).optional(),
   })
   .passthrough();
 
