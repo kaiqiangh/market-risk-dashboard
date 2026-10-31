@@ -1,6 +1,202 @@
 {
   "items": [
     {
+      "id": "2cabea01901ee9f7ca9f6c24c3e971f588bed4e8",
+      "title_zh": "苹果收盘市值5.03万亿美元反超英伟达，重夺全球第一",
+      "summary_zh": "美股周五收盘，苹果市值报5.03万亿美元，从英伟达手中夺回全球市值最高公司的头衔",
+      "title": "Apple closes at $5.03 trillion market cap, surpassing Nvidia to regain global No.1",
+      "summary": "At Friday's U.S. close, Apple's market capitalization stood at $5.03 trillion, reclaiming the title of the world's most valuable company from Nvidia."
+    },
+    {
+      "id": "9e92b64670a1647094fda94b93ad95b434cafc71",
+      "title_zh": "英伟达披露下一代CPO技术 光引擎绕开有机基板 原型样品已就位",
+      "summary_zh": "《科创板日报》10月31日讯 英伟达 近日在SEMICON West 2026上公开展示了下一代共封装光学（CPO）技术，名为OOI（Optics-on-Interposer，中介层上集成光学）",
+      "title": "Nvidia unveils next-gen CPO tech; optical engine bypasses organic substrate, prototypes ready",
+      "summary": "Per the Star Market Daily on Oct 31, Nvidia recently showcased its next-generation co-packaged optics (CPO) technology, called OOI (Optics-on-Interposer), at SEMICON West 2026."
+    },
+    {
+      "id": "0f1e50b0cb13e3d30d3326d28ed50a30d1ac9d49",
+      "title_zh": "OpenAI CEO到访三星 会谈约50名高管 存储芯片及AI基础设施合作是重点",
+      "summary_zh": "时隔近一年，OpenAI CEO萨姆·奥尔特曼（Sam Altman）再次到访三星",
+      "title": "OpenAI CEO visits Samsung, meets ~50 executives; memory chips and AI infrastructure in focus",
+      "summary": "Nearly a year later, OpenAI CEO Sam Altman has again visited Samsung."
+    },
+    {
+      "id": "a9a77a67ccb3310e9b02e189e80e48e9bb191a65",
+      "title_zh": "长鑫科技业绩交流会：LPDDR6瞄准汽车新场景，20亿回购获通过，强劲现金流支撑再投入",
+      "summary_zh": "长鑫科技2026年三季度交出一份强劲成绩单，同时以LPDDR6首发旗舰手机为标志，正式宣示跻身全球高端存储第一梯队",
+      "title": "ChangXin earnings call: LPDDR6 targets automotive use cases, RMB 2bn buyback approved, strong cash flow supports reinvestment",
+      "summary": "ChangXin Technology delivered a strong Q3 2026 and, marked by the LPDDR6 debut in flagship phones, formally declared its entry into the global top tier of high-end memory."
+    },
+    {
+      "id": "d320e5683cc7396a89308f57fdaceaab4eaa59ed",
+      "title_zh": "今年前三季度东北地区货物贸易进出口超9900亿元 创历史同期新高",
+      "summary_zh": "【今年前三季度东北地区货物贸易进出口超9900亿元 创历史同期新高】财联社10月31日电，从沈阳海关了解到，今年前三季度，东北地区货物贸易进出口总值9952.6亿元，同比增长8.7%，规模创历史同期新高",
+      "title": "Northeast China's goods trade exceeds RMB 990bn in first three quarters, a record high for the period",
+      "summary": "Per Shenyang Customs, the Northeast's total goods trade reached RMB 995.26bn in the first three quarters, up 8.7% y/y, a record high for the period."
+    },
+    {
+      "id": "7ff540b478a83fc257df661ac40ec8c05c8bc42e",
+      "title_zh": "加政府推动提升港口吞吐能力以降低对美出口依赖",
+      "summary_zh": "【加政府推动提升港口吞吐能力以降低对美出口依赖】财联社10月31日电，加拿大联邦政府10月30日宣布，正式将该国最大港口温哥华港罗伯茨滩2号码头项目列为国家利益项目，此举旨在推动提升港口吞吐能力，以促进贸易多元化并降低对美出口依赖",
+      "title": "Canada pushes to boost port capacity to cut reliance on U.S.-bound exports",
+      "summary": "On Oct 30, the Canadian federal government designated the Roberts Bank Terminal 2 project at the Port of Vancouver, its largest port, as a project of national interest, aiming to raise throughput, diversify trade and reduce dependence on U.S. exports."
+    },
+    {
+      "id": "81d704c1578ebef14cc1f2ba7a801620d63054b5",
+      "title_zh": "近40家A股上市公司三季度获中国国新、中国诚通新进或增仓",
+      "summary_zh": "【近40家A股上市公司三季度获中国国新、中国诚通新进或增仓】财联社10月31日电，据财联社不完全统计，截至发稿，云路股份、中材国际、国博电子、华大九天、国睿科技、中国动力、华能蒙电、时代电气、中瓷电子、中航光电、中金黄金、云铝股份、国电南瑞、国机精工、光迅科技、有研新材、东方钽业、福能股份、中国神华、海光信息、五矿发展",
+      "title": "Nearly 40 A-share firms saw new or increased positions by China Reform and China Chengtong in Q3",
+      "summary": "Per Cailian Press estimates, nearly 40 A-share companies saw new or increased holdings by the state-owned capital operators China Reform and China Chengtong in the third quarter."
+    },
+    {
+      "id": "86f5e98c5f96e1510b7d62e5e4182457561920ee",
+      "title_zh": "哥伦比亚国防部宣布对与委内瑞拉接壤边境城市实施军事管制",
+      "summary_zh": "【哥伦比亚国防部宣布对与委内瑞拉接壤边境城市实施军事管制】当地时间10月30日，哥伦比亚国防部宣布，根据哥伦比亚总统德拉埃斯普列亚命令，已开始对与委内瑞拉接壤的哥伦比亚城市库库塔实施军事化管制",
+      "title": "Colombia's defense ministry announces martial control over border city with Venezuela",
+      "summary": "On Oct 30, Colombia's Defense Ministry said it has begun militarized control of Cucuta, a city bordering Venezuela, under orders from President Draco."
+    },
+    {
+      "id": "b47cfe7005b7099cccdd6332ade7bc01de748cce",
+      "title_zh": "中信证券：银行板块有望从“高股息防御资产”向“高确定性权益资产”重估 预计全年仍将演绎估值上行方向",
+      "summary_zh": "【中信证券：银行板块有望从“高股息防御资产”向“高确定性权益资产”重估 预计全年仍将演绎估值上行方向】财联社10月31日电，中信证券研报称，7月以来，市场风格再平衡，银行板块表现明显回暖，绝对收益和相对收益均录得较好表现，公募机构持仓亦明显回升0.92ppts至1.93%，处于2025年第三季度以来的最高水平，中信证券",
+      "title": "CITIC Securities: bank sector may be re-rated from 'high-dividend defensive' to 'high-conviction equity', valuation upside seen for full year",
+      "summary": "CITIC Securities notes that since July, style rebalancing has visibly warmed the bank sector; mutual-fund holdings rose 0.92ppt to 1.93%, a high since Q3 2025, and it expects valuation gains to continue through the year."
+    },
+    {
+      "id": "3614966cf7d2b2cc1e82776d22b0b2701668dbae",
+      "title_zh": "禄达技术集团收购亚洲算力算网与量子计算科技有限公司55%股权",
+      "summary_zh": "【禄达技术集团收购亚洲算力算网与量子计算科技有限公司55%股权】财联社10月31日电，美股上市公司禄达技术集团（LUD.US）宣布，正式收购亚洲算力算网与量子计算科技有限公司（简称“亚洲算力”）55%的股权，后者的业务涵盖数据中心规划建设的运营管理、高性能算力租赁，以及量子计算托管与运营",
+      "title": "Luda Technology Group acquires 55% stake in Asia Computing Power & Quantum Computing Technology",
+      "summary": "U.S.-listed Luda Technology Group (LUD.US) announced the acquisition of a 55% stake in Asia Computing Power & Quantum Computing Technology, whose business spans data-center operations, high-performance computing leasing, and quantum computing hosting."
+    },
+    {
+      "id": "511dc393adcb750e64a3d00ce7dc908ce530c232",
+      "title_zh": "美国今年麻疹确诊病例超4000例",
+      "summary_zh": "【美国今年麻疹确诊病例超4000例】财联社10月31日电，美国疾病控制和预防中心10月30日公布的最新数据显示，截至10月29日，累计确诊病例已达4852例，为2025年全年病例总数2289例的两倍多",
+      "title": "U.S. measles cases exceed 4,000 this year",
+      "summary": "As of Oct 29, cumulative confirmed cases reached 4,852, more than double the 2,289 cases recorded for all of 2025."
+    },
+    {
+      "id": "21c24a4b0a76879a41749007a27718eec07d656c",
+      "title_zh": "财联社10月31日电，阿布扎比国家石油公司（ADNOC）达成协议，将向泰国供应最多200万吨液化天然气。",
+      "summary_zh": "财联社10月31日电，阿布扎比国家石油公司（ADNOC）达成协议，将向泰国供应最多200万吨液化天然气",
+      "title": "ADNOC agrees to supply Thailand with up to 2 million tonnes of LNG",
+      "summary": "Abu Dhabi National Oil Company (ADNOC) has reached an agreement to supply Thailand with up to 2 million tonnes of liquefied natural gas."
+    },
+    {
+      "id": "bb72e3d24eeea23df6d21f116fe276914faa120c",
+      "title_zh": "42家A股上市银行三季报悉数“交卷” 营收利润双增长",
+      "summary_zh": "【42家A股上市银行三季报悉数“交卷” 营收利润双增长】财联社10月31日电，截至10月30日晚间，42家A股上市银行2026年三季报已全部披露完毕",
+      "title": "All 42 A-share listed banks report Q3 results with revenue and profit growth",
+      "summary": "By the evening of Oct 30, all 42 A-share listed banks had disclosed their 2026 third-quarter reports."
+    },
+    {
+      "id": "aca38e990b09992433dfc40a5efa57e27c667183",
+      "title_zh": "默茨称美以伊冲突使欧洲损失超千亿",
+      "summary_zh": "【默茨称美以伊冲突使欧洲损失超千亿】财联社10月31日电，德国总理默茨10月30日在韩国首尔接受媒体采访时表示，德国正通过多种渠道协调并加强外交努力，以期尽快结束美以伊冲突",
+      "title": "Merkz says U.S.-Israel-Iran conflict has cost Europe over RMB 100bn",
+      "summary": "On Oct 30 in Seoul, German Chancellor Merz told media that Germany is coordinating through multiple channels and stepping up diplomatic efforts to end the U.S.-Israel-Iran conflict as soon as possible."
+    },
+    {
+      "id": "6c43e5b140336d70f5ec3aa89084a15e1f44b747",
+      "title_zh": "国家电投山东海阳核电项目三期工程开工建设",
+      "summary_zh": "【国家电投山东海阳核电项目三期工程开工建设】财联社10月31日电，国家电投10月31日通报，公司“十五五”规划重点项目——国家电投山东海阳核电5号机组核岛开始浇筑第一罐混凝土，标志着海阳核电项目三期工程开工建设",
+      "title": "State Power Investment Corp begins construction of Phase III of Shandong Haiyang nuclear project",
+      "summary": "On Oct 31, SPIC reported that the nuclear island of Unit 5 at Shandong Haiyang began first concrete pouring, marking the start of Phase III construction."
+    },
+    {
+      "id": "936a35312c5d143b80bffc572cdf3d95a7448aa0",
+      "title_zh": "俄外长：乌方破坏会谈氛围 俄美根本问题未解",
+      "summary_zh": "【俄外长：乌方破坏会谈氛围 俄美根本问题未解】财联社10月31日电，乌克兰总统泽连斯基10月30日表示，乌方将扩充远程打击部队，已确定远程打击的“关键优先目标”，且乌方正努力使无人机和导弹能够打击“俄罗斯更深处的领土”",
+      "title": "Russian FM: Ukraine undermining talks atmosphere; fundamental Russia-U.S. issues unresolved",
+      "summary": "On Oct 30, Ukrainian President Zelensky said Ukraine will expand its long-range strike forces and has identified key priority targets, seeking to enable drones and missiles to strike 'deeper into Russian territory.'"
+    },
+    {
+      "id": "39901b158d52554442d7d1d12f62daceaf827ab6",
+      "title_zh": "墨西哥外交部：墨美边界不能由美国州政府单方面改变",
+      "summary_zh": "【墨西哥外交部：墨美边界不能由美国州政府单方面改变】财联社10月31日电，墨西哥外交部30日发表声明说，墨西哥与美国之间的边界不能因美国某个州政府的决定而改变",
+      "title": "Mexico's foreign ministry: U.S.-Mexico border cannot be unilaterally changed by a U.S. state government",
+      "summary": "On Oct 30, Mexico's Foreign Ministry stated that the border between Mexico and the U.S. cannot be altered by the decision of any individual U.S. state government."
+    },
+    {
+      "id": "78a3f01ae093ae71f2da08e13345c3c7bda148e7",
+      "title_zh": "前三季度深市上市公司共计实现净利润10750.67亿元 同比增长19.27%",
+      "summary_zh": "【前三季度深市上市公司共计实现净利润10750.67亿元 同比增长19.27%】财联社10月31日电，截至2026年10月31日，深市2904家上市公司披露了三季度报告，共计实现营业总收入17.49万亿元，同比增长10.62%；共计实现净利润10750.67亿元，同比增长19.27%，增速高于营业总收入8.65个百分点",
+      "title": "Shenzhen-listed companies post RMB 1.075tn net profit in first three quarters, up 19.27% y/y",
+      "summary": "As of Oct 31, 2026, 2,904 Shenzhen-listed firms reported Q3 results: total operating revenue of RMB 17.49tn (+10.62% y/y) and net profit of RMB 1.075tn (+19.27% y/y)."
+    },
+    {
+      "id": "56d832e5389163965a8952978af9a1948c2206a8",
+      "title_zh": "国家数据局召开数据标注先行先试工作座谈会 推进高质量数据集建设“以需定供”“以用促建”",
+      "summary_zh": "【国家数据局召开数据标注先行先试工作座谈会 推进高质量数据集建设“以需定供”“以用促建”】财联社10月31日电，据国家数据局官微消息，国家数据局10月27日下午在京组织召开数据标注先行先试工作推进会，总结数据标注先行先试工作进展，交流典型经验，部署下一阶段重点任务",
+      "title": "National Data Administration holds data-labeling pilot symposium to advance high-quality datasets",
+      "summary": "On Oct 27, the National Data Administration convened a Beijing symposium on data-labeling pilots to review progress, share best practices, and outline next-phase priorities for building high-quality datasets."
+    },
+    {
+      "id": "f6256c465749e039f56583510ef4fee3e537d626",
+      "title_zh": "巴西政府就博索纳罗离境一事传唤阿根廷驻巴临时代办",
+      "summary_zh": "【巴西政府就博索纳罗离境一事传唤阿根廷驻巴临时代办】财联社10月31日电，巴西政府当地时间10月30日传唤阿根廷驻巴西大使馆临时代办玛丽亚·埃米莉亚·科尔特斯，要求其就参议员兼总统候选人弗拉维奥·博索纳罗离开巴西一事作出说明",
+      "title": "Brazil summons Argentina's charge d'affaires over Bolsonaro's departure",
+      "summary": "On Oct 30, Brazil summoned Argentina's charge d'affaires in Brasilia, Maria Emilia Cortes, to explain the departure from Brazil of senator and presidential candidate Flavio Bolsonaro."
+    },
+    {
+      "id": "0fb5ff2d76f5e37fab5e733a508e775bdf5ffc26",
+      "title_zh": "美国加州一购物中心发生枪击致1死6伤",
+      "summary_zh": "【美国加州一购物中心发生枪击致1死6伤】财联社10月31日电，美国加利福尼亚州费尔菲尔德市警方30日晚通报，该市索拉诺购物中心当晚发生的枪击事件已造成1人死亡、6人受伤，其中至少3人伤势危重",
+      "title": "Shooting at California mall leaves 1 dead, 6 wounded",
+      "summary": "On the evening of Oct 30, Fairfield, California police said a shooting at the Solano Mall left one dead and six injured, at least three critically."
+    },
+    {
+      "id": "eb294324eac98c3846b544cb10745c9bb66c2d8a",
+      "title_zh": "事关大额存单 多家外资银行密集上架",
+      "summary_zh": "【事关大额存单 多家外资银行密集上架】财联社10月31日电，大额存单是由金融机构发行的大额存款产品，常见20万元起存，覆盖1个月至5年等多个投资期限",
+      "title": "Multiple foreign banks roll out large-denomination certificates of deposit",
+      "summary": "Large-denomination certificates of deposit are bulk deposit products from financial institutions, typically with a RMB 200,000 minimum and tenors from one month to five years."
+    },
+    {
+      "id": "1175fcdeda1f5d5d0f67eb45bc182f889358839f",
+      "title_zh": "生态环境部：11月上半月局地可能出现轻度污染 京津冀中南部可能出现中度污染",
+      "summary_zh": "【生态环境部：11月上半月局地可能出现轻度污染 京津冀中南部可能出现中度污染】财联社10月31日电，中国环境监测总站联合中央气象台、大气污染防治攻关联合中心，东北、华南、西南、西北、长三角区域空气质量预测预报中心和北京市生态环境监测中心，开展11月上半月（11月1日—15日）全国空气质量预报会商",
+      "title": "Ministry of Ecology and Environment: localized light pollution possible in early November; moderate pollution possible in south-central Jing-Jin-Ji",
+      "summary": "China's environmental monitors conducted a nationwide air-quality consultation for the first half of November (Nov 1-15), forecasting possible localized light pollution and moderate pollution in south-central Beijing-Tianjin-Hebei."
+    },
+    {
+      "id": "33b4c952788b74bc8d188da9258f1498b9a90c88",
+      "title_zh": "《考古工作“十五五”规划》印发 明确7方面重点任务",
+      "summary_zh": "【《考古工作“十五五”规划》印发 明确7方面重点任务】财联社10月31日电，国家文物局近日印发《考古工作“十五五”规划》",
+      "title": "14th Five-Year archaeology plan issued, outlining seven key tasks",
+      "summary": "The National Cultural Heritage Administration recently issued the 15th Five-Year Plan for archaeological work."
+    },
+    {
+      "id": "8b9e47e29a7b532df6c33e838cb0b8204acad58b",
+      "title_zh": "美联储10月“按兵不动” 12月加息预期仍强",
+      "summary_zh": "北京时间10月29日凌晨，美联储宣布，将联邦基金利率目标区间维持在3.75%—4.00%不变，符合市场预期",
+      "title": "Fed holds rates in October; December hike expectations remain strong",
+      "summary": "In the early hours of Oct 29 (Beijing time), the Fed kept the federal funds target range at 3.75%-4.00%, in line with market expectations."
+    },
+    {
+      "id": "71ed93c8d1038c20c4c79496223a093a8a9798b9",
+      "title_zh": "“象征性护盘？”话音未落 长鑫科技公告拟回购股份至少注销一半 前三季净利1320亿元",
+      "summary_zh": "10月30日， 长鑫科技 （688825.SH）披露2026年三季报，公司前三季度实现营收2690.24亿元，同比增长738.51%；归母净利润1320.40亿元，同比扭亏为盈；经营现金流净额2547.51亿元，同比增长1864.52%",
+      "title": "ChangXin to buy back and cancel at least half of shares; nine-month net profit RMB 132bn",
+      "summary": "On Oct 30, ChangXin Technology (688825.SH) reported Q3 2026: revenue of RMB 269.02bn (+738.51% y/y), net profit of RMB 132.04bn (turning profitable), and operating cash flow of RMB 254.75bn (+1864.52% y/y)."
+    },
+    {
+      "id": "211fc661e1d4ab734c5205e19646dc75d1c4f873",
+      "title": "Fed officials are already saying they’ll need to get back to hiking rates",
+      "summary": "The comments from Federal Reserve Presidents Alberto Musalem and Lorie Logan offer the first morsels of insight into what leaders at the Fed see happening next.",
+      "title_zh": "美联储官员已暗示可能需要恢复加息",
+      "summary_zh": "美联储官员穆斯莱姆和洛根的表述，首次透露了美联储领导层对未来政策走向的初步看法。"
+    },
+    {
+      "id": "4c465a1f0dffdd5870b128626ba579cebb1414dc",
+      "title": "Why bitcoin held up better after the record Binance hack",
+      "summary": "Bitcoin was trading down about 4% on Friday afternoon, less than a day after the biggest crypto hack in history.",
+      "title_zh": "创纪录的币安遭黑后，比特币为何表现更抗跌",
+      "summary_zh": "在史上最大规模的加密黑客事件发生后不到一天，周五午后比特币仅下跌约4%。"
+    },
+    {
       "id": "4945305648f8ab25860464935e2516e9e334b646",
       "title": "Federal Reserve Board announces approval of application by The Bank of Nova Scotia",
       "summary": "Federal Reserve Board announces approval of application by The Bank of Nova Scotia",
@@ -8,348 +204,152 @@
       "summary_zh": "美联储理事会宣布批准加拿大丰业银行的申请"
     },
     {
-      "id": "3cdad670fdcf47ff37b7cd753b24ce119b047c39",
-      "title": "ChangXin Technology: first-three-quarter 2026 net profit 132.04 billion yuan, back in the black year on year",
-      "summary": "ChangXin Technology said first-three-quarter revenue reached 269.024 billion yuan, up 738.51% year on year, with net profit attributable to shareholders of 132.04 billion yuan, turning profitable from a year-earlier loss.",
-      "title_zh": "长鑫科技：2026年前三季度净利润1320.4亿元 同比扭亏为盈",
-      "summary_zh": "长鑫科技公告称，前三季度实现营业收入2690.24亿元，同比增长738.51%；归属于上市公司股东的净利润1320.4亿元，同比扭亏为盈"
+      "id": "63a23965bf173e35d5a69303737261e1ecf8d76d",
+      "title_zh": "标普将Meta信用评级展望下调至负面，维持AA-，警告AI开支与自由现金流承压",
+      "summary_zh": "标普全球评级周五将Meta Platforms的AA-信用评级展望由稳定下调至负面，评级本身维持AA-不变",
+      "title": "S&P cuts Meta credit outlook to negative, affirms AA-; warns on AI spend and free cash flow",
+      "summary": "On Friday, S&P Global Ratings lowered the outlook on Meta Platforms' AA- rating from stable to negative, while keeping the rating itself at AA-."
     },
     {
-      "id": "b351dfd02470f4377c2d91c185bb1ca35c16d0f2",
-      "title": "ChangXin Technology: first-three-quarter net profit 132.04 billion yuan; plans a 1 billion to 2 billion yuan buyback",
-      "summary": "ChangXin Technology (688825.SH) said first-three-quarter revenue reached 269.024 billion yuan, up 738.51% year on year, with net profit attributable to shareholders of 132.04 billion yuan, turning profitable from a year-earlier loss.",
-      "title_zh": "长鑫科技：前三季度净利润1320.4亿元 拟10亿元至20亿元回购股份",
-      "summary_zh": "长鑫科技 (688825.SH)公告称，前三季度实现营业收入2690.24亿元，同比增长738.51%；归属于上市公司股东的净利润1320.4亿元，同比扭亏为盈"
+      "id": "a33e421eadff4d317b6fff0a0815174e60b1f14d",
+      "title_zh": "国新、诚通出手 三季度加仓名单曝光",
+      "summary_zh": "随着2026年A股三季报披露收官，中国国新与中国诚通两大国有资本运营平台三季度持仓动向浮出水面",
+      "title": "China Reform and Chengtong step in; Q3 increased-holdings list revealed",
+      "summary": "With the 2026 A-share Q3 reporting season closed, the third-quarter positioning of the two state-owned capital platforms China Reform and Chengtong has come to light."
     },
     {
-      "id": "dbf2816cd4a488dbeae6e326d1fb206d4337979a",
-      "title": "DeepSeek's 100 billion yuan funding round detailed: CXMT, Tencent and nearly 30 institutions took part, with state capital at 27%",
-      "summary": "On 30 October, The Information reported the details of DeepSeek's second funding round.",
-      "title_zh": "DeepSeek千亿融资细节曝光：长鑫存储、腾讯等近30家机构参投 国资占比27%",
-      "summary_zh": "10月30日，据The Information报道，DeepSeek第二轮融资的具体细节曝光"
+      "id": "8bade3ad380991661c06334126e73972e128506f",
+      "title_zh": "利好来了！北京重磅发布！事关千亿产业",
+      "summary_zh": "氢能产业又迎来政策利好！ 日前，北京市经济和信息化局印发《北京市氢能产业发展实施方案（2026—2030年）》（以下简称《实施方案》），力争到2030年，累计推广燃料 电池 汽车 突破万辆，建成加氢站超40座，实现绿色化工、热电联供等场景规模化应用，全市氢能产业链规模突破400亿元，带动 京津冀 突破1000亿元，构建",
+      "title": "Beijing unveils hydrogen industry plan targeting RMB 100bn cluster",
+      "summary": "Beijing's economy bureau issued the Hydrogen Industry Development Implementation Plan (2026-2030), aiming by 2030 for over 10,000 fuel-cell vehicles, 40+ hydrogen stations, a city-wide hydrogen value chain exceeding RMB 40bn, and over RMB 100bn across Jing-Jin-Ji."
     },
     {
-      "id": "b6e1ff37dc39540b9ed2ec04d1e9ab5eca95efd5",
-      "title": "CLS, 30 October: the commander of US Central Command said it has helped Gulf partners export 1.5 billion barrels of crude through the Strait of Hormuz since the summer, while a tight blockade of Iranian ports has",
-      "summary": "CLS, 30 October: the commander of US Central Command said it has helped Gulf partners export 1.5 billion barrels of crude through the Strait of Hormuz since the summer.",
-      "title_zh": "财联社10月30日电，美国中央司令部司令称，自夏季以来，已协助海湾伙伴通过霍尔木兹海峡出口了15亿桶原油。与此同时，由于对伊朗港口实施了严密的封锁，美国已阻...",
-      "summary_zh": "财联社10月30日电，美国中央司令部司令称，自夏季以来，已协助海湾伙伴通过霍尔木兹海峡出口了15亿桶原油"
+      "id": "e60911b9f361488d0d28169a9371d88e80c961ff",
+      "title_zh": "奥特曼：PC上装内存太浪费，最好留给AI数据中心",
+      "summary_zh": "「从全球资源配置的角度来看，让每个人把紧缺的 DRAM 囤在自己电脑里大部分时间闲置，是『相当糟糕』（quite terrible）的安排，内存应该集中到云端数据中心去",
+      "title": "Altman: RAM in PCs is wasteful; better to pool it in AI data centers",
+      "summary": "Altman argued that hoarding scarce DRAM in idle personal computers is 'quite terrible' resource allocation, and memory should be concentrated in cloud data centers instead."
     },
     {
-      "id": "4aad3d24bb85cce5585fbd25d4a16cec311a1649",
-      "title": "CLS, 30 October: US server makers extended their pre-market declines, with Dell down 11.8%, HP down 8% and Super Micro down 6%",
-      "summary": "CLS, 30 October: US server makers extended their pre-market declines, with Dell down 11.8%, HP down 8% and Super Micro down 6%.",
-      "title_zh": "财联社10月30日电，美国服务器制造商股价盘前继续下跌，戴尔下跌11.8%，惠普下跌8%，超微电脑下跌6%。",
-      "summary_zh": "财联社10月30日电，美国服务器制造商股价盘前继续下跌，戴尔下跌11.8%，惠普下跌8%，超微电脑下跌6%"
+      "id": "6e5a8caafc186da3daa1a1db6600a21de8525020",
+      "title_zh": "长安汽车短期业绩承压，部分新能源平台已盈利",
+      "summary_zh": "10月30日晚，长安汽车披露2026年三季报",
+      "title": "Changan Automobile faces near-term earnings pressure, but some NEV platforms already profitable",
+      "summary": "On the evening of Oct 30, Changan Automobile disclosed its 2026 third-quarter report."
     },
     {
-      "id": "0561f241383312f9ebf4031bf6eed5e009ef43f5",
-      "title": "BOE Technology: third-quarter net loss of 996 million yuan as small and mid-size display shipments come under clear pressure",
-      "summary": "BOE Technology (000725.SZ) reported first-three-quarter revenue of 151.809 billion yuan, down 1.77% year on year, and net profit attributable to shareholders of 4.251 billion yuan, down 7.61%.",
-      "title_zh": "京东方A：第三季度净亏损9.96亿元 中小尺寸显示产品出货明显承压",
-      "summary_zh": "【京东方A：第三季度净亏损9.96亿元 中小尺寸显示产品出货明显承压】财联社10月30日电，京东方A(000725.SZ)公告称，前三季度实现营业收入1518.09亿元，同比下降1.77%；归属于上市公司股东的净利润42.51亿元，同比下降7.61%"
+      "id": "00ce4547e68f94165bd2c37bc6df6aa06ac01f56",
+      "title_zh": "港股打新遇冷？六只新股同日招股 首日融资认购均不足1倍",
+      "summary_zh": "新股供给仍在增加，港股打新的热度却明显降了下来",
+      "title": "Hong Kong IPO hype cools? Six new listings open same day, first-day margin subscriptions all below 1x",
+      "summary": "While new-share supply keeps rising, enthusiasm for Hong Kong IPO subscriptions has clearly cooled."
     },
     {
-      "id": "fc8b322edd286a9ea69b96af3d55a41c53a99b4f",
-      "title": "China Railway Construction: third-quarter net profit down 83.98% year on year and 84% quarter on quarter",
-      "summary": "China Railway Construction (601186.SH) reported first-three-quarter revenue of 639.447 billion yuan, down 12.21%, and net profit attributable to shareholders of 9.348 billion yuan, down 36.88%.",
-      "title_zh": "中国铁建：Q3净利润同比下降83.98% 环比下降84%",
-      "summary_zh": "【中国铁建：Q3净利润同比下降83.98% 环比下降84%】财联社10月30日电，中国铁建(601186.SH)公告称，前三季度实现营业收入6394.47亿元，同比下降12.21%；归属于上市公司股东的净利润93.48亿元，同比下降36.88%"
+      "id": "0104a2d0e5537f8e3d35401c39da8756691b2369",
+      "title_zh": "八大上市车企三季报盘点：业绩分化加剧 出口增长但盈利承压",
+      "summary_zh": "日前， 比亚迪 （002594.SZ；01211.HK）、 上汽集团 （600104.SH）、 吉利汽车 （00175.HK）、 奇瑞汽车 （09973.HK）、 长城汽车 （601633.SH；02333.HK）、 长安汽车 （000625.SZ）、 赛力斯 （601127.SH；09927.HK）、 广汽集团 （6",
+      "title": "Q3 scorecard of eight listed automakers: diverging results, export growth but profit pressure",
+      "summary": "A review of Q3 reports from eight listed automakers - BYD, SAIC, Geely, Chery, Great Wall, Changan, Seres, and GAC - shows widening divergence, export growth, but profit pressure."
     },
     {
-      "id": "dd7770fc08b6478943a2db4dd64a64f550d859e0",
-      "title": "CLS, 30 October: the VIX rose 1.22 points to 18.42",
-      "summary": "CLS, 30 October: the VIX rose 1.22 points to 18.42.",
-      "title_zh": "财联社10月30日电，恐慌指数VIX上涨1.22点，至18.42。",
-      "summary_zh": "财联社10月30日电，恐慌指数VIX上涨1.22点，至18.42"
+      "id": "8e650ce54d694ed414525ce69c10cf9f84cc9bdc",
+      "title_zh": "现货黄金失守3900美元关口 创一年新低 金价长期逻辑变了吗？",
+      "summary_zh": "现货 黄金 周五失守3900美元",
+      "title": "Spot gold falls below $3,900, hitting one-year low; has the long-term thesis changed?",
+      "summary": "Spot gold broke below the $3,900 level on Friday, marking a one-year low."
     },
     {
-      "id": "40c67f95602a05263d4793878df78a3b858782a7",
-      "title": "Two non-compliant tankers intercepted in the Strait of Hormuz",
-      "summary": "Iran's Revolutionary Guard Navy released video saying two non-compliant tankers, east and west of the Strait of Hormuz, tried to transit on unauthorised routes after switching off their navigation systems and ignoring radio warnings.",
-      "title_zh": "2艘违规油轮在霍尔木兹海峡被拦",
-      "summary_zh": "【2艘违规油轮在霍尔木兹海峡被拦】财联社10月30日电，伊朗伊斯兰革命卫队海军今天（10月30日）发布视频并表示，两艘分别位于霍尔木兹海峡东部和西部的“违规油轮”，“在关闭导航系统并无视无线电警告后试图通过未经授权的航线”"
+      "id": "d201cbf652873bdcd0e04e85e0f54855e00084ee",
+      "title_zh": "财报炸裂，但闪迪隔夜为何暴跌？",
+      "summary_zh": "闪迪交出全面超预期的财报，股价却在周五美股盘前一度暴跌8%",
+      "title": "Stellar earnings, yet SanDisk plunges overnight - why?",
+      "summary": "SanDisk delivered beats across the board, yet its shares plunged as much as 8% in U.S. premarket trading on Friday."
     },
     {
-      "id": "b7a44ae83f1a9b328d7f0da16f9b46cfd4f47ac5",
-      "title": "China State Construction: first-three-quarter net profit down 24.8% year on year",
-      "summary": "China State Construction (601668.SH) reported revenue of 1.34 trillion yuan, down 14.3%, and net profit attributable to shareholders of 28.714 billion yuan, down 24.8%.",
-      "title_zh": "中国建筑：前三季度净利润同比下降24.8%",
-      "summary_zh": "【中国建筑：前三季度净利润同比下降24.8%】财联社10月30日电，中国建筑(601668.SH)公告称，前三季度实现营业收入1.34万亿元，同比下降14.3%；归属于上市公司股东的净利润287.14亿元，同比下降24.8%"
+      "id": "a8fafe0479e624e5391e77d158e077fd567fac13",
+      "title_zh": "标普下调Meta信用展望！巨额资本支出和负自由现金流为主要担忧",
+      "summary_zh": "人工智能 领域的高额资本支出正在让投资者退却，并引发了科技股的抛售",
+      "title": "S&P downgrades Meta outlook! Huge capex and negative free cash flow are key concerns",
+      "summary": "Heavy capital spending in AI is prompting investors to retreat and has triggered a sell-off in tech stocks."
     },
     {
-      "id": "6644fffac3bbe866e5f3cd1ff00eb2cd2cf2893b",
-      "title": "Coking coal drifts lower as mine restarts proceed in an orderly way",
-      "summary": "The domestic coking coal market is adjusting lower.",
-      "title_zh": "主产地复产进程仍有序推进 炼焦煤弱势调整运行",
-      "summary_zh": "【主产地复产进程仍有序推进 炼焦煤弱势调整运行】财联社10月30日电，国内市场炼焦煤弱势调整运行"
+      "id": "229fb341002cdfa7d10212cd71a16caefd234238",
+      "title_zh": "AI股重挫而等权标普逆势涨1.2%，必需消费领涨并一度创新高",
+      "summary_zh": "周五早盘，AI股再遭重挫，纳斯达克100指数下跌3%，等权重标普500指数却逆势上涨约1.2%",
+      "title": "AI stocks slump while equal-weight S&P rises 1.2%; staples lead and briefly hit record",
+      "summary": "In Friday's early session, AI stocks were hit again with the Nasdaq 100 down 3%, yet the equal-weight S&P 500 rose about 1.2% against the trend."
     },
     {
-      "id": "fbad4f485f4fb473526c35822f4e93082bd26967",
-      "title": "CLS, 30 October: Mizuho cut its SanDisk price target to 1,900 dollars from 2,050 dollars",
-      "summary": "CLS, 30 October: Mizuho cut its SanDisk price target to 1,900 dollars from 2,050 dollars.",
-      "title_zh": "财联社10月30日电，瑞穗将闪迪目标价从2050美元下调至1900美元。",
-      "summary_zh": "财联社10月30日电，瑞穗将闪迪目标价从2050美元下调至1900美元"
+      "id": "7bd9021f0c71b47d0fb3e9600d325e492c3681b4",
+      "title_zh": "全球粮食风险共振：粮食安全年底进入压力测试区？",
+      "summary_zh": "年底全球粮食市场或进入急性冲击与慢燃压力叠加的复合风险阶段",
+      "title": "Global food-risk resonance: is food security entering a stress-test zone by year-end?",
+      "summary": "By year-end, the global food market may enter a phase of compounded risk where acute shocks overlap with slow-burning pressures."
     },
     {
-      "id": "eb542ba7a4ab8bbffeb75e938dd63c6c3840610e",
-      "title": "China Tourism Group Duty Free: first-three-quarter net profit up 20.25%, plans a 0.40 yuan per share cash dividend",
-      "summary": "China Tourism Group Duty Free (601888.SH) reported first-three-quarter revenue of 38.821 billion yuan, down 2.61%, and net profit attributable to shareholders of 3.67 billion yuan, up 20.25%.",
-      "title_zh": "中国中免：前三季度净利润同比增长20.25% 拟每股派发现金红利0.40元",
-      "summary_zh": "【中国中免：前三季度净利润同比增长20.25% 拟每股派发现金红利0.40元】财联社10月30日电，中国中免(601888.SH)公告称，前三季度实现营业收入388.21亿元，同比下降2.61%；归属于上市公司股东的净利润36.7亿元，同比增长20.25%"
+      "id": "569cb5bc3961ed178ad5cf01a8872250b4e8ebde",
+      "title_zh": "Anthropic冲刺IPO：一场与OpenAI的估值、营收和算力竞赛",
+      "summary_zh": "编者按： 本文以Anthropic最新招股书及近期媒体报道为基础，从估值、营收、盈利能力和算力投入四个维度，对两家公司的经营状况与发展战略进行全面比较，力求通过直观的数据对比，为投资者了解两家AI巨头的商业化进展、竞争格局及未来挑战提供参考",
+      "title": "Anthropic races toward IPO: a valuation, revenue and compute contest with OpenAI",
+      "summary": "Based on Anthropic's latest prospectus and recent media, this piece compares the two companies' operations and strategy across valuation, revenue, profitability, and compute investment."
     },
     {
-      "id": "a3a318eb738efa09bde1657976fe6cd773d82eb8",
-      "title": "NDRC: perform the macro-management role better and implement the 15th Five-Year Plan in an orderly way",
-      "summary": "CLS, 30 October: the NDRC party group held an enlarged meeting to study and implement the spirit of the 20th Central Committee's fifth plenum and the General Secretary's remarks, and to set out implementation work.",
-      "title_zh": "国家发改委：更好发挥宏观管理和经济综合部门职责 推进“十五五”规划有序实施",
-      "summary_zh": "【国家发改委：更好发挥宏观管理和经济综合部门职责 推进“十五五”规划有序实施】财联社10月30日电，国家发展改革委党组召开扩大会议，传达学习贯彻党的二十届五中全会精神和习近平总书记重要讲话精神，研究部署全委学习宣传贯彻工作"
+      "id": "4aa7919e6f3d517542f1d884363bb5fbbd64ea7e",
+      "title_zh": "价格周报｜养殖端出栏节奏加快 本周猪价继续下滑",
+      "summary_zh": "据农业农村部监测，10月30日，全国 农产品 批发市场猪肉平均价格为15.29元/公斤，与上周五（10月23日）的15.82元/公斤相比，下降3.4%",
+      "title": "Price weekly: faster hog off-take pushes pork prices lower again",
+      "summary": "Per the Ministry of Agriculture, the national wholesale pork price was RMB 15.29/kg on Oct 30, down 3.4% from RMB 15.82/kg on Oct 23."
     },
     {
-      "id": "77927078808dae77e70f08ad4b5d09afe9f756fe",
-      "title": "Ministry of Finance: January-September state-owned enterprise revenue down 3.2%, total profit up 3.0%",
-      "summary": "CLS, 30 October: Ministry of Finance data show that in January-September, nationwide state-owned and state-controlled enterprises saw total revenue fall 3.2% year on year while total profit rose 3.0%.",
-      "title_zh": "财政部：1-9月国有企业营业总收入同比下降3.2% 利润总额同比增长3.0%",
-      "summary_zh": "【财政部：1-9月国有企业营业总收入同比下降3.2% 利润总额同比增长3.0%】财联社10月30日电，财政部数据显示，1-9月，全国国有及国有控股企业（以下称国有企业）营业总收入同比下降3.2%，利润总额同比增长3.0%"
+      "id": "a6d85af713e6ddc27634589c21e13e95d6fa3ca1",
+      "title_zh": "从小米离职后王腾首次公开亮相 谈“蹭雷军流量”：真心感谢小米和雷总",
+      "summary_zh": "“很多人问我是不是在蹭雷总的流量？但是我真心实意感谢过往的经历，真心感谢小米和雷总",
+      "title": "Wang Teng's first public appearance since leaving Xiaomi; on 'riding Lei Jun's coattails': truly grateful to Xiaomi",
+      "summary": "Asked whether he is riding on Lei Jun's popularity, Wang Teng said he is sincerely grateful for his past experience and for Xiaomi and Lei Jun."
     },
     {
-      "id": "56cad4cac87571b2130f02fb709beccaeef8514b",
-      "title": "China Minsheng Bank: first-three-quarter 2026 net profit down 14.78% year on year",
-      "summary": "China Minsheng Bank (600016.SH) reported first-three-quarter revenue of 110.554 billion yuan, up 1.88%, and net profit attributable to shareholders of 24.323 billion yuan, down 14.78%.",
-      "title_zh": "民生银行：2026年前三季度净利润同比下降14.78%",
-      "summary_zh": "【民生银行：2026年前三季度净利润同比下降14.78%】财联社10月30日电，民生银行(600016.SH)公告称，前三季度实现营业收入1105.54亿元，同比增长1.88%；归属于本行股东的净利润243.23亿元，同比下降14.78%"
+      "id": "d0a6336a42a77f6748ae435d72d2c70973523413",
+      "title_zh": "当前AI最紧迫的瓶颈：廉价资金正在枯竭！",
+      "summary_zh": "过去几年，AI公司轻松筹得数千亿美元，华尔街竞相出资、很少过问，主打一个“钱多事少”",
+      "title": "AI's most urgent bottleneck now: cheap money is drying up",
+      "summary": "In recent years AI firms easily raised hundreds of billions of dollars as Wall Street rushed to fund them with little scrutiny - a 'money-rich, oversight-light' era that is now ending."
     },
     {
-      "id": "ee6a37f778262af4c7117f67421a2694c43a0610",
-      "title": "CLS, 30 October: Stifel cut its Intel price target to 90 dollars from 110 dollars",
-      "summary": "CLS, 30 October: Stifel cut its Intel price target to 90 dollars from 110 dollars.",
-      "title_zh": "财联社10月30日电，投行Stifel将英特尔目标价从110美元下调至90美元。",
-      "summary_zh": "财联社10月30日电，投行Stifel将英特尔目标价从110美元下调至90美元"
+      "id": "51499da7bc35030ab82bc621655f06ec2ea6c6b4",
+      "title_zh": "突然大涨！美伊局势传来大消息",
+      "summary_zh": "中东紧张局势升级，再度引发油价上涨！ 北京时间10月31日凌晨，国际油价收涨，纽约商品交易所12月交货的轻质原油 期货 价格上涨2.08%，报104.12美元/桶；12月交货的伦敦布伦特原油 期货 价格上涨2.4%，报117.64美元/桶",
+      "title": "Sudden surge! Major news on U.S.-Iran tensions",
+      "summary": "Escalating Middle East tensions drove oil higher: at the Oct 31 early close, Nymex December WTI rose 2.08% to $104.12/bbl and December Brent rose 2.4% to $117.64/bbl."
     },
     {
-      "id": "e6365648eb67e8007ecb98da6a51fbda2d83f5b8",
-      "title": "Huatai Securities: third-quarter net profit down 51% quarter on quarter",
-      "summary": "Huatai Securities (601688.SH) reported first-three-quarter revenue of 31.748 billion yuan, up 17.03%, and net profit attributable to shareholders of 15.041 billion yuan, up 18.13%.",
-      "title_zh": "华泰证券：Q3净利润环比下降51%",
-      "summary_zh": "【华泰证券：Q3净利润环比下降51%】财联社10月30日电，华泰证券(601688.SH)公告称，前三季度实现营业收入317.48亿元，同比增长17.03%；归属于上市公司股东的净利润150.41亿元，同比增长18.13%"
+      "id": "56c2d40b5ca0f7d0b1cbe2f8b5dcd4017e870902",
+      "title": "Trump called out Big Oil profits. Here’s how much their refining earnings have surged since",
+      "summary": "Trump criticized Big Oil for making “too much money,” but oil majors have since reported surging refining earnings as fuel supplies tightened.",
+      "title_zh": "特朗普点名批评石油巨头暴利，其炼油利润究竟涨了多少",
+      "summary_zh": "特朗普批评大型石油公司“赚得太多”，但随着燃料供应收紧，石油巨头随后披露的炼油利润大幅飙升。"
     },
     {
-      "id": "0553795cf9d75569cb01fa22e8becd68d800c95a",
-      "title": "CLS, 30 October: Mizuho cut its Intel price target to 88 dollars from 114 dollars",
-      "summary": "CLS, 30 October: Mizuho cut its Intel price target to 88 dollars from 114 dollars.",
-      "title_zh": "财联社10月30日电，瑞穗将英特尔目标价从114美元下调至88美元。",
-      "summary_zh": "财联社10月30日电，瑞穗将英特尔目标价从114美元下调至88美元"
+      "id": "ae3c217307db6f18b8e9df934fc49cc706d7b65c",
+      "title": "AI is coming to construction sites. But does it make workers safer?",
+      "summary": "AI is flagging hazards on construction sites, but researchers say evidence that the technology prevents injuries remains limited.",
+      "title_zh": "AI 走进建筑工地，但它真能让工人更安全吗？",
+      "summary_zh": "AI 正在建筑工地识别安全隐患，但研究人员表示，该技术能预防工伤的证据仍然有限。"
     },
     {
-      "id": "7ec15f21f19acd28f3e5bdee4da30a941af821ae",
-      "title": "Baili Tianheng: third-quarter net profit up 49.54% year on year",
-      "summary": "Baili Tianheng (688506.SH) reported first-three-quarter revenue of 2.094 billion yuan, up 1.35%, with a net loss attributable to shareholders of 705 million yuan.",
-      "title_zh": "百利天恒：第三季度净利润同比增长49.54%",
-      "summary_zh": "【百利天恒：第三季度净利润同比增长49.54%】财联社10月30日电，百利天恒(688506.SH)公告称，前三季度实现营业收入20.94亿元，同比增长1.35%；归属于上市公司股东的净利润为亏损7.05亿元"
+      "id": "11d8306ad0d715f8ea2fa18ef201c091446d1e8a",
+      "title_zh": "2008再现！一文读懂华尔街最热门交易：AI CDS",
+      "summary_zh": "巴克莱银行（Barclays）发布了一份针对人工智能相关企业信用违约互换（CDS）市场的综合报告，指出 随着资本支出的大幅扩张，AI相关企业的信贷风险已出现显著的重新定价，其CDS交易量及利差均呈现急剧上升趋势",
+      "title": "2008 redux? Understanding Wall Street's hottest trade: AI CDS",
+      "summary": "Barclays published a comprehensive report on the CDS market for AI-related firms, noting that as capex expands sharply, AI firms' credit risk has been repriced, with CDS volumes and spreads rising steeply."
     },
     {
-      "id": "e6ac301376078fbbce35774c6ed521b46e7c13c2",
-      "title": "Securities Association of China publishes 34 AI case studies, covering seven areas from operational efficiency to decision support",
-      "summary": "CLS, 30 October: the Securities Association of China published a collection of 34 securities-industry AI case studies on 30 October, spanning seven directions including operational efficiency, experience upgrades and decision support.",
-      "title_zh": "中证协发布34篇证券业AI应用典型案例，覆盖运营提效、体验升级、决策支持等七大方向",
-      "summary_zh": "【中证协发布34篇证券业AI应用典型案例，覆盖运营提效、体验升级、决策支持等七大方向】财联社10月30日电，记者从业内独家获悉，10月30日，中国证券业协会在业内发布“智汇证券·共创未来”证券行业人工智能应用案例集，34篇入选案例集中亮相"
-    },
-    {
-      "id": "ecf677156a7c3e33510869732e3e7b247d920e96",
-      "title": "CLS, 30 October: EU officials estimate the levy on low-value e-commerce parcels will add about 5.9 billion euros a year to the EU budget between 2028 and 2034",
-      "summary": "CLS, 30 October: EU officials estimate the levy on low-value e-commerce parcels will add about 5.9 billion euros a year to the EU budget between 2028 and 2034.",
-      "title_zh": "财联社10月30日电，据欧盟官方估算，欧盟对低价值电商包裹征收的费用，预计在2028至2034年间每年为欧盟预算带来59亿欧元收入。",
-      "summary_zh": "财联社10月30日电，据欧盟官方估算，欧盟对低价值电商包裹征收的费用，预计在2028至2034年间每年为欧盟预算带来59亿欧元收入"
-    },
-    {
-      "id": "7dfa6f0a9cab177e9c69dcc3dfa4720f8d7f8b17",
-      "title": "MIIT Vice Minister Xie Yuansheng meets Helene Budliger Artieda, State Secretary of Switzerland's State Secretariat for Economic Affairs",
-      "summary": "CLS, 30 October: MIIT Vice Minister Xie Yuansheng met Helene Budliger Artieda, State Secretary of Switzerland's State Secretariat for Economic Affairs, in Beijing on 30 October to discuss watchmaking and pharmaceuticals cooperation and a new memorandum on the watch cooperation working group.",
-      "title_zh": "工信部副部长谢远生会见瑞士联邦经济总局局长、国务秘书海伦娜·布德里格·阿蒂达",
-      "summary_zh": "【工信部副部长谢远生会见瑞士联邦经济总局局长、国务秘书海伦娜·布德里格·阿蒂达】财联社10月30日电，工业和信息化部副部长谢远生10月30日在北京会见瑞士联邦经济总局局长、国务秘书海伦娜·布德里格·阿蒂达，双方就深化中瑞钟表、医药产业合作以及签署新版《关于在中瑞经贸联委会框架下加强钟表合作工作组合作的谅解备忘录》等议题"
-    },
-    {
-      "id": "03201a7fa19bbf940055edcaa1b386596aeb9658",
-      "title": "Coinbase net income surges 66% in third quarter, benefiting from bitcoin investment gains",
-      "summary": "Coinbase posted better-than-expected earnings in the third quarter, largely due to a recovery in the cryptocurrency market.",
-      "title_zh": "Coinbase 第三季度净利润激增 66%，受益于比特币投资收益",
-      "summary_zh": "Coinbase 第三季度业绩好于预期，主要受加密货币市场回暖推动。"
-    },
-    {
-      "id": "f6bffb5cf4ec1badb49383ddcb81f80546a62c31",
-      "title": "Federal Reserve issues FOMC statement",
-      "summary": "Federal Reserve issues FOMC statement",
-      "title_zh": "美联储发布 FOMC 声明",
-      "summary_zh": "美联储发布 FOMC 声明"
-    },
-    {
-      "id": "1d1b8cee3b14c6b34a1f824b89d3a2dd25ba7de7",
-      "title": "Chevron and Exxon beat earnings expectations as refining profits soar on high diesel fuel prices",
-      "summary": "Diesel prices have surged globally as Ukraine and Iran have bombed refineries in Russia and the Middle East.",
-      "title_zh": "雪佛龙与埃克森美孚业绩超预期，柴油价格高企推动炼油利润飙升",
-      "summary_zh": "随着乌克兰和伊朗袭击俄罗斯与中东的炼厂，全球柴油价格大幅上涨。"
-    },
-    {
-      "id": "5a9e4d658b49506d940d3f932a62d1d5267f7799",
-      "title": "Some Polymarket user funds stolen by hackers; exchange referring matter to U.K. authorities",
-      "summary": "The outage comes just days before the platform is expected to experience heightened trading during the U.S",
-      "title_zh": "Polymarket 部分用户资金遭黑客窃取，平台已将事件移交英国当局",
-      "summary_zh": "此次中断距该平台预计在美国迎来交易高峰仅数日。"
-    },
-    {
-      "id": "75c9f344648aaddb995f15197866f36bd21f05bd",
-      "title": "Musk and Zuckerberg echo Trump's push to rebrand AI as 'super intelligence' on earnings calls. Others did not",
-      "summary": "Meta's Mark Zuckerberg and Elon Musk of Tesla and SpaceX adopted President Trump's preferred \"super intelligence\" term on their third-quarter earnings calls.",
-      "title_zh": "马斯克与扎克伯格在财报电话会上呼应特朗普，将 AI 改称“超级智能”，其他公司并未跟进",
-      "summary_zh": "Meta 的马克·扎克伯格以及特斯拉与 SpaceX 的埃隆·马斯克在第三季度财报电话会上采用了特朗普偏好的“超级智能”说法。"
-    },
-    {
-      "id": "13820d4a22a7308bc5ac43096b40490bfcaf3cf0",
-      "title": "Russian strikes plunge Ukrainian city into blackout as Zelenskyy warns of more missile attacks",
-      "summary": "Russian strikes caused major power outages in Dnipro as a reported Ukrainian drone attack sparked a fire at a Russian oil refinery.",
-      "title_zh": "俄军袭击致乌克兰一城市停电，泽连斯基警告将有更多导弹袭击",
-      "summary_zh": "俄军袭击导致第聂伯罗大面积停电，同时据报道乌克兰无人机袭击引发俄罗斯一处炼油厂火灾。"
-    },
-    {
-      "id": "3038432f3ac2e17df4b435c621c9adc9709c8c5b",
-      "title": "Biggest-ever crypto hack impacts $6.3 billion as Binance works to contain fallout",
-      "summary": "Binance estimated the impact of a security incident at $6.3 billion, with around $3 billion in crypto assets frozen, and pledged to cover all losses.",
-      "title_zh": "史上最大规模加密黑客事件涉及 63 亿美元，币安正努力控制影响",
-      "summary_zh": "币安估算一起安全事件的影响约为 63 亿美元，约 30 亿美元加密资产被冻结，并承诺承担全部损失。"
-    },
-    {
-      "id": "586797ee10673510ddadb54aa47a33a0615ca391",
-      "title": "Euro zone economy slows to 0.4% growth in Q3 as crisis-hit France contracts",
-      "summary": "The euro zone showed surprising resilience, but weak productivity, industrial competitiveness challenges and demographic pressures remain, analysts said.",
-      "title_zh": "欧元区第三季度增速放缓至 0.4%，受危机冲击的法国出现萎缩",
-      "summary_zh": "分析师表示，欧元区展现出意外的韧性，但生产率疲弱、工业竞争力挑战与人口压力依然存在。"
-    },
-    {
-      "id": "6fbc20217012ca123d6aec0833a866f97fec6bd8",
-      "title": "Wall Street braces for Democratic gains as 2026 midterm election nears",
-      "summary": "Investors are preparing for a blue wave in the midterm election on Tuesday that will determine who controls Congress for the remainder of President Trump's term",
-      "title_zh": "2026 年中期选举临近，华尔街准备迎接民主党斩获",
-      "summary_zh": "投资者正在为周二中期选举的“蓝色浪潮”做准备，选举结果将决定特朗普总统余下任期内国会的控制权。"
-    },
-    {
-      "id": "859792f242f168733daad78564891779b1efba59",
-      "title": "PBoC: will continue the moderately loose monetary policy and keep liquidity ample",
-      "summary": "On 30 October 2026, Pan Gongsheng, Party Secretary and Governor of the People's Bank of China, chaired a party committee meeting.",
-      "title_zh": "中国央行：续实施适度宽松的货币政策，保持流动性充裕",
-      "summary_zh": "2026年10月30日，中国人民银行党委书记、行长潘功胜主持召开党委会议"
-    },
-    {
-      "id": "b3cf99cb7817e556d86aee99507380d1d8d936b6",
-      "title": "PBoC: continue the moderately loose monetary policy and keep liquidity ample",
-      "summary": "On 30 October 2026, Pan Gongsheng, Party Secretary and Governor of the People's Bank of China, chaired a party committee meeting to study the General Secretary's remarks at the 20th Central Committee's fifth plenum and to set out implementation measures.",
-      "title_zh": "央行：继续实施适度宽松的货币政策 保持流动性充裕",
-      "summary_zh": "2026年10月30日，中国人民 银行 党委书记、行长潘功胜主持召开党委会议，传达学习习近平总书记在党的二十届五中全会上的重要讲话和全会精神，研究部署贯彻落实举措"
-    },
-    {
-      "id": "49a57a5d6fad0ccbd948e1139eac198ad27e0fd4",
-      "title": "Kweichow Moutai: first-three-quarter net profit attributable to shareholders 64.467 billion yuan, down 0.25%",
-      "summary": "Kweichow Moutai reported 2026 first-three-quarter revenue of 130.971 billion yuan, up 1.96%, net profit attributable to shareholders of 64.467 billion yuan, down 0.25%, and recurring net profit of 64.325 billion yuan, down 0.55%.",
-      "title_zh": "贵州茅台：前三季度归母净利润644.67亿元，同比下降0.25%",
-      "summary_zh": "贵州茅台公告，2026年前三季度营业收入1309.71亿元，同比增1.96%；归母净利润644.67亿元，同比降0.25%；扣非净利润643.25亿元，同比降0.55%"
-    },
-    {
-      "id": "08ff89b2bf56244826b802dfc8b45c1602447eea",
-      "title": "Bond market shock: concentrated selling hits credit bonds; institutions say the correction does not change the easing bias",
-      "summary": "On 30 October the domestic bond market saw a sudden, concentrated correction, with yields on city-investment bonds and liquid bank perpetual and tier-2 capital bonds rising fast on significantly heavier volume.",
-      "title_zh": "债市巨震！信用债抛压集中释放 机构：调整不改宽松基调",
-      "summary_zh": "10月30日，国内债券市场突发集中调整，城投债以及流动性较好的 银行 二永债等多品种收益率快速上行，成交显著放量"
-    },
-    {
-      "id": "9fa056b88dec0bae2ad38519e2f94a1f44509e6c",
-      "title": "Fourth batch of mutual fund benchmark changes lands, giving more products a clear reference",
-      "summary": "A thousand-plus mutual funds published benchmark adjustment notices this evening, formally landing the fourth batch of performance-benchmark changes.",
-      "title_zh": "第四批公募产品基准调整落地 更多产品有了清晰“参照系”",
-      "summary_zh": "今日晚间，千余只公募基金集中发布业绩比较基准调整公告，公募基金第四批业绩比较基准调整正式落地"
-    },
-    {
-      "id": "6255e60543b111dfbb8abe03983ac889d3ef4c51",
-      "title": "Tech giants need legacy businesses to keep growing as they pour trillions into the AI buildout",
-      "summary": "Hyperscalers continue spending big on artificial intelligence, putting pressure on their legacy businesses and impacting their free cash flow.",
-      "title_zh": "科技巨头向 AI 基建投入数万亿美元，却仍需传统业务维持增长",
-      "summary_zh": "超大规模云厂商持续在人工智能上大举投入，给传统业务带来压力并影响自由现金流。"
-    },
-    {
-      "id": "736f1b8555d8c1021f821f579b08724b55c11a13",
-      "title": "A decade of data: the Shanghai Composite rose in November 60% of the time, with micro and small caps outperforming; where do valuations stand now?",
-      "summary": "With October trading over, the market is about to enter November.",
-      "title_zh": "近10年数据复盘：沪指11月上涨比例60% 小微盘股相对占优 当下指数估值如何？",
-      "summary_zh": "随着10月行情落下帷幕，市场即将迈入11月"
-    },
-    {
-      "id": "6560ad383baab1f4f59e62dc3f640f21cb788b44",
-      "title": "Sudden wave of target cuts, a 26% plunge: what happened at the US chip giant?",
-      "summary": "After Google, Intel also delivered results the market found unsatisfactory.",
-      "title_zh": "突然集体下调！暴跌26%！美国芯片巨头发生了啥？",
-      "summary_zh": "继谷歌之后， 英特尔 也交出了一份令市场不满意的“答卷”"
-    },
-    {
-      "id": "1672f3448199356a470a5ef905a643123b02d9e8",
-      "title": "Fourth batch of mutual fund benchmark changes completes, with more than 4,000 products adjusted",
-      "summary": "On 30 October, as the fourth batch of a thousand-plus existing funds published benchmark notices, the number of products requiring unified adjustment in the transition period passed 4,000.",
-      "title_zh": "公募基金第四批业绩比较基准调整落地 超4000只产品完成调整安排",
-      "summary_zh": "10月30日，随着第四批千余只存量公募基金集中发布业绩比较基准调整公告，过渡期内需统一调整的产品已超4000只"
-    },
-    {
-      "id": "adf1e7ba48d1e0311b2ef175972330d4d63e9166",
-      "title": "Japan's 'national team' to accelerate ETF sales, having offloaded 244 billion yen this year",
-      "summary": "The Bank of Japan said today that from January it will raise annual ETF sales to about 860 billion yen at book value, from about 330 billion yen, shortening the time needed to complete the unwind from roughly 112 years to about 43 years.",
-      "title_zh": "日本“国家队”将加速抛售ETF 年内已卖2440亿日元",
-      "summary_zh": "日本央行今日宣布，从明年1月起，按账面价值计算， 每年出售ETF的规模提高至约8600亿日元 （约363亿元），此前为每年约3300亿日元（约139亿元），完成全部出售的时间预计由约112年缩短至约43年"
-    },
-    {
-      "id": "0efd1643192a05204a597952084dfc4503084ea3",
-      "title": "Interview with SGX group managing director Chen Qing: regional allocation to renminbi assets is turning longer-term",
-      "summary": "Overseas investors now have one more option for allocating to renminbi bonds.",
-      "title_zh": "对话新交所集团董事总经理陈庆：区域投资者配置人民币资产渐趋长期",
-      "summary_zh": "海外投资者配置人民币债券，又多了一种选择"
-    },
-    {
-      "id": "77e632858b1931977719ab6ce1676b86b8da2705",
-      "title": "At 4.9 yuan per thousand calls, Baidu wants to push search API pricing to the floor",
-      "summary": "On 30 October Baidu held a product upgrade briefing in Beijing, launching a new round of upgrades around its Ernie assistant, AI camera, GUI interaction and AI interactive content, and upgrading its search AI API for developers.",
-      "title_zh": "千次4.9元，百度这回想把搜索API打到地板价",
-      "summary_zh": "10月30日，百度App在北京举办产品升级沟通会，围绕文心助手、AI镜头、GUI交互和AI互动内容推出新一轮升级，同时升级搜索AI API，面向开发者提供搜索服务"
-    },
-    {
-      "id": "08318fc87e9775abdf06381b1254f092c8d56d5a",
-      "title": "MetaX: first-three-quarter net profit attributable to shareholders 639 million yuan, turning profitable",
-      "summary": "MetaX reported 2026 first-three-quarter revenue of 2.824 billion yuan, up 128.45%, and net profit attributable to shareholders of 639 million yuan versus a 346 million yuan loss a year earlier; recurring net profit was 259 million yuan, also turning profitable.",
-      "title_zh": "沐曦股份：前三季度归母净利润6.39亿元，扭亏为盈",
-      "summary_zh": "沐曦股份公告，2026年前三季度营业收入28.24亿元，同比增长128.45%；归母净利润6.39亿元，上年同期亏损3.46亿元，扭亏为盈；扣非净利润2.59亿元，扭亏为盈"
-    },
-    {
-      "id": "e8fdc364e41a6eec6b7122e4a7baf0f511cc3e93",
-      "title": "Kweichow Moutai: third-quarter net profit 19.951 billion yuan, up 3.78% year on year and 15% quarter on quarter",
-      "summary": "Kweichow Moutai (600519.SH) reported first-three-quarter revenue of 130.971 billion yuan, up 1.96%, and net profit attributable to shareholders of 64.467 billion yuan, down 0.25%.",
-      "title_zh": "贵州茅台：第三季度净利润199.51亿元 同比增长3.78%环比增长15%",
-      "summary_zh": "贵州茅台 (600519.SH)公告称，前三季度实现营业收入1309.71亿元，同比增长1.96%；归属于上市公司股东的净利润644.67亿元，同比下降0.25%"
-    },
-    {
-      "id": "65aaa40beb1e248d97371c1eadbabe2f88695324",
-      "title": "Gen Z is ditching bars for run clubs — and finding more than friends along the way",
-      "summary": "As young adults denote less wallet share to bars, run clubs, races and recreational leagues become increasingly popular places to build community.",
-      "title_zh": "Z 世代抛弃酒吧转向跑步俱乐部，顺带收获的不只是朋友",
-      "summary_zh": "随着年轻人把更少的支出投向酒吧，跑步俱乐部、赛事和休闲联赛正成为越来越受欢迎的社群场所。"
-    },
-    {
-      "id": "7ae6a3ca57e1c0dd0315a02374e7275f4aad03a8",
-      "title": "China's live hog price falls below 9 yuan per kilogram; will the cycle turn?",
-      "summary": "Since October the hog market has stayed weak through the peak season, with domestic prices continuing to slide.",
-      "title_zh": "国内生猪价跌破9元/公斤，周期反转还会来吗？",
-      "summary_zh": "10月以来，生猪市场延续旺季不旺态势，国内生猪价格继续下行"
-    },
-    {
-      "id": "1e57fbe11d7624acda065e0c390b33d9c5e9c8ce",
-      "title": "YOFC: first-three-quarter net profit attributable to shareholders 6.128 billion yuan, up 1,204.63%",
-      "summary": "YOFC reported 2026 first-three-quarter revenue of 19.124 billion yuan, up 86.12%, net profit attributable to shareholders of 6.128 billion yuan, up 1,204.63%, and recurring net profit of 5.505 billion yuan, up 1,846.32%.",
-      "title_zh": "长飞光纤：前三季度归母净利润61.28亿元，同比增长1204.63%",
-      "summary_zh": "长飞光纤公告，2026年前三季度营业收入191.24亿元，同比增长86.12%；归母净利润61.28亿元，同比增长1204.63%；扣非净利润55.05亿元，同比增长1846.32%"
+      "id": "1f76c7cc212cd7f4a48176b7c29a47d6a1ccbc91",
+      "title_zh": "官方披露：将有两名中国人登陆月球",
+      "summary_zh": "今天（2026年10月31日），是钱学森逝世17周年",
+      "title": "Officials disclose: two Chinese will land on the moon",
+      "summary": "Today (Oct 31, 2026) marks the 17th anniversary of Qian Xuesen's passing."
     }
   ],
-  "updated_at": "2026-10-30T12:41:09Z"
+  "updated_at": "2026-10-31T09:21:13Z"
 }
